@@ -1,0 +1,172 @@
+dataset: global_ibge_tabua_mares
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  estacoes:
+    linhas: 6
+    fonte_do_perfil: tabela inteira
+    colunas:
+      siglaMaregrafo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: EMARC
+        max: EMSAN
+        top:
+        - [EMARC, 1]
+        - [EMBEL, 1]
+        - [EMFOR, 1]
+        - [EMIMB, 1]
+        - [EMSAL, 1]
+        - [EMSAN, 1]
+      nomeMaregrafo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6, pessoal: 'só contagens: valores seriam dado pessoal'}
+      local:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: Capitania dos Portos
+        max: Porto do Forno
+        top:
+        - [Capitania dos Portos, 1]
+        - [Porto de Belém, 1]
+        - [Porto de Imbituba, 1]
+        - [Porto de Mucuripe, 1]
+        - [Porto de Santana, 1]
+        - [Porto do Forno, 1]
+      siglaUF:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: AP
+        max: SC
+        top:
+        - [AP, 1]
+        - [BA, 1]
+        - [CE, 1]
+        - [PA, 1]
+        - [RJ, 1]
+        - [SC, 1]
+      dataInicialOperacao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '1998-09-01'
+        max: '2019-11-26'
+        top:
+        - ['1998-09-01', 1]
+        - ['2004-10-15', 1]
+        - ['2005-06-01', 1]
+        - ['2007-12-01', 1]
+        - ['2017-06-12', 1]
+        - ['2019-11-26', 1]
+      urlRelatorio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: https://geoftp.ibge.gov.br/informacoes_sobre_posicionamento_geodesico/rmpg/relatorio/Arraial/ARRAIAL.pdf
+        max: https://geoftp.ibge.gov.br/informacoes_sobre_posicionamento_geodesico/rmpg/relatorio/Santana/SANTANA.pdf
+        top:
+        - ['https://geoftp.ibge.gov.br/informacoes_sobre_posicionamento_geodesico/rmpg/relatorio/Arraial/ARRAIAL.pdf', 1]
+        - ['https://geoftp.ibge.gov.br/informacoes_sobre_posicionamento_geodesico/rmpg/relatorio/Belem/BELEM.pdf', 1]
+        - ['https://geoftp.ibge.gov.br/informacoes_sobre_posicionamento_geodesico/rmpg/relatorio/Fortaleza/FORTALEZA.pdf', 1]
+        - ['https://geoftp.ibge.gov.br/informacoes_sobre_posicionamento_geodesico/rmpg/relatorio/Imbituba/IMBITUBA.pdf', 1]
+        - ['https://geoftp.ibge.gov.br/informacoes_sobre_posicionamento_geodesico/rmpg/relatorio/Salvador/SALVADOR.pdf', 1]
+        - ['https://geoftp.ibge.gov.br/informacoes_sobre_posicionamento_geodesico/rmpg/relatorio/Santana/SANTANA.pdf', 1]
+      lat:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '-28.231111'
+        max: '-0.061389'
+        media: -11.566
+        quartis: [-22.9725, -8.3443, -1.4423]
+        top:
+        - ['-0.061389', 1]
+        - ['-1.442286', 1]
+        - ['-12.973969', 1]
+        - ['-22.9725', 1]
+        - ['-28.231111', 1]
+        - ['-3.714597', 1]
+      lon:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '-51.165833'
+        max: '-38.476817'
+        media: -44.5533
+        quartis: [-48.6503, -45.255, -38.5172]
+        top:
+        - ['-38.476817', 1]
+        - ['-38.517208', 1]
+        - ['-42.013611', 1]
+        - ['-48.496353', 1]
+        - ['-48.650278', 1]
+        - ['-51.165833', 1]
+      idGLOSS:
+        tipo: BIGINT
+        nulos_pct: 33.33
+        distintos_aprox: 3
+        min: '201'
+        max: '351'
+        media: 305.5
+        quartis: [268, 335, 344]
+        top:
+        - [null, 2]
+        - ['201', 1]
+        - ['334', 1]
+        - ['336', 1]
+        - ['351', 1]
+      idUHSLC:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '178'
+        max: '718'
+        media: 472
+        quartis: [229, 496, 716]
+        top:
+        - ['178', 1]
+        - ['229', 1]
+        - ['283', 1]
+        - ['708', 1]
+        - ['716', 1]
+        - ['718', 1]
+      idPSMSL:
+        tipo: BIGINT
+        nulos_pct: 50
+        distintos_aprox: 3
+        min: '559'
+        max: '580'
+        media: 572.3333
+        quartis: [564, 578, 580]
+        top:
+        - [null, 3]
+        - ['559', 1]
+        - ['578', 1]
+        - ['580', 1]
+  previsao:
+    linhas: 1261440
+    fonte_do_perfil: tabela inteira
+    colunas:
+      dtHrPrevisao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 214554}
+      previsao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 10496
+        min: '0.994'
+        max: '8.684'
+        media: 3.911
+        quartis: [1.823, 3.1438, 6.2381]
+      siglaMaregrafo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: EMARC
+        max: EMSAN
+        top:
+        - [EMARC, 210240]
+        - [EMBEL, 210240]
+        - [EMFOR, 210240]
+        - [EMIMB, 210240]
+        - [EMSAL, 210240]
+        - [EMSAN, 210240]

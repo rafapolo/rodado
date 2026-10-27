@@ -1,0 +1,204 @@
+dataset: br_pncp
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  contratos:
+    linhas: 5229507
+    fonte_do_perfil: amostra de 38.245%. ~2.000.000 linhas
+    colunas:
+      numeroControlePncpCompra: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 733635, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numeroControlePncpAta: {tipo: VARCHAR, nulos_pct: 89.44, distintos_aprox: 39000, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigoPaisFornecedor: {tipo: VARCHAR, nulos_pct: 74.53, distintos_aprox: 36, pessoal: 'só contagens: valores seriam dado pessoal'}
+      anoContrato:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '2021'
+        max: '24062025'
+        media: 2043.983
+        quartis: [2025, 2025, 2026]
+        top:
+        - ['2025', 915109]
+        - ['2026', 757902]
+        - ['2024', 296332]
+        - ['2023', 99870]
+        - ['2022', 15038]
+        - ['2021', 284]
+        - ['2027', 21]
+        - ['2028', 10]
+        - ['8197', 6]
+        - ['2029', 3]
+      tipoContrato:
+        tipo: STRUCT(id BIGINT, nome VARCHAR)
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: '{''id'': 1, ''nome'': ''Contrato (termo inicial)''}'
+        max: '{''id'': 12, ''nome'': Carta Contrato}'
+        top:
+        - ['{''id'': 7, ''nome'': Empenho}', 758431]
+        - ['{''id'': 1, ''nome'': ''Contrato (termo inicial)''}', 755211]
+        - ['{''id'': 8, ''nome'': Outros}', 560250]
+        - ['{''id'': 12, ''nome'': Carta Contrato}', 4867]
+        - ['{''id'': 5, ''nome'': Termo de Adesão}', 3827]
+        - ['{''id'': 2, ''nome'': Comodato}', 1207]
+        - ['{''id'': 4, ''nome'': Concessão}', 541]
+        - ['{''id'': 3, ''nome'': Arrendamento}', 159]
+        - ['{''id'': 6, ''nome'': Convênio}', 89]
+        - ['{''id'': 11, ''nome'': Termo de Compromisso}', 12]
+      numeroContratoEmpenho: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 883171, pessoal: 'só contagens: valores seriam dado pessoal'}
+      dataAssinatura: {tipo: DATE, nulos_pct: 0, distintos_aprox: 2039, min: '2021-04-04', max: '2027-08-03'}
+      dataVigenciaInicio: {tipo: DATE, nulos_pct: 0, distintos_aprox: 2205, min: '2021-04-14', max: '5026-05-07'}
+      dataVigenciaFim: {tipo: DATE, nulos_pct: 0.02, distintos_aprox: 5804, min: '2021-08-08', max: '9999-12-31'}
+      niFornecedor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 340898, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipoPessoa:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: PE
+        max: PJ
+        top:
+        - [PJ, 2000776]
+        - [PF, 78540]
+        - [PE, 5283]
+      orgaoEntidade: {tipo: 'STRUCT(cnpj VARCHAR, razaoSocial VARCHAR, poderId VARCHAR, esferaId VARCHAR)', nulos_pct: 0, distintos_aprox: 13959,
+        min: '{''cnpj'': 00000000000191, ''razaoSocial'': BANCO DO BRASIL SA, ''poderId'': N, ''esferaId'': N}', max: '{''cnpj'': 98671597000109,
+          ''razaoSocial'': MUNICIPIO DE VERANOPOLIS, ''poderId'': N, ''esferaId'': M}'}
+      categoriaProcesso:
+        tipo: STRUCT(id BIGINT, nome VARCHAR)
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: '{''id'': 1, ''nome'': Cessão}'
+        max: '{''id'': 11, ''nome'': Alienação de bens móveis/imóveis}'
+        top:
+        - ['{''id'': 2, ''nome'': Compras}', 1425055]
+        - ['{''id'': 8, ''nome'': Serviços}', 521626]
+        - ['{''id'': 10, ''nome'': Serviços de Saúde}', 41043]
+        - ['{''id'': 7, ''nome'': Obras}', 23981]
+        - ['{''id'': 9, ''nome'': Serviços de Engenharia}', 19012]
+        - ['{''id'': 5, ''nome'': Locação Imóveis}', 13086]
+        - ['{''id'': 3, ''nome'': ''Informática (TIC)''}', 12459]
+        - ['{''id'': 1, ''nome'': Cessão}', 12270]
+        - ['{''id'': 11, ''nome'': Alienação de bens móveis/imóveis}', 8906]
+        - ['{''id'': 6, ''nome'': Mão de Obra}', 6882]
+      dataPublicacaoPncp: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 1695766, min: '2022-06-02 11:22:47', max: '2026-10-06 23:22:09'}
+      dataAtualizacao: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 1858945, min: '2022-06-02 11:23:07', max: '2026-10-07 11:25:23'}
+      sequencialContrato:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 32337
+        min: '1'
+        max: '41505'
+        media: 1676.5824
+        quartis: [95, 404, 1262]
+      unidadeOrgao: {tipo: 'STRUCT(ufNome VARCHAR, codigoUnidade VARCHAR, nomeUnidade VARCHAR, ufSigla VARCHAR, municipioNome VARCHAR, codigoIbge
+          VARCHAR)', nulos_pct: 0, distintos_aprox: 32662, min: '{''ufNome'': Acre, ''codigoUnidade'': 04034583000122, ''nomeUnidade'': MUNICIPIO
+          DE RIO BRANCO/AC, ''ufSigla'': AC, ''municipioNome'': Rio Branco, ''codigoIbge'': 1200401}', max: '{''ufNome'': Tocantins, ''codigoUnidade'':
+          x, ''nomeUnidade'': SECRETARIA MUNICIPAL DE ASSISTENCIA SOCIAL, ''ufSigla'': TO, ''municipioNome'': Porto Nacional, ''codigoIbge'':
+          1718204}'}
+      informacaoComplementar: {tipo: VARCHAR, nulos_pct: 73.92, distintos_aprox: 70812}
+      processo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 550442}
+      unidadeSubRogada: {tipo: 'STRUCT(ufNome VARCHAR, ufSigla VARCHAR, codigoUnidade VARCHAR, nomeUnidade VARCHAR, municipioNome VARCHAR, codigoIbge
+          VARCHAR)', nulos_pct: 99.82, distintos_aprox: 479, min: '{''ufNome'': Acre, ''ufSigla'': AC, ''codigoUnidade'': 070002, ''nomeUnidade'':
+          Tribunal Regional Eleitoral do Acre, ''municipioNome'': Rio Branco, ''codigoIbge'': 1200401}', max: '{''ufNome'': Tocantins, ''ufSigla'':
+          TO, ''codigoUnidade'': 158131, ''nomeUnidade'': ''INST.FED.DE EDUC.,CIENC. E TEC.DO TOCANTINS'', ''municipioNome'': Palmas, ''codigoIbge'':
+          1721000}'}
+      orgaoSubRogado: {tipo: 'STRUCT(cnpj VARCHAR, razaoSocial VARCHAR, poderId VARCHAR, esferaId VARCHAR)', nulos_pct: 99.82, distintos_aprox: 171,
+        min: '{''cnpj'': 00038166000105, ''razaoSocial'': BANCO CENTRAL DO BRASIL, ''poderId'': E, ''esferaId'': F}', max: '{''cnpj'': 88830609000139,
+          ''razaoSocial'': MUNICIPIO DE CAXIAS DO SUL, ''poderId'': N, ''esferaId'': M}'}
+      nomeRazaoSocialFornecedor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 317695, pessoal: 'só contagens: valores seriam dado pessoal'}
+      niFornecedorSubContratado: {tipo: VARCHAR, nulos_pct: 99.98, distintos_aprox: 311, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nomeFornecedorSubContratado: {tipo: VARCHAR, nulos_pct: 99.98, distintos_aprox: 275, pessoal: 'só contagens: valores seriam dado pessoal'}
+      receita:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['false', 2062786]
+        - ['true', 21813]
+      numeroParcelas: {tipo: BIGINT, nulos_pct: 0, distintos_aprox: 916, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numeroRetificacao: {tipo: BIGINT, nulos_pct: 0, distintos_aprox: 92, pessoal: 'só contagens: valores seriam dado pessoal'}
+      temRemanejamento:
+        tipo: BOOLEAN
+        nulos_pct: 77.52
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - [null, 1615898]
+        - ['false', 465050]
+        - ['true', 3651]
+      emendaParlamentar:
+        tipo: BOOLEAN
+        nulos_pct: 98.95
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - [null, 2062644]
+        - ['false', 21824]
+        - ['true', 131]
+      frutoAdesao:
+        tipo: BOOLEAN
+        nulos_pct: 77.52
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - [null, 1615898]
+        - ['false', 465860]
+        - ['true', 2841]
+      tipoPessoaSubContratada: {tipo: VARCHAR, nulos_pct: 99.98, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      objetoContrato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 792217}
+      valorInicial:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 552947
+        min: '0.0'
+        max: '3935137983935.13'
+        media: 13904218.6153
+        quartis: [550.0363, 3210.8189, 23903.8889]
+      valorParcela:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 439269
+        min: '0.0'
+        max: '1960000000000.0'
+        media: 4485344.1087
+        quartis: [0.0001, 1390.1573, 12868.7708]
+      valorGlobal:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 557926
+        min: '0.0'
+        max: '3935137983935.13'
+        media: 14051811.9226
+        quartis: [551.9146, 3228.7471, 24295.9194]
+      numeroControlePNCP: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1996803, pessoal: 'só contagens: valores seriam dado pessoal'}
+      valorAcumulado:
+        tipo: DOUBLE
+        nulos_pct: 40.83
+        distintos_aprox: 218104
+        min: '-213125.16'
+        max: '3600000000000.0'
+        media: 4175499.0763
+        quartis: [0, 0, 2745.9478]
+      dataAtualizacaoGlobal: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 1950217, min: '2022-06-02 11:23:07', max: '2026-10-07 11:25:40'}
+      identificadorCipi: {tipo: VARCHAR, nulos_pct: 97.47, distintos_aprox: 59, pessoal: 'só contagens: valores seriam dado pessoal'}
+      urlCipi: {tipo: VARCHAR, nulos_pct: 96.44, distintos_aprox: 94, min: '', max: www.diadema.gov.br}
+      usuarioNome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 287, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ano_publicacao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '2022'
+        max: '2026'
+        media: 2025.1876
+        quartis: [2025, 2025, 2026]
+        top:
+        - ['2025', 865740]
+        - ['2026', 858892]
+        - ['2024', 266074]
+        - ['2023', 79872]
+        - ['2022', 14021]

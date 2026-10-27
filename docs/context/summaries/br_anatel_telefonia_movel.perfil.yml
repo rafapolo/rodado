@@ -1,0 +1,700 @@
+dataset: br_anatel_telefonia_movel
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  densidade_brasil:
+    linhas: 259
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 23
+        min: '2005'
+        max: '2026'
+        media: 2015.3784
+        quartis: [2010, 2015, 2021]
+        top:
+        - ['2006', 12]
+        - ['2007', 12]
+        - ['2008', 12]
+        - ['2009', 12]
+        - ['2010', 12]
+        - ['2011', 12]
+        - ['2012', 12]
+        - ['2013', 12]
+        - ['2014', 12]
+        - ['2015', 12]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.4595
+        quartis: [3, 6, 9]
+        top:
+        - ['2', 22]
+        - ['3', 22]
+        - ['4', 22]
+        - ['5', 22]
+        - ['6', 22]
+        - ['7', 22]
+        - ['8', 22]
+        - ['1', 21]
+        - ['10', 21]
+        - ['11', 21]
+      uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Brasil
+        max: Brasil
+        top:
+        - [Brasil, 259]
+      municipio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Brasil
+        max: Brasil
+        top:
+        - [Brasil, 259]
+      id_municipio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '0000000'
+        max: '0000000'
+        top:
+        - ['0000000', 259]
+      densidade:
+        tipo: DOUBLE
+        nulos_pct: 15.06
+        distintos_aprox: 227
+        min: '37.123946329083'
+        max: '140.12558008151'
+        media: 101.1059
+        quartis: [86.3149, 103.1874, 123.6316]
+      nivel:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Brasil
+        max: Brasil
+        top:
+        - [Brasil, 259]
+  densidade_municipio:
+    linhas: 295210
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '2019'
+        max: '2026'
+        media: 2021.0189
+        quartis: [2020, 2021, 2022]
+        top:
+        - ['2019', 66840]
+        - ['2020', 66840]
+        - ['2021', 66840]
+        - ['2022', 66840]
+        - ['2026', 27850]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.4528
+        quartis: [4, 6, 9]
+        top:
+        - ['4', 27850]
+        - ['5', 27850]
+        - ['6', 27850]
+        - ['7', 27850]
+        - ['8', 27850]
+        - ['1', 22280]
+        - ['10', 22280]
+        - ['11', 22280]
+        - ['12', 22280]
+        - ['2', 22280]
+      uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 45209]
+        - [SP, 34185]
+        - [RS, 26341]
+        - [BA, 22101]
+        - [PR, 21147]
+        - [SC, 15635]
+        - [GO, 13038]
+        - [PI, 11872]
+        - [PB, 11819]
+        - [MA, 11501]
+      municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5869}
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      densidade:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 320439
+        min: '0.31831537708129'
+        max: '675.77134404057'
+        media: 72.4534
+        quartis: [53.8032, 71.7425, 88.3312]
+      nivel:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Municipio
+        max: Municipio
+        top:
+        - [Municipio, 295210]
+  densidade_uf:
+    linhas: 6028
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 23
+        min: '2005'
+        max: '2026'
+        media: 2013.8339
+        quartis: [2009, 2014, 2018]
+        top:
+        - ['2006', 336]
+        - ['2007', 336]
+        - ['2008', 336]
+        - ['2009', 325]
+        - ['2010', 324]
+        - ['2011', 324]
+        - ['2012', 324]
+        - ['2013', 324]
+        - ['2014', 324]
+        - ['2015', 324]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.5108
+        quartis: [4, 6, 9]
+        top:
+        - ['4', 521]
+        - ['5', 520]
+        - ['6', 520]
+        - ['7', 520]
+        - ['8', 520]
+        - ['2', 494]
+        - ['3', 494]
+        - ['10', 493]
+        - ['11', 493]
+        - ['12', 493]
+      uf:
+        tipo: VARCHAR
+        nulos_pct: 1.46
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [AC, 220]
+        - [AL, 220]
+        - [AM, 220]
+        - [AP, 220]
+        - [BA, 220]
+        - [CE, 220]
+        - [DF, 220]
+        - [ES, 220]
+        - [GO, 220]
+        - [MA, 220]
+      municipio:
+        tipo: VARCHAR
+        nulos_pct: 1.46
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [AC, 220]
+        - [AL, 220]
+        - [AM, 220]
+        - [AP, 220]
+        - [BA, 220]
+        - [CE, 220]
+        - [DF, 220]
+        - [ES, 220]
+        - [GO, 220]
+        - [MA, 220]
+      id_municipio:
+        tipo: VARCHAR
+        nulos_pct: 1.46
+        distintos_aprox: 24
+        min: '1100000'
+        max: '5300000'
+        top:
+        - ['1100000', 220]
+        - ['1200000', 220]
+        - ['1300000', 220]
+        - ['1400000', 220]
+        - ['1500000', 220]
+        - ['1600000', 220]
+        - ['1700000', 220]
+        - ['2100000', 220]
+        - ['2200000', 220]
+        - ['2300000', 220]
+      densidade:
+        tipo: DOUBLE
+        nulos_pct: 1.46
+        distintos_aprox: 5342
+        min: '0.0'
+        max: '225.12720254088'
+        media: 85.0802
+        quartis: [75.2864, 97.7759, 117.5111]
+      nivel:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: UF
+        max: UF
+        top:
+        - [UF, 6028]
+  microdados:
+    linhas: 176986031
+    fonte_do_perfil: amostra de 10.432% da última partição (ano = 2026). ~2.000.000 linhas
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
+        top:
+        - ['2026', 2101248]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '1'
+        max: '8'
+        media: 4.5553
+        quartis: [3, 5, 7]
+        top:
+        - ['8', 273458]
+        - ['7', 273358]
+        - ['5', 267313]
+        - ['6', 263207]
+        - ['2', 259499]
+        - ['4', 258478]
+        - ['1', 257941]
+        - ['3', 247994]
+      grupo_economico:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: ALGAR (CTBC TELECOM)
+        max: VERO
+        top:
+        - [TELEFONICA, 863258]
+        - [TELECOM AMERICAS, 776137]
+        - [TELECOM ITALIA, 396816]
+        - [SURF TELECOM, 38649]
+        - [OUTROS, 12578]
+        - [VERO, 6727]
+        - [BRISANET, 2902]
+        - [ALGAR (CTBC TELECOM), 1993]
+        - [UNIFIQUE, 1915]
+        - [DATORA, 217]
+      empresa:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 14
+        min: 1NCE
+        max: VIVO
+        top:
+        - [VIVO, 863258]
+        - [CLARO, 776137]
+        - [TIM, 396816]
+        - [SURF TELECOM, 38649]
+        - [Telecall, 12463]
+        - [VERO, 6727]
+        - [BRISANET, 2902]
+        - [ALGAR (CTBC TELECOM), 1993]
+        - [UNIFIQUE, 1915]
+        - [DATORA, 217]
+      cnpj: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 17, pessoal: 'só contagens: valores seriam dado pessoal'}
+      porte_empresa:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Grande Porte
+        max: Pequeno Porte
+        top:
+        - [Grande Porte, 2036211]
+        - [Pequeno Porte, 65037]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 382976]
+        - [MG, 266240]
+        - [PR, 168618]
+        - [RS, 157696]
+        - [SC, 145408]
+        - [BA, 144333]
+        - [GO, 114688]
+        - [PE, 90112]
+        - [MT, 71680]
+        - [MA, 63488]
+      municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1885}
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2220}
+      ddd: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 63, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ddd_chip: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 63, pessoal: 'só contagens: valores seriam dado pessoal'}
+      modalidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Pré-pago
+        max: Pós-pago
+        top:
+        - [Pós-pago, 1444448]
+        - [Pré-pago, 656800]
+      tecnologia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: CDMA IS 95
+        max: WCDMA
+        top:
+        - [LTE, 1165724]
+        - [GSM, 352255]
+        - [NR, 293148]
+        - [WCDMA, 290063]
+        - [CDMA IS 95, 58]
+      sinal:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: 2G
+        max: 5G
+        top:
+        - [4G, 1165724]
+        - [2G, 352313]
+        - [5G, 293148]
+        - [3G, 290063]
+      pessoa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      produto:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: DADOS
+        max: VOZ+DADOS
+        top:
+        - [VOZ+DADOS, 1508264]
+        - [M2M, 284856]
+        - [PONTO_DE_SERVICO, 135095]
+        - [DADOS, 133719]
+        - [VOZ, 39314]
+      acessos:
+        tipo: BIGINT
+        nulos_pct: 4.33
+        distintos_aprox: 9948
+        min: '1'
+        max: '1920759'
+        media: 113.7226
+        quartis: [1, 2, 7]
+  modalidade:
+    linhas: 96813
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: '2005'
+        max: '2018'
+        media: 2011.9826
+        quartis: [2009, 2012, 2016]
+        top:
+        - ['2018', 8628]
+        - ['2017', 7975]
+        - ['2016', 7830]
+        - ['2015', 7678]
+        - ['2014', 7298]
+        - ['2013', 6993]
+        - ['2012', 6678]
+        - ['2010', 6672]
+        - ['2009', 6670]
+        - ['2011', 6664]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.5612
+        quartis: [4, 7, 10]
+        top:
+        - ['12', 8247]
+        - ['11', 8219]
+        - ['10', 8195]
+        - ['9', 8158]
+        - ['8', 8139]
+        - ['7', 8111]
+        - ['6', 8080]
+        - ['5', 8057]
+        - ['4', 8046]
+        - ['3', 8026]
+      grupo_economico:
+        tipo: VARCHAR
+        nulos_pct: 0.12
+        distintos_aprox: 11
+        min: ALGAR (CTBC TELECOM)
+        max: UNICEL
+        top:
+        - [TELECOM ITALIA, 22678]
+        - [TELECOM AMERICAS, 21810]
+        - [TELEFÔNICA, 21657]
+        - [OI, 21585]
+        - [NEXTEL, 4406]
+        - [ALGAR (CTBC TELECOM), 2226]
+        - [PORTO SEGURO, 875]
+        - [OUTROS, 717]
+        - [DATORA, 379]
+        - [PREFEITURA DE LONDRINA/COPEL, 334]
+      empresa:
+        tipo: VARCHAR
+        nulos_pct: 0.12
+        distintos_aprox: 12
+        min: ALGAR (CTBC TELECOM)
+        max: VIVO
+        top:
+        - [TIM, 22678]
+        - [CLARO, 21810]
+        - [VIVO, 21657]
+        - [OI, 21585]
+        - [NEXTEL, 4406]
+        - [ALGAR (CTBC TELECOM), 2226]
+        - [PORTO SEGURO, 875]
+        - [SURF TELECOM SA, 684]
+        - [DATORA, 379]
+        - [PREFEITURA DE LONDRINA/COPEL, 334]
+      cnpj: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 15, pessoal: 'só contagens: valores seriam dado pessoal'}
+      porte_empresa:
+        tipo: VARCHAR
+        nulos_pct: 0.12
+        distintos_aprox: 2
+        min: Grande Porte
+        max: Pequeno Porte
+        top:
+        - [Grande Porte, 87730]
+        - [Pequeno Porte, 8971]
+        - [null, 112]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 13986]
+        - [MG, 10764]
+        - [PR, 8724]
+        - [BA, 7048]
+        - [RS, 5688]
+        - [RJ, 4549]
+        - [SC, 4227]
+        - [PA, 3923]
+        - [GO, 3922]
+        - [ES, 2793]
+      regiao_pgo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - ['1', 50130]
+        - ['2', 32697]
+        - ['3', 13986]
+      ddd: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 63, pessoal: 'só contagens: valores seriam dado pessoal'}
+      modalidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Pré-pago
+        max: Pós-pago
+        top:
+        - [Pós-pago, 49899]
+        - [Pré-pago, 46914]
+      acessos:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 75403
+        min: '1'
+        max: '10299438'
+        media: 344683.5436
+        quartis: [39674, 138374, 390193]
+  tecnologia:
+    linhas: 175055
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: '2005'
+        max: '2018'
+        media: 2014.0056
+        quartis: [2012, 2014, 2016]
+        top:
+        - ['2018', 21796]
+        - ['2017', 21232]
+        - ['2016', 21167]
+        - ['2015', 20987]
+        - ['2014', 19294]
+        - ['2013', 16389]
+        - ['2010', 13407]
+        - ['2011', 13077]
+        - ['2012', 13023]
+        - ['2009', 12771]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.6107
+        quartis: [4, 7, 10]
+        top:
+        - ['12', 15124]
+        - ['11', 15022]
+        - ['10', 14977]
+        - ['9', 14955]
+        - ['8', 14921]
+        - ['7', 14869]
+        - ['6', 14824]
+        - ['5', 14440]
+        - ['3', 14354]
+        - ['4', 14236]
+      grupo_economico:
+        tipo: VARCHAR
+        nulos_pct: 0.17
+        distintos_aprox: 11
+        min: ALGAR (CTBC TELECOM)
+        max: UNICEL
+        top:
+        - [TELECOM AMERICAS, 39935]
+        - [TELECOM ITALIA, 39670]
+        - [TELEFÔNICA, 35788]
+        - [OI, 34229]
+        - [OUTROS, 13412]
+        - [NEXTEL, 5400]
+        - [ALGAR (CTBC TELECOM), 3608]
+        - [PORTO SEGURO, 1384]
+        - [PREFEITURA DE LONDRINA/COPEL, 686]
+        - [DATORA, 607]
+      empresa:
+        tipo: VARCHAR
+        nulos_pct: 0.17
+        distintos_aprox: 12
+        min: ALGAR (CTBC TELECOM)
+        max: VIVO
+        top:
+        - [VIVO, 46061]
+        - [CLARO, 39935]
+        - [TIM, 39802]
+        - [OI, 36424]
+        - [NEXTEL, 5400]
+        - [ALGAR (CTBC TELECOM), 3608]
+        - [PORTO SEGURO, 1384]
+        - [SURF TELECOM SA, 748]
+        - [PREFEITURA DE LONDRINA/COPEL, 686]
+        - [DATORA, 607]
+      cnpj: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 21, pessoal: 'só contagens: valores seriam dado pessoal'}
+      porte_empresa:
+        tipo: VARCHAR
+        nulos_pct: 0.17
+        distintos_aprox: 2
+        min: Grande Porte
+        max: Pequeno Porte
+        top:
+        - [Grande Porte, 162222]
+        - [Pequeno Porte, 12531]
+        - [null, 302]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 1.13
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 25956]
+        - [MG, 18444]
+        - [PR, 15846]
+        - [BA, 12349]
+        - [RS, 10257]
+        - [RJ, 8243]
+        - [SC, 7714]
+        - [PA, 7070]
+        - [GO, 6369]
+        - [MT, 5035]
+      regiao_pgo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - ['1', 89603]
+        - ['2', 59060]
+        - ['3', 26392]
+      ddd: {tipo: VARCHAR, nulos_pct: 1.13, distintos_aprox: 63, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tecnologia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 14
+        min: AMPS
+        max: WCDMA
+        top:
+        - [WCDMA, 36347]
+        - [GSM, 35427]
+        - [Dados Banda Larga, 23445]
+        - [LTE, 18917]
+        - [M2M Padrão, 14319]
+        - [M2M Especial, 13450]
+        - [Dados > 256kbps, 9891]
+        - [Dados até 256kbps, 7668]
+        - [CDMA IS 95, 6154]
+        - [M2M, 6139]
+      sinal:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: 1G
+        max: M2M
+        top:
+        - [3G, 69683]
+        - [2G, 51732]
+        - [M2M, 33908]
+        - [4G, 18917]
+        - [1G, 815]
+      acessos:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 112677
+        min: '1'
+        max: '22519869'
+        media: 190618.1252
+        quartis: [2065, 19178, 146955]

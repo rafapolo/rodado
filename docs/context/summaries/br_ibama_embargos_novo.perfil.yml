@@ -1,0 +1,655 @@
+dataset: br_ibama_embargos_novo
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  coordenadas:
+    linhas: 128498
+    fonte_do_perfil: tabela inteira
+    colunas:
+      seq_tad: {tipo: VARCHAR, nulos_pct: 2.87, distintos_aprox: 17972}
+      num_tad: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 15893}
+      seq_poligono: {tipo: VARCHAR, nulos_pct: 2.87, distintos_aprox: 12937}
+      sq_poligono_aiemob: {tipo: VARCHAR, nulos_pct: 32.01, distintos_aprox: 4053}
+      no_area: {tipo: VARCHAR, nulos_pct: 32.02, distintos_aprox: 2830}
+      area_poligono:
+        tipo: DOUBLE
+        nulos_pct: 32.1
+        distintos_aprox: 1666
+        min: '0.0'
+        max: '68956.23'
+        media: 2181.3307
+        quartis: [3.6961, 19.6032, 81.3167]
+      seq_ponto_poligono: {tipo: VARCHAR, nulos_pct: 2.87, distintos_aprox: 135694}
+      sq_coordenada_aiemob: {tipo: VARCHAR, nulos_pct: 97.13, distintos_aprox: 3886}
+      ordem: {tipo: VARCHAR, nulos_pct: 97.13, distintos_aprox: 492, min: '1', max: '99'}
+      longitude: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 108169}
+      latitude: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 87368}
+      wkt: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 109383}
+      ultima_atualizacao_relatorio:
+        tipo: TIMESTAMP
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-07 00:59:23'
+        max: '2026-10-07 00:59:23'
+        top:
+        - ['2026-10-07 00:59:23', 128498]
+  decisao:
+    linhas: 476
+    fonte_do_perfil: tabela inteira
+    colunas:
+      seq_tad: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 490, min: '1343727', max: '90071'}
+      seq_decisao_judicial: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 508, min: '1', max: '99'}
+      dat_decisao_embargo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 326, min: '0026-03-11 00:00:00', max: '2026-10-01 00:00:00'}
+      tipo_decisao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Desembargo
+        max: Embargo
+        top:
+        - [Desembargo, 406]
+        - [Embargo, 70]
+      des_observacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 462, min: 00807.017457/2024-53, max: 'ÁREA DE MANEJO FLORESTAL CORRESPONDENTE
+          A 2.400,00 HECTARES POR INFRAÇÃO AMBIENTAL CAPITULADA NO ART. 51-A E DEC. FED. 6514/2008. O EMBARGO VISA CONTER A INFRAÇÃO AMBIENTAL
+          E PROMOVER A REGENERAÇÃO DA'}
+      num_pessoa_interessado: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 284, pessoal: 'só contagens: valores seriam dado pessoal'}
+      interessado: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 365, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf_cnpj_interessado: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 288, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_acao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Alteração
+        max: Inclusão
+        top:
+        - [Inclusão, 443]
+        - [Alteração, 33]
+      dat_inclusao_acao: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 514, min: '2013-04-25 17:12:58', max: '2026-10-06 10:19:51'}
+      sit_cancelado:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [N, 391]
+        - [S, 85]
+      ultima_atualizacao_relatorio:
+        tipo: TIMESTAMP
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-06 12:30:23'
+        max: '2026-10-06 12:30:23'
+        top:
+        - ['2026-10-06 12:30:23', 476]
+  enquadramento:
+    linhas: 150662
+    fonte_do_perfil: tabela inteira
+    colunas:
+      seq_tad: {tipo: VARCHAR, nulos_pct: 14.77, distintos_aprox: 27162}
+      num_tad: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 31317}
+      administrativo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [S, 117547]
+        - [N, 33115]
+      norma_tipo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Decreto
+        max: Lei
+        top:
+        - [Decreto, 88438]
+        - [Lei, 62224]
+      norma_numero: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      artigo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 54, min: '24', max: '93'}
+      nu_paragrafo:
+        tipo: VARCHAR
+        nulos_pct: 73
+        distintos_aprox: 6
+        min: '1'
+        max: '7'
+        top:
+        - [null, 109980]
+        - ['1', 33060]
+        - ['2', 7116]
+        - ['6', 260]
+        - ['3', 214]
+        - ['4', 16]
+        - ['7', 16]
+      nu_inciso:
+        tipo: VARCHAR
+        nulos_pct: 66.81
+        distintos_aprox: 11
+        min: '1'
+        max: '9'
+        top:
+        - [null, 100662]
+        - ['2', 23886]
+        - ['7', 22184]
+        - ['1', 1385]
+        - ['4', 1245]
+        - ['3', 454]
+        - ['9', 289]
+        - ['5', 255]
+        - ['8', 233]
+        - ['6', 43]
+      cd_alinea:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 150662]
+      ultima_atualizacao_relatorio:
+        tipo: TIMESTAMP
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-07 01:54:01'
+        max: '2026-10-07 01:54:01'
+        top:
+        - ['2026-10-07 01:54:01', 150662]
+  enquadramento_complementar:
+    linhas: 14679
+    fonte_do_perfil: tabela inteira
+    colunas:
+      seq_tad: {tipo: VARCHAR, nulos_pct: 12.85, distintos_aprox: 12202}
+      num_tad: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 11030}
+      nu_lei_comp: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2370}
+      nu_artigo_comp: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 567, min: ' ', max: '''°'}
+      nu_par_inc_al: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1186}
+      ultima_atualizacao_relatorio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '''2026-10-07 01:56:28'
+        max: '''2026-10-07 01:56:28'
+        top:
+        - ['''2026-10-07 01:56:28', 14679]
+  itens:
+    linhas: 48783
+    fonte_do_perfil: tabela inteira
+    colunas:
+      seq_tad: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 42473}
+      natureza:
+        tipo: VARCHAR
+        nulos_pct: 0.03
+        distintos_aprox: 22
+        min: Atividade Industrial
+        max: Uso de fogo
+        top:
+        - [Desmatamento, 21711]
+        - [Atividade de Exploração Florestal, 5792]
+        - [Florestal, 4563]
+        - [Empreendimentos, 3745]
+        - [Poluição / Degradação, 3462]
+        - [Atividade de Exploração Agropastoril, 2257]
+        - [Comercial, 2078]
+        - [Atividade de criador, 1853]
+        - [Atividade Industrial, 1619]
+        - [Uso de Fogo, 987]
+      item: {tipo: VARCHAR, nulos_pct: 0.03, distintos_aprox: 70, min: Abatedouro, max: Áreas de encosta}
+      num_latitude_tad: {tipo: VARCHAR, nulos_pct: 29.84, distintos_aprox: 22453}
+      num_longitude_tad: {tipo: VARCHAR, nulos_pct: 29.74, distintos_aprox: 42604}
+      deter_prodes:
+        tipo: VARCHAR
+        nulos_pct: 95.67
+        distintos_aprox: 2
+        min: Deter
+        max: Prodes
+        top:
+        - [null, 46673]
+        - [Deter, 1993]
+        - [Prodes, 117]
+      wkt: {tipo: VARCHAR, nulos_pct: 30.63, distintos_aprox: 31629}
+      id_poligono: {tipo: VARCHAR, nulos_pct: 96.53, distintos_aprox: 1268}
+      embarga_poligono:
+        tipo: VARCHAR
+        nulos_pct: 87.62
+        distintos_aprox: 2
+        min: Não
+        max: Sim
+        top:
+        - [null, 42745]
+        - [Sim, 5811]
+        - [Não, 227]
+      qtd_area_embargada:
+        tipo: DOUBLE
+        nulos_pct: 50.84
+        distintos_aprox: 9107
+        min: '0.0'
+        max: '149498.0'
+        media: 204.2653
+        quartis: [5.0117, 22.9678, 82.8338]
+      nome_imovel: {tipo: VARCHAR, nulos_pct: 65.19, distintos_aprox: 12078, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ultima_atualizacao_relatorio:
+        tipo: TIMESTAMP
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-06 12:30:22'
+        max: '2026-10-06 12:30:22'
+        top:
+        - ['2026-10-06 12:30:22', 48783]
+  termo_de_embargo_anexo:
+    linhas: 15918
+    fonte_do_perfil: tabela inteira
+    colunas:
+      seq_tad: {tipo: VARCHAR, nulos_pct: 2.35, distintos_aprox: 5914}
+      seq_anexo_tad: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3076}
+      num_anexo_tad: {tipo: VARCHAR, nulos_pct: 26.59, distintos_aprox: 3282}
+      tipo_anexo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Croqui
+        max: Mapa
+        top:
+        - [Documento, 10339]
+        - [Imagem, 3409]
+        - [Mapa, 1120]
+        - [Foto, 833]
+        - [Croqui, 217]
+      des_anexo_tad: {tipo: VARCHAR, nulos_pct: 6.94, distintos_aprox: 8523}
+      no_arquivo_evidencia: {tipo: VARCHAR, nulos_pct: 78.58, distintos_aprox: 3380}
+      ultima_atualizacao_relatorio:
+        tipo: TIMESTAMP
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-07 00:57:39'
+        max: '2026-10-07 00:57:39'
+        top:
+        - ['2026-10-07 00:57:39', 15918]
+  termo_embargo:
+    linhas: 116746
+    fonte_do_perfil: tabela inteira
+    colunas:
+      seq_tad: {tipo: VARCHAR, nulos_pct: 2.65, distintos_aprox: 122206}
+      des_status_formulario:
+        tipo: VARCHAR
+        nulos_pct: 2.65
+        distintos_aprox: 4
+        min: Cancelado
+        max: Substituído por outro
+        top:
+        - [Lavrado, 108588]
+        - [Cancelado, 4610]
+        - [null, 3098]
+        - [Substituído por outro, 254]
+        - [Excluído, 196]
+      des_status_formulario_aie:
+        tipo: VARCHAR
+        nulos_pct: 74.61
+        distintos_aprox: 3
+        min: Em execução
+        max: Impresso
+        top:
+        - [null, 87109]
+        - [Impresso, 28084]
+        - [Excluído, 1523]
+        - [Em execução, 30]
+      sit_cancelado:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [N, 110439]
+        - [S, 6307]
+      num_tad: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 122264}
+      ser_tad:
+        tipo: VARCHAR
+        nulos_pct: 27.24
+        distintos_aprox: 9
+        min: '0'
+        max: V
+        top:
+        - [C, 57187]
+        - [null, 31805]
+        - [E, 27130]
+        - [D, 395]
+        - [A, 192]
+        - [B, 34]
+        - ['0', 1]
+        - ['4', 1]
+        - [V, 1]
+      cod_substituicao: {tipo: VARCHAR, nulos_pct: 99.57, distintos_aprox: 448, min: 0210925-C, max: o6XYZ1Y2}
+      dat_embargo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 131220}
+      dat_impressao: {tipo: TIMESTAMP, nulos_pct: 77.19, distintos_aprox: 28643, min: '2013-03-26 16:34:27', max: '2081-06-23 19:55:37'}
+      forma_entrega:
+        tipo: VARCHAR
+        nulos_pct: 36.85
+        distintos_aprox: 6
+        min: A pessoa interessada recusou-se a assinar
+        max: Representante
+        top:
+        - [null, 43020]
+        - [Pessoalmente, 38822]
+        - [Correios, 27286]
+        - [Edital, 3767]
+        - [Representante, 3295]
+        - [A pessoa interessada recusou-se a assinar, 553]
+        - [N¿o cadastrada!, 3]
+      num_pessoa_embargo: {tipo: VARCHAR, nulos_pct: 6.22, distintos_aprox: 75410, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_embargado: {tipo: VARCHAR, nulos_pct: 5.39, distintos_aprox: 96079, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf_cnpj_embargado: {tipo: VARCHAR, nulos_pct: 8.86, distintos_aprox: 109677, pessoal: 'só contagens: valores seriam dado pessoal'}
+      num_processo: {tipo: VARCHAR, nulos_pct: 8.2, distintos_aprox: 92982}
+      des_tad: {tipo: VARCHAR, nulos_pct: 1.96, distintos_aprox: 110318}
+      cod_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4608}
+      municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3945}
+      uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [PA, 20114]
+        - [MT, 13148]
+        - [RO, 12103]
+        - [AM, 10436]
+        - [MG, 5288]
+        - [BA, 4944]
+        - [AC, 4859]
+        - [GO, 4717]
+        - [TO, 3919]
+        - [ES, 3774]
+      des_localizacao: {tipo: VARCHAR, nulos_pct: 12.01, distintos_aprox: 81483}
+      num_longitude_tad: {tipo: VARCHAR, nulos_pct: 14.74, distintos_aprox: 78840}
+      num_latitude_tad: {tipo: VARCHAR, nulos_pct: 13.58, distintos_aprox: 60061}
+      deter_prodes:
+        tipo: VARCHAR
+        nulos_pct: 99.15
+        distintos_aprox: 2
+        min: Deter
+        max: Prodes
+        top:
+        - [null, 115753]
+        - [Deter, 963]
+        - [Prodes, 30]
+      id_poligono: {tipo: VARCHAR, nulos_pct: 99.4, distintos_aprox: 573, min: '-15.0000000000', max: '99131716969.0000000000'}
+      embarga_poligono:
+        tipo: VARCHAR
+        nulos_pct: 96.13
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [null, 112233]
+        - [S, 4401]
+        - [N, 112]
+      qtd_area_embargada:
+        tipo: DOUBLE
+        nulos_pct: 38.26
+        distintos_aprox: 71876
+        min: '0.0'
+        max: '131239.0'
+        media: 153.5607
+        quartis: [5.7437, 25.0963, 86.6086]
+      nome_imovel: {tipo: VARCHAR, nulos_pct: 85.63, distintos_aprox: 12078, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_area:
+        tipo: VARCHAR
+        nulos_pct: 61.76
+        distintos_aprox: 9
+        min: Atividade
+        max: Queimada
+        top:
+        - [null, 72098]
+        - [Desmatamento, 40472]
+        - [Atividade, 1764]
+        - [Outros, 1469]
+        - [Queimada, 527]
+        - [Não se Aplica, 297]
+        - [Desmatamento e Queimada, 101]
+        - [Outro(s), 14]
+        - [Não se aplica, 4]
+      geom_area_embargada: {tipo: VARCHAR, nulos_pct: 49.1, distintos_aprox: 55670}
+      dat_ult_alter_geom: {tipo: TIMESTAMP, nulos_pct: 2.56, distintos_aprox: 46713, min: '2016-07-04 12:57:47', max: '2026-10-06 18:02:47'}
+      unid_apresentacao: {tipo: VARCHAR, nulos_pct: 0.1, distintos_aprox: 532, min: Administração Estadual do Meio Ambiente de Estado de Sergipe,
+        max: Área de Proteção Ambiental do Igarapé Gelado}
+      unid_controle: {tipo: VARCHAR, nulos_pct: 0.1, distintos_aprox: 125, min: Centro Nacional de Telemática, max: Unidade Técnica em Imperatriz}
+      sit_desembargo:
+        tipo: VARCHAR
+        nulos_pct: 83.15
+        distintos_aprox: 1
+        min: S
+        max: S
+        top:
+        - [null, 97073]
+        - [S, 19673]
+      tipo_desembargo:
+        tipo: VARCHAR
+        nulos_pct: 83.15
+        distintos_aprox: 1
+        min: Administrativo
+        max: Judicial
+        top:
+        - [null, 97073]
+        - [Administrativo, 19417]
+        - [Judicial, 256]
+      dat_desembargo: {tipo: VARCHAR, nulos_pct: 83.15, distintos_aprox: 18619}
+      des_desembargo: {tipo: VARCHAR, nulos_pct: 83.15, distintos_aprox: 18962}
+      seq_auto_infracao: {tipo: VARCHAR, nulos_pct: 17.37, distintos_aprox: 86175}
+      num_auto_infracao: {tipo: VARCHAR, nulos_pct: 14.14, distintos_aprox: 93476}
+      seq_notificacao: {tipo: VARCHAR, nulos_pct: 94.2, distintos_aprox: 6356}
+      seq_acao_fiscalizatoria: {tipo: VARCHAR, nulos_pct: 54.43, distintos_aprox: 57769}
+      cd_acao_fiscalizatoria: {tipo: VARCHAR, nulos_pct: 74.54, distintos_aprox: 30387}
+      operacao: {tipo: VARCHAR, nulos_pct: 89.86, distintos_aprox: 643, min: '* AGATA V RS *', max: ÁGUAS DE MARÇO}
+      seq_ordem_fiscalizacao: {tipo: VARCHAR, nulos_pct: 47.8, distintos_aprox: 7128}
+      ordem_fiscalizacao: {tipo: VARCHAR, nulos_pct: 47.7, distintos_aprox: 8844}
+      unid_ordenadora: {tipo: VARCHAR, nulos_pct: 47.8, distintos_aprox: 232, min: COORDENAÇÃO DE FINANÇAS, max: Área de Proteção Ambiental Meandros
+          do Rio Araguaia}
+      seq_solicitacao_recurso: {tipo: VARCHAR, nulos_pct: 69.29, distintos_aprox: 2304}
+      solicitacao_recurso: {tipo: VARCHAR, nulos_pct: 69.29, distintos_aprox: 3078}
+      operacao_sol_recurso: {tipo: VARCHAR, nulos_pct: 69.29, distintos_aprox: 1510}
+      dat_ult_alteracao: {tipo: TIMESTAMP, nulos_pct: 2.65, distintos_aprox: 25358, min: '2005-11-08 12:06:18', max: '2026-10-06 18:50:15'}
+      tipo_alteracao:
+        tipo: VARCHAR
+        nulos_pct: 14.73
+        distintos_aprox: 5
+        min: Alterado
+        max: Redistribuido
+        top:
+        - [Alterado, 95002]
+        - [null, 17199]
+        - [Preenchido, 3762]
+        - [Cancelado, 768]
+        - [Cancelamento estornado, 8]
+        - [Redistribuido, 7]
+      justificativa_alteracao: {tipo: VARCHAR, nulos_pct: 14.74, distintos_aprox: 2265}
+      ultima_atualizacao_relatorio:
+        tipo: TIMESTAMP
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-07 00:52:08'
+        max: '2026-10-07 00:52:08'
+        top:
+        - ['2026-10-07 00:52:08', 116746]
+  termo_embargo_historico:
+    linhas: 502584
+    fonte_do_perfil: tabela inteira
+    colunas:
+      seq_tad: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 116332}
+      seq_hist_tad: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 204, min: '1', max: '99'}
+      dt_alteracao: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 160593, min: '2015-09-29 08:58:43', max: '2026-10-06 11:54:04'}
+      des_status_formulario:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Cancelado
+        max: Substituído por outro
+        top:
+        - [Lavrado, 468663]
+        - [Lançado no Sistema, 25210]
+        - [Cancelado, 7954]
+        - [Substituído por outro, 462]
+        - [Excluído, 289]
+        - [null, 6]
+      sit_cancelado:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [N, 493866]
+        - [S, 8718]
+      num_tad: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 122264}
+      ser_tad:
+        tipo: VARCHAR
+        nulos_pct: 23.29
+        distintos_aprox: 12
+        min: '0'
+        max: e
+        top:
+        - [E, 192291]
+        - [C, 191155]
+        - [null, 117055]
+        - [D, 1424]
+        - [A, 471]
+        - [B, 97]
+        - [c, 50]
+        - [e, 20]
+        - [V, 8]
+        - ['0', 4]
+      dat_embargo: {tipo: VARCHAR, nulos_pct: 5.02, distintos_aprox: 125247}
+      dat_impressao: {tipo: TIMESTAMP, nulos_pct: 66.32, distintos_aprox: 26685, min: '2013-03-26 16:34:27', max: '2081-06-23 19:55:37'}
+      forma_entrega:
+        tipo: VARCHAR
+        nulos_pct: 31.49
+        distintos_aprox: 6
+        min: A pessoa interessada recusou-se a assinar
+        max: Representante
+        top:
+        - [Pessoalmente, 181943]
+        - [null, 158274]
+        - [Correios, 120784]
+        - [Edital, 24284]
+        - [Representante, 15468]
+        - [A pessoa interessada recusou-se a assinar, 1803]
+        - [Não cadastrada!, 28]
+      num_processo: {tipo: VARCHAR, nulos_pct: 24.68, distintos_aprox: 86657}
+      des_tad: {tipo: VARCHAR, nulos_pct: 6.45, distintos_aprox: 110918}
+      cod_municipio: {tipo: VARCHAR, nulos_pct: 4.99, distintos_aprox: 4608}
+      municipio: {tipo: VARCHAR, nulos_pct: 4.99, distintos_aprox: 4007}
+      uf:
+        tipo: VARCHAR
+        nulos_pct: 4.99
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [PA, 89448]
+        - [MT, 69333]
+        - [RO, 61559]
+        - [AM, 51257]
+        - [null, 25102]
+        - [AC, 22885]
+        - [TO, 20557]
+        - [GO, 16748]
+        - [RR, 13509]
+        - [BA, 13271]
+      des_localizacao: {tipo: VARCHAR, nulos_pct: 16.99, distintos_aprox: 82036}
+      num_longitude_tad: {tipo: VARCHAR, nulos_pct: 13.63, distintos_aprox: 86096}
+      num_latitude_tad: {tipo: VARCHAR, nulos_pct: 12.59, distintos_aprox: 64481}
+      deter_prodes:
+        tipo: VARCHAR
+        nulos_pct: 99.04
+        distintos_aprox: 2
+        min: Deter
+        max: Prodes
+        top:
+        - [null, 497768]
+        - [Deter, 4653]
+        - [Prodes, 163]
+      id_poligono: {tipo: VARCHAR, nulos_pct: 99.26, distintos_aprox: 552, min: '-15', max: '99131716969'}
+      embarga_poligono:
+        tipo: VARCHAR
+        nulos_pct: 95.7
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [null, 480992]
+        - [S, 21241]
+        - [N, 351]
+      qtd_area_embargada:
+        tipo: DOUBLE
+        nulos_pct: 65.01
+        distintos_aprox: 25835
+        min: '0.0'
+        max: '775298490.0'
+        media: 21555.3346
+        quartis: [7.7769, 27.4517, 95.0039]
+      nome_imovel: {tipo: VARCHAR, nulos_pct: 90.31, distintos_aprox: 9106, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_area:
+        tipo: VARCHAR
+        nulos_pct: 75.07
+        distintos_aprox: 6
+        min: '5'
+        max: Queimadas
+        top:
+        - [null, 377284]
+        - [Desmatamento, 106476]
+        - ['6', 9196]
+        - [No se aplica, 3153]
+        - [Queimadas, 3091]
+        - [Outros, 1890]
+        - ['5', 1494]
+      wkt: {tipo: VARCHAR, nulos_pct: 42.97, distintos_aprox: 56697}
+      unid_apresentacao: {tipo: VARCHAR, nulos_pct: 5.02, distintos_aprox: 586, min: Administração Estadual do Meio Ambiente de Estado de Sergipe,
+        max: Área de Proteção Ambiental do Igarapé Gelado}
+      unid_controle: {tipo: VARCHAR, nulos_pct: 4.12, distintos_aprox: 139, min: Centro Nacional de Telemática, max: Unidade Técnica Nível 2 em
+          Viracopos/SP}
+      sit_desembargo:
+        tipo: VARCHAR
+        nulos_pct: 89.85
+        distintos_aprox: 1
+        min: S
+        max: S
+        top:
+        - [null, 451564]
+        - [S, 51020]
+      dat_desembargo: {tipo: TIMESTAMP, nulos_pct: 89.85, distintos_aprox: 20652, min: '2008-04-04 14:53:15', max: '2026-10-05 14:39:46'}
+      des_desembargo: {tipo: VARCHAR, nulos_pct: 89.85, distintos_aprox: 21448}
+      seq_auto_infracao: {tipo: VARCHAR, nulos_pct: 22.82, distintos_aprox: 83825}
+      seq_notificacao: {tipo: VARCHAR, nulos_pct: 94.29, distintos_aprox: 5604}
+      seq_acao_fiscalizatoria: {tipo: VARCHAR, nulos_pct: 44.95, distintos_aprox: 46878}
+      operacao: {tipo: VARCHAR, nulos_pct: 89.97, distintos_aprox: 591, min: '* AGATA V RS *', max: ÁGUAS DE MARÇO}
+      seq_ordem_fiscalizacao: {tipo: VARCHAR, nulos_pct: 41.46, distintos_aprox: 5987}
+      ordem_fiscalizacao: {tipo: VARCHAR, nulos_pct: 41.46, distintos_aprox: 8844}
+      unid_ordenadora: {tipo: VARCHAR, nulos_pct: 41.46, distintos_aprox: 270, min: COORDENAÇÃO DE FINANÇAS, max: Área de Proteção Ambiental da
+          Baleia Franca}
+      seq_solicitacao_recurso: {tipo: VARCHAR, nulos_pct: 70.33, distintos_aprox: 2364}
+      solicitacao_recurso: {tipo: VARCHAR, nulos_pct: 70.33, distintos_aprox: 3065}
+      operacao_sol_recurso: {tipo: VARCHAR, nulos_pct: 70.33, distintos_aprox: 1446}
+      dat_ult_alteracao: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 22303, min: '2015-09-29 10:44:19', max: '2026-10-06 11:54:04'}
+      tipo_alteracao:
+        tipo: VARCHAR
+        nulos_pct: 45.64
+        distintos_aprox: 6
+        min: Alterado
+        max: Redistribuido
+        top:
+        - [null, 229373]
+        - [Preenchido, 126876]
+        - [Alterado, 93263]
+        - [Lançado no Sistema, 48386]
+        - [Cancelado, 2462]
+        - [Redistribuido, 2157]
+        - [Cancelamento estornado, 67]
+      justificativa_alteracao: {tipo: VARCHAR, nulos_pct: 45.64, distintos_aprox: 8369}
+      ultima_atualizacao_relatorio:
+        tipo: TIMESTAMP
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-06 12:30:21'
+        max: '2026-10-06 12:30:21'
+        top:
+        - ['2026-10-06 12:30:21', 502584]

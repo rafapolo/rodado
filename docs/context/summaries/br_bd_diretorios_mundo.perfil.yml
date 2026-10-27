@@ -1,0 +1,168 @@
+dataset: br_bd_diretorios_mundo
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  continente:
+    linhas: 7
+    fonte_do_perfil: tabela inteira
+    colunas:
+      sigla:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: AF
+        max: SA
+        top:
+        - [AF, 1]
+        - [AN, 1]
+        - [AS, 1]
+        - [EU, 1]
+        - [NA, 1]
+        - [OC, 1]
+        - [SA, 1]
+      nome_pt: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_en: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6, pessoal: 'só contagens: valores seriam dado pessoal'}
+  nomenclatura_comum_mercosul:
+    linhas: 13744
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_ncm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 14673}
+      id_unidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: '10'
+        max: '22'
+        top:
+        - ['10', 9756]
+        - ['11', 3381]
+        - ['15', 197]
+        - ['16', 195]
+        - ['13', 75]
+        - ['21', 46]
+        - ['17', 40]
+        - ['14', 22]
+        - ['20', 14]
+        - ['19', 9]
+      id_sh6: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6528}
+      id_ppe: {tipo: VARCHAR, nulos_pct: 2.23, distintos_aprox: 307, min: '1011', max: '6010'}
+      id_ppi: {tipo: VARCHAR, nulos_pct: 2.23, distintos_aprox: 420, min: '1021', max: '4999'}
+      id_fator_agregado_ncm:
+        tipo: VARCHAR
+        nulos_pct: 0.16
+        distintos_aprox: 6
+        min: '01'
+        max: '06'
+        top:
+        - ['03', 11632]
+        - ['01', 1603]
+        - ['02', 468]
+        - [null, 22]
+        - ['04', 13]
+        - ['05', 4]
+        - ['06', 2]
+      id_cgce_n3:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 17
+        min: '110'
+        max: '999'
+        top:
+        - ['240', 6894]
+        - ['110', 1778]
+        - ['270', 836]
+        - ['322', 711]
+        - ['324', 711]
+        - ['321', 636]
+        - ['230', 613]
+        - ['323', 454]
+        - ['311', 308]
+        - ['280', 285]
+      id_isic_classe: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 189, min: '0111', max: '9102'}
+      id_siit:
+        tipo: VARCHAR
+        nulos_pct: 2.23
+        distintos_aprox: 5
+        min: '1000'
+        max: '9000'
+        top:
+        - ['2000', 5478]
+        - ['4000', 3303]
+        - ['1000', 2005]
+        - ['3000', 1616]
+        - ['9000', 1036]
+        - [null, 306]
+      id_cuci_item: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3502}
+      nome_unidade: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 11, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_ncm_portugues: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 15098, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_ncm_espanhol: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 13329, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_ncm_ingles: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 13373, pessoal: 'só contagens: valores seriam dado pessoal'}
+  pais:
+    linhas: 277
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_m49: {tipo: VARCHAR, nulos_pct: 10.11, distintos_aprox: 278, min: '10', max: '96'}
+      id_fao: {tipo: VARCHAR, nulos_pct: 16.61, distintos_aprox: 228, min: '1', max: '99'}
+      id_gaul: {tipo: VARCHAR, nulos_pct: 19.49, distintos_aprox: 237, min: '1', max: '99'}
+      id_cow: {tipo: VARCHAR, nulos_pct: 21.66, distintos_aprox: 208, min: '100', max: '990'}
+      sigla_iso3: {tipo: VARCHAR, nulos_pct: 10.11, distintos_aprox: 292, min: ABW, max: ZWE}
+      sigla_iso2: {tipo: VARCHAR, nulos_pct: 10.47, distintos_aprox: 294, min: AD, max: ZW}
+      sigla_pnud: {tipo: VARCHAR, nulos_pct: 31.05, distintos_aprox: 212, min: AFG, max: ZIM}
+      sigla_cow: {tipo: VARCHAR, nulos_pct: 21.66, distintos_aprox: 283, min: AAB, max: ZIM}
+      sigla_coi: {tipo: VARCHAR, nulos_pct: 25.99, distintos_aprox: 216, min: AFG, max: ZIM}
+      sigla_fifa: {tipo: VARCHAR, nulos_pct: 23.83, distintos_aprox: 259, min: AFG, max: ZIM}
+      nome_pt: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 252, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_en: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 278, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_oficial_en: {tipo: VARCHAR, nulos_pct: 10.11, distintos_aprox: 256, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nacionalidade: {tipo: VARCHAR, nulos_pct: 11.91, distintos_aprox: 231, min: Afegã, max: dos Territórios Franceses do Sul}
+      sigla_continente:
+        tipo: VARCHAR
+        nulos_pct: 0.36
+        distintos_aprox: 7
+        min: AF
+        max: SA
+        top:
+        - [EU, 72]
+        - [AF, 59]
+        - [AS, 57]
+        - [NA, 41]
+        - [OC, 26]
+        - [SA, 17]
+        - [AN, 4]
+        - [null, 1]
+  sistema_harmonizado:
+    linhas: 6620
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_sh6: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6363}
+      id_sh4: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1392}
+      id_sh2: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 90, min: '01', max: '99'}
+      id_ncm_secrom:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 22
+        min: I
+        max: XXII
+        top:
+        - [VI, 1065]
+        - [XVI, 971]
+        - [XI, 930]
+        - [XV, 633]
+        - [I, 453]
+        - [II, 386]
+        - [XVIII, 255]
+        - [IV, 241]
+        - [VII, 240]
+        - [IX, 194]
+      nome_sh6_portugues: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6580, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_sh4_portugues: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1326, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_sh2_portugues: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 85, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_sec_portugues: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 21, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_sh6_espanhol: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6286, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_sh4_espanhol: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1435, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_sh2_espanhol: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 115, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_sec_espanhol: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 27, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_sh6_ingles: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5858, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_sh4_ingles: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1207, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_sh2_ingles: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 115, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_sec_ingles: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 25, pessoal: 'só contagens: valores seriam dado pessoal'}

@@ -1,0 +1,7538 @@
+dataset: world_wwf_hydrosheds
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  basins_atlas:
+    linhas: 3786228
+    fonte_do_perfil: amostra de 52.823%. ~2.000.000 linhas
+    colunas:
+      level:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: '01'
+        max: '12'
+        top:
+        - ['12', 567006]
+        - ['11', 562789]
+        - ['10', 481259]
+        - [09, 283937]
+        - [08, 82321]
+        - ['07', 27915]
+        - ['05', 4734]
+        - ['06', 2688]
+        - ['03', 292]
+        - ['01', 10]
+      hybas_id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1852969, min: '1010000010', max: '9120169920'}
+      next_down: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1272216, min: '0', max: '9120169930'}
+      next_sink: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 185987, min: '1010000010', max: '9120018440'}
+      main_bas: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 172792, min: '1010000010', max: '9120018440'}
+      dist_sink:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 56810
+        min: '0.0'
+        max: '6823.7'
+        media: 1102.0764
+        quartis: [111.6635, 549.9876, 1783.0666]
+      dist_main:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 56810
+        min: '0.0'
+        max: '6823.7'
+        media: 1124.8807
+        quartis: [124.173, 584.3731, 1818.9056]
+      sub_area:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 28227
+        min: '0.0'
+        max: '29953085.0'
+        media: 418.5054
+        quartis: [105.775, 142.1566, 189.1457]
+      up_area:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 201753
+        min: '0.1'
+        max: '29953085.0'
+        media: 15415.5046
+        quartis: [181.3812, 422.2933, 1741.9734]
+      pfaf_id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2165791, min: '1', max: '9149009740'}
+      endo:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '0'
+        max: '2'
+        media: 0.242
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 1564213]
+        - ['1', 410276]
+        - ['2', 38462]
+      coast:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0291
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 1954403]
+        - ['1', 58548]
+      order_:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: '0'
+        max: '9'
+        top:
+        - ['3', 543841]
+        - ['2', 531172]
+        - ['4', 358405]
+        - ['1', 313000]
+        - ['5', 154649]
+        - ['0', 58548]
+        - ['6', 44233]
+        - ['7', 8121]
+        - ['8', 916]
+        - ['9', 62]
+      sort:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1000053
+        min: '1'
+        max: '1034082'
+        media: 442016.341
+        quartis: [178401, 409049, 696434]
+      dis_m3_pyr:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 125047
+        min: '0.0'
+        max: '205605.016'
+        media: 150.1116
+        quartis: [0.2738, 2.1376, 11.1404]
+      dis_m3_pmn:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 88257
+        min: '0.0'
+        max: '126002.898'
+        media: 67.7853
+        quartis: [0.0205, 0.4154, 2.8525]
+      dis_m3_pmx:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 219728
+        min: '0.0'
+        max: '290310.469'
+        media: 295.9448
+        quartis: [1.0603, 6.1451, 29.1957]
+      run_mm_syr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5199
+        min: '0'
+        max: '6631'
+        media: 330.8289
+        quartis: [22, 156, 426]
+      inu_pc_smn:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 6.5771
+        quartis: [0, 0, 3]
+      inu_pc_umn:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 4.409
+        quartis: [0, 0, 1]
+      inu_pc_smx:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 11.2265
+        quartis: [0, 0, 8]
+      inu_pc_umx:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 7.767
+        quartis: [0, 0, 3]
+      inu_pc_slt:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 15.8786
+        quartis: [0, 1, 19]
+      inu_pc_ult:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 10.8483
+        quartis: [0, 1, 9]
+      lka_pc_sse:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1249
+        min: '0'
+        max: '1000'
+        media: 23.2786
+        quartis: [0, 0, 0]
+      lka_pc_use:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1232
+        min: '0'
+        max: '1000'
+        media: 13.9456
+        quartis: [0, 0, 2]
+      lkv_mc_usu:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 16733
+        min: '0'
+        max: '24495426'
+        media: 28572.6628
+        quartis: [0, 0, 6]
+      rev_mc_usu:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3348
+        min: '0'
+        max: '412300'
+        media: 742.1831
+        quartis: [0, 0, 0]
+      dor_pc_pva:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 4664
+        min: '0'
+        max: '9948'
+        media: 40.9421
+        quartis: [0, 0, 0]
+      ria_ha_ssu:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 246512
+        min: '0.0'
+        max: '8004051.0'
+        media: 114.8851
+        quartis: [6.5637, 19.4423, 43.3388]
+      ria_ha_usu:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 361091
+        min: '0.0'
+        max: '4271162.5'
+        media: 4663.4515
+        quartis: [13.04, 41.6586, 220.4016]
+      riv_tc_ssu:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 464492
+        min: '0.0'
+        max: '409650368.0'
+        media: 3657.7813
+        quartis: [14.074, 69.3243, 279.3108]
+      riv_tc_usu:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 469259
+        min: '0.0'
+        max: '289945568.0'
+        media: 150422.4143
+        quartis: [22.6857, 121.1274, 1010.1845]
+      gwt_cm_sav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2217
+        min: '0'
+        max: '2642'
+        media: 233.0129
+        quartis: [50, 143, 339]
+      ele_mt_sav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5725
+        min: '-415'
+        max: '6187'
+        media: 655.9816
+        quartis: [161, 376, 822]
+      ele_mt_uav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5875
+        min: '-309'
+        max: '6187'
+        media: 764.7637
+        quartis: [213, 456, 992]
+      ele_mt_smn:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5858
+        min: '-598'
+        max: '5676'
+        media: 498.5643
+        quartis: [91, 276, 610]
+      ele_mt_smx:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 6735
+        min: '-415'
+        max: '8654'
+        media: 926.8435
+        quartis: [251, 535, 1174]
+      slp_dg_sav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 455
+        min: '-999'
+        max: '474'
+        media: 22.0853
+        quartis: [6, 18, 51]
+      slp_dg_uav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 405
+        min: '-999'
+        max: '398'
+        media: 27.4901
+        quartis: [8, 24, 63]
+      sgr_dk_sav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1987
+        min: '-999'
+        max: '7465'
+        media: 56.3426
+        quartis: [14, 32, 85]
+      clz_cl_smj:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 20
+        min: '1'
+        max: '18'
+        media: 11.9444
+        quartis: [7, 12, 17]
+        top:
+        - ['18', 317291]
+        - ['7', 240048]
+        - ['6', 225517]
+        - ['17', 218555]
+        - ['8', 155127]
+        - ['14', 154880]
+        - ['13', 139959]
+        - ['11', 118217]
+        - ['9', 101786]
+        - ['15', 92813]
+      cls_cl_smj:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 126
+        min: '1'
+        max: '125'
+        media: 77.3013
+        quartis: [43, 86, 111]
+      tmp_dc_syr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 546
+        min: '-262'
+        max: '315'
+        media: 132.1481
+        quartis: [29, 176, 247]
+      tmp_dc_uyr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 546
+        min: '-262'
+        max: '315'
+        media: 126.7369
+        quartis: [23, 169, 243]
+      tmp_dc_smn:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 701
+        min: '-509'
+        max: '285'
+        media: 31.6896
+        quartis: [-127, 96, 200]
+      tmp_dc_smx:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 436
+        min: '-85'
+        max: '394'
+        media: 226.8932
+        quartis: [174, 247, 280]
+      tmp_dc_s01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 725
+        min: '-509'
+        max: '339'
+        media: 51.88
+        quartis: [-126, 117, 241]
+      tmp_dc_s02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 683
+        min: '-472'
+        max: '334'
+        media: 64.7009
+        quartis: [-108, 135, 246]
+      tmp_dc_s03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 669
+        min: '-437'
+        max: '335'
+        media: 95.6961
+        quartis: [-48, 162, 250]
+      tmp_dc_s04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 593
+        min: '-344'
+        max: '344'
+        media: 134.409
+        quartis: [37, 177, 253]
+      tmp_dc_s05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 559
+        min: '-193'
+        max: '362'
+        media: 167.2217
+        quartis: [96, 183, 256]
+      tmp_dc_s06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 480
+        min: '-114'
+        max: '385'
+        media: 190.8282
+        quartis: [131, 199, 258]
+      tmp_dc_s07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 436
+        min: '-106'
+        max: '394'
+        media: 202.2894
+        quartis: [150, 211, 261]
+      tmp_dc_s08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 438
+        min: '-101'
+        max: '384'
+        media: 197.9448
+        quartis: [140, 210, 260]
+      tmp_dc_s09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 514
+        min: '-164'
+        max: '360'
+        media: 177.1056
+        quartis: [103, 199, 258]
+      tmp_dc_s10:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 550
+        min: '-279'
+        max: '330'
+        media: 142.3434
+        quartis: [43, 182, 255]
+      tmp_dc_s11:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 659
+        min: '-407'
+        max: '329'
+        media: 96.8958
+        quartis: [-38, 161, 245]
+      tmp_dc_s12:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 683
+        min: '-484'
+        max: '331'
+        media: 63.9425
+        quartis: [-98, 127, 239]
+      pre_mm_syr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5878
+        min: '0'
+        max: '9591'
+        media: 789.894
+        quartis: [268, 548, 1118]
+      pre_mm_uyr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5094
+        min: '0'
+        max: '9471'
+        media: 797.4545
+        quartis: [281, 560, 1131]
+      pre_mm_s01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 863
+        min: '0'
+        max: '894'
+        media: 63.237
+        quartis: [8, 25, 79]
+      pre_mm_s02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 809
+        min: '0'
+        max: '751'
+        media: 59.0879
+        quartis: [8, 23, 78]
+      pre_mm_s03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 748
+        min: '0'
+        max: '729'
+        media: 64.7286
+        quartis: [11, 28, 85]
+      pre_mm_s04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 745
+        min: '0'
+        max: '855'
+        media: 61.8216
+        quartis: [14, 32, 79]
+      pre_mm_s05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 895
+        min: '0'
+        max: '998'
+        media: 64.0374
+        quartis: [14, 37, 79]
+      pre_mm_s06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1305
+        min: '0'
+        max: '1838'
+        media: 68.452
+        quartis: [10, 43, 88]
+      pre_mm_s07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1690
+        min: '0'
+        max: '2125'
+        media: 78.2046
+        quartis: [11, 52, 101]
+      pre_mm_s08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1370
+        min: '0'
+        max: '1451'
+        media: 77.3576
+        quartis: [12, 52, 100]
+      pre_mm_s09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 966
+        min: '0'
+        max: '1066'
+        media: 69.0694
+        quartis: [13, 44, 92]
+      pre_mm_s10:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 971
+        min: '0'
+        max: '1087'
+        media: 62.9776
+        quartis: [15, 37, 82]
+      pre_mm_s11:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 807
+        min: '0'
+        max: '967'
+        media: 59.239
+        quartis: [11, 32, 78]
+      pre_mm_s12:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 829
+        min: '0'
+        max: '959'
+        media: 61.6229
+        quartis: [9, 26, 80]
+      pet_mm_syr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2403
+        min: '52'
+        max: '2379'
+        media: 1266.9874
+        quartis: [731, 1418, 1746]
+      pet_mm_uyr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2403
+        min: '52'
+        max: '2379'
+        media: 1248.7719
+        quartis: [715, 1392, 1731]
+      pet_mm_s01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 290
+        min: '0'
+        max: '261'
+        media: 81.2357
+        quartis: [3, 73, 148]
+      pet_mm_s02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 234
+        min: '0'
+        max: '214'
+        media: 78.651
+        quartis: [7, 84, 138]
+      pet_mm_s03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 260
+        min: '0'
+        max: '237'
+        media: 96.9243
+        quartis: [26, 117, 153]
+      pet_mm_s04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 266
+        min: '0'
+        max: '253'
+        media: 107.5465
+        quartis: [62, 115, 146]
+      pet_mm_s05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 299
+        min: '0'
+        max: '266'
+        media: 126.045
+        quartis: [91, 125, 157]
+      pet_mm_s06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 299
+        min: '0'
+        max: '272'
+        media: 132.9057
+        quartis: [102, 130, 163]
+      pet_mm_s07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 339
+        min: '5'
+        max: '296'
+        media: 138.243
+        quartis: [110, 135, 165]
+      pet_mm_s08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 289
+        min: '11'
+        max: '268'
+        media: 129.5774
+        quartis: [99, 131, 156]
+      pet_mm_s09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 239
+        min: '0'
+        max: '218'
+        media: 111.252
+        quartis: [70, 121, 151]
+      pet_mm_s10:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 246
+        min: '0'
+        max: '227'
+        media: 99.6375
+        quartis: [36, 115, 154]
+      pet_mm_s11:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 261
+        min: '0'
+        max: '240'
+        media: 84.1202
+        quartis: [12, 87, 145]
+      pet_mm_s12:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 290
+        min: '0'
+        max: '259'
+        media: 80.8783
+        quartis: [4, 71, 146]
+      aet_mm_syr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2213
+        min: '0'
+        max: '1983'
+        media: 549.9096
+        quartis: [217, 417, 845]
+      aet_mm_uyr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2194
+        min: '0'
+        max: '1967'
+        media: 552.0914
+        quartis: [226, 423, 843]
+      aet_mm_s01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 192
+        min: '0'
+        max: '178'
+        media: 36.4719
+        quartis: [0, 11, 59]
+      aet_mm_s02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 171
+        min: '0'
+        max: '164'
+        media: 34.9899
+        quartis: [1, 14, 52]
+      aet_mm_s03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 218
+        min: '0'
+        max: '189'
+        media: 42.6768
+        quartis: [8, 22, 63]
+      aet_mm_s04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 174
+        min: '0'
+        max: '169'
+        media: 48.0167
+        quartis: [15, 37, 70]
+      aet_mm_s05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 171
+        min: '0'
+        max: '164'
+        media: 57.0633
+        quartis: [22, 53, 86]
+      aet_mm_s06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 178
+        min: '0'
+        max: '172'
+        media: 59.1778
+        quartis: [23, 61, 90]
+      aet_mm_s07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 215
+        min: '0'
+        max: '183'
+        media: 60.2921
+        quartis: [24, 62, 89]
+      aet_mm_s08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 217
+        min: '0'
+        max: '187'
+        media: 54.9792
+        quartis: [22, 49, 78]
+      aet_mm_s09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 185
+        min: '0'
+        max: '175'
+        media: 45.8635
+        quartis: [15, 31, 66]
+      aet_mm_s10:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 192
+        min: '0'
+        max: '177'
+        media: 40.5023
+        quartis: [7, 20, 65]
+      aet_mm_s11:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 192
+        min: '0'
+        max: '178'
+        media: 34.8773
+        quartis: [2, 13, 61]
+      aet_mm_s12:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 207
+        min: '0'
+        max: '181'
+        media: 34.9645
+        quartis: [0, 10, 60]
+      ari_ix_sav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2380
+        min: '0'
+        max: '2274'
+        media: 83.6393
+        quartis: [24, 65, 103]
+      ari_ix_uav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2411
+        min: '0'
+        max: '2276'
+        media: 87.5626
+        quartis: [27, 68, 105]
+      cmi_ix_syr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 197
+        min: '-999'
+        max: '96'
+        media: -32.8525
+        quartis: [-76, -35, 3]
+      cmi_ix_uyr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 197
+        min: '-999'
+        max: '96'
+        media: -31.5326
+        quartis: [-73, -32, 4]
+      cmi_ix_s01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 197
+        min: '-999'
+        max: '100'
+        media: 2.5856
+        quartis: [-83, 11, 91]
+      cmi_ix_s02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 197
+        min: '-999'
+        max: '100'
+        media: -2.2964
+        quartis: [-83, -1, 73]
+      cmi_ix_s03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 197
+        min: '-100'
+        max: '100'
+        media: -16.59
+        quartis: [-83, -25, 41]
+      cmi_ix_s04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 197
+        min: '-100'
+        max: '100'
+        media: -34.5801
+        quartis: [-83, -49, 5]
+      cmi_ix_s05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 197
+        min: '-999'
+        max: '100'
+        media: -47.8217
+        quartis: [-87, -60, -25]
+      cmi_ix_s06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 197
+        min: '-999'
+        max: '100'
+        media: -48.8469
+        quartis: [-91, -61, -28]
+      cmi_ix_s07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 197
+        min: '-100'
+        max: '98'
+        media: -45.5433
+        quartis: [-92, -57, -15]
+      cmi_ix_s08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 197
+        min: '-999'
+        max: '96'
+        media: -40.8498
+        quartis: [-91, -48, -4]
+      cmi_ix_s09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 197
+        min: '-999'
+        max: '100'
+        media: -31.6792
+        quartis: [-90, -38, 21]
+      cmi_ix_s10:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 197
+        min: '-999'
+        max: '100'
+        media: -20.3442
+        quartis: [-86, -32, 40]
+      cmi_ix_s11:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 197
+        min: '-999'
+        max: '100'
+        media: -8.0553
+        quartis: [-84, -20, 69]
+      cmi_ix_s12:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 197
+        min: '-999'
+        max: '100'
+        media: 0.3317
+        quartis: [-85, 4, 88]
+      snw_pc_syr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '-999'
+        max: '100'
+        media: 16.1359
+        quartis: [0, 0, 29]
+      snw_pc_uyr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 16.8692
+        quartis: [0, 0, 31]
+      snw_pc_smx:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '-999'
+        max: '100'
+        media: 32.3443
+        quartis: [0, 0, 92]
+      snw_pc_s01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '-999'
+        max: '100'
+        media: 30.7423
+        quartis: [0, 0, 85]
+      snw_pc_s02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '-999'
+        max: '100'
+        media: 29.9115
+        quartis: [0, 0, 86]
+      snw_pc_s03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '-999'
+        max: '100'
+        media: 25.6913
+        quartis: [0, 0, 55]
+      snw_pc_s04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '-999'
+        max: '100'
+        media: 19.1687
+        quartis: [0, 0, 10]
+      snw_pc_s05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '-999'
+        max: '100'
+        media: 11.068
+        quartis: [0, 0, 1]
+      snw_pc_s06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '-999'
+        max: '100'
+        media: 4.2156
+        quartis: [0, 0, 1]
+      snw_pc_s07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '-999'
+        max: '100'
+        media: 2.5277
+        quartis: [0, 0, 0]
+      snw_pc_s08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '-999'
+        max: '100'
+        media: 2.7316
+        quartis: [0, 0, 0]
+      snw_pc_s09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '-999'
+        max: '100'
+        media: 4.9088
+        quartis: [0, 0, 1]
+      snw_pc_s10:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '-999'
+        max: '100'
+        media: 12.9598
+        quartis: [0, 0, 6]
+      snw_pc_s11:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '-999'
+        max: '100'
+        media: 21.5344
+        quartis: [0, 0, 27]
+      snw_pc_s12:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '-999'
+        max: '100'
+        media: 28.1695
+        quartis: [0, 0, 68]
+      glc_cl_smj:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 23
+        min: '1'
+        max: '23'
+        media: 11.7291
+        quartis: [5, 13, 16]
+        top:
+        - ['19', 303516]
+        - ['16', 287558]
+        - ['14', 201484]
+        - ['1', 195249]
+        - ['13', 189140]
+        - ['12', 164690]
+        - ['4', 149873]
+        - ['2', 93340]
+        - ['5', 73394]
+        - ['3', 56770]
+      glc_pc_s01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 9.124
+        quartis: [0, 0, 0]
+      glc_pc_s02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 4.7291
+        quartis: [0, 0, 0]
+      glc_pc_s03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 2.8181
+        quartis: [0, 0, 0]
+      glc_pc_s04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 6.6725
+        quartis: [0, 0, 0]
+      glc_pc_s05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 2.8356
+        quartis: [0, 0, 0]
+      glc_pc_s06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 2.3362
+        quartis: [0, 0, 0]
+      glc_pc_s07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.4622
+        quartis: [0, 0, 0]
+      glc_pc_s08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.109
+        quartis: [0, 0, 0]
+      glc_pc_s09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 1.7821
+        quartis: [0, 0, 0]
+      glc_pc_s10:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.2267
+        quartis: [0, 0, 0]
+      glc_pc_s11:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 1.5231
+        quartis: [0, 0, 0]
+      glc_pc_s12:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 8.432
+        quartis: [0, 0, 3]
+      glc_pc_s13:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 9.7073
+        quartis: [0, 0, 6]
+      glc_pc_s14:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 10.0623
+        quartis: [0, 0, 4]
+      glc_pc_s15:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 1.386
+        quartis: [0, 0, 0]
+      glc_pc_s16:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 12.7754
+        quartis: [0, 0, 8]
+      glc_pc_s17:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 2.6244
+        quartis: [0, 0, 0]
+      glc_pc_s18:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 2.3282
+        quartis: [0, 0, 0]
+      glc_pc_s19:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 14.8036
+        quartis: [0, 0, 0]
+      glc_pc_s20:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 2.6296
+        quartis: [0, 0, 0]
+      glc_pc_s21:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 2.3284
+        quartis: [0, 0, 0]
+      glc_pc_s22:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.256
+        quartis: [0, 0, 0]
+      glc_pc_u01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 9.4609
+        quartis: [0, 0, 0]
+      glc_pc_u02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 5.0264
+        quartis: [0, 0, 1]
+      glc_pc_u03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 2.9903
+        quartis: [0, 0, 0]
+      glc_pc_u04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 7.0788
+        quartis: [0, 0, 0]
+      glc_pc_u05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 2.8011
+        quartis: [0, 0, 0]
+      glc_pc_u06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 2.4029
+        quartis: [0, 0, 0]
+      glc_pc_u07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.3187
+        quartis: [0, 0, 0]
+      glc_pc_u08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.1015
+        quartis: [0, 0, 0]
+      glc_pc_u09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 1.8155
+        quartis: [0, 0, 0]
+      glc_pc_u10:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.2332
+        quartis: [0, 0, 0]
+      glc_pc_u11:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 1.5437
+        quartis: [0, 0, 0]
+      glc_pc_u12:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 8.5618
+        quartis: [0, 0, 6]
+      glc_pc_u13:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 10.1662
+        quartis: [0, 0, 8]
+      glc_pc_u14:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 10.4039
+        quartis: [0, 0, 6]
+      glc_pc_u15:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 1.118
+        quartis: [0, 0, 0]
+      glc_pc_u16:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 10.9994
+        quartis: [0, 0, 6]
+      glc_pc_u17:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 1.8542
+        quartis: [0, 0, 0]
+      glc_pc_u18:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 2.2837
+        quartis: [0, 0, 0]
+      glc_pc_u19:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 14.6571
+        quartis: [0, 0, 1]
+      glc_pc_u20:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 1.38
+        quartis: [0, 0, 0]
+      glc_pc_u21:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 2.5152
+        quartis: [0, 0, 0]
+      glc_pc_u22:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.1822
+        quartis: [0, 0, 0]
+      pnv_cl_smj:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 18
+        min: '1'
+        max: '99'
+        media: 9.9747
+        quartis: [6, 9, 12]
+        top:
+        - ['9', 291060]
+        - ['1', 259449]
+        - ['14', 235224]
+        - ['8', 226890]
+        - ['10', 212837]
+        - ['12', 183056]
+        - ['13', 99908]
+        - ['6', 92164]
+        - ['11', 91365]
+        - ['2', 91155]
+      pnv_pc_s01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 12.8238
+        quartis: [0, 0, 0]
+      pnv_pc_s02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 4.5085
+        quartis: [0, 0, 0]
+      pnv_pc_s03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.8743
+        quartis: [0, 0, 0]
+      pnv_pc_s04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 2.7417
+        quartis: [0, 0, 0]
+      pnv_pc_s05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 3.5468
+        quartis: [0, 0, 0]
+      pnv_pc_s06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 4.5382
+        quartis: [0, 0, 0]
+      pnv_pc_s07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 1.6875
+        quartis: [0, 0, 0]
+      pnv_pc_s08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 11.236
+        quartis: [0, 0, 0]
+      pnv_pc_s09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 14.4966
+        quartis: [0, 0, 0]
+      pnv_pc_s10:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 10.6194
+        quartis: [0, 0, 0]
+      pnv_pc_s11:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 4.5733
+        quartis: [0, 0, 0]
+      pnv_pc_s12:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 9.062
+        quartis: [0, 0, 0]
+      pnv_pc_s13:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 5.0063
+        quartis: [0, 0, 0]
+      pnv_pc_s14:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 11.6777
+        quartis: [0, 0, 0]
+      pnv_pc_s15:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.7835
+        quartis: [0, 0, 0]
+      pnv_pc_u01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 12.7385
+        quartis: [0, 0, 0]
+      pnv_pc_u02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 4.4861
+        quartis: [0, 0, 0]
+      pnv_pc_u03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.8296
+        quartis: [0, 0, 0]
+      pnv_pc_u04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 2.7771
+        quartis: [0, 0, 0]
+      pnv_pc_u05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 3.5324
+        quartis: [0, 0, 0]
+      pnv_pc_u06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 4.5755
+        quartis: [0, 0, 0]
+      pnv_pc_u07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 1.6095
+        quartis: [0, 0, 0]
+      pnv_pc_u08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 11.2055
+        quartis: [0, 0, 0]
+      pnv_pc_u09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 14.5022
+        quartis: [0, 0, 5]
+      pnv_pc_u10:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 10.8099
+        quartis: [0, 0, 0]
+      pnv_pc_u11:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 4.5614
+        quartis: [0, 0, 0]
+      pnv_pc_u12:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 8.9131
+        quartis: [0, 0, 0]
+      pnv_pc_u13:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 5.6274
+        quartis: [0, 0, 0]
+      pnv_pc_u14:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 11.0412
+        quartis: [0, 0, 0]
+      pnv_pc_u15:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.957
+        quartis: [0, 0, 0]
+      wet_cl_smj:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 14
+        min: '-999'
+        max: '12'
+        media: -639.0678
+        quartis: [-999, -999, 3]
+        top:
+        - ['-999', 1291551]
+        - ['1', 194656]
+        - ['9', 112326]
+        - ['4', 95498]
+        - ['11', 62017]
+        - ['3', 59729]
+        - ['8', 44510]
+        - ['5', 38035]
+        - ['10', 35685]
+        - ['7', 22512]
+      wet_pc_sg1:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 9.6458
+        quartis: [0, 0, 4]
+      wet_pc_ug1:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 6.55
+        quartis: [0, 0, 3]
+      wet_pc_sg2:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 7.0683
+        quartis: [0, 0, 0]
+      wet_pc_ug2:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 5.2444
+        quartis: [0, 0, 1]
+      wet_pc_s01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 1.8367
+        quartis: [0, 0, 0]
+      wet_pc_s02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.2876
+        quartis: [0, 0, 0]
+      wet_pc_s03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 94
+        min: '0'
+        max: '100'
+        media: 0.452
+        quartis: [0, 0, 0]
+      wet_pc_s04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 2.0213
+        quartis: [0, 0, 0]
+      wet_pc_s05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.964
+        quartis: [0, 0, 0]
+      wet_pc_s06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.4091
+        quartis: [0, 0, 0]
+      wet_pc_s07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.4601
+        quartis: [0, 0, 0]
+      wet_pc_s08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.5178
+        quartis: [0, 0, 0]
+      wet_pc_s09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.7405
+        quartis: [0, 0, 0]
+      wet_pc_u01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 1.152
+        quartis: [0, 0, 0]
+      wet_pc_u02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 91
+        min: '0'
+        max: '100'
+        media: 0.0733
+        quartis: [0, 0, 0]
+      wet_pc_u03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 74
+        min: '0'
+        max: '100'
+        media: 0.0648
+        quartis: [0, 0, 0]
+      wet_pc_u04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 1.453
+        quartis: [0, 0, 0]
+      wet_pc_u05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.585
+        quartis: [0, 0, 0]
+      wet_pc_u06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.3372
+        quartis: [0, 0, 0]
+      wet_pc_u07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.1893
+        quartis: [0, 0, 0]
+      wet_pc_u08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.5008
+        quartis: [0, 0, 0]
+      wet_pc_u09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.3506
+        quartis: [0, 0, 0]
+      for_pc_sse:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 29.0923
+        quartis: [0, 4, 61]
+      for_pc_use:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 29.7743
+        quartis: [0, 8, 61]
+      crp_pc_sse:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 11.3922
+        quartis: [0, 0, 12]
+      crp_pc_use:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 10.8784
+        quartis: [0, 1, 12]
+      pst_pc_sse:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 20.4092
+        quartis: [0, 4, 34]
+      pst_pc_use:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 20.7353
+        quartis: [0, 5, 35]
+      ire_pc_sse:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 2.4071
+        quartis: [0, 0, 0]
+      ire_pc_use:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 1.9137
+        quartis: [0, 0, 0]
+      gla_pc_sse:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.3185
+        quartis: [0, 0, 0]
+      gla_pc_use:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.3838
+        quartis: [0, 0, 0]
+      prm_pc_sse:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 11.9806
+        quartis: [0, 0, 0]
+      prm_pc_use:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 12.6905
+        quartis: [0, 0, 0]
+      pac_pc_sse:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 13.9012
+        quartis: [0, 0, 1]
+      pac_pc_use:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 14.3186
+        quartis: [0, 0, 9]
+      tbi_cl_smj:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 17
+        min: '1'
+        max: '99'
+        media: 8.7615
+        quartis: [4, 7, 11]
+        top:
+        - ['13', 401824]
+        - ['7', 327927]
+        - ['1', 296203]
+        - ['6', 230476]
+        - ['4', 185464]
+        - ['8', 158949]
+        - ['11', 115206]
+        - ['10', 68428]
+        - ['2', 60527]
+        - ['5', 52664]
+      tec_cl_smj:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1012
+        min: '0'
+        max: '846'
+        media: 466.8166
+        quartis: [219, 479, 718]
+      fmh_cl_smj:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '1'
+        max: '99'
+        media: 8.5545
+        quartis: [4, 7, 10]
+        top:
+        - ['4', 488181]
+        - ['11', 278581]
+        - ['10', 251315]
+        - ['7', 211658]
+        - ['5', 194382]
+        - ['8', 171000]
+        - ['9', 143709]
+        - ['6', 113174]
+        - ['1', 54769]
+        - ['3', 53680]
+      fec_cl_smj:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 494
+        min: '101'
+        max: '999'
+        media: 486.0288
+        quartis: [333, 512, 619]
+      cly_pc_sav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 47
+        min: '-999'
+        max: '48'
+        media: -80.9637
+        quartis: [12, 18, 25]
+        top:
+        - ['-999', 199602]
+        - ['13', 82719]
+        - ['17', 80597]
+        - ['16', 79711]
+        - ['14', 79252]
+        - ['18', 79096]
+        - ['20', 78418]
+        - ['19', 76765]
+        - ['15', 75800]
+        - ['12', 74154]
+      cly_pc_uav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 47
+        min: '-999'
+        max: '48'
+        media: -57.5297
+        quartis: [11, 18, 25]
+        top:
+        - ['-999', 151684]
+        - ['13', 82532]
+        - ['16', 79660]
+        - ['17', 79367]
+        - ['12', 79223]
+        - ['14', 77191]
+        - ['15', 75135]
+        - ['20', 73099]
+        - ['18', 73038]
+        - ['19', 71449]
+      slt_pc_sav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 62
+        min: '-999'
+        max: '68'
+        media: -71.5726
+        quartis: [18, 30, 38]
+      slt_pc_uav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 59
+        min: '-999'
+        max: '63'
+        media: -48.1462
+        quartis: [18, 29, 38]
+      snd_pc_sav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 80
+        min: '-999'
+        max: '90'
+        media: -54.5474
+        quartis: [39, 46, 54]
+      snd_pc_uav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 78
+        min: '-999'
+        max: '90'
+        media: -30.6347
+        quartis: [39, 46, 54]
+      soc_th_sav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 770
+        min: '-999'
+        max: '1041'
+        media: -55.4137
+        quartis: [11, 23, 53]
+      soc_th_uav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 702
+        min: '-999'
+        max: '946'
+        media: -29.943
+        quartis: [12, 24, 59]
+      swc_pc_syr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 52.9208
+        quartis: [23, 58, 81]
+      swc_pc_uyr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 53.924
+        quartis: [25, 60, 82]
+      swc_pc_s01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 56.3473
+        quartis: [23, 61, 91]
+      swc_pc_s02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 57.3671
+        quartis: [22, 62, 96]
+      swc_pc_s03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 57.6541
+        quartis: [21, 62, 98]
+      swc_pc_s04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 56.8904
+        quartis: [20, 62, 96]
+      swc_pc_s05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 54.6142
+        quartis: [20, 60, 88]
+      swc_pc_s06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 51.5129
+        quartis: [20, 56, 80]
+      swc_pc_s07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 49.3075
+        quartis: [20, 51, 74]
+      swc_pc_s08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 48.4446
+        quartis: [19, 49, 74]
+      swc_pc_s09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 48.556
+        quartis: [16, 49, 77]
+      swc_pc_s10:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 49.4829
+        quartis: [15, 51, 81]
+      swc_pc_s11:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 51.162
+        quartis: [17, 55, 83]
+      swc_pc_s12:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 53.2539
+        quartis: [19, 57, 86]
+      lit_cl_smj:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 18
+        min: '1'
+        max: '16'
+        media: 4.5996
+        quartis: [1, 4, 8]
+        top:
+        - ['1', 565837]
+        - ['3', 356396]
+        - ['5', 310887]
+        - ['8', 279646]
+        - ['6', 154349]
+        - ['9', 122500]
+        - ['2', 73818]
+        - ['10', 35796]
+        - ['16', 33525]
+        - ['7', 21831]
+      kar_pc_sse:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 10.8291
+        quartis: [0, 0, 0]
+      kar_pc_use:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 11.0485
+        quartis: [0, 0, 0]
+      ero_kh_sav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 29590
+        min: '0'
+        max: '181046'
+        media: 2633.1723
+        quartis: [68, 537, 2465]
+      ero_kh_uav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 32954
+        min: '0'
+        max: '152132'
+        media: 2839.8962
+        quartis: [92, 698, 3016]
+      pop_ct_ssu:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 86060
+        min: '0.0'
+        max: '3496646.0'
+        media: 21.3386
+        quartis: [0.0115, 0.2768, 2.8918]
+      pop_ct_usu:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 167604
+        min: '0.0'
+        max: '634471.75'
+        media: 580.3296
+        quartis: [0.0639, 1.5472, 18.9427]
+      ppd_pk_sav:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 169336
+        min: '0.0'
+        max: '37101.063'
+        media: 56.7237
+        quartis: [0.1083, 2.3442, 20.7364]
+      ppd_pk_uav:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 154661
+        min: '0.0'
+        max: '42138.816'
+        media: 48.3743
+        quartis: [0.1394, 2.8358, 23.0476]
+      urb_pc_sse:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 1.939
+        quartis: [0, 0, 0]
+      urb_pc_use:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 1.4857
+        quartis: [0, 0, 0]
+      nli_ix_sav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5968
+        min: '0'
+        max: '6300'
+        media: 292.2156
+        quartis: [0, 0, 164]
+      nli_ix_uav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 4436
+        min: '0'
+        max: '6300'
+        media: 242.4627
+        quartis: [0, 0, 200]
+      rdd_mk_sav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 6153
+        min: '0'
+        max: '330306'
+        media: 177.501
+        quartis: [0, 59, 168]
+      rdd_mk_uav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 4952
+        min: '0'
+        max: '117094'
+        media: 157.7668
+        quartis: [0, 60, 155]
+      hft_ix_s93:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 512
+        min: '0'
+        max: '495'
+        media: 55.3475
+        quartis: [8, 40, 80]
+      hft_ix_u93:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 512
+        min: '0'
+        max: '495'
+        media: 52.0073
+        quartis: [9, 40, 77]
+      hft_ix_s09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 502
+        min: '0'
+        max: '495'
+        media: 59.9367
+        quartis: [10, 44, 88]
+      hft_ix_u09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 512
+        min: '0'
+        max: '495'
+        media: 56.513
+        quartis: [10, 44, 85]
+      gad_id_smj:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 248
+        min: '1'
+        max: '253'
+        media: 116.6178
+        quartis: [41, 108, 186]
+      gdp_ud_sav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 37324
+        min: '378'
+        max: '189535'
+        media: 24485.9716
+        quartis: [6619, 13933, 37882]
+      gdp_ud_ssu:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 646663
+        min: '0'
+        max: '39653507858432'
+        media: 334122855.1734
+        quartis: [0, 15434, 12087796]
+      gdp_ud_usu:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 621996
+        min: '0'
+        max: '5808972627968'
+        media: 6965095518.9491
+        quartis: [0, 1907777, 141097995]
+      hdi_ix_sav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 698
+        min: '317'
+        max: '1000'
+        media: 734.4192
+        quartis: [664, 764, 837]
+      geometry:
+        tipo: GEOMETRY
+        nulos_pct: 0
+        distintos_aprox: 1423789
+        geometrias: [MULTIPOLYGON, POLYGON]
+        caixa_xmin_ymin_xmax_ymax: [-180.0, -55.9875, 179.9994, 83.6256]
+        pontos_media: 96.5946
+  lakes_atlas:
+    linhas: 2855376
+    fonte_do_perfil: amostra de 70.043%. ~2.000.000 linhas
+    colunas:
+      region:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: pnt_east
+        max: pol_west
+        top:
+        - [pol_west, 768746]
+        - [pnt_west, 750851]
+        - [pol_east, 242295]
+        - [pnt_east, 240604]
+      hylak_id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1308346, min: '1', max: '999999'}
+      lake_name: {tipo: VARCHAR, nulos_pct: 99.79, distintos_aprox: 3221, min: Abaya, max: Zukeyama}
+      country: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 181, min: Afghanistan, max: Zimbabwe}
+      continent:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Africa
+        max: South America
+        top:
+        - [North America, 1438288]
+        - [Europe, 361007]
+        - [Asia, 88608]
+        - [South America, 76823]
+        - [Africa, 20347]
+        - [Oceania, 17423]
+      poly_src:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: CanVec
+        max: SWBD
+        top:
+        - [CanVec, 1248664]
+        - [SWBD, 384870]
+        - [MODIS, 214126]
+        - [NHD, 85630]
+        - [ECRINS, 62368]
+        - [GLWD, 4383]
+        - [GRanD, 1472]
+        - [Other, 983]
+      lake_type:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - ['1', 1993266]
+        - ['2', 9084]
+        - ['3', 146]
+      grand_id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6641, min: '0', max: '999'}
+      lake_area:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5282
+        min: '0.1'
+        max: '377002.0'
+        media: 2.1374
+        quartis: [0.14, 0.23, 0.5054]
+      shore_len:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 10075
+        min: '1.12'
+        max: '15829.4'
+        media: 5.3687
+        quartis: [1.9306, 2.6866, 4.3875]
+      shore_dev:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1254
+        min: '1.01'
+        max: '53.51'
+        media: 1.7203
+        quartis: [1.277, 1.519, 1.9197]
+      vol_total:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 15950
+        min: '0.05'
+        max: '75600000.0'
+        media: 164.8339
+        quartis: [0.4073, 0.7699, 1.875]
+      vol_res:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2763
+        min: '0.0'
+        max: '204800.0'
+        media: 3.9496
+        quartis: [0, 0, 0]
+      vol_src:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        media: 2.9951
+        quartis: [3, 3, 3]
+        top:
+        - ['3', 1993008]
+        - ['2', 9130]
+        - ['1', 358]
+      depth_avg:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1188
+        min: '0.1'
+        max: '738.7'
+        media: 3.872
+        quartis: [2.307, 3.234, 4.4981]
+      dis_avg:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 31588
+        min: '-9999.0'
+        max: '161806.0'
+        media: 0.0932
+        quartis: [0.005, 0.0226, 0.1368]
+      res_time:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 130503
+        min: '-9999.0'
+        max: '13203800.0'
+        media: 1776.0417
+        quartis: [91.9913, 433.2102, 1588.4039]
+      elevation:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5038
+        min: '-415'
+        max: '5813'
+        media: 281.2109
+        quartis: [68, 213, 378]
+      slope_100:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2682
+        min: '-1.0'
+        max: '55.59'
+        media: 2.8709
+        quartis: [1.0434, 1.9758, 3.5633]
+      wshd_area:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 27603
+        min: '-9999.0'
+        max: '4323650.0'
+        media: 631.3382
+        quartis: [0.7873, 2.8584, 16.1257]
+      pour_long:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 922622
+        min: '-179.992498'
+        max: '179.998792'
+        media: -53.3638
+        quartis: [-104.506, -80.696, -50.479]
+      pour_lat:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1367239
+        min: '-55.860876'
+        max: '83.57118'
+        media: 54.2703
+        quartis: [51.9225, 59.9425, 65.9418]
+      hybas_l12:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 178137
+        min: '0'
+        max: '9120169930'
+        media: 6466670463.5016
+        quartis: [6100615918, 7120712422, 8120154527]
+      hyriv_rch:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 278562
+        min: '0'
+        max: '90137075'
+        media: 19298244.8033
+        quartis: [0, 0, 36155512]
+      hyriv_cat:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 528877
+        min: '0'
+        max: '90137075'
+        media: 62332947.478
+        quartis: [48431075, 70199207, 80084083]
+      dis_m3_pyr:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 31588
+        min: '-9999.0'
+        max: '161806.0'
+        media: 0.0954
+        quartis: [0.005, 0.0226, 0.1368]
+      dis_m3_pmn:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 27559
+        min: '-9999.0'
+        max: '112345.0'
+        media: -2.678
+        quartis: [0.002, 0.009, 0.0549]
+      dis_m3_pmx:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 48518
+        min: '-9999.0'
+        max: '219077.0'
+        media: 5.3599
+        quartis: [0.01, 0.0491, 0.3135]
+      run_mm_vyr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5456
+        min: '-9999'
+        max: '6741'
+        media: 344.0701
+        quartis: [144, 255, 463]
+      inu_pc_vmn:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 10.5965
+        quartis: [0, 0, 17]
+      inu_pc_umn:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 6.6008
+        quartis: [0, 0, 4]
+      inu_pc_vmx:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 19.226
+        quartis: [0, 1, 44]
+      inu_pc_umx:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 14.1812
+        quartis: [0, 0, 24]
+      inu_pc_vlt:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 26.492
+        quartis: [0, 9, 66]
+      inu_pc_ult:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 20.6085
+        quartis: [0, 1, 47]
+      lka_pc_vse:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 942
+        min: '-9999'
+        max: '930'
+        media: 70.9975
+        quartis: [22, 53, 109]
+      lka_pc_use:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1217
+        min: '-9999'
+        max: '1000'
+        media: 144.3903
+        quartis: [50, 112, 203]
+      lkv_mc_usu:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 8106
+        min: '-9999'
+        max: '24238482'
+        media: 744.6639
+        quartis: [1, 1, 5]
+      rev_mc_usu:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2100
+        min: '-9999'
+        max: '310635'
+        media: 21.6578
+        quartis: [0, 0, 0]
+      dor_pc_pva:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3260
+        min: '-9999'
+        max: '10000'
+        media: 6.1013
+        quartis: [0, 0, 0]
+      ria_ha_vsu:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 49612
+        min: '-9999.0'
+        max: '8974.66'
+        media: -0.6379
+        quartis: [0.1619, 0.5373, 2.0592]
+      ria_ha_usu:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 92207
+        min: '-9999.0'
+        max: '3149710.0'
+        media: 157.7721
+        quartis: [0.0362, 0.1773, 1.2675]
+      riv_tc_vsu:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 138782
+        min: '-9999.0'
+        max: '908223.0'
+        media: 213.4632
+        quartis: [0.1216, 0.6938, 4.7558]
+      riv_tc_usu:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 129176
+        min: '-9999.0'
+        max: '190988992.0'
+        media: 4345.9422
+        quartis: [0.0209, 0.1435, 1.5396]
+      gwt_cm_vav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1855
+        min: '-9999'
+        max: '2967'
+        media: 82.545
+        quartis: [23, 57, 99]
+      ele_mt_lav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5442
+        min: '-9999'
+        max: '5826'
+        media: 279.4326
+        quartis: [72, 215, 382]
+      ele_mt_uav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5412
+        min: '-9999'
+        max: '6137'
+        media: 308.6814
+        quartis: [88, 241, 406]
+      ele_mt_lmn:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 4932
+        min: '-9999'
+        max: '5813'
+        media: 272.1873
+        quartis: [64, 210, 376]
+      ele_mt_vmx:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5384
+        min: '-9999'
+        max: '7775'
+        media: 336.4901
+        quartis: [104, 260, 428]
+      slp_dg_vav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 375
+        min: '-9999'
+        max: '465'
+        media: 1.2719
+        quartis: [10, 19, 35]
+      slp_dg_uav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 455
+        min: '-9999'
+        max: '733'
+        media: 3.017
+        quartis: [11, 20, 36]
+      sgr_dk_vav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2246
+        min: '-9999'
+        max: '6328'
+        media: -4269.1701
+        quartis: [-9999, 8, 35]
+      clz_cl_lmj:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 20
+        min: '-9999'
+        max: '18'
+        media: 1.7043
+        quartis: [6, 6, 7]
+        top:
+        - ['6', 1088802]
+        - ['7', 516306]
+        - ['8', 88470]
+        - ['18', 56159]
+        - ['4', 43185]
+        - ['14', 32601]
+        - ['5', 32030]
+        - ['11', 31123]
+        - ['9', 27940]
+        - ['17', 27379]
+      cls_cl_lmj:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 127
+        min: '-9999'
+        max: '125'
+        media: 27.8658
+        quartis: [17, 25, 38]
+      tmp_dc_lyr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 566
+        min: '-9999'
+        max: '319'
+        media: -36.9051
+        quartis: [-107, -53, 9]
+      tmp_dc_uyr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 566
+        min: '-9999'
+        max: '313'
+        media: -38.242
+        quartis: [-107, -54, 7]
+      tmp_dc_lmn:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 734
+        min: '-9999'
+        max: '284'
+        media: -206.5996
+        quartis: [-303, -243, -148]
+      tmp_dc_lmx:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 415
+        min: '-9999'
+        max: '378'
+        media: 132.2245
+        quartis: [95, 129, 165]
+      tmp_dc_l01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 760
+        min: '-9999'
+        max: '331'
+        media: -201.2296
+        quartis: [-301, -242, -147]
+      tmp_dc_l02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 709
+        min: '-9999'
+        max: '326'
+        media: -188.5076
+        quartis: [-287, -226, -130]
+      tmp_dc_l03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 699
+        min: '-9999'
+        max: '331'
+        media: -141.034
+        quartis: [-245, -165, -75]
+      tmp_dc_l04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 600
+        min: '-9999'
+        max: '340'
+        media: -59.4347
+        quartis: [-152, -68, 8]
+      tmp_dc_l05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 573
+        min: '-9999'
+        max: '362'
+        media: 24.0642
+        quartis: [-39, 21, 77]
+      tmp_dc_l06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 434
+        min: '-9999'
+        max: '378'
+        media: 91.4208
+        quartis: [45, 91, 132]
+      tmp_dc_l07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 421
+        min: '-9999'
+        max: '374'
+        media: 127.5834
+        quartis: [93, 128, 162]
+      tmp_dc_l08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 421
+        min: '-9999'
+        max: '367'
+        media: 114.3637
+        quartis: [80, 114, 145]
+      tmp_dc_l09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 478
+        min: '-9999'
+        max: '353'
+        media: 63.5932
+        quartis: [24, 57, 92]
+      tmp_dc_l10:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 566
+        min: '-9999'
+        max: '320'
+        media: -7.9609
+        quartis: [-68, -13, 35]
+      tmp_dc_l11:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 668
+        min: '-9999'
+        max: '330'
+        media: -98.8176
+        quartis: [-185, -102, -44]
+      tmp_dc_l12:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 760
+        min: '-9999'
+        max: '327'
+        media: -167.47
+        quartis: [-258, -194, -119]
+      pre_mm_lyr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5022
+        min: '-9999'
+        max: '8163'
+        media: 545.6213
+        quartis: [259, 432, 695]
+      pre_mm_uyr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5345
+        min: '-9999'
+        max: '8114'
+        media: 549.5351
+        quartis: [260, 436, 701]
+      pre_mm_l01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 784
+        min: '-9999'
+        max: '896'
+        media: 29.8048
+        quartis: [10, 20, 38]
+      pre_mm_l02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 635
+        min: '-9999'
+        max: '745'
+        media: 24.7917
+        quartis: [9, 16, 31]
+      pre_mm_l03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 748
+        min: '-9999'
+        max: '672'
+        media: 28.1058
+        quartis: [10, 19, 36]
+      pre_mm_l04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 765
+        min: '-9999'
+        max: '811'
+        media: 28.5162
+        quartis: [12, 22, 39]
+      pre_mm_l05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 796
+        min: '-9999'
+        max: '723'
+        media: 35.0893
+        quartis: [15, 29, 50]
+      pre_mm_l06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1082
+        min: '-9999'
+        max: '1303'
+        media: 47.829
+        quartis: [23, 43, 73]
+      pre_mm_l07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1147
+        min: '-9999'
+        max: '2218'
+        media: 60.0586
+        quartis: [37, 56, 83]
+      pre_mm_l08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 974
+        min: '-9999'
+        max: '1496'
+        media: 61.2661
+        quartis: [41, 58, 85]
+      pre_mm_l09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 845
+        min: '-9999'
+        max: '729'
+        media: 53.92
+        quartis: [31, 49, 78]
+      pre_mm_l10:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 789
+        min: '-9999'
+        max: '764'
+        media: 45.1906
+        quartis: [26, 37, 63]
+      pre_mm_l11:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 760
+        min: '-9999'
+        max: '790'
+        media: 38.0638
+        quartis: [17, 29, 56]
+      pre_mm_l12:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 767
+        min: '-9999'
+        max: '746'
+        media: 32.6963
+        quartis: [12, 23, 43]
+      pet_mm_lyr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2338
+        min: '-9999'
+        max: '2282'
+        media: 539.9964
+        quartis: [314, 438, 620]
+      pet_mm_uyr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2338
+        min: '-9999'
+        max: '2270'
+        media: 536.3086
+        quartis: [313, 436, 615]
+      pet_mm_l01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 271
+        min: '-9999'
+        max: '261'
+        media: 7.7105
+        quartis: [0, 0, 0]
+      pet_mm_l02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 231
+        min: '-9999'
+        max: '214'
+        media: 7.582
+        quartis: [0, 0, 3]
+      pet_mm_l03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 250
+        min: '-9999'
+        max: '228'
+        media: 14.3512
+        quartis: [0, 2, 19]
+      pet_mm_l04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 264
+        min: '-9999'
+        max: '233'
+        media: 30.5594
+        quartis: [5, 27, 50]
+      pet_mm_l05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 296
+        min: '-9999'
+        max: '258'
+        media: 64.2837
+        quartis: [39, 64, 94]
+      pet_mm_l06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 301
+        min: '-9999'
+        max: '268'
+        media: 92.4858
+        quartis: [71, 98, 122]
+      pet_mm_l07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 342
+        min: '-9999'
+        max: '280'
+        media: 104.8276
+        quartis: [90, 109, 129]
+      pet_mm_l08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 287
+        min: '-9999'
+        max: '259'
+        media: 78.5132
+        quartis: [62, 78, 100]
+      pet_mm_l09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 235
+        min: '-9999'
+        max: '211'
+        media: 41.4748
+        quartis: [24, 36, 57]
+      pet_mm_l10:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 254
+        min: '-9999'
+        max: '229'
+        media: 20.3172
+        quartis: [5, 12, 26]
+      pet_mm_l11:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 254
+        min: '-9999'
+        max: '231'
+        media: 9.9459
+        quartis: [0, 2, 8]
+      pet_mm_l12:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 268
+        min: '-9999'
+        max: '255'
+        media: 7.792
+        quartis: [0, 0, 2]
+      aet_mm_vyr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2097
+        min: '-9999'
+        max: '1893'
+        media: 369.2796
+        quartis: [216, 320, 445]
+      aet_mm_uyr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2054
+        min: '-9999'
+        max: '1892'
+        media: 369.5026
+        quartis: [217, 321, 446]
+      aet_mm_v01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 195
+        min: '-9999'
+        max: '177'
+        media: 2.3287
+        quartis: [0, 0, 0]
+      aet_mm_v02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 172
+        min: '-9999'
+        max: '162'
+        media: 2.5528
+        quartis: [0, 0, 3]
+      aet_mm_v03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 187
+        min: '-9999'
+        max: '174'
+        media: 8.1529
+        quartis: [0, 2, 16]
+      aet_mm_v04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 172
+        min: '-9999'
+        max: '160'
+        media: 22.3473
+        quartis: [4, 24, 41]
+      aet_mm_v05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 173
+        min: '-9999'
+        max: '163'
+        media: 48.9571
+        quartis: [32, 52, 72]
+      aet_mm_v06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 177
+        min: '-9999'
+        max: '173'
+        media: 65.8445
+        quartis: [53, 71, 88]
+      aet_mm_v07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 217
+        min: '-9999'
+        max: '183'
+        media: 68.3738
+        quartis: [59, 72, 88]
+      aet_mm_v08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 198
+        min: '-9999'
+        max: '185'
+        media: 48.4188
+        quartis: [37, 50, 66]
+      aet_mm_v09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 180
+        min: '-9999'
+        max: '172'
+        media: 24.9722
+        quartis: [14, 25, 38]
+      aet_mm_v10:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 176
+        min: '-9999'
+        max: '170'
+        media: 11.0615
+        quartis: [3, 9, 19]
+      aet_mm_v11:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 187
+        min: '-9999'
+        max: '175'
+        media: 3.872
+        quartis: [0, 1, 6]
+      aet_mm_v12:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 195
+        min: '-9999'
+        max: '176'
+        media: 2.2038
+        quartis: [0, 0, 1]
+      ari_ix_lav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1293
+        min: '-9999'
+        max: '1300'
+        media: 100.3183
+        quartis: [68, 92, 130]
+      ari_ix_uav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1200
+        min: '-9999'
+        max: '1951'
+        media: 102.0209
+        quartis: [69, 93, 132]
+      cmi_ix_lyr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 203
+        min: '-9999'
+        max: '92'
+        media: -10.4899
+        quartis: [-32, -8, 23]
+      cmi_ix_uyr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 203
+        min: '-9999'
+        max: '95'
+        media: -9.5723
+        quartis: [-31, -7, 24]
+      cmi_ix_l01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 203
+        min: '-9999'
+        max: '100'
+        media: 79.6085
+        quartis: [99, 100, 100]
+      cmi_ix_l02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 203
+        min: '-9999'
+        max: '100'
+        media: 75.3305
+        quartis: [91, 100, 100]
+      cmi_ix_l03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 203
+        min: '-9999'
+        max: '100'
+        media: 61.4715
+        quartis: [52, 94, 100]
+      cmi_ix_l04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 203
+        min: '-9999'
+        max: '100'
+        media: 10.8722
+        quartis: [-29, 13, 63]
+      cmi_ix_l05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 203
+        min: '-9999'
+        max: '100'
+        media: -50.7266
+        quartis: [-67, -50, -32]
+      cmi_ix_l06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 203
+        min: '-9999'
+        max: '98'
+        media: -54.4502
+        quartis: [-72, -54, -34]
+      cmi_ix_l07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 203
+        min: '-9999'
+        max: '98'
+        media: -48.3601
+        quartis: [-63, -48, -31]
+      cmi_ix_l08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 203
+        min: '-9999'
+        max: '96'
+        media: -27.3008
+        quartis: [-42, -28, 1]
+      cmi_ix_l09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 203
+        min: '-9999'
+        max: '98'
+        media: 14.1339
+        quartis: [4, 28, 46]
+      cmi_ix_l10:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 203
+        min: '-9999'
+        max: '100'
+        media: 52.7952
+        quartis: [55, 75, 82]
+      cmi_ix_l11:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 203
+        min: '-9999'
+        max: '100'
+        media: 73.7565
+        quartis: [86, 95, 100]
+      cmi_ix_l12:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 203
+        min: '-9999'
+        max: '100'
+        media: 79.1228
+        quartis: [97, 100, 100]
+      snw_pc_vyr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 46.8357
+        quartis: [48, 59, 67]
+      snw_pc_uyr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 47.1553
+        quartis: [48, 59, 67]
+      snw_pc_vmx:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 82.7856
+        quartis: [100, 100, 100]
+      snw_pc_v01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 81.7007
+        quartis: [99, 100, 100]
+      snw_pc_v02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 81.6866
+        quartis: [100, 100, 100]
+      snw_pc_v03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 79.1562
+        quartis: [98, 100, 100]
+      snw_pc_v04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 69.6282
+        quartis: [59, 100, 100]
+      snw_pc_v05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 44.9216
+        quartis: [6, 49, 98]
+      snw_pc_v06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 8.3058
+        quartis: [1, 3, 14]
+      snw_pc_v07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -3.9026
+        quartis: [0, 1, 1]
+      snw_pc_v08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -2.9006
+        quartis: [0, 1, 3]
+      snw_pc_v09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 5.7785
+        quartis: [3, 9, 16]
+      snw_pc_v10:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 44.5641
+        quartis: [24, 50, 80]
+      snw_pc_v11:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 72.9273
+        quartis: [75, 99, 100]
+      snw_pc_v12:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 80.1619
+        quartis: [97, 100, 100]
+      glc_cl_vmj:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 24
+        min: '-9999'
+        max: '23'
+        media: 5.3783
+        quartis: [5, 13, 14]
+        top:
+        - ['14', 640561]
+        - ['4', 414820]
+        - ['9', 164735]
+        - ['16', 110343]
+        - ['12', 82002]
+        - ['20', 80886]
+        - ['6', 76237]
+        - ['11', 74291]
+        - ['13', 68295]
+        - ['15', 60309]
+      glc_pc_v01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -4.2321
+        quartis: [0, 0, 0]
+      glc_pc_v02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -3.2769
+        quartis: [0, 0, 0]
+      glc_pc_v03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -5.0841
+        quartis: [0, 0, 0]
+      glc_pc_v04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 13.9255
+        quartis: [0, 0, 24]
+      glc_pc_v05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -4.1036
+        quartis: [0, 0, 0]
+      glc_pc_v06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -1.5158
+        quartis: [0, 0, 0]
+      glc_pc_v07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -5.2604
+        quartis: [0, 0, 0]
+      glc_pc_v08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -5.4085
+        quartis: [0, 0, 0]
+      glc_pc_v09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 3.0547
+        quartis: [0, 0, 0]
+      glc_pc_v10:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -3.5303
+        quartis: [0, 0, 0]
+      glc_pc_v11:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -1.3959
+        quartis: [0, 0, 0]
+      glc_pc_v12:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -1.5318
+        quartis: [0, 0, 0]
+      glc_pc_v13:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -1.8801
+        quartis: [0, 0, 0]
+      glc_pc_v14:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 25.8012
+        quartis: [0, 0, 77]
+      glc_pc_v15:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -2.3674
+        quartis: [0, 0, 0]
+      glc_pc_v16:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -0.5934
+        quartis: [0, 0, 0]
+      glc_pc_v17:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -4.8495
+        quartis: [0, 0, 0]
+      glc_pc_v18:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -4.6266
+        quartis: [0, 0, 0]
+      glc_pc_v19:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -3.8787
+        quartis: [0, 0, 0]
+      glc_pc_v20:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 0.0486
+        quartis: [0, 0, 0]
+      glc_pc_v21:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -4.4718
+        quartis: [0, 0, 0]
+      glc_pc_v22:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -5.2837
+        quartis: [0, 0, 0]
+      glc_pc_u01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -4.158
+        quartis: [0, 0, 0]
+      glc_pc_u02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -3.1764
+        quartis: [0, 0, 0]
+      glc_pc_u03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -5.0712
+        quartis: [0, 0, 0]
+      glc_pc_u04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 14.0446
+        quartis: [0, 0, 22]
+      glc_pc_u05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -4.1415
+        quartis: [0, 0, 0]
+      glc_pc_u06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -1.4949
+        quartis: [0, 0, 0]
+      glc_pc_u07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -5.2636
+        quartis: [0, 0, 0]
+      glc_pc_u08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -5.4192
+        quartis: [0, 0, 0]
+      glc_pc_u09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 2.8997
+        quartis: [0, 0, 0]
+      glc_pc_u10:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -3.6183
+        quartis: [0, 0, 0]
+      glc_pc_u11:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -1.4301
+        quartis: [0, 0, 0]
+      glc_pc_u12:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -1.472
+        quartis: [0, 0, 0]
+      glc_pc_u13:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -1.9358
+        quartis: [0, 0, 0]
+      glc_pc_u14:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 26.2223
+        quartis: [0, 0, 82]
+      glc_pc_u15:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -2.5174
+        quartis: [0, 0, 0]
+      glc_pc_u16:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -0.6928
+        quartis: [0, 0, 0]
+      glc_pc_u17:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -4.85
+        quartis: [0, 0, 0]
+      glc_pc_u18:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -4.6449
+        quartis: [0, 0, 0]
+      glc_pc_u19:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -3.7978
+        quartis: [0, 0, 0]
+      glc_pc_u20:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -0.3021
+        quartis: [0, 0, 0]
+      glc_pc_u21:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -4.3283
+        quartis: [0, 0, 0]
+      glc_pc_u22:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -5.3239
+        quartis: [0, 0, 0]
+      pnv_cl_vmj:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 20
+        min: '-9999'
+        max: '99'
+        media: 3.6185
+        quartis: [6, 8, 13]
+        top:
+        - ['8', 603551]
+        - ['13', 567721]
+        - ['6', 403712]
+        - ['10', 99033]
+        - ['4', 66458]
+        - ['9', 59938]
+        - ['1', 46621]
+        - ['5', 39224]
+        - ['15', 28577]
+        - ['11', 19605]
+      pnv_pc_v01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -3.1485
+        quartis: [0, 0, 0]
+      pnv_pc_v02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -4.5727
+        quartis: [0, 0, 0]
+      pnv_pc_v03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -5.1773
+        quartis: [0, 0, 0]
+      pnv_pc_v04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -2.1541
+        quartis: [0, 0, 0]
+      pnv_pc_v05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -3.5124
+        quartis: [0, 0, 0]
+      pnv_pc_v06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 14.6607
+        quartis: [0, 0, 0]
+      pnv_pc_v07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -4.7465
+        quartis: [0, 0, 0]
+      pnv_pc_v08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 24.6747
+        quartis: [0, 0, 100]
+      pnv_pc_v09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -2.479
+        quartis: [0, 0, 0]
+      pnv_pc_v10:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -0.5227
+        quartis: [0, 0, 0]
+      pnv_pc_v11:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -4.4947
+        quartis: [0, 0, 0]
+      pnv_pc_v12:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -4.5766
+        quartis: [0, 0, 0]
+      pnv_pc_v13:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 22.8852
+        quartis: [0, 0, 100]
+      pnv_pc_v14:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -5.16
+        quartis: [0, 0, 0]
+      pnv_pc_v15:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -4.0391
+        quartis: [0, 0, 0]
+      pnv_pc_u01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -3.1437
+        quartis: [0, 0, 0]
+      pnv_pc_u02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -4.5883
+        quartis: [0, 0, 0]
+      pnv_pc_u03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -5.1875
+        quartis: [0, 0, 0]
+      pnv_pc_u04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -2.1629
+        quartis: [0, 0, 0]
+      pnv_pc_u05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -3.5112
+        quartis: [0, 0, 0]
+      pnv_pc_u06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 14.545
+        quartis: [0, 0, 0]
+      pnv_pc_u07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -4.7532
+        quartis: [0, 0, 0]
+      pnv_pc_u08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 24.7502
+        quartis: [0, 0, 100]
+      pnv_pc_u09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -2.4497
+        quartis: [0, 0, 0]
+      pnv_pc_u10:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -0.5399
+        quartis: [0, 0, 0]
+      pnv_pc_u11:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -4.5056
+        quartis: [0, 0, 0]
+      pnv_pc_u12:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -4.6172
+        quartis: [0, 0, 0]
+      pnv_pc_u13:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 22.9339
+        quartis: [0, 0, 100]
+      pnv_pc_u14:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -5.1913
+        quartis: [0, 0, 0]
+      pnv_pc_u15:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -3.9423
+        quartis: [0, 0, 0]
+      wet_cl_vmj:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 14
+        min: '-9999'
+        max: '12'
+        media: -5373.1912
+        quartis: [-9999, -9999, 7]
+        top:
+        - ['-9999', 1076665]
+        - ['1', 303700]
+        - ['11', 197316]
+        - ['10', 164012]
+        - ['8', 119712]
+        - ['4', 63824]
+        - ['3', 20598]
+        - ['6', 15643]
+        - ['9', 14906]
+        - ['5', 14320]
+      wet_pc_vg1:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 15.5055
+        quartis: [0, 0, 38]
+      wet_pc_ug1:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 14.7419
+        quartis: [0, 0, 38]
+      wet_pc_vg2:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 11.6764
+        quartis: [0, 0, 34]
+      wet_pc_ug2:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 11.3374
+        quartis: [0, 0, 31]
+      wet_pc_v01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -2.0962
+        quartis: [0, 0, 0]
+      wet_pc_v02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -5.415
+        quartis: [0, 0, 0]
+      wet_pc_v03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -5.0779
+        quartis: [0, 0, 0]
+      wet_pc_v04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -2.9004
+        quartis: [0, 0, 0]
+      wet_pc_v05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -4.8831
+        quartis: [0, 0, 0]
+      wet_pc_v06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -4.8795
+        quartis: [0, 0, 0]
+      wet_pc_v07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -5.3665
+        quartis: [0, 0, 0]
+      wet_pc_v08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -1.6654
+        quartis: [0, 0, 0]
+      wet_pc_v09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -5.282
+        quartis: [0, 0, 0]
+      wet_pc_u01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -2.1916
+        quartis: [0, 0, 1]
+      wet_pc_u02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 90
+        min: '-9999'
+        max: '100'
+        media: -5.4392
+        quartis: [0, 0, 0]
+      wet_pc_u03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 100
+        min: '-9999'
+        max: '100'
+        media: -5.3842
+        quartis: [0, 0, 0]
+      wet_pc_u04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -3.0275
+        quartis: [0, 0, 0]
+      wet_pc_u05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -4.9029
+        quartis: [0, 0, 0]
+      wet_pc_u06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -4.939
+        quartis: [0, 0, 0]
+      wet_pc_u07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -5.4035
+        quartis: [0, 0, 0]
+      wet_pc_u08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -1.6089
+        quartis: [0, 0, 0]
+      wet_pc_u09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -5.341
+        quartis: [0, 0, 0]
+      for_pc_vse:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 23.3525
+        quartis: [0, 0, 64]
+      for_pc_use:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 23.3673
+        quartis: [0, 0, 66]
+      crp_pc_vse:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -1.0323
+        quartis: [0, 0, 0]
+      crp_pc_use:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -1.0687
+        quartis: [0, 0, 0]
+      pst_pc_vse:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -1.1155
+        quartis: [0, 0, 0]
+      pst_pc_use:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -1.12
+        quartis: [0, 0, 0]
+      ire_pc_vse:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -4.6462
+        quartis: [0, 0, 0]
+      ire_pc_use:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -4.7038
+        quartis: [0, 0, 0]
+      gla_pc_vse:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -5.337
+        quartis: [0, 0, 0]
+      gla_pc_use:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -5.2885
+        quartis: [0, 0, 0]
+      prm_pc_vse:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 45.5218
+        quartis: [0, 57, 98]
+      prm_pc_use:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 46.0243
+        quartis: [0, 58, 99]
+      pac_pc_lse:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 7.2135
+        quartis: [0, 0, 0]
+      pac_pc_use:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 6.9668
+        quartis: [0, 0, 0]
+      tbi_cl_lmj:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 18
+        min: '-9999'
+        max: '99'
+        media: 2.2172
+        quartis: [6, 6, 11]
+        top:
+        - ['6', 872628]
+        - ['11', 680242]
+        - ['4', 173733]
+        - ['8', 76564]
+        - ['1', 49209]
+        - ['5', 31075]
+        - ['7', 29893]
+        - ['13', 28584]
+        - ['2', 16652]
+        - ['9', 13348]
+      tec_cl_lmj:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 991
+        min: '-9999'
+        max: '845'
+        media: 454.3213
+        quartis: [376, 410, 460]
+      fmh_cl_lmj:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 17
+        min: '-9999'
+        max: '99'
+        media: 3.1276
+        quartis: [5, 11, 11]
+        top:
+        - ['11', 1077714]
+        - ['5', 534396]
+        - ['7', 121272]
+        - ['1', 78482]
+        - ['6', 45891]
+        - ['10', 44192]
+        - ['8', 33061]
+        - ['4', 31245]
+        - ['9', 23129]
+        - ['3', 4464]
+      fec_cl_lmj:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 494
+        min: '-9999'
+        max: '999'
+        media: 226.2416
+        quartis: [110, 113, 361]
+      cly_pc_vav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 47
+        min: '-9999'
+        max: '45'
+        media: -36.039
+        quartis: [9, 12, 14]
+        top:
+        - ['13', 272267]
+        - ['12', 253932]
+        - ['14', 178146]
+        - ['11', 142654]
+        - ['10', 118707]
+        - ['7', 102316]
+        - ['6', 98437]
+        - ['9', 95181]
+        - ['8', 89284]
+        - ['15', 81322]
+      cly_pc_uav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 47
+        min: '-9999'
+        max: '46'
+        media: -76.1205
+        quartis: [8, 12, 14]
+        top:
+        - ['12', 256592]
+        - ['13', 254788]
+        - ['11', 158870]
+        - ['14', 156121]
+        - ['10', 121103]
+        - ['7', 104229]
+        - ['9', 101879]
+        - ['6', 99214]
+        - ['8', 88683]
+        - ['5', 84154]
+      slt_pc_vav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 65
+        min: '-9999'
+        max: '65'
+        media: -12.1878
+        quartis: [33, 37, 41]
+      slt_pc_uav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 66
+        min: '-9999'
+        max: '66'
+        media: -52.4041
+        quartis: [32, 37, 41]
+      snd_pc_vav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 81
+        min: '-9999'
+        max: '90'
+        media: 2.2522
+        quartis: [45, 50, 56]
+      snd_pc_uav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 82
+        min: '-9999'
+        max: '90'
+        media: -37.9206
+        quartis: [45, 50, 56]
+      soc_th_vav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1025
+        min: '-9999'
+        max: '967'
+        media: 63.4452
+        quartis: [78, 109, 137]
+      soc_th_uav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1108
+        min: '-9999'
+        max: '1226'
+        media: 22.7621
+        quartis: [78, 108, 136]
+      swc_pc_vyr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 72.994
+        quartis: [69, 83, 92]
+      swc_pc_uyr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 73.2887
+        quartis: [70, 83, 92]
+      swc_pc_v01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 79.7632
+        quartis: [77, 90, 100]
+      swc_pc_v02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 81.2025
+        quartis: [79, 93, 100]
+      swc_pc_v03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 82.1635
+        quartis: [81, 96, 100]
+      swc_pc_v04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 81.8638
+        quartis: [81, 96, 99]
+      swc_pc_v05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 77.9857
+        quartis: [78, 89, 96]
+      swc_pc_v06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 70.6879
+        quartis: [69, 79, 89]
+      swc_pc_v07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 63.6413
+        quartis: [61, 71, 81]
+      swc_pc_v08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 60.6308
+        quartis: [57, 67, 78]
+      swc_pc_v09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 62.7756
+        quartis: [57, 69, 82]
+      swc_pc_v10:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 67.4509
+        quartis: [61, 75, 89]
+      swc_pc_v11:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 71.9796
+        quartis: [65, 81, 96]
+      swc_pc_v12:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 75.2823
+        quartis: [68, 85, 100]
+      lit_cl_vmj:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 20
+        min: '-9999'
+        max: '16'
+        media: 0.5035
+        quartis: [3, 6, 8]
+        top:
+        - ['8', 571042]
+        - ['5', 405213]
+        - ['9', 305753]
+        - ['3', 268785]
+        - ['1', 218081]
+        - ['6', 65227]
+        - ['2', 55748]
+        - ['13', 33343]
+        - ['10', 27949]
+        - ['4', 19642]
+      kar_pc_vse:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 5.6007
+        quartis: [0, 0, 0]
+      kar_pc_use:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: 5.712
+        quartis: [0, 0, 0]
+      ero_kh_vav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 23941
+        min: '-9999'
+        max: '146006'
+        media: 815.4377
+        quartis: [40, 103, 377]
+      ero_kh_uav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 23195
+        min: '-9999'
+        max: '172405'
+        media: 881.6287
+        quartis: [39, 100, 371]
+      pop_ct_vsu:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 24799
+        min: '-9999.0'
+        max: '3946.9'
+        media: -4.8461
+        quartis: [0, 0, 0.0024]
+      pop_ct_usu:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 37716
+        min: '-9999.0'
+        max: '183665.0'
+        media: 17.8572
+        quartis: [0, 0, 0.001]
+      ppd_pk_vav:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 111541
+        min: '-9999.0'
+        max: '61543.699'
+        media: 19.0832
+        quartis: [0, 0, 0.2402]
+      ppd_pk_uav:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 92383
+        min: '-9999.0'
+        max: '61543.699'
+        media: 16.7461
+        quartis: [0, 0, 0.2265]
+      urb_pc_vse:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -4.5406
+        quartis: [0, 0, 0]
+      urb_pc_use:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 103
+        min: '-9999'
+        max: '100'
+        media: -4.7026
+        quartis: [0, 0, 0]
+      nli_ix_vav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5968
+        min: '-9999'
+        max: '6300'
+        media: 195.3841
+        quartis: [0, 0, 0]
+      nli_ix_uav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 71
+        min: '-9999'
+        max: '6300'
+        media: 177.1648
+        quartis: [0, 0, 0]
+      rdd_mk_vav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 6434
+        min: '-9999'
+        max: '330306'
+        media: 85.4571
+        quartis: [0, 0, 0]
+      rdd_mk_uav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5289
+        min: '-9999'
+        max: '330306'
+        media: 78.1886
+        quartis: [0, 0, 0]
+      hft_ix_v93:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 519
+        min: '-9999'
+        max: '479'
+        media: 17.3157
+        quartis: [0, 0, 12]
+      hft_ix_u93:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 519
+        min: '-9999'
+        max: '480'
+        media: 15.8314
+        quartis: [0, 0, 10]
+      hft_ix_v09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 519
+        min: '-9999'
+        max: '479'
+        media: 17.7602
+        quartis: [0, 0, 12]
+      hft_ix_u09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 519
+        min: '-9999'
+        max: '490'
+        media: 16.1987
+        quartis: [0, 0, 11]
+      gad_id_lmj:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 227
+        min: '-9999'
+        max: '253'
+        media: 80.0378
+        quartis: [41, 41, 167]
+      gdp_ud_vav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 14204
+        min: '-9999'
+        max: '189535'
+        media: 52996.0637
+        quartis: [37544, 44783, 64789]
+      gdp_ud_vsu:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 198702
+        min: '-9999'
+        max: '96239198208'
+        media: 13036007.6096
+        quartis: [0, 0, 0]
+      gdp_ud_usu:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 175310
+        min: '-9999'
+        max: '2297270108160'
+        media: 312907908.3565
+        quartis: [0, 0, 0]
+      hdi_ix_vav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 618
+        min: '-9999'
+        max: '1000'
+        media: 862.0976
+        quartis: [832, 903, 924]
+      geometry:
+        tipo: GEOMETRY
+        nulos_pct: 0
+        distintos_aprox: 2246674
+        geometrias: [POINT, POLYGON]
+        caixa_xmin_ymin_xmax_ymax: [-179.9959, -55.8609, 180.0, 83.576]
+        pontos_media: 23.3663
+  rivers_atlas:
+    linhas: 8477883
+    fonte_do_perfil: amostra de 23.591%. ~2.000.000 linhas
+    colunas:
+      region:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: af
+        max: si
+        top:
+        - [af, 362810]
+        - [as, 352550]
+        - [sa_north, 282180]
+        - [au, 215146]
+        - [na, 213344]
+        - [eu, 204907]
+        - [si, 167576]
+        - [sa_south, 110420]
+        - [ar, 65536]
+        - [gr, 31552]
+      hyriv_id:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2039587
+        min: '10000046'
+        max: '90137086'
+        media: 42573888.8785
+        quartis: [20646786, 41082810, 60835704]
+      next_down:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1459548
+        min: '0'
+        max: '90137082'
+        media: 41709358.9505
+        quartis: [20519441, 40994653, 60769665]
+      main_riv:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 83716
+        min: '10000030'
+        max: '90137086'
+        media: 42539587.0057
+        quartis: [20647163, 41199453, 60443230]
+      length_km:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5224
+        min: '0.06'
+        max: '340.08'
+        media: 4.1785
+        quartis: [1.55, 2.9452, 5.3328]
+      dist_dn_km:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 66121
+        min: '0.0'
+        max: '6836.7'
+        media: 1148.7202
+        quartis: [122.8417, 587.1437, 1867.172]
+      dist_up_km:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 15826
+        min: '0.7'
+        max: '6846.5'
+        media: 50.5832
+        quartis: [6.914, 11.9506, 28.1662]
+      catch_skm:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 10627
+        min: '0.03'
+        max: '894.69'
+        media: 15.5835
+        quartis: [4.8621, 11.5844, 20.7463]
+      upland_skm:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 148972
+        min: '0.6'
+        max: '5912750.0'
+        media: 4906.4476
+        quartis: [13.583, 33.4236, 157.4659]
+      endorheic:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.1562
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 1692776]
+        - ['1', 313245]
+      dis_av_cms:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 157299
+        min: '0.0'
+        max: '205591.328'
+        media: 59.9259
+        quartis: [0.0877, 0.2693, 1.35]
+      ord_stra:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: '1'
+        max: '10'
+        media: 1.9611
+        quartis: [1, 1, 2]
+        top:
+        - ['1', 1032269]
+        - ['2', 474008]
+        - ['3', 247357]
+        - ['4', 132006]
+        - ['5', 67881]
+        - ['6', 32506]
+        - ['7', 12813]
+        - ['8', 5296]
+        - ['9', 1785]
+        - ['10', 100]
+      ord_clas:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '1'
+        max: '14'
+        media: 3.5306
+        quartis: [2, 3, 5]
+        top:
+        - ['3', 504536]
+        - ['4', 461408]
+        - ['2', 372312]
+        - ['5', 299977]
+        - ['1', 162120]
+        - ['6', 141414]
+        - ['7', 49100]
+        - ['8', 12454]
+        - ['9', 2300]
+        - ['10', 354]
+      ord_flow:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: '1'
+        max: '10'
+        media: 6.993
+        quartis: [6, 7, 8]
+        top:
+        - ['7', 914709]
+        - ['6', 360904]
+        - ['8', 305796]
+        - ['5', 138784]
+        - ['9', 135686]
+        - ['10', 85755]
+        - ['4', 49638]
+        - ['3', 12730]
+        - ['2', 1919]
+        - ['1', 100]
+      hybas_l12:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 746546
+        min: '1120000020'
+        max: '9120169950'
+        media: 4317388246.567
+        quartis: [2120985358, 4121324281, 6120681750]
+      dis_m3_pyr:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 157299
+        min: '0.0'
+        max: '205591.328'
+        media: 59.9259
+        quartis: [0.0877, 0.2693, 1.35]
+      dis_m3_pmn:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 86686
+        min: '0.0'
+        max: '125943.219'
+        media: 28.2326
+        quartis: [0.0103, 0.0729, 0.3642]
+      dis_m3_pmx:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 173664
+        min: '0.0'
+        max: '290276.313'
+        media: 113.8613
+        quartis: [0.2315, 0.6846, 3.3138]
+      run_mm_cyr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5968
+        min: '0'
+        max: '6721'
+        media: 630.463
+        quartis: [55, 324, 929]
+      inu_pc_cmn:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 5.7188
+        quartis: [0, 0, 0]
+      inu_pc_umn:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 2.781
+        quartis: [0, 0, 0]
+      inu_pc_cmx:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 11.2881
+        quartis: [0, 0, 2]
+      inu_pc_umx:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 6.9551
+        quartis: [0, 0, 1]
+      inu_pc_clt:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 15.7512
+        quartis: [0, 0, 12]
+      inu_pc_ult:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 9.9769
+        quartis: [0, 0, 5]
+      lka_pc_cse:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1249
+        min: '0'
+        max: '1000'
+        media: 20.1668
+        quartis: [0, 0, 0]
+      lka_pc_use:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1249
+        min: '0'
+        max: '1000'
+        media: 12.5262
+        quartis: [0, 0, 0]
+      lkv_mc_usu:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 12493
+        min: '0'
+        max: '24493033'
+        media: 8211.1947
+        quartis: [0, 0, 0]
+      rev_mc_usu:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3090
+        min: '0'
+        max: '412300'
+        media: 230.7528
+        quartis: [0, 0, 0]
+      dor_pc_pva:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3904
+        min: '0'
+        max: '9963'
+        media: 13.4896
+        quartis: [0, 0, 0]
+      ria_ha_csu:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 62645
+        min: '0.0'
+        max: '6489.235'
+        media: 4.2767
+        quartis: [0.5934, 1.3205, 3.0599]
+      ria_ha_usu:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 381547
+        min: '0.0'
+        max: '4269743.5'
+        media: 1617.1617
+        quartis: [0.8762, 2.6463, 15.8787]
+      riv_tc_csu:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 203813
+        min: '0.0'
+        max: '1602609.5'
+        media: 137.997
+        quartis: [0.9043, 2.6781, 10.4107]
+      riv_tc_usu:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 387065
+        min: '0.0'
+        max: '289584416.0'
+        media: 54531.4742
+        quartis: [1.1327, 4.3356, 39.0472]
+      gwt_cm_cav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2743
+        min: '0'
+        max: '6041'
+        media: 228.8058
+        quartis: [32, 121, 338]
+      ele_mt_cav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5968
+        min: '-415'
+        max: '6775'
+        media: 629.5249
+        quartis: [142, 352, 789]
+      ele_mt_uav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5968
+        min: '-396'
+        max: '6775'
+        media: 717.4537
+        quartis: [176, 417, 926]
+      ele_mt_cmn:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5881
+        min: '-597'
+        max: '6022'
+        media: 530.2658
+        quartis: [105, 285, 647]
+      ele_mt_cmx:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 6735
+        min: '-415'
+        max: '8243'
+        media: 765.3677
+        quartis: [182, 436, 987]
+      slp_dg_cav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 539
+        min: '-999'
+        max: '680'
+        media: 33.7623
+        quartis: [6, 20, 66]
+      slp_dg_uav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 513
+        min: '-999'
+        max: '542'
+        media: 39.7529
+        quartis: [8, 26, 81]
+      sgr_dk_rav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 4083
+        min: '-999'
+        max: '9175'
+        media: 87.2724
+        quartis: [7, 26, 80]
+      clz_cl_cmj:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 20
+        min: '1'
+        max: '18'
+        media: 12.3877
+        quartis: [8, 13, 17]
+        top:
+        - ['18', 479861]
+        - ['7', 218146]
+        - ['6', 196552]
+        - ['13', 189005]
+        - ['14', 152411]
+        - ['17', 152102]
+        - ['11', 133484]
+        - ['8', 125188]
+        - ['9', 73537]
+        - ['12', 64594]
+      cls_cl_cmj:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 126
+        min: '1'
+        max: '125'
+        media: 80.1977
+        quartis: [46, 93, 113]
+      tmp_dc_cyr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 546
+        min: '-264'
+        max: '320'
+        media: 145.5502
+        quartis: [50, 196, 254]
+      tmp_dc_uyr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 546
+        min: '-264'
+        max: '314'
+        media: 141.0217
+        quartis: [44, 190, 251]
+      tmp_dc_cmn:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 720
+        min: '-518'
+        max: '286'
+        media: 58.9785
+        quartis: [-84, 121, 225]
+      tmp_dc_cmx:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 448
+        min: '-103'
+        max: '393'
+        media: 226.8085
+        quartis: [179, 249, 275]
+      tmp_dc_c01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 745
+        min: '-518'
+        max: '339'
+        media: 77.4525
+        quartis: [-84, 159, 249]
+      tmp_dc_c02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 683
+        min: '-480'
+        max: '335'
+        media: 88.6026
+        quartis: [-67, 173, 253]
+      tmp_dc_c03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 668
+        min: '-437'
+        max: '336'
+        media: 115.4719
+        quartis: [-17, 192, 256]
+      tmp_dc_c04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 596
+        min: '-344'
+        max: '345'
+        media: 148.2591
+        quartis: [54, 198, 259]
+      tmp_dc_c05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 559
+        min: '-188'
+        max: '362'
+        media: 175.3217
+        quartis: [104, 200, 260]
+      tmp_dc_c06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 501
+        min: '-129'
+        max: '385'
+        media: 194.1621
+        quartis: [135, 211, 258]
+      tmp_dc_c07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 485
+        min: '-119'
+        max: '393'
+        media: 203.6707
+        quartis: [154, 220, 259]
+      tmp_dc_c08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 464
+        min: '-115'
+        max: '384'
+        media: 200.6612
+        quartis: [146, 221, 260]
+      tmp_dc_c09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 514
+        min: '-164'
+        max: '359'
+        media: 183.7127
+        quartis: [113, 214, 260]
+      tmp_dc_c10:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 550
+        min: '-278'
+        max: '329'
+        media: 154.6344
+        quartis: [61, 205, 259]
+      tmp_dc_c11:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 659
+        min: '-415'
+        max: '330'
+        media: 116.2927
+        quartis: [-5, 189, 253]
+      tmp_dc_c12:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 725
+        min: '-492'
+        max: '332'
+        media: 87.8364
+        quartis: [-61, 164, 249]
+      pre_mm_cyr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 7335
+        min: '0'
+        max: '9925'
+        media: 1165.5458
+        quartis: [361, 815, 1750]
+      pre_mm_uyr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 6904
+        min: '0'
+        max: '9925'
+        media: 1169.2769
+        quartis: [372, 826, 1754]
+      pre_mm_c01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1093
+        min: '0'
+        max: '936'
+        media: 89.8346
+        quartis: [12, 35, 138]
+      pre_mm_c02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 969
+        min: '0'
+        max: '831'
+        media: 84.2639
+        quartis: [12, 34, 127]
+      pre_mm_c03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 814
+        min: '0'
+        max: '734'
+        media: 94.2948
+        quartis: [15, 45, 143]
+      pre_mm_c04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1017
+        min: '0'
+        max: '903'
+        media: 93.9525
+        quartis: [19, 49, 140]
+      pre_mm_c05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1116
+        min: '0'
+        max: '1186'
+        media: 101.1624
+        quartis: [20, 54, 156]
+      pre_mm_c06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1504
+        min: '0'
+        max: '2569'
+        media: 107.1137
+        quartis: [19, 63, 146]
+      pre_mm_c07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2294
+        min: '0'
+        max: '2649'
+        media: 115.3708
+        quartis: [21, 71, 156]
+      pre_mm_c08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1669
+        min: '0'
+        max: '1903'
+        media: 110.9872
+        quartis: [23, 71, 150]
+      pre_mm_c09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1103
+        min: '0'
+        max: '1164'
+        media: 100.7056
+        quartis: [24, 63, 144]
+      pre_mm_c10:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1217
+        min: '0'
+        max: '1188'
+        media: 93.2673
+        quartis: [22, 57, 144]
+      pre_mm_c11:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1075
+        min: '0'
+        max: '1066'
+        media: 85.9115
+        quartis: [17, 48, 128]
+      pre_mm_c12:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1009
+        min: '0'
+        max: '1013'
+        media: 88.6901
+        quartis: [13, 39, 141]
+      pet_mm_cyr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2403
+        min: '47'
+        max: '2379'
+        media: 1279.2393
+        quartis: [790, 1449, 1701]
+      pet_mm_uyr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2403
+        min: '47'
+        max: '2379'
+        media: 1263.7199
+        quartis: [771, 1429, 1693]
+      pet_mm_c01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 290
+        min: '0'
+        max: '261'
+        media: 87.0235
+        quartis: [8, 97, 147]
+      pet_mm_c02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 234
+        min: '0'
+        max: '214'
+        media: 83.6162
+        quartis: [14, 104, 137]
+      pet_mm_c03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 261
+        min: '0'
+        max: '238'
+        media: 101.1466
+        quartis: [35, 127, 151]
+      pet_mm_c04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 266
+        min: '0'
+        max: '252'
+        media: 108.6129
+        quartis: [67, 121, 143]
+      pet_mm_c05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 299
+        min: '0'
+        max: '266'
+        media: 123.1462
+        quartis: [95, 126, 147]
+      pet_mm_c06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 298
+        min: '3'
+        max: '272'
+        media: 127.0254
+        quartis: [104, 125, 148]
+      pet_mm_c07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 339
+        min: '4'
+        max: '296'
+        media: 132.3461
+        quartis: [110, 131, 152]
+      pet_mm_c08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 292
+        min: '9'
+        max: '269'
+        media: 126.5629
+        quartis: [101, 130, 149]
+      pet_mm_c09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 239
+        min: '0'
+        max: '218'
+        media: 111.6085
+        quartis: [76, 122, 148]
+      pet_mm_c10:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 250
+        min: '0'
+        max: '230'
+        media: 102.7613
+        quartis: [44, 120, 152]
+      pet_mm_c11:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 261
+        min: '0'
+        max: '241'
+        media: 88.9281
+        quartis: [17, 102, 144]
+      pet_mm_c12:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 290
+        min: '0'
+        max: '259'
+        media: 86.5082
+        quartis: [9, 93, 145]
+      aet_mm_cyr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2322
+        min: '0'
+        max: '1986'
+        media: 712.0135
+        quartis: [289, 570, 1129]
+      aet_mm_uyr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2239
+        min: '0'
+        max: '1986'
+        media: 710.6242
+        quartis: [293, 571, 1122]
+      aet_mm_c01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 192
+        min: '0'
+        max: '178'
+        media: 50.8429
+        quartis: [1, 27, 100]
+      aet_mm_c02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 171
+        min: '0'
+        max: '165'
+        media: 47.7246
+        quartis: [3, 27, 93]
+      aet_mm_c03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 218
+        min: '0'
+        max: '190'
+        media: 56.3872
+        quartis: [12, 38, 101]
+      aet_mm_c04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 174
+        min: '0'
+        max: '170'
+        media: 60.5541
+        quartis: [23, 48, 101]
+      aet_mm_c05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 175
+        min: '0'
+        max: '173'
+        media: 69.4725
+        quartis: [32, 69, 108]
+      aet_mm_c06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 185
+        min: '0'
+        max: '175'
+        media: 70.9191
+        quartis: [35, 76, 106]
+      aet_mm_c07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 215
+        min: '0'
+        max: '185'
+        media: 72.5392
+        quartis: [37, 75, 108]
+      aet_mm_c08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 214
+        min: '0'
+        max: '192'
+        media: 68.2933
+        quartis: [33, 60, 110]
+      aet_mm_c09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 192
+        min: '0'
+        max: '176'
+        media: 59.9207
+        quartis: [20, 44, 106]
+      aet_mm_c10:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 203
+        min: '0'
+        max: '180'
+        media: 55.7916
+        quartis: [11, 34, 105]
+      aet_mm_c11:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 192
+        min: '0'
+        max: '178'
+        media: 49.6924
+        quartis: [3, 28, 96]
+      aet_mm_c12:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 215
+        min: '0'
+        max: '183'
+        media: 49.8558
+        quartis: [1, 27, 96]
+      ari_ix_cav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2411
+        min: '0'
+        max: '4298'
+        media: 106.1223
+        quartis: [40, 86, 137]
+      ari_ix_uav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2411
+        min: '0'
+        max: '4297'
+        media: 109.2788
+        quartis: [42, 88, 140]
+      cmi_ix_cyr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 197
+        min: '-999'
+        max: '97'
+        media: -15.9989
+        quartis: [-60, -14, 27]
+      cmi_ix_uyr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 197
+        min: '-999'
+        max: '97'
+        media: -14.7765
+        quartis: [-58, -12, 28]
+      cmi_ix_c01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 197
+        min: '-999'
+        max: '100'
+        media: 7.6115
+        quartis: [-76, 27, 81]
+      cmi_ix_c02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 197
+        min: '-999'
+        max: '100'
+        media: 4.3991
+        quartis: [-73, 21, 68]
+      cmi_ix_c03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 197
+        min: '-999'
+        max: '100'
+        media: -6.6903
+        quartis: [-74, -2, 50]
+      cmi_ix_c04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 197
+        min: '-100'
+        max: '100'
+        media: -19.8017
+        quartis: [-74, -27, 35]
+      cmi_ix_c05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 197
+        min: '-100'
+        max: '100'
+        media: -28.9334
+        quartis: [-78, -44, 24]
+      cmi_ix_c06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 197
+        min: '-999'
+        max: '98'
+        media: -29.9063
+        quartis: [-82, -47, 26]
+      cmi_ix_c07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 197
+        min: '-999'
+        max: '98'
+        media: -28.7396
+        quartis: [-82, -42, 23]
+      cmi_ix_c08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 197
+        min: '-999'
+        max: '96'
+        media: -25.7941
+        quartis: [-81, -32, 23]
+      cmi_ix_c09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 197
+        min: '-999'
+        max: '100'
+        media: -17.619
+        quartis: [-76, -17, 36]
+      cmi_ix_c10:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 197
+        min: '-999'
+        max: '100'
+        media: -7.8894
+        quartis: [-72, -5, 47]
+      cmi_ix_c11:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 197
+        min: '-999'
+        max: '100'
+        media: 0.5955
+        quartis: [-70, 10, 65]
+      cmi_ix_c12:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 197
+        min: '-999'
+        max: '100'
+        media: 6.4007
+        quartis: [-76, 23, 80]
+      snw_pc_cyr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '-999'
+        max: '100'
+        media: 14.4301
+        quartis: [0, 0, 22]
+      snw_pc_uyr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 15.0518
+        quartis: [0, 0, 24]
+      snw_pc_cmx:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '-999'
+        max: '100'
+        media: 29.013
+        quartis: [0, 0, 74]
+      snw_pc_c01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '-999'
+        max: '100'
+        media: 27.0313
+        quartis: [0, 0, 65]
+      snw_pc_c02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '-999'
+        max: '100'
+        media: 26.346
+        quartis: [0, 0, 60]
+      snw_pc_c03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '-999'
+        max: '100'
+        media: 22.9387
+        quartis: [0, 0, 28]
+      snw_pc_c04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '-999'
+        max: '100'
+        media: 17.1977
+        quartis: [0, 0, 5]
+      snw_pc_c05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '-999'
+        max: '100'
+        media: 9.9813
+        quartis: [0, 0, 1]
+      snw_pc_c06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '-999'
+        max: '100'
+        media: 4.0166
+        quartis: [0, 0, 0]
+      snw_pc_c07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '-999'
+        max: '100'
+        media: 2.693
+        quartis: [0, 0, 0]
+      snw_pc_c08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '-999'
+        max: '100'
+        media: 2.8371
+        quartis: [0, 0, 0]
+      snw_pc_c09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '-999'
+        max: '100'
+        media: 4.612
+        quartis: [0, 0, 1]
+      snw_pc_c10:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '-999'
+        max: '100'
+        media: 11.4993
+        quartis: [0, 0, 3]
+      snw_pc_c11:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '-999'
+        max: '100'
+        media: 19.1007
+        quartis: [0, 0, 16]
+      snw_pc_c12:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '-999'
+        max: '100'
+        media: 24.9383
+        quartis: [0, 0, 48]
+      glc_cl_cmj:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 23
+        min: '1'
+        max: '23'
+        media: 10.4783
+        quartis: [3, 13, 16]
+        top:
+        - ['1', 363046]
+        - ['16', 260500]
+        - ['19', 203609]
+        - ['13', 178504]
+        - ['14', 159656]
+        - ['12', 142098]
+        - ['4', 140392]
+        - ['2', 92188]
+        - ['17', 80285]
+        - ['5', 58755]
+      glc_pc_c01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 17.5428
+        quartis: [0, 0, 0]
+      glc_pc_c02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 4.5678
+        quartis: [0, 0, 0]
+      glc_pc_c03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 2.4683
+        quartis: [0, 0, 0]
+      glc_pc_c04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 6.6229
+        quartis: [0, 0, 0]
+      glc_pc_c05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 2.4823
+        quartis: [0, 0, 0]
+      glc_pc_c06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 2.3824
+        quartis: [0, 0, 0]
+      glc_pc_c07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.909
+        quartis: [0, 0, 0]
+      glc_pc_c08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.1506
+        quartis: [0, 0, 0]
+      glc_pc_c09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 1.9242
+        quartis: [0, 0, 0]
+      glc_pc_c10:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.1907
+        quartis: [0, 0, 0]
+      glc_pc_c11:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 2.0602
+        quartis: [0, 0, 0]
+      glc_pc_c12:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 7.2558
+        quartis: [0, 0, 0]
+      glc_pc_c13:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 8.9839
+        quartis: [0, 0, 0]
+      glc_pc_c14:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 8.0274
+        quartis: [0, 0, 0]
+      glc_pc_c15:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 1.1752
+        quartis: [0, 0, 0]
+      glc_pc_c16:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 12.3746
+        quartis: [0, 0, 0]
+      glc_pc_c17:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 4.3169
+        quartis: [0, 0, 0]
+      glc_pc_c18:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 2.0036
+        quartis: [0, 0, 0]
+      glc_pc_c19:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 10.0972
+        quartis: [0, 0, 0]
+      glc_pc_c20:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 2.2285
+        quartis: [0, 0, 0]
+      glc_pc_c21:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 2.0168
+        quartis: [0, 0, 0]
+      glc_pc_c22:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.2056
+        quartis: [0, 0, 0]
+      glc_pc_u01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 18.2378
+        quartis: [0, 0, 8]
+      glc_pc_u02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 4.8799
+        quartis: [0, 0, 0]
+      glc_pc_u03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 2.539
+        quartis: [0, 0, 0]
+      glc_pc_u04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 6.8571
+        quartis: [0, 0, 0]
+      glc_pc_u05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 2.3779
+        quartis: [0, 0, 0]
+      glc_pc_u06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 2.4383
+        quartis: [0, 0, 0]
+      glc_pc_u07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.7829
+        quartis: [0, 0, 0]
+      glc_pc_u08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.1145
+        quartis: [0, 0, 0]
+      glc_pc_u09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 1.9118
+        quartis: [0, 0, 0]
+      glc_pc_u10:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.1897
+        quartis: [0, 0, 0]
+      glc_pc_u11:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 2.0886
+        quartis: [0, 0, 0]
+      glc_pc_u12:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 7.3156
+        quartis: [0, 0, 1]
+      glc_pc_u13:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 9.1754
+        quartis: [0, 0, 3]
+      glc_pc_u14:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 8.2404
+        quartis: [0, 0, 0]
+      glc_pc_u15:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.9891
+        quartis: [0, 0, 0]
+      glc_pc_u16:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 10.5758
+        quartis: [0, 0, 2]
+      glc_pc_u17:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 3.228
+        quartis: [0, 0, 0]
+      glc_pc_u18:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 1.9542
+        quartis: [0, 0, 0]
+      glc_pc_u19:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 10.1117
+        quartis: [0, 0, 0]
+      glc_pc_u20:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 1.3238
+        quartis: [0, 0, 0]
+      glc_pc_u21:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 2.2808
+        quartis: [0, 0, 0]
+      glc_pc_u22:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.1491
+        quartis: [0, 0, 0]
+      pnv_cl_cmj:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 18
+        min: '1'
+        max: '99'
+        media: 8.5353
+        quartis: [2, 8, 10]
+        top:
+        - ['1', 479210]
+        - ['9', 264976]
+        - ['8', 232935]
+        - ['10', 189596]
+        - ['14', 153867]
+        - ['12', 135730]
+        - ['2', 92381]
+        - ['13', 85445]
+        - ['6', 81473]
+        - ['5', 72068]
+      pnv_pc_c01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 23.8698
+        quartis: [0, 0, 12]
+      pnv_pc_c02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 4.6071
+        quartis: [0, 0, 0]
+      pnv_pc_c03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 1.2233
+        quartis: [0, 0, 0]
+      pnv_pc_c04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 2.5219
+        quartis: [0, 0, 0]
+      pnv_pc_c05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 3.5898
+        quartis: [0, 0, 0]
+      pnv_pc_c06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 4.0509
+        quartis: [0, 0, 0]
+      pnv_pc_c07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 1.3827
+        quartis: [0, 0, 0]
+      pnv_pc_c08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 11.6066
+        quartis: [0, 0, 0]
+      pnv_pc_c09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 13.2237
+        quartis: [0, 0, 0]
+      pnv_pc_c10:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 9.4504
+        quartis: [0, 0, 0]
+      pnv_pc_c11:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 3.5101
+        quartis: [0, 0, 0]
+      pnv_pc_c12:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 6.7648
+        quartis: [0, 0, 0]
+      pnv_pc_c13:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 4.2682
+        quartis: [0, 0, 0]
+      pnv_pc_c14:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 7.6723
+        quartis: [0, 0, 0]
+      pnv_pc_c15:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.6855
+        quartis: [0, 0, 0]
+      pnv_pc_u01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 23.762
+        quartis: [0, 0, 27]
+      pnv_pc_u02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 4.5822
+        quartis: [0, 0, 0]
+      pnv_pc_u03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 1.1781
+        quartis: [0, 0, 0]
+      pnv_pc_u04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 2.552
+        quartis: [0, 0, 0]
+      pnv_pc_u05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 3.565
+        quartis: [0, 0, 0]
+      pnv_pc_u06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 3.9986
+        quartis: [0, 0, 0]
+      pnv_pc_u07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 1.326
+        quartis: [0, 0, 0]
+      pnv_pc_u08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 11.6234
+        quartis: [0, 0, 0]
+      pnv_pc_u09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 13.1796
+        quartis: [0, 0, 0]
+      pnv_pc_u10:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 9.583
+        quartis: [0, 0, 0]
+      pnv_pc_u11:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 3.513
+        quartis: [0, 0, 0]
+      pnv_pc_u12:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 6.6672
+        quartis: [0, 0, 0]
+      pnv_pc_u13:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 4.6274
+        quartis: [0, 0, 0]
+      pnv_pc_u14:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 7.4305
+        quartis: [0, 0, 0]
+      pnv_pc_u15:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.8353
+        quartis: [0, 0, 0]
+      wet_cl_cmj:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 14
+        min: '-999'
+        max: '12'
+        media: -808.2477
+        quartis: [-999, -999, -999]
+        top:
+        - ['-999', 1625108]
+        - ['1', 85605]
+        - ['4', 60837]
+        - ['11', 45689]
+        - ['5', 35613]
+        - ['9', 35182]
+        - ['3', 28608]
+        - ['8', 24298]
+        - ['10', 22591]
+        - ['6', 11616]
+      wet_pc_cg1:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 9.2253
+        quartis: [0, 0, 0]
+      wet_pc_ug1:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 6.9644
+        quartis: [0, 0, 0]
+      wet_pc_cg2:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 6.8794
+        quartis: [0, 0, 0]
+      wet_pc_ug2:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 5.7677
+        quartis: [0, 0, 0]
+      wet_pc_c01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 1.6002
+        quartis: [0, 0, 0]
+      wet_pc_c02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.2454
+        quartis: [0, 0, 0]
+      wet_pc_c03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.5003
+        quartis: [0, 0, 0]
+      wet_pc_c04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 2.182
+        quartis: [0, 0, 0]
+      wet_pc_c05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 1.4387
+        quartis: [0, 0, 0]
+      wet_pc_c06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.431
+        quartis: [0, 0, 0]
+      wet_pc_c07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.297
+        quartis: [0, 0, 0]
+      wet_pc_c08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.4686
+        quartis: [0, 0, 0]
+      wet_pc_c09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.493
+        quartis: [0, 0, 0]
+      wet_pc_u01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.9837
+        quartis: [0, 0, 0]
+      wet_pc_u02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.0853
+        quartis: [0, 0, 0]
+      wet_pc_u03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.1229
+        quartis: [0, 0, 0]
+      wet_pc_u04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 1.8236
+        quartis: [0, 0, 0]
+      wet_pc_u05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 1.215
+        quartis: [0, 0, 0]
+      wet_pc_u06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.3488
+        quartis: [0, 0, 0]
+      wet_pc_u07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.157
+        quartis: [0, 0, 0]
+      wet_pc_u08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.472
+        quartis: [0, 0, 0]
+      wet_pc_u09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.2302
+        quartis: [0, 0, 0]
+      for_pc_cse:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 37.1263
+        quartis: [0, 8, 92]
+      for_pc_use:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 37.3345
+        quartis: [0, 16, 84]
+      crp_pc_cse:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 11.4045
+        quartis: [0, 1, 12]
+      crp_pc_use:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 11.0221
+        quartis: [0, 1, 12]
+      pst_pc_cse:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 17.8393
+        quartis: [0, 1, 25]
+      pst_pc_use:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 17.933
+        quartis: [0, 2, 27]
+      ire_pc_cse:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 2.346
+        quartis: [0, 0, 0]
+      ire_pc_use:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 2.0218
+        quartis: [0, 0, 0]
+      gla_pc_cse:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.4678
+        quartis: [0, 0, 0]
+      gla_pc_use:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 0.5961
+        quartis: [0, 0, 0]
+      prm_pc_cse:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 9.9284
+        quartis: [0, 0, 0]
+      prm_pc_use:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 10.6701
+        quartis: [0, 0, 0]
+      pac_pc_cse:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 16.1994
+        quartis: [0, 0, 0]
+      pac_pc_use:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 16.7364
+        quartis: [0, 0, 4]
+      tbi_cl_cmj:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 17
+        min: '1'
+        max: '99'
+        media: 7.2904
+        quartis: [1, 6, 10]
+        top:
+        - ['1', 558689]
+        - ['13', 276227]
+        - ['7', 269696]
+        - ['6', 202475]
+        - ['4', 196972]
+        - ['8', 130718]
+        - ['11', 94675]
+        - ['10', 65250]
+        - ['5', 59791]
+        - ['2', 53017]
+      tec_cl_cmj:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1012
+        min: '0'
+        max: '846'
+        media: 443.8362
+        quartis: [228, 465, 694]
+      fmh_cl_cmj:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '1'
+        max: '99'
+        media: 8.5205
+        quartis: [4, 8, 10]
+        top:
+        - ['4', 343441]
+        - ['10', 312802]
+        - ['8', 243637]
+        - ['11', 236669]
+        - ['5', 215282]
+        - ['9', 183060]
+        - ['7', 172577]
+        - ['6', 101653]
+        - ['3', 95014]
+        - ['1', 46285]
+      fec_cl_cmj:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 494
+        min: '101'
+        max: '999'
+        media: 493.88
+        quartis: [319, 517, 637]
+      cly_pc_cav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 47
+        min: '-999'
+        max: '50'
+        media: -64.2979
+        quartis: [13, 20, 28]
+        top:
+        - ['-999', 168571]
+        - ['26', 81750]
+        - ['28', 81075]
+        - ['27', 80847]
+        - ['30', 79000]
+        - ['25', 76004]
+        - ['29', 72943]
+        - ['24', 71544]
+        - ['14', 67934]
+        - ['16', 67489]
+      cly_pc_uav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 47
+        min: '-999'
+        max: '50'
+        media: -47.9703
+        quartis: [13, 20, 27]
+        top:
+        - ['-999', 135601]
+        - ['27', 85523]
+        - ['26', 80834]
+        - ['28', 80521]
+        - ['30', 79243]
+        - ['25', 76887]
+        - ['29', 76026]
+        - ['13', 69454]
+        - ['24', 68864]
+        - ['15', 67842]
+      slt_pc_cav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 65
+        min: '-999'
+        max: '70'
+        media: -55.9916
+        quartis: [19, 30, 38]
+      slt_pc_uav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 63
+        min: '-999'
+        max: '69'
+        media: -39.503
+        quartis: [20, 30, 38]
+      snd_pc_cav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 91
+        min: '-999'
+        max: '90'
+        media: -39.9474
+        quartis: [38, 45, 53]
+      snd_pc_uav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 92
+        min: '-999'
+        max: '90'
+        media: -23.0714
+        quartis: [39, 45, 53]
+      soc_th_cav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 935
+        min: '-999'
+        max: '1152'
+        media: -38.6956
+        quartis: [14, 27, 54]
+      soc_th_uav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 949
+        min: '-999'
+        max: '1144'
+        media: -20.7092
+        quartis: [15, 29, 58]
+      swc_pc_cyr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 62.0954
+        quartis: [37, 71, 88]
+      swc_pc_uyr:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 62.8511
+        quartis: [39, 72, 89]
+      swc_pc_c01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 64.7661
+        quartis: [37, 73, 99]
+      swc_pc_c02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 65.0692
+        quartis: [35, 75, 100]
+      swc_pc_c03:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 64.9612
+        quartis: [32, 76, 100]
+      swc_pc_c04:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 64.5047
+        quartis: [31, 77, 99]
+      swc_pc_c05:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 63.4332
+        quartis: [33, 74, 95]
+      swc_pc_c06:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 61.6846
+        quartis: [33, 70, 92]
+      swc_pc_c07:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 59.9358
+        quartis: [33, 65, 93]
+      swc_pc_c08:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 58.757
+        quartis: [29, 62, 94]
+      swc_pc_c09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 58.5503
+        quartis: [26, 62, 96]
+      swc_pc_c10:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 59.4285
+        quartis: [27, 65, 95]
+      swc_pc_c11:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 60.9708
+        quartis: [29, 69, 93]
+      swc_pc_c12:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 62.6215
+        quartis: [33, 71, 95]
+      lit_cl_cmj:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 18
+        min: '1'
+        max: '16'
+        media: 4.7163
+        quartis: [1, 5, 8]
+        top:
+        - ['1', 517248]
+        - ['3', 363314]
+        - ['5', 310210]
+        - ['8', 290958]
+        - ['6', 147205]
+        - ['9', 143398]
+        - ['2', 78795]
+        - ['10', 41422]
+        - ['16', 27582]
+        - ['7', 26104]
+      kar_pc_cse:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 10.0604
+        quartis: [0, 0, 0]
+      kar_pc_use:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 10.2346
+        quartis: [0, 0, 0]
+      ero_kh_cav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 44048
+        min: '0'
+        max: '201711'
+        media: 3091.6287
+        quartis: [72, 509, 2568]
+      ero_kh_uav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 46369
+        min: '0'
+        max: '201718'
+        media: 3270.8391
+        quartis: [90, 664, 3167]
+      pop_ct_csu:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 27120
+        min: '0.0'
+        max: '1819.722'
+        media: 0.8066
+        quartis: [0.001, 0.0226, 0.2347]
+      pop_ct_usu:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 156853
+        min: '0.0'
+        max: '634471.625'
+        media: 186.214
+        quartis: [0.0054, 0.1203, 1.5556]
+      ppd_pk_cav:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 168663
+        min: '0.0'
+        max: '63101.77'
+        media: 63.196
+        quartis: [0.1338, 2.5756, 22.5866]
+      ppd_pk_uav:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 243108
+        min: '0.0'
+        max: '63101.949'
+        media: 56.7035
+        quartis: [0.1554, 2.855, 23.7905]
+      urb_pc_cse:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 2.1719
+        quartis: [0, 0, 0]
+      urb_pc_use:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 1.5836
+        quartis: [0, 0, 0]
+      nli_ix_cav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5968
+        min: '0'
+        max: '6300'
+        media: 277.8054
+        quartis: [0, 0, 52]
+      nli_ix_uav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 67
+        min: '0'
+        max: '6300'
+        media: 234.2046
+        quartis: [0, 0, 100]
+      rdd_mk_cav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 7234
+        min: '0'
+        max: '274409'
+        media: 179.3928
+        quartis: [0, 35, 182]
+      rdd_mk_uav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 6738
+        min: '0'
+        max: '127856'
+        media: 161.4963
+        quartis: [0, 45, 167]
+      hft_ix_c93:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 513
+        min: '0'
+        max: '500'
+        media: 55.7268
+        quartis: [4, 37, 82]
+      hft_ix_u93:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 502
+        min: '0'
+        max: '494'
+        media: 51.9225
+        quartis: [5, 37, 77]
+      hft_ix_c09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 523
+        min: '0'
+        max: '500'
+        media: 60.8818
+        quartis: [8, 43, 90]
+      hft_ix_u09:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 502
+        min: '0'
+        max: '494'
+        media: 56.7382
+        quartis: [9, 42, 85]
+      gad_id_cmj:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 243
+        min: '1'
+        max: '253'
+        media: 115.2977
+        quartis: [41, 106, 186]
+      gdp_ud_cav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 27851
+        min: '378'
+        max: '189535'
+        media: 22130.3129
+        quartis: [6358, 12617, 33975]
+      gdp_ud_csu:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 468691
+        min: '0'
+        max: '68559101952'
+        media: 11886208.1454
+        quartis: [0, 0, 118734]
+      gdp_ud_usu:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 792319
+        min: '0'
+        max: '5808966860800'
+        media: 2178672335.5626
+        quartis: [0, 0, 3694200]
+      hdi_ix_cav:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 652
+        min: '317'
+        max: '1000'
+        media: 731.1398
+        quartis: [665, 742, 822]
+      geometry:
+        tipo: GEOMETRY
+        nulos_pct: 0
+        distintos_aprox: 1944861
+        geometrias: [LINESTRING]
+        caixa_xmin_ymin_xmax_ymax: [-179.9979, -55.8687, 179.9979, 83.5896]
+        pontos_media: 5.6714

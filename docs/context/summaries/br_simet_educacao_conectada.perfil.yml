@@ -1,0 +1,433 @@
+dataset: br_simet_educacao_conectada
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  escola:
+    linhas: 137914
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano_censo:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2023'
+        max: '2023'
+        media: 2023
+        quartis: [2023, 2023, 2023]
+        top:
+        - ['2023', 137914]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 19006]
+        - [BA, 13170]
+        - [MG, 11978]
+        - [MA, 10325]
+        - [PA, 9678]
+        - [PR, 7392]
+        - [RS, 7238]
+        - [RJ, 6788]
+        - [CE, 5934]
+        - [PE, 5855]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      id_escola: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 133011}
+      id_setor: {tipo: VARCHAR, nulos_pct: 43.6323, distintos_aprox: 60299}
+      rede:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Estadual
+        max: Municipal
+        top:
+        - [Municipal, 107425]
+        - [Estadual, 29783]
+        - [Federal, 706]
+      localizacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Rural
+        max: Urbana
+        top:
+        - [Urbana, 86712]
+        - [Rural, 51202]
+      porte_escola:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: 1001 a 2000
+        max: Menos de 50
+        top:
+        - [51 a 200, 47966]
+        - [201 a 500, 40328]
+        - [Menos de 50, 26841]
+        - [501 a 1000, 18292]
+        - [1001 a 2000, 4235]
+        - [Mais de 2000, 252]
+      tipo_rede_local:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Cabo
+        max: Wireless
+        top:
+        - [Cabo e Wireless, 52284]
+        - [Sem Informação, 24509]
+        - [Cabo, 24226]
+        - [Wireless, 22274]
+        - [Não há rede local, 14621]
+      tipo_energia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Gerador Fossil
+        max: Renovável
+        top:
+        - [Pública, 132744]
+        - [Inexistente, 2572]
+        - [Gerador Fossil, 1602]
+        - [Renovável, 996]
+      tipo_tecnologia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: ADSL
+        max: Sem Informação
+        top:
+        - [Sem Informação, 56506]
+        - [ADSL, 46900]
+        - [Satélite, 14750]
+        - [Rede Celular, 11610]
+        - [Fibra, 5536]
+        - [Dedicado, 2314]
+        - [HDSL, 298]
+      tipo_recurso_recebido:
+        tipo: VARCHAR
+        nulos_pct: 1.192
+        distintos_aprox: 11
+        min: Nenhum Recurso
+        max: só Rural-4G
+        top:
+        - [PIEC e PBLE, 33423]
+        - [Nenhum Recurso, 31387]
+        - [só PBLE, 23969]
+        - [só PIEC, 23398]
+        - [PIEC e Rural-4G, 15812]
+        - [só Rural-4G, 8108]
+        - [null, 1644]
+        - [só AC, 58]
+        - [Rural-4G e AC, 46]
+        - [PBLE e AC, 25]
+      faixa_velocidade:
+        tipo: VARCHAR
+        nulos_pct: 7.2248
+        distintos_aprox: 4
+        min: Com 20 A 50 Mbits/S
+        max: Sem Medidor Instalado
+        top:
+        - [Com Mais De 50 Mbits/S, 49326]
+        - [Sem Medidor Instalado, 45768]
+        - [Com 20 A 50 Mbits/S, 17064]
+        - [Sem Internet, 15792]
+        - [null, 9964]
+      nome_empresa_provedora_1: {tipo: VARCHAR, nulos_pct: 46.2564, distintos_aprox: 5655, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_empresa_provedora_2: {tipo: VARCHAR, nulos_pct: 78.9267, distintos_aprox: 4363, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_simet_asn: {tipo: VARCHAR, nulos_pct: 81.3971, distintos_aprox: 8511, pessoal: 'só contagens: valores seriam dado pessoal'}
+      indicador_laboratorio_informatica:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['false', 97003]
+        - ['true', 40911]
+      indicador_internet:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['true', 122122]
+        - ['false', 15792]
+      indicador_internet_alunos:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['false', 83796]
+        - ['true', 54118]
+      indicador_internet_aprendizagem:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['true', 85700]
+        - ['false', 52214]
+      indicador_satelite_mec:
+        tipo: BOOLEAN
+        nulos_pct: 1.192
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['false', 126850]
+        - ['true', 9420]
+        - [null, 1644]
+      razao_desktop_aluno: {tipo: DOUBLE, nulos_pct: 0, distintos_aprox: 344, pessoal: 'só contagens: valores seriam dado pessoal'}
+      razao_comp_portatil_aluno: {tipo: DOUBLE, nulos_pct: 0, distintos_aprox: 466, pessoal: 'só contagens: valores seriam dado pessoal'}
+      razao_tablet_aluno: {tipo: DOUBLE, nulos_pct: 0, distintos_aprox: 557, pessoal: 'só contagens: valores seriam dado pessoal'}
+      quantidade_matricula: {tipo: BIGINT, nulos_pct: 0, distintos_aprox: 2301, pessoal: 'só contagens: valores seriam dado pessoal'}
+      quantidade_matricula_maior_turno: {tipo: BIGINT, nulos_pct: 0, distintos_aprox: 1273, pessoal: 'só contagens: valores seriam dado pessoal'}
+      quantidade_turma:
+        tipo: BIGINT
+        nulos_pct: 0.72
+        distintos_aprox: 117
+        min: '1'
+        max: '290'
+        media: 12.2122
+        quartis: [5, 10, 16]
+      quantidade_medicao:
+        tipo: BIGINT
+        nulos_pct: 43.4379
+        distintos_aprox: 2043
+        min: '1'
+        max: '38325'
+        media: 268.665
+        quartis: [80, 182, 345]
+      quantidade_medicoes_entorno:
+        tipo: BIGINT
+        nulos_pct: 81.3971
+        distintos_aprox: 259
+        min: '1'
+        max: '6387'
+        media: 9.3363
+        quartis: [2, 3, 6]
+      quantidade_ipv6:
+        tipo: BIGINT
+        nulos_pct: 81.3971
+        distintos_aprox: 86
+        min: '0'
+        max: '1735'
+        media: 2.3341
+        quartis: [0, 1, 2]
+      quantidade_asn:
+        tipo: BIGINT
+        nulos_pct: 81.3971
+        distintos_aprox: 20
+        min: '1'
+        max: '23'
+        media: 1.5082
+        quartis: [1, 1, 2]
+        top:
+        - [null, 112258]
+        - ['1', 17418]
+        - ['2', 5506]
+        - ['3', 1716]
+        - ['4', 569]
+        - ['5', 224]
+        - ['6', 102]
+        - ['7', 59]
+        - ['9', 18]
+        - ['8', 12]
+      media_tcp_download:
+        tipo: DOUBLE
+        nulos_pct: 43.4901
+        distintos_aprox: 28589
+        min: '0.0'
+        max: '2380.575'
+        media: 105.323
+        quartis: [35.36, 75.4433, 97.2]
+      media_tcp_upload:
+        tipo: DOUBLE
+        nulos_pct: 43.4843
+        distintos_aprox: 26585
+        min: '0.0'
+        max: '2765.215'
+        media: 78.014
+        quartis: [29.14, 61.18, 93.47]
+      media_latencia:
+        tipo: DOUBLE
+        nulos_pct: 43.8114
+        distintos_aprox: 26790
+        min: '0.0'
+        max: '8234.68'
+        media: 52.1823
+        quartis: [15.7, 29.01, 51]
+      media_perda_pacote:
+        tipo: DOUBLE
+        nulos_pct: 43.8106
+        distintos_aprox: 4554
+        min: '0.0'
+        max: '99.5'
+        media: 1.5426
+        quartis: [0.15, 0.455, 1.15]
+      media_jitter_download:
+        tipo: DOUBLE
+        nulos_pct: 43.8353
+        distintos_aprox: 6416
+        min: '0.0'
+        max: '846.53'
+        media: 3.4079
+        quartis: [0.19, 0.82, 3.0258]
+      media_jitter_upload:
+        tipo: DOUBLE
+        nulos_pct: 43.8331
+        distintos_aprox: 5332
+        min: '0.0'
+        max: '113.73'
+        media: 2.4441
+        quartis: [0.44, 0.995, 2.555]
+      media_download_entorno:
+        tipo: DOUBLE
+        nulos_pct: 81.8836
+        distintos_aprox: 20087
+        min: '0.0'
+        max: '2198.698'
+        media: 48.4899
+        quartis: [14.4965, 26.985, 49.63]
+      media_upload_entorno:
+        tipo: DOUBLE
+        nulos_pct: 81.8836
+        distintos_aprox: 20087
+        min: '0.0'
+        max: '2198.698'
+        media: 48.4899
+        quartis: [14.4965, 26.985, 49.63]
+      media_latencia_entorno:
+        tipo: DOUBLE
+        nulos_pct: 81.8836
+        distintos_aprox: 20087
+        min: '0.0'
+        max: '2198.698'
+        media: 48.4899
+        quartis: [14.4965, 26.985, 49.63]
+      media_pacotes_entorno:
+        tipo: DOUBLE
+        nulos_pct: 81.8836
+        distintos_aprox: 20087
+        min: '0.0'
+        max: '2198.698'
+        media: 48.4899
+        quartis: [14.4965, 26.985, 49.63]
+      media_jitter_upload_entorno:
+        tipo: DOUBLE
+        nulos_pct: 81.8836
+        distintos_aprox: 20087
+        min: '0.0'
+        max: '2198.698'
+        media: 48.4899
+        quartis: [14.4965, 26.985, 49.63]
+      media_jitter_download_entorno:
+        tipo: DOUBLE
+        nulos_pct: 81.8836
+        distintos_aprox: 20087
+        min: '0.0'
+        max: '2198.698'
+        media: 48.4899
+        quartis: [14.4965, 26.985, 49.63]
+      comparador_empresas:
+        tipo: VARCHAR
+        nulos_pct: 60.4456
+        distintos_aprox: 22
+        min: ALGAR TELECOM, OI
+        max: VIVO, TIM, SKY, OI
+        top:
+        - [null, 83363]
+        - ['VIVO, CLARO, OI', 13307]
+        - ['VIVO, OI', 8759]
+        - ['VIVO, SKY, CLARO, OI', 6862]
+        - ['VIVO, TIM, CLARO, OI', 6177]
+        - ['BRISANET SERVIÇOS, OI', 4878]
+        - ['VIVO, TIM, SKY, CLARO, OI', 3810]
+        - ['SKY, OI', 2512]
+        - ['VIVO, SKY, CLARO, BRISANET SERVIÇOS, OI', 1459]
+        - ['CLARO, OI', 1234]
+      comparativo_download_entorno:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Melhor
+        max: Sem Medições No Entorno
+        top:
+        - [Sem Medidor, 59979]
+        - [Sem Medições No Entorno, 52980]
+        - [Melhor, 19210]
+        - [Pior, 5745]
+      comparativo_upload_entorno:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Melhor
+        max: Sem Medições No Entorno
+        top:
+        - [Sem Medidor, 59971]
+        - [Sem Medições No Entorno, 52986]
+        - [Melhor, 18059]
+        - [Pior, 6898]
+      comparativo_latencia_entorno:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Melhor
+        max: Sem Medições No Entorno
+        top:
+        - [Sem Medidor, 60422]
+        - [Sem Medições No Entorno, 52716]
+        - [Melhor, 14487]
+        - [Pior, 10289]
+      velocidade_download_necessaria:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1328
+        min: '0.0'
+        max: '2771.0'
+        media: 162.2318
+        quartis: [49, 118, 225]
+      razao_download_aluno: {tipo: DOUBLE, nulos_pct: 43.4909, distintos_aprox: 75594, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_download_aluno:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Com  100 A 1000 Kbit/S/Aluno (Ruim)
+        max: Sem Dados De Velocidade
+        top:
+        - [Sem Dados De Velocidade, 59983]
+        - [Com  100 A 1000 Kbit/S/Aluno (Ruim), 51694]
+        - [Com 1000 A 1900 Kbit/S/Aluno (Bom), 10006]
+        - [Com Mais De 1900 Kbit/S/Aluno (Ótimo), 8628]
+        - [Com Menos De 100 Kbit/S/Aluno (Péssimo), 7603]
+      latitude:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 123571
+        min: '-33.690605'
+        max: '5.082777'
+        media: -14.5625
+        quartis: [-22.8204, -14.484, -6.3467]
+      longitude:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 141430
+        min: '-73.46079'
+        max: '-32.40975'
+        media: -46.2026
+        quartis: [-49.7589, -46.1066, -41.051]
+      ponto: {tipo: GEOMETRY, nulos_pct: 0, distintos_aprox: 117935}
+      data_ultima_atualizacao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2024-12-12'
+        max: '2024-12-12'
+        top:
+        - ['2024-12-12', 137914]

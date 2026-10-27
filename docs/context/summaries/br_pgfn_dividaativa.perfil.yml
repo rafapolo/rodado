@@ -1,0 +1,209 @@
+dataset: br_pgfn_dividaativa
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  divida:
+    linhas: 49702198
+    fonte_do_perfil: amostra de 4.024%. ~2.000.000 linhas
+    colunas:
+      CPF_CNPJ: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 343858, pessoal: 'só contagens: valores seriam dado pessoal'}
+      TIPO_PESSOA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      TIPO_DEVEDOR:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: CORRESPONSAVEL
+        max: SOLIDARIO
+        top:
+        - [PRINCIPAL, 1331268]
+        - [CORRESPONSAVEL, 634885]
+        - [Principal, 182252]
+        - [SOLIDARIO, 1995]
+      NOME_DEVEDOR: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 748891, pessoal: 'só contagens: valores seriam dado pessoal'}
+      UF_DEVEDOR:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AC
+        max: TO
+        top:
+        - [SP, 607740]
+        - [MG, 200686]
+        - [RJ, 187628]
+        - [PR, 144927]
+        - [RS, 136151]
+        - [SC, 106210]
+        - [BA, 100063]
+        - [GO, 75801]
+        - [PE, 71883]
+        - [CE, 64967]
+      UNIDADE_RESPONSAVEL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 21, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ENTIDADE_RESPONSAVEL: {tipo: VARCHAR, nulos_pct: 98.89, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      UNIDADE_INSCRICAO:
+        tipo: VARCHAR
+        nulos_pct: 98.89
+        distintos_aprox: 20
+        min: 1ª REGIÃO
+        max: SAO JOSE DO RIO PRETO
+        top:
+        - [null, 2126637]
+        - [3ª REGIÃO, 6461]
+        - [1ª REGIÃO, 4815]
+        - [4ª REGIÃO, 3389]
+        - [5ª REGIÃO, 2863]
+        - [2ª REGIÃO, 2736]
+        - [6ª REGIÃO, 2327]
+        - [PARANA, 1095]
+        - [SAO CARLOS, 26]
+        - [PETROLINA, 15]
+      NUMERO_INSCRICAO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2526020, pessoal: 'só contagens: valores seriam dado pessoal'}
+      TIPO_SITUACAO_INSCRICAO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Benefício Fiscal
+        max: Suspenso por decisão judicial
+        top:
+        - [Em cobrança, 1735237]
+        - [Benefício Fiscal, 408303]
+        - [Garantia, 4949]
+        - [Suspenso por decisão judicial, 1908]
+        - [Em negociação, 3]
+      SITUACAO_INSCRICAO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 161, min: AGUARDANDO CADASTRAMENTO DE EMBARGOS, max: SUSPENSAO E   OU
+          SOBRESTAMENTO DA ACAO}
+      RECEITA_PRINCIPAL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 120, min: AFERICAO INDIRETA, max: SUCUMBENCIA}
+      DATA_INSCRICAO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 10843}
+      INDICADOR_AJUIZADO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: NAO
+        max: SIM
+        top:
+        - [NAO, 1666644]
+        - [SIM, 483756]
+      VALOR_CONSOLIDADO:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1240382
+        min: '0.0'
+        max: '3871616907.61'
+        media: 141543.5104
+        quartis: [1627.1852, 3887.4889, 14854.5168]
+      categoria:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: fgts
+        max: previdenciario
+        top:
+        - [nao_previdenciario, 1968148]
+        - [previdenciario, 158489]
+        - [fgts, 23763]
+      trimestre:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: 2026_trimestre_02
+        max: 2026_trimestre_02
+        top:
+        - [2026_trimestre_02, 2150400]
+      cnpj_basico: {tipo: VARCHAR, nulos_pct: 34.86, distintos_aprox: 290417}
+  divida_trimestres:
+    linhas: 807424243
+    fonte_do_perfil: amostra de 0,248%. ~2.000.000 linhas
+    colunas:
+      CPF_CNPJ: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1143234, pessoal: 'só contagens: valores seriam dado pessoal'}
+      TIPO_PESSOA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      TIPO_DEVEDOR:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: CORRESPONSAVEL
+        max: SOLIDARIO
+        top:
+        - [PRINCIPAL, 1122990]
+        - [CORRESPONSAVEL, 432510]
+        - [Principal, 413510]
+        - [SOLIDARIO, 1594]
+      NOME_DEVEDOR: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1301750, pessoal: 'só contagens: valores seriam dado pessoal'}
+      UF_DEVEDOR:
+        tipo: VARCHAR
+        nulos_pct: 34.17
+        distintos_aprox: 30
+        min: AC
+        max: TO
+        top:
+        - [null, 673330]
+        - [SP, 381050]
+        - [RJ, 134511]
+        - [MG, 102991]
+        - [PR, 84027]
+        - [RS, 79484]
+        - [SC, 71491]
+        - [BA, 54616]
+        - [PE, 48466]
+        - [CE, 44937]
+      UNIDADE_RESPONSAVEL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 99, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ENTIDADE_RESPONSAVEL: {tipo: VARCHAR, nulos_pct: 97.61, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      UNIDADE_INSCRICAO: {tipo: VARCHAR, nulos_pct: 97.61, distintos_aprox: 74, min: 1ª REGIÃO, max: VOLTA REDONDA}
+      NUMERO_INSCRICAO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2172507, pessoal: 'só contagens: valores seriam dado pessoal'}
+      TIPO_SITUACAO_INSCRICAO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Benefício Fiscal
+        max: Suspenso por decisão judicial
+        top:
+        - [Em cobrança, 1567147]
+        - [Benefício Fiscal, 397473]
+        - [Suspenso por decisão judicial, 3062]
+        - [Garantia, 2821]
+        - [Em negociação, 101]
+      SITUACAO_INSCRICAO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 220, min: AJUIZ PARCELADA, max: SUSPENSAO E / OU SOBRESTAMENTO DA ACAO}
+      RECEITA_PRINCIPAL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 143, min: AFERICAO INDIRETA, max: SUCUMBENCIA}
+      DATA_INSCRICAO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 12436}
+      INDICADOR_AJUIZADO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: NAO
+        max: SIM
+        top:
+        - [NAO, 1320634]
+        - [SIM, 649970]
+      VALOR_CONSOLIDADO:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 980354
+        min: '0.0'
+        max: '9323802697.29'
+        media: 170536.3055
+        quartis: [2116.211, 5491.6594, 22805.1891]
+      categoria:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: fgts
+        max: previdenciario
+        top:
+        - [nao_previdenciario, 1557094]
+        - [previdenciario, 366406]
+        - [fgts, 47104]
+      trimestre:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 24
+        min: 2020_trimestre_01
+        max: 2026_trimestre_02
+        top:
+        - [2026_trimestre_02, 115094]
+        - [2025_trimestre_02, 110592]
+        - [2025_trimestre_04, 108544]
+        - [2024_trimestre_04, 106496]
+        - [2026_trimestre_01, 106496]
+        - [2025_trimestre_03, 96788]
+        - [2025_trimestre_01, 96256]
+        - [2023_trimestre_03, 91974]
+        - [2024_trimestre_03, 88064]
+        - [2023_trimestre_02, 79872]

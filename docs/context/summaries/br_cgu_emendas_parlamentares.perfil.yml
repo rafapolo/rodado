@@ -1,0 +1,422 @@
+dataset: br_cgu_emendas_parlamentares
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  convenios:
+    linhas: 85313
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_emenda: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 26697}
+      codigo_funcao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 23
+        min: '03'
+        max: '28'
+        top:
+        - ['15', 25736]
+        - ['10', 15410]
+        - ['20', 12120]
+        - ['27', 9085]
+        - ['23', 4314]
+        - ['13', 3856]
+        - ['05', 3094]
+        - ['14', 2836]
+        - [08, 2187]
+        - ['06', 1711]
+      nome_funcao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 25, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_subfuncao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 63, min: 092, max: '846'}
+      nome_subfuncao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 59, pessoal: 'só contagens: valores seriam dado pessoal'}
+      localidade_do_gasto: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4320}
+      tipo_de_emenda:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Emenda Individual - Transferências com Finalidade Definida
+        max: Emenda de Relator
+        top:
+        - [Emenda Individual - Transferências com Finalidade Definida, 66543]
+        - [Emenda de Relator, 9950]
+        - [Emenda de Comissão, 5442]
+        - [Emenda de Bancada, 3378]
+      data_publicacao_convenio: {tipo: DATE, nulos_pct: 0, distintos_aprox: 2579, min: '1999-05-10', max: '2026-09-10'}
+      convenente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 12164}
+      objeto_convenio: {tipo: VARCHAR, nulos_pct: 0.07, distintos_aprox: 65373}
+      numero_convenio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 81836, pessoal: 'só contagens: valores seriam dado pessoal'}
+      valor_convenio:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 16414
+        min: '90.0'
+        max: '5657265907.45'
+        media: 1426162.8723
+        quartis: [223311.2633, 295538.0917, 511574.7093]
+  emendas:
+    linhas: 94627
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_emenda: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 82963}
+      ano_emenda:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: '2014'
+        max: '2026'
+        media: 2019.587
+        quartis: [2017, 2019, 2023]
+        top:
+        - ['2014', 11155]
+        - ['2017', 9633]
+        - ['2020', 8621]
+        - ['2019', 8476]
+        - ['2016', 8051]
+        - ['2018', 7230]
+        - ['2024', 6990]
+        - ['2021', 6595]
+        - ['2025', 6310]
+        - ['2023', 6110]
+      tipo_de_emenda:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Emenda Individual - Transferências Especiais
+        max: Emenda de Relator
+        top:
+        - [Emenda Individual - Transferências com Finalidade Definida, 79849]
+        - [Emenda Individual - Transferências Especiais, 5108]
+        - [Emenda de Relator, 3892]
+        - [Emenda de Bancada, 3588]
+        - [Emenda de Comissão, 2190]
+      id_autor_emenda: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1581, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_autor_emenda: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1534, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_da_emenda: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 419, pessoal: 'só contagens: valores seriam dado pessoal'}
+      localidade: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4320}
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6422}
+      municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5929}
+      id_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '-1'
+        max: '5300000'
+        top:
+        - ['3500000', 11135]
+        - ['3100000', 8733]
+        - ['3300000', 7458]
+        - ['2900000', 6054]
+        - ['-1', 5669]
+        - ['4300000', 5609]
+        - ['4100000', 5333]
+        - ['2600000', 4047]
+        - ['2300000', 3521]
+        - ['5200000', 3318]
+      nome_uf: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 29, pessoal: 'só contagens: valores seriam dado pessoal'}
+      regiao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: Centro-Oeste
+        max: Sul
+        top:
+        - [Sudeste, 29441]
+        - [Nordeste, 25908]
+        - [Sul, 14153]
+        - [Norte, 11178]
+        - [Centro-Oeste, 7883]
+        - [Nacional, 5344]
+        - [Múltiplo, 651]
+        - [Exterior, 69]
+      codigo_funcao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 24
+        min: '03'
+        max: MU
+        top:
+        - ['10', 39180]
+        - ['15', 8848]
+        - ['12', 8556]
+        - ['28', 5305]
+        - ['20', 5129]
+        - ['27', 4717]
+        - [08, 4237]
+        - ['05', 3163]
+        - ['14', 2985]
+        - ['06', 2627]
+      nome_funcao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 30, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_subfuncao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 97, min: 092, max: MU}
+      nome_subfuncao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 88, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_programa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 275, min: '0032', max: MU}
+      nome_programa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 161, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_acao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 694, min: '0017', max: MU}
+      nome_acao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 932, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_plano_orcamentario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 60, min: '-1', max: MU}
+      nome_plano_orcamentario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 952, pessoal: 'só contagens: valores seriam dado pessoal'}
+      valor_empenhado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 40790
+        min: '-35865.08'
+        max: '5019577208.0'
+        media: 3619826.3383
+        quartis: [257737.0019, 580337.4297, 1951878.8725]
+      valor_liquidado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 26107
+        min: '0.0'
+        max: '5019577208.0'
+        media: 2065698.4254
+        quartis: [0, 1720.059, 593782.9405]
+      valor_pago:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 25292
+        min: '0.0'
+        max: '5019577208.0'
+        media: 2045761.4958
+        quartis: [0, 103.6503, 564702.7549]
+      valor_restos_a_pagar_inscritos:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 19463
+        min: '-1370791.0'
+        max: '6019114030.89'
+        media: 1220340.5675
+        quartis: [0, 0, 192694.6089]
+      valor_restos_a_pagar_cancelados:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 11015
+        min: '0.0'
+        max: '431250388.77'
+        media: 150981.1062
+        quartis: [0, 0, 0]
+      valor_restos_a_pagar_pagos:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 37187
+        min: '0.0'
+        max: '2061185770.51'
+        media: 987750.69
+        quartis: [0, 150699.2139, 502629.8747]
+  microdados:
+    linhas: 88993
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano_emenda:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '2014'
+        max: '2025'
+        media: 2019.181
+        quartis: [2016, 2019, 2022]
+        top:
+        - ['2014', 11155]
+        - ['2017', 9633]
+        - ['2020', 8621]
+        - ['2019', 8476]
+        - ['2016', 8051]
+        - ['2018', 7230]
+        - ['2024', 6990]
+        - ['2021', 6595]
+        - ['2025', 6310]
+        - ['2023', 6110]
+      id_emenda: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 80247}
+      numero_emenda: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 466, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_emenda:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Emenda Individual - Transferências Especiais
+        max: Emenda de Relator
+        top:
+        - [Emenda Individual - Transferências com Finalidade Definida, 75051]
+        - [Emenda Individual - Transferências Especiais, 4430]
+        - [Emenda de Relator, 3892]
+        - [Emenda de Bancada, 3452]
+        - [Emenda de Comissão, 2168]
+      id_autor_emenda: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1581, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_autor_emenda: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1534, pessoal: 'só contagens: valores seriam dado pessoal'}
+      localidade:
+        tipo: VARCHAR
+        nulos_pct: 94.26
+        distintos_aprox: 6
+        min: Centro-Oeste
+        max: Sul
+        top:
+        - [null, 83882]
+        - [Nacional, 4812]
+        - [Exterior, 66]
+        - [Norte, 61]
+        - [Centro-Oeste, 55]
+        - [Sul, 50]
+        - [Nordeste, 47]
+        - [Sudeste, 20]
+      sigla_uf_gasto:
+        tipo: VARCHAR
+        nulos_pct: 6.55
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 10462]
+        - [MG, 8237]
+        - [RJ, 6996]
+        - [null, 5826]
+        - [BA, 5702]
+        - [RS, 5280]
+        - [PR, 5038]
+        - [PE, 3787]
+        - [CE, 3348]
+        - [GO, 3135]
+      id_municipio_gasto: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6422}
+      id_funcao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 24
+        min: '03'
+        max: MU
+        top:
+        - ['10', 37124]
+        - ['15', 8671]
+        - ['12', 8188]
+        - ['20', 4944]
+        - ['28', 4614]
+        - ['27', 4407]
+        - [08, 3756]
+        - ['05', 2867]
+        - ['14', 2761]
+        - ['23', 2495]
+      nome_funcao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 30, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_subfuncao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 97, min: 092, max: MU}
+      nome_subfuncao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 88, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_programa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 275, min: '0032', max: MU}
+      nome_programa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 161, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_acao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 679, min: '0017', max: MU}
+      nome_acao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 932, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_plano_orcamentario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 60, min: '-1', max: MU}
+      nome_plano_orcamentario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 898, pessoal: 'só contagens: valores seriam dado pessoal'}
+      valor_empenhado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 31541
+        min: '0.0'
+        max: '5019577208.0'
+        media: 3398839.5557
+        quartis: [252617.7751, 543070.765, 1813672.2969]
+      valor_liquidado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 24446
+        min: '0.0'
+        max: '5019577208.0'
+        media: 1914860.2306
+        quartis: [0, 7.4459, 515404.1877]
+      valor_pago:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 21845
+        min: '0.0'
+        max: '5019577208.0'
+        media: 1895057.0415
+        quartis: [0, 0, 505142.7991]
+      valor_resto_pagar_inscrito:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 17685
+        min: '-1370791.0'
+        max: '5891239824.38'
+        media: 1272099.2831
+        quartis: [0, 0, 217575.4625]
+      valor_resto_pagar_cancelado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 10935
+        min: '0.0'
+        max: '431253546.48'
+        media: 161080.148
+        quartis: [0, 0, 0.0001]
+      valor_resto_pagar_pagos:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 38125
+        min: '0.0'
+        max: '2145888664.07'
+        media: 1075258.9948
+        quartis: [0, 197123.1, 539492.2076]
+  por_favorecido:
+    linhas: 826056
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: '2014'
+        max: '2026'
+        media: 2021.5604
+        quartis: [2020, 2021, 2024]
+        top:
+        - ['2020', 179289]
+        - ['2025', 103869]
+        - ['2026', 82571]
+        - ['2021', 81069]
+        - ['2023', 75620]
+        - ['2024', 71058]
+        - ['2022', 58111]
+        - ['2019', 47830]
+        - ['2018', 44797]
+        - ['2017', 43342]
+      mes:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 7.4532
+        quartis: [5, 7, 10]
+        top:
+        - ['12', 133043]
+        - ['6', 86207]
+        - ['5', 77292]
+        - ['3', 72977]
+        - ['7', 72847]
+        - ['10', 71501]
+        - ['11', 71272]
+        - ['9', 67983]
+        - ['8', 64211]
+        - ['4', 54419]
+      id_emenda: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 74590}
+      id_autor_emenda: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1581, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_autor_emenda: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1534, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_emenda: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 419, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_emenda:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Emenda Individual - Transferências Especiais
+        max: Emenda de Relator
+        top:
+        - [Emenda Individual - Transferências com Finalidade Definida, 414901]
+        - [Emenda de Relator, 207268]
+        - [Emenda de Bancada, 107896]
+        - [Emenda Individual - Transferências Especiais, 52144]
+        - [Emenda de Comissão, 43847]
+      ano_mes: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 137, min: '201406', max: '202609'}
+      documento_favorecido: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 116049, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_favorecido: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 111783, pessoal: 'só contagens: valores seriam dado pessoal'}
+      natureza_juridica_favorecido: {tipo: VARCHAR, nulos_pct: 0.11, distintos_aprox: 51, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_favorecido: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla_uf_favorecido: {tipo: VARCHAR, nulos_pct: 0.7, distintos_aprox: 28, pessoal: 'só contagens: valores seriam dado pessoal'}
+      municipio_favorecido: {tipo: VARCHAR, nulos_pct: 0.02, distintos_aprox: 5976, pessoal: 'só contagens: valores seriam dado pessoal'}
+      valor_recebido:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 333387
+        min: '-2347495.0'
+        max: '3549688064.0'
+        media: 339956.7339
+        quartis: [1801.5127, 21118.7686, 201942.1871]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 1.18, distintos_aprox: 6859}

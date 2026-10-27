@@ -1,0 +1,143 @@
+dataset: br_ibge_populacao
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  brasil:
+    linhas: 35
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 35
+        min: '1991'
+        max: '2025'
+        media: 2008
+        quartis: [1999, 2008, 2017]
+        top:
+        - ['1991', 1]
+        - ['1992', 1]
+        - ['1993', 1]
+        - ['1994', 1]
+        - ['1995', 1]
+        - ['1996', 1]
+        - ['1997', 1]
+        - ['1998', 1]
+        - ['1999', 1]
+        - ['2000', 1]
+      populacao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 33
+        min: '146815815'
+        max: '213421037'
+        media: 185312725.9143
+        quartis: [165428879, 189612814, 204107726]
+        top:
+        - ['146815815', 1]
+        - ['149236984', 1]
+        - ['151571727', 1]
+        - ['153725670', 1]
+        - ['155822440', 1]
+        - ['157070163', 1]
+        - ['159636413', 1]
+        - ['161790311', 1]
+        - ['163947554', 1]
+        - ['169872854', 1]
+  municipio:
+    linhas: 191099
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 35
+        min: '1991'
+        max: '2025'
+        media: 2008.2945
+        quartis: [2000, 2008, 2017]
+        top:
+        - ['2025', 5571]
+        - ['2012', 5570]
+        - ['2013', 5570]
+        - ['2014', 5570]
+        - ['2015', 5570]
+        - ['2016', 5570]
+        - ['2017', 5570]
+        - ['2018', 5570]
+        - ['2019', 5570]
+        - ['2020', 5570]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 29337]
+        - [SP, 22422]
+        - [RS, 16790]
+        - [BA, 14575]
+        - [PR, 13777]
+        - [SC, 10075]
+        - [GO, 8499]
+        - [PB, 7545]
+        - [PI, 7405]
+        - [MA, 7190]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      populacao:
+        tipo: BIGINT
+        nulos_pct: 0.28
+        distintos_aprox: 48186
+        min: '652'
+        max: '12396372'
+        media: 34035.3444
+        quartis: [5317, 11064, 23421]
+  uf:
+    linhas: 946
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 35
+        min: '1991'
+        max: '2025'
+        media: 2008.018
+        quartis: [1999, 2008, 2017]
+        top:
+        - ['2025', 28]
+        - ['1991', 27]
+        - ['1992', 27]
+        - ['1993', 27]
+        - ['1994', 27]
+        - ['1995', 27]
+        - ['1996', 27]
+        - ['1997', 27]
+        - ['1998', 27]
+        - ['1999', 27]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0.11
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [AC, 35]
+        - [AL, 35]
+        - [AM, 35]
+        - [AP, 35]
+        - [BA, 35]
+        - [CE, 35]
+        - [DF, 35]
+        - [ES, 35]
+        - [GO, 35]
+        - [MA, 35]
+      populacao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1017
+        min: '5877'
+        max: '46649132'
+        media: 6856179.0772
+        quartis: [2242567, 3600025, 8737353]

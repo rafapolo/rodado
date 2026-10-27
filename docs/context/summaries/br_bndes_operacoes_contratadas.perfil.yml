@@ -1,0 +1,1354 @@
+dataset: br_bndes_operacoes_contratadas
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  operacoes_administracao_publica:
+    linhas: 4749
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 32
+        min: '1994'
+        max: '2026'
+        media: 2009.2961
+        quartis: [2007, 2009, 2012]
+        top:
+        - ['2007', 611]
+        - ['2010', 550]
+        - ['2009', 505]
+        - ['2008', 437]
+        - ['2012', 367]
+        - ['2011', 353]
+        - ['2016', 229]
+        - ['2004', 197]
+        - ['2002', 166]
+        - ['2003', 166]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0.38
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [RS, 1210]
+        - [MG, 724]
+        - [SC, 518]
+        - [SP, 472]
+        - [PR, 378]
+        - [MT, 197]
+        - [CE, 157]
+        - [RJ, 121]
+        - [ES, 112]
+        - [TO, 92]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 17.58, distintos_aprox: 1788}
+      ente_publico:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Administração Estadual
+        max: União
+        top:
+        - [Administração Municipal, 3926]
+        - [Administração Estadual, 805]
+        - [União, 18]
+      programa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 124, min: AMAZONIA INTEGRADA, max: TURISMO}
+      modalidade_operacional:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: BNDES AUTOMATICO
+        max: FRDOCE
+        top:
+        - [BNDES FINAME, 2850]
+        - [BNDES FINEM DIRETO, 1052]
+        - [BNDES AUTOMATICO, 513]
+        - [BNDES NAO REEMB DIR, 179]
+        - [BNDES FINEM INDIRETO, 51]
+        - [BNDES FINAME AUT C, 49]
+        - [BNDES PROJECT DIR, 13]
+        - [BNDES FINAME DIR, 12]
+        - [BNDES MAQ/EQUIP DIR, 11]
+        - [BNDES MAQ E SERVICO, 7]
+      data_nivel_atual: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1631, min: '1994-07-01', max: '2026-08-28'}
+      nivel_atual:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: CONTRATADA
+        max: CONTRATADA
+        top:
+        - [CONTRATADA, 4749]
+      situacao_operacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: ATIVA
+        max: LIQUIDADA
+        top:
+        - [LIQUIDADA, 4144]
+        - [ATIVA-UTILIZADA, 364]
+        - [ATIVA, 241]
+      descricao_projeto: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 700, min: '''INVENTARIO FLORESTAL NACIONAL: IMPLEMENTACAO DE UM SISTEMA
+          DE MONITORAMENTO FLORESTAL PARA O BIOMA AMAZONIA''', max: VIABILIZAR DUPLICACAO DA RODOVIA ESTADUAL AM-070}
+      valor_operacao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2895
+        min: '1.0'
+        max: '3605000000.0'
+        media: 27414682.8389
+        quartis: [299154.3578, 702785.0688, 2773967.8434]
+      valor_desembolsado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2873
+        min: '0.0'
+        max: '3031405000.0'
+        media: 22236157.1704
+        quartis: [273318.2668, 627686.6668, 2340924.5913]
+      valor_saldo_liberar:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 195
+        min: '0.0'
+        max: '3595000090.0'
+        media: 4832005.6926
+        quartis: [0, 0, 0]
+  operacoes_exportacao_bens:
+    linhas: 2363
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 24
+        min: '2002'
+        max: '2026'
+        media: 2016.2175
+        quartis: [2011, 2018, 2022]
+        top:
+        - ['2019', 193]
+        - ['2018', 172]
+        - ['2026', 167]
+        - ['2023', 157]
+        - ['2025', 154]
+        - ['2022', 152]
+        - ['2017', 150]
+        - ['2024', 107]
+        - ['2012', 104]
+        - ['2002', 103]
+      data_contratacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1400, min: '2002-01-04', max: '2026-08-31'}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: ES
+        max: SP
+        top:
+        - [SP, 1090]
+        - [RS, 634]
+        - [MG, 217]
+        - [SC, 214]
+        - [PR, 164]
+        - [RJ, 37]
+        - [PE, 3]
+        - [ES, 2]
+        - [GO, 1]
+        - [PB, 1]
+      sigla_pais_destino:
+        tipo: VARCHAR
+        nulos_pct: 3.47
+        distintos_aprox: 24
+        min: AGO
+        max: VEN
+        top:
+        - [PRY, 759]
+        - [ECU, 462]
+        - [ARG, 409]
+        - [USA, 161]
+        - [CHL, 121]
+        - [null, 82]
+        - [PER, 74]
+        - [CUB, 73]
+        - [URY, 41]
+        - [MEX, 33]
+      id_operacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1633}
+      cnpj_exportador: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 243, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_exportador: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 274, pessoal: 'só contagens: valores seriam dado pessoal'}
+      porte_exportador:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: GRANDE
+        max: PEQUENA
+        top:
+        - [GRANDE, 1973]
+        - [MÉDIA, 326]
+        - [PEQUENA, 46]
+        - [MICRO, 18]
+      tipo_operacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Exportação de bens
+        max: Exportação de bens e serviços
+        top:
+        - [Exportação de bens, 2357]
+        - [Exportação de bens e serviços, 6]
+      categoria:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Bens de capital e demais operações
+        max: Bens de capital e demais operações
+        top:
+        - [Bens de capital e demais operações, 2363]
+      modalidade_operacional:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Buyer
+        max: Supplier
+        top:
+        - [Supplier, 2218]
+        - [Buyer, 145]
+      tipo_mutuario:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Ente privado
+        max: Ente público
+        top:
+        - [Ente privado, 2265]
+        - [Ente público, 98]
+      produto:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: BNDES EXIM PÓS-EMBARQUE
+        max: BNDES EXIM PÓS-EMBARQUE - EXIM AUTOMÁTICO
+        top:
+        - [BNDES EXIM PÓS-EMBARQUE - EXIM AUTOMÁTICO, 1563]
+        - [BNDES EXIM PÓS-EMBARQUE, 800]
+      modalidade_apoio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Reembolsável
+        max: Reembolsável
+        top:
+        - [Reembolsável, 2363]
+      forma_apoio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Direta
+        max: Direta
+        top:
+        - [Direta, 2363]
+      area_operacional:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: AREA DE COMÉRCIO EXTERIOR
+        max: AREA DE COMÉRCIO EXTERIOR
+        top:
+        - [AREA DE COMÉRCIO EXTERIOR, 2363]
+      fonte_recurso:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: FAT CAMBIAL
+        max: RECURSOS PROPRIOS - BNDES
+        top:
+        - [FAT CAMBIAL, 2355]
+        - [RECURSOS PROPRIOS - BNDES, 8]
+      custo_financeiro:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Taxa de juros em moeda estrangeira
+        max: Taxa flutuante em moeda estrangeira LIBOR 12
+        top:
+        - [Taxa de juros em moeda estrangeira, 2352]
+        - [Taxa flutuante em moeda estrangeira LIBOR 06, 7]
+        - [Taxa flutuante em moeda estrangeira LIBOR 06 EURO, 2]
+        - [Taxa flutuante em moeda estrangeira LIBOR 12, 2]
+      sigla_moeda:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: EUR
+        max: USD
+        top:
+        - [USD, 2352]
+        - [EUR, 11]
+      setor_bndes:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: COMERCIO/SERVICOS
+        max: INDUSTRIA
+        top:
+        - [INDUSTRIA, 2252]
+        - [COMERCIO/SERVICOS, 111]
+      subsetor_bndes:
+        tipo: VARCHAR
+        nulos_pct: 0.55
+        distintos_aprox: 27
+        min: ATIVIDADES DE SEDES DE EMPRESAS E CONSULTORIA EM GESTÃO EMPRESARIAL
+        max: SERVICOS ESPECIALIZADOS PARA CONSTRUCAO
+        top:
+        - [FABRICACAO DE MAQUINAS E EQUIPAMENTOS, 1408]
+        - ['FABRICACAO DE VEICULOS AUTOMOTORES, REBOQUES E CARROCERIAS', 371]
+        - ['FABRICACAO DE PRODUTOS DE METAL, EXCETO MAQUINAS E EQUIPAMENTOS', 145]
+        - ['FABRICACAO DE OUTROS EQUIPAMENTOS DE TRANSPORTE, EXCETO VEICULOS AUTOMOTORES', 118]
+        - ['FABRICACAO DE MAQUINAS, APARELHOS E MATERIAIS ELETRICOS', 60]
+        - [ATIVIDADES DE SERVICOS FINANCEIROS, 34]
+        - ['FABRICACAO DE EQUIPAMENTOS DE INFORMATICA, PRODUTOS ELETRONICOS E OPTICOS', 32]
+        - [METALURGIA, 30]
+        - ['COMERCIO POR ATACADO, EXCETO VEICULOS AUTOMOTORES E MOTOCICLETAS', 27]
+        - [COMERCIO E REPARACAO DE VEICULOS AUTOMOTORES E MOTOCICLETAS, 21]
+      tipo_garantia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: CCR/ALADI
+        max: Seguro de crédito/FGE / Real / Pessoal
+        top:
+        - [Pessoal, 2040]
+        - [Seguro de crédito/FGE, 105]
+        - [Seguro de crédito/FGE / Pessoal, 86]
+        - [Outras, 29]
+        - [Seguro de crédito / Pessoal, 27]
+        - [CCR/ALADI, 24]
+        - [Seguro de crédito/FGE / Real / Pessoal, 21]
+        - [Real / Pessoal, 20]
+        - [Seguro de crédito/FGE / Real, 7]
+        - [Seguro de crédito / Real / Pessoal, 3]
+      situacao_operacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: ATIVA
+        max: LIQUIDADA
+        top:
+        - [LIQUIDADA, 1817]
+        - [ATIVA, 546]
+  operacoes_exportacao_servicos:
+    linhas: 652
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 18
+        min: '1998'
+        max: '2015'
+        media: 2009
+        quartis: [2008, 2010, 2012]
+        top:
+        - ['2012', 111]
+        - ['2011', 107]
+        - ['2013', 73]
+        - ['2009', 70]
+        - ['2008', 64]
+        - ['2010', 51]
+        - ['2007', 46]
+        - ['2005', 26]
+        - ['2001', 24]
+        - ['1999', 23]
+      data_contratacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 334, min: '1998-07-24', max: '2015-04-28'}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: BA
+        max: SP
+        top:
+        - [RJ, 528]
+        - [SP, 92]
+        - [MG, 27]
+        - [RO, 3]
+        - [BA, 1]
+        - [GO, 1]
+      sigla_pais_destino:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 17
+        min: AGO
+        max: VEN
+        top:
+        - [ARG, 440]
+        - [AGO, 84]
+        - [ECU, 42]
+        - [URY, 41]
+        - [DOM, 20]
+        - [CUB, 6]
+        - [VEN, 6]
+        - [MOZ, 3]
+        - [GHA, 2]
+        - [PER, 2]
+      id_operacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 135, min: '1104729', max: '677623'}
+      cnpj_exportador: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 20, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_exportador: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 18, pessoal: 'só contagens: valores seriam dado pessoal'}
+      porte_exportador:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: GRANDE
+        max: PEQUENA
+        top:
+        - [GRANDE, 650]
+        - [MÉDIA, 1]
+        - [PEQUENA, 1]
+      descricao_operacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 134, min: EXPORTACAO DE BENS E SERVICOS PARA A C.A. METRO CARACAS., max: 'FINANCIAMENTO
+          A EXPORTAÇÃO DE BENS E SERVIÇOS DE ENGENHARIA DESTINADOS AO APROVEITAMENTO HIDROELETRICO SAN FRANCISCO, LOCALIZADO NAS MONTANHAS DOS
+          ANDES CENTRAIS EQUATORIANOS, NA BACIA MEDIA DO RIO PASTAZA, NO EQUADOR.'}
+      categoria:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Bens e serviços para obras no exterior
+        max: Bens e serviços para obras no exterior
+        top:
+        - [Bens e serviços para obras no exterior, 652]
+      modalidade_operacional:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Buyer
+        max: Supplier
+        top:
+        - [Supplier, 523]
+        - [Buyer, 129]
+      tipo_mutuario:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Ente privado
+        max: Ente público
+        top:
+        - [Ente público, 642]
+        - [Ente privado, 10]
+      produto:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: BNDES EXIM PÓS-EMBARQUE
+        max: BNDES EXIM PÓS-EMBARQUE
+        top:
+        - [BNDES EXIM PÓS-EMBARQUE, 652]
+      modalidade_apoio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: REEMBOLSÁVEL
+        max: REEMBOLSÁVEL
+        top:
+        - [REEMBOLSÁVEL, 652]
+      forma_apoio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: DIRETA
+        max: DIRETA
+        top:
+        - [DIRETA, 652]
+      area_operacional:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Área de Comércio Exterior
+        max: Área de Comércio Exterior
+        top:
+        - [Área de Comércio Exterior, 652]
+      fonte_recurso:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: RECURSOS LIVRES - FAT CAMBIAL
+        max: RECURSOS LIVRES - FAT CAMBIAL
+        top:
+        - [RECURSOS LIVRES - FAT CAMBIAL, 652]
+      custo_financeiro:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: TAXA FIXA EM US$
+        max: TAXA FIXA EM US$
+        top:
+        - [TAXA FIXA EM US$, 652]
+      sigla_moeda:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: USD
+        max: USD
+        top:
+        - [USD, 652]
+      setor_bndes:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: COMERCIO E SERVICOS
+        max: COMERCIO E SERVICOS
+        top:
+        - [COMERCIO E SERVICOS, 652]
+      subsetor_bndes:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: CONSTRUÇÃO
+        max: CONSTRUÇÃO
+        top:
+        - [CONSTRUÇÃO, 652]
+      tipo_garantia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: CCR/ALADI
+        max: SEGURO DE CRÉDITO/FGE / EXPORTADOR
+        top:
+        - [SEGURO DE CRÉDITO/FGE, 566]
+        - [CCR/ALADI, 76]
+        - [PESSOAL, 8]
+        - [OUTRAS, 1]
+        - [SEGURO DE CRÉDITO/FGE / EXPORTADOR, 1]
+      situacao_operacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: ATIVA
+        max: LIQUIDADA
+        top:
+        - [LIQUIDADA, 639]
+        - [ATIVA, 13]
+      valor_operacao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 625
+        min: '4568.72'
+        max: '865423450.0'
+        media: 19468303.2605
+        quartis: [708412.1362, 2798215.2088, 12123879.3291]
+      valor_desembolsado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 631
+        min: '4568.72'
+        max: '492975886.84999985'
+        media: 16103100.7117
+        quartis: [708412.1362, 2798215.2086, 11834278.8855]
+      taxa_juros:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 402
+        min: '2.792'
+        max: '9.875'
+        media: 5.1673
+        quartis: [4.0052, 4.8676, 6.2238]
+      prazo_meses:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 18
+        min: '60'
+        max: '300'
+        media: 132.4785
+        quartis: [120, 120, 144]
+        top:
+        - ['120', 329]
+        - ['144', 221]
+        - ['150', 36]
+        - ['132', 35]
+        - ['96', 6]
+        - ['180', 5]
+        - ['300', 5]
+        - ['60', 3]
+        - ['168', 2]
+        - ['174', 2]
+  operacoes_indiretas_automaticas:
+    linhas: 2392704
+    fonte_do_perfil: tabela inteira da última partição (ano = 2026)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
+        top:
+        - ['2026', 64244]
+      data_contratacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 214, min: '2026-01-02', max: '2026-08-31'}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SC, 11556]
+        - [SP, 10827]
+        - [PR, 8986]
+        - [RS, 7564]
+        - [MG, 6131]
+        - [GO, 2643]
+        - [ES, 2048]
+        - [MT, 1896]
+        - [BA, 1799]
+        - [RJ, 1566]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3774}
+      cnpj_cliente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 39030, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_cliente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 35719, pessoal: 'só contagens: valores seriam dado pessoal'}
+      porte_cliente:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: GRANDE
+        max: PEQUENA
+        top:
+        - [MÉDIA, 25882]
+        - [PEQUENA, 22091]
+        - [MICRO, 9876]
+        - [GRANDE, 6395]
+      natureza_cliente:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: ADMINISTRAÇÃO PÚBLICA DIRETA - GOVERNO MUNICIPAL
+        max: PÚBLICA INDIRETA
+        top:
+        - [PRIVADA, 64225]
+        - [ADMINISTRAÇÃO PÚBLICA DIRETA - GOVERNO MUNICIPAL, 17]
+        - [PÚBLICA INDIRETA, 2]
+      valor_operacao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 14204
+        min: '500.0'
+        max: '150000000.0'
+        media: 837218.6577
+        quartis: [97727.098, 368027.9996, 806722.6028]
+      valor_desembolsado:
+        tipo: DOUBLE
+        nulos_pct: 40.58
+        distintos_aprox: 8867
+        min: '500.0'
+        max: '100000000.0'
+        media: 692963.3115
+        quartis: [83154.6166, 308305.2687, 724828.8523]
+      fonte_recurso:
+        tipo: VARCHAR
+        nulos_pct: 65.35
+        distintos_aprox: 4
+        min: RECURSOS LIVRES - FAT
+        max: RECURSOS VINCULADOS - FUNDO CLIMA
+        top:
+        - [null, 41982]
+        - [RECURSOS LIVRES - PRÓPRIOS, 18242]
+        - [RECURSOS LIVRES - FAT, 3501]
+        - [RECURSOS VINCULADOS - FAT DEPÓSITOS ESPECIAIS, 517]
+        - [RECURSOS LIVRES - FUNTEL, 1]
+        - [RECURSOS VINCULADOS - FUNDO CLIMA, 1]
+      custo_financeiro:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: SELIC
+        max: US$ / CESTA
+        top:
+        - [TAXA FIXA, 55865]
+        - [TLP, 6381]
+        - [SELIC, 1792]
+        - [US$ / CESTA, 182]
+        - [TAXA REFERENCIAL (TR, 24]
+      taxa_juros:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2931
+        min: '1.12'
+        max: '65.88'
+        media: 15.7257
+        quartis: [12.5482, 13.7218, 19.8027]
+      prazo_carencia:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 32
+        min: '0'
+        max: '95'
+        media: 3.7224
+        quartis: [0, 3, 6]
+        top:
+        - ['0', 20509]
+        - ['3', 19154]
+        - ['6', 15248]
+        - ['12', 5646]
+        - ['2', 1172]
+        - ['1', 1013]
+        - ['5', 467]
+        - ['24', 376]
+        - ['4', 176]
+        - ['11', 146]
+      prazo_amortizacao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 120
+        min: '1'
+        max: '239'
+        media: 51.0655
+        quartis: [42, 54, 57]
+      modalidade_apoio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: REEMBOLSÁVEL
+        max: REEMBOLSÁVEL
+        top:
+        - [REEMBOLSÁVEL, 64244]
+      forma_apoio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: INDIRETA
+        max: INDIRETA
+        top:
+        - [INDIRETA, 64244]
+      produto:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: BNDES AUTOMÁTICO
+        max: BNDES FINAME
+        top:
+        - [BNDES FINAME, 38014]
+        - [BNDES AUTOMÁTICO, 26116]
+        - [BNDES CRÉDITO RURAL, 114]
+      instrumento_financeiro:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 44
+        min: BK AQUISIÇÃO E COMERCIALIZAÇÃO - DEMAIS
+        max: PRONAMP INVESTIMENTO
+        top:
+        - [PROGRAMA BNDES MAIS MOBILIDADE, 15809]
+        - [LINHA CRÉDITO PEQUENAS E MÉDIAS EMPRESAS, 14394]
+        - [PROGRAMA BNDES RENOVA FROTA, 7325]
+        - [BNDES PROCAPCRED, 7127]
+        - [BK AQUISIÇÃO E COMERCIALIZAÇÃO – ÔNIBUS E CAMINHÃO, 5835]
+        - [MATERIAIS INDUSTRIALIZADOS, 4346]
+        - [PROCAPCRED, 3748]
+        - [PROGRAMA BNDES MAIS INOVAÇÃO, 2915]
+        - [BK AQUISIÇÃO E COMERCIALIZAÇÃO - DEMAIS, 1370]
+        - [BNDES PER BR, 359]
+      inovacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: NÃO
+        max: SIM
+        top:
+        - [NÃO, 61285]
+        - [SIM, 2959]
+      area_operacional:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: AREA DE OPERACOES E CANAIS DIGITAIS
+        max: AREA DE OPERACOES E CANAIS DIGITAIS
+        top:
+        - [AREA DE OPERACOES E CANAIS DIGITAIS, 64244]
+      setor_cnae:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: AGROPECUÁRIA E PESCA
+        max: INDUSTRIA EXTRATIVA
+        top:
+        - [COMERCIO E SERVICOS, 58439]
+        - [INDUSTRIA DE TRANSFORMAÇÃO, 5084]
+        - [AGROPECUÁRIA E PESCA, 573]
+        - [INDUSTRIA EXTRATIVA, 148]
+      subsetor_cnae_agrupado:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 49
+        min: Administração Pública
+        max: Água, esgoto e lixo
+        top:
+        - [Transporte terrestre, 28315]
+        - [Ativ financeira e seguro, 10981]
+        - [Comércio, 10527]
+        - ['Ativ imobil, profissional e adm', 2862]
+        - [Construção, 2759]
+        - [Alojamento e alimentação, 886]
+        - [Produtos Alimentícios, 781]
+        - [Agropecuária, 573]
+        - [Produto de metal, 561]
+        - [Saúde e serv social, 541]
+      codigo_subsetor_cnae: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1176}
+      nome_subsetor_cnae: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 963, pessoal: 'só contagens: valores seriam dado pessoal'}
+      setor_bndes:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: AGROPECUÁRIA
+        max: INFRA-ESTRUTURA
+        top:
+        - [COMERCIO/SERVICOS, 29493]
+        - [INFRA-ESTRUTURA, 28946]
+        - [INDUSTRIA, 5232]
+        - [AGROPECUÁRIA, 573]
+      subsetor_bndes:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: AGROPECUÁRIA
+        max: TÊXTIL E VESTUÁRIO
+        top:
+        - [COMÉRCIO E SERVIÇOS, 29493]
+        - [TRANSPORTE RODOVIÁRIO, 28315]
+        - [OUTRAS, 1960]
+        - [ALIMENTO E BEBIDA, 861]
+        - [METALURGIA E PRODUTOS, 648]
+        - [AGROPECUÁRIA, 573]
+        - [TÊXTIL E VESTUÁRIO, 565]
+        - [MECÂNICA, 446]
+        - [QUÍMICA E PETROQUÍMICA, 327]
+        - [ATV. AUX. TRANSPORTES, 207]
+      instituicao_financeira_credenciada: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 58, min: ACCREDITO SOCIEDADE DE CREDITO DIRETO S.A.,
+        max: 'STARA FINANCEIRA S.A. - CREDITO, FINANCIAMENTO E INVEST'}
+      cnpj_agente_financeiro: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 61, pessoal: 'só contagens: valores seriam dado pessoal'}
+      situacao_operacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: ATIVA
+        max: LIQUIDADA
+        top:
+        - [ATIVA, 63782]
+        - [LIQUIDADA, 462]
+  operacoes_nao_automaticas:
+    linhas: 23896
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_contratacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 3567, min: '2002-01-02', max: '2026-08-31'}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 29
+        min: AC
+        max: TO
+        top:
+        - [SP, 5661]
+        - [IE, 2603]
+        - [RJ, 2286]
+        - [MG, 1874]
+        - [RS, 1706]
+        - [SC, 1688]
+        - [PR, 1435]
+        - [BA, 1104]
+        - [GO, 701]
+        - [RN, 581]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 32.55, distintos_aprox: 1317}
+      id_contrato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 10087}
+      cnpj_cliente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4619, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_cliente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4522, pessoal: 'só contagens: valores seriam dado pessoal'}
+      porte_cliente:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: GRANDE
+        max: PEQUENA
+        top:
+        - [GRANDE, 20657]
+        - [MÉDIA, 1720]
+        - [PEQUENA, 834]
+        - [MICRO, 685]
+      natureza_cliente:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: ADMINISTRAÇÃO PÚBLICA DIRETA - GOVERNO ESTADUAL
+        max: PÚBLICA INDIRETA
+        top:
+        - [PRIVADA, 21904]
+        - [PÚBLICA INDIRETA, 878]
+        - [ADMINISTRAÇÃO PÚBLICA DIRETA - GOVERNO MUNICIPAL, 620]
+        - [ADMINISTRAÇÃO PÚBLICA DIRETA - GOVERNO ESTADUAL, 485]
+        - [ADMINISTRAÇÃO PÚBLICA DIRETA - GOVERNO FEDERAL, 9]
+      descricao_projeto: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5826}
+      fonte_recurso: {tipo: VARCHAR, nulos_pct: 3.46, distintos_aprox: 90, min: RECURSOS LIVRES - FAT CONSTITUCIONAL, max: RECURSOS VINCULADOS
+          - TESOURO}
+      custo_financeiro:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: 101,75% DO CDI
+        max: US$ / CESTA
+        top:
+        - [TJLP, 10089]
+        - [US$ / CESTA, 3157]
+        - [TLP, 2568]
+        - [TAXA FIXA, 2561]
+        - [SEM CUSTO, 1628]
+        - [SELIC, 1415]
+        - [TJ462, 1290]
+        - [TAXA REFERENCIAL (TR), 649]
+        - [IPCA, 424]
+        - [CDI, 38]
+      modalidade_apoio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: NÃO REEMBOLSÁVEL
+        max: REEMBOLSÁVEL
+        top:
+        - [REEMBOLSÁVEL, 22284]
+        - [NÃO REEMBOLSÁVEL, 1612]
+      forma_apoio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: DIRETA
+        max: INDIRETA
+        top:
+        - [DIRETA, 19826]
+        - [INDIRETA, 4070]
+      produto:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: BNDES CADEIAS PRODUTIVAS
+        max: OUTROS
+        top:
+        - [BNDES FINEM, 16046]
+        - [BNDES NÃO REEMBOLSÁVEL, 1612]
+        - [BNDES PROJECT FINANCE, 1546]
+        - [BNDES LIMITE DE CRÉDITO, 1521]
+        - [BNDES FINAME, 1399]
+        - [BNDES MÁQUINAS E SERVIÇOS, 984]
+        - [BNDES DEBENTURES SIMPLES, 338]
+        - [BNDES EMPRÉSTIMO PONTE, 224]
+        - [BNDES MICROCRÉDITO, 66]
+        - [OPERAÇÃO FINANCEIRA, 50]
+      instrumento_financeiro: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 176, min: AEROPORTOS DE PRIMEIRO CICLO, max: TELECOMUNICAÇÕES}
+      tipo_garantia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: COM DISPENSA DE GARANTIA
+        max: SEM REGISTRO DE GARANTIA
+        top:
+        - [REAL / PESSOAL, 7312]
+        - [PESSOAL, 5894]
+        - [DEFINIDA PELO AGENTE FINANCEIRO, 4093]
+        - [REAL, 2269]
+        - [NÃO SE APLICA, 1613]
+        - ['OUTRA, DE NATUREZA ESPECÍFICA OU MISTA', 1100]
+        - [COMPROMISSO DE DESEMPENHO FINANCEIRO ('COVENANTS'), 367]
+        - ['PESSOAL / OUTRA, DE NATUREZA ESPECÍFICA OU MISTA', 338]
+        - ['REAL / PESSOAL / OUTRA, DE NATUREZA ESPECÍFICA OU MISTA', 308]
+        - ['REAL / OUTRA, DE NATUREZA ESPECÍFICA OU MISTA', 260]
+      tipo_excepcionalidade: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 9, pessoal: 'só contagens: valores seriam dado pessoal'}
+      indicador_inovacao:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 23896]
+      area_operacional:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: AREA DE COMÉRCIO EXTERIOR
+        max: AREA DE TRANSICAO ENERGETICA E CLIMATICA
+        top:
+        - [AREA DE DESENVOLVIMENTO PRODUTIVO E INOVACAO, 12079]
+        - [AREA DE TRANSICAO ENERGETICA E CLIMATICA, 6084]
+        - [AREA DE INFRAESTRUTURA, 2850]
+        - [AREA DE DESENVOLVIMENTO SOCIAL E GESTAO PUBLICA, 1586]
+        - ['AREA DE RELACIONAMENTO, MARKETING E CULTURA', 652]
+        - [AREA DE MEIO AMBIENTE, 275]
+        - [AREA DE OPERACOES E CANAIS DIGITAIS, 140]
+        - [AREA DE TRANSICAO ENERGETICA E CLIMA, 94]
+        - ['AREA DE MERC DE CAPITAIS, INVEST, PARTICIP E REESTRUT DE EMPRESAS', 50]
+        - [AREA DE PLANEJAMENTO E PESQUISA ECONOMICA, 37]
+      setor_cnae:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: AGROPECUÁRIA E PESCA
+        max: INDUSTRIA EXTRATIVA
+        top:
+        - [COMERCIO E SERVICOS, 14541]
+        - [INDUSTRIA DE TRANSFORMAÇÃO, 8276]
+        - [AGROPECUÁRIA E PESCA, 893]
+        - [INDUSTRIA EXTRATIVA, 186]
+      subsetor_cnae_agrupado:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 46
+        min: ADMINISTRAÇÃO PÚBLICA
+        max: ÁGUA, ESGOTO E LIXO
+        top:
+        - [ELETRICIDADE E GÁS, 5235]
+        - [PRODUTOS ALIMENTÍCIOS, 1810]
+        - [TRANSPORTE AQUAVIÁRIO, 1638]
+        - [COMÉRCIO, 1138]
+        - ['COQUE, PETRÓLEO E COMBUSTÍVEL', 1092]
+        - [ATIV AUX TRANSPORTE E ENTREGA, 1034]
+        - [AGROPECUÁRIA, 893]
+        - [ADMINISTRAÇÃO PÚBLICA, 741]
+        - [QUÍMICA, 739]
+        - [MÁQUINAS E EQUIPAMENTOS, 711]
+      secao_cnae:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 19
+        min: A
+        max: U
+        top:
+        - [C, 8276]
+        - [D, 5235]
+        - [H, 3085]
+        - [G, 1138]
+        - [J, 960]
+        - [A, 893]
+        - [O, 741]
+        - [E, 658]
+        - [R, 628]
+        - [F, 386]
+      divisao_cnae: {tipo: VARCHAR, nulos_pct: 0.35, distintos_aprox: 71, min: '01', max: '99'}
+      grupo_cnae: {tipo: VARCHAR, nulos_pct: 1.07, distintos_aprox: 238, min: '011', max: '990'}
+      classe_cnae: {tipo: VARCHAR, nulos_pct: 2.08, distintos_aprox: 505, min: '01113', max: '99008'}
+      subclasse_cnae: {tipo: VARCHAR, nulos_pct: 23.06, distintos_aprox: 675, min: '0111302', max: '9900800'}
+      descricao_cnae: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 716, min: ABATE DE AVES, max: USINAS DE COMPOSTAGEM}
+      setor_bndes:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: AGROPECUÁRIA
+        max: INFRAESTRUTURA
+        top:
+        - [INFRAESTRUTURA, 9684]
+        - [INDUSTRIA, 8462]
+        - [COMERCIO/SERVICOS, 4857]
+        - [AGROPECUÁRIA, 893]
+      subsetor_bndes:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: AGROPECUÁRIA
+        max: TÊXTIL E VESTUÁRIO
+        top:
+        - [ENERGIA ELÉTRICA, 5107]
+        - [COMÉRCIO E SERVIÇOS, 4857]
+        - [QUÍMICA E PETROQUÍMICA, 2140]
+        - [ALIMENTO E BEBIDA, 1947]
+        - [OUTROS TRANSPORTES, 1720]
+        - [MECÂNICA, 1096]
+        - [ATV. AUX. TRANSPORTES, 1034]
+        - [AGROPECUÁRIA, 893]
+        - [METALURGIA E PRODUTOS, 816]
+        - [OUTRAS, 808]
+      nome_instituicao_financeira_credenciada: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 47, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      cnpj_instituicao_financeira_credenciada: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 46, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      valor_operacao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 17328
+        min: '0.55'
+        max: '9889997969.99'
+        media: 51754211.0478
+        quartis: [2136169.0139, 9289212.7101, 32434974.9287]
+      valor_desembolsado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 20476
+        min: '0.0'
+        max: '9889997969.99'
+        media: 40473204.1415
+        quartis: [1224377.5498, 6673557.842, 25316629.5687]
+      taxa_juros:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 667
+        min: '0.0'
+        max: '16.53'
+        media: 2.7767
+        quartis: [1.7896, 2.4993, 3.5155]
+      prazo_carencia:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 92
+        min: '0'
+        max: '259'
+        media: 20.9368
+        quartis: [12, 18, 26]
+      prazo_amortizacao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 340
+        min: '0'
+        max: '399'
+        media: 92.9103
+        quartis: [54, 72, 139]
+      situacao_operacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '-'
+        max: LIQUIDADO
+        top:
+        - [LIQUIDADO, 14187]
+        - [ATIVO, 9441]
+        - ['-', 268]
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 24
+        min: '2002'
+        max: '2026'
+        media: 2013.3688
+        quartis: [2009, 2012, 2018]
+        top:
+        - ['2012', 1850]
+        - ['2009', 1842]
+        - ['2013', 1592]
+        - ['2010', 1529]
+        - ['2011', 1477]
+        - ['2014', 1354]
+        - ['2025', 1334]
+        - ['2015', 1184]
+        - ['2007', 1173]
+        - ['2008', 1137]
+  operacoes_pre_embarque:
+    linhas: 7664
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 24
+        min: '2002'
+        max: '2026'
+        media: 2009.3485
+        quartis: [2005, 2009, 2012]
+        top:
+        - ['2010', 931]
+        - ['2002', 823]
+        - ['2003', 803]
+        - ['2006', 554]
+        - ['2013', 506]
+        - ['2005', 492]
+        - ['2009', 470]
+        - ['2011', 417]
+        - ['2025', 374]
+        - ['2008', 360]
+      data_contratacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 2311, min: '2002-01-08', max: '2026-08-31'}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0.01
+        distintos_aprox: 24
+        min: AC
+        max: TO
+        top:
+        - [SP, 3171]
+        - [RS, 1476]
+        - [SC, 1010]
+        - [PR, 645]
+        - [MG, 455]
+        - [CE, 193]
+        - [RJ, 156]
+        - [ES, 128]
+        - [BA, 125]
+        - [PE, 104]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0.07, distintos_aprox: 524, min: '1100205', max: '5220454'}
+      cnpj_cliente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1906, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_cliente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1607, pessoal: 'só contagens: valores seriam dado pessoal'}
+      porte_cliente:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: GRANDE
+        max: PEQUENA
+        top:
+        - [GRANDE, 6129]
+        - [MÉDIA, 1393]
+        - [PEQUENA, 94]
+        - [MICRO, 48]
+      natureza_cliente:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: PRIVADA
+        max: PRIVADA
+        top:
+        - [PRIVADA, 7664]
+      fonte_recurso:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '-'
+        max: RECURSOS VINCULADOS - FAT DEPÓSITOS ESPECIAIS
+        top:
+        - [RECURSOS LIVRES - TESOURO, 2423]
+        - [RECURSOS LIVRES - FAT, 2197]
+        - [RECURSOS LIVRES - PRÓPRIOS, 1343]
+        - [RECURSOS VINCULADOS - FAT DEPÓSITOS ESPECIAIS, 820]
+        - [RECURSOS LIVRES - FAT CAMBIAL, 510]
+        - ['-', 371]
+      modalidade_apoio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: REEMBOLSÁVEL
+        max: REEMBOLSÁVEL
+        top:
+        - [REEMBOLSÁVEL, 7664]
+      forma_apoio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: DIRETA
+        max: INDIRETA
+        top:
+        - [INDIRETA, 7579]
+        - [DIRETA, 85]
+      produto:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: BNDES EXIM PRÉ-EMBARQUE
+        max: BNDES EXIM PRÉ-EMBARQUE
+        top:
+        - [BNDES EXIM PRÉ-EMBARQUE, 7664]
+      instrumento_financeiro:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: BNDES EXIM PRÉ-EMBARQUE
+        max: PSI - Exportação de Bens de Consumo
+        top:
+        - [BNDES EXIM PRÉ-EMBARQUE, 3756]
+        - [PSI - Exportação de Bens de Capital, 1886]
+        - [BNDES EXIM PRÉ-EMBARQUE - Especial, 651]
+        - [BNDES REVITALIZA, 434]
+        - [PSI - Exportação de Bens de Consumo, 411]
+        - [PROGRAMA BNDES BRASIL SOBERANO, 315]
+        - [BNDES EXIM PRÉ-EMBARQUE - Ágil, 98]
+        - [PROGRAMA BNDES BRASIL SOBERANO COMPETITIVIDADE, 49]
+        - [BNDES EXIM PRÉ-EMBARQUE - Empresa Âncora, 22]
+        - [BNDES EXIM PRÉ-EMBARQUE - Automóveis, 20]
+      indicador_inovacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: NÃO
+        max: SIM
+        top:
+        - [NÃO, 7651]
+        - [SIM, 13]
+      area_operacional:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: AREA DE COMÉRCIO EXTERIOR
+        max: AREA DE DESENVOLVIMENTO PRODUTIVO E INOVACAO
+        top:
+        - [AREA DE COMÉRCIO EXTERIOR, 7659]
+        - [AREA DE DESENVOLVIMENTO PRODUTIVO E INOVACAO, 5]
+      setor_cnae:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: AGROPECUÁRIA E PESCA
+        max: INDUSTRIA EXTRATIVA
+        top:
+        - [INDUSTRIA DE TRANSFORMAÇÃO, 7110]
+        - [COMERCIO E SERVICOS, 325]
+        - [AGROPECUÁRIA E PESCA, 212]
+        - [INDUSTRIA EXTRATIVA, 17]
+      subsetor_cnae_agrupado:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 41
+        min: Agropecuária
+        max: Água, esgoto e lixo
+        top:
+        - ['Veículo, reboque e carroceria', 1392]
+        - [Máquinas e equipamentos, 1297]
+        - [Produtos Alimentícios, 914]
+        - ['Couro, artefato e calçado', 504]
+        - ['Máq, aparelho eletrico', 390]
+        - [Metalurgia, 330]
+        - [Mineral não metálico, 258]
+        - [Comércio, 247]
+        - [Borracha e plástico, 241]
+        - [Móveis, 240]
+      codigo_subsetor_cnae: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 422, min: A0100000, max: N8292000}
+      nome_subsetor_cnae: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 365, pessoal: 'só contagens: valores seriam dado pessoal'}
+      setor_bndes:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: AGROPECUÁRIA
+        max: INDUSTRIA
+        top:
+        - [INDUSTRIA, 7127]
+        - [COMERCIO/SERVICOS, 325]
+        - [AGROPECUÁRIA, 212]
+      subsetor_bndes:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: AGROPECUÁRIA
+        max: TÊXTIL E VESTUÁRIO
+        top:
+        - [MECÂNICA, 1869]
+        - [OUTRAS, 1574]
+        - [MATERIAL DE TRANSPORTE, 1507]
+        - [ALIMENTO E BEBIDA, 927]
+        - [METALURGIA E PRODUTOS, 522]
+        - [TÊXTIL E VESTUÁRIO, 338]
+        - [COMÉRCIO E SERVIÇOS, 325]
+        - [QUÍMICA E PETROQUÍMICA, 290]
+        - [AGROPECUÁRIA, 212]
+        - [CELULOSE E PAPEL, 83]
+      nome_instituicao_financeira_credenciada: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 64, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      cnpj_instituicao_financeira_credenciada: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 75, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      situacao_operacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: ATIVA
+        max: LIQUIDADA
+        top:
+        - [LIQUIDADA, 7102]
+        - [ATIVA, 562]
+      valor_operacao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5992
+        min: '1.0'
+        max: '1986240000.0'
+        media: 19309889.5004
+        quartis: [1954282.2795, 5662664.2132, 18389471.9225]
+      valor_desembolsado:
+        tipo: DOUBLE
+        nulos_pct: 0.73
+        distintos_aprox: 6088
+        min: '49712.0'
+        max: '1958048974.0'
+        media: 18960063.193
+        quartis: [1942796.7, 5617359.9714, 18045662.1213]

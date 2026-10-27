@@ -1,0 +1,86 @@
+dataset: br_ms_sipni_doses_historicas
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  doses_agregadas:
+    linhas: 93785056
+    fonte_do_perfil: amostra de 2.133%. ~2.000.000 linhas
+    colunas:
+      ANO:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 24
+        min: '1994'
+        max: '2019'
+        media: 2010.6657
+        quartis: [2007, 2012, 2015]
+        top:
+        - ['2018', 160293]
+        - ['2013', 146048]
+        - ['2016', 138816]
+        - ['2014', 137216]
+        - ['2017', 137216]
+        - ['2012', 126976]
+        - ['2015', 120226]
+        - ['2007', 112640]
+        - ['2010', 110571]
+        - ['2009', 106496]
+      UF:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 299008]
+        - [SP, 266240]
+        - [BA, 160497]
+        - [SC, 144381]
+        - [PR, 140706]
+        - [RS, 110592]
+        - [GO, 97545]
+        - [MA, 81920]
+        - [PE, 75776]
+        - [RJ, 67534]
+      MUNIC: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 9927}
+      FX_ETARIA: {tipo: VARCHAR, nulos_pct: 1.98, distintos_aprox: 158, min: '0', max: X6}
+      IMUNO: {tipo: VARCHAR, nulos_pct: 1.38, distintos_aprox: 93, min: '01', max: XX}
+      DOSE:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: '01'
+        max: '37'
+        top:
+        - ['01', 730826]
+        - ['02', 467723]
+        - ['03', 336732]
+        - ['05', 274346]
+        - ['06', 54526]
+        - [09, 39230]
+        - ['36', 30388]
+        - ['04', 23828]
+        - [08, 17490]
+        - ['07', 10481]
+      QT_DOSE: {tipo: VARCHAR, nulos_pct: 1.98, distintos_aprox: 5647}
+      ANOMES: {tipo: VARCHAR, nulos_pct: 9.6, distintos_aprox: 205, pessoal: 'só contagens: valores seriam dado pessoal'}
+      MES:
+        tipo: VARCHAR
+        nulos_pct: 9.6
+        distintos_aprox: 12
+        min: '00'
+        max: '12'
+        top:
+        - [null, 191541]
+        - ['04', 177187]
+        - ['03', 173067]
+        - ['05', 154822]
+        - ['11', 153182]
+        - ['06', 152001]
+        - ['12', 148699]
+        - [09, 147697]
+        - ['07', 146271]
+        - ['01', 143254]
+      DOSE1: {tipo: VARCHAR, nulos_pct: 11.59, distintos_aprox: 1315}
+      DOSEN: {tipo: VARCHAR, nulos_pct: 11.59, distintos_aprox: 1048}
+      DIFER: {tipo: VARCHAR, nulos_pct: 11.59, distintos_aprox: 2464}

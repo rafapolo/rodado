@@ -1,0 +1,937 @@
+dataset: br_ibama_autos
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  aie_enquadramento:
+    linhas: 531750
+    fonte_do_perfil: tabela inteira
+    colunas:
+      iseq_auto_infracao: {tipo: VARCHAR, nulos_pct: 9.37, distintos_aprox: 97185}
+      num_auto_infracao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 90336}
+      cd_serie_auto_infracao:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 531750]
+      sq_enquadramento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 506071}
+      administrativo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [S, 398338]
+        - [N, 133412]
+      tp_norma:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Decreto
+        max: Lei
+        top:
+        - [Decreto, 308019]
+        - [Lei, 223731]
+      nu_norma:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '13123'
+        max: '9966'
+        top:
+        - ['6514', 308019]
+        - ['9605', 221248]
+        - ['9966', 2150]
+        - ['13123', 333]
+      numero_artigo_norma: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 81, pessoal: 'só contagens: valores seriam dado pessoal'}
+      paragrafo_artigo_norm:
+        tipo: VARCHAR
+        nulos_pct: 72.37
+        distintos_aprox: 7
+        min: '1'
+        max: '9'
+        top:
+        - [null, 384812]
+        - ['1', 123634]
+        - ['3', 10468]
+        - ['2', 8634]
+        - ['7', 2122]
+        - ['6', 1156]
+        - ['4', 831]
+        - ['9', 78]
+        - ['5', 15]
+      inciso_artigo_norma:
+        tipo: VARCHAR
+        nulos_pct: 61.78
+        distintos_aprox: 12
+        min: '1'
+        max: '9'
+        top:
+        - [null, 328512]
+        - ['2', 116166]
+        - ['7', 30584]
+        - ['4', 26373]
+        - ['1', 10095]
+        - ['3', 7699]
+        - ['9', 6532]
+        - ['5', 3730]
+        - ['8', 1100]
+        - ['6', 895]
+      alinea_artigo_norma:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 531750]
+      ultima_atualizacao_relatorio:
+        tipo: TIMESTAMP
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-07 00:17:27'
+        max: '2026-10-07 00:17:27'
+        top:
+        - ['2026-10-07 00:17:27', 531750]
+  aie_enquadramentocomp:
+    linhas: 35820
+    fonte_do_perfil: tabela inteira
+    colunas:
+      seq_auto_infracao: {tipo: VARCHAR, nulos_pct: 7.13, distintos_aprox: 33971}
+      num_auto_infracao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 27676}
+      cd_serie_auto_infracao:
+        tipo: VARCHAR
+        nulos_pct: 99.98
+        distintos_aprox: 2
+        min: D
+        max: E
+        top:
+        - [null, 35814]
+        - [E, 4]
+        - [D, 2]
+      sq_enquadramento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2198}
+      nu_lei_comp: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 8912}
+      nu_artigo_comp: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2089}
+      nu_par_inc_al: {tipo: VARCHAR, nulos_pct: 0.12, distintos_aprox: 2994}
+      ultima_atualizacao_relatorio:
+        tipo: TIMESTAMP
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-07 01:07:50'
+        max: '2026-10-07 01:07:50'
+        top:
+        - ['2026-10-07 01:07:50', 35820]
+  anexo:
+    linhas: 722831
+    fonte_do_perfil: tabela inteira
+    colunas:
+      seq_auto_infracao: {tipo: VARCHAR, nulos_pct: 0.6, distintos_aprox: 140813}
+      cd_auto_infracao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 162719}
+      cd_serie_auto_infracao:
+        tipo: VARCHAR
+        nulos_pct: 6.43
+        distintos_aprox: 10
+        min: '0'
+        max: d
+        top:
+        - [D, 631980]
+        - [null, 46483]
+        - [E, 43817]
+        - [A, 246]
+        - [B, 211]
+        - [O, 63]
+        - ['0', 10]
+        - [C, 10]
+        - [d, 6]
+        - [a, 5]
+      seq_auto_anexo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 63503}
+      num_anexo_auto: {tipo: VARCHAR, nulos_pct: 13.08, distintos_aprox: 105664}
+      arquivo_evidencia: {tipo: VARCHAR, nulos_pct: 93.6, distintos_aprox: 52277}
+      dt_auto_infracao: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 94249, min: '1985-08-02 16:15:00', max: '2026-10-06 16:09:00'}
+      tp_anexo_auto:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: Croqui
+        max: Áudio
+        top:
+        - [Documento, 641692]
+        - [Imagem, 46267]
+        - [Foto, 22435]
+        - [Mapa, 8639]
+        - [Croqui, 3790]
+        - [Áudio, 8]
+      des_anexo_auto: {tipo: VARCHAR, nulos_pct: 6.19, distintos_aprox: 345161}
+      ultima_atualizacao_relatorio:
+        tipo: TIMESTAMP
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-07 00:19:58'
+        max: '2026-10-07 00:19:58'
+        top:
+        - ['2026-10-07 00:19:58', 722831]
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 39
+        min: '1985'
+        max: '2026'
+        media: 2010.4667
+        quartis: [2008, 2010, 2012]
+        top:
+        - ['2008', 104304]
+        - ['2009', 91269]
+        - ['2010', 80842]
+        - ['2007', 79831]
+        - ['2011', 77112]
+        - ['2012', 69614]
+        - ['2013', 52776]
+        - ['2006', 50808]
+        - ['2014', 20567]
+        - ['2005', 14175]
+  auto_infracao:
+    linhas: 711839
+    fonte_do_perfil: tabela inteira
+    colunas:
+      seq_auto_infracao: {tipo: VARCHAR, nulos_pct: 0.96, distintos_aprox: 800947}
+      des_status_formulario:
+        tipo: VARCHAR
+        nulos_pct: 0.96
+        distintos_aprox: 4
+        min: Cancelado
+        max: Substituído por outro
+        top:
+        - [Lavrado, 682699]
+        - [Cancelado, 19812]
+        - [null, 6860]
+        - [Excluído, 1365]
+        - [Substituído por outro, 1103]
+      ds_sit_auto_aie:
+        tipo: VARCHAR
+        nulos_pct: 87.24
+        distintos_aprox: 2
+        min: Excluído
+        max: Impresso
+        top:
+        - [null, 621007]
+        - [Impresso, 87273]
+        - [Excluído, 3559]
+      sit_cancelado:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [N, 685780]
+        - [S, 26059]
+      num_auto_infracao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 671179}
+      ser_auto_infracao:
+        tipo: VARCHAR
+        nulos_pct: 13.07
+        distintos_aprox: 37
+        min: ' '
+        max: À
+        top:
+        - [D, 422626]
+        - [E, 97000]
+        - [null, 93016]
+        - [A, 46860]
+        - [B, 46169]
+        - ['7', 2479]
+        - ['8', 1549]
+        - ['6', 1350]
+        - [C, 434]
+        - [a, 50]
+      cd_original_auto_infracao: {tipo: VARCHAR, nulos_pct: 99.87, distintos_aprox: 1040}
+      tipo_auto:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Advertência
+        max: Multa simples
+        top:
+        - [Multa simples, 698150]
+        - [Advertência, 13219]
+        - [Multa diária, 438]
+        - [null, 32]
+      tipo_multa:
+        tipo: VARCHAR
+        nulos_pct: 74.96
+        distintos_aprox: 4
+        min: '3'
+        max: Fechada
+        top:
+        - [null, 533627]
+        - [Fechada, 117894]
+        - [Aberta, 60121]
+        - ['4', 132]
+        - ['3', 65]
+      val_auto_infracao:
+        tipo: DOUBLE
+        nulos_pct: 1.57
+        distintos_aprox: 70670
+        min: '0.0'
+        max: '4306569666.0'
+        media: 160788.668
+        quartis: [695.4925, 2503.8369, 14372.7113]
+      fundamentacao_multa: {tipo: VARCHAR, nulos_pct: 85.08, distintos_aprox: 67433}
+      patrimonio_apuracao:
+        tipo: VARCHAR
+        nulos_pct: 99.55
+        distintos_aprox: 2
+        min: Capacidade Aparente
+        max: Patrimônio Comprovado
+        top:
+        - [null, 708616]
+        - [Capacidade Aparente, 3014]
+        - [Patrimônio Comprovado, 209]
+      gravidade_infracao:
+        tipo: VARCHAR
+        nulos_pct: 94
+        distintos_aprox: 3
+        min: Baixa
+        max: Média
+        top:
+        - [null, 669156]
+        - [Baixa, 21582]
+        - [Média, 18324]
+        - [Grave, 2777]
+      cd_nivel_gravidade:
+        tipo: VARCHAR
+        nulos_pct: 93.98
+        distintos_aprox: 5
+        min: A
+        max: E
+        top:
+        - [null, 668986]
+        - [A, 21098]
+        - [C, 7594]
+        - [E, 5335]
+        - [B, 5064]
+        - [D, 3762]
+      motivacao_conduta:
+        tipo: VARCHAR
+        nulos_pct: 84.96
+        distintos_aprox: 2
+        min: Intencional
+        max: Não intencional
+        top:
+        - [null, 604749]
+        - [Intencional, 97584]
+        - [Não intencional, 9506]
+      efeito_meio_ambiente:
+        tipo: VARCHAR
+        nulos_pct: 87.86
+        distintos_aprox: 5
+        min: Desprezível
+        max: Significativa
+        top:
+        - [null, 625446]
+        - [Potencial, 34583]
+        - [Fraca, 18476]
+        - [Moderada, 13813]
+        - [Significativa, 13549]
+        - [Desprezível, 5972]
+      efeito_saude_publica:
+        tipo: VARCHAR
+        nulos_pct: 87.86
+        distintos_aprox: 5
+        min: Desprezível
+        max: Significativa
+        top:
+        - [null, 625446]
+        - [Potencial, 58563]
+        - [Desprezível, 14011]
+        - [Fraca, 9163]
+        - [Moderada, 2440]
+        - [Significativa, 2216]
+      passivel_recuperacao:
+        tipo: VARCHAR
+        nulos_pct: 86.26
+        distintos_aprox: 4
+        min: Dano potencial
+        max: S
+        top:
+        - [null, 614031]
+        - [N, 48791]
+        - [S, 37994]
+        - [Dano potencial, 9274]
+        - [Não, 1749]
+      unid_arrecadacao: {tipo: VARCHAR, nulos_pct: 1.2, distintos_aprox: 480, min: Centro Nacional de Pesquisa e Conservação da Biodiversidade
+          Marinha do Sudeste e Sul, max: Área de Proteção Ambiental do Igarapé Gelado}
+      des_auto_infracao: {tipo: VARCHAR, nulos_pct: 2.1, distintos_aprox: 518695}
+      dat_hora_auto_infracao: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 290853, min: '1977-09-03 00:00:00', max: '2026-10-06 17:51:40'}
+      forma_entrega:
+        tipo: VARCHAR
+        nulos_pct: 69.06
+        distintos_aprox: 5
+        min: Correios
+        max: Representante
+        top:
+        - [null, 491621]
+        - [Correios, 124690]
+        - [Pessoalmente, 81050]
+        - [Representante, 13268]
+        - [Edital, 714]
+        - [O Autuado se recusou a assinar, 496]
+      dat_ciencia_autuacao: {tipo: VARCHAR, nulos_pct: 39.3, distintos_aprox: 55435}
+      dt_fato_infracional: {tipo: TIMESTAMP, nulos_pct: 87.89, distintos_aprox: 5408, min: '1982-11-17 00:00:00', max: '2026-10-29 00:00:00'}
+      dt_inicio_ato_inequivoco: {tipo: TIMESTAMP, nulos_pct: 87.89, distintos_aprox: 4968, min: '1994-05-10 00:00:00', max: '2027-07-19 00:00:00'}
+      dt_fim_ato_inequivoco: {tipo: TIMESTAMP, nulos_pct: 87.89, distintos_aprox: 3914, min: '2002-09-27 00:00:00', max: '2026-10-30 00:00:00'}
+      ds_unid_conciliacao:
+        tipo: VARCHAR
+        nulos_pct: 97.48
+        distintos_aprox: 32
+        min: A DEFINIR
+        max: Núcleo de Conciliação Ambiental/TO
+        top:
+        - [null, 693936]
+        - [A DEFINIR, 6520]
+        - [Núcleo de Conciliação Ambiental/GO, 785]
+        - [Núcleo de Conciliação Ambiental/MG, 714]
+        - [Núcleo de Conciliação Ambiental/PA, 609]
+        - [Núcleo de Conciliação Ambiental Nacional 2, 601]
+        - [Núcleo de Conciliação Ambiental/PI, 572]
+        - [Núcleo de Conciliação Ambiental Nacional 1, 570]
+        - [Núcleo de Conciliação Ambiental/CE, 563]
+        - [Núcleo de Conciliação Ambiental/RS, 534]
+      cod_municipio: {tipo: VARCHAR, nulos_pct: 0.04, distintos_aprox: 6648}
+      municipio: {tipo: VARCHAR, nulos_pct: 0.04, distintos_aprox: 6394}
+      uf:
+        tipo: VARCHAR
+        nulos_pct: 0.04
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 113318]
+        - [PA, 70533]
+        - [MT, 52999]
+        - [GO, 41990]
+        - [SP, 39721]
+        - [RO, 38355]
+        - [CE, 31496]
+        - [ES, 29499]
+        - [RS, 28955]
+        - [AM, 25841]
+      num_processo: {tipo: VARCHAR, nulos_pct: 2.29, distintos_aprox: 694266}
+      nu_processo_formatado: {tipo: VARCHAR, nulos_pct: 2.29, distintos_aprox: 657226}
+      cod_infracao: {tipo: VARCHAR, nulos_pct: 39.76, distintos_aprox: 456, min: '209901', max: '910005'}
+      des_infracao: {tipo: VARCHAR, nulos_pct: 39.76, distintos_aprox: 481, min: 'Abandonar produtos ou substâncias tóxicas, perigosas ou nocivas
+          à saúde humana e ao meio ambiente, em desacordo com as exigências estabelecidas em leis ou nos seus regulamentos ou utilizar em desacordo
+          com as normas vigentes.', max: Violar as limitações administrativas provisórias impostas às atividades efetiva ou potencialmente causadoras
+          de degradação ambiental nas áreas delimitadas para realização de estudos com vistas à criação de unidade de conservação.}
+      tipo_infracao:
+        tipo: VARCHAR
+        nulos_pct: 39.76
+        distintos_aprox: 12
+        min: Administração Ambiental
+        max: Unidade de Conservação
+        top:
+        - [null, 283034]
+        - [Flora, 219017]
+        - [Fauna, 66465]
+        - [Cadastro Técnico Federal, 36766]
+        - [Controle Ambiental, 34716]
+        - [Pesca, 33149]
+        - [Outras, 11661]
+        - [Administração Ambiental, 9338]
+        - [Qualidade Ambiental, 7219]
+        - [Unidade de Conservação, 3588]
+      cd_receita_auto_infracao:
+        tipo: VARCHAR
+        nulos_pct: 39.76
+        distintos_aprox: 12
+        min: '1304.0'
+        max: '9304.0'
+        top:
+        - [null, 283034]
+        - ['4304.0', 219020]
+        - ['3304.0', 66468]
+        - ['5304.0', 43802]
+        - ['1304.0', 36787]
+        - ['6304.0', 33149]
+        - ['9304.0', 21428]
+        - ['8304.0', 2390]
+        - ['7304.0', 2375]
+        - ['1306.0', 1213]
+      des_receita:
+        tipo: VARCHAR
+        nulos_pct: 39.76
+        distintos_aprox: 13
+        min: Penalidade pecuniária - Administração Ambiental
+        max: Penalidade pecuniária - Unidades de conservação
+        top:
+        - [null, 283034]
+        - [Penalidade pecuniária - Flora, 219020]
+        - [Penalidade pecuniária - Fauna, 66468]
+        - [Penalidade pecuniária - Controle ambiental, 43802]
+        - [Penalidade pecuniária - Cadastro Técnico Federal, 36787]
+        - [Penalidade pecuniária - Pesca, 33149]
+        - [Penalidade pecuniária - Outras, 21428]
+        - ['Penalidade pecuniária - Org. Gen. Modific. e Biopirataria ', 2390]
+        - [Penalidade pecuniária - Ecossistema, 2375]
+        - [Penalidade pecuniária - Unidades de conservação, 1213]
+      tp_pessoa_infrator: {tipo: VARCHAR, nulos_pct: 4.63, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      num_pessoa_infrator: {tipo: VARCHAR, nulos_pct: 0.21, distintos_aprox: 381924, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_infrator: {tipo: VARCHAR, nulos_pct: 0.16, distintos_aprox: 419236, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf_cnpj_infrator: {tipo: VARCHAR, nulos_pct: 4.63, distintos_aprox: 458308, pessoal: 'só contagens: valores seriam dado pessoal'}
+      qt_area:
+        tipo: DOUBLE
+        nulos_pct: 93.25
+        distintos_aprox: 19242
+        min: '0.0'
+        max: '10220680.0'
+        media: 1182.4979
+        quartis: [6.4889, 24.4633, 89.0256]
+      infracao_area:
+        tipo: VARCHAR
+        nulos_pct: 67.9
+        distintos_aprox: 9
+        min: Atividade
+        max: Queimada
+        top:
+        - [null, 483320]
+        - [Desmatamento, 116636]
+        - [Outros, 41923]
+        - [Atividade, 34329]
+        - [Não se Aplica, 26823]
+        - [Queimada, 4545]
+        - [Desmatamento e Queimada, 2558]
+        - [Não se aplica, 1279]
+        - [Outro(s), 426]
+      des_outros_tipo_area: {tipo: VARCHAR, nulos_pct: 99.64, distintos_aprox: 2057}
+      classificacao_area: {tipo: VARCHAR, nulos_pct: 70.12, distintos_aprox: 283, min: APP, max: Unidade de Conservação de Uso Sustentável}
+      ds_fator_ajuste: {tipo: VARCHAR, nulos_pct: 97.17, distintos_aprox: 180, min: '(0,4 % DO TETO)', max: x}
+      num_longitude_auto: {tipo: VARCHAR, nulos_pct: 58.21, distintos_aprox: 162719}
+      num_latitude_auto: {tipo: VARCHAR, nulos_pct: 58.32, distintos_aprox: 98687}
+      ds_wkt: {tipo: VARCHAR, nulos_pct: 58.41, distintos_aprox: 217965}
+      des_local_infracao: {tipo: VARCHAR, nulos_pct: 69.02, distintos_aprox: 153801}
+      ds_referencia_acao_fiscalizatoria: {tipo: VARCHAR, nulos_pct: 77.13, distintos_aprox: 129739}
+      unidade_conservacao: {tipo: VARCHAR, nulos_pct: 99.94, distintos_aprox: 81, min: APA Bacia Hidrográfica do Rio Paraíba do Sul, max: RVS
+          dos Campos de Palmas}
+      id_sicafi_biomas_atingidos_infracao: {tipo: VARCHAR, nulos_pct: 61.84, distintos_aprox: 83, min: '1', max: '7, 7'}
+      ds_biomas_atingidos: {tipo: VARCHAR, nulos_pct: 61.84, distintos_aprox: 79, min: Amazonia, max: 'Pantanal, Pantanal'}
+      seq_notificacao: {tipo: VARCHAR, nulos_pct: 98.01, distintos_aprox: 14056}
+      seq_acao_fiscalizatoria: {tipo: VARCHAR, nulos_pct: 74.74, distintos_aprox: 156283}
+      cd_acao_fiscalizatoria: {tipo: VARCHAR, nulos_pct: 87.21, distintos_aprox: 82429}
+      unid_controle: {tipo: VARCHAR, nulos_pct: 0.06, distintos_aprox: 140, min: Centro Nacional de Telemática, max: Unidade Técnica em Ipatinga_MG}
+      tipo_acao:
+        tipo: VARCHAR
+        nulos_pct: 68.34
+        distintos_aprox: 5
+        min: Demanda Jud/MP
+        max: Rotina
+        top:
+        - [null, 486499]
+        - [Rotina, 116238]
+        - [Operação, 102469]
+        - [Fortuito, 5363]
+        - [Demanda Jud/MP, 1074]
+        - [Linha Verde, 196]
+      operacao: {tipo: VARCHAR, nulos_pct: 93.28, distintos_aprox: 3033}
+      denuncia_sisliv: {tipo: VARCHAR, nulos_pct: 99.98, distintos_aprox: 109, min: 10311/2007, max: 980/2013}
+      seq_ordem_fiscalizacao: {tipo: VARCHAR, nulos_pct: 72.27, distintos_aprox: 16908}
+      ordem_fiscalizacao: {tipo: VARCHAR, nulos_pct: 72.21, distintos_aprox: 20037}
+      unid_ordenadora: {tipo: VARCHAR, nulos_pct: 72.21, distintos_aprox: 280, min: Autoridade Julgadora em Porto Alegre/RS, max: Área de Proteção
+          Ambiental Meandros do Rio Araguaia}
+      seq_solicitacao_recurso: {tipo: VARCHAR, nulos_pct: 84.55, distintos_aprox: 3817}
+      solicitacao_recurso: {tipo: VARCHAR, nulos_pct: 84.55, distintos_aprox: 5897}
+      operacao_sol_recurso: {tipo: VARCHAR, nulos_pct: 84.55, distintos_aprox: 2137}
+      dt_lancamento: {tipo: TIMESTAMP, nulos_pct: 0.07, distintos_aprox: 450970, min: '1980-01-02 00:00:00', max: '2081-06-23 19:34:38'}
+      tp_ult_alteracao:
+        tipo: VARCHAR
+        nulos_pct: 0.18
+        distintos_aprox: 5
+        min: Alterado
+        max: Redistribuido
+        top:
+        - [Alterado, 669905]
+        - [Preenchido, 35303]
+        - [Cancelado, 4717]
+        - [null, 1290]
+        - [Redistribuido, 601]
+        - [Cancelamento estornado, 23]
+      dt_ult_alteracao: {tipo: TIMESTAMP, nulos_pct: 0.25, distintos_aprox: 71770, min: '1997-09-11 00:00:00', max: '2081-06-23 19:34:38'}
+      justificativa_alteracao: {tipo: VARCHAR, nulos_pct: 2.09, distintos_aprox: 21496}
+      wkt_ge_area_autuada:
+        tipo: VARCHAR
+        nulos_pct: 99.5
+        distintos_aprox: 1
+        min: '{''type'': {''default_size'': 0, ''name'': DB_TYPE_CLOB, ''num'': 2017}}'
+        max: '{''type'': {''default_size'': 0, ''name'': DB_TYPE_CLOB, ''num'': 2017}}'
+        top:
+        - [null, 708300]
+        - ['{''type'': {''default_size'': 0, ''name'': DB_TYPE_CLOB, ''num'': 2017}}', 3539]
+      dt_ult_alter_geom: {tipo: TIMESTAMP, nulos_pct: 99.5, distintos_aprox: 2531, min: '2023-12-14 23:53:50', max: '2026-10-06 18:35:49'}
+      tp_origem_ge_area_autuada:
+        tipo: VARCHAR
+        nulos_pct: 99.5
+        distintos_aprox: 2
+        min: AI-e Aplicativo
+        max: AI-e Cadastro de Formulários
+        top:
+        - [null, 708300]
+        - [AI-e Aplicativo, 3523]
+        - [AI-e Cadastro de Formulários, 16]
+      ds_erro_ge_area_autuada:
+        tipo: VARCHAR
+        nulos_pct: 99.97
+        distintos_aprox: 4
+        min: Cannot invoke "java.util.List.forEach(java.util.function.Consumer)" because the return value of "br.gov.ibama.aie.api.dto.syncronizacao.PoligonoDTO.getCoordenadasExternas()"
+          is null
+        max: Polígono sem coordenada
+        top:
+        - [null, 711618]
+        - [Polígono com menos de quatro coordenadas, 148]
+        - [Polígono possui arestas com intersecção, 58]
+        - [Polígono sem coordenada, 14]
+        - [Cannot invoke "java.util.List.forEach(java.util.function.Consumer)" because the return value of "br.gov.ibama.aie.api.dto.syncronizacao.PoligonoDTO.getCoordenadasExternas()"
+            is null, 1]
+      ds_wkt_ge_area_autuada_com_erro:
+        tipo: VARCHAR
+        nulos_pct: 99.97
+        distintos_aprox: 1
+        min: '{''type'': {''default_size'': 0, ''name'': DB_TYPE_CLOB, ''num'': 2017}}'
+        max: '{''type'': {''default_size'': 0, ''name'': DB_TYPE_CLOB, ''num'': 2017}}'
+        top:
+        - [null, 711632]
+        - ['{''type'': {''default_size'': 0, ''name'': DB_TYPE_CLOB, ''num'': 2017}}', 207]
+      st_auto_migrado_aie:
+        tipo: VARCHAR
+        nulos_pct: 0.96
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [N, 621007]
+        - [S, 83972]
+        - [null, 6860]
+      ds_enquadramento_administrativo: {tipo: VARCHAR, nulos_pct: 48.4, distintos_aprox: 13805}
+      ds_enquadramento_nao_administrativo: {tipo: VARCHAR, nulos_pct: 38.56, distintos_aprox: 61103}
+      ds_enquadramento_complementar: {tipo: VARCHAR, nulos_pct: 96.69, distintos_aprox: 13165}
+      cd_termos_apreensao: {tipo: VARCHAR, nulos_pct: 84.61, distintos_aprox: 84391}
+      cd_termos_embargos: {tipo: VARCHAR, nulos_pct: 86.41, distintos_aprox: 85585}
+      tp_origem_registro_auto:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: AI-e Aplicativo
+        max: SICAFI
+        top:
+        - [SICAFI, 621007]
+        - [AI-e Aplicativo, 89872]
+        - [AI-e Cadastro de Formulários, 960]
+      ultima_atualizacao_relatorio:
+        tipo: TIMESTAMP
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-07 01:29:04'
+        max: '2026-10-07 01:29:04'
+        top:
+        - ['2026-10-07 01:29:04', 711839]
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 44
+        min: '1977'
+        max: '2026'
+        media: 2007.4965
+        quartis: [2000, 2006, 2015]
+        top:
+        - ['1997', 37761]
+        - ['2002', 37646]
+        - ['1996', 36651]
+        - ['1999', 34456]
+        - ['1998', 33597]
+        - ['2005', 33104]
+        - ['2008', 31316]
+        - ['2007', 28992]
+        - ['2004', 27190]
+        - ['2001', 26814]
+  bioma:
+    linhas: 294460
+    fonte_do_perfil: tabela inteira
+    colunas:
+      iseq_auto_infracao: {tipo: VARCHAR, nulos_pct: 2.97, distintos_aprox: 254258}
+      num_auto_infracao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 294502}
+      cd_serie_auto_infracao:
+        tipo: VARCHAR
+        nulos_pct: 36.03
+        distintos_aprox: 17
+        min: '0'
+        max: d
+        top:
+        - [null, 106083]
+        - [E, 95124]
+        - [D, 91511]
+        - [A, 1084]
+        - [B, 563]
+        - [a, 49]
+        - [d, 13]
+        - [C, 10]
+        - [O, 10]
+        - [b, 4]
+      bioma:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: Amazonia
+        max: Pantanal
+        top:
+        - [Amazonia, 115373]
+        - [Mata Atlantica, 64084]
+        - [Cerrado, 42436]
+        - [Caatinga, 34799]
+        - [Costeiro e Marinho, 30211]
+        - [Pampa, 6088]
+        - [Pantanal, 1459]
+        - [null, 10]
+      ultima_atualizacao_relatorio:
+        tipo: TIMESTAMP
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-07 01:13:09'
+        max: '2026-10-07 01:13:09'
+        top:
+        - ['2026-10-07 01:13:09', 294460]
+  coordenada:
+    linhas: 73035
+    fonte_do_perfil: tabela inteira
+    colunas:
+      iseq_auto_infracao: {tipo: VARCHAR, nulos_pct: 5.41, distintos_aprox: 7263}
+      num_auto_infracao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6642}
+      cd_serie_auto_infracao:
+        tipo: VARCHAR
+        nulos_pct: 67.31
+        distintos_aprox: 3
+        min: '-'
+        max: E
+        top:
+        - [null, 49157]
+        - [E, 20261]
+        - [D, 3616]
+        - ['-', 1]
+      seq_poligono: {tipo: VARCHAR, nulos_pct: 5.41, distintos_aprox: 7671}
+      sq_poligono_aiemob: {tipo: VARCHAR, nulos_pct: 32.77, distintos_aprox: 2481}
+      no_area: {tipo: VARCHAR, nulos_pct: 32.77, distintos_aprox: 1789}
+      area_poligono:
+        tipo: DOUBLE
+        nulos_pct: 32.91
+        distintos_aprox: 1409
+        min: '0.0'
+        max: '20157.09'
+        media: 196.8024
+        quartis: [3.4289, 21.9663, 86.953]
+      seq_ponto_poligono: {tipo: VARCHAR, nulos_pct: 5.41, distintos_aprox: 85246}
+      sq_cordenada_aiemob: {tipo: VARCHAR, nulos_pct: 94.59, distintos_aprox: 4012}
+      ordem: {tipo: VARCHAR, nulos_pct: 94.61, distintos_aprox: 1154}
+      longitude: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 53689}
+      latitude: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 52165}
+      ds_wkt: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 60930}
+      ultima_atualizacao_relatorio:
+        tipo: TIMESTAMP
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-07 01:07:10'
+        max: '2026-10-07 01:07:10'
+        top:
+        - ['2026-10-07 01:07:10', 73035]
+  enquadramento:
+    linhas: 689797
+    fonte_do_perfil: tabela inteira
+    colunas:
+      seq_auto_infracao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 513866}
+      seq_enquadramento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 9643}
+      num_auto_infracao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 409377}
+      ser_auto_infracao:
+        tipo: VARCHAR
+        nulos_pct: 18.58
+        distintos_aprox: 20
+        min: '2'
+        max: d
+        top:
+        - [D, 451085]
+        - [null, 128166]
+        - [E, 104832]
+        - [A, 2749]
+        - [B, 2674]
+        - [C, 129]
+        - [a, 72]
+        - [d, 29]
+        - ['`', 16]
+        - [O, 11]
+      artigo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3838}
+      nu_par_inc_al_artigo_norma: {tipo: VARCHAR, nulos_pct: 72.69, distintos_aprox: 10129}
+      ds_com_artigo: {tipo: VARCHAR, nulos_pct: 74.65, distintos_aprox: 3080}
+      ds_com_par_inc_al: {tipo: VARCHAR, nulos_pct: 97.61, distintos_aprox: 1919}
+      tp_norma:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: Constituição Federal
+        max: Resolução
+        top:
+        - [Decreto, 462641]
+        - [Lei, 174434]
+        - [Portaria, 21300]
+        - [Instrução Normativa, 17758]
+        - [Constituição Federal, 7825]
+        - [Resolução, 5274]
+        - [Medida Provisória, 565]
+      nu_norma: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 543, min: '', max: ibama 90-N/1998}
+      dt_auto_infracao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 306749}
+      ultima_atualizacao_relatorio:
+        tipo: TIMESTAMP
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-07 00:13:31'
+        max: '2026-10-07 00:13:31'
+        top:
+        - ['2026-10-07 00:13:31', 689797]
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 46
+        min: '1195'
+        max: '2026'
+        media: 2011.2488
+        quartis: [2006, 2009, 2017]
+        top:
+        - ['2008', 56833]
+        - ['2007', 56492]
+        - ['2006', 51901]
+        - ['2005', 49612]
+        - ['2009', 35164]
+        - ['2004', 30341]
+        - ['2010', 29335]
+        - ['2011', 26395]
+        - ['2002', 25099]
+        - ['2012', 24884]
+  especime:
+    linhas: 38059
+    fonte_do_perfil: tabela inteira
+    colunas:
+      seq_auto_infracao: {tipo: VARCHAR, nulos_pct: 8.91, distintos_aprox: 15572}
+      num_auto_infracao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 18302}
+      cd_serie_auto_infracao:
+        tipo: VARCHAR
+        nulos_pct: 9.18
+        distintos_aprox: 4
+        min: A
+        max: a
+        top:
+        - [E, 33390]
+        - [null, 3495]
+        - [D, 1172]
+        - [A, 1]
+        - [a, 1]
+      seq_taxonomia: {tipo: VARCHAR, nulos_pct: 97.34, distintos_aprox: 160, min: '10124', max: '9886'}
+      seq_especime: {tipo: VARCHAR, nulos_pct: 8.91, distintos_aprox: 40303}
+      cd_especime: {tipo: VARCHAR, nulos_pct: 91.09, distintos_aprox: 3600}
+      quantidade:
+        tipo: DOUBLE
+        nulos_pct: 0.76
+        distintos_aprox: 4122
+        min: '0.0'
+        max: '19199628.0'
+        media: 2459.0856
+        quartis: [1, 2, 6.8125]
+      unidade_medida:
+        tipo: VARCHAR
+        nulos_pct: 1.08
+        distintos_aprox: 24
+        min: Alqueire Mineiro (48.400 m²)
+        max: m³ (1 MDC)
+        top:
+        - [Unidade, 28338]
+        - [m³, 5449]
+        - [kg (1.000 L), 2364]
+        - [m³ (1 MDC), 490]
+        - [M³, 471]
+        - [null, 412]
+        - [g (Gramas), 182]
+        - ['Metros ', 80]
+        - ['St. ', 76]
+        - [MDC (255 kg ou 7 sacos carvão), 63]
+      descricao:
+        tipo: VARCHAR
+        nulos_pct: 88.54
+        distintos_aprox: 6
+        min: Artesanato
+        max: Taxid. (Empalhado)
+        top:
+        - [null, 33696]
+        - [Espécime, 3391]
+        - [Carne, 521]
+        - [Partes, 296]
+        - [Pele, 88]
+        - [Artesanato, 49]
+        - [Taxid. (Empalhado), 18]
+      caracteristica: {tipo: VARCHAR, nulos_pct: 8.37, distintos_aprox: 127, min: '(1,574 m3) de madeiras em toras da essência cupiúba. Valoração:
+          R$ 150/m3.', max: árvores extraídas no interior do PARNA.}
+      st_perecivel:
+        tipo: VARCHAR
+        nulos_pct: 91.09
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [null, 34668]
+        - [N, 2232]
+        - [S, 1159]
+      tipo:
+        tipo: VARCHAR
+        nulos_pct: 3.17
+        distintos_aprox: 3
+        min: Fauna
+        max: Pesca
+        top:
+        - [Fauna, 28014]
+        - [Flora, 6384]
+        - [Pesca, 2454]
+        - [null, 1207]
+      grupo:
+        tipo: VARCHAR
+        nulos_pct: 20.42
+        distintos_aprox: 16
+        min: Anfíbio
+        max: Xaxim
+        top:
+        - [Ave, 21331]
+        - [null, 7770]
+        - [Madeira Serrada, 2702]
+        - [Tora, 2056]
+        - [Pescado, 1262]
+        - [Mamífero, 883]
+        - [Réptil, 708]
+        - [Caranguejo, 254]
+        - [Peixes Ornamentais, 250]
+        - [Invertebrado, 205]
+      nome_cientifico: {tipo: VARCHAR, nulos_pct: 13.12, distintos_aprox: 1478, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_popular: {tipo: VARCHAR, nulos_pct: 6.14, distintos_aprox: 2588, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cites:
+        tipo: VARCHAR
+        nulos_pct: 0.28
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [N, 34196]
+        - [S, 3757]
+        - [null, 106]
+      situacao: {tipo: VARCHAR, nulos_pct: 94.57, distintos_aprox: 1592}
+      dat_alteracao: {tipo: TIMESTAMP, nulos_pct: 12.74, distintos_aprox: 36363, min: '2012-10-22 22:43:31', max: '2045-04-05 21:40:29'}
+      nu_valor: {tipo: VARCHAR, nulos_pct: 91.09, distintos_aprox: 1104}
+      ultima_atualizacao_relatorio:
+        tipo: TIMESTAMP
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-07 01:01:50'
+        max: '2026-10-07 01:01:50'
+        top:
+        - ['2026-10-07 01:01:50', 38059]

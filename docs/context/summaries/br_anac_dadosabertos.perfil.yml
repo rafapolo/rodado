@@ -1,0 +1,316 @@
+dataset: br_anac_dadosabertos
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  pontualidade:
+    linhas: 14013
+    fonte_do_perfil: tabela inteira
+    colunas:
+      Empresa_Aerea: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 76, min: 'AAL - AMERICAN AIRLINES, INC.', max: VOZ - VIRGIN AUSTRALIA AIRLINES}
+      N_Voo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7239}
+      Aeroporto_Origem_Designador_OACI: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 231, min: CYUL, max: ZBAA}
+      'Aeroporto_Origem_Nome_UF_Pais ': {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 204, pessoal: 'só contagens: valores seriam dado pessoal'}
+      Aeroporto_Destino_Designador_OACI: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 231, min: CYUL, max: ZBAA}
+      Aeroporto_Destino_Nome_UF_Pais: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 211, pessoal: 'só contagens: valores seriam dado pessoal'}
+      Etapas_Previstas:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 32
+        min: '1'
+        max: '75'
+        media: 14.8728
+        quartis: [3, 13, 29]
+        top:
+        - ['31', 2831]
+        - ['1', 2339]
+        - ['2', 854]
+        - ['5', 806]
+        - ['4', 672]
+        - ['3', 620]
+        - ['13', 544]
+        - ['26', 511]
+        - ['30', 438]
+        - ['9', 373]
+      Percentuais_de_Cancelamentos:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 66
+        min: '0.0'
+        max: '100.0'
+        media: 1.8885
+        quartis: [0, 0, 0]
+      Percentuais_de_Atrasos_superiores_a_30_minutos:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 173
+        min: '0.0'
+        max: '100.0'
+        media: 9.5501
+        quartis: [0, 3.3007, 12.7667]
+      Percentuais_de_Atrasos_superiores_a_60_minutos:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0.0'
+        max: '100.0'
+        media: 2.8719
+        quartis: [0, 0, 3.23]
+  rab:
+    linhas: 35024
+    fonte_do_perfil: tabela inteira
+    colunas:
+      MARCAS: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 34479}
+      PROPRIETARIOS: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 19662}
+      OPERADORES: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 25579}
+      NR_CERT_MATRICULA: {tipo: BIGINT, nulos_pct: 10.92, distintos_aprox: 29092, pessoal: 'só contagens: valores seriam dado pessoal'}
+      NR_SERIE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 24042}
+      CD_TIPO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 146, min: '', max: uaaf}
+      DS_MODELO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3189}
+      NM_FABRICANTE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2459, pessoal: 'só contagens: valores seriam dado pessoal'}
+      CD_CLS:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 22
+        min: ''
+        max: S1P
+        top:
+        - [L1P, 15352]
+        - ['', 4778]
+        - [L2J, 3540]
+        - [L2P, 2802]
+        - [L2T, 1785]
+        - [L1T, 1677]
+        - [H1T, 1613]
+        - [H2T, 983]
+        - [L00, 913]
+        - [H1P, 814]
+      NR_PMD: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2159}
+      CD_TIPO_ICAO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 397, min: '', max: ZZZZ}
+      NR_TRIPULACAO_MIN:
+        tipo: BIGINT
+        nulos_pct: 9.35
+        distintos_aprox: 5
+        min: '0'
+        max: '4'
+        media: 1.0713
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 26008]
+        - ['2', 3735]
+        - [null, 3274]
+        - ['0', 1830]
+        - ['3', 172]
+        - ['4', 5]
+      NR_PASSAGEIROS_MAX:
+        tipo: BIGINT
+        nulos_pct: 9.38
+        distintos_aprox: 172
+        min: '0'
+        max: '660'
+        media: 11.907
+        quartis: [1, 3, 6]
+      NR_ASSENTOS:
+        tipo: BIGINT
+        nulos_pct: 9.38
+        distintos_aprox: 161
+        min: '0'
+        max: '663'
+        media: 13.3403
+        quartis: [2, 4, 7]
+      NR_ANO_FABRICACAO:
+        tipo: BIGINT
+        nulos_pct: 24.79
+        distintos_aprox: 112
+        min: '0'
+        max: '2029'
+        media: 1997.3616
+        quartis: [1981, 2002, 2012]
+      DT_VALIDADE_CVA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6755}
+      DT_VALIDADE_CA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6755}
+      DT_CANC: {tipo: DATE, nulos_pct: 76.6, distintos_aprox: 3477, min: '1943-10-06', max: '2099-12-17'}
+      DS_MOTIVO_CANC: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2655}
+      CD_INTERDICAO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 265, min: '', max: ZX}
+      DS_GRAVAME: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 392, min: '', max: USUFRUTO / O.J. RESTRITIVA DE TRANSFERÊNCIA  / O.J. RESTRITIVA
+          DE TRANSFERÊNCIA}
+      DT_MATRICULA: {tipo: TIMESTAMP, nulos_pct: 39.51, distintos_aprox: 3392, pessoal: 'só contagens: valores seriam dado pessoal'}
+      TP_MOTOR:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: ''
+        max: SEM MOTOR
+        top:
+        - [MOTOR CONVENCIONAL, 19215]
+        - ['', 4778]
+        - [MOTOR JATO/TURBOFAN, 3828]
+        - [MOTOR TURBOHELICE, 3493]
+        - [MOTOR TURBOEIXO, 2596]
+        - [SEM MOTOR, 913]
+        - [MOTOR A PISTÃO, 101]
+        - [DRONE, 82]
+        - [MOTOR ELETRICO, 18]
+      QT_MOTOR:
+        tipo: BIGINT
+        nulos_pct: 13.64
+        distintos_aprox: 5
+        min: '0'
+        max: '4'
+        media: 1.291
+        quartis: [1, 1, 2]
+        top:
+        - ['1', 19957]
+        - ['2', 9113]
+        - [null, 4778]
+        - ['0', 913]
+        - ['3', 186]
+        - ['4', 77]
+      TP_POUSO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: ''
+        max: POUSO NA AGUA
+        top:
+        - [POUSO CONVENCIONAL, 26382]
+        - ['', 4778]
+        - [HELICOPTERO, 3410]
+        - [ANFIBIO, 243]
+        - [GIROCOPTERO, 101]
+        - [DRONE (RPAS), 82]
+        - [POUSO EM TERRA, 18]
+        - [POUSO NA AGUA, 10]
+      TP_CA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: ''
+        max: CEALE
+        top:
+        - [CA PADRAO, 25003]
+        - [CAVE, 6422]
+        - ['', 2446]
+        - [AEV, 666]
+        - [CEALE, 206]
+        - [APO, 174]
+        - [CAER, 97]
+        - [APO+CAVE, 7]
+        - [CAARF, 3]
+      CD_PROPOSITO_CAVE:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: ''
+        max: '9'
+        top:
+        - ['', 28965]
+        - ['7', 4727]
+        - ['10', 657]
+        - ['9', 261]
+        - ['4', 203]
+        - ['5', 93]
+        - ['1,2,3,6', 64]
+        - ['4,5', 24]
+        - ['1, 2, 3, 6', 8]
+        - ['1,2', 6]
+      CF_OPERACIONAL:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: ''
+        max: RBAC E94
+        top:
+        - [RBAC 91, 27368]
+        - [RBAC 135, 3080]
+        - ['', 2438]
+        - [RBAC 121, 2042]
+        - [RBAC E94, 96]
+      DS_CATEGORIA_HOMOLOGACAO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 23
+        min: ''
+        max: UTILIDADE/S.ACROB
+        top:
+        - [NORMAL, 14294]
+        - ['', 10385]
+        - [TRANSPORTE, 3559]
+        - [RESTRITA, 2125]
+        - [UTILIDADE, 1231]
+        - [NORMAL/RESTRITA, 1052]
+        - [NORMAL/UTILIDADE, 858]
+        - [NÃO CERTIFICADA, 454]
+        - [TRANSP.REGIONAL, 344]
+        - [TRANSPORTE A/B, 343]
+      TP_OPERACAO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: ''
+        max: PUBLICO MUNICIPAL
+        top:
+        - [PRIVADO, 31653]
+        - ['', 2462]
+        - [PUBLICO ESTADUAL, 441]
+        - [PUBLICO FEDERAL, 244]
+        - [PRIVADA, 209]
+        - [PUBLICO DISTRITO FEDERAL, 9]
+        - [PUBLICA ESTADUAL, 3]
+        - [PUBLICO MUNICIPAL, 2]
+        - [PUBLICO, 1]
+  voos:
+    linhas: 679492
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ICAO Empresa Aérea: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 133, min: 1ED, max: WAL}
+      Número Voo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7788}
+      Código Autorização (DI):
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: '0'
+        max: E
+        top:
+        - ['0', 653966]
+        - ['1', 4577]
+        - ['4', 4372]
+        - ['2', 3896]
+        - ['9', 3693]
+        - ['6', 3683]
+        - ['3', 2542]
+        - ['7', 2254]
+        - [D, 396]
+        - [E, 113]
+      Código Tipo Linha:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: C
+        max: N
+        top:
+        - [N, 536054]
+        - [I, 119049]
+        - [G, 15107]
+        - [C, 9282]
+      ICAO Aeródromo Origem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 427, min: BIKF, max: ZSPD}
+      ICAO Aeródromo Destino: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 418, min: BIKF, max: ZBAA}
+      Partida Prevista: {tipo: TIMESTAMP_NS, nulos_pct: 2.83, distintos_aprox: 104534, min: '2026-01-01 00:00:00', max: '2026-09-01 12:40:00.1'}
+      Partida Real: {tipo: TIMESTAMP, nulos_pct: 3.05, distintos_aprox: 242765, min: '2025-12-31 22:13:00', max: '2026-09-01 12:04:00'}
+      Chegada Prevista: {tipo: TIMESTAMP_NS, nulos_pct: 2.83, distintos_aprox: 103916, min: '2026-01-01 01:40:00', max: '2026-09-01 17:30:00.1'}
+      Chegada Real: {tipo: TIMESTAMP, nulos_pct: 3.05, distintos_aprox: 234461, min: '2026-01-01 01:19:00', max: '2027-07-15 15:05:00'}
+      Situação Voo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: CANCELADO
+        max: REALIZADO
+        top:
+        - [REALIZADO, 658781]
+        - [CANCELADO, 20711]
+      Código Justificativa:
+        tipo: INTEGER
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 679492]

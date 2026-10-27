@@ -1,0 +1,152 @@
+dataset: br_ibge_cnefe
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  enderecos:
+    linhas: 111102875
+    fonte_do_perfil: amostra de 1.8%. ~2.000.000 linhas
+    colunas:
+      COD_UNICO_ENDERECO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2171079, pessoal: 'só contagens: valores seriam dado pessoal'}
+      COD_UF:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: '11'
+        max: '53'
+        top:
+        - ['35', 362771]
+        - ['31', 231951]
+        - ['29', 184416]
+        - ['33', 171529]
+        - ['43', 124848]
+        - ['41', 114012]
+        - ['26', 110703]
+        - ['23', 86016]
+        - ['42', 69242]
+        - ['15', 59392]
+      COD_MUNICIPIO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6262}
+      COD_DISTRITO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 10575}
+      COD_SUBDISTRITO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 11809}
+      COD_SETOR: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 273303}
+      NUM_QUADRA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 326, min: '0', max: '994'}
+      NUM_FACE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 480, min: '1', max: '99'}
+      CEP: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 310437, pessoal: 'só contagens: valores seriam dado pessoal'}
+      DSC_LOCALIDADE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 75921}
+      NOM_TIPO_SEGLOGR: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 322, min: 10A TRAVESSA, max: ZONA}
+      NOM_TITULO_SEGLOGR: {tipo: VARCHAR, nulos_pct: 85.9, distintos_aprox: 436, min: ABADE, max: VOVO}
+      NOM_SEGLOGR: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 276968}
+      NUM_ENDERECO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 12837, pessoal: 'só contagens: valores seriam dado pessoal'}
+      DSC_MODIFICADOR: {tipo: VARCHAR, nulos_pct: 65.72, distintos_aprox: 7374}
+      NOM_COMP_ELEM1: {tipo: VARCHAR, nulos_pct: 59.55, distintos_aprox: 61, min: ALA, max: VILA}
+      VAL_COMP_ELEM1: {tipo: VARCHAR, nulos_pct: 70.82, distintos_aprox: 20388}
+      NOM_COMP_ELEM2: {tipo: VARCHAR, nulos_pct: 89.72, distintos_aprox: 58, min: ALA, max: TRAVESSA INTERNA}
+      VAL_COMP_ELEM2: {tipo: VARCHAR, nulos_pct: 90.89, distintos_aprox: 5136}
+      NOM_COMP_ELEM3: {tipo: VARCHAR, nulos_pct: 97.98, distintos_aprox: 54, min: ALA, max: TRAVESSA INTERNA}
+      VAL_COMP_ELEM3: {tipo: VARCHAR, nulos_pct: 98.26, distintos_aprox: 2485}
+      NOM_COMP_ELEM4:
+        tipo: VARCHAR
+        nulos_pct: 99.8
+        distintos_aprox: 44
+        min: ALA
+        max: TRAVESSA INTERNA
+        top:
+        - [null, 1975517]
+        - [APARTAMENTO, 1539]
+        - [CASA, 695]
+        - [BLOCO, 403]
+        - [FUNDOS, 268]
+        - [FRENTE, 201]
+        - [LOTE, 177]
+        - [TERREO, 106]
+        - [ANDAR, 93]
+        - [SOBRADO, 87]
+      VAL_COMP_ELEM4: {tipo: VARCHAR, nulos_pct: 99.84, distintos_aprox: 669, min: '0', max: VERMELHO}
+      NOM_COMP_ELEM5:
+        tipo: VARCHAR
+        nulos_pct: 99.97
+        distintos_aprox: 30
+        min: ALAMEDA INTERNA
+        max: TORRE
+        top:
+        - [null, 1978947]
+        - [APARTAMENTO, 424]
+        - [CASA, 23]
+        - [PORTAO, 20]
+        - [FRENTE, 10]
+        - [LADO, 8]
+        - [FUNDOS, 7]
+        - [SALA, 7]
+        - [LOJA, 6]
+        - [SOBRADO, 4]
+      VAL_COMP_ELEM5: {tipo: VARCHAR, nulos_pct: 99.97, distintos_aprox: 100, min: '001', max: VERMELHO}
+      LATITUDE:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1518708
+        min: '-33.737981'
+        max: '4.127018'
+        media: -17.2583
+        quartis: [-23.3264, -20.0999, -9.8303]
+      LONGITUDE:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1483440
+        min: '-72.795071'
+        max: '-32.404649'
+        media: -45.3333
+        quartis: [-49.0633, -45.5749, -40.6069]
+      NV_GEO_COORD:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '1'
+        max: '6'
+        top:
+        - ['1', 1850823]
+        - ['2', 108134]
+        - ['3', 13816]
+        - ['4', 6306]
+        - ['6', 245]
+        - ['5', 154]
+      COD_ESPECIE:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '1'
+        max: '8'
+        top:
+        - ['1', 1614569]
+        - ['6', 205919]
+        - ['3', 74200]
+        - ['7', 63827]
+        - ['8', 10387]
+        - ['4', 4630]
+        - ['5', 4254]
+        - ['2', 1692]
+      DSC_ESTABELECIMENTO: {tipo: VARCHAR, nulos_pct: 86.48, distintos_aprox: 132174}
+      COD_INDICADOR_ESTAB_ENDERECO: {tipo: VARCHAR, nulos_pct: 84.87, distintos_aprox: 4, pessoal: 'só contagens: valores seriam dado pessoal'}
+      COD_INDICADOR_CONST_ENDERECO: {tipo: VARCHAR, nulos_pct: 96.74, distintos_aprox: 4, pessoal: 'só contagens: valores seriam dado pessoal'}
+      COD_INDICADOR_FINALIDADE_CONST:
+        tipo: VARCHAR
+        nulos_pct: 96.75
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        top:
+        - [null, 1915086]
+        - ['1', 49898]
+        - ['4', 9658]
+        - ['2', 4165]
+        - ['3', 671]
+      COD_TIPO_ESPECI:
+        tipo: VARCHAR
+        nulos_pct: 18.35
+        distintos_aprox: 4
+        min: '101'
+        max: '104'
+        top:
+        - ['101', 1306219]
+        - [null, 363217]
+        - ['103', 256133]
+        - ['102', 45138]
+        - ['104', 8771]

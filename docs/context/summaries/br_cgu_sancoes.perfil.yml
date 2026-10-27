@@ -1,0 +1,410 @@
+dataset: br_cgu_sancoes
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  acordos_leniencia:
+    linhas: 146
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-03'
+        max: '2026-10-03'
+        top:
+        - ['2026-10-03', 146]
+      id_acordo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 52, min: '1000001', max: '900002'}
+      cnpj_sancionado: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 187, pessoal: 'só contagens: valores seriam dado pessoal'}
+      razao_social_receita: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 132, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_fantasia_receita: {tipo: VARCHAR, nulos_pct: 79.45, distintos_aprox: 30, pessoal: 'só contagens: valores seriam dado pessoal'}
+      data_inicio_acordo:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 47
+        min: '2017-07-10'
+        max: '2025-11-05'
+        top:
+        - ['2018-07-09', 44]
+        - ['2019-11-14', 7]
+        - ['2025-03-28', 7]
+        - ['2022-04-20', 6]
+        - ['2019-11-12', 5]
+        - ['2020-08-25', 4]
+        - ['2021-10-15', 4]
+        - ['2022-05-31', 4]
+        - ['2022-11-09', 4]
+        - ['2022-12-28', 4]
+      data_fim_acordo:
+        tipo: DATE
+        nulos_pct: 2.05
+        distintos_aprox: 50
+        min: '2019-10-16'
+        max: '2047-12-31'
+        top:
+        - ['2039-10-31', 44]
+        - ['2028-03-13', 7]
+        - ['2047-12-31', 7]
+        - ['2023-10-12', 6]
+        - ['2046-01-31', 5]
+        - ['2022-02-21', 4]
+        - ['2023-04-15', 4]
+        - ['2023-11-30', 4]
+        - ['2044-10-01', 4]
+        - ['2026-06-13', 3]
+      situacao_acordo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Cumprido
+        max: Em Execução
+        top:
+        - [Em Execução, 109]
+        - [Cumprido, 37]
+      data_informacao:
+        tipo: DATE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 146]
+      numero_processo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 48, pessoal: 'só contagens: valores seriam dado pessoal'}
+      termos_acordo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 52, min: '''CONSIDERANDO A OCORRÊNCIA DE PANDEMIA CAUSADA PELA COVID-19, FATO
+          SUPERVENIENTE, QUE REDUZIU O NÚMERO DE LICITAÇÕES, E AMPARDAO NO aRT. 87, III, DA LEI Nº 8.666/1993, DECIDO PELA APLICAÇÃO DA REDUÇÃO
+          DA SUSPENSÃO TEMPORÁRIA DE PARTICIPAÇÃO EM LICITAÇÃO PELO PERÍODO DE 1(UM) ANO.''', max: '_ Pagamento de R$ 128,9 milhões até dezembro
+          de 2030, em parcelas a serem corrigidas pela taxa Selic ou outro índice que vier a substitui-la; _ Adoção, aperfeiçoamento e monitoramento
+          das políticas de governança e de compliance, incluindo mecanismos de controle e fiscalização, etc.'}
+      orgao_sancionador:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Controladoria-Geral da União - Unidades com vínculo direto
+        max: Controladoria-Geral da União - Unidades com vínculo direto
+        top:
+        - [Controladoria-Geral da União - Unidades com vínculo direto, 146]
+  acordos_leniencia_efeitos:
+    linhas: 176
+    fonte_do_perfil: tabela inteira
+    colunas:
+      complemento: {tipo: VARCHAR, nulos_pct: 53.98, distintos_aprox: 67, pessoal: 'só contagens: valores seriam dado pessoal'}
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-08-28'
+        max: '2026-08-28'
+        top:
+        - ['2026-08-28', 176]
+      efeito:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: Adoção, aplicação ou aperfeiçoamento do programa de integridade
+        max: Remissão da multa (§ 2º, inc. III, art. 16, Lei nº 12.846/13)
+        top:
+        - ['Adoção, aplicação ou aperfeiçoamento do programa de integridade', 45]
+        - [Outros, 33]
+        - ['Isenção da publicação extraordinária da decisão condenatória (6º, II, Lei 12.846/13)', 24]
+        - ['Isenção da proibição de receber incentivos, subsídios, subvenções etc. (19, inciso IV, Lei 12.846/13)', 20]
+        - ['Isenção da declaração de inidoneidade (Art. 87, IV, Lei 8.666)', 18]
+        - ['Isenção da suspensão de contratar (Art. 87, III, Lei 8.666)', 18]
+        - ['Atenuação da multa (§ 2º, inc. II, art. 16, Lei nº 12.846/13)', 7]
+        - ['Remissão da multa (§ 2º, inc. III, art. 16, Lei nº 12.846/13)', 5]
+        - ['Atenuação da suspensão de contratar (Art. 87, III, Lei 8.666)', 2]
+        - [Isenção do impedimento da Lei do Pregão (Lei 10.520/2002), 2]
+      id_acordo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 60, min: '1000001', max: '900002'}
+  ceis:
+    linhas: 19131
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-03'
+        max: '2026-10-03'
+        top:
+        - ['2026-10-03', 19131]
+      cadastro:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: CEIS
+        max: CEIS
+        top:
+        - [CEIS, 19131]
+      codigo_sancao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 22846}
+      tipo_pessoa: {tipo: VARCHAR, nulos_pct: 0.06, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf_cnpj_sancionado: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 13041, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_sancionado: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 15378, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_informado_orgao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 17680, pessoal: 'só contagens: valores seriam dado pessoal'}
+      razao_social_receita: {tipo: VARCHAR, nulos_pct: 45.94, distintos_aprox: 6784, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_fantasia_receita: {tipo: VARCHAR, nulos_pct: 61.63, distintos_aprox: 5830, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_processo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 14614, pessoal: 'só contagens: valores seriam dado pessoal'}
+      categoria_sancao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: Declaração de Inidoneidade com prazo determinado
+        max: Suspensão/Interdição das atividades sem prazo determinado
+        top:
+        - [Impedimento/proibição de contratar com prazo determinado, 14259]
+        - [Suspensão, 2115]
+        - [Declaração de Inidoneidade sem prazo determinado, 1380]
+        - [Declaração de Inidoneidade com prazo determinado, 1140]
+        - [Impedimento/proibição de contratar sem prazo determinado, 149]
+        - [Demissão, 61]
+        - [Suspensão/Interdição das atividades sem prazo determinado, 23]
+        - [Suspensão/Interdição das atividades com prazo determinado, 4]
+      data_inicio_sancao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 2797, min: '2003-01-28', max: '2026-04-02'}
+      data_final_sancao: {tipo: DATE, nulos_pct: 10.23, distintos_aprox: 3148, min: '2011-11-07', max: '2099-12-31'}
+      data_publicacao: {tipo: DATE, nulos_pct: 68.92, distintos_aprox: 1810, min: '2003-09-12', max: '2026-08-17'}
+      publicacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1904}
+      detalhamento_meio_publicacao: {tipo: VARCHAR, nulos_pct: 94.61, distintos_aprox: 465, min: ., max: 'ção Civil de Improbidade Administrativa
+          nº 0900083-66.2016.8.24.0040/SC, da 2ª Vara Cível da Comarca de Laguna/SC, cujo acórdão transitou em julgado em 04 de dezembro de 2025.'}
+      data_transito_julgado: {tipo: DATE, nulos_pct: 42.45, distintos_aprox: 2226, min: '2003-09-12', max: '2033-03-09'}
+      abrangencia_sancao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Em outro órgão
+        max: Todas as Esferas em todos os Poderes
+        top:
+        - [Sem Informação, 9898]
+        - [Em todos os Poderes da Esfera do órgão sancionador, 4737]
+        - [No órgão sancionador, 2182]
+        - [Todas as Esferas em todos os Poderes, 1378]
+        - [Na Esfera e no Poder do órgão sancionador, 935]
+        - [Em outro órgão, 1]
+      orgao_sancionador: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3184}
+      sigla_uf_orgao:
+        tipo: VARCHAR
+        nulos_pct: 3.12
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 3735]
+        - [MG, 1795]
+        - [PR, 1357]
+        - [RS, 1352]
+        - [BA, 1315]
+        - [RJ, 1309]
+        - [SC, 1133]
+        - [DF, 1097]
+        - [null, 597]
+        - [PB, 524]
+      esfera_orgao:
+        tipo: VARCHAR
+        nulos_pct: 0.84
+        distintos_aprox: 3
+        min: ESTADUAL
+        max: MUNICIPAL
+        top:
+        - [ESTADUAL, 8928]
+        - [FEDERAL, 6468]
+        - [MUNICIPAL, 3575]
+        - [null, 160]
+      fundamentacao_legal: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 356, min: 'CÓDIGO DE PROCESSO PENAL - ART. 319, VI - SUSPENSÃO DO EXERCÍCIO
+          DE FUNÇÃO PÚBLICA OU DE ATIVIDADE DE NATUREZA ECONÔMICA OU FINANCEIRA QUANDO HOUVER JUSTO RECEIO DE SUA UTILIZAÇÃO PARA A PRÁTICA DE
+          INFRAÇÕES PENAIS', max: 'REGULAMENTA A APLICAÇÃO DE SANÇÕES ADMINISTRATIVAS NO ÂMBITO DO PODER EXECUTIVO DO MUNICÍPIO DE POMPÉU/MINAS
+          GERAIS. - ART. 11, PARÁGRAFO ÚNICO, III - ART. 11. A PRÁTICA DE ATOS ILÍCITOS SUJEITA O INFRATOR À APLICAÇÃO DAS SEGUINTES SANÇÕES ADMINISTRATIVAS:
+          III - IMPEDIMENTO DE LICITAR E CONTRATAR COM O MUNICÍPIO, POR NO MÁXIMO 03 (TRÊS) ANOS, OU QUANDO NÃO SE JUSTIFICAR APLICAÇÃO DE PENALIDADE
+          MAIS GRAVE'}
+      data_origem_informacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1692, min: '2007-12-17', max: '2026-10-02'}
+      origem_informacao: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 823, min: 27º GRUPO DE ARTILHARIA DE CAMPANHA, max: Água de Ivoti (RS)}
+      observacoes: {tipo: VARCHAR, nulos_pct: 61.86, distintos_aprox: 1978}
+  cepim:
+    linhas: 3530
+    fonte_do_perfil: tabela inteira
+    colunas:
+      cnpj_entidade: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1701, pessoal: 'só contagens: valores seriam dado pessoal'}
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-08-27'
+        max: '2026-08-27'
+        top:
+        - ['2026-08-27', 3530]
+      motivo_impedimento:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 29
+        min: APRESENTOU DOCUMENTACAO COMPLEMENTAR
+        max: UTILIZOU OS RECURSOS EM DESACORDO C/PROG TRAB
+        top:
+        - [INSTAURACAO DE TOMADA DE CONTAS ESPECIAL, 751]
+        - [MOTIVO NÃO ESPECIFICADO, 575]
+        - [NAO APRESENTACAO DE DOCUMENTACAO COMPLEMENTAR, 485]
+        - [NAO APRESENTACAO DA PRESTACAO DE CONTAS, 380]
+        - [IRREGULARIDADE NA EXECUCAO FINANCEIRA, 307]
+        - [IRREGULARIDADE NA EXECUCAO FIS. E FINANCEIRA, 221]
+        - [NAO EXECUTOU TOTALMENTE O OBJETO PACTUADO, 133]
+        - [TEVE A PRESTACAO DE CONTAS IMPUGNADA, 121]
+        - [INSCRICAO POR DECISAO DO T.C.U., 117]
+        - [ATRASO NA ENTREGA DA PRESTACAO DE CONTAS, 108]
+      nome_entidade: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1471, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_convenio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3117, pessoal: 'só contagens: valores seriam dado pessoal'}
+      orgao_concedente:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: Ministério da Agricultura e Pecuária - Unidades com vínculo direto
+        max: Ministério dos Transportes - Unidades com vínculo direto
+        top:
+        - [Ministério do Turismo - Unidades com vínculo direto, 792]
+        - [Ministério da Cultura - Unidades com vínculo direto, 466]
+        - [Ministério da Saúde - Unidades com vínculo direto, 379]
+        - [Ministério do Desenvolvimento Agrário e Agricultura Familiar - Unidades com vínculo direto, 371]
+        - [Ministério da Agricultura e Pecuária - Unidades com vínculo direto, 325]
+        - [Ministério da Educação - Unidades com vínculo direto, 251]
+        - [Ministério do Esporte - Unidades com vínculo direto, 199]
+        - [Ministério da Gestão e da Inovação em Serviços Públicos - Unidades com vínculo direto, 125]
+        - [Ministério do Trabalho e Emprego - Unidades com vínculo direto, 109]
+        - [Ministério da Integração e do Desenvolvimento Regional - Unidades com vínculo direto, 88]
+  cnep:
+    linhas: 1592
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-03'
+        max: '2026-10-03'
+        top:
+        - ['2026-10-03', 1592]
+      cadastro:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: CNEP
+        max: CNEP
+        top:
+        - [CNEP, 1592]
+      codigo_sancao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1879}
+      tipo_pessoa: {tipo: VARCHAR, nulos_pct: 0.75, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf_cnpj_sancionado: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 716, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_sancionado: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 873, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_informado_orgao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 796, pessoal: 'só contagens: valores seriam dado pessoal'}
+      razao_social_receita: {tipo: VARCHAR, nulos_pct: 1.88, distintos_aprox: 808, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_fantasia_receita: {tipo: VARCHAR, nulos_pct: 35.43, distintos_aprox: 538, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_processo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 728, pessoal: 'só contagens: valores seriam dado pessoal'}
+      categoria_sancao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: Dissolução compulsória da PJ
+        max: Suspensão/Interdição das atividades sem prazo determinado
+        top:
+        - [Multa, 904]
+        - [Publicação extraordinária da decisão condenatória, 636]
+        - ['Proibição de receber incentivos, subsídios, subvenções, doações ou empréstimos', 23]
+        - [Suspensão/Interdição das atividades com prazo determinado, 10]
+        - [Dissolução compulsória da PJ, 8]
+        - [Perdimento de bens, 6]
+        - [Impedimento/proibição de contratar com prazo determinado, 4]
+        - [Suspensão/Interdição das atividades sem prazo determinado, 1]
+      valor_multa:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 896
+        min: '0.0'
+        max: '387431733.02'
+        media: 1701929.5595
+        quartis: [0, 6113.9073, 204323.2925]
+      data_inicio_sancao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 765, min: '2016-01-27', max: '2026-03-29'}
+      data_final_sancao:
+        tipo: DATE
+        nulos_pct: 97.8
+        distintos_aprox: 27
+        min: '2020-09-27'
+        max: '2030-11-19'
+        top:
+        - [null, 1557]
+        - ['2020-09-27', 3]
+        - ['2027-01-27', 3]
+        - ['2030-02-17', 3]
+        - ['2026-10-29', 2]
+        - ['2027-05-27', 2]
+        - ['2028-11-12', 2]
+        - ['2029-05-08', 2]
+        - ['2026-10-14', 1]
+        - ['2026-10-19', 1]
+      data_publicacao: {tipo: DATE, nulos_pct: 4.52, distintos_aprox: 514, min: '2016-02-11', max: '2026-10-02'}
+      publicacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 491, min: Boletim Interno, max: Sem Informação Seção Secretarias Pagina 39}
+      detalhamento_meio_publicacao: {tipo: VARCHAR, nulos_pct: 82.41, distintos_aprox: 62, min: ') Multa no valor de R$ 12.920,00 (doze mil novecentos
+          e vinte reais), em razão da fixação da vantagem pretendida ou auferida, nos termos do art. 6º, inciso I da Lei nº 12.846/2013.', max: 'Trata
+          da homologação de Acordo de Não Persecução Cível firmado entre o Ministério Público do Estado do Rio Grande do Norte e as Sras. Renata
+          Bezerra Cavalcante e Roberta Bezerra Cavalcante, no âmbito de Ação de Improbidade Administrativa originária do processo nº 0800537-60.2019.8.20.5111.
+          Aplicar sanção de restrição ao recebimento de benefícios ou incentivos fiscais ou creditícios concedidos pelo Poder Público, pelo prazo
+          de 4 (quatro) anos.'}
+      data_transito_julgado: {tipo: DATE, nulos_pct: 69.35, distintos_aprox: 231, min: '2016-01-27', max: '2026-03-30'}
+      abrangencia_sancao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Em todos os Poderes da Esfera do órgão sancionador
+        max: Todas as Esferas em todos os Poderes
+        top:
+        - [Todas as Esferas em todos os Poderes, 488]
+        - [Sem Informação, 443]
+        - [No órgão sancionador, 358]
+        - [Na Esfera e no Poder do órgão sancionador, 158]
+        - [Em todos os Poderes da Esfera do órgão sancionador, 145]
+      orgao_sancionador: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 111, min: 1º Grau - TRF3 / Seção Judiciária de São Paulo / ª SUBSEÇÃO
+          DE BAURU / 1ª VARA FEDERAL DE BAURU COM JUIZADO ESPECIAL FEDERAL CRIMINAL ADJUNTO, max: 'VALEC - ENGENHARIA, CONSTRUÇÕES E FERROVIAS
+          S/A'}
+      sigla_uf_orgao:
+        tipo: VARCHAR
+        nulos_pct: 39.76
+        distintos_aprox: 18
+        min: AM
+        max: SP
+        top:
+        - [null, 633]
+        - [DF, 317]
+        - [ES, 156]
+        - [SP, 156]
+        - [MT, 103]
+        - [MG, 67]
+        - [RJ, 49]
+        - [SC, 31]
+        - [RS, 17]
+        - [MS, 16]
+      esfera_orgao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: ESTADUAL
+        max: MUNICIPAL
+        top:
+        - [FEDERAL, 999]
+        - [ESTADUAL, 386]
+        - [MUNICIPAL, 207]
+      fundamentacao_legal: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 108, min: 'DECRETO MUNICIPAL - ART. 5º, VII - ENSEJAR O RETARDAMENTO
+          DA EXECUÇÃO OU DA ENTREGA DO OBJETO DA LICITAÇÃO SEM MOTIVO JUSTIFICADO: PENALIDADE DE IMPEDIMENTO DE LICITAR E CONTRATAR COM A MUNICÍPIO
+          PELO PERÍODO DE 180 (CENTO E OITENTA) DIAS.', max: 'PROGRAMA NACIONAL DE APOIO À CULTURA (PRONAC) - LEI ROUANET - ART. 38 - NA HIPÓTESE
+          DE DOLO, FRAUDE OU SIMULAÇÃO, INCLUSIVE NO CASO DE DESVIO DE OBJETO, SERÁ APLICADA, AO DOADOR E AO BENEFICIÁRIO, MULTA CORRESPONDENTE
+          A DUAS VEZES O VALOR DA VANTAGEM RECEBIDA INDEVIDAMENTE.;LEI 12846 - ART. 6º, I - MULTA, NO VALOR DE 0,1% (UM DÉCIMO POR CENTO) A 20%
+          (VINTE POR CENTO) DO FATURAMENTO BRUTO DO ÚLTIMO EXERCÍCIO ANTERIOR AO DA INSTAURAÇÃO DO PROCESSO ADMINISTRATIVO, EXCLUÍDOS OS TRIBUTOS,
+          A QUAL NUNCA SERÁ INFERIOR À VANTAGEM AUFERIDA, QUANDO FOR POSSÍVEL SUA ESTIMAÇÃO;LEI 12846 - ART. 5º, II - COMPROVADAMENTE, FINANCIAR,
+          CUSTEAR, PATROCINAR OU DE QUALQUER MODO SUBVENCIONAR A PRÁTICA DOS ATOS ILÍCITOS PREVISTOS NESTA LEI'}
+      data_origem_informacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 466, min: '2016-02-19', max: '2026-09-21'}
+      origem_informacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 86, min: AGÊNCIA NACIONAL DE TRANSPORTES TERRESTRES, max: Universidade
+          Federal Rual de Pernambuco}
+      observacoes: {tipo: VARCHAR, nulos_pct: 78.14, distintos_aprox: 223, min: '''a) multa no valor de R$ 8.100.510,13 (oito milhões cem mil
+          quinhentos e dez reais e treze centavos), com fundamento no artigo 6º, inciso I, da Lei nº 12.846, de 1º de agosto de 2013, assim como
+          no artigo 19, inciso I, do Decreto nº 11.129, de 11 de julho de 2022; (...) Considerando que ficou demonstrado que as pessoas jurídicas
+          foram usadas de forma indevida (abuso de direito), com o objetivo de ''facilitar, encobrir ou dissimular a prática dos atos ilícitos'',
+          com fundamento no artigo 50 do Código Civil, assim como no artigo 14 da Lei nº 12.846, de 1º de agosto de 2013, determino a desconsideração
+          da personalidade jurídica para que os efeitos das penalidades impostas às empesas Marvão Serviços Ltda., CNPJ 13.118.835/0001-92, Line
+          Transporte de Passageiros Ltda., CNPJ 13.317.374/0001-87, C2 Transporte e Locadora Ltda., CNPJ 15.072.752/0001-35, e DRM Locadora de
+          Veículos Ltda., CNPJ 17.453.682/0001-90, sejam estendidos ao patrimônio do Senhor Luiz Carlos Magno Silva, CPF nº ***.882.483-**. ''',
+        max: 'publicação extraordinária da decisão condenatória administrativa na forma de extrato de sentença, cumulativamente, às expensas da
+          pessoa jurídica, em meio de comunicação de grande circulação na área da prática da infração e de atuação da pessoa jurídica ou, na sua
+          falta, em publicação de circulação nacional, pelo prazo de 1 (um) dia; afixar edital no próprio estabelecimento ou no local de exercício
+          da atividade, de modo visível ao público, pelo prazo de 30 (trinta) dias, e em seu sítio eletrônico, em destaque na página principal
+          do referido sítio, pelo prazo de 30 (trinta) dias, com fundamento nos incisos I e II do art. 6º da Lei nº 12.846, de 2013.'}

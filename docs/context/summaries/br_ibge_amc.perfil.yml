@@ -1,0 +1,48 @@
+dataset: br_ibge_amc
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  municipio_de_para:
+    linhas: 434070
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano_de:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: '1872'
+        max: '2000'
+        media: 1924.359
+        quartis: [1900, 1920, 1950]
+        top:
+        - ['1872', 66780]
+        - ['1900', 61215]
+        - ['1911', 55650]
+        - ['1920', 50085]
+        - ['1933', 44520]
+        - ['1940', 38955]
+        - ['1950', 33390]
+        - ['1960', 27825]
+        - ['1970', 22260]
+        - ['1980', 16695]
+      ano_para:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: '1900'
+        max: '2010'
+        media: 1973.641
+        quartis: [1950, 1980, 2000]
+        top:
+        - ['2010', 66780]
+        - ['2000', 61215]
+        - ['1991', 55650]
+        - ['1980', 50085]
+        - ['1970', 44520]
+        - ['1960', 38955]
+        - ['1950', 33390]
+        - ['1940', 27825]
+        - ['1933', 22260]
+        - ['1920', 16695]
+      id_amc: {tipo: VARCHAR, nulos_pct: 13.59, distintos_aprox: 5031}
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}

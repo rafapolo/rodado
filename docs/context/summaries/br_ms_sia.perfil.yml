@@ -1,0 +1,301 @@
+dataset: br_ms_sia
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  producao_ambulatorial: {linhas: 6159969884, erro: 'Invalid Input Error: Invalid string encoding found in Parquet file "/home/polo/rodado/br_ms_sia/producao_ambulatorial/000000001874.parquet":
+      value "00\xBB\xBF446134901" is not valid UTF8!'}
+  psicossocial:
+    linhas: 138059411
+    fonte_do_perfil: amostra de 21.005% da última partição (ano = 2025). ~2.000.000 linhas
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2025'
+        max: '2025'
+        media: 2025
+        quartis: [2025, 2025, 2025]
+        top:
+        - ['2025', 2051221]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '1'
+        max: '7'
+        media: 4.1009
+        quartis: [2, 4, 6]
+        top:
+        - ['4', 322226]
+        - ['6', 318742]
+        - ['5', 317410]
+        - ['7', 286737]
+        - ['2', 276936]
+        - ['3', 266656]
+        - ['1', 262514]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 636765]
+        - [MG, 237424]
+        - [RS, 146729]
+        - [RJ, 142955]
+        - [PR, 115053]
+        - [PE, 92355]
+        - [SC, 90477]
+        - [BA, 88777]
+        - [CE, 73205]
+        - [PB, 49204]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1631}
+      id_estabelecimento_cnes: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2481}
+      id_estabelecimento_cnes_familia: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 14534}
+      id_procedimento_ambulatorial:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: 0301080020
+        max: 0301080380
+        top:
+        - [0301080208, 871214]
+        - [0301080216, 322722]
+        - [0301080194, 234551]
+        - [0301080224, 167332]
+        - [0301080283, 125951]
+        - [0301080348, 96716]
+        - [0301080275, 60144]
+        - [0301080291, 53055]
+        - [0301080240, 35758]
+        - [0301080020, 34117]
+      id_servico_especializado:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '115'
+        max: '115'
+        top:
+        - ['115', 2051221]
+      id_classificacao_servico:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '001'
+        max: '007'
+        top:
+        - ['002', 2042938]
+        - ['005', 4553]
+        - ['004', 3186]
+        - ['006', 390]
+        - ['001', 129]
+        - ['007', 25]
+      data_inicio_atendimento: {tipo: DATE, nulos_pct: 69.56, distintos_aprox: 335, min: '2024-08-01', max: '2025-07-31'}
+      data_termino_atendimento: {tipo: DATE, nulos_pct: 69.56, distintos_aprox: 255, min: '2024-08-31', max: '2025-07-31'}
+      permanencia_atendimento:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 35
+        min: '    '
+        max: '9   '
+        top:
+        - ['    ', 1426790]
+        - ['31  ', 275038]
+        - ['30  ', 188362]
+        - ['28  ', 69321]
+        - ['1   ', 21399]
+        - ['22  ', 3364]
+        - ['26  ', 3331]
+        - ['25  ', 3236]
+        - ['24  ', 3026]
+        - ['29  ', 3019]
+      motivo_saida_permanencia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 20
+        min: '11'
+        max: '51'
+        top:
+        - ['21', 1922905]
+        - ['28', 83692]
+        - ['12', 20098]
+        - ['18', 14188]
+        - ['11', 5007]
+        - ['15', 1805]
+        - ['31', 1762]
+        - ['22', 762]
+        - ['51', 415]
+        - ['27', 161]
+      data_motivo_saida_permanencia: {tipo: DATE, nulos_pct: 99.4, distintos_aprox: 265, min: '2015-01-16', max: '2025-11-29'}
+      ano_processamento:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2025'
+        max: '2025'
+        media: 2025
+        quartis: [2025, 2025, 2025]
+        top:
+        - ['2025', 2051221]
+      mes_processamento:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '1'
+        max: '7'
+        media: 4.1009
+        quartis: [2, 4, 6]
+        top:
+        - ['4', 322226]
+        - ['6', 318742]
+        - ['5', 317410]
+        - ['7', 286737]
+        - ['2', 276936]
+        - ['3', 266656]
+        - ['1', 262514]
+      ano_atendimento:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '2024'
+        max: '2025'
+        media: 2024.9924
+        quartis: [2025, 2025, 2025]
+        top:
+        - ['2025', 2035630]
+        - ['2024', 15591]
+      mes_atendimento:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 4.1287
+        quartis: [2, 4, 6]
+        top:
+        - ['5', 321382]
+        - ['4', 319941]
+        - ['6', 313152]
+        - ['2', 280949]
+        - ['7', 271886]
+        - ['3', 265082]
+        - ['1', 263238]
+        - ['12', 9835]
+        - ['11', 4398]
+        - ['10', 1134]
+      data_nascimento_paciente: {tipo: DATE, nulos_pct: 0, distintos_aprox: 27583, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_municipio_residencia_paciente: {tipo: VARCHAR, nulos_pct: 0.16, distintos_aprox: 3262, pessoal: 'só contagens: valores seriam dado pessoal'}
+      origem_paciente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nacionalidade_paciente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 29, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_idade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '2'
+        max: '5'
+        top:
+        - ['4', 2039688]
+        - ['2', 9570]
+        - ['3', 1804]
+        - ['5', 159]
+      idade_paciente: {tipo: BIGINT, nulos_pct: 0, distintos_aprox: 98, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sexo_paciente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      raca_cor_paciente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5, pessoal: 'só contagens: valores seriam dado pessoal'}
+      etnia_paciente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 9, pessoal: 'só contagens: valores seriam dado pessoal'}
+      carater_atendimento:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '1'
+        max: '5'
+        top:
+        - ['1', 2050991]
+        - ['2', 215]
+        - ['5', 7]
+        - ['3', 5]
+        - ['4', 3]
+      cid_principal_categoria: {tipo: VARCHAR, nulos_pct: 50.18, distintos_aprox: 267, min: A00, max: f99}
+      cid_principal_subcategoria: {tipo: VARCHAR, nulos_pct: 49.82, distintos_aprox: 1136}
+      cid_causas_associadas_categoria: {tipo: VARCHAR, nulos_pct: 91.66, distintos_aprox: 272, min: A00, max: Z99}
+      cid_causas_associadas_subcategoria: {tipo: VARCHAR, nulos_pct: 92.03, distintos_aprox: 665, min: A010, max: Z915}
+      tipo_droga:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '   '
+        max: OOC
+        top:
+        - ['   ', 1624721]
+        - ['O  ', 133010]
+        - ['A  ', 117834]
+        - ['AO ', 79917]
+        - [ACO, 51820]
+        - ['CO ', 13318]
+        - ['AC ', 13271]
+        - ['C  ', 13203]
+        - ['  N', 2198]
+        - [A O, 1023]
+      destino_paciente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4, pessoal: 'só contagens: valores seriam dado pessoal'}
+      local_realizacao_atendimento:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: C
+        max: T
+        top:
+        - [C, 2012254]
+        - [T, 38967]
+      indicador_situacao_rua:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2051221]
+      indicador_estrategia_familia:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2051221]
+      quantidade_produzida_procedimento:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 121
+        min: '0'
+        max: '1194'
+        media: 1.2238
+        quartis: [1, 1, 1]
+      quantidade_aprovada_procedimento:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 111
+        min: '0'
+        max: '1194'
+        media: 1.1213
+        quartis: [1, 1, 1]
+      quantidade_atendimentos:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.3044
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 1426790]
+        - ['1', 624431]
+      quantidade_pacientes:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0   '
+        max: '1   '
+        top:
+        - ['0   ', 1426790]
+        - ['1   ', 624431]

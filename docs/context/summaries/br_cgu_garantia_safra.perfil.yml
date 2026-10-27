@@ -1,0 +1,78 @@
+dataset: br_cgu_garantia_safra
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  favorecido:
+    linhas: 2655471
+    fonte_do_perfil: amostra de 75.316%. ~2.000.000 linhas
+    colunas:
+      favorecido_id: {tipo: INTEGER, nulos_pct: 0, distintos_aprox: 1867489, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nis_favorecido: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1708802, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_favorecido: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1184200, pessoal: 'só contagens: valores seriam dado pessoal'}
+  garantia_safra:
+    linhas: 0
+    fonte_do_perfil: tabela inteira
+    colunas:
+      mes_referencia: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 154, min: '201301', max: '202609'}
+      uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: AL
+        max: SE
+        top:
+        - [BA, 9644846]
+        - [CE, 8056758]
+        - [PE, 4635760]
+        - [PI, 3451530]
+        - [PB, 3050214]
+        - [RN, 1618188]
+        - [MG, 1372468]
+        - [AL, 968024]
+        - [SE, 535043]
+        - [MA, 221410]
+      codigo_municipio_siafi: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1547}
+      nome_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1632, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nis_favorecido: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2205001, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_favorecido: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1735423, pessoal: 'só contagens: valores seriam dado pessoal'}
+      valor_parcela:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 176
+        min: '15.0'
+        max: '7750.0'
+        media: 273.7208
+        quartis: [155, 170, 170]
+  pagamento:
+    linhas: 33555512
+    fonte_do_perfil: amostra de 5.96%. ~2.000.000 linhas
+    colunas:
+      mes_referencia: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 114, min: '201301', max: '202607'}
+      uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: AL
+        max: SE
+        top:
+        - [BA, 645333]
+        - [CE, 553895]
+        - [PE, 280075]
+        - [PI, 237275]
+        - [PB, 178636]
+        - [RN, 104565]
+        - [MG, 90702]
+        - [AL, 58976]
+        - [SE, 26698]
+        - [MA, 16037]
+      codigo_municipio_siafi: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1474}
+      nome_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1449, pessoal: 'só contagens: valores seriam dado pessoal'}
+      valor_parcela:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 57
+        min: '60.0'
+        max: '4950.0'
+        media: 289.1242
+        quartis: [155, 170, 170]
+      favorecido_id: {tipo: INTEGER, nulos_pct: 0, distintos_aprox: 1167576, pessoal: 'só contagens: valores seriam dado pessoal'}

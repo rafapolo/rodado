@@ -1,0 +1,924 @@
+dataset: br_mj_sisdepen
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  cobertura:
+    linhas: 513
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: '2016'
+        max: '2025'
+        media: 2020.7368
+        quartis: [2018, 2021, 2023]
+        top:
+        - ['2017', 54]
+        - ['2018', 54]
+        - ['2019', 54]
+        - ['2020', 54]
+        - ['2021', 54]
+        - ['2022', 54]
+        - ['2023', 54]
+        - ['2024', 54]
+        - ['2025', 54]
+        - ['2016', 27]
+      semestre:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        media: 1.5263
+        quartis: [1, 2, 2]
+        top:
+        - ['2', 270]
+        - ['1', 243]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [AC, 19]
+        - [AL, 19]
+        - [AM, 19]
+        - [AP, 19]
+        - [BA, 19]
+        - [CE, 19]
+        - [DF, 19]
+        - [ES, 19]
+        - [GO, 19]
+        - [MA, 19]
+      ciclo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: '1'
+        max: '9'
+        top:
+        - ['1', 27]
+        - ['10', 27]
+        - ['11', 27]
+        - ['12', 27]
+        - ['13', 27]
+        - ['14', 27]
+        - ['15', 27]
+        - ['16', 27]
+        - ['17', 27]
+        - ['18', 27]
+      geracao_esquema:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: A
+        max: D
+        top:
+        - [B, 216]
+        - [D, 162]
+        - [C, 108]
+        - [A, 27]
+      unidades_esperadas:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 144
+        min: '5'
+        max: '259'
+        media: 56.7154
+        quartis: [18, 45, 68]
+      unidades_reportando:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 144
+        min: '5'
+        max: '244'
+        media: 56.1891
+        quartis: [18, 45, 68]
+      unidades_ausentes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: '0'
+        max: '24'
+        media: 0.5263
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 419]
+        - ['1', 62]
+        - ['2', 9]
+        - ['3', 6]
+        - ['6', 6]
+        - ['4', 3]
+        - ['23', 2]
+        - ['24', 2]
+        - ['7', 2]
+        - ['8', 2]
+      taxa_presenca:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 61
+        min: '0.666667'
+        max: '1.0'
+        media: 0.9931
+        quartis: [1, 1, 1]
+      taxa_faixa_etaria_completa:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 275
+        min: '0.0'
+        max: '1.0'
+        media: 0.6919
+        quartis: [0.5308, 0.7432, 0.9024]
+      taxa_faixa_etaria_parcial:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 254
+        min: '0.0'
+        max: '1.0'
+        media: 0.2095
+        quartis: [0.0598, 0.1383, 0.2825]
+      taxa_faixa_etaria_ausente:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 214
+        min: '0.0'
+        max: '0.807339'
+        media: 0.0985
+        quartis: [0, 0.0358, 0.1374]
+      taxa_raca_cor_completa:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 309
+        min: '0.0'
+        max: '1.0'
+        media: 0.6078
+        quartis: [0.3675, 0.6516, 0.8684]
+      taxa_raca_cor_parcial:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 240
+        min: '0.0'
+        max: '1.0'
+        media: 0.2511
+        quartis: [0.0738, 0.1718, 0.3473]
+      taxa_raca_cor_ausente:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 216
+        min: '0.0'
+        max: '1.0'
+        media: 0.1408
+        quartis: [0, 0.0586, 0.2068]
+      taxa_escolaridade_completa:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 336
+        min: '0.0'
+        max: '1.0'
+        media: 0.5815
+        quartis: [0.3513, 0.5775, 0.8442]
+      taxa_escolaridade_parcial:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 307
+        min: '0.0'
+        max: '1.0'
+        media: 0.2894
+        quartis: [0.0938, 0.2159, 0.4283]
+      taxa_escolaridade_ausente:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 228
+        min: '0.0'
+        max: '0.807339'
+        media: 0.1286
+        quartis: [0, 0.0587, 0.1926]
+      taxa_capacidade_informada:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '0.857143'
+        max: '1.0'
+        media: 0.9988
+        quartis: [1, 1, 1]
+        top:
+        - ['1.0', 495]
+        - ['0.96875', 3]
+        - ['0.988095', 2]
+        - ['0.989796', 2]
+        - ['0.857143', 1]
+        - ['0.923077', 1]
+        - ['0.928571', 1]
+        - ['0.964286', 1]
+        - ['0.971429', 1]
+        - ['0.978723', 1]
+      populacao_total:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 534
+        min: '2503'
+        max: '233755'
+        media: 29774.2398
+        quartis: [9157, 16191, 30660]
+      capacidade_total:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 430
+        min: '924'
+        max: '164884'
+        media: 20339.3158
+        quartis: [5924, 12324, 20970]
+  populacao_caracteristica:
+    linhas: 1790112
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: '2016'
+        max: '2025'
+        media: 2020.776
+        quartis: [2018, 2021, 2023]
+        top:
+        - ['2021', 194804]
+        - ['2024', 194060]
+        - ['2025', 191394]
+        - ['2023', 190588]
+        - ['2022', 189720]
+        - ['2018', 187488]
+        - ['2017', 186496]
+        - ['2020', 184264]
+        - ['2019', 176514]
+        - ['2016', 94784]
+      semestre:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        media: 1.5282
+        quartis: [1, 2, 2]
+        top:
+        - ['2', 945548]
+        - ['1', 844564]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 270332]
+        - [SP, 213798]
+        - [RS, 130784]
+        - [GO, 115956]
+        - [PR, 99574]
+        - [PE, 98178]
+        - [PB, 83852]
+        - [CE, 73272]
+        - [RO, 66318]
+        - [RJ, 62530]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0.19, distintos_aprox: 1042}
+      id_unidade: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2430}
+      ciclo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: '1'
+        max: '9'
+        top:
+        - ['11', 98084]
+        - ['16', 97154]
+        - ['17', 96906]
+        - ['10', 96720]
+        - ['18', 96410]
+        - ['14', 95480]
+        - ['15', 95108]
+        - ['13', 95046]
+        - ['19', 94984]
+        - ['1', 94784]
+      geracao_esquema:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: A
+        max: D
+        top:
+        - [B, 734762]
+        - [D, 576042]
+        - [C, 384524]
+        - [A, 94784]
+      caracteristica:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: escolaridade
+        max: raca_cor
+        top:
+        - [escolaridade, 576500]
+        - [faixa_etaria, 461200]
+        - [estado_civil, 403550]
+        - [raca_cor, 348862]
+      categoria:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 35
+        min: 18 a 24 anos
+        max: Viúvo/a
+        top:
+        - [Não informado, 172950]
+        - [18 a 24 anos, 57650]
+        - [25 a 29 anos, 57650]
+        - [30 a 34 anos, 57650]
+        - [35 a 45 anos, 57650]
+        - [46 a 60 anos, 57650]
+        - [61 a 70 anos, 57650]
+        - [Alfabetizado (sem cursos regulares), 57650]
+        - [Amarela, 57650]
+        - [Analfabeto, 57650]
+      sexo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: feminino
+        max: masculino
+        top:
+        - [feminino, 895056]
+        - [masculino, 895056]
+      quantidade:
+        tipo: BIGINT
+        nulos_pct: 39.74
+        distintos_aprox: 2407
+        min: '0'
+        max: '37799'
+        media: 48.7657
+        quartis: [0, 2, 23]
+      condicao_registro:
+        tipo: VARCHAR
+        nulos_pct: 0.01
+        distintos_aprox: 3
+        min: nao
+        max: todas
+        top:
+        - [todas, 1171080]
+        - [parte, 375014]
+        - [nao, 243914]
+        - [null, 104]
+  populacao_prisional:
+    linhas: 1037700
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: '2016'
+        max: '2025'
+        media: 2020.7839
+        quartis: [2018, 2021, 2023]
+        top:
+        - ['2021', 113112]
+        - ['2024', 112680]
+        - ['2025', 111132]
+        - ['2023', 110664]
+        - ['2022', 110160]
+        - ['2018', 108864]
+        - ['2017', 108288]
+        - ['2020', 106992]
+        - ['2019', 102492]
+        - ['2016', 53316]
+      semestre:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        media: 1.5274
+        quartis: [1, 2, 2]
+        top:
+        - ['2', 547308]
+        - ['1', 490392]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 156708]
+        - [SP, 123948]
+        - [RS, 75816]
+        - [GO, 67212]
+        - [PR, 57780]
+        - [PE, 56916]
+        - [PB, 48600]
+        - [CE, 42372]
+        - [RO, 38448]
+        - [RJ, 36252]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0.19, distintos_aprox: 1042}
+      id_unidade: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2430}
+      ciclo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: '1'
+        max: '9'
+        top:
+        - ['11', 56952]
+        - ['16', 56412]
+        - ['17', 56268]
+        - ['10', 56160]
+        - ['18', 55980]
+        - ['14', 55440]
+        - ['15', 55224]
+        - ['13', 55188]
+        - ['19', 55152]
+        - ['9', 55008]
+      geracao_esquema:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: A
+        max: D
+        top:
+        - [B, 426636]
+        - [D, 334476]
+        - [C, 223272]
+        - [A, 53316]
+      situacao_processual:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: medida_seguranca
+        max: sentenciado
+        top:
+        - [sentenciado, 518850]
+        - [medida_seguranca, 345900]
+        - [provisorio, 172950]
+      regime:
+        tipo: VARCHAR
+        nulos_pct: 16.67
+        distintos_aprox: 5
+        min: aberto
+        max: tratamento_ambulatorial
+        top:
+        - [aberto, 172950]
+        - [fechado, 172950]
+        - [internacao, 172950]
+        - [semiaberto, 172950]
+        - [tratamento_ambulatorial, 172950]
+        - [null, 172950]
+      esfera_justica:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: estadual
+        max: outros
+        top:
+        - [estadual, 345900]
+        - [federal, 345900]
+        - [outros, 345900]
+      sexo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: feminino
+        max: masculino
+        top:
+        - [feminino, 518850]
+        - [masculino, 518850]
+      quantidade:
+        tipo: BIGINT
+        nulos_pct: 48.92
+        distintos_aprox: 2638
+        min: '0'
+        max: '38801'
+        media: 28.8148
+        quartis: [0, 0, 0]
+      quantidade_rdd:
+        tipo: BIGINT
+        nulos_pct: 40.36
+        distintos_aprox: 97
+        min: '0'
+        max: '2697'
+        media: 0.8317
+        quartis: [0, 0, 0]
+  uf_semestre:
+    linhas: 513
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: '2016'
+        max: '2025'
+        media: 2020.7368
+        quartis: [2018, 2021, 2023]
+        top:
+        - ['2017', 54]
+        - ['2018', 54]
+        - ['2019', 54]
+        - ['2020', 54]
+        - ['2021', 54]
+        - ['2022', 54]
+        - ['2023', 54]
+        - ['2024', 54]
+        - ['2025', 54]
+        - ['2016', 27]
+      semestre:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        media: 1.5263
+        quartis: [1, 2, 2]
+        top:
+        - ['2', 270]
+        - ['1', 243]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [AC, 19]
+        - [AL, 19]
+        - [AM, 19]
+        - [AP, 19]
+        - [BA, 19]
+        - [CE, 19]
+        - [DF, 19]
+        - [ES, 19]
+        - [GO, 19]
+        - [MA, 19]
+      ciclo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: '1'
+        max: '9'
+        top:
+        - ['1', 27]
+        - ['10', 27]
+        - ['11', 27]
+        - ['12', 27]
+        - ['13', 27]
+        - ['14', 27]
+        - ['15', 27]
+        - ['16', 27]
+        - ['17', 27]
+        - ['18', 27]
+      geracao_esquema:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: A
+        max: D
+        top:
+        - [B, 216]
+        - [D, 162]
+        - [C, 108]
+        - [A, 27]
+      unidades:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 144
+        min: '5'
+        max: '244'
+        media: 56.1891
+        quartis: [18, 45, 68]
+      populacao_total:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 534
+        min: '2503'
+        max: '233755'
+        media: 29774.2398
+        quartis: [9157, 16191, 30660]
+      populacao_masculina:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 482
+        min: '2358'
+        max: '222220'
+        media: 28173.4717
+        quartis: [8632, 15388, 28830]
+      populacao_feminina:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 657
+        min: '88'
+        max: '12485'
+        media: 1600.768
+        quartis: [493, 942, 1704]
+      populacao_provisoria:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 528
+        min: '629'
+        max: '60339'
+        media: 8383.3996
+        quartis: [2722, 4955, 9713]
+      capacidade_total:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 430
+        min: '924'
+        max: '164884'
+        media: 20339.3158
+        quartis: [5924, 12324, 20970]
+      vagas_desativadas:
+        tipo: BIGINT
+        nulos_pct: 5.07
+        distintos_aprox: 270
+        min: '0'
+        max: '3636'
+        media: 282.5873
+        quartis: [13, 95, 326]
+      taxa_ocupacao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 571
+        min: '0.647476'
+        max: '3.994949'
+        media: 1.54
+        quartis: [1.2128, 1.4384, 1.7873]
+  unidade_crosswalk:
+    linhas: 28825
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: '2016'
+        max: '2025'
+        media: 2020.7839
+        quartis: [2018, 2021, 2023]
+        top:
+        - ['2021', 3142]
+        - ['2024', 3130]
+        - ['2025', 3087]
+        - ['2023', 3074]
+        - ['2022', 3060]
+        - ['2018', 3024]
+        - ['2017', 3008]
+        - ['2020', 2972]
+        - ['2019', 2847]
+        - ['2016', 1481]
+      semestre:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        media: 1.5274
+        quartis: [1, 2, 2]
+        top:
+        - ['2', 15203]
+        - ['1', 13622]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 4353]
+        - [SP, 3443]
+        - [RS, 2106]
+        - [GO, 1867]
+        - [PR, 1605]
+        - [PE, 1581]
+        - [PB, 1350]
+        - [CE, 1177]
+        - [RO, 1068]
+        - [RJ, 1007]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0.19, distintos_aprox: 1042}
+      id_unidade: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2430}
+      ciclo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: '1'
+        max: '9'
+        top:
+        - ['11', 1582]
+        - ['16', 1567]
+        - ['17', 1563]
+        - ['10', 1560]
+        - ['18', 1555]
+        - ['14', 1540]
+        - ['15', 1534]
+        - ['13', 1533]
+        - ['19', 1532]
+        - ['9', 1528]
+      nome_unidade_original: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2497, pessoal: 'só contagens: valores seriam dado pessoal'}
+      score_pareamento:
+        tipo: DOUBLE
+        nulos_pct: 8.61
+        distintos_aprox: 1642
+        min: '0.5522'
+        max: '1.0'
+        media: 0.9759
+        quartis: [0.9873, 1, 1]
+      score_rival:
+        tipo: DOUBLE
+        nulos_pct: 8.61
+        distintos_aprox: 2233
+        min: '0.0'
+        max: '0.999'
+        media: 0.212
+        quartis: [0, 0.1067, 0.4068]
+      pareamento_ambiguo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: nao
+        max: sim
+        top:
+        - [nao, 28641]
+        - [sim, 184]
+      metodo_pareamento:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: consecutivo
+        max: lacuna
+        top:
+        - [consecutivo, 26344]
+        - [inicio_trajetoria, 2384]
+        - [lacuna, 97]
+  unidade_prisional:
+    linhas: 201775
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: '2016'
+        max: '2025'
+        media: 2020.7839
+        quartis: [2018, 2021, 2023]
+        top:
+        - ['2021', 21994]
+        - ['2024', 21910]
+        - ['2025', 21609]
+        - ['2023', 21518]
+        - ['2022', 21420]
+        - ['2018', 21168]
+        - ['2017', 21056]
+        - ['2020', 20804]
+        - ['2019', 19929]
+        - ['2016', 10367]
+      semestre:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        media: 1.5274
+        quartis: [1, 2, 2]
+        top:
+        - ['2', 106421]
+        - ['1', 95354]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 30471]
+        - [SP, 24101]
+        - [RS, 14742]
+        - [GO, 13069]
+        - [PR, 11235]
+        - [PE, 11067]
+        - [PB, 9450]
+        - [CE, 8239]
+        - [RO, 7476]
+        - [RJ, 7049]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0.19, distintos_aprox: 1042}
+      id_unidade: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2430}
+      ciclo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: '1'
+        max: '9'
+        top:
+        - ['11', 11074]
+        - ['16', 10969]
+        - ['17', 10941]
+        - ['10', 10920]
+        - ['18', 10885]
+        - ['14', 10780]
+        - ['15', 10738]
+        - ['13', 10731]
+        - ['19', 10724]
+        - ['9', 10696]
+      geracao_esquema:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: A
+        max: D
+        top:
+        - [B, 82957]
+        - [D, 65037]
+        - [C, 43414]
+        - [A, 10367]
+      nome_unidade: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1994, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_unidade_original: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2497, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ambito:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Estadual
+        max: Federal
+        top:
+        - [Estadual, 201138]
+        - [Federal, 637]
+      tipo_recolhimento:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Cela física
+        max: Domiciliar sem monitoramento eletrônico
+        top:
+        - [Cela física, 188762]
+        - [Domiciliar sem monitoramento eletrônico, 7371]
+        - [Domiciliar com monitoramento eletrônico, 5642]
+      sexo_destinacao_original:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Feminino
+        max: Misto
+        top:
+        - [Masculino, 154357]
+        - [Misto, 30842]
+        - [Feminino, 16569]
+        - [Masculino | Misto, 7]
+      tipo_estabelecimento_original: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 779, min: Estabelecimento destinado a diversos tipos de regime,
+        max: Patronato}
+      gestao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Co-gestão
+        max: Pública
+        top:
+        - [Pública, 189609]
+        - [Organizações sem fins lucrativos, 6286]
+        - [Co-gestão, 4823]
+        - [Parceria Público-Privada, 1057]
+      data_inauguracao: {tipo: DATE, nulos_pct: 10.36, distintos_aprox: 3225, min: '1000-01-01', max: '2025-11-17'}
+      tipo_regime:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: aberto
+        max: semiaberto
+        top:
+        - [aberto, 28825]
+        - [fechado, 28825]
+        - [medida_seguranca_internacao, 28825]
+        - [outro, 28825]
+        - [provisorio, 28825]
+        - [rdd, 28825]
+        - [semiaberto, 28825]
+      capacidade_masculina:
+        tipo: BIGINT
+        nulos_pct: 44.47
+        distintos_aprox: 1268
+        min: '0'
+        max: '30640'
+        media: 84.8493
+        quartis: [0, 0, 35]
+      capacidade_feminina:
+        tipo: BIGINT
+        nulos_pct: 53.99
+        distintos_aprox: 401
+        min: '0'
+        max: '10000'
+        media: 9.9875
+        quartis: [0, 0, 0]
+      capacidade_total:
+        tipo: BIGINT
+        nulos_pct: 42.62
+        distintos_aprox: 1210
+        min: '0'
+        max: '33750'
+        media: 90.1268
+        quartis: [0, 0, 41]
+      descricao_outro_regime: {tipo: VARCHAR, nulos_pct: 99.06, distintos_aprox: 356, min: '0', max: triagem + isolamento}

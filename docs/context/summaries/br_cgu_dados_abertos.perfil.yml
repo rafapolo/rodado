@@ -1,0 +1,171 @@
+dataset: br_cgu_dados_abertos
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  conjunto:
+    linhas: 12731
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 12203}
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 12810, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_tokenizado: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 11164, pessoal: 'só contagens: valores seriam dado pessoal'}
+      descricao: {tipo: VARCHAR, nulos_pct: 0.68, distintos_aprox: 10471}
+      mantenedor: {tipo: VARCHAR, nulos_pct: 16.82, distintos_aprox: 1711}
+      email_mantenedor: {tipo: VARCHAR, nulos_pct: 50.4, distintos_aprox: 1784, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_organizacao_responsavel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 193, pessoal: 'só contagens: valores seriam dado pessoal'}
+      organizacao_responsavel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 226, pessoal: 'só contagens: valores seriam dado pessoal'}
+      data_criacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1280, min: '2011-11-25', max: '2024-02-16'}
+      data_atualizacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 832, min: '2015-06-03', max: '2024-02-18'}
+      quantidade_reusos:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '0'
+        max: '2'
+        media: 0.0018
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 12712]
+        - ['1', 15]
+        - ['2', 4]
+      quantidade_recursos:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 134
+        min: '0'
+        max: '478'
+        media: 6.0352
+        quartis: [2, 4, 5]
+      quantidade_downloads:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 639
+        min: '0'
+        max: '362011'
+        media: 80.621
+        quartis: [0, 2, 13]
+  organizacao:
+    linhas: 254
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 208, min: 008945aa-7ac9-4023-b04f-8d57286a7dd6, max: ffce99e4-3d0b-49ab-b4ec-26cb5f803c2f}
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 231, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_tokenizado: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 206, pessoal: 'só contagens: valores seriam dado pessoal'}
+      descricao: {tipo: VARCHAR, nulos_pct: 1.97, distintos_aprox: 249, min: " A Universidade Federal de Alfenas – UNIFAL-MG, originalmente Escola\
+          \ de Farmácia e Odontologia de Alfenas - EFOA, foi fundada no dia 03 de abril de 1914 e em 2005 foi transformada em Universidade Federal\
+          \ de Alfenas - UNIFAL-MG.\r\n\r\n    A UNIFAL-MG tem sido responsável pela formação de várias gerações de competentes profissionais,\
+          \ através de seus Cursos de Graduação e Pós-Graduação; pela consolidação de suas atividades de Extensão, onde ocupa posição de destaque\
+          \ na prestação de serviços à comunidade local e regional e; pelo crescimento expressivo de sua produção científica e tecnológica, responsável\
+          \ pelo desenvolvimento regional e nacional.", max: "Órgão extinto com a edição da Lei Nº 13.844, de 18 de Junho de 2019. As funções\
+          \ do antigo Ministério foram atribuídas ao Ministério da Cidadania. \r\n\r\nO Ministério do Esporte era responsável por construir uma\
+          \ Política Nacional de Esporte. Além de desenvolver o esporte de alto rendimento, o Ministério trabalhava ações de inclusão social por\
+          \ meio do esporte, garantindo à população brasileira o acesso gratuito à prática esportiva, qualidade de vida e desenvolvimento humano."}
+      tipo_esfera_administrativa:
+        tipo: VARCHAR
+        nulos_pct: 69.69
+        distintos_aprox: 3
+        min: Estadual/Distrital
+        max: Municipal
+        top:
+        - [null, 177]
+        - [Federal, 69]
+        - [Municipal, 6]
+        - [Estadual/Distrital, 2]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 70.47
+        distintos_aprox: 18
+        min: AP
+        max: SP
+        top:
+        - [null, 179]
+        - [DF, 32]
+        - [MG, 6]
+        - [RJ, 6]
+        - [SP, 6]
+        - [PR, 4]
+        - [RS, 4]
+        - [BA, 3]
+        - [PA, 3]
+        - [MT, 2]
+      id_municipio:
+        tipo: VARCHAR
+        nulos_pct: 74.02
+        distintos_aprox: 29
+        min: '1400100'
+        max: '5300108'
+        top:
+        - [null, 188]
+        - ['5300108', 28]
+        - ['3304557', 4]
+        - ['3550308', 4]
+        - ['1501402', 2]
+        - ['2408102', 2]
+        - ['3170206', 2]
+        - ['1400100', 1]
+        - ['1502152', 1]
+        - ['1600303', 1]
+      quantidade_seguidores:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '0'
+        max: '37'
+        media: 0.2992
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 250]
+        - ['11', 1]
+        - ['23', 1]
+        - ['37', 1]
+        - ['5', 1]
+      quantidade_conjuntos:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 80
+        min: '0'
+        max: '4022'
+        media: 52.0315
+        quartis: [5, 17, 35]
+  recurso:
+    linhas: 76786
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 77685}
+      id_conjunto: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 12203}
+      nome: {tipo: VARCHAR, nulos_pct: 0.11, distintos_aprox: 59134, pessoal: 'só contagens: valores seriam dado pessoal'}
+      descricao: {tipo: VARCHAR, nulos_pct: 24.9, distintos_aprox: 31552}
+      tipo:
+        tipo: VARCHAR
+        nulos_pct: 92.63
+        distintos_aprox: 6
+        min: API
+        max: OUTRO
+        top:
+        - [null, 71128]
+        - [DADOS, 5063]
+        - [DICIONARIO_DE_DADOS, 317]
+        - [DOCUMENTACAO, 189]
+        - [API, 69]
+        - [OUTRO, 19]
+        - [INVALIDO, 1]
+      formato: {tipo: VARCHAR, nulos_pct: 1.92, distintos_aprox: 163, min: ' .pdf', max: ´xlsx}
+      tamanho_bytes:
+        tipo: BIGINT
+        nulos_pct: 74.85
+        distintos_aprox: 16668
+        min: '17'
+        max: '4230125471'
+        media: 14775420.0486
+        quartis: [19575, 268461, 3560524]
+      url_download: {tipo: VARCHAR, nulos_pct: 0.28, distintos_aprox: 61489}
+      data_criacao: {tipo: DATE, nulos_pct: 0.18, distintos_aprox: 1980, min: '2010-11-06', max: '2024-02-19'}
+      data_modificacao_metadados: {tipo: DATE, nulos_pct: 0.18, distintos_aprox: 1776, min: '2012-06-15', max: '2024-02-19'}
+      quantidade_downloads:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 819
+        min: '0'
+        max: '37043'
+        media: 13.2363
+        quartis: [0, 0, 3]

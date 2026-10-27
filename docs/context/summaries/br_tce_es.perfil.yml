@@ -1,0 +1,725 @@
+dataset: br_tce_es
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  aquisicoes_mensais:
+    linhas: 133
+    fonte_do_perfil: tabela inteira
+    colunas:
+      Chave: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 133, min: 1bjlz, max: zlroi}
+      Ano:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: '2016'
+        max: '2026'
+        top:
+        - ['2018', 13]
+        - ['2020', 13]
+        - ['2021', 13]
+        - ['2022', 13]
+        - ['2023', 13]
+        - ['2024', 13]
+        - ['2025', 13]
+        - ['2017', 12]
+        - ['2016', 11]
+        - ['2019', 11]
+      Mes:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: Abril
+        max: Setembro
+        top:
+        - [Abril, 11]
+        - [Agosto, 11]
+        - [Fevereiro, 11]
+        - [Julho, 11]
+        - [Junho, 11]
+        - [Maio, 11]
+        - [Março, 11]
+        - [Dezembro, 10]
+        - [Janeiro, 10]
+        - [Novembro, 10]
+      MesValor:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: '01'
+        max: '13'
+        top:
+        - ['02', 11]
+        - ['03', 11]
+        - ['04', 11]
+        - ['05', 11]
+        - ['06', 11]
+        - ['07', 11]
+        - [08, 11]
+        - ['01', 10]
+        - ['10', 10]
+        - ['11', 10]
+      ArquivoPDF: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 129, min: 'https://www.tcees.tc.br/portal-da-transparencia/wp-content/uploads/sites/10/formidable/43/2016-04-SECE209.pdf',
+        max: 'https://www.tcees.tc.br/portal-da-transparencia/wp-content/uploads/sites/10/formidable/43/aquisicoes.pdf'}
+      ArquivoODS:
+        tipo: INTEGER
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 133]
+      Criacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 130, min: '01-02-2022 14:18:37', max: '31-08-2020 16:44:42'}
+      Atualizacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 127, min: '01-02-2022 14:18:37', max: '31-08-2020 16:44:42'}
+  julgamento_contas:
+    linhas: 11691
+    fonte_do_perfil: tabela inteira
+    colunas:
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 67, pessoal: 'só contagens: valores seriam dado pessoal'}
+      Ano:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: '2009'
+        max: '2024'
+        top:
+        - ['2016', 1025]
+        - ['2019', 819]
+        - ['2012', 814]
+        - ['2017', 812]
+        - ['2014', 804]
+        - ['2015', 777]
+        - ['2011', 770]
+        - ['2013', 766]
+        - ['2018', 763]
+        - ['2020', 753]
+      NumeroParecerPrevio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 139, pessoal: 'só contagens: valores seriam dado pessoal'}
+      AnoParecerPrevio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '2010'
+        max: '2026'
+        top:
+        - ['2023', 1110]
+        - ['2024', 1090]
+        - ['2017', 1061]
+        - ['2020', 984]
+        - ['2022', 962]
+        - ['2021', 927]
+        - ['2018', 847]
+        - ['2019', 787]
+        - ['2016', 722]
+        - ['2025', 699]
+      Responsavel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 331, pessoal: 'só contagens: valores seriam dado pessoal'}
+      DataAutuacao: {tipo: TIMESTAMP, nulos_pct: 0.34, distintos_aprox: 849, min: '2010-03-01 00:00:00', max: '2025-09-04 13:55:41'}
+      DataTransitoJulgado: {tipo: DATE, nulos_pct: 33.33, distintos_aprox: 534, min: '2016-03-02', max: '2025-11-25'}
+      DataJulgamento: {tipo: DATE, nulos_pct: 1.36, distintos_aprox: 632, min: '2010-10-20', max: '2026-09-16'}
+      Resultado parecer previo:
+        tipo: VARCHAR
+        nulos_pct: 1.85
+        distintos_aprox: 4
+        min: Aprovação
+        max: Rejeição
+        top:
+        - [Aprovação com ressalva, 5147]
+        - [Aprovação, 4682]
+        - [Rejeição, 1578]
+        - [null, 216]
+        - [Extinção sem resolução de mérito, 68]
+      Resultado julgamento câmara:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '-'
+        max: Rejeição
+        top:
+        - [Aprovação, 10559]
+        - [Rejeição, 970]
+        - ['-', 162]
+      NumeroDecretoLegislativo: {tipo: VARCHAR, nulos_pct: 1.36, distintos_aprox: 515, pessoal: 'só contagens: valores seriam dado pessoal'}
+      AnoDecretoLegislativo:
+        tipo: VARCHAR
+        nulos_pct: 1.36
+        distintos_aprox: 17
+        min: '2009'
+        max: '2026'
+        top:
+        - ['2022', 1533]
+        - ['2023', 1384]
+        - ['2024', 1159]
+        - ['2019', 937]
+        - ['2025', 893]
+        - ['2026', 821]
+        - ['2021', 814]
+        - ['2018', 794]
+        - ['2020', 678]
+        - ['2017', 606]
+      QuantidadeVereadoresExercicio:
+        tipo: INTEGER
+        nulos_pct: 1.36
+        distintos_aprox: 10
+        min: '8'
+        max: '23'
+        media: 11.7897
+        quartis: [9, 11, 13]
+        top:
+        - ['9', 4548]
+        - ['11', 3142]
+        - ['13', 1717]
+        - ['17', 719]
+        - ['19', 513]
+        - ['15', 345]
+        - ['23', 345]
+        - [null, 159]
+        - ['21', 84]
+        - ['12', 72]
+      PrazoJulgamentoLeiOrganicaUG:
+        tipo: VARCHAR
+        nulos_pct: 1.36
+        distintos_aprox: 23
+        min: '0'
+        max: '90'
+        top:
+        - ['0', 4518]
+        - ['90', 3001]
+        - ['60', 2507]
+        - ['30', 574]
+        - ['120', 352]
+        - ['180', 195]
+        - [null, 159]
+        - ['150', 88]
+        - ['135', 72]
+        - ['15', 36]
+      NomeVereador: {tipo: VARCHAR, nulos_pct: 2.6, distintos_aprox: 2242, pessoal: 'só contagens: valores seriam dado pessoal'}
+      PartidoVereador: {tipo: VARCHAR, nulos_pct: 2.6, distintos_aprox: 239, min: "\tPROGRESSISTAS", max: união brasil}
+      Registro de presença:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '-'
+        max: Sim
+        top:
+        - [Sim, 10836]
+        - [Não, 551]
+        - ['-', 304]
+      QuantidadeAprovacao:
+        tipo: INTEGER
+        nulos_pct: 3.69
+        distintos_aprox: 24
+        min: '0'
+        max: '23'
+        media: 9.9591
+        quartis: [8, 9, 11]
+        top:
+        - ['9', 2150]
+        - ['11', 1885]
+        - ['8', 1562]
+        - ['10', 1013]
+        - ['12', 704]
+        - ['7', 692]
+        - ['13', 505]
+        - ['6', 466]
+        - [null, 431]
+        - ['15', 344]
+      QuantidadeRejeicao:
+        tipo: INTEGER
+        nulos_pct: 72.66
+        distintos_aprox: 14
+        min: '0'
+        max: '13'
+        media: 3.7175
+        quartis: [1, 2, 6]
+        top:
+        - [null, 8495]
+        - ['1', 910]
+        - ['2', 645]
+        - ['3', 286]
+        - ['4', 253]
+        - ['7', 252]
+        - ['8', 180]
+        - ['10', 142]
+        - ['6', 133]
+        - ['5', 125]
+      QuantidadeAbstencao:
+        tipo: INTEGER
+        nulos_pct: 88.31
+        distintos_aprox: 7
+        min: '0'
+        max: '9'
+        media: 1.2465
+        quartis: [1, 1, 1]
+        top:
+        - [null, 10324]
+        - ['1', 936]
+        - ['2', 238]
+        - ['0', 131]
+        - ['5', 23]
+        - ['3', 20]
+        - ['6', 18]
+        - ['9', 1]
+      QuantidadeAusente:
+        tipo: INTEGER
+        nulos_pct: 62.39
+        distintos_aprox: 7
+        min: '0'
+        max: '8'
+        media: 1.5763
+        quartis: [1, 1, 2]
+        top:
+        - [null, 7294]
+        - ['1', 2669]
+        - ['2', 930]
+        - ['3', 492]
+        - ['4', 155]
+        - ['0', 100]
+        - ['5', 34]
+        - ['8', 17]
+      QuantidadeNaoRegistrouVoto:
+        tipo: INTEGER
+        nulos_pct: 80.12
+        distintos_aprox: 7
+        min: '0'
+        max: '9'
+        media: 1.4131
+        quartis: [1, 1, 1]
+        top:
+        - [null, 9367]
+        - ['1', 1801]
+        - ['3', 184]
+        - ['4', 110]
+        - ['0', 91]
+        - ['2', 73]
+        - ['5', 60]
+        - ['9', 5]
+  lista_responsaveis:
+    linhas: 734
+    fonte_do_perfil: tabela inteira
+    colunas:
+      NomeResponsavel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 491, pessoal: 'só contagens: valores seriam dado pessoal'}
+      TipoDocumentoResponsavel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      NumeroDocumentoResponsavel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 642, pessoal: 'só contagens: valores seriam dado pessoal'}
+      NumeroProcesso: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 453, pessoal: 'só contagens: valores seriam dado pessoal'}
+      AnoProcesso:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 24
+        min: '2001'
+        max: '2025'
+        top:
+        - ['2018', 111]
+        - ['2017', 106]
+        - ['2020', 94]
+        - ['2019', 92]
+        - ['2016', 59]
+        - ['2021', 45]
+        - ['2022', 39]
+        - ['2015', 35]
+        - ['2024', 23]
+        - ['2010', 20]
+      TipoDeliberacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Acórdão
+        max: Parecer Prévio
+        top:
+        - [Acórdão, 639]
+        - [Parecer Prévio, 94]
+        - [Acórdão - 1ª Câmara, 1]
+      NumeroDeliberacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 369, pessoal: 'só contagens: valores seriam dado pessoal'}
+      AnoDeliberacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: '2016'
+        max: '2026'
+        top:
+        - ['2019', 182]
+        - ['2018', 160]
+        - ['2021', 111]
+        - ['2020', 97]
+        - ['2022', 84]
+        - ['2024', 29]
+        - ['2023', 27]
+        - ['2026', 22]
+        - ['2025', 17]
+        - ['2017', 4]
+      DataTransito: {tipo: DATE, nulos_pct: 0, distintos_aprox: 289, min: '2018-10-11', max: '2026-09-04'}
+      DataTermino: {tipo: DATE, nulos_pct: 0, distintos_aprox: 269, min: '2026-10-11', max: '2034-09-04'}
+      Jurisdicionado: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 201, min: ADERES - Agência de Desenvolvimento das Micro e Pequenas Empresas
+          e do Empreendedorismo, max: UG-1905 - Serviço Autônomo de Limpeza Pública de Aracruz}
+      categoria:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: contas_irregulares
+        max: responsaveis_inabilitados
+        top:
+        - [contas_irregulares, 727]
+        - [responsaveis_inabilitados, 4]
+        - [proibidos_contratar, 2]
+        - [empresas_inidoneas, 1]
+  obras_publicas:
+    linhas: 250
+    fonte_do_perfil: tabela inteira
+    colunas:
+      _id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 239, min: '1', max: '99'}
+      Licitacao: {tipo: VARCHAR, nulos_pct: 12.4, distintos_aprox: 150, min: 000005/2014, max: 94/2012}
+      ModalidadeLicitacao:
+        tipo: VARCHAR
+        nulos_pct: 1.2
+        distintos_aprox: 5
+        min: Concorrência Pública
+        max: Tomada de Preço
+        top:
+        - [Tomada de Preço, 92]
+        - [Concorrência Pública, 50]
+        - [Convite, 39]
+        - [Pregão, 38]
+        - [Dispensa, 20]
+        - [Inexigibilidade, 8]
+        - [null, 3]
+      Contrato: {tipo: VARCHAR, nulos_pct: 1.2, distintos_aprox: 231, min: 000017/2014-1, max: OES0002/2011-1}
+      DataAssinaturaContrato: {tipo: DATE, nulos_pct: 1.2, distintos_aprox: 237, min: '2007-02-06', max: '2023-12-11'}
+      TipoContratacao:
+        tipo: VARCHAR
+        nulos_pct: 1.2
+        distintos_aprox: 3
+        min: Dispensa
+        max: Vinculada a uma licitação
+        top:
+        - [Vinculada a uma licitação, 219]
+        - [Dispensa, 20]
+        - [Inexigibilidade, 8]
+        - [null, 3]
+      RegimeExecucao:
+        tipo: VARCHAR
+        nulos_pct: 1.2
+        distintos_aprox: 3
+        min: Empreitada por preço global
+        max: Tarefa
+        top:
+        - [Empreitada por preço global, 134]
+        - [Empreitada por preço unitário, 111]
+        - [null, 3]
+        - [Tarefa, 2]
+      FormaExecucao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Direta
+        max: Indireta
+        top:
+        - [Indireta, 247]
+        - [Direta, 3]
+      TipoObra:
+        tipo: VARCHAR
+        nulos_pct: 23.2
+        distintos_aprox: 33
+        min: Aterro sanitário
+        max: Via urbana pavimentada
+        top:
+        - [null, 58]
+        - [Outros, 54]
+        - [Escola, 13]
+        - [Prédio público, 13]
+        - [Unidade de saúde, 12]
+        - [Ruas e avenidas, 11]
+        - [Limpeza pública, 9]
+        - [Quadra de esporte, 9]
+        - [Praça, 8]
+        - [Drenagem de águas pluviais, 5]
+      TipoServico:
+        tipo: VARCHAR
+        nulos_pct: 23.2
+        distintos_aprox: 18
+        min: Ampliação
+        max: Terraplenagem
+        top:
+        - [null, 58]
+        - [Construção nova, 54]
+        - [Outros, 26]
+        - [Reforma, 26]
+        - [Manutenção, 23]
+        - [Pavimentação, 23]
+        - [Reforma e ampliação, 8]
+        - [Ampliação, 6]
+        - [Readequação, 5]
+        - [Recuperação, 4]
+      SetorBeneficiado:
+        tipo: VARCHAR
+        nulos_pct: 23.2
+        distintos_aprox: 16
+        min: Administração central
+        max: Urbanização e habitação
+        top:
+        - [null, 58]
+        - [Infra-estrutura e transporte, 57]
+        - [Educação, 23]
+        - [Administração central, 20]
+        - [Saúde, 19]
+        - [Urbanização e habitação, 14]
+        - [Esporte, 12]
+        - ['Meio ambiente, recursos hídricos e saneamento', 9]
+        - [Ação social, 8]
+        - [Limpeza pública, 8]
+      BemPublico: {tipo: VARCHAR, nulos_pct: 23.2, distintos_aprox: 200, min: 'Abertura, reabertura e calçamento de diversas ruas e avenidas',
+        max: drenagem e pavimentação de ruas do loteamento mirante dos pontões.}
+      Endereco: {tipo: VARCHAR, nulos_pct: 23.2, distintos_aprox: 163, pessoal: 'só contagens: valores seriam dado pessoal'}
+      Bairro: {tipo: VARCHAR, nulos_pct: 23.2, distintos_aprox: 107, pessoal: 'só contagens: valores seriam dado pessoal'}
+      Municipio: {tipo: VARCHAR, nulos_pct: 23.2, distintos_aprox: 52, min: Afonso Cláudio, max: Águia Branca}
+      CEP: {tipo: VARCHAR, nulos_pct: 23.2, distintos_aprox: 92, pessoal: 'só contagens: valores seriam dado pessoal'}
+      Objeto: {tipo: VARCHAR, nulos_pct: 18, distintos_aprox: 208, min: Adesão de ata de registro de preço para contratação de empresa de engenharia
+          especializada para construção do centro municipal de educação infantil  cmei vale do sol localizado à rua augusta bairro vale do sol
+          vianaes, max: É objeto da presente licitação a contratação de empresa para execução de obras de construção de uma unidade básica de
+          saúde na localidade de barra do triunfo  joão neiva com fornecimento de materiais conforme processo administrativo nº 3837 de 28092011
+          oriundo da secretaria municipal de saúdefundo municipal de saúde de joão neiva}
+      Quantidade:
+        tipo: INTEGER
+        nulos_pct: 46.8
+        distintos_aprox: 70
+        min: '1'
+        max: '1996551'
+        media: 21847.8496
+        quartis: [1, 13, 610]
+      Unidade:
+        tipo: VARCHAR
+        nulos_pct: 50.4
+        distintos_aprox: 10
+        min: Dia
+        max: un - Unidade
+        top:
+        - [null, 126]
+        - [m² - Metro quadrado, 48]
+        - [un - Unidade, 35]
+        - [Mês, 10]
+        - [Dia, 8]
+        - [m - Metro, 6]
+        - [km - Quilômetro, 5]
+        - [h - Hora, 4]
+        - [kg - Quilograma, 4]
+        - [t - Tonelada, 2]
+      Empresa: {tipo: VARCHAR, nulos_pct: 1.2, distintos_aprox: 170, min: A Madeira Indústria e Comércio Ltda, max: Zgf Engenharia Ltda}
+      EmpresaCNPJ: {tipo: VARCHAR, nulos_pct: 1.2, distintos_aprox: 195, pessoal: 'só contagens: valores seriam dado pessoal'}
+      UnidadeGestora: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 102, min: Banco de Desenvolvimento do Espírito Santo S/A, max: Tribunal de
+          Justiça do Estado do Espírito Santo}
+      Esfera: {tipo: VARCHAR, nulos_pct: 20, distintos_aprox: 52, min: Afonso Cláudio, max: Águia Branca}
+      DataInicioObra:
+        tipo: INTEGER
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 250]
+      PrazoExecucaoInicial:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 46
+        min: '10'
+        max: '912'
+        top:
+        - ['180', 44]
+        - ['365', 30]
+        - ['120', 29]
+        - ['90', 26]
+        - ['60', 20]
+        - ['150', 15]
+        - ['360', 15]
+        - ['240', 12]
+        - ['300', 7]
+        - ['210', 5]
+      PrazoExecucaoAditado:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '0'
+        max: '60'
+        top:
+        - ['0', 246]
+        - ['180', 3]
+        - ['60', 1]
+      PrazoExecucaoTotal:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 52
+        min: '10'
+        max: '912'
+        media: 206.808
+        quartis: [120, 180, 300]
+      DiasAtrasada:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '0'
+        max: '0'
+        media: 0
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 250]
+      ValorInicial:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 271
+        min: '630.0'
+        max: '47193055.96'
+        media: 1050720.1824
+        quartis: [70405.8967, 178506.9089, 492592.7578]
+      ValorAcrescido:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '0'
+        max: '0'
+        media: 0
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 250]
+      ValorDecrescido:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '0.0'
+        max: '271054.62'
+        media: 2704.0599
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 246]
+        - ['151014.98', 1]
+        - ['189057.98', 1]
+        - ['271054.62', 1]
+        - ['64887.39', 1]
+      ValorAditado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '-271054.62'
+        max: '0.0'
+        media: -2704.0599
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 246]
+        - ['-151014.98', 1]
+        - ['-189057.98', 1]
+        - ['-271054.62', 1]
+        - ['-64887.39', 1]
+      ValorMaterial:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '0'
+        max: '0'
+        media: 0
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 250]
+      ValorMaquinasEquipamentos:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '0'
+        max: '0'
+        media: 0
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 250]
+      ValorExtraContratoTotal:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '0'
+        max: '0'
+        media: 0
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 250]
+      ValorMedido:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '0'
+        max: '20240'
+        media: 118.76
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 248]
+        - ['20240', 1]
+        - ['9450', 1]
+      PercentualRestante:
+        tipo: DOUBLE
+        nulos_pct: 1.6
+        distintos_aprox: 2
+        min: '0.0'
+        max: '1.0'
+        media: 0.9956
+        quartis: [1, 1, 1]
+        top:
+        - ['1.0', 244]
+        - [null, 4]
+        - ['0.0', 1]
+        - ['0.91', 1]
+      Situacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Concluída e recebida definitivamente
+        max: Situação não definida
+        top:
+        - [Situação não definida, 187]
+        - [Não iniciada, 62]
+        - [Concluída e recebida definitivamente, 1]
+      DataSituacao:
+        tipo: DATE
+        nulos_pct: 84.4
+        distintos_aprox: 30
+        min: '2011-07-28'
+        max: '2022-08-17'
+        top:
+        - [null, 211]
+        - ['2016-05-18', 3]
+        - ['2016-10-26', 3]
+        - ['2012-05-10', 2]
+        - ['2012-12-13', 2]
+        - ['2013-02-26', 2]
+        - ['2014-07-20', 2]
+        - ['2015-08-19', 2]
+        - ['2011-07-28', 1]
+        - ['2012-05-16', 1]
+      NecessidadeDeAtencaoEspecial:
+        tipo: INTEGER
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 250]
+  resultados_fiscalizacoes:
+    linhas: 156
+    fonte_do_perfil: tabela inteira
+    colunas:
+      NomeEsferaAdministrativa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 67, pessoal: 'só contagens: valores seriam dado pessoal'}
+      Ano:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '2015'
+        max: '2020'
+        top:
+        - ['2015', 78]
+        - ['2020', 78]
+      ValorExecutivo:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 69
+        min: '0.0'
+        max: '84.0'
+        media: 38.2756
+        quartis: [26, 37.5, 50]
+      ValorLegislativo:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 57
+        min: '0.0'
+        max: '81.0'
+        media: 32.9167
+        quartis: [0, 34.5, 53]

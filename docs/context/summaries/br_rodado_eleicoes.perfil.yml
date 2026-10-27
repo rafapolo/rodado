@@ -1,0 +1,687 @@
+dataset: br_rodado_eleicoes
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  local_2026_coord_cnefe:
+    linhas: 235
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_municipio_tse: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 100, min: '11134', max: '98299'}
+      zona: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 112, min: '1', max: '98'}
+      numero: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 84, pessoal: 'só contagens: valores seriam dado pessoal'}
+      latitude:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 233
+        min: '-29.713159'
+        max: '3.845563'
+        media: -12.7093
+        quartis: [-19.8662, -12.005, -9.5204]
+      longitude:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 270
+        min: '-61.956723'
+        max: '-34.833966'
+        media: -45.2663
+        quartis: [-48.8607, -42.7665, -42.27]
+      origem_coord:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: CNEFE centro do CEP
+        max: CNEFE estabelecimento
+        top:
+        - [CNEFE centro do bairro/povoado, 98]
+        - [CNEFE estabelecimento, 96]
+        - [CNEFE centro do CEP, 41]
+  mudanca_local_2turno_2026:
+    linhas: 383
+    fonte_do_perfil: tabela inteira
+    colunas:
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: AL
+        max: SP
+        top:
+        - [MG, 103]
+        - [PA, 41]
+        - [SP, 35]
+        - [RN, 24]
+        - [RS, 21]
+        - [MA, 20]
+        - [MT, 20]
+        - [AM, 18]
+        - [ES, 16]
+        - [PI, 15]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 97, min: '1100106', max: '5108402'}
+      id_municipio_tse: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 97, min: '10375', max: '98477'}
+      municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 121, min: ANAJÁS, max: ÁGUAS VERMELHAS}
+      zona:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 71
+        min: '1'
+        max: '402'
+        media: 100.8695
+        quartis: [24, 62, 149]
+      secao:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 257
+        min: '1'
+        max: '1023'
+        media: 189.6005
+        quartis: [59, 129, 253]
+      eleitores_secao:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 190
+        min: '60'
+        max: '414'
+        media: 292.5013
+        quartis: [250, 301, 358]
+      caso:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: temporário nos dois turnos
+        max: temporário só no 2º turno
+        top:
+        - [temporário só no 2º turno, 332]
+        - [temporário só no 1º turno, 32]
+        - [temporário nos dois turnos, 19]
+      local_cadastro:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 51
+        min: '1015'
+        max: '2658'
+        media: 1289.1619
+        quartis: [1066, 1166, 1386]
+      nome_local_cadastro: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 130, pessoal: 'só contagens: valores seriam dado pessoal'}
+      local_1t:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 59
+        min: '1015'
+        max: '2950'
+        media: 1323.3708
+        quartis: [1082, 1204, 1438]
+      nome_local_1t: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 142, pessoal: 'só contagens: valores seriam dado pessoal'}
+      endereco_1t: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 121, pessoal: 'só contagens: valores seriam dado pessoal'}
+      bairro_1t: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 74, pessoal: 'só contagens: valores seriam dado pessoal'}
+      local_2t:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 70
+        min: '1015'
+        max: '2917'
+        media: 1473.2454
+        quartis: [1104, 1340, 1763]
+      nome_local_2t: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 122, pessoal: 'só contagens: valores seriam dado pessoal'}
+      endereco_2t: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 130, pessoal: 'só contagens: valores seriam dado pessoal'}
+      bairro_2t: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 61, pessoal: 'só contagens: valores seriam dado pessoal'}
+      local_2t_novo:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['true', 219]
+        - ['false', 164]
+      local_1t_fechado:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['true', 286]
+        - ['false', 97]
+      distancia_m:
+        tipo: INTEGER
+        nulos_pct: 37.6
+        distintos_aprox: 51
+        min: '10'
+        max: '10550'
+        media: 655.9833
+        quartis: [78, 397, 734]
+      distancia_km:
+        tipo: DOUBLE
+        nulos_pct: 37.6
+        distintos_aprox: 63
+        min: '0.01'
+        max: '10.55'
+        media: 0.656
+        quartis: [0.0781, 0.3967, 0.7342]
+      distancia_m_bruta:
+        tipo: INTEGER
+        nulos_pct: 37.34
+        distintos_aprox: 53
+        min: '10'
+        max: '14290'
+        media: 712.7917
+        quartis: [80, 395, 737]
+      coordenada_suspeita:
+        tipo: BOOLEAN
+        nulos_pct: 37.34
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['false', 239]
+        - [null, 143]
+        - ['true', 1]
+      motivo_suspeita:
+        tipo: VARCHAR
+        nulos_pct: 62.4
+        distintos_aprox: 3
+        min: ponto do 2º turno fora do município
+        max: sem coordenada no TSE; local rural do 1º turno com a coordenada de outro local
+        top:
+        - [null, 239]
+        - [sem coordenada no TSE, 141]
+        - [sem coordenada no TSE; local rural do 1º turno com a coordenada de outro local, 2]
+        - [ponto do 2º turno fora do município, 1]
+      votos_validos_1t:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 172
+        min: '50.0'
+        max: '332.0'
+        media: 229.4439
+        quartis: [199.35, 235.0833, 264.36]
+      votos_lula_1t:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 162
+        min: '26.0'
+        max: '312.0'
+        media: 113.2898
+        quartis: [80.9, 104.9583, 134.1]
+      votos_flavio_1t:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 181
+        min: '3.0'
+        max: '219.0'
+        media: 101.0313
+        quartis: [62.86, 100.5, 138.95]
+      diferenca_lula_flavio_1t:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 239
+        min: '-173.0'
+        max: '296.0'
+        media: 12.2585
+        quartis: [-49.68, 1.5417, 64.18]
+      pct_lula_1t:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 403
+        min: '14.77'
+        max: '98.23'
+        media: 49.9078
+        quartis: [35.4984, 46.6233, 63.0282]
+      pct_flavio_1t:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 327
+        min: '1.33'
+        max: '82.95'
+        media: 43.5409
+        quartis: [31.3297, 45.5221, 56.1216]
+      pct_lula_municipio_1t:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 99
+        min: '21.9'
+        max: '87.7'
+        media: 49.5167
+        quartis: [37.0763, 46.085, 63.5915]
+      pct_flavio_municipio_1t:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 80
+        min: '8.9'
+        max: '73.59'
+        media: 43.9142
+        quartis: [31.288, 45.4367, 56.5978]
+      desvio_lula_municipio_pp:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 450
+        min: '-25.24'
+        max: '61.75'
+        media: 0.3912
+        quartis: [-4.7415, -0.3992, 5.1252]
+      lat_1t:
+        tipo: DOUBLE
+        nulos_pct: 4.96
+        distintos_aprox: 119
+        min: '-31.769526'
+        max: '-0.76194777'
+        media: -14.052
+        quartis: [-20.5415, -15.6275, -6.219]
+      lon_1t:
+        tipo: DOUBLE
+        nulos_pct: 4.96
+        distintos_aprox: 103
+        min: '-69.94333624'
+        max: '-36.3129704'
+        media: -46.7757
+        quartis: [-51.0044, -45.2208, -42.1436]
+      lat_2t:
+        tipo: DOUBLE
+        nulos_pct: 33.68
+        distintos_aprox: 88
+        min: '-31.7663402'
+        max: '-0.9173586'
+        media: -15.5517
+        quartis: [-21.3804, -18.6485, -6.8785]
+      lon_2t:
+        tipo: DOUBLE
+        nulos_pct: 33.68
+        distintos_aprox: 85
+        min: '-69.94259'
+        max: '-36.2909969'
+        media: -46.0458
+        quartis: [-50.6366, -44.1586, -41.7813]
+  secao_setor:
+    linhas: 1014035
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '2022'
+        max: '2026'
+        media: 2024.0401
+        quartis: [2022, 2026, 2026]
+        top:
+        - ['2026', 517179]
+        - ['2022', 496856]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AC
+        max: ZZ
+        top:
+        - [SP, 205532]
+        - [MG, 106677]
+        - [RJ, 75289]
+        - [BA, 74797]
+        - [RS, 55167]
+        - [PR, 53211]
+        - [CE, 50487]
+        - [PE, 43513]
+        - [PA, 41789]
+        - [MA, 39287]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0.48, distintos_aprox: 6859}
+      id_municipio_tse: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4933}
+      zona: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 420, min: '1', max: '99'}
+      secao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2750}
+      local_numero: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 397, pessoal: 'só contagens: valores seriam dado pessoal'}
+      local_nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 100996, pessoal: 'só contagens: valores seriam dado pessoal'}
+      endereco: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 111333, pessoal: 'só contagens: valores seriam dado pessoal'}
+      bairro: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 41903, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cep: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 41718, pessoal: 'só contagens: valores seriam dado pessoal'}
+      eleitores_secao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 627
+        min: '0'
+        max: '645'
+        media: 310.8369
+        quartis: [271, 327, 367]
+      latitude:
+        tipo: DOUBLE
+        nulos_pct: 0.59
+        distintos_aprox: 116455
+        min: '-33.734513'
+        max: '5.0823855'
+        media: -16.6852
+        quartis: [-23.334, -19.8235, -8.6473]
+      longitude:
+        tipo: DOUBLE
+        nulos_pct: 0.59
+        distintos_aprox: 157619
+        min: '-73.6440882'
+        max: '-32.41465074'
+        media: -45.7469
+        quartis: [-49.1536, -46.4008, -41.6664]
+      origem_coordenada:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: mesma_secao_2020
+        max: tse_2026
+        top:
+        - [tse_2026, 512557]
+        - [tse_2022, 467352]
+        - [mesma_secao_2026, 26507]
+        - [sem_coordenada, 6014]
+        - [mesma_secao_2024, 1191]
+        - [mesma_secao_2022, 192]
+        - [mesmo_local_2026, 147]
+        - [mesma_secao_2020, 72]
+        - [mesmo_local_2024, 2]
+        - [mesmo_local_2020, 1]
+      id_municipio_malha: {tipo: VARCHAR, nulos_pct: 0.48, distintos_aprox: 6859}
+      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 1.11, distintos_aprox: 80138}
+      metodo_setor:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: fora_do_municipio
+        max: sem_coordenada
+        top:
+        - [ponto_no_setor, 1002801]
+        - [sem_coordenada, 6014]
+        - [fora_do_municipio, 5220]
+  secoes_local_mudou_2026_2t:
+    linhas: 983
+    fonte_do_perfil: tabela inteira
+    colunas:
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 23
+        min: AC
+        max: TO
+        top:
+        - [PR, 115]
+        - [BA, 112]
+        - [MG, 93]
+        - [PB, 88]
+        - [PE, 88]
+        - [SE, 70]
+        - [AL, 48]
+        - [AM, 48]
+        - [SP, 48]
+        - [GO, 44]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 176, min: '1100205', max: '5221601'}
+      id_municipio_tse: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 183, min: '00035', max: '96679'}
+      municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 177, min: AIMORÉS, max: XAPURI}
+      zona:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 117
+        min: '1'
+        max: '402'
+        media: 72.2564
+        quartis: [21, 48, 101]
+      secao:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 481
+        min: '1'
+        max: '1033'
+        media: 185.6958
+        quartis: [54, 126, 232]
+      eleitores_secao:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 288
+        min: '52'
+        max: '401'
+        media: 296.9084
+        quartis: [259, 309, 347]
+      local_1t:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 91
+        min: '1015'
+        max: '2410'
+        media: 1407.413
+        quartis: [1106, 1281, 1627]
+      nome_local_1t: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 262, pessoal: 'só contagens: valores seriam dado pessoal'}
+      endereco_1t: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 252, pessoal: 'só contagens: valores seriam dado pessoal'}
+      bairro_1t: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 160, pessoal: 'só contagens: valores seriam dado pessoal'}
+      local_2t:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 89
+        min: '1015'
+        max: '2917'
+        media: 1346.4283
+        quartis: [1059, 1170, 1519]
+      nome_local_2t: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 320, pessoal: 'só contagens: valores seriam dado pessoal'}
+      endereco_2t: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 301, pessoal: 'só contagens: valores seriam dado pessoal'}
+      bairro_2t: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 154, pessoal: 'só contagens: valores seriam dado pessoal'}
+      distancia_m:
+        tipo: INTEGER
+        nulos_pct: 24.01
+        distintos_aprox: 114
+        min: '0'
+        max: '14890'
+        media: 798.0054
+        quartis: [197, 404, 713]
+      distancia_km:
+        tipo: DOUBLE
+        nulos_pct: 24.01
+        distintos_aprox: 123
+        min: '0.0'
+        max: '14.89'
+        media: 0.798
+        quartis: [0.1969, 0.4037, 0.7134]
+      distancia_m_bruta:
+        tipo: INTEGER
+        nulos_pct: 22.48
+        distintos_aprox: 118
+        min: '0'
+        max: '73030'
+        media: 1079.6982
+        quartis: [200, 409, 728]
+      coordenada_suspeita:
+        tipo: BOOLEAN
+        nulos_pct: 22.48
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['false', 747]
+        - [null, 221]
+        - ['true', 15]
+      motivo_suspeita:
+        tipo: VARCHAR
+        nulos_pct: 75.99
+        distintos_aprox: 10
+        min: local rural do 1º turno com a coordenada de outro local
+        max: sem coordenada no TSE; local rural do 1º turno com a coordenada de outro local
+        top:
+        - [null, 747]
+        - [sem coordenada no TSE, 219]
+        - [ponto do 2º turno fora do município, 6]
+        - [mesmo endereço/povoado a mais de 1 km; local rural do 2º turno com a coordenada de outro local, 3]
+        - [mesmo endereço/povoado a mais de 1 km, 2]
+        - [sem coordenada no TSE; local rural do 1º turno com a coordenada de outro local, 2]
+        - [local rural do 1º turno com a coordenada de outro local, 1]
+        - [local rural do 1º turno com a coordenada de outro local; local rural do 2º turno com a coordenada de outro local, 1]
+        - ['mais de 30 km entre os locais: implausível para remanejamento de seção, não verificado', 1]
+        - [ponto do 2º turno fora do município; mesmo endereço/povoado a mais de 1 km; local rural do 2º turno com a coordenada de outro local,
+          1]
+      votos_validos_1t:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 244
+        min: '36.0'
+        max: '358.0'
+        media: 229.1831
+        quartis: [198.2175, 237.7692, 266.6538]
+      votos_lula_1t:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 221
+        min: '8.0'
+        max: '353.0'
+        media: 120.5524
+        quartis: [83.2128, 116.8, 155.9408]
+      votos_flavio_1t:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 202
+        min: '1.0'
+        max: '219.0'
+        media: 94.0224
+        quartis: [59.2869, 92.9333, 126.8529]
+      pct_lula_1t:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 781
+        min: '13.43'
+        max: '98.6'
+        media: 52.8107
+        quartis: [37.9701, 53.0821, 67.1424]
+      pct_flavio_1t:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 926
+        min: '0.28'
+        max: '82.95'
+        media: 40.9003
+        quartis: [27.7824, 40.5092, 54.2102]
+      lat_1t:
+        tipo: DOUBLE
+        nulos_pct: 9.97
+        distintos_aprox: 239
+        min: '-31.769526'
+        max: '-0.03016454'
+        media: -12.9276
+        quartis: [-19.475, -11.1662, -7.2419]
+      lon_1t:
+        tipo: DOUBLE
+        nulos_pct: 9.97
+        distintos_aprox: 249
+        min: '-69.44775'
+        max: '-34.8248163'
+        media: -44.8239
+        quartis: [-49.7858, -44.0502, -38.061]
+      lat_2t:
+        tipo: DOUBLE
+        nulos_pct: 13.94
+        distintos_aprox: 239
+        min: '-31.7663402'
+        max: '2.0500051'
+        media: -12.7725
+        quartis: [-18.9482, -10.8987, -7.4239]
+      lon_2t:
+        tipo: DOUBLE
+        nulos_pct: 13.94
+        distintos_aprox: 205
+        min: '-69.44739165'
+        max: '-34.8295561'
+        media: -44.5776
+        quartis: [-50.2714, -42.6563, -37.6732]
+      local_2t_novo:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['true', 757]
+        - ['false', 226]
+      local_1t_fechado:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['true', 647]
+        - ['false', 336]
+      revisao:
+        tipo: VARCHAR
+        nulos_pct: 99.19
+        distintos_aprox: 7
+        min: 'Revisada: 1 das 12 seções do local do Distrito de Xucuru foi para um local já existente no Sítio Fundão. Plausível; não verificado.'
+        max: 'Revisada: seção rural levada a um local novo no outro extremo do município; a seção irmã 281 ficou no local antigo. Distância não
+          verificada.'
+        top:
+        - [null, 975]
+        - ['Revisada: o local antigo fica no centro da cidade; 2 de suas 7 seções foram para um local novo em zona rural (Vila Hortigranjeira),
+            a 15 km. Pode aproximar o voto de onde os eleitores moram; não verificado.', 2]
+        - ['Revisada: 1 das 12 seções do local do Distrito de Xucuru foi para um local já existente no Sítio Fundão. Plausível; não verificado.',
+          1]
+        - ['Revisada: as duas coordenadas são cópias de outros locais (o Povoado Lagoa Seca está a 2 m de uma escola do centro). Distância desconhecida.',
+          1]
+        - ['Revisada: o local antigo (Fazenda Saco Grande) foi fechado e a única seção dele foi para um local já existente (Povoado de Palmeirinha).
+            Plausível.', 1]
+        - ['Revisada: o local antigo (Povoado Araguanópolis) tinha 5 seções e foi desmembrado em locais novos nos povoados; esta foi para Santa
+            Luzia. Plausível como desconcentração; não verificado.', 1]
+        - ['Revisada: o local antigo (Povoado Araguanópolis) tinha 5 seções e foi desmembrado em locais novos nos povoados; esta foi para o Retiro
+            Santa Cruz II. Plausível como desconcentração; não verificado.', 1]
+        - ['Revisada: seção rural levada a um local novo no outro extremo do município; a seção irmã 281 ficou no local antigo. Distância não
+            verificada.', 1]
+  setor_local:
+    linhas: 1191699
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '2022'
+        max: '2026'
+        media: 2024.0036
+        quartis: [2022, 2024, 2026]
+        top:
+        - ['2026', 596919]
+        - ['2022', 594780]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 444803}
+      latitude:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 116455
+        min: '-33.734513'
+        max: '5.0823855'
+        media: -17.039
+        quartis: [-23.4032, -20.2558, -9.2162]
+      longitude:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 157619
+        min: '-73.6440882'
+        max: '-32.41465074'
+        media: -45.7574
+        quartis: [-49.0294, -46.3675, -41.9058]
+      distancia_poligono_m:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 62102
+        min: '0.0'
+        max: '1139951.0'
+        media: 1198.8352
+        quartis: [44.8649, 187.9851, 435.0652]
+      faixa_100m:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 1994
+        min: '1'
+        max: '11400'
+        media: 12.5583
+        quartis: [1, 2, 5]
+      distancia_centroide_m:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 126621
+        min: '0.8'
+        max: '1143854.0'
+        media: 2191.9389
+        quartis: [271.3035, 476.0061, 1084.9171]
+      peso:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 932269
+        min: '8.742374542765368e-07'
+        max: '1.0'
+        media: 0.0031
+        quartis: [0.0009, 0.0021, 0.0037]

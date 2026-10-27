@@ -1,0 +1,194 @@
+dataset: br_comprasgov_catmatcatser
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  materiais:
+    linhas: 249804
+    fonte_do_perfil: tabela inteira
+    colunas:
+      codigoItem:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 228799
+        min: '19'
+        max: '641847'
+        media: 391197.4161
+        quartis: [289492, 387689, 464991]
+      codigoGrupo:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 68
+        min: '10'
+        max: '99'
+        media: 64.587
+        quartis: [59, 65, 75]
+      nomeGrupo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 65, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigoClasse:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 638
+        min: '1005'
+        max: '9999'
+        media: 6490.0671
+        quartis: [5910, 6550, 7510]
+      nomeClasse: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 517, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigoPdm:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13447
+        min: '1'
+        max: '30476'
+        media: 9521.7235
+        quartis: [1893, 9704, 14644]
+      nomePdm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 16387, pessoal: 'só contagens: valores seriam dado pessoal'}
+      descricaoItem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 267544}
+      statusItem:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: 'true'
+        max: 'true'
+        top:
+        - ['true', 249804]
+      itemSustentavel:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['false', 249263]
+        - ['true', 541]
+      codigo_ncm: {tipo: VARCHAR, nulos_pct: 67.68, distintos_aprox: 560, min: '', max: '96190000'}
+      descricao_ncm:
+        tipo: INTEGER
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 249804]
+      aplica_margem_preferencia:
+        tipo: BOOLEAN
+        nulos_pct: 67.68
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - [null, 169066]
+        - ['true', 51515]
+        - ['false', 29223]
+      dataHoraAtualizacao: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 50230, min: '2021-10-16 09:43:08.030221', max: '2026-10-06 09:00:19.198212'}
+  servicos:
+    linhas: 3021
+    fonte_do_perfil: tabela inteira
+    colunas:
+      codigoSecao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '1'
+        max: '9'
+        media: 7.5952
+        quartis: [8, 8, 9]
+        top:
+        - ['8', 1308]
+        - ['9', 1112]
+        - ['1', 218]
+        - ['5', 147]
+        - ['6', 132]
+        - ['7', 104]
+      nomeSecao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigoDivisao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 32
+        min: '11'
+        max: '97'
+        media: 80.3231
+        quartis: [83, 87, 93]
+        top:
+        - ['93', 936]
+        - ['87', 450]
+        - ['83', 352]
+        - ['85', 314]
+        - ['54', 147]
+        - ['88', 80]
+        - ['73', 67]
+        - ['14', 66]
+        - ['64', 65]
+        - ['92', 65]
+      nomeDivisao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 39, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigoGrupo:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 126
+        min: '111'
+        max: '979'
+        media: 806.0046
+        quartis: [831, 871, 931]
+      nomeGrupo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 134, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigoClasse:
+        tipo: BIGINT
+        nulos_pct: 23.07
+        distintos_aprox: 193
+        min: '1111'
+        max: '9799'
+        media: 8022.1308
+        quartis: [8327, 8726, 9311]
+      nomeClasse: {tipo: VARCHAR, nulos_pct: 23.07, distintos_aprox: 220, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigoSubclasse:
+        tipo: BIGINT
+        nulos_pct: 97.98
+        distintos_aprox: 33
+        min: '54270'
+        max: '97990'
+        media: 82033.7213
+        quartis: [83111, 83569, 87153]
+        top:
+        - [null, 2960]
+        - ['97990', 7]
+        - ['83111', 6]
+        - ['83569', 5]
+        - ['87141', 5]
+        - ['87153', 5]
+        - ['83112', 4]
+        - ['61251', 3]
+        - ['54270', 2]
+        - ['54691', 2]
+      nomeSubclasse: {tipo: VARCHAR, nulos_pct: 97.98, distintos_aprox: 30, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigoServico:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3739
+        min: '19'
+        max: '30348'
+        media: 15871.2334
+        quartis: [8031, 15769, 23690]
+      nomeServico: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3291, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigoCpc:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 313
+        min: '541'
+        max: '97990'
+        media: 7852.3529
+        quartis: [1412, 8599, 9311]
+      exclusivoCentralCompras:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['false', 3018]
+        - ['true', 3]
+      statusServico:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: 'true'
+        max: 'true'
+        top:
+        - ['true', 3021]
+      dataHoraAtualizacao: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 569, min: '2021-10-16 09:09:59.689615', max: '2026-10-05 11:12:46.318606'}

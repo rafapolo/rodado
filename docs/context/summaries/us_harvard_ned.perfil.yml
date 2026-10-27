@@ -1,0 +1,6275 @@
+dataset: us_harvard_ned
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  parliamentary_elections:
+    linhas: 4900
+    fonte_do_perfil: tabela inteira
+    colunas:
+      country_id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 262, min: AAB, max: ZIM}
+      year:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 261
+        min: '1789'
+        max: '2023'
+        media: 1955.9661
+        quartis: [1924, 1968, 1998]
+      month:
+        tipo: BIGINT
+        nulos_pct: 96.65
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.7195
+        quartis: [4, 6, 10]
+        top:
+        - [null, 4736]
+        - ['11', 18]
+        - ['12', 17]
+        - ['2', 17]
+        - ['3', 17]
+        - ['6', 17]
+        - ['9', 17]
+        - ['4', 15]
+        - ['5', 13]
+        - ['7', 10]
+      type:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Parliamentary
+        max: Parliamentary
+        top:
+        - [Parliamentary, 4900]
+      date: {tipo: DATE, nulos_pct: 6.18, distintos_aprox: 5554, min: '1789-06-01', max: '2023-12-20'}
+      source:
+        tipo: VARCHAR
+        nulos_pct: 17.88
+        distintos_aprox: 11
+        min: AC
+        max: Wiki
+        top:
+        - [Nohlen, 1337]
+        - [Wiki, 1059]
+        - [null, 876]
+        - [PARL, 788]
+        - [AC, 278]
+        - [IPU, 252]
+        - [DPI, 112]
+        - [AED, 80]
+        - [IFES, 55]
+        - [MP, 48]
+      total_seats:
+        tipo: BIGINT
+        nulos_pct: 18
+        distintos_aprox: 690
+        min: '3'
+        max: '2250'
+        media: 185.283
+        quartis: [62, 129, 250]
+      party_1: {tipo: VARCHAR, nulos_pct: 17.88, distintos_aprox: 2224}
+      seats_1:
+        tipo: BIGINT
+        nulos_pct: 18.06
+        distintos_aprox: 489
+        min: '1'
+        max: '1716'
+        media: 108.6132
+        quartis: [32, 68, 138]
+      seat_share_1:
+        tipo: DOUBLE
+        nulos_pct: 18.08
+        distintos_aprox: 1943
+        min: '2.5'
+        max: '100.0'
+        media: 59.0635
+        quartis: [42.5575, 55.1485, 75.1737]
+      party_2: {tipo: VARCHAR, nulos_pct: 27.94, distintos_aprox: 1449}
+      seats_2:
+        tipo: BIGINT
+        nulos_pct: 28.12
+        distintos_aprox: 282
+        min: '0'
+        max: '324'
+        media: 47.1315
+        quartis: [11, 29, 62]
+      seat_share_2:
+        tipo: DOUBLE
+        nulos_pct: 28.14
+        distintos_aprox: 1294
+        min: '0.0'
+        max: '100.0'
+        media: 25.1547
+        quartis: [16.0278, 25.0427, 34.2477]
+      party_3: {tipo: VARCHAR, nulos_pct: 37.86, distintos_aprox: 2109}
+      seats_3:
+        tipo: BIGINT
+        nulos_pct: 38.35
+        distintos_aprox: 125
+        min: '0'
+        max: '175'
+        media: 18.2668
+        quartis: [3, 10, 25]
+      seat_share_3:
+        tipo: DOUBLE
+        nulos_pct: 38.39
+        distintos_aprox: 956
+        min: '0.0'
+        max: '95.0'
+        media: 9.8332
+        quartis: [3.4401, 8.9958, 14.5168]
+      party_4: {tipo: VARCHAR, nulos_pct: 49.18, distintos_aprox: 1760}
+      seats_4:
+        tipo: BIGINT
+        nulos_pct: 49.65
+        distintos_aprox: 82
+        min: '0'
+        max: '130'
+        media: 11.8383
+        quartis: [2, 7, 16]
+      seat_share_4:
+        tipo: DOUBLE
+        nulos_pct: 49.78
+        distintos_aprox: 967
+        min: '0.0'
+        max: '94.55'
+        media: 6.2686
+        quartis: [1.8893, 5.2219, 9.4097]
+      party_5: {tipo: VARCHAR, nulos_pct: 58.71, distintos_aprox: 1676}
+      seats_5:
+        tipo: BIGINT
+        nulos_pct: 59.1
+        distintos_aprox: 65
+        min: '0'
+        max: '113'
+        media: 8.4157
+        quartis: [2, 4, 11]
+      seat_share_5:
+        tipo: DOUBLE
+        nulos_pct: 59.12
+        distintos_aprox: 532
+        min: '0.0'
+        max: '94.12'
+        media: 4.4765
+        quartis: [1.2281, 3.2064, 6.3829]
+      party_6: {tipo: VARCHAR, nulos_pct: 66.08, distintos_aprox: 1018}
+      seats_6:
+        tipo: BIGINT
+        nulos_pct: 66.61
+        distintos_aprox: 59
+        min: '0'
+        max: '129'
+        media: 6.3007
+        quartis: [1, 3, 7]
+      seat_share_6:
+        tipo: DOUBLE
+        nulos_pct: 66.63
+        distintos_aprox: 450
+        min: '0.0'
+        max: '94.12'
+        media: 3.2287
+        quartis: [0.6317, 2.0115, 4.5094]
+      party_7: {tipo: VARCHAR, nulos_pct: 72.61, distintos_aprox: 1067}
+      seats_7:
+        tipo: BIGINT
+        nulos_pct: 73.12
+        distintos_aprox: 53
+        min: '0'
+        max: '120'
+        media: 5.142
+        quartis: [1, 2, 6]
+      seat_share_7:
+        tipo: DOUBLE
+        nulos_pct: 73.14
+        distintos_aprox: 362
+        min: '0.0'
+        max: '85.5'
+        media: 2.6947
+        quartis: [0.4403, 1.3817, 3.3202]
+      party_8: {tipo: VARCHAR, nulos_pct: 77.61, distintos_aprox: 722, min: '"New Choice" Union [Suyuz "Nov izbor"] (SNI)', max: ‘Chites’ Party
+          of the National Union}
+      seats_8:
+        tipo: BIGINT
+        nulos_pct: 78.02
+        distintos_aprox: 43
+        min: '0'
+        max: '141'
+        media: 3.9276
+        quartis: [1, 2, 4]
+        top:
+        - [null, 3823]
+        - ['0', 251]
+        - ['1', 249]
+        - ['2', 142]
+        - ['3', 132]
+        - ['4', 64]
+        - ['5', 57]
+        - ['6', 35]
+        - ['10', 17]
+        - ['8', 16]
+      seat_share_8:
+        tipo: DOUBLE
+        nulos_pct: 78.02
+        distintos_aprox: 344
+        min: '0.0'
+        max: '70.7'
+        media: 1.9446
+        quartis: [0.2102, 0.9857, 2.3154]
+      party_9: {tipo: VARCHAR, nulos_pct: 81.39, distintos_aprox: 723, min: (Nouvo Lizour), max: 'others [divers] (etc)'}
+      seats_9:
+        tipo: BIGINT
+        nulos_pct: 81.61
+        distintos_aprox: 35
+        min: '0'
+        max: '126'
+        media: 3.6193
+        quartis: [1, 1, 3]
+        top:
+        - [null, 3999]
+        - ['1', 258]
+        - ['0', 207]
+        - ['2', 121]
+        - ['3', 96]
+        - ['4', 48]
+        - ['5', 37]
+        - ['6', 25]
+        - ['9', 15]
+        - ['10', 11]
+      seat_share_9:
+        tipo: DOUBLE
+        nulos_pct: 81.61
+        distintos_aprox: 314
+        min: '0.0'
+        max: '68.7'
+        media: 1.9715
+        quartis: [0.1893, 0.8023, 1.9392]
+      party_10: {tipo: VARCHAR, nulos_pct: 84.61, distintos_aprox: 688, min: 100% for Colombia, max: others (etc)}
+      seats_10:
+        tipo: BIGINT
+        nulos_pct: 84.82
+        distintos_aprox: 35
+        min: '0'
+        max: '95'
+        media: 3.0161
+        quartis: [0, 1, 3]
+        top:
+        - [null, 4156]
+        - ['1', 240]
+        - ['0', 195]
+        - ['2', 111]
+        - ['3', 61]
+        - ['4', 32]
+        - ['5', 21]
+        - ['6', 13]
+        - ['8', 9]
+        - ['9', 9]
+      seat_share_10:
+        tipo: DOUBLE
+        nulos_pct: 84.88
+        distintos_aprox: 261
+        min: '0.0'
+        max: '86.36'
+        media: 1.5265
+        quartis: [0.0094, 0.6545, 1.5256]
+      party_11: {tipo: VARCHAR, nulos_pct: 87.76, distintos_aprox: 552, min: 50PLUS (50+), max: ’48-as Kisgazda Párt (’48s Smallholders Party)}
+      seats_11:
+        tipo: BIGINT
+        nulos_pct: 87.96
+        distintos_aprox: 25
+        min: '0'
+        max: '73'
+        media: 2.4136
+        quartis: [0, 1, 2]
+        top:
+        - [null, 4310]
+        - ['1', 197]
+        - ['0', 164]
+        - ['2', 93]
+        - ['3', 40]
+        - ['4', 24]
+        - ['5', 16]
+        - ['6', 13]
+        - ['7', 5]
+        - ['8', 5]
+      seat_share_11:
+        tipo: DOUBLE
+        nulos_pct: 88.04
+        distintos_aprox: 226
+        min: '0.0'
+        max: '69.5'
+        media: 1.1503
+        quartis: [0, 0.5811, 1.3086]
+      party_12: {tipo: VARCHAR, nulos_pct: 90.2, distintos_aprox: 381, min: ARD, max: ‘Achdus’ (or Jewish faction)}
+      seats_12:
+        tipo: BIGINT
+        nulos_pct: 90.33
+        distintos_aprox: 25
+        min: '0'
+        max: '110'
+        media: 2.4852
+        quartis: [0, 1, 2]
+        top:
+        - [null, 4426]
+        - ['1', 175]
+        - ['0', 123]
+        - ['2', 71]
+        - ['3', 31]
+        - ['4', 19]
+        - ['5', 11]
+        - ['6', 8]
+        - ['7', 7]
+        - ['9', 5]
+      seat_share_12:
+        tipo: DOUBLE
+        nulos_pct: 90.37
+        distintos_aprox: 155
+        min: '0.0'
+        max: '63.81'
+        media: 1.1831
+        quartis: [0, 0.5701, 1.2039]
+      party_13: {tipo: VARCHAR, nulos_pct: 92.41, distintos_aprox: 311, min: 5 others (for minority seats), max: others (etc)}
+      seats_13:
+        tipo: BIGINT
+        nulos_pct: 92.57
+        distintos_aprox: 18
+        min: '0'
+        max: '97'
+        media: 2.261
+        quartis: [0, 1, 2]
+        top:
+        - [null, 4536]
+        - ['1', 137]
+        - ['0', 101]
+        - ['2', 56]
+        - ['3', 24]
+        - ['4', 11]
+        - ['5', 8]
+        - ['7', 7]
+        - ['6', 4]
+        - ['13', 3]
+      seat_share_13:
+        tipo: DOUBLE
+        nulos_pct: 92.59
+        distintos_aprox: 131
+        min: '0.0'
+        max: '32.8'
+        media: 1.0266
+        quartis: [0, 0.5548, 1.0078]
+      party_14: {tipo: VARCHAR, nulos_pct: 94, distintos_aprox: 263, min: A-SDA, max: others (etc)}
+      seats_14:
+        tipo: BIGINT
+        nulos_pct: 94.14
+        distintos_aprox: 21
+        min: '0'
+        max: '325'
+        media: 3.1882
+        quartis: [0, 1, 2]
+        top:
+        - [null, 4613]
+        - ['1', 121]
+        - ['0', 82]
+        - ['2', 38]
+        - ['3', 14]
+        - ['4', 9]
+        - ['5', 5]
+        - ['10', 3]
+        - ['6', 2]
+        - ['7', 2]
+      seat_share_14:
+        tipo: DOUBLE
+        nulos_pct: 94.18
+        distintos_aprox: 90
+        min: '0.0'
+        max: '54.53'
+        media: 1.1404
+        quartis: [0, 0.5, 0.83]
+      party_15: {tipo: VARCHAR, nulos_pct: 95.18, distintos_aprox: 186, min: 50PLUS (50+), max: one seat (one-seat)}
+      seats_15:
+        tipo: BIGINT
+        nulos_pct: 95.24
+        distintos_aprox: 22
+        min: '0'
+        max: '114'
+        media: 3.382
+        quartis: [0, 1, 2]
+        top:
+        - [null, 4667]
+        - ['1', 95]
+        - ['0', 71]
+        - ['2', 26]
+        - ['3', 11]
+        - ['4', 7]
+        - ['5', 3]
+        - ['8', 3]
+        - ['11', 2]
+        - ['14', 2]
+      seat_share_15:
+        tipo: DOUBLE
+        nulos_pct: 95.27
+        distintos_aprox: 75
+        min: '0.0'
+        max: '71.9'
+        media: 1.5418
+        quartis: [0, 0.465, 0.8078]
+      party_16: {tipo: VARCHAR, nulos_pct: 95.94, distintos_aprox: 159, min: ADC–BOC, max: one seat (one-seat)}
+      seats_16:
+        tipo: BIGINT
+        nulos_pct: 96.04
+        distintos_aprox: 24
+        min: '0'
+        max: '168'
+        media: 4.5155
+        quartis: [0, 1, 2]
+        top:
+        - [null, 4706]
+        - ['0', 72]
+        - ['1', 71]
+        - ['2', 18]
+        - ['3', 9]
+        - ['4', 4]
+        - ['9', 3]
+        - ['110', 2]
+        - ['6', 2]
+        - ['10', 1]
+      seat_share_16:
+        tipo: DOUBLE
+        nulos_pct: 96.04
+        distintos_aprox: 80
+        min: '0.0'
+        max: '73.4'
+        media: 1.816
+        quartis: [0, 0.39, 0.815]
+      party_17: {tipo: VARCHAR, nulos_pct: 96.69, distintos_aprox: 144, min: AFIA, max: one seat (one-seat)}
+      seats_17:
+        tipo: BIGINT
+        nulos_pct: 96.76
+        distintos_aprox: 17
+        min: '0'
+        max: '92'
+        media: 3.1006
+        quartis: [0, 1, 2]
+        top:
+        - [null, 4741]
+        - ['1', 59]
+        - ['0', 57]
+        - ['2', 17]
+        - ['3', 7]
+        - ['4', 5]
+        - ['6', 3]
+        - ['10', 2]
+        - ['11', 1]
+        - ['12', 1]
+      seat_share_17:
+        tipo: DOUBLE
+        nulos_pct: 96.78
+        distintos_aprox: 64
+        min: '0.0'
+        max: '67.19'
+        media: 1.2901
+        quartis: [0, 0.39, 0.8162]
+      party_18: {tipo: VARCHAR, nulos_pct: 97.24, distintos_aprox: 161, min: ANP, max: one seat (one-seat)}
+      seats_18:
+        tipo: BIGINT
+        nulos_pct: 97.33
+        distintos_aprox: 13
+        min: '0'
+        max: '56'
+        media: 1.9618
+        quartis: [0, 1, 2]
+        top:
+        - [null, 4769]
+        - ['1', 51]
+        - ['0', 47]
+        - ['2', 13]
+        - ['3', 6]
+        - ['4', 3]
+        - ['5', 3]
+        - ['8', 3]
+        - ['10', 1]
+        - ['17', 1]
+      seat_share_18:
+        tipo: DOUBLE
+        nulos_pct: 97.33
+        distintos_aprox: 45
+        min: '0.0'
+        max: '42.75'
+        media: 1.0715
+        quartis: [0, 0.39, 0.7825]
+        top:
+        - [null, 4769]
+        - ['0.0', 47]
+        - ['0.4', 8]
+        - ['0.39', 6]
+        - ['0.2', 5]
+        - ['1.0', 5]
+        - ['0.9', 3]
+        - ['1.2', 3]
+        - ['0.18', 2]
+        - ['0.3', 2]
+      party_19: {tipo: VARCHAR, nulos_pct: 97.61, distintos_aprox: 112, min: ADEMA-PARENA, max: Worker and Farmer Party of Germany/Christian Radical
+          People's Front}
+      seats_19:
+        tipo: BIGINT
+        nulos_pct: 97.69
+        distintos_aprox: 12
+        min: '0'
+        max: '21'
+        media: 1.531
+        quartis: [0, 1, 1]
+        top:
+        - [null, 4787]
+        - ['1', 47]
+        - ['0', 44]
+        - ['2', 8]
+        - ['5', 4]
+        - ['10', 2]
+        - ['3', 2]
+        - ['8', 2]
+        - ['16', 1]
+        - ['21', 1]
+      seat_share_19:
+        tipo: DOUBLE
+        nulos_pct: 97.69
+        distintos_aprox: 45
+        min: '0.0'
+        max: '19.27'
+        media: 0.6586
+        quartis: [0, 0.25, 0.62]
+        top:
+        - [null, 4787]
+        - ['0.0', 44]
+        - ['0.4', 8]
+        - ['1.0', 7]
+        - ['0.39', 5]
+        - ['0.2', 4]
+        - ['0.18', 2]
+        - ['0.22', 2]
+        - ['0.24', 2]
+        - ['0.25', 2]
+      party_20: {tipo: VARCHAR, nulos_pct: 98, distintos_aprox: 102, min: ADEMA-UDD, max: one seat (one-seat)}
+      seats_20:
+        tipo: BIGINT
+        nulos_pct: 98.08
+        distintos_aprox: 11
+        min: '0'
+        max: '38'
+        media: 1.7872
+        quartis: [0, 1, 1]
+        top:
+        - [null, 4806]
+        - ['1', 40]
+        - ['0', 35]
+        - ['2', 8]
+        - ['3', 3]
+        - ['10', 2]
+        - ['8', 2]
+        - ['20', 1]
+        - ['38', 1]
+        - ['4', 1]
+      seat_share_20:
+        tipo: DOUBLE
+        nulos_pct: 98.08
+        distintos_aprox: 42
+        min: '0.0'
+        max: '13.25'
+        media: 0.5973
+        quartis: [0, 0.3, 0.61]
+        top:
+        - [null, 4806]
+        - ['0.0', 35]
+        - ['0.4', 7]
+        - ['1.0', 6]
+        - ['0.39', 5]
+        - ['0.2', 3]
+        - ['0.18', 2]
+        - ['0.24', 2]
+        - ['0.25', 2]
+        - ['0.3', 2]
+      party_21: {tipo: VARCHAR, nulos_pct: 98.2, distintos_aprox: 75, min: ADEMA-PARENA-PDP, max: no seat (no-seat)}
+      seats_21:
+        tipo: BIGINT
+        nulos_pct: 98.27
+        distintos_aprox: 13
+        min: '0'
+        max: '32'
+        media: 1.9529
+        quartis: [0, 1, 1]
+        top:
+        - [null, 4815]
+        - ['0', 38]
+        - ['1', 30]
+        - ['2', 6]
+        - ['3', 2]
+        - ['7', 2]
+        - ['10', 1]
+        - ['16', 1]
+        - ['29', 1]
+        - ['32', 1]
+      seat_share_21:
+        tipo: DOUBLE
+        nulos_pct: 98.27
+        distintos_aprox: 37
+        min: '0.0'
+        max: '14.41'
+        media: 0.7606
+        quartis: [0, 0.22, 0.6175]
+        top:
+        - [null, 4815]
+        - ['0.0', 38]
+        - ['0.4', 6]
+        - ['1.0', 5]
+        - ['0.39', 4]
+        - ['0.18', 2]
+        - ['0.3', 2]
+        - ['0.49', 2]
+        - ['0.17', 1]
+        - ['0.2', 1]
+      party_22: {tipo: VARCHAR, nulos_pct: 98.43, distintos_aprox: 65, min: (Hindu Ekta Andolan Dul), max: Zimbabwe Rainbow Democratic Party}
+      seats_22:
+        tipo: BIGINT
+        nulos_pct: 98.47
+        distintos_aprox: 10
+        min: '0'
+        max: '13'
+        media: 1.3333
+        quartis: [0, 1, 1]
+        top:
+        - [null, 4825]
+        - ['0', 31]
+        - ['1', 28]
+        - ['2', 7]
+        - ['6', 3]
+        - ['3', 2]
+        - ['13', 1]
+        - ['5', 1]
+        - ['7', 1]
+        - ['9', 1]
+      seat_share_22:
+        tipo: DOUBLE
+        nulos_pct: 98.47
+        distintos_aprox: 34
+        min: '0.0'
+        max: '11.71'
+        media: 0.5188
+        quartis: [0, 0.26, 0.6075]
+        top:
+        - [null, 4825]
+        - ['0.0', 31]
+        - ['0.4', 5]
+        - ['1.0', 5]
+        - ['0.39', 4]
+        - ['0.24', 2]
+        - ['0.3', 2]
+        - ['0.6', 2]
+        - ['1.1', 2]
+        - ['0.17', 1]
+      party_23: {tipo: VARCHAR, nulos_pct: 98.59, distintos_aprox: 63, min: African Party for Renewal and Integration, max: Workers' Federation}
+      seats_23:
+        tipo: BIGINT
+        nulos_pct: 98.65
+        distintos_aprox: 10
+        min: '0'
+        max: '20'
+        media: 1.4848
+        quartis: [0, 1, 1]
+        top:
+        - [null, 4834]
+        - ['1', 26]
+        - ['0', 24]
+        - ['2', 9]
+        - ['7', 2]
+        - ['20', 1]
+        - ['3', 1]
+        - ['4', 1]
+        - ['5', 1]
+        - ['8', 1]
+      seat_share_23:
+        tipo: DOUBLE
+        nulos_pct: 98.65
+        distintos_aprox: 39
+        min: '0.0'
+        max: '40.0'
+        media: 1.2048
+        quartis: [0, 0.31, 0.61]
+        top:
+        - [null, 4834]
+        - ['0.0', 24]
+        - ['0.39', 4]
+        - ['0.4', 4]
+        - ['1.0', 4]
+        - ['0.24', 2]
+        - ['0.3', 2]
+        - ['0.37', 2]
+        - ['0.17', 1]
+        - ['0.18', 1]
+      party_24: {tipo: VARCHAR, nulos_pct: 98.73, distintos_aprox: 59, min: All Russian Muslim Public Movement "Nur", max: “Join” Provincial Movement}
+      seats_24:
+        tipo: BIGINT
+        nulos_pct: 98.78
+        distintos_aprox: 12
+        min: '0'
+        max: '111'
+        media: 3.4333
+        quartis: [0, 1, 1]
+        top:
+        - [null, 4840]
+        - ['0', 26]
+        - ['1', 22]
+        - ['2', 3]
+        - ['4', 2]
+        - ['10', 1]
+        - ['111', 1]
+        - ['12', 1]
+        - ['19', 1]
+        - ['3', 1]
+      seat_share_24:
+        tipo: DOUBLE
+        nulos_pct: 98.78
+        distintos_aprox: 32
+        min: '0.0'
+        max: '24.9'
+        media: 0.959
+        quartis: [0, 0.22, 0.66]
+        top:
+        - [null, 4840]
+        - ['0.0', 26]
+        - ['1.0', 4]
+        - ['0.39', 3]
+        - ['0.24', 2]
+        - ['0.4', 2]
+        - ['0.6', 2]
+        - ['0.17', 1]
+        - ['0.18', 1]
+        - ['0.19', 1]
+      party_25: {tipo: VARCHAR, nulos_pct: 98.88, distintos_aprox: 65, min: Alliance of Nationalists (AN), max: “Seed” Movement}
+      seats_25:
+        tipo: BIGINT
+        nulos_pct: 98.92
+        distintos_aprox: 9
+        min: '0'
+        max: '35'
+        media: 1.7547
+        quartis: [0, 1, 1]
+        top:
+        - [null, 4847]
+        - ['0', 23]
+        - ['1', 20]
+        - ['4', 4]
+        - ['2', 2]
+        - ['3', 1]
+        - ['35', 1]
+        - ['7', 1]
+        - ['8', 1]
+      seat_share_25:
+        tipo: DOUBLE
+        nulos_pct: 98.92
+        distintos_aprox: 30
+        min: '0.0'
+        max: '25.0'
+        media: 0.8138
+        quartis: [0, 0.19, 0.64]
+        top:
+        - [null, 4847]
+        - ['0.0', 23]
+        - ['1.0', 4]
+        - ['0.39', 3]
+        - ['0.6', 2]
+        - ['0.13', 1]
+        - ['0.17', 1]
+        - ['0.18', 1]
+        - ['0.19', 1]
+        - ['0.2', 1]
+      party_26: {tipo: VARCHAR, nulos_pct: 99, distintos_aprox: 51, min: Acoma Party, max: Vamos Colombia}
+      seats_26:
+        tipo: BIGINT
+        nulos_pct: 99.04
+        distintos_aprox: 9
+        min: '0'
+        max: '60'
+        media: 2.2128
+        quartis: [0, 1, 1]
+        top:
+        - [null, 4853]
+        - ['0', 22]
+        - ['1', 18]
+        - ['3', 2]
+        - ['2', 1]
+        - ['4', 1]
+        - ['6', 1]
+        - ['60', 1]
+        - ['8', 1]
+      seat_share_26:
+        tipo: DOUBLE
+        nulos_pct: 99.04
+        distintos_aprox: 20
+        min: '0.0'
+        max: '26.7'
+        media: 0.8426
+        quartis: [0, 0.17, 0.495]
+        top:
+        - [null, 4853]
+        - ['0.0', 22]
+        - ['0.24', 3]
+        - ['0.39', 3]
+        - ['1.0', 3]
+        - ['0.6', 2]
+        - ['0.13', 1]
+        - ['0.17', 1]
+        - ['0.18', 1]
+        - ['0.19', 1]
+      party_27:
+        tipo: VARCHAR
+        nulos_pct: 99.04
+        distintos_aprox: 45
+        min: Adelante Zamboanga Party
+        max: Zimbabwe Labour Party
+        top:
+        - [null, 4853]
+        - [Adelante Zamboanga Party, 1]
+        - [Alliance for the Renewal of Congo (Alliance pour le Renouveau du Congo), 1]
+        - [Alliance of Unified Tshisekedists and Allies (ATUA), 1]
+        - [American Independent, 1]
+        - [Basotho Total Liberation Congress, 1]
+        - [Basque Nationalist Communion (CNV), 1]
+        - [Bharatiya Navshakti Party (Indian New Force Party), 1]
+        - [Cause of Peter the First, 1]
+        - [Christian Labour Party (PTC), 1]
+      seats_27:
+        tipo: BIGINT
+        nulos_pct: 99.08
+        distintos_aprox: 6
+        min: '0'
+        max: '7'
+        media: 0.9111
+        quartis: [0, 1, 1]
+        top:
+        - [null, 4855]
+        - ['0', 22]
+        - ['1', 16]
+        - ['2', 4]
+        - ['4', 1]
+        - ['6', 1]
+        - ['7', 1]
+      seat_share_27:
+        tipo: DOUBLE
+        nulos_pct: 99.08
+        distintos_aprox: 21
+        min: '0.0'
+        max: '1.4'
+        media: 0.26
+        quartis: [0, 0.13, 0.39]
+        top:
+        - [null, 4855]
+        - ['0.0', 22]
+        - ['0.24', 3]
+        - ['0.39', 3]
+        - ['1.0', 2]
+        - ['0.13', 1]
+        - ['0.17', 1]
+        - ['0.18', 1]
+        - ['0.19', 1]
+        - ['0.2', 1]
+      party_28:
+        tipo: VARCHAR
+        nulos_pct: 99.1
+        distintos_aprox: 40
+        min: Adelante Zamboanga Party
+        max: Zimbabwe Patriotic Movement
+        top:
+        - [null, 4856]
+        - [Adelante Zamboanga Party, 1]
+        - [Albanian National Front Party, 1]
+        - [Alliance for Economic and Social Development, 1]
+        - [Alliance in the Unity, 1]
+        - [Alliance of Congolese Believing Nationalists (Alliance des Nationalistes Croyants Congolais), 1]
+        - [Another Vision of Congo and Allies (AVC-A), 1]
+        - [Chaldean Syriac Assyrian Popular Council, 1]
+        - [Christian Democracy (DC), 1]
+        - [Christian-Democratic Union - Christians of Russia, 1]
+      seats_28:
+        tipo: BIGINT
+        nulos_pct: 99.14
+        distintos_aprox: 10
+        min: '0'
+        max: '9'
+        media: 1.1905
+        quartis: [0, 0, 1]
+        top:
+        - [null, 4858]
+        - ['0', 22]
+        - ['1', 12]
+        - ['2', 2]
+        - ['3', 1]
+        - ['4', 1]
+        - ['5', 1]
+        - ['6', 1]
+        - ['7', 1]
+        - ['9', 1]
+      seat_share_28:
+        tipo: DOUBLE
+        nulos_pct: 99.14
+        distintos_aprox: 21
+        min: '0.0'
+        max: '4.13'
+        media: 0.3455
+        quartis: [0, 0, 0.4]
+        top:
+        - [null, 4858]
+        - ['0.0', 22]
+        - ['0.19', 2]
+        - ['1.0', 2]
+        - ['0.13', 1]
+        - ['0.17', 1]
+        - ['0.18', 1]
+        - ['0.24', 1]
+        - ['0.3', 1]
+        - ['0.32', 1]
+      party_29:
+        tipo: VARCHAR
+        nulos_pct: 99.2
+        distintos_aprox: 33
+        min: African Unity Movement
+        max: Zim First
+        top:
+        - [null, 4861]
+        - [Independents, 2]
+        - [African Unity Movement, 1]
+        - [All-Russia Political Party of the People, 1]
+        - [Aufwertungs- und Aufbaupartei, 1]
+        - [Christian Democratic People's Union, 1]
+        - [Congolese Party for Good Governance (Parti Congolais pour la Bonne Gouvernance), 1]
+        - [Derzhava, 1]
+        - [Enteigneter Mittelstand, 1]
+        - [Forward-MS (AVANCONS-MS), 1]
+      seats_29:
+        tipo: BIGINT
+        nulos_pct: 99.24
+        distintos_aprox: 6
+        min: '0'
+        max: '6'
+        media: 1.0811
+        quartis: [0, 0, 1]
+        top:
+        - [null, 4863]
+        - ['0', 19]
+        - ['1', 11]
+        - ['5', 3]
+        - ['2', 2]
+        - ['4', 1]
+        - ['6', 1]
+      seat_share_29:
+        tipo: DOUBLE
+        nulos_pct: 99.24
+        distintos_aprox: 15
+        min: '0.0'
+        max: '1.2'
+        media: 0.2605
+        quartis: [0, 0, 0.3925]
+        top:
+        - [null, 4863]
+        - ['0.0', 19]
+        - ['1.0', 3]
+        - ['0.19', 2]
+        - ['0.3', 2]
+        - ['0.13', 1]
+        - ['0.17', 1]
+        - ['0.24', 1]
+        - ['0.32', 1]
+        - ['0.39', 1]
+      party_30:
+        tipo: VARCHAR
+        nulos_pct: 99.24
+        distintos_aprox: 43
+        min: Alliance and Action for the Rule of Law (AE)
+        max: Your Opportunity and Network Alliance
+        top:
+        - [null, 4863]
+        - [Alliance and Action for the Rule of Law (AE), 1]
+        - [Alliance of Humanist Democrats (ADH), 1]
+        - [Anglo-Indians, 1]
+        - [Carlist Catholics (Cató.carl), 1]
+        - [Citizens First, 1]
+        - [Democratic Social Christian Party (Parti Democrate Social Chretien), 1]
+        - [Deutscher Reichsblock der Geschädigten, 1]
+        - [Duma-96, 1]
+        - [Federal Union, 1]
+      seats_30:
+        tipo: BIGINT
+        nulos_pct: 99.29
+        distintos_aprox: 5
+        min: '0'
+        max: '4'
+        media: 0.6857
+        quartis: [0, 0, 1]
+        top:
+        - [null, 4865]
+        - ['0', 21]
+        - ['1', 9]
+        - ['2', 2]
+        - ['4', 2]
+        - ['3', 1]
+      seat_share_30:
+        tipo: DOUBLE
+        nulos_pct: 99.29
+        distintos_aprox: 12
+        min: '0.0'
+        max: '0.8'
+        media: 0.1589
+        quartis: [0, 0, 0.3]
+        top:
+        - [null, 4865]
+        - ['0.0', 21]
+        - ['0.19', 2]
+        - ['0.3', 2]
+        - ['0.6', 2]
+        - ['0.8', 2]
+        - ['0.13', 1]
+        - ['0.17', 1]
+        - ['0.32', 1]
+        - ['0.37', 1]
+      party_31:
+        tipo: VARCHAR
+        nulos_pct: 99.35
+        distintos_aprox: 34
+        min: Aksyon Demokratiko
+        max: Unity and Progress Party
+        top:
+        - [null, 4868]
+        - [Aksyon Demokratiko, 1]
+        - [Alliance of Progressives for Congo, 1]
+        - [Arab Alliance of Kirkuk, 1]
+        - [CCP, 1]
+        - [Christian Alternative for the Congo (A1), 1]
+        - [Civic Union National and Popular Movement, 1]
+        - [Congress of Allies for Action in Congo (CAAC), 1]
+        - ['Deutsche Einheitspartei für wahre Volkswirtschaft, Unterstützungsempfänger- Partei Deutschlands', 1]
+        - [Electoral Platform Renaissance (Renaissance Plate-forme électorale), 1]
+      seats_31:
+        tipo: BIGINT
+        nulos_pct: 99.39
+        distintos_aprox: 5
+        min: '0'
+        max: '4'
+        media: 0.7333
+        quartis: [0, 0, 1]
+        top:
+        - [null, 4870]
+        - ['0', 19]
+        - ['1', 5]
+        - ['3', 3]
+        - ['2', 2]
+        - ['4', 1]
+      seat_share_31:
+        tipo: DOUBLE
+        nulos_pct: 99.39
+        distintos_aprox: 10
+        min: '0.0'
+        max: '0.8'
+        media: 0.1667
+        quartis: [0, 0, 0.3]
+        top:
+        - [null, 4870]
+        - ['0.0', 19]
+        - ['0.6', 3]
+        - ['0.3', 2]
+        - ['0.13', 1]
+        - ['0.19', 1]
+        - ['0.35', 1]
+        - ['0.4', 1]
+        - ['0.73', 1]
+        - ['0.8', 1]
+      party_32:
+        tipo: VARCHAR
+        nulos_pct: 99.39
+        distintos_aprox: 30
+        min: Avançons
+        max: United Iraqi Turkmen Front
+        top:
+        - [null, 4870]
+        - [Avançons, 1]
+        - [Basotho Social Party, 1]
+        - [Circle, 1]
+        - [Colombian People's Party, 1]
+        - [Concerns of People, 1]
+        - [Democratic Party of the Philippines, 1]
+        - [FN, 1]
+        - [Federal Democratic Movement, 1]
+        - [Federalist Christian Democracy-Convention of Federalists for Christian Democracy (COFEDEC), 1]
+      seats_32:
+        tipo: BIGINT
+        nulos_pct: 99.43
+        distintos_aprox: 5
+        min: '0'
+        max: '4'
+        media: 0.6429
+        quartis: [0, 0, 1]
+        top:
+        - [null, 4872]
+        - ['0', 18]
+        - ['1', 6]
+        - ['3', 2]
+        - ['2', 1]
+        - ['4', 1]
+      seat_share_32:
+        tipo: DOUBLE
+        nulos_pct: 99.43
+        distintos_aprox: 10
+        min: '0.0'
+        max: '0.8'
+        media: 0.1518
+        quartis: [0, 0, 0.25]
+        top:
+        - [null, 4872]
+        - ['0.0', 18]
+        - ['0.3', 2]
+        - ['0.6', 2]
+        - ['0.13', 1]
+        - ['0.19', 1]
+        - ['0.2', 1]
+        - ['0.4', 1]
+        - ['0.73', 1]
+        - ['0.8', 1]
+      party_33:
+        tipo: VARCHAR
+        nulos_pct: 99.39
+        distintos_aprox: 24
+        min: Al-Sadiqoun Bloc
+        max: 'Zimbabwe People''s Party: Good People''s Movement'
+        top:
+        - [null, 4870]
+        - [Al-Sadiqoun Bloc, 1]
+        - [Alliance 2025 (A25), 1]
+        - [Antipersonalist Radical Civic Union (UCRA), 1]
+        - [Bosnian-Herzegovinian Patriotic Party, 1]
+        - [Christian National Party, 1]
+        - [Federalist Christian Democracy-Nyamwisi (DCF-N), 1]
+        - [Federation of Families, 1]
+        - [For the Motherland!, 1]
+        - [Franconian Peasants, 1]
+      seats_33:
+        tipo: BIGINT
+        nulos_pct: 99.43
+        distintos_aprox: 5
+        min: '0'
+        max: '58'
+        media: 2.6786
+        quartis: [0, 0, 1]
+        top:
+        - [null, 4872]
+        - ['0', 17]
+        - ['1', 6]
+        - ['3', 3]
+        - ['2', 1]
+        - ['58', 1]
+      seat_share_33:
+        tipo: DOUBLE
+        nulos_pct: 99.43
+        distintos_aprox: 10
+        min: '0.0'
+        max: '19.86'
+        media: 0.8539
+        quartis: [0, 0, 0.3]
+        top:
+        - [null, 4872]
+        - ['0.0', 17]
+        - ['0.6', 3]
+        - ['0.3', 2]
+        - ['0.13', 1]
+        - ['0.19', 1]
+        - ['0.2', 1]
+        - ['0.4', 1]
+        - ['0.73', 1]
+        - ['19.86', 1]
+      party_34:
+        tipo: VARCHAR
+        nulos_pct: 99.43
+        distintos_aprox: 29
+        min: Algerian Liberal Party
+        max: Wendish People's Party
+        top:
+        - [null, 4872]
+        - [Algerian Liberal Party, 1]
+        - [All-Russian Union of Landowners and Farmers, 1]
+        - [Alternative Vital Kamerhe 2018 (A/VK2018), 1]
+        - [Basotho Poverty Solution Party, 1]
+        - [Colombia Unite, 1]
+        - [Democratic Official Party, 1]
+        - [Equitable State Movement, 1]
+        - [Frontier Generation, 1]
+        - [Höchstgehalt der Beamten 5000 M. Für die Arbeitslosen und bis jetzt abgewiesenen Kriegsbeschädigten, 1]
+      seats_34:
+        tipo: BIGINT
+        nulos_pct: 99.49
+        distintos_aprox: 7
+        min: '0'
+        max: '106'
+        media: 6.72
+        quartis: [0, 0, 2]
+        top:
+        - [null, 4875]
+        - ['0', 15]
+        - ['1', 3]
+        - ['2', 2]
+        - ['3', 2]
+        - ['106', 1]
+        - ['43', 1]
+        - ['6', 1]
+      seat_share_34:
+        tipo: DOUBLE
+        nulos_pct: 99.49
+        distintos_aprox: 10
+        min: '0.0'
+        max: '23.66'
+        media: 1.6784
+        quartis: [0, 0, 0.5175]
+        top:
+        - [null, 4875]
+        - ['0.0', 15]
+        - ['0.6', 3]
+        - ['0.19', 1]
+        - ['0.3', 1]
+        - ['0.4', 1]
+        - ['0.49', 1]
+        - ['13.07', 1]
+        - ['2.05', 1]
+        - ['23.66', 1]
+      party_35:
+        tipo: VARCHAR
+        nulos_pct: 99.51
+        distintos_aprox: 26
+        min: Algerian Party of the Essential Man
+        max: Unity Party of Kenya
+        top:
+        - [null, 4876]
+        - [Algerian Party of the Essential Man, 1]
+        - [Colombian Social Democratic Party, 1]
+        - [Development Party for All, 1]
+        - [German Socialist Struggle Movement, 1]
+        - [Independent Catholics (Cató.i), 1]
+        - [Independents, 1]
+        - [Interethnic Union, 1]
+        - [Islamic Dawa Party, 1]
+        - [Ivorian Party of Rising to Challenges, 1]
+      seats_35:
+        tipo: BIGINT
+        nulos_pct: 99.55
+        distintos_aprox: 4
+        min: '0'
+        max: '3'
+        media: 0.5
+        quartis: [0, 0, 1]
+        top:
+        - [null, 4878]
+        - ['0', 16]
+        - ['1', 3]
+        - ['3', 2]
+        - ['2', 1]
+      seat_share_35:
+        tipo: DOUBLE
+        nulos_pct: 99.55
+        distintos_aprox: 5
+        min: '0.0'
+        max: '0.6'
+        media: 0.1245
+        quartis: [0, 0, 0.24]
+        top:
+        - [null, 4878]
+        - ['0.0', 16]
+        - ['0.6', 3]
+        - ['0.24', 1]
+        - ['0.3', 1]
+        - ['0.4', 1]
+      party_36:
+        tipo: VARCHAR
+        nulos_pct: 99.57
+        distintos_aprox: 19
+        min: Ahd 54
+        max: '[MMP and HP]'
+        top:
+        - [null, 4879]
+        - [Ahd 54, 1]
+        - [Alliance for Development and the Republic (ADR), 1]
+        - [Bahlabani ba Tokoloho Movement, 1]
+        - [Democratic Unity Party, 1]
+        - [Earth Federation, 1]
+        - [Forces of Liberation Organization of African National Party, 1]
+        - [Haus- und Landwirtepartei, 1]
+        - [Kenya Social Congress, 1]
+        - [Kilusang Bagong Lipunan, 1]
+      seats_36:
+        tipo: BIGINT
+        nulos_pct: 99.59
+        distintos_aprox: 4
+        min: '0'
+        max: '3'
+        media: 0.45
+        quartis: [0, 0, 0]
+        top:
+        - [null, 4880]
+        - ['0', 15]
+        - ['1', 2]
+        - ['2', 2]
+        - ['3', 1]
+      seat_share_36:
+        tipo: DOUBLE
+        nulos_pct: 99.59
+        distintos_aprox: 4
+        min: '0.0'
+        max: '0.6'
+        media: 0.115
+        quartis: [0, 0, 0.15]
+        top:
+        - [null, 4880]
+        - ['0.0', 15]
+        - ['0.4', 2]
+        - ['0.6', 2]
+        - ['0.3', 1]
+      party_37:
+        tipo: VARCHAR
+        nulos_pct: 99.59
+        distintos_aprox: 20
+        min: Action for the Federative Cause (APCF)
+        max: Union for Renewal and Democracy
+        top:
+        - [null, 4880]
+        - [Action for the Federative Cause (APCF), 1]
+        - [Alliance of Builders of Kongo (ABAKO), 1]
+        - [Argentine Popular Movement, 1]
+        - [Basutholand African National Congress, 1]
+        - [Chief's Party, 1]
+        - [Democratic Progressive Party, 1]
+        - [Friesland, 1]
+        - [German Christian Folk Party, 1]
+        - [Group for Democracy and Progress, 1]
+      seats_37:
+        tipo: BIGINT
+        nulos_pct: 99.61
+        distintos_aprox: 3
+        min: '0'
+        max: '2'
+        media: 0.4211
+        quartis: [0, 0, 1]
+        top:
+        - [null, 4881]
+        - ['0', 14]
+        - ['2', 3]
+        - ['1', 2]
+      seat_share_37:
+        tipo: DOUBLE
+        nulos_pct: 99.61
+        distintos_aprox: 4
+        min: '0.0'
+        max: '0.6'
+        media: 0.1105
+        quartis: [0, 0, 0.225]
+        top:
+        - [null, 4881]
+        - ['0.0', 14]
+        - ['0.4', 3]
+        - ['0.3', 1]
+        - ['0.6', 1]
+      party_38:
+        tipo: VARCHAR
+        nulos_pct: 99.61
+        distintos_aprox: 21
+        min: Algerian National Rally
+        max: United Crusade for Achieving Democracy Green Party of Zimbabwe
+        top:
+        - [null, 4881]
+        - [Algerian National Rally, 1]
+        - [Alliance for the Reform of the Republic (A2R), 1]
+        - [Bigkis Pinoy, 1]
+        - [Build a United and Prosperous Congo (BCUP), 1]
+        - [German Social Monarchist Party, 1]
+        - [Independents, 1]
+        - [Kampfbund gegen Hauszinssteuer, 1]
+        - [Khalas Coalition, 1]
+        - [Lebensinteressen der Ledigen, 1]
+      seats_38:
+        tipo: BIGINT
+        nulos_pct: 99.63
+        distintos_aprox: 4
+        min: '0'
+        max: '35'
+        media: 2.3889
+        quartis: [0, 0, 1]
+        top:
+        - [null, 4882]
+        - ['0', 12]
+        - ['2', 3]
+        - ['1', 2]
+        - ['35', 1]
+      seat_share_38:
+        tipo: DOUBLE
+        nulos_pct: 99.63
+        distintos_aprox: 5
+        min: '0.0'
+        max: '13.73'
+        media: 0.8794
+        quartis: [0, 0, 0.4]
+        top:
+        - [null, 4882]
+        - ['0.0', 12]
+        - ['0.4', 3]
+        - ['0.3', 1]
+        - ['0.6', 1]
+        - ['13.73', 1]
+      party_39:
+        tipo: VARCHAR
+        nulos_pct: 99.63
+        distintos_aprox: 18
+        min: Action Movement for Resurrection of the Congo-Fraternity and Labour Party (Mouvement d'Action pour la Résurrection du Congo, Parti
+          du Travail et de la Fraternité)
+        max: Yazidi Movement for Reform and Progress
+        top:
+        - [null, 4882]
+        - ['Action Movement for Resurrection of the Congo-Fraternity and Labour Party (Mouvement d''Action pour la Résurrection du Congo, Parti
+            du Travail et de la Fraternité)', 1]
+        - [Alliance of Political Parties Allied to the Congo Liberation Movement (APA/MLC), 1]
+        - [C4, 1]
+        - [Christian Alliance for Democracy and Development (ACDD), 1]
+        - [German People's Community, 1]
+        - [German Reform Party, 1]
+        - [Masurian People's Party, 1]
+        - [National Labour Party, 1]
+        - [Over Vote, 1]
+      seats_39:
+        tipo: BIGINT
+        nulos_pct: 99.65
+        distintos_aprox: 3
+        min: '0'
+        max: '2'
+        media: 0.3529
+        quartis: [0, 0, 0]
+        top:
+        - [null, 4883]
+        - ['0', 13]
+        - ['1', 2]
+        - ['2', 2]
+      seat_share_39:
+        tipo: DOUBLE
+        nulos_pct: 99.65
+        distintos_aprox: 4
+        min: '0.0'
+        max: '0.4'
+        media: 0.0765
+        quartis: [0, 0, 0.05]
+        top:
+        - [null, 4883]
+        - ['0.0', 13]
+        - ['0.4', 2]
+        - ['0.2', 1]
+        - ['0.3', 1]
+      party_40:
+        tipo: VARCHAR
+        nulos_pct: 99.63
+        distintos_aprox: 17
+        min: Action of the Rally for Reconstruction and Edification (Action de Rassemblement pour la Reconstruction et l'Edification Nationales )
+        max: Union of Democrats for Panafrican Renewal
+        top:
+        - [null, 4882]
+        - [Action of the Rally for Reconstruction and Edification (Action de Rassemblement pour la Reconstruction et l'Edification Nationales ),
+          1]
+        - [African Ark, 1]
+        - [Congolese People's Movement for the Republic (MPCR), 1]
+        - [German Workers Party, 1]
+        - [Greater Germany Schmalix List, 1]
+        - [Independent, 1]
+        - [Independent Movement of Absolute Renovation, 1]
+        - [Iraqi Communist Party, 1]
+        - [Lakas–CMD/United Negros Alliance, 1]
+      seats_40:
+        tipo: BIGINT
+        nulos_pct: 99.65
+        distintos_aprox: 3
+        min: '0'
+        max: '2'
+        media: 0.4706
+        quartis: [0, 0, 1]
+        top:
+        - [null, 4883]
+        - ['0', 12]
+        - ['2', 3]
+        - ['1', 2]
+      seat_share_40:
+        tipo: DOUBLE
+        nulos_pct: 99.65
+        distintos_aprox: 5
+        min: '0.0'
+        max: '0.46'
+        media: 0.1035
+        quartis: [0, 0, 0.225]
+        top:
+        - [null, 4883]
+        - ['0.0', 12]
+        - ['0.4', 2]
+        - ['0.2', 1]
+        - ['0.3', 1]
+        - ['0.46', 1]
+      party_41:
+        tipo: VARCHAR
+        nulos_pct: 99.63
+        distintos_aprox: 18
+        min: 19th of April Movement
+        max: Unitarianist Union of Germany
+        top:
+        - [null, 4882]
+        - [19th of April Movement, 1]
+        - [Algerian Party for Justice and Progress, 1]
+        - [Alliance for Development Actions of the Congo and Allies (AADC-A), 1]
+        - [Alliance of Congolese Nationalists (Alliance des Nationalistes Congolais/Plate Forme ), 1]
+        - [Basotho Council for Economic Freedom, 1]
+        - [Christian Democratic Movement, 1]
+        - [Federal Democrats of Zimbabwe, 1]
+        - [Foundation of Congo (FC), 1]
+        - [Friesland, 1]
+      seats_41:
+        tipo: BIGINT
+        nulos_pct: 99.65
+        distintos_aprox: 4
+        min: '0'
+        max: '27'
+        media: 1.8824
+        quartis: [0, 0, 1]
+        top:
+        - [null, 4883]
+        - ['0', 12]
+        - ['1', 3]
+        - ['2', 1]
+        - ['27', 1]
+      seat_share_41:
+        tipo: DOUBLE
+        nulos_pct: 99.65
+        distintos_aprox: 5
+        min: '0.0'
+        max: '25.71'
+        media: 1.5771
+        quartis: [0, 0, 0.2]
+        top:
+        - [null, 4883]
+        - ['0.0', 12]
+        - ['0.2', 2]
+        - ['0.3', 1]
+        - ['0.4', 1]
+        - ['25.71', 1]
+      party_42:
+        tipo: VARCHAR
+        nulos_pct: 99.69
+        distintos_aprox: 16
+        min: Agrarian Social Party
+        max: Sociopolitical Movement "Stable Russia"
+        top:
+        - [null, 4885]
+        - [Agrarian Social Party, 1]
+        - [Alliance for the Rise and Democracy of the Congo and Allies (AEDC-A), 1]
+        - [Basotho Redevelopment Party, 1]
+        - [Christian Convention for Democracy (Convention Chrétienne pour la Démocratie), 1]
+        - [Council of Free Shabaks, 1]
+        - [Der ernste evangelisch-lutherische Christ (Gerechtigkeits-Bewegung), 1]
+        - [ERA, 1]
+        - [German socialists, 1]
+        - [Greater German Middle Class Party for Middle Class Dictatorship, 1]
+      seats_42:
+        tipo: BIGINT
+        nulos_pct: 99.71
+        distintos_aprox: 3
+        min: '0'
+        max: '2'
+        media: 0.3571
+        quartis: [0, 0, 1]
+        top:
+        - [null, 4886]
+        - ['0', 10]
+        - ['1', 3]
+        - ['2', 1]
+      seat_share_42:
+        tipo: DOUBLE
+        nulos_pct: 99.71
+        distintos_aprox: 4
+        min: '0.0'
+        max: '0.4'
+        media: 0.0786
+        quartis: [0, 0, 0.2]
+        top:
+        - [null, 4886]
+        - ['0.0', 10]
+        - ['0.2', 2]
+        - ['0.3', 1]
+        - ['0.4', 1]
+      party_43:
+        tipo: VARCHAR
+        nulos_pct: 99.69
+        distintos_aprox: 13
+        min: Bund Bayerisches Handwerk und Gewerbe, Haus- und Grundbesitz und Landwirtschaft
+        max: United Jewish Socialist Labour Party (S.S. and E.S.)
+        top:
+        - [null, 4885]
+        - ['Bund Bayerisches Handwerk und Gewerbe, Haus- und Grundbesitz und Landwirtschaft', 1]
+        - [Chama Cha Mwananchi, 1]
+        - ['Christian Democracy {Démocratie Chrétienne)', 1]
+        - [Christian Social Front, 1]
+        - [Democratic Alliance–United People's Party, 1]
+        - [Empowerment Movement for Basotho, 1]
+        - [Gerechtigkeits-Bewegung-Meißner, 1]
+        - [Laicists for Colombia, 1]
+        - [Leadership and Governance for Development (LGD), 1]
+      seats_43:
+        tipo: BIGINT
+        nulos_pct: 99.71
+        distintos_aprox: 3
+        min: '0'
+        max: '2'
+        media: 0.2857
+        quartis: [0, 0, 0]
+        top:
+        - [null, 4886]
+        - ['0', 11]
+        - ['1', 2]
+        - ['2', 1]
+      seat_share_43:
+        tipo: DOUBLE
+        nulos_pct: 99.71
+        distintos_aprox: 3
+        min: '0.0'
+        max: '0.4'
+        media: 0.0571
+        quartis: [0, 0, 0]
+        top:
+        - [null, 4886]
+        - ['0.0', 11]
+        - ['0.2', 2]
+        - ['0.4', 1]
+      party_44:
+        tipo: VARCHAR
+        nulos_pct: 99.73
+        distintos_aprox: 12
+        min: Argentine Socialist Party - Chaco Federation
+        max: Reform PH - People's Party
+        top:
+        - [null, 4887]
+        - [Argentine Socialist Party - Chaco Federation, 1]
+        - ['Bund[xii]', 1]
+        - [Chama Cha Mapinduzi, 1]
+        - [Congolese Party for the People's Well-Being (Parti Congolais pour le Bien-être du Peuple), 1]
+        - [German National Citizen Bloc, 1]
+        - [Independents, 1]
+        - ['Kampfgemeinschaft der Rentner, Sparer und Inflationsgeschädigten', 1]
+        - [Mookoli Theological Front, 1]
+        - [New Colombia Movement, 1]
+      seats_44:
+        tipo: BIGINT
+        nulos_pct: 99.76
+        distintos_aprox: 4
+        min: '0'
+        max: '77'
+        media: 6.6667
+        quartis: [0, 0, 0]
+        top:
+        - [null, 4888]
+        - ['0', 9]
+        - ['1', 1]
+        - ['2', 1]
+        - ['77', 1]
+      seat_share_44:
+        tipo: DOUBLE
+        nulos_pct: 99.76
+        distintos_aprox: 3
+        min: '0.0'
+        max: '17.11'
+        media: 1.4758
+        quartis: [0, 0, 0.1]
+        top:
+        - [null, 4888]
+        - ['0.0', 9]
+        - ['0.2', 1]
+        - ['0.4', 1]
+        - ['17.11', 1]
+      party_45:
+        tipo: VARCHAR
+        nulos_pct: 99.73
+        distintos_aprox: 14
+        min: Citizens' Movement
+        max: Yearn for Economic Sustainability
+        top:
+        - [null, 4887]
+        - [Citizens' Movement, 1]
+        - [Congolese People's Movement for the Republic (Mouvement du Peuple Congolais pour la République), 1]
+        - [Mkenya Solidarity Movement, 1]
+        - ['National Bloc (Ukrainians, Muslims, Poles and Lithuanians)', 1]
+        - ['Nationale Rentner, Sparer und Inflationsgeschädigte', 1]
+        - [Organisation of the Forces of Free Revolutionary Islamic Algeria, 1]
+        - [Other parties, 1]
+        - [Partido Prosperidad y Amor para na Zamboanga, 1]
+        - [Party for the Unemployed for Work and Bread, 1]
+      seats_45:
+        tipo: BIGINT
+        nulos_pct: 99.76
+        distintos_aprox: 3
+        min: '0'
+        max: '2'
+        media: 0.25
+        quartis: [0, 0, 0]
+        top:
+        - [null, 4888]
+        - ['0', 10]
+        - ['1', 1]
+        - ['2', 1]
+      seat_share_45:
+        tipo: DOUBLE
+        nulos_pct: 99.76
+        distintos_aprox: 3
+        min: '0.0'
+        max: '0.4'
+        media: 0.05
+        quartis: [0, 0, 0]
+        top:
+        - [null, 4888]
+        - ['0.0', 10]
+        - ['0.2', 1]
+        - ['0.4', 1]
+      party_46:
+        tipo: VARCHAR
+        nulos_pct: 99.76
+        distintos_aprox: 13
+        min: African People's Congress
+        max: Uighur-Dungan alliance
+        top:
+        - [null, 4888]
+        - [African People's Congress, 1]
+        - [Algerian Nation's Youth Rally, 1]
+        - [Congolese Union for Change (Union Congolaise pour le Changement), 1]
+        - [Democratic Alternative Movement, 1]
+        - [Lingkod ng Mamamayan ng Valenzuela City, 1]
+        - [National German Catholic Reich Party, 1]
+        - [Nationalist Civic Union, 1]
+        - [Party of Action, 1]
+        - [Party of the Unemployed for Work and Bread, 1]
+      seats_46:
+        tipo: BIGINT
+        nulos_pct: 99.78
+        distintos_aprox: 3
+        min: '0'
+        max: '2'
+        media: 0.2727
+        quartis: [0, 0, 0]
+        top:
+        - [null, 4889]
+        - ['0', 9]
+        - ['1', 1]
+        - ['2', 1]
+      seat_share_46:
+        tipo: DOUBLE
+        nulos_pct: 99.78
+        distintos_aprox: 3
+        min: '0.0'
+        max: '0.4'
+        media: 0.0545
+        quartis: [0, 0, 0]
+        top:
+        - [null, 4889]
+        - ['0.0', 9]
+        - ['0.2', 1]
+        - ['0.4', 1]
+      party_47:
+        tipo: VARCHAR
+        nulos_pct: 99.76
+        distintos_aprox: 12
+        min: Algerian National Party
+        max: Suffering Voices of Zimbabwe
+        top:
+        - [null, 4888]
+        - [Algerian National Party, 1]
+        - [Allies for Patriotic Change, 1]
+        - [Commercial-Industrial lists, 1]
+        - [Conscience and People's Will (Conscience et Volonté du Peuple ), 1]
+        - [FORD - Asili, 1]
+        - [Federal Agrarian Labour Party, 1]
+        - [Force Colombia, 1]
+        - [Freiheitliche National-Soziale Deutsche Mittelstandsbewegung, 1]
+        - [German Socialist Struggle Movement, 1]
+      seats_47:
+        tipo: BIGINT
+        nulos_pct: 99.78
+        distintos_aprox: 3
+        min: '0'
+        max: '2'
+        media: 0.2727
+        quartis: [0, 0, 0]
+        top:
+        - [null, 4889]
+        - ['0', 9]
+        - ['1', 1]
+        - ['2', 1]
+      seat_share_47:
+        tipo: DOUBLE
+        nulos_pct: 99.78
+        distintos_aprox: 3
+        min: '0.0'
+        max: '0.4'
+        media: 0.0545
+        quartis: [0, 0, 0]
+        top:
+        - [null, 4889]
+        - ['0.0', 9]
+        - ['0.2', 1]
+        - ['0.4', 1]
+      party_48:
+        tipo: VARCHAR
+        nulos_pct: 99.76
+        distintos_aprox: 11
+        min: Achievers with Integrity Movement
+        max: Workers' Argentine Socialist Party
+        top:
+        - [null, 4888]
+        - [Achievers with Integrity Movement, 1]
+        - [Colombia My Country, 1]
+        - [Freedom Front, 1]
+        - [Front for Social Integration (Front pour l'Intégration Sociale), 1]
+        - [German Reich against Interest Rate Movement, 1]
+        - [Movement for the Islamic Risala, 1]
+        - [National Democratic Movement, 1]
+        - [National Freedom Party of Germany, 1]
+        - [Popular Socialist-Cooperative lists, 1]
+      seats_48:
+        tipo: BIGINT
+        nulos_pct: 99.78
+        distintos_aprox: 3
+        min: '0'
+        max: '2'
+        media: 0.2727
+        quartis: [0, 0, 0]
+        top:
+        - [null, 4889]
+        - ['0', 9]
+        - ['1', 1]
+        - ['2', 1]
+      seat_share_48:
+        tipo: DOUBLE
+        nulos_pct: 99.78
+        distintos_aprox: 3
+        min: '0.0'
+        max: '0.4'
+        media: 0.0545
+        quartis: [0, 0, 0]
+        top:
+        - [null, 4889]
+        - ['0.0', 9]
+        - ['0.2', 1]
+        - ['0.4', 1]
+      party_49:
+        tipo: VARCHAR
+        nulos_pct: 99.76
+        distintos_aprox: 11
+        min: Commitment to Citizenship and Development (ECiDé)
+        max: Ummah Party
+        top:
+        - [null, 4888]
+        - [Independents, 2]
+        - [Commitment to Citizenship and Development (ECiDé), 1]
+        - [Freiheitsbewegung Schwarz-Weiß-Rot, 1]
+        - [Front of Congolese Democrats (Front des Démocrates Congolais), 1]
+        - [National Party of Kenya, 1]
+        - [National Rally for Progress, 1]
+        - [National-Soziale Partei gegen die Hauszinssteuer, 1]
+        - [Others, 1]
+        - [Radical Recovery Movement, 1]
+      seats_49:
+        tipo: BIGINT
+        nulos_pct: 99.78
+        distintos_aprox: 4
+        min: '0'
+        max: '11'
+        media: 1.3636
+        quartis: [0, 0, 1]
+        top:
+        - [null, 4889]
+        - ['0', 7]
+        - ['1', 2]
+        - ['11', 1]
+        - ['2', 1]
+      seat_share_49:
+        tipo: DOUBLE
+        nulos_pct: 99.8
+        distintos_aprox: 4
+        min: '0.0'
+        max: '6.63'
+        media: 0.72
+        quartis: [0, 0, 0.2]
+        top:
+        - [null, 4890]
+        - ['0.0', 7]
+        - ['0.2', 1]
+        - ['0.37', 1]
+        - ['6.63', 1]
+      party_50:
+        tipo: VARCHAR
+        nulos_pct: 99.8
+        distintos_aprox: 10
+        min: Ang Kapatiran
+        max: Unity and Progress Movement
+        top:
+        - [null, 4890]
+        - [Ang Kapatiran, 1]
+        - [Front of Social Democrats for Development (Front des Sociaux Démocrates pour le Développement), 1]
+        - [Independent Conservatism, 1]
+        - [Independents, 1]
+        - [Middle Class Party, 1]
+        - ['Nationalsoziale Kampfgemeinschaft für Handwerk, Gewerbe, Hausbesitz und Landwirtschaft', 1]
+        - [Party for Peace in Congo (CONGO-PAX), 1]
+        - [Poalei Zion, 1]
+        - [UDP, 1]
+      seats_50:
+        tipo: BIGINT
+        nulos_pct: 99.82
+        distintos_aprox: 3
+        min: '0'
+        max: '2'
+        media: 0.4444
+        quartis: [0, 0, 1]
+        top:
+        - [null, 4891]
+        - ['0', 6]
+        - ['1', 2]
+        - ['2', 1]
+      seat_share_50:
+        tipo: DOUBLE
+        nulos_pct: 99.84
+        distintos_aprox: 3
+        min: '0.0'
+        max: '0.6'
+        media: 0.1
+        quartis: [0, 0, 0.1]
+        top:
+        - [null, 4892]
+        - ['0.0', 6]
+        - ['0.2', 1]
+        - ['0.6', 1]
+      party_51:
+        tipo: VARCHAR
+        nulos_pct: 99.84
+        distintos_aprox: 7
+        min: Conservative Provincial Labour Party
+        max: Unity
+        top:
+        - [null, 4892]
+        - [Conservative Provincial Labour Party, 1]
+        - [General Social-National Unity Worker Party of Germany, 1]
+        - [Kampfbund der Lohn- und Gehaltsabgebauten, 1]
+        - [Liberal Christian Democrats Union (Union des Libéraux Démocrates Chrétiens), 1]
+        - [NAC, 1]
+        - [Pwersa ng Masang Pilipino, 1]
+        - [Union of Congolese Patriots (UPC), 1]
+        - [Unity, 1]
+      seats_51:
+        tipo: BIGINT
+        nulos_pct: 99.86
+        distintos_aprox: 3
+        min: '0'
+        max: '2'
+        media: 0.4286
+        quartis: [0, 0, 1]
+        top:
+        - [null, 4893]
+        - ['0', 5]
+        - ['1', 1]
+        - ['2', 1]
+      seat_share_51:
+        tipo: DOUBLE
+        nulos_pct: 99.88
+        distintos_aprox: 2
+        min: '0.0'
+        max: '0.2'
+        media: 0.0333
+        quartis: [0, 0, 0]
+        top:
+        - [null, 4894]
+        - ['0.0', 5]
+        - ['0.2', 1]
+      party_52:
+        tipo: VARCHAR
+        nulos_pct: 99.86
+        distintos_aprox: 7
+        min: Agreement with the Allies Alliance (AAA)
+        max: Republican Liberty Party
+        top:
+        - [null, 4893]
+        - [Agreement with the Allies Alliance (AAA), 1]
+        - [Communist Party (PCA), 1]
+        - ['Freiwirtschaftsbewegung für Freiland, Freigeld, Festwährung', 1]
+        - [Maï Maï Movement (Mouvement Maï-Maï), 1]
+        - [Menshevik Defencists, 1]
+        - [Partido Lakas ng Masa, 1]
+        - [Republican Liberty Party, 1]
+      seats_52:
+        tipo: BIGINT
+        nulos_pct: 99.88
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.3333
+        quartis: [0, 0, 1]
+        top:
+        - [null, 4894]
+        - ['0', 4]
+        - ['1', 2]
+      seat_share_52:
+        tipo: DOUBLE
+        nulos_pct: 99.9
+        distintos_aprox: 2
+        min: '0.0'
+        max: '0.2'
+        media: 0.04
+        quartis: [0, 0, 0.05]
+        top:
+        - [null, 4895]
+        - ['0.0', 4]
+        - ['0.2', 1]
+      party_53:
+        tipo: VARCHAR
+        nulos_pct: 99.88
+        distintos_aprox: 5
+        min: Alliance for Humanism and Democracy (AHUDE)
+        max: Philippine Green Republican Party
+        top:
+        - [null, 4894]
+        - [Alliance for Humanism and Democracy (AHUDE), 1]
+        - [Georgian National Democrats, 1]
+        - [German Workers Party, 1]
+        - [National Convention for Republic and Progress (Convention Nationale pour la République et le Progrès, 1]
+        - [National Democrats, 1]
+        - [Philippine Green Republican Party, 1]
+      seats_53:
+        tipo: BIGINT
+        nulos_pct: 99.88
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.3333
+        quartis: [0, 0, 1]
+        top:
+        - [null, 4894]
+        - ['0', 4]
+        - ['1', 2]
+      seat_share_53:
+        tipo: DOUBLE
+        nulos_pct: 99.9
+        distintos_aprox: 2
+        min: '0.0'
+        max: '0.2'
+        media: 0.04
+        quartis: [0, 0, 0.05]
+        top:
+        - [null, 4895]
+        - ['0.0', 4]
+        - ['0.2', 1]
+      party_54:
+        tipo: VARCHAR
+        nulos_pct: 99.88
+        distintos_aprox: 6
+        min: Alliance for Justice, Development, and Solidarity (AJDS)
+        max: Ukrainian Socialist-Federalists[xiii]
+        top:
+        - [null, 4894]
+        - ['Alliance for Justice, Development, and Solidarity (AJDS)', 1]
+        - [Alliance of Real Change, 1]
+        - [Katipunan ng Nagkakaisang Pilipino, 1]
+        - [National Convention of Political Action (Convention Nationale d'Action Politique)), 1]
+        - [Nationaler Bürger- und Wirtschaftsblock, 1]
+        - ['Ukrainian Socialist-Federalists[xiii]', 1]
+      seats_54:
+        tipo: BIGINT
+        nulos_pct: 99.88
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.3333
+        quartis: [0, 0, 1]
+        top:
+        - [null, 4894]
+        - ['0', 4]
+        - ['1', 2]
+      seat_share_54:
+        tipo: DOUBLE
+        nulos_pct: 99.9
+        distintos_aprox: 2
+        min: '0.0'
+        max: '0.2'
+        media: 0.04
+        quartis: [0, 0, 0.05]
+        top:
+        - [null, 4895]
+        - ['0.0', 4]
+        - ['0.2', 1]
+      party_55:
+        tipo: VARCHAR
+        nulos_pct: 99.88
+        distintos_aprox: 6
+        min: Christian Convention for Democracy (CCD)
+        max: National People's Party (Parti National du Peuple)
+        top:
+        - [null, 4894]
+        - [Christian Convention for Democracy (CCD), 1]
+        - [Independents, 1]
+        - [Kampfbund der Lohn- und Gehaltsabgebauten und Auslandsgeschädigten, 1]
+        - [Katipunan ng Kamalayang Kayumanggi, 1]
+        - ['Menshevik-Internationalists[xiv]', 1]
+        - [National People's Party (Parti National du Peuple), 1]
+      seats_55:
+        tipo: BIGINT
+        nulos_pct: 99.88
+        distintos_aprox: 3
+        min: '0'
+        max: '4'
+        media: 1
+        quartis: [0, 0, 1]
+        top:
+        - [null, 4894]
+        - ['0', 3]
+        - ['1', 2]
+        - ['4', 1]
+      seat_share_55:
+        tipo: DOUBLE
+        nulos_pct: 99.9
+        distintos_aprox: 3
+        min: '0.0'
+        max: '1.15'
+        media: 0.27
+        quartis: [0, 0, 0.4375]
+        top:
+        - [null, 4895]
+        - ['0.0', 3]
+        - ['0.2', 1]
+        - ['1.15', 1]
+      party_56:
+        tipo: VARCHAR
+        nulos_pct: 99.9
+        distintos_aprox: 5
+        min: Bagumbayan–VNP
+        max: Radical Party
+        top:
+        - [null, 4895]
+        - [Bagumbayan–VNP, 1]
+        - [Christian Democracy (DC), 1]
+        - [Cooperative movement, 1]
+        - [National Unity Party (Parti de l'Unité Nationale), 1]
+        - [Radical Party, 1]
+      seats_56:
+        tipo: BIGINT
+        nulos_pct: 99.9
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.4
+        quartis: [0, 0, 1]
+        top:
+        - [null, 4895]
+        - ['0', 3]
+        - ['1', 2]
+      seat_share_56:
+        tipo: DOUBLE
+        nulos_pct: 99.92
+        distintos_aprox: 2
+        min: '0.0'
+        max: '0.2'
+        media: 0.05
+        quartis: [0, 0, 0.1]
+        top:
+        - [null, 4896]
+        - ['0.0', 3]
+        - ['0.2', 1]
+      party_57:
+        tipo: VARCHAR
+        nulos_pct: 99.9
+        distintos_aprox: 5
+        min: Christian Movement for Solidarity and Democracy (MCSD)
+        max: Political Organisation of Kasavubists and Allies (Organisation Politique des Kasavubistes et Alliés)
+        top:
+        - [null, 4895]
+        - [Christian Movement for Solidarity and Democracy (MCSD), 1]
+        - [Georgian Socialist-Federalists, 1]
+        - [Kampfgemeinschaft der Lohn- und Gehaltsabgebauten, 1]
+        - [Others, 1]
+        - [Political Organisation of Kasavubists and Allies (Organisation Politique des Kasavubistes et Alliés), 1]
+      seats_57:
+        tipo: BIGINT
+        nulos_pct: 99.9
+        distintos_aprox: 3
+        min: '0'
+        max: '63'
+        media: 13
+        quartis: [0, 1, 16]
+        top:
+        - [null, 4895]
+        - ['0', 2]
+        - ['1', 2]
+        - ['63', 1]
+      seat_share_57:
+        tipo: DOUBLE
+        nulos_pct: 99.92
+        distintos_aprox: 3
+        min: '0.0'
+        max: '19.94'
+        media: 5.035
+        quartis: [0, 0.1, 10.07]
+        top:
+        - [null, 4896]
+        - ['0.0', 2]
+        - ['0.2', 1]
+        - ['19.94', 1]
+      party_58:
+        tipo: VARCHAR
+        nulos_pct: 99.9
+        distintos_aprox: 5
+        min: Congolese Alliance of Christian Democrats (ACDC)
+        max: Unitarianist Union of Germany
+        top:
+        - [null, 4895]
+        - [Congolese Alliance of Christian Democrats (ACDC), 1]
+        - [Estonian Socialist Revolutionary Party, 1]
+        - [Independent, 1]
+        - [Popular Movement of the Revolution (Mouvement Populaire de la Révolution), 1]
+        - [Unitarianist Union of Germany, 1]
+      seats_58:
+        tipo: BIGINT
+        nulos_pct: 99.9
+        distintos_aprox: 3
+        min: '0'
+        max: '6'
+        media: 1.6
+        quartis: [0, 1, 2]
+        top:
+        - [null, 4895]
+        - ['0', 2]
+        - ['1', 2]
+        - ['6', 1]
+      seat_share_58:
+        tipo: DOUBLE
+        nulos_pct: 99.92
+        distintos_aprox: 3
+        min: '0.0'
+        max: '1.9'
+        media: 0.525
+        quartis: [0, 0.1, 1.05]
+        top:
+        - [null, 4896]
+        - ['0.0', 2]
+        - ['0.2', 1]
+        - ['1.9', 1]
+      party_59:
+        tipo: VARCHAR
+        nulos_pct: 99.92
+        distintos_aprox: 4
+        min: Congolese National Congress (CNC)
+        max: Rally for Economic and Social Development (Rassemblement pour le Développement Économique et Social)
+        top:
+        - [null, 4896]
+        - [Congolese National Congress (CNC), 1]
+        - [Estonian Radical Democratic Party, 1]
+        - [Mieter- und Volks-Reichspartei, 1]
+        - [Rally for Economic and Social Development (Rassemblement pour le Développement Économique et Social), 1]
+      seats_59:
+        tipo: BIGINT
+        nulos_pct: 99.92
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.5
+        quartis: [0, 0, 1]
+        top:
+        - [null, 4896]
+        - ['0', 2]
+        - ['1', 2]
+      seat_share_59:
+        tipo: DOUBLE
+        nulos_pct: 99.94
+        distintos_aprox: 2
+        min: '0.0'
+        max: '0.2'
+        media: 0.0667
+        quartis: [0, 0, 0.15]
+        top:
+        - [null, 4897]
+        - ['0.0', 2]
+        - ['0.2', 1]
+      party_60:
+        tipo: VARCHAR
+        nulos_pct: 99.92
+        distintos_aprox: 4
+        min: Convention for Democracy and Liberty (CODELI)
+        max: Rally of Christians for the Congo (Rassemblement des Chrétiens pour le Congo)
+        top:
+        - [null, 4896]
+        - [Convention for Democracy and Liberty (CODELI), 1]
+        - [Estonian List, 1]
+        - [German Social Monarchist Party, 1]
+        - [Rally of Christians for the Congo (Rassemblement des Chrétiens pour le Congo), 1]
+      seats_60:
+        tipo: BIGINT
+        nulos_pct: 99.92
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.5
+        quartis: [0, 0, 1]
+        top:
+        - [null, 4896]
+        - ['0', 2]
+        - ['1', 2]
+      seat_share_60:
+        tipo: DOUBLE
+        nulos_pct: 99.94
+        distintos_aprox: 2
+        min: '0.0'
+        max: '0.2'
+        media: 0.0667
+        quartis: [0, 0, 0.15]
+        top:
+        - [null, 4897]
+        - ['0.0', 2]
+        - ['0.2', 1]
+      party_61:
+        tipo: VARCHAR
+        nulos_pct: 99.92
+        distintos_aprox: 4
+        min: All Russian Peasants Union
+        max: Rally of Congolese Ecologist-The Greens (Rassemblement des Écologistes Congolais, les verts)
+        top:
+        - [null, 4896]
+        - [All Russian Peasants Union, 1]
+        - [Convention for Renaissance and Progress (CRP), 1]
+        - [German Reform Party, 1]
+        - ['Rally of Congolese Ecologist-The Greens (Rassemblement des Écologistes Congolais, les verts)', 1]
+      seats_61:
+        tipo: BIGINT
+        nulos_pct: 99.92
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.5
+        quartis: [0, 0, 1]
+        top:
+        - [null, 4896]
+        - ['0', 2]
+        - ['1', 2]
+      seat_share_61:
+        tipo: DOUBLE
+        nulos_pct: 99.94
+        distintos_aprox: 2
+        min: '0.0'
+        max: '0.2'
+        media: 0.0667
+        quartis: [0, 0, 0.15]
+        top:
+        - [null, 4897]
+        - ['0.0', 2]
+        - ['0.2', 1]
+      party_62:
+        tipo: VARCHAR
+        nulos_pct: 99.94
+        distintos_aprox: 3
+        min: Current Future (CF)
+        max: Republican Generations (Générations Républicaines)
+        top:
+        - [null, 4897]
+        - [Current Future (CF), 1]
+        - [Other Muslim lists, 1]
+        - [Republican Generations (Générations Républicaines), 1]
+      seats_62:
+        tipo: BIGINT
+        nulos_pct: 99.96
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        media: 1
+        quartis: [1, 1, 1]
+        top:
+        - [null, 4898]
+        - ['1', 2]
+      seat_share_62:
+        tipo: DOUBLE
+        nulos_pct: 99.98
+        distintos_aprox: 1
+        min: '0.2'
+        max: '0.2'
+        media: 0.2
+        quartis: [0.2, 0.2, 0.2]
+        top:
+        - [null, 4899]
+        - ['0.2', 1]
+      party_63:
+        tipo: VARCHAR
+        nulos_pct: 99.94
+        distintos_aprox: 3
+        min: Dynamics for Democracy in Congo (DDC)
+        max: Self-Defence Movement for Integrity and Maintenance of Independent Authority (Mouvement d'Autodéfense pour l'Intégrité et le Maintien
+          de l'Autorité Indépendante)
+        top:
+        - [null, 4897]
+        - [Dynamics for Democracy in Congo (DDC), 1]
+        - [Others, 1]
+        - [Self-Defence Movement for Integrity and Maintenance of Independent Authority (Mouvement d'Autodéfense pour l'Intégrité et le Maintien
+            de l'Autorité Indépendante), 1]
+      seats_63:
+        tipo: BIGINT
+        nulos_pct: 99.94
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.6667
+        quartis: [0, 1, 1]
+        top:
+        - [null, 4897]
+        - ['1', 2]
+        - ['0', 1]
+      seat_share_63:
+        tipo: DOUBLE
+        nulos_pct: 99.96
+        distintos_aprox: 2
+        min: '0.0'
+        max: '0.2'
+        media: 0.1
+        quartis: [0, 0.1, 0.2]
+        top:
+        - [null, 4898]
+        - ['0.0', 1]
+        - ['0.2', 1]
+      party_64:
+        tipo: VARCHAR
+        nulos_pct: 99.96
+        distintos_aprox: 2
+        min: Force of the People (FOP)
+        max: Social Front of Independent Republicans (Front Social des Indépendants Républicains)
+        top:
+        - [null, 4898]
+        - [Force of the People (FOP), 1]
+        - [Social Front of Independent Republicans (Front Social des Indépendants Républicains), 1]
+      seats_64:
+        tipo: BIGINT
+        nulos_pct: 99.96
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        media: 1
+        quartis: [1, 1, 1]
+        top:
+        - [null, 4898]
+        - ['1', 2]
+      seat_share_64:
+        tipo: DOUBLE
+        nulos_pct: 99.98
+        distintos_aprox: 1
+        min: '0.2'
+        max: '0.2'
+        media: 0.2
+        quartis: [0.2, 0.2, 0.2]
+        top:
+        - [null, 4899]
+        - ['0.2', 1]
+      party_65:
+        tipo: VARCHAR
+        nulos_pct: 99.96
+        distintos_aprox: 2
+        min: Front of Social Democrats for Development (FSDD)
+        max: Solidarity Movement for Democracy and Development (Mouvement Solidarité pour la Démocratie et le Développement)
+        top:
+        - [null, 4898]
+        - [Front of Social Democrats for Development (FSDD), 1]
+        - [Solidarity Movement for Democracy and Development (Mouvement Solidarité pour la Démocratie et le Développement), 1]
+      seats_65:
+        tipo: BIGINT
+        nulos_pct: 99.96
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        media: 1
+        quartis: [1, 1, 1]
+        top:
+        - [null, 4898]
+        - ['1', 2]
+      seat_share_65:
+        tipo: DOUBLE
+        nulos_pct: 99.98
+        distintos_aprox: 1
+        min: '0.2'
+        max: '0.2'
+        media: 0.2
+        quartis: [0.2, 0.2, 0.2]
+        top:
+        - [null, 4899]
+        - ['0.2', 1]
+      party_66:
+        tipo: VARCHAR
+        nulos_pct: 99.96
+        distintos_aprox: 2
+        min: Generation for Solidarity and the Development of Congo (GSCO)
+        max: Union for the Defence of the Republic (Union pour la Défense de la République)
+        top:
+        - [null, 4898]
+        - [Generation for Solidarity and the Development of Congo (GSCO), 1]
+        - [Union for the Defence of the Republic (Union pour la Défense de la République), 1]
+      seats_66:
+        tipo: BIGINT
+        nulos_pct: 99.96
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        media: 1
+        quartis: [1, 1, 1]
+        top:
+        - [null, 4898]
+        - ['1', 2]
+      seat_share_66:
+        tipo: DOUBLE
+        nulos_pct: 99.98
+        distintos_aprox: 1
+        min: '0.2'
+        max: '0.2'
+        media: 0.2
+        quartis: [0.2, 0.2, 0.2]
+        top:
+        - [null, 4899]
+        - ['0.2', 1]
+      party_67:
+        tipo: VARCHAR
+        nulos_pct: 99.96
+        distintos_aprox: 2
+        min: Independent Front for Christian Democracy (FIDEC)
+        max: Union of Congolese Nationalist Patriots (Union des Patriotes Nationalistes Congolais)
+        top:
+        - [null, 4898]
+        - [Independent Front for Christian Democracy (FIDEC), 1]
+        - [Union of Congolese Nationalist Patriots (Union des Patriotes Nationalistes Congolais), 1]
+      seats_67:
+        tipo: BIGINT
+        nulos_pct: 99.96
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        media: 1
+        quartis: [1, 1, 1]
+        top:
+        - [null, 4898]
+        - ['1', 2]
+      seat_share_67:
+        tipo: DOUBLE
+        nulos_pct: 99.98
+        distintos_aprox: 1
+        min: '0.2'
+        max: '0.2'
+        media: 0.2
+        quartis: [0.2, 0.2, 0.2]
+        top:
+        - [null, 4899]
+        - ['0.2', 1]
+      party_68:
+        tipo: VARCHAR
+        nulos_pct: 99.96
+        distintos_aprox: 2
+        min: Independents
+        max: Innovative Forces for Union and Solidarity (FONUS)
+        top:
+        - [null, 4898]
+        - [Independents, 1]
+        - [Innovative Forces for Union and Solidarity (FONUS), 1]
+      seats_68:
+        tipo: BIGINT
+        nulos_pct: 99.96
+        distintos_aprox: 2
+        min: '1'
+        max: '63'
+        media: 32
+        quartis: [1, 32, 63]
+        top:
+        - [null, 4898]
+        - ['1', 1]
+        - ['63', 1]
+      seat_share_68:
+        tipo: DOUBLE
+        nulos_pct: 99.98
+        distintos_aprox: 1
+        min: '12.6'
+        max: '12.6'
+        media: 12.6
+        quartis: [12.6, 12.6, 12.6]
+        top:
+        - [null, 4899]
+        - ['12.6', 1]
+      party_69:
+        tipo: VARCHAR
+        nulos_pct: 99.96
+        distintos_aprox: 2
+        min: Movement of Independent Reformists (MIR)
+        max: Others
+        top:
+        - [null, 4898]
+        - [Movement of Independent Reformists (MIR), 1]
+        - [Others, 1]
+      seats_69:
+        tipo: BIGINT
+        nulos_pct: 99.96
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        media: 1.5
+        quartis: [1, 2, 2]
+        top:
+        - [null, 4898]
+        - ['1', 1]
+        - ['2', 1]
+      seat_share_69:
+        tipo: DOUBLE
+        nulos_pct: 99.98
+        distintos_aprox: 1
+        min: '0.4'
+        max: '0.4'
+        media: 0.4
+        quartis: [0.4, 0.4, 0.4]
+        top:
+        - [null, 4899]
+        - ['0.4', 1]
+      party_70:
+        tipo: VARCHAR
+        nulos_pct: 99.98
+        distintos_aprox: 1
+        min: Nationalist and Integrationist Front (FNI)
+        max: Nationalist and Integrationist Front (FNI)
+        top:
+        - [null, 4899]
+        - [Nationalist and Integrationist Front (FNI), 1]
+      seats_70:
+        tipo: BIGINT
+        nulos_pct: 99.98
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        media: 1
+        quartis: [1, 1, 1]
+        top:
+        - [null, 4899]
+        - ['1', 1]
+      seat_share_70:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 4900]
+      party_71:
+        tipo: VARCHAR
+        nulos_pct: 99.98
+        distintos_aprox: 1
+        min: Social Front of Independent Republicans (FSIR)
+        max: Social Front of Independent Republicans (FSIR)
+        top:
+        - [null, 4899]
+        - [Social Front of Independent Republicans (FSIR), 1]
+      seats_71:
+        tipo: BIGINT
+        nulos_pct: 99.98
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        media: 1
+        quartis: [1, 1, 1]
+        top:
+        - [null, 4899]
+        - ['1', 1]
+      seat_share_71:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 4900]
+      party_72:
+        tipo: VARCHAR
+        nulos_pct: 99.98
+        distintos_aprox: 1
+        min: Volunteers Together for Development Party of the Democratic Republic of the Congo (ENVOL)
+        max: Volunteers Together for Development Party of the Democratic Republic of the Congo (ENVOL)
+        top:
+        - [null, 4899]
+        - [Volunteers Together for Development Party of the Democratic Republic of the Congo (ENVOL), 1]
+      seats_72:
+        tipo: BIGINT
+        nulos_pct: 99.98
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        media: 1
+        quartis: [1, 1, 1]
+        top:
+        - [null, 4899]
+        - ['1', 1]
+      seat_share_72:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 4900]
+      party_73:
+        tipo: VARCHAR
+        nulos_pct: 99.98
+        distintos_aprox: 1
+        min: Others
+        max: Others
+        top:
+        - [null, 4899]
+        - [Others, 1]
+      seats_73:
+        tipo: BIGINT
+        nulos_pct: 99.98
+        distintos_aprox: 1
+        min: '33'
+        max: '33'
+        media: 33
+        quartis: [33, 33, 33]
+        top:
+        - [null, 4899]
+        - ['33', 1]
+      seat_share_73:
+        tipo: DOUBLE
+        nulos_pct: 99.98
+        distintos_aprox: 1
+        min: '6.6'
+        max: '6.6'
+        media: 6.6
+        quartis: [6.6, 6.6, 6.6]
+        top:
+        - [null, 4899]
+        - ['6.6', 1]
+      party_74:
+        tipo: VARCHAR
+        nulos_pct: 99.98
+        distintos_aprox: 1
+        min: Independents
+        max: Independents
+        top:
+        - [null, 4899]
+        - [Independents, 1]
+      seats_74:
+        tipo: BIGINT
+        nulos_pct: 99.98
+        distintos_aprox: 1
+        min: '13'
+        max: '13'
+        media: 13
+        quartis: [13, 13, 13]
+        top:
+        - [null, 4899]
+        - ['13', 1]
+      seat_share_74:
+        tipo: DOUBLE
+        nulos_pct: 99.98
+        distintos_aprox: 1
+        min: '2.6'
+        max: '2.6'
+        media: 2.6
+        quartis: [2.6, 2.6, 2.6]
+        top:
+        - [null, 4899]
+        - ['2.6', 1]
+      flag_constituent:
+        tipo: BOOLEAN
+        nulos_pct: 97.02
+        distintos_aprox: 1
+        min: 'true'
+        max: 'true'
+        top:
+        - [null, 4754]
+        - ['true', 146]
+      flag_inconsequential:
+        tipo: BOOLEAN
+        nulos_pct: 99.35
+        distintos_aprox: 1
+        min: 'true'
+        max: 'true'
+        top:
+        - [null, 4868]
+        - ['true', 32]
+      flag_inconsequential_note:
+        tipo: VARCHAR
+        nulos_pct: 99.35
+        distintos_aprox: 7
+        min: Annulled
+        max: The results of this election were cancelled by the Constitutional Court due to irregularities on 25 April 1997
+        top:
+        - [null, 4868]
+        - [Cancelled, 13]
+        - [Dissolved, 9]
+        - [Annulled, 6]
+        - [Anulled, 1]
+        - [Election declared invalid by Thailand's Constitutional Court, 1]
+        - [Election suspended, 1]
+        - [The results of this election were cancelled by the Constitutional Court due to irregularities on 25 April 1997, 1]
+      flag_coup:
+        tipo: BOOLEAN
+        nulos_pct: 99.55
+        distintos_aprox: 1
+        min: 'true'
+        max: 'true'
+        top:
+        - [null, 4878]
+        - ['true', 22]
+      flag_vacant_seats:
+        tipo: BOOLEAN
+        nulos_pct: 97.67
+        distintos_aprox: 1
+        min: 'true'
+        max: 'true'
+        top:
+        - [null, 4786]
+        - ['true', 114]
+      flag_vacant_seats_nb:
+        tipo: BIGINT
+        nulos_pct: 97.67
+        distintos_aprox: 33
+        min: '1'
+        max: '112'
+        media: 10.2193
+        quartis: [2, 3, 9]
+        top:
+        - [null, 4786]
+        - ['1', 27]
+        - ['2', 21]
+        - ['3', 11]
+        - ['4', 8]
+        - ['7', 7]
+        - ['11', 5]
+        - ['6', 5]
+        - ['5', 4]
+        - ['13', 2]
+      flag_appointed:
+        tipo: BOOLEAN
+        nulos_pct: 93.33
+        distintos_aprox: 1
+        min: 'true'
+        max: 'true'
+        top:
+        - [null, 4573]
+        - ['true', 327]
+      flag_appointed_nb:
+        tipo: BIGINT
+        nulos_pct: 93.65
+        distintos_aprox: 66
+        min: '1'
+        max: '456'
+        media: 22.865
+        quartis: [6, 11, 26]
+      flag_non_partisan:
+        tipo: BOOLEAN
+        nulos_pct: 93.67
+        distintos_aprox: 1
+        min: 'true'
+        max: 'true'
+        top:
+        - [null, 4590]
+        - ['true', 310]
+  presidential_elections:
+    linhas: 1409
+    fonte_do_perfil: tabela inteira
+    colunas:
+      country_id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 129, min: AFG, max: ZIM}
+      year:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 223
+        min: '1789'
+        max: '2023'
+        media: 1973.714
+        quartis: [1953, 1991, 2007]
+      month:
+        tipo: BIGINT
+        nulos_pct: 97.87
+        distintos_aprox: 12
+        min: '1'
+        max: '12'
+        media: 7.2667
+        quartis: [5, 8, 10]
+        top:
+        - [null, 1379]
+        - ['10', 5]
+        - ['5', 5]
+        - ['12', 4]
+        - ['3', 3]
+        - ['7', 3]
+        - ['9', 3]
+        - ['2', 2]
+        - ['8', 2]
+        - ['1', 1]
+      type:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Presidential
+        max: Presidential
+        top:
+        - [Presidential, 1409]
+      date: {tipo: DATE, nulos_pct: 3.34, distintos_aprox: 1252, min: '1789-01-10', max: '2023-12-20'}
+      source:
+        tipo: VARCHAR
+        nulos_pct: 9.51
+        distintos_aprox: 9
+        min: AC
+        max: Wiki
+        top:
+        - [Nohlen, 546]
+        - [IFES, 279]
+        - [Wiki, 239]
+        - [null, 134]
+        - [AC, 109]
+        - [USA, 57]
+        - [AED, 29]
+        - [PDA, 12]
+        - [EED, 4]
+      candidate_1: {tipo: VARCHAR, nulos_pct: 9.51, distintos_aprox: 1038}
+      party_1: {tipo: VARCHAR, nulos_pct: 10.79, distintos_aprox: 515, min: (Rpp), max: '​Party: Democratic Party of Socialists'}
+      votes1_1:
+        tipo: BIGINT
+        nulos_pct: 12.99
+        distintos_aprox: 1287
+        min: '1'
+        max: '84654894'
+        media: 4379805.5294
+        quartis: [329224, 1150723, 3691155]
+      votes2_1:
+        tipo: BIGINT
+        nulos_pct: 82.61
+        distintos_aprox: 270
+        min: '4841'
+        max: '69266350'
+        media: 5392799.102
+        quartis: [677948, 1565230, 4550933]
+      vote_share1_1:
+        tipo: DOUBLE
+        nulos_pct: 10.29
+        distintos_aprox: 1176
+        min: '13.89'
+        max: '100.0'
+        media: 63.7764
+        quartis: [47.1479, 57.7416, 87.1363]
+      vote_share2_1:
+        tipo: DOUBLE
+        nulos_pct: 82.54
+        distintos_aprox: 162
+        min: '40.98'
+        max: '100.0'
+        media: 58.3115
+        quartis: [52.3367, 55.2683, 61.5967]
+      e_votes_1:
+        tipo: BIGINT
+        nulos_pct: 95.81
+        distintos_aprox: 57
+        min: '69'
+        max: '2075'
+        media: 348.4915
+        quartis: [212, 292, 420]
+      e_vote_share_1:
+        tipo: DOUBLE
+        nulos_pct: 95.81
+        distintos_aprox: 60
+        min: '50.14'
+        max: '100.0'
+        media: 72.2441
+        quartis: [58.0175, 70.45, 84.1525]
+      candidate_2: {tipo: VARCHAR, nulos_pct: 17.81, distintos_aprox: 812, min: Abbas Djoussouf, max: Þora Arnorsdottir}
+      party_2: {tipo: VARCHAR, nulos_pct: 24.63, distintos_aprox: 833, min: '"Blue" Republican', max: Österreichische Volkspartei (Austrian People’s
+          Party)/Freiheitliche Partei Österreichs (Freedom Party of Austria)}
+      votes1_2:
+        tipo: BIGINT
+        nulos_pct: 20.16
+        distintos_aprox: 1332
+        min: '0'
+        max: '74216747'
+        media: 2643878.3529
+        quartis: [86906, 486246, 1624499]
+      votes2_2:
+        tipo: BIGINT
+        nulos_pct: 82.75
+        distintos_aprox: 282
+        min: '3356'
+        max: '58206354'
+        media: 4169867.1358
+        quartis: [420173, 1057482, 3495632]
+      vote_share1_2:
+        tipo: DOUBLE
+        nulos_pct: 18.95
+        distintos_aprox: 746
+        min: '0.0'
+        max: '51.53'
+        media: 25.6643
+        quartis: [14.6897, 27.2941, 37.4865]
+      vote_share2_2:
+        tipo: DOUBLE
+        nulos_pct: 82.68
+        distintos_aprox: 183
+        min: '7.51'
+        max: '49.9'
+        media: 41.5648
+        quartis: [37.8461, 44.4539, 47.3967]
+      e_votes_2:
+        tipo: BIGINT
+        nulos_pct: 95.81
+        distintos_aprox: 47
+        min: '1'
+        max: '509'
+        media: 125.2542
+        quartis: [59, 105, 175]
+        top:
+        - [null, 1350]
+        - ['127', 2]
+        - ['155', 2]
+        - ['168', 2]
+        - ['34', 2]
+        - ['42', 2]
+        - ['73', 2]
+        - ['89', 2]
+        - ['1', 1]
+        - ['105', 1]
+      e_vote_share_2:
+        tipo: DOUBLE
+        nulos_pct: 95.81
+        distintos_aprox: 57
+        min: '0.43'
+        max: '58.33'
+        media: 28.049
+        quartis: [15.8475, 29.41, 40.9525]
+      candidate_3: {tipo: VARCHAR, nulos_pct: 36.05, distintos_aprox: 675, min: ., max: Štefan Harabin}
+      party_3: {tipo: VARCHAR, nulos_pct: 44.14, distintos_aprox: 460, min: '"Red" Republican', max: 'united democratic alliance (uda) (The United
+          Democratic Alliance (UDA) brings together three opposition parties: the United Party for National Development (UPND), the United National
+          Independent Party (UNIP), and the Forum for Democracy and Development (FDD)).'}
+      votes1_3:
+        tipo: BIGINT
+        nulos_pct: 38.33
+        distintos_aprox: 800
+        min: '11'
+        max: '26286788'
+        media: 875258.298
+        quartis: [36485, 175086, 560330]
+      votes2_3:
+        tipo: BIGINT
+        nulos_pct: 99.65
+        distintos_aprox: 5
+        min: '11018'
+        max: '3706759'
+        media: 1141873.2
+        quartis: [20246, 37116, 2375053]
+        top:
+        - [null, 1404]
+        - ['11018', 1]
+        - ['1931151', 1]
+        - ['23322', 1]
+        - ['3706759', 1]
+        - ['37116', 1]
+      vote_share1_3:
+        tipo: DOUBLE
+        nulos_pct: 37.62
+        distintos_aprox: 475
+        min: '0.0'
+        max: '33.2'
+        media: 9.8798
+        quartis: [2.9802, 8.3612, 15.8811]
+      vote_share2_3:
+        tipo: DOUBLE
+        nulos_pct: 99.65
+        distintos_aprox: 3
+        min: '6.28'
+        max: '19.15'
+        media: 11.136
+        quartis: [6.37, 10.2, 15.025]
+        top:
+        - [null, 1404]
+        - ['10.2', 1]
+        - ['13.65', 1]
+        - ['19.15', 1]
+        - ['6.28', 1]
+        - ['6.4', 1]
+      e_votes_3:
+        tipo: BIGINT
+        nulos_pct: 98.3
+        distintos_aprox: 15
+        min: '0'
+        max: '121'
+        media: 20.625
+        quartis: [1, 10, 32]
+        top:
+        - [null, 1385]
+        - ['1', 5]
+        - ['0', 3]
+        - ['39', 2]
+        - ['8', 2]
+        - ['11', 1]
+        - ['121', 1]
+        - ['13', 1]
+        - ['15', 1]
+        - ['18', 1]
+      e_vote_share_3:
+        tipo: DOUBLE
+        nulos_pct: 98.3
+        distintos_aprox: 19
+        min: '0.0'
+        max: '42.75'
+        media: 6.8721
+        quartis: [0.19, 3.11, 7.945]
+        top:
+        - [null, 1385]
+        - ['0.19', 5]
+        - ['0.0', 3]
+        - ['1.51', 1]
+        - ['12.87', 1]
+        - ['13.04', 1]
+        - ['2.45', 1]
+        - ['2.7', 1]
+        - ['2.79', 1]
+        - ['3.43', 1]
+      candidate_4: {tipo: VARCHAR, nulos_pct: 48.55, distintos_aprox: 797, min: ., max: Éric ZEMMOUR}
+      party_4: {tipo: VARCHAR, nulos_pct: 55.86, distintos_aprox: 492, min: '"Amanat" Commonwealth of Trade Unions (Ind.)', max: ČSSD - Czech
+          Social Democratic Party}
+      votes1_4:
+        tipo: BIGINT
+        nulos_pct: 50.11
+        distintos_aprox: 777
+        min: '12'
+        max: '17392931'
+        media: 439377.5363
+        quartis: [22982, 83485, 288503]
+      votes2_4:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      vote_share1_4:
+        tipo: DOUBLE
+        nulos_pct: 49.54
+        distintos_aprox: 348
+        min: '0.0'
+        max: '29.0'
+        media: 4.8086
+        quartis: [1.3, 3.3121, 7.1312]
+      vote_share2_4:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_votes_4:
+        tipo: BIGINT
+        nulos_pct: 99.5
+        distintos_aprox: 7
+        min: '2'
+        max: '30'
+        media: 10.7143
+        quartis: [4, 7, 14]
+        top:
+        - [null, 1402]
+        - ['12', 1]
+        - ['14', 1]
+        - ['2', 1]
+        - ['30', 1]
+        - ['4', 1]
+        - ['6', 1]
+        - ['7', 1]
+      e_vote_share_4:
+        tipo: DOUBLE
+        nulos_pct: 99.5
+        distintos_aprox: 7
+        min: '0.57'
+        max: '21.74'
+        media: 6.4586
+        quartis: [2.595, 3.96, 7.715]
+        top:
+        - [null, 1402]
+        - ['0.57', 1]
+        - ['2.45', 1]
+        - ['21.74', 1]
+        - ['3.03', 1]
+        - ['3.96', 1]
+        - ['4.76', 1]
+        - ['8.7', 1]
+      candidate_5: {tipo: VARCHAR, nulos_pct: 59.97, distintos_aprox: 540, min: ., max: Óscar López}
+      party_5: {tipo: VARCHAR, nulos_pct: 66, distintos_aprox: 340, min: ADD, max: 'alliance:national solidarity alliance / alianza solidaridad
+          nacional (The alliance is made up of Cambio 90, Partido Solidaridad Nacional, Siempre Unidos, Todos por el Peru, and Union por el Peru).'}
+      votes1_5:
+        tipo: BIGINT
+        nulos_pct: 61.25
+        distintos_aprox: 683
+        min: '9'
+        max: '5986012'
+        media: 246296.0366
+        quartis: [15194, 52353, 176613]
+      votes2_5:
+        tipo: BIGINT
+        nulos_pct: 99.93
+        distintos_aprox: 1
+        min: '5474'
+        max: '5474'
+        media: 5474
+        quartis: [5474, 5474, 5474]
+        top:
+        - [null, 1408]
+        - ['5474', 1]
+      vote_share1_5:
+        tipo: DOUBLE
+        nulos_pct: 60.82
+        distintos_aprox: 219
+        min: '0.0'
+        max: '19.14'
+        media: 2.8014
+        quartis: [0.7037, 1.9755, 4.0661]
+      vote_share2_5:
+        tipo: DOUBLE
+        nulos_pct: 99.93
+        distintos_aprox: 1
+        min: '0.0'
+        max: '0.0'
+        media: 0
+        quartis: [0, 0, 0]
+        top:
+        - [null, 1408]
+        - ['0.0', 1]
+      e_votes_5:
+        tipo: BIGINT
+        nulos_pct: 99.65
+        distintos_aprox: 4
+        min: '1'
+        max: '15'
+        media: 6.8
+        quartis: [1, 6, 12]
+        top:
+        - [null, 1404]
+        - ['1', 2]
+        - ['11', 1]
+        - ['15', 1]
+        - ['6', 1]
+      e_vote_share_5:
+        tipo: DOUBLE
+        nulos_pct: 99.65
+        distintos_aprox: 5
+        min: '0.28'
+        max: '10.87'
+        media: 4.87
+        quartis: [0.64, 3.74, 9.2425]
+        top:
+        - [null, 1404]
+        - ['0.28', 1]
+        - ['0.76', 1]
+        - ['10.87', 1]
+        - ['3.74', 1]
+        - ['8.7', 1]
+      candidate_6: {tipo: VARCHAR, nulos_pct: 68.63, distintos_aprox: 436, min: ., max: Álvaro González Espinoza}
+      party_6: {tipo: VARCHAR, nulos_pct: 73.24, distintos_aprox: 330, min: AD - Aliança Democrática (Democratic Alliance), max: union of Independent
+          liberals}
+      votes1_6:
+        tipo: BIGINT
+        nulos_pct: 69.27
+        distintos_aprox: 393
+        min: '2'
+        max: '4105542'
+        media: 162513.4296
+        quartis: [10646, 35660, 118074]
+      votes2_6:
+        tipo: BIGINT
+        nulos_pct: 99.93
+        distintos_aprox: 1
+        min: '619396'
+        max: '619396'
+        media: 619396
+        quartis: [619396, 619396, 619396]
+        top:
+        - [null, 1408]
+        - ['619396', 1]
+      vote_share1_6:
+        tipo: DOUBLE
+        nulos_pct: 69.13
+        distintos_aprox: 198
+        min: '0.0'
+        max: '44.07'
+        media: 2.0782
+        quartis: [0.402, 1.3143, 2.6166]
+      vote_share2_6:
+        tipo: DOUBLE
+        nulos_pct: 99.93
+        distintos_aprox: 1
+        min: '4.0'
+        max: '4.0'
+        media: 4
+        quartis: [4, 4, 4]
+        top:
+        - [null, 1408]
+        - ['4.0', 1]
+      e_votes_6:
+        tipo: BIGINT
+        nulos_pct: 99.86
+        distintos_aprox: 2
+        min: '4'
+        max: '11'
+        media: 7.5
+        quartis: [4, 8, 11]
+        top:
+        - [null, 1407]
+        - ['11', 1]
+        - ['4', 1]
+      e_vote_share_6:
+        tipo: DOUBLE
+        nulos_pct: 99.86
+        distintos_aprox: 2
+        min: '5.8'
+        max: '7.97'
+        media: 6.885
+        quartis: [5.8, 6.885, 7.97]
+        top:
+        - [null, 1407]
+        - ['5.8', 1]
+        - ['7.97', 1]
+      candidate_7: {tipo: VARCHAR, nulos_pct: 75.59, distintos_aprox: 290, min: Abass Chernon Bundu, max: 'Švec, Juraj'}
+      party_7: {tipo: VARCHAR, nulos_pct: 79.7, distintos_aprox: 270, min: A Just Costa Rica, max: '​Party:Serb List'}
+      votes1_7:
+        tipo: BIGINT
+        nulos_pct: 75.8
+        distintos_aprox: 307
+        min: '6'
+        max: '3204853'
+        media: 118522.1232
+        quartis: [8508, 28641, 81224]
+      votes2_7:
+        tipo: BIGINT
+        nulos_pct: 99.93
+        distintos_aprox: 1
+        min: '271783'
+        max: '271783'
+        media: 271783
+        quartis: [271783, 271783, 271783]
+        top:
+        - [null, 1408]
+        - ['271783', 1]
+      vote_share1_7:
+        tipo: DOUBLE
+        nulos_pct: 75.8
+        distintos_aprox: 144
+        min: '0.0'
+        max: '6.7'
+        media: 1.3527
+        quartis: [0.3, 0.98, 2.0472]
+      vote_share2_7:
+        tipo: DOUBLE
+        nulos_pct: 99.93
+        distintos_aprox: 1
+        min: '5.2'
+        max: '5.2'
+        media: 5.2
+        quartis: [5.2, 5.2, 5.2]
+        top:
+        - [null, 1408]
+        - ['5.2', 1]
+      e_votes_7:
+        tipo: BIGINT
+        nulos_pct: 99.86
+        distintos_aprox: 2
+        min: '3'
+        max: '7'
+        media: 5
+        quartis: [3, 5, 7]
+        top:
+        - [null, 1407]
+        - ['3', 1]
+        - ['7', 1]
+      e_vote_share_7:
+        tipo: DOUBLE
+        nulos_pct: 99.86
+        distintos_aprox: 2
+        min: '4.35'
+        max: '5.07'
+        media: 4.71
+        quartis: [4.35, 4.71, 5.07]
+        top:
+        - [null, 1407]
+        - ['4.35', 1]
+        - ['5.07', 1]
+      candidate_8: {tipo: VARCHAR, nulos_pct: 81.48, distintos_aprox: 255, min: ., max: Émile Muller}
+      party_8: {tipo: VARCHAR, nulos_pct: 84.39, distintos_aprox: 188, min: ANDP, max: Yugoslav Communists}
+      votes1_8:
+        tipo: BIGINT
+        nulos_pct: 81.9
+        distintos_aprox: 255
+        min: '1'
+        max: '1629903'
+        media: 87447.6
+        quartis: [7486, 22766, 61340]
+      votes2_8:
+        tipo: BIGINT
+        nulos_pct: 99.86
+        distintos_aprox: 1
+        min: '13416'
+        max: '645508'
+        media: 329462
+        quartis: [13416, 329462, 645508]
+        top:
+        - [null, 1407]
+        - ['13416', 1]
+        - ['645508', 1]
+      vote_share1_8:
+        tipo: DOUBLE
+        nulos_pct: 81.97
+        distintos_aprox: 111
+        min: '0.0'
+        max: '9.62'
+        media: 1.0395
+        quartis: [0.1978, 0.6633, 1.4789]
+      vote_share2_8:
+        tipo: DOUBLE
+        nulos_pct: 99.86
+        distintos_aprox: 2
+        min: '0.0'
+        max: '2.1'
+        media: 1.05
+        quartis: [0, 1.05, 2.1]
+        top:
+        - [null, 1407]
+        - ['0.0', 1]
+        - ['2.1', 1]
+      e_votes_8:
+        tipo: BIGINT
+        nulos_pct: 99.86
+        distintos_aprox: 2
+        min: '2'
+        max: '5'
+        media: 3.5
+        quartis: [2, 4, 5]
+        top:
+        - [null, 1407]
+        - ['2', 1]
+        - ['5', 1]
+      e_vote_share_8:
+        tipo: DOUBLE
+        nulos_pct: 99.86
+        distintos_aprox: 2
+        min: '2.9'
+        max: '3.62'
+        media: 3.26
+        quartis: [2.9, 3.26, 3.62]
+        top:
+        - [null, 1407]
+        - ['2.9', 1]
+        - ['3.62', 1]
+      candidate_9: {tipo: VARCHAR, nulos_pct: 86.3, distintos_aprox: 180, min: ., max: Živojin Kiro Radović}
+      party_9: {tipo: VARCHAR, nulos_pct: 88.43, distintos_aprox: 131, min: AMEN, max: Zimbabwe Partnership for Prosperity}
+      votes1_9:
+        tipo: BIGINT
+        nulos_pct: 86.66
+        distintos_aprox: 225
+        min: '1'
+        max: '2549699'
+        media: 77789.6755
+        quartis: [6488, 18565, 53718]
+      votes2_9:
+        tipo: BIGINT
+        nulos_pct: 99.93
+        distintos_aprox: 1
+        min: '445330'
+        max: '445330'
+        media: 445330
+        quartis: [445330, 445330, 445330]
+        top:
+        - [null, 1408]
+        - ['445330', 1]
+      vote_share1_9:
+        tipo: DOUBLE
+        nulos_pct: 86.73
+        distintos_aprox: 82
+        min: '0.0'
+        max: '7.1'
+        media: 0.8585
+        quartis: [0.1556, 0.5, 1.2069]
+      vote_share2_9:
+        tipo: DOUBLE
+        nulos_pct: 99.93
+        distintos_aprox: 1
+        min: '3.42'
+        max: '3.42'
+        media: 3.42
+        quartis: [3.42, 3.42, 3.42]
+        top:
+        - [null, 1408]
+        - ['3.42', 1]
+      e_votes_9:
+        tipo: BIGINT
+        nulos_pct: 99.86
+        distintos_aprox: 2
+        min: '2'
+        max: '3'
+        media: 2.5
+        quartis: [2, 2, 3]
+        top:
+        - [null, 1407]
+        - ['2', 1]
+        - ['3', 1]
+      e_vote_share_9:
+        tipo: DOUBLE
+        nulos_pct: 99.86
+        distintos_aprox: 2
+        min: '2.17'
+        max: '2.9'
+        media: 2.535
+        quartis: [2.17, 2.535, 2.9]
+        top:
+        - [null, 1407]
+        - ['2.17', 1]
+        - ['2.9', 1]
+      candidate_10: {tipo: VARCHAR, nulos_pct: 89.14, distintos_aprox: 164, min: 47 others, max: 'Šesták, Jozef'}
+      party_10: {tipo: VARCHAR, nulos_pct: 91.13, distintos_aprox: 85, min: ADN, max: ZED}
+      votes1_10:
+        tipo: BIGINT
+        nulos_pct: 89.43
+        distintos_aprox: 168
+        min: '58'
+        max: '1113484'
+        media: 56751.7852
+        quartis: [6365, 17977, 44555]
+      votes2_10:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      vote_share1_10:
+        tipo: DOUBLE
+        nulos_pct: 89.43
+        distintos_aprox: 69
+        min: '0.0'
+        max: '8.9'
+        media: 0.734
+        quartis: [0.1, 0.4, 0.9044]
+      vote_share2_10:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_votes_10:
+        tipo: BIGINT
+        nulos_pct: 99.86
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        media: 1.5
+        quartis: [1, 2, 2]
+        top:
+        - [null, 1407]
+        - ['1', 1]
+        - ['2', 1]
+      e_vote_share_10:
+        tipo: DOUBLE
+        nulos_pct: 99.86
+        distintos_aprox: 1
+        min: '1.45'
+        max: '1.45'
+        media: 1.45
+        quartis: [1.45, 1.45, 1.45]
+        top:
+        - [null, 1407]
+        - ['1.45', 2]
+      candidate_11: {tipo: VARCHAR, nulos_pct: 91.27, distintos_aprox: 138, min: 7 others, max: Óscar López Arias}
+      party_11: {tipo: VARCHAR, nulos_pct: 92.9, distintos_aprox: 85, min: (Groupe) Féderaliste Européenne (European Federalist), max: 'a Lietuvos
+          krikš?ionys demokratai (Christian Democrats of Lithuania)'}
+      votes1_11:
+        tipo: BIGINT
+        nulos_pct: 91.55
+        distintos_aprox: 112
+        min: '210'
+        max: '1119901'
+        media: 54217.8992
+        quartis: [5331, 14964, 37192]
+      votes2_11:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      vote_share1_11:
+        tipo: DOUBLE
+        nulos_pct: 91.55
+        distintos_aprox: 57
+        min: '0.0'
+        max: '7.8'
+        media: 0.7639
+        quartis: [0.1, 0.36, 0.7925]
+      vote_share2_11:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_votes_11:
+        tipo: BIGINT
+        nulos_pct: 99.86
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        media: 1.5
+        quartis: [1, 2, 2]
+        top:
+        - [null, 1407]
+        - ['1', 1]
+        - ['2', 1]
+      e_vote_share_11:
+        tipo: DOUBLE
+        nulos_pct: 99.86
+        distintos_aprox: 1
+        min: '1.45'
+        max: '1.45'
+        media: 1.45
+        quartis: [1.45, 1.45, 1.45]
+        top:
+        - [null, 1407]
+        - ['1.45', 2]
+      candidate_12: {tipo: VARCHAR, nulos_pct: 92.97, distintos_aprox: 80, min: 9 Others, max: Yuriy Kostenko}
+      party_12: {tipo: VARCHAR, nulos_pct: 94.04, distintos_aprox: 69, min: (Groupe) Féderaliste Européenne (European Federalist), max: inde-
+          pendent}
+      votes1_12:
+        tipo: BIGINT
+        nulos_pct: 93.26
+        distintos_aprox: 97
+        min: '330'
+        max: '1732112'
+        media: 62027.0632
+        quartis: [4965, 12224, 29712]
+      votes2_12:
+        tipo: BIGINT
+        nulos_pct: 99.93
+        distintos_aprox: 1
+        min: '3604550'
+        max: '3604550'
+        media: 3604550
+        quartis: [3604550, 3604550, 3604550]
+        top:
+        - [null, 1408]
+        - ['3604550', 1]
+      vote_share1_12:
+        tipo: DOUBLE
+        nulos_pct: 93.26
+        distintos_aprox: 50
+        min: '0.0'
+        max: '2.6'
+        media: 0.5181
+        quartis: [0.1, 0.3, 0.575]
+        top:
+        - [null, 1314]
+        - ['0.0', 13]
+        - ['0.3', 12]
+        - ['0.1', 8]
+        - ['0.5', 6]
+        - ['0.2', 5]
+        - ['0.09', 3]
+        - ['0.19', 3]
+        - ['0.4', 3]
+        - ['0.23', 2]
+      vote_share2_12:
+        tipo: DOUBLE
+        nulos_pct: 99.93
+        distintos_aprox: 1
+        min: '4.88'
+        max: '4.88'
+        media: 4.88
+        quartis: [4.88, 4.88, 4.88]
+        top:
+        - [null, 1408]
+        - ['4.88', 1]
+      e_votes_12:
+        tipo: BIGINT
+        nulos_pct: 99.86
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        media: 1.5
+        quartis: [1, 2, 2]
+        top:
+        - [null, 1407]
+        - ['1', 1]
+        - ['2', 1]
+      e_vote_share_12:
+        tipo: DOUBLE
+        nulos_pct: 99.86
+        distintos_aprox: 1
+        min: '1.45'
+        max: '1.45'
+        media: 1.45
+        quartis: [1.45, 1.45, 1.45]
+        top:
+        - [null, 1407]
+        - ['1.45', 2]
+      candidate_13: {tipo: VARCHAR, nulos_pct: 94.61, distintos_aprox: 71, min: ., max: Yolanda Gutiérrez Ventura}
+      party_13: {tipo: VARCHAR, nulos_pct: 95.6, distintos_aprox: 55, min: Apple party (Politychna partiya ‘Yabluko’), max: Workers' Party/ De
+          Los Trabajadores (PDTLR)}
+      votes1_13:
+        tipo: BIGINT
+        nulos_pct: 94.89
+        distintos_aprox: 72
+        min: '299'
+        max: '660447'
+        media: 31560
+        quartis: [3288, 9223, 23838]
+      votes2_13:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      vote_share1_13:
+        tipo: DOUBLE
+        nulos_pct: 94.82
+        distintos_aprox: 45
+        min: '0.0'
+        max: '9.0'
+        media: 0.5552
+        quartis: [0.1, 0.3, 0.5]
+        top:
+        - [null, 1336]
+        - ['0.0', 10]
+        - ['0.1', 8]
+        - ['0.3', 6]
+        - ['0.4', 4]
+        - ['0.32', 3]
+        - ['0.5', 3]
+        - ['0.05', 2]
+        - ['0.09', 2]
+        - ['0.18', 2]
+      vote_share2_13:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_votes_13:
+        tipo: BIGINT
+        nulos_pct: 99.93
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        media: 1
+        quartis: [1, 1, 1]
+        top:
+        - [null, 1408]
+        - ['1', 1]
+      e_vote_share_13:
+        tipo: DOUBLE
+        nulos_pct: 99.93
+        distintos_aprox: 1
+        min: '0.73'
+        max: '0.73'
+        media: 0.73
+        quartis: [0.73, 0.73, 0.73]
+        top:
+        - [null, 1408]
+        - ['0.73', 1]
+      candidate_14:
+        tipo: VARCHAR
+        nulos_pct: 96.31
+        distintos_aprox: 50
+        min: Abdul Hadi Khalilzai
+        max: Yuriy Boyko
+        top:
+        - [null, 1357]
+        - [Abdul Hadi Khalilzai, 1]
+        - [Adoum Hassan Issa, 1]
+        - [Against all, 1]
+        - [Agnès Bandou, 1]
+        - [Akaki Asatiani, 1]
+        - [Alexander Trifonov Tomov, 1]
+        - [Aloysius William Kpadeh, 1]
+        - [Ambrose Mutinhiri, 1]
+        - [Anuruddha Polgampola, 1]
+      party_14:
+        tipo: VARCHAR
+        nulos_pct: 96.81
+        distintos_aprox: 35
+        min: '5.10'
+        max: Vojvodina Coalition
+        top:
+        - [null, 1364]
+        - [Independent, 13]
+        - ['5.10', 1]
+        - [ARO-RIAKA, 1]
+        - [Alliance for Mali, 1]
+        - [CPP, 1]
+        - [Cap21, 1]
+        - [Coalition of Citizens of Slovakia / Koalícia občanov Slovenska (KOS), 1]
+        - [Democracia Cristiana Guatemalteca (DCG), 1]
+        - [Economic Independence Party, 1]
+      votes1_14:
+        tipo: BIGINT
+        nulos_pct: 96.45
+        distintos_aprox: 58
+        min: '165'
+        max: '535837'
+        media: 34072.5
+        quartis: [4107, 10453, 26572]
+      votes2_14:
+        tipo: BIGINT
+        nulos_pct: 99.93
+        distintos_aprox: 1
+        min: '970181'
+        max: '970181'
+        media: 970181
+        quartis: [970181, 970181, 970181]
+        top:
+        - [null, 1408]
+        - ['970181', 1]
+      vote_share1_14:
+        tipo: DOUBLE
+        nulos_pct: 96.38
+        distintos_aprox: 27
+        min: '0.0'
+        max: '1.9'
+        media: 0.3735
+        quartis: [0.105, 0.2, 0.4375]
+        top:
+        - [null, 1358]
+        - ['0.0', 6]
+        - ['0.2', 5]
+        - ['0.1', 4]
+        - ['0.18', 3]
+        - ['0.4', 3]
+        - ['0.08', 2]
+        - ['0.13', 2]
+        - ['0.23', 2]
+        - ['0.29', 2]
+      vote_share2_14:
+        tipo: DOUBLE
+        nulos_pct: 99.93
+        distintos_aprox: 1
+        min: '3.5'
+        max: '3.5'
+        media: 3.5
+        quartis: [3.5, 3.5, 3.5]
+        top:
+        - [null, 1408]
+        - ['3.5', 1]
+      e_votes_14:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_vote_share_14:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      candidate_15:
+        tipo: VARCHAR
+        nulos_pct: 96.95
+        distintos_aprox: 42
+        min: .
+        max: Wije Dias
+        top:
+        - [null, 1366]
+        - [., 1]
+        - [André Masalu Anedu, 1]
+        - [Antero Benedito Silva, 1]
+        - [Antoine Makangou, 1]
+        - [Aníbal García, 1]
+        - [Carmen Quesada Santamaría, 1]
+        - [Charles Luntadila, 1]
+        - [Christine Boutin, 1]
+        - [Daniel Shumba, 1]
+      party_15:
+        tipo: VARCHAR
+        nulos_pct: 97.23
+        distintos_aprox: 23
+        min: Afghanistan Liberal Party
+        max: United Democratic Alliance
+        top:
+        - [null, 1370]
+        - [Independent, 14]
+        - [Afghanistan Liberal Party, 1]
+        - [Amicale, 1]
+        - [Ata-Meken, 1]
+        - [CDP, 1]
+        - [Christian-Democratic Movement, 1]
+        - ['Commitment, Renewal and Order', 1]
+        - [Costa Rican Social Justice Party, 1]
+        - [Democratic Alternative, 1]
+      votes1_15:
+        tipo: BIGINT
+        nulos_pct: 97.16
+        distintos_aprox: 39
+        min: '649'
+        max: '339112'
+        media: 21246.3
+        quartis: [4051, 9144, 22008]
+        top:
+        - [null, 1369]
+        - ['10255', 1]
+        - ['1208', 1]
+        - ['13488', 1]
+        - ['13566', 1]
+        - ['13754', 1]
+        - ['13974', 1]
+        - ['1468', 1]
+        - ['1562', 1]
+        - ['16054', 1]
+      votes2_15:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      vote_share1_15:
+        tipo: DOUBLE
+        nulos_pct: 97.09
+        distintos_aprox: 28
+        min: '0.0'
+        max: '1.2'
+        media: 0.3137
+        quartis: [0.1, 0.2, 0.3225]
+        top:
+        - [null, 1368]
+        - ['0.1', 6]
+        - ['0.0', 3]
+        - ['0.3', 3]
+        - ['0.2', 2]
+        - ['0.22', 2]
+        - ['0.32', 2]
+        - ['0.95', 2]
+        - ['0.06', 1]
+        - ['0.07', 1]
+      vote_share2_15:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_votes_15:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_vote_share_15:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      candidate_16:
+        tipo: VARCHAR
+        nulos_pct: 97.52
+        distintos_aprox: 30
+        min: A.C. Kouba
+        max: Živan Haravan
+        top:
+        - [null, 1374]
+        - [A.C. Kouba, 1]
+        - [Adama Kane, 1]
+        - [Aleksandar Tomov, 1]
+        - [Algirdas Pilvelis, 1]
+        - [Alhaj Abdul Ghafor Zori, 1]
+        - [Andriamparany Benjamin Radavidson, 1]
+        - [Benito Morales, 1]
+        - [Daniel Gluckstein, 1]
+        - [David Farhat, 1]
+      party_16:
+        tipo: VARCHAR
+        nulos_pct: 97.52
+        distintos_aprox: 20
+        min: BNP
+        max: United Democratic Front
+        top:
+        - [null, 1374]
+        - [Independent, 12]
+        - [BNP, 1]
+        - [Bulgarian Social Democratic Party–EuroLeft, 1]
+        - [Convergence, 1]
+        - [Democratic Center, 1]
+        - [Democratic People's Party of Liberia, 1]
+        - [Free Democratic Party, 1]
+        - [Georgian Veterans' and Patriots' Political Movement, 1]
+        - [Liberal Union Party, 1]
+      votes1_16:
+        tipo: BIGINT
+        nulos_pct: 97.73
+        distintos_aprox: 29
+        min: '413'
+        max: '132686'
+        media: 16147.5312
+        quartis: [4716, 9376, 19392]
+        top:
+        - [null, 1377]
+        - ['11705', 1]
+        - ['12956', 1]
+        - ['132686', 1]
+        - ['1327', 1]
+        - ['13707', 1]
+        - ['14242', 1]
+        - ['1623', 1]
+        - ['18689', 1]
+        - ['18976', 1]
+      votes2_16:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      vote_share1_16:
+        tipo: DOUBLE
+        nulos_pct: 97.66
+        distintos_aprox: 20
+        min: '0.0'
+        max: '0.96'
+        media: 0.263
+        quartis: [0.1, 0.15, 0.3225]
+        top:
+        - [null, 1376]
+        - ['0.1', 6]
+        - ['0.0', 4]
+        - ['0.11', 2]
+        - ['0.12', 2]
+        - ['0.5', 2]
+        - ['0.07', 1]
+        - ['0.08', 1]
+        - ['0.15', 1]
+        - ['0.18', 1]
+      vote_share2_16:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_votes_16:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_vote_share_16:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      candidate_17:
+        tipo: VARCHAR
+        nulos_pct: 97.94
+        distintos_aprox: 29
+        min: Alexander Kollie
+        max: Yulia Lytvynenko
+        top:
+        - [null, 1380]
+        - [Alexander Kollie, 1]
+        - [Arstanbek Abdyldayev, 1]
+        - [Bohdan Boiko, 1]
+        - [Boubacar Bah, 1]
+        - [Boyan Rasate, 1]
+        - [Brian Mteki, 1]
+        - [Célestine Zanou, 1]
+        - [Daba Diawara, 1]
+        - [Duminda Nagamuwa, 1]
+      party_17:
+        tipo: VARCHAR
+        nulos_pct: 97.94
+        distintos_aprox: 16
+        min: ADPG
+        max: Unidos
+        top:
+        - [null, 1380]
+        - [Independent, 12]
+        - [ADPG, 1]
+        - [Bulgarian National Union – New Democracy, 1]
+        - [Costa Rican Democratic Union, 1]
+        - [Elephant Community, 1]
+        - [For the People, 1]
+        - [Frontline Socialist Party, 1]
+        - [Liberal Democratic Party, 1]
+        - [NCP, 1]
+      votes1_17:
+        tipo: BIGINT
+        nulos_pct: 98.01
+        distintos_aprox: 29
+        min: '1157'
+        max: '39658'
+        media: 10771.5
+        quartis: [4698, 8224, 13892]
+        top:
+        - [null, 1381]
+        - ['1157', 1]
+        - ['11770', 1]
+        - ['12391', 1]
+        - ['1264', 1]
+        - ['12793', 1]
+        - ['1418', 1]
+        - ['14991', 1]
+        - ['16596', 1]
+        - ['20014', 1]
+      votes2_17:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      vote_share1_17:
+        tipo: DOUBLE
+        nulos_pct: 97.94
+        distintos_aprox: 21
+        min: '0.0'
+        max: '0.94'
+        media: 0.2407
+        quartis: [0.0675, 0.13, 0.32]
+        top:
+        - [null, 1380]
+        - ['0.0', 4]
+        - ['0.06', 2]
+        - ['0.09', 2]
+        - ['0.1', 2]
+        - ['0.3', 2]
+        - ['0.32', 2]
+        - ['0.05', 1]
+        - ['0.07', 1]
+        - ['0.08', 1]
+      vote_share2_17:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_votes_17:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_vote_share_17:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      candidate_18:
+        tipo: VARCHAR
+        nulos_pct: 98.01
+        distintos_aprox: 31
+        min: Abdul Hasib Aarian
+        max: Émile Gros Raymond Nakombo
+        top:
+        - [null, 1381]
+        - [Abdul Hasib Aarian, 1]
+        - [Against all, 1]
+        - [Alpha Ibrahima Keira, 1]
+        - [Aparekke Punnananda, 1]
+        - [Armah Jallah, 1]
+        - [Battaramulla Seelarathana Thero, 1]
+        - [Christian Rivera Paniagua, 1]
+        - [Diana Dimitrova Gervasova, 1]
+        - [Gabriel Mokia Mandembo, 1]
+      party_18:
+        tipo: VARCHAR
+        nulos_pct: 98.15
+        distintos_aprox: 25
+        min: African Congress of Democrats
+        max: Vision For Liberia Transformation
+        top:
+        - [null, 1383]
+        - [Independent, 6]
+        - [African Congress of Democrats, 1]
+        - [African Liberation League, 1]
+        - [Christian Democratic Alliance, 1]
+        - [Citizen's Group, 1]
+        - [Humanist Party, 1]
+        - [Janasetha Peramuna, 1]
+        - [Justice and Development Party, 1]
+        - [Liberty, 1]
+      votes1_18:
+        tipo: BIGINT
+        nulos_pct: 98.08
+        distintos_aprox: 30
+        min: '1074'
+        max: '35423'
+        media: 10420.037
+        quartis: [4825, 8001, 14512]
+        top:
+        - [null, 1382]
+        - ['10542', 1]
+        - ['10714', 1]
+        - ['1074', 1]
+        - ['15778', 1]
+        - ['18673', 1]
+        - ['19542', 1]
+        - ['20312', 1]
+        - ['23437', 1]
+        - ['23962', 1]
+      votes2_18:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      vote_share1_18:
+        tipo: DOUBLE
+        nulos_pct: 98.01
+        distintos_aprox: 21
+        min: '0.0'
+        max: '1.35'
+        media: 0.2661
+        quartis: [0.06, 0.135, 0.35]
+        top:
+        - [null, 1381]
+        - ['0.0', 4]
+        - ['0.1', 3]
+        - ['0.06', 2]
+        - ['0.3', 2]
+        - ['0.03', 1]
+        - ['0.05', 1]
+        - ['0.07', 1]
+        - ['0.09', 1]
+        - ['0.13', 1]
+      vote_share2_18:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_votes_18:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_vote_share_18:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      candidate_19:
+        tipo: VARCHAR
+        nulos_pct: 98.15
+        distintos_aprox: 27
+        min: Abdul Jabar Sabet
+        max: Óscar Campos Chavarría
+        top:
+        - [null, 1383]
+        - [Abdul Jabar Sabet, 1]
+        - [Against all, 1]
+        - [Akpone Solomon, 1]
+        - [Danilo Roca, 1]
+        - [Didier Ratsiraka, 1]
+        - [Dina Aduruge Senarathne De Silva, 1]
+        - [Dramane Dembele, 1]
+        - [Francis Mvemba, 1]
+        - [Giorgi Liluashvili, 1]
+      party_19:
+        tipo: VARCHAR
+        nulos_pct: 98.3
+        distintos_aprox: 15
+        min: Alliance for Democracy in Mali
+        max: Union of Liberian Democrats
+        top:
+        - [null, 1385]
+        - [Independent, 9]
+        - [Alliance for Democracy in Mali, 1]
+        - [Association for the Rebirth of Madagascar, 1]
+        - [Avanza, 1]
+        - [Build Zimbabwe Alliance, 1]
+        - [Citizen's Group, 1]
+        - [Georgia Party, 1]
+        - [NMDP, 1]
+        - [National Encounter Party, 1]
+      votes1_19:
+        tipo: BIGINT
+        nulos_pct: 98.23
+        distintos_aprox: 25
+        min: '892'
+        max: '542819'
+        media: 30832.36
+        quartis: [4102, 6684, 15944]
+        top:
+        - [null, 1384]
+        - ['10289', 1]
+        - ['10434', 1]
+        - ['15013', 1]
+        - ['18737', 1]
+        - ['18918', 1]
+        - ['1940', 1]
+        - ['21410', 1]
+        - ['22222', 1]
+        - ['2620', 1]
+      votes2_19:
+        tipo: BIGINT
+        nulos_pct: 99.93
+        distintos_aprox: 1
+        min: '1113055'
+        max: '1113055'
+        media: 1113055
+        quartis: [1113055, 1113055, 1113055]
+        top:
+        - [null, 1408]
+        - ['1113055', 1]
+      vote_share1_19:
+        tipo: DOUBLE
+        nulos_pct: 98.15
+        distintos_aprox: 20
+        min: '0.0'
+        max: '2.2'
+        media: 0.2881
+        quartis: [0.06, 0.125, 0.4]
+        top:
+        - [null, 1383]
+        - ['0.0', 4]
+        - ['0.06', 3]
+        - ['0.1', 3]
+        - ['0.59', 2]
+        - ['0.04', 1]
+        - ['0.08', 1]
+        - ['0.12', 1]
+        - ['0.13', 1]
+        - ['0.18', 1]
+      vote_share2_19:
+        tipo: DOUBLE
+        nulos_pct: 99.93
+        distintos_aprox: 1
+        min: '4.36'
+        max: '4.36'
+        media: 4.36
+        quartis: [4.36, 4.36, 4.36]
+        top:
+        - [null, 1408]
+        - ['4.36', 1]
+      e_votes_19:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_vote_share_19:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      candidate_20:
+        tipo: VARCHAR
+        nulos_pct: 98.3
+        distintos_aprox: 22
+        min: A, S, P, Liyanage
+        max: Zviad Mekhatishvili
+        top:
+        - [null, 1385]
+        - ['A, S, P, Liyanage', 1]
+        - [Blagoy Petrevski, 1]
+        - [Elton Mangoma, 1]
+        - [George Kiadii, 1]
+        - [Heethaka Oswald Arunya De Soysa, 1]
+        - [Ihor Shevchenko, 1]
+        - [Isa Odidi, 1]
+        - ['Joëlle Bile Batali [fr]', 1]
+        - [Mamadou Baadiko Bah, 1]
+      party_20:
+        tipo: VARCHAR
+        nulos_pct: 98.3
+        distintos_aprox: 16
+        min: Association for Mali
+        max: UFD
+        top:
+        - [null, 1385]
+        - [Independent, 8]
+        - [Association for Mali, 1]
+        - [Bulgarian Union for Direct Democracy, 1]
+        - [Change Democratic Action, 1]
+        - [Citizen's Group, 1]
+        - [Coalition of Democrats, 1]
+        - [Georgian Christian-Conservative Party, 1]
+        - [Liberian for Prosperity Party, 1]
+        - [Malagasy Tonga Saina, 1]
+      votes1_20:
+        tipo: BIGINT
+        nulos_pct: 98.37
+        distintos_aprox: 21
+        min: '713'
+        max: '22816'
+        media: 7853.087
+        quartis: [3431, 5518, 8867]
+        top:
+        - [null, 1386]
+        - ['14337', 1]
+        - ['1646', 1]
+        - ['17712', 1]
+        - ['18667', 1]
+        - ['21377', 1]
+        - ['22816', 1]
+        - ['2437', 1]
+        - ['2618', 1]
+        - ['2885', 1]
+      votes2_20:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      vote_share1_20:
+        tipo: DOUBLE
+        nulos_pct: 98.3
+        distintos_aprox: 15
+        min: '0.0'
+        max: '0.57'
+        media: 0.1763
+        quartis: [0.04, 0.105, 0.23]
+        top:
+        - [null, 1385]
+        - ['0.0', 4]
+        - ['0.04', 3]
+        - ['0.1', 3]
+        - ['0.11', 2]
+        - ['0.16', 2]
+        - ['0.05', 1]
+        - ['0.08', 1]
+        - ['0.19', 1]
+        - ['0.21', 1]
+      vote_share2_20:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_votes_20:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_vote_share_20:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      candidate_21:
+        tipo: VARCHAR
+        nulos_pct: 98.44
+        distintos_aprox: 24
+        min: Aminu Abubakar
+        max: Álvaro Trujillo
+        top:
+        - [null, 1387]
+        - [Aminu Abubakar, 1]
+        - [Bismillah Shir, 1]
+        - [Bisser Georgiev Milanov, 1]
+        - [Cyriaque Gonda, 1]
+        - ['Franck Diongo [fr]', 1]
+        - [Gatien Houngbédji, 1]
+        - [Hamadoun Toure, 1]
+        - [Inna Bohoslovska, 1]
+        - [Joseph Bangoura, 1]
+      party_21:
+        tipo: VARCHAR
+        nulos_pct: 98.44
+        distintos_aprox: 13
+        min: '#1980 Freedom Movement Zimbabwe'
+        max: United National Alternative Front
+        top:
+        - [null, 1387]
+        - [Independent, 9]
+        - ['#1980 Freedom Movement Zimbabwe', 1]
+        - [Antoky ny Fivoaran'ny Malagasy, 1]
+        - [Change, 1]
+        - [Democratic Union for Economic and Social Development, 1]
+        - [Industry Will Save Georgia, 1]
+        - [Liberal Party, 1]
+        - [NUP, 1]
+        - [National Integration Party, 1]
+      votes1_21:
+        tipo: BIGINT
+        nulos_pct: 98.51
+        distintos_aprox: 23
+        min: '664'
+        max: '18962'
+        media: 7446.619
+        quartis: [3231, 5021, 9613]
+        top:
+        - [null, 1388]
+        - ['11562', 1]
+        - ['17087', 1]
+        - ['18306', 1]
+        - ['18482', 1]
+        - ['18962', 1]
+        - ['1899', 1]
+        - ['2260', 1]
+        - ['3022', 1]
+        - ['3188', 1]
+      votes2_21:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      vote_share1_21:
+        tipo: DOUBLE
+        nulos_pct: 98.44
+        distintos_aprox: 13
+        min: '0.0'
+        max: '0.57'
+        media: 0.1573
+        quartis: [0.03, 0.1, 0.22]
+        top:
+        - [null, 1387]
+        - ['0.0', 5]
+        - ['0.1', 3]
+        - ['0.03', 2]
+        - ['0.04', 2]
+        - ['0.06', 1]
+        - ['0.14', 1]
+        - ['0.18', 1]
+        - ['0.2', 1]
+        - ['0.22', 1]
+      vote_share2_21:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_votes_21:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_vote_share_21:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      candidate_22:
+        tipo: VARCHAR
+        nulos_pct: 98.58
+        distintos_aprox: 20
+        min: Abraham Bouré
+        max: Zafimahaleo Dit Dama Mahaleo Rasolofondraosolo
+        top:
+        - [null, 1389]
+        - [Abraham Bouré, 1]
+        - [Adolphe Djimon Hodonou, 1]
+        - [Alfred Reeves, 1]
+        - [Aruna de Zoysa, 1]
+        - [Ghulam Faroq Nijrabi, 1]
+        - [I Do Not Support Any Candidate, 1]
+        - [Ihor Dushyn, 1]
+        - [Laurent Gomina-Pampali, 1]
+        - [Luis Lam Padilla, 1]
+      party_22:
+        tipo: VARCHAR
+        nulos_pct: 98.58
+        distintos_aprox: 16
+        min: Citizen's Group
+        max: United Democracy Movement
+        top:
+        - [null, 1389]
+        - [Independent, 6]
+        - [Citizen's Group, 1]
+        - [Costa Rican Social Democratic Movement, 1]
+        - [Democratic National Movement, 1]
+        - [Manajary Vahoaka, 1]
+        - [NMM, 1]
+        - [National Integration Party, 1]
+        - [National Reformation Party, 1]
+        - [National Union for Democracy and Rally, 1]
+      votes1_22:
+        tipo: BIGINT
+        nulos_pct: 98.65
+        distintos_aprox: 17
+        min: '633'
+        max: '210980'
+        media: 17200
+        quartis: [3422, 4666, 8453]
+        top:
+        - [null, 1390]
+        - ['15965', 1]
+        - ['16367', 1]
+        - ['16632', 1]
+        - ['1673', 1]
+        - ['2007', 1]
+        - ['2032', 1]
+        - ['210980', 1]
+        - ['3156', 1]
+        - ['4218', 1]
+      votes2_22:
+        tipo: BIGINT
+        nulos_pct: 99.93
+        distintos_aprox: 1
+        min: '155398'
+        max: '155398'
+        media: 155398
+        quartis: [155398, 155398, 155398]
+        top:
+        - [null, 1408]
+        - ['155398', 1]
+      vote_share1_22:
+        tipo: DOUBLE
+        nulos_pct: 98.58
+        distintos_aprox: 15
+        min: '0.0'
+        max: '5.52'
+        media: 0.4185
+        quartis: [0.035, 0.1, 0.26]
+        top:
+        - [null, 1389]
+        - ['0.0', 4]
+        - ['0.04', 2]
+        - ['0.09', 2]
+        - ['0.1', 2]
+        - ['0.03', 1]
+        - ['0.12', 1]
+        - ['0.17', 1]
+        - ['0.19', 1]
+        - ['0.22', 1]
+      vote_share2_22:
+        tipo: DOUBLE
+        nulos_pct: 99.93
+        distintos_aprox: 1
+        min: '4.47'
+        max: '4.47'
+        media: 4.47
+        quartis: [4.47, 4.47, 4.47]
+        top:
+        - [null, 1408]
+        - ['4.47', 1]
+      e_votes_22:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_vote_share_22:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      candidate_23:
+        tipo: VARCHAR
+        nulos_pct: 98.94
+        distintos_aprox: 16
+        min: Abdul Hasib Arian
+        max: Volodymyr Petrov
+        top:
+        - [null, 1394]
+        - [Abdul Hasib Arian, 1]
+        - [Constant Gouyomgbia Kongba Zézé, 1]
+        - [Fodé Mohamed Soumah, 1]
+        - [Galiou Soglo, 1]
+        - [Georgi Georgiev-Goti, 1]
+        - [Irakli Gorgadze, 1]
+        - [Jhon Vega Masís, 1]
+        - [Ljiljana Ćuić, 1]
+        - [Mamadou Traore, 1]
+      party_23:
+        tipo: VARCHAR
+        nulos_pct: 98.94
+        distintos_aprox: 11
+        min: Antsika Madagasikara
+        max: Workers' Party
+        top:
+        - [null, 1394]
+        - [Independent, 6]
+        - [Antsika Madagasikara, 1]
+        - [Bulgarian National Unification, 1]
+        - [Citizen's Group, 1]
+        - [GECI, 1]
+        - [MIRIA, 1]
+        - [Movement for a Free Georgia, 1]
+        - [Organisation of Ukrainian Nationalists (Orhanizatsiya ukraïns’kykh natisionalistiv), 1]
+        - [People’s Progressive Party, 1]
+      votes1_23:
+        tipo: BIGINT
+        nulos_pct: 99.01
+        distintos_aprox: 16
+        min: '531'
+        max: '15587'
+        media: 6460.2143
+        quartis: [2958, 4858, 8410]
+        top:
+        - [null, 1395]
+        - ['15352', 1]
+        - ['1549', 1]
+        - ['15502', 1]
+        - ['15587', 1]
+        - ['1951', 1]
+        - ['2958', 1]
+        - ['3425', 1]
+        - ['4146', 1]
+        - ['4472', 1]
+      votes2_23:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      vote_share1_23:
+        tipo: DOUBLE
+        nulos_pct: 98.94
+        distintos_aprox: 9
+        min: '0.0'
+        max: '0.49'
+        media: 0.1407
+        quartis: [0.03, 0.09, 0.155]
+        top:
+        - [null, 1394]
+        - ['0.03', 3]
+        - ['0.0', 2]
+        - ['0.11', 2]
+        - ['0.49', 2]
+        - ['0.07', 1]
+        - ['0.08', 1]
+        - ['0.09', 1]
+        - ['0.1', 1]
+        - ['0.17', 1]
+      vote_share2_23:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_votes_23:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_vote_share_23:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      candidate_24:
+        tipo: VARCHAR
+        nulos_pct: 99.01
+        distintos_aprox: 16
+        min: Bouna Keita
+        max: Zviad Baghdavadze
+        top:
+        - [null, 1395]
+        - [Bouna Keita, 1]
+        - [Georges Buse Falay, 1]
+        - [Illiyas Idroos Mohamed, 1]
+        - [Jean Jacques Ratsietison, 1]
+        - [Joseph Yakété, 1]
+        - [Léandre Djagoué, 1]
+        - [Madame Djeneba N'diaye, 1]
+        - [Martín Chinchilla Castro, 1]
+        - [Milorad Radović, 1]
+      party_24:
+        tipo: VARCHAR
+        nulos_pct: 99.01
+        distintos_aprox: 7
+        min: Citizen Platform–New Georgia
+        max: United People
+        top:
+        - [null, 1395]
+        - [Independent, 7]
+        - [Citizen Platform–New Georgia, 1]
+        - [Citizen's Group, 1]
+        - [Fahefa-Mividy no Ilain'ny Malagasy, 1]
+        - [Forum for the Central African Rally, 1]
+        - [RGP, 1]
+        - [Rally of Liberal Democrats – Hêviosso, 1]
+        - [United People, 1]
+      votes1_24:
+        tipo: BIGINT
+        nulos_pct: 99.08
+        distintos_aprox: 14
+        min: '477'
+        max: '60786'
+        media: 10617.9231
+        quartis: [3495, 5288, 12986]
+        top:
+        - [null, 1396]
+        - ['12275', 1]
+        - ['1495', 1]
+        - ['15118', 1]
+        - ['15281', 1]
+        - ['3425', 1]
+        - ['3518', 1]
+        - ['3987', 1]
+        - ['4665', 1]
+        - ['477', 1]
+      votes2_24:
+        tipo: BIGINT
+        nulos_pct: 99.93
+        distintos_aprox: 1
+        min: '34169'
+        max: '34169'
+        media: 34169
+        quartis: [34169, 34169, 34169]
+        top:
+        - [null, 1408]
+        - ['34169', 1]
+      vote_share1_24:
+        tipo: DOUBLE
+        nulos_pct: 99.01
+        distintos_aprox: 10
+        min: '0.0'
+        max: '2.27'
+        media: 0.29
+        quartis: [0.03, 0.075, 0.31]
+        top:
+        - [null, 1395]
+        - ['0.03', 3]
+        - ['0.07', 3]
+        - ['0.08', 2]
+        - ['0.0', 1]
+        - ['0.15', 1]
+        - ['0.31', 1]
+        - ['0.38', 1]
+        - ['0.49', 1]
+        - ['2.27', 1]
+      vote_share2_24:
+        tipo: DOUBLE
+        nulos_pct: 99.93
+        distintos_aprox: 1
+        min: '1.48'
+        max: '1.48'
+        media: 1.48
+        quartis: [1.48, 1.48, 1.48]
+        top:
+        - [null, 1408]
+        - ['1.48', 1]
+      e_votes_24:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_vote_share_24:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      candidate_25:
+        tipo: VARCHAR
+        nulos_pct: 99.22
+        distintos_aprox: 10
+        min: Against all candidates
+        max: Zviad Iashvili
+        top:
+        - [null, 1398]
+        - [Against all candidates, 1]
+        - [Enoch Ngila, 1]
+        - [Erick Francis Rajaonary, 1]
+        - [Gul Ahmmad Yama, 1]
+        - [Luis Alberto Cordero Arias, 1]
+        - [Marcel Gbaguidi, 1]
+        - [Mathias Barthélemy Morouba, 1]
+        - [Saša Goranci, 1]
+        - [Serhiy Kaplin, 1]
+      party_25:
+        tipo: VARCHAR
+        nulos_pct: 99.29
+        distintos_aprox: 7
+        min: Citizen's Group
+        max: United Socialist Party
+        top:
+        - [null, 1399]
+        - [Independent, 4]
+        - [Citizen's Group, 1]
+        - [Libertarian Movement, 1]
+        - [Malagasy Miray sy Mifankatia, 1]
+        - [National Democratic Party, 1]
+        - [Social Democratic Party, 1]
+        - [United Socialist Party, 1]
+      votes1_25:
+        tipo: BIGINT
+        nulos_pct: 99.22
+        distintos_aprox: 10
+        min: '444'
+        max: '538610'
+        media: 54010.4545
+        quartis: [3268, 3944, 12188]
+        top:
+        - [null, 1398]
+        - ['5156', 2]
+        - ['1406', 1]
+        - ['14532', 1]
+        - ['14758', 1]
+        - ['3221', 1]
+        - ['3409', 1]
+        - ['3479', 1]
+        - ['3944', 1]
+        - ['444', 1]
+      votes2_25:
+        tipo: BIGINT
+        nulos_pct: 99.93
+        distintos_aprox: 1
+        min: '682239'
+        max: '682239'
+        media: 682239
+        quartis: [682239, 682239, 682239]
+        top:
+        - [null, 1408]
+        - ['682239', 1]
+      vote_share1_25:
+        tipo: DOUBLE
+        nulos_pct: 99.22
+        distintos_aprox: 7
+        min: '0.03'
+        max: '2.0'
+        media: 0.2964
+        quartis: [0.04, 0.07, 0.255]
+        top:
+        - [null, 1398]
+        - ['0.03', 3]
+        - ['0.07', 3]
+        - ['0.08', 1]
+        - ['0.12', 1]
+        - ['0.3', 1]
+        - ['0.46', 1]
+        - ['2.0', 1]
+      vote_share2_25:
+        tipo: DOUBLE
+        nulos_pct: 99.93
+        distintos_aprox: 1
+        min: '2.4'
+        max: '2.4'
+        media: 2.4
+        quartis: [2.4, 2.4, 2.4]
+        top:
+        - [null, 1408]
+        - ['2.4', 1]
+      e_votes_25:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_vote_share_25:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      candidate_26:
+        tipo: VARCHAR
+        nulos_pct: 99.43
+        distintos_aprox: 9
+        min: Ghulam Mohammad Rigi
+        max: Théophile Sony Colé
+        top:
+        - [null, 1401]
+        - [Ghulam Mohammad Rigi, 1]
+        - [Nikola Šećeroski, 1]
+        - [Oleksandr Moroz, 1]
+        - [Raphiou Toukourou, 1]
+        - [Rivomanantsoa Orlando Robimanana, 1]
+        - [Sarath Keerthirathna, 1]
+        - [Théodore Ngoy, 1]
+        - [Théophile Sony Colé, 1]
+      party_26:
+        tipo: VARCHAR
+        nulos_pct: 99.43
+        distintos_aprox: 5
+        min: Citizen's Group
+        max: Syndical Union of Central African Workers
+        top:
+        - [null, 1401]
+        - [Independent, 4]
+        - [Citizen's Group, 1]
+        - [Madagsikara Vina sy Fanantenana, 1]
+        - [Socialist Party of Oleksandr Moroz, 1]
+        - [Syndical Union of Central African Workers, 1]
+      votes1_26:
+        tipo: BIGINT
+        nulos_pct: 99.43
+        distintos_aprox: 9
+        min: '3168'
+        max: '14561'
+        media: 6122.75
+        quartis: [3300, 3692, 8636]
+        top:
+        - [null, 1401]
+        - ['13139', 1]
+        - ['14561', 1]
+        - ['3168', 1]
+        - ['3180', 1]
+        - ['3419', 1]
+        - ['3599', 1]
+        - ['3784', 1]
+        - ['4132', 1]
+      votes2_26:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      vote_share1_26:
+        tipo: DOUBLE
+        nulos_pct: 99.43
+        distintos_aprox: 6
+        min: '0.02'
+        max: '0.33'
+        media: 0.1225
+        quartis: [0.045, 0.07, 0.2]
+        top:
+        - [null, 1401]
+        - ['0.07', 2]
+        - ['0.02', 1]
+        - ['0.03', 1]
+        - ['0.06', 1]
+        - ['0.11', 1]
+        - ['0.29', 1]
+        - ['0.33', 1]
+      vote_share2_26:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_votes_26:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_vote_share_26:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      candidate_27:
+        tipo: VARCHAR
+        nulos_pct: 99.57
+        distintos_aprox: 6
+        min: Fanirisoa Ernaivo
+        max: Čedomir Nešić
+        top:
+        - [null, 1403]
+        - [Fanirisoa Ernaivo, 1]
+        - [Maxime Kazagui, 1]
+        - [Mohammad Akbar Oria, 1]
+        - [Sarath Manamendra, 1]
+        - [Viktor Kryvenko, 1]
+        - [Čedomir Nešić, 1]
+      party_27:
+        tipo: VARCHAR
+        nulos_pct: 99.57
+        distintos_aprox: 5
+        min: Alliance for a New Central Africa
+        max: ZAMA–PATRAM
+        top:
+        - [null, 1403]
+        - [Alliance for a New Central Africa, 1]
+        - [Citizen's Group, 1]
+        - [Independent, 1]
+        - [New Sinhala Heritage, 1]
+        - [People's Movement of Ukraine, 1]
+        - [ZAMA–PATRAM, 1]
+      votes1_27:
+        tipo: BIGINT
+        nulos_pct: 99.57
+        distintos_aprox: 6
+        min: '2553'
+        max: '14117'
+        media: 5861.6667
+        quartis: [2886, 3186, 9243]
+        top:
+        - [null, 1403]
+        - ['14117', 1]
+        - ['2553', 1]
+        - ['2886', 1]
+        - ['2991', 1]
+        - ['3380', 1]
+        - ['9243', 1]
+      votes2_27:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      vote_share1_27:
+        tipo: DOUBLE
+        nulos_pct: 99.57
+        distintos_aprox: 5
+        min: '0.03'
+        max: '0.28'
+        media: 0.1217
+        quartis: [0.05, 0.06, 0.25]
+        top:
+        - [null, 1403]
+        - ['0.05', 2]
+        - ['0.03', 1]
+        - ['0.07', 1]
+        - ['0.25', 1]
+        - ['0.28', 1]
+      vote_share2_27:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_votes_27:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_vote_share_27:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      candidate_28:
+        tipo: VARCHAR
+        nulos_pct: 99.57
+        distintos_aprox: 5
+        min: Arlette Ramaroson
+        max: Vasyl Zhuravlyov
+        top:
+        - [null, 1403]
+        - [Arlette Ramaroson, 1]
+        - [Bashir Ahmad Bizhan, 1]
+        - [Jean-Baptiste Koba, 1]
+        - [Pani Wijesiriwardene, 1]
+        - [Slobodan Ranković, 1]
+        - [Vasyl Zhuravlyov, 1]
+      party_28:
+        tipo: VARCHAR
+        nulos_pct: 99.65
+        distintos_aprox: 5
+        min: Citizen's Group
+        max: Stability Party
+        top:
+        - [null, 1404]
+        - [Citizen's Group, 1]
+        - [Kangara Afghanistan National Party, 1]
+        - [PARRAINAGE, 1]
+        - [Socialist Equality Party, 1]
+        - [Stability Party, 1]
+      votes1_28:
+        tipo: BIGINT
+        nulos_pct: 99.57
+        distintos_aprox: 6
+        min: '2010'
+        max: '12645'
+        media: 5167.3333
+        quartis: [2425, 2736, 8453]
+        top:
+        - [null, 1403]
+        - ['12645', 1]
+        - ['2010', 1]
+        - ['2425', 1]
+        - ['2457', 1]
+        - ['3014', 1]
+        - ['8453', 1]
+      votes2_28:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      vote_share1_28:
+        tipo: DOUBLE
+        nulos_pct: 99.57
+        distintos_aprox: 4
+        min: '0.02'
+        max: '0.25'
+        media: 0.1
+        quartis: [0.05, 0.05, 0.18]
+        top:
+        - [null, 1403]
+        - ['0.05', 3]
+        - ['0.02', 1]
+        - ['0.18', 1]
+        - ['0.25', 1]
+      vote_share2_28:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_votes_28:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_vote_share_28:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      candidate_29:
+        tipo: VARCHAR
+        nulos_pct: 99.57
+        distintos_aprox: 5
+        min: Ashoka Wadigamangawa
+        max: Stanislas Moussa Kembé
+        top:
+        - [null, 1403]
+        - [Ashoka Wadigamangawa, 1]
+        - [Falimampionona Rasolonjatovo, 1]
+        - [Illia Kyva, 1]
+        - [Radivoje Šarenac, 1]
+        - [Sangin Mohammad Rahmani, 1]
+        - [Stanislas Moussa Kembé, 1]
+      party_29:
+        tipo: VARCHAR
+        nulos_pct: 99.65
+        distintos_aprox: 4
+        min: Citizen's Group
+        max: Socialist Party of Ukraine
+        top:
+        - [null, 1404]
+        - [Independent, 2]
+        - [Citizen's Group, 1]
+        - [FITAMBOLAGNELA/IAD, 1]
+        - [Socialist Party of Ukraine, 1]
+      votes1_29:
+        tipo: BIGINT
+        nulos_pct: 99.57
+        distintos_aprox: 6
+        min: '1706'
+        max: '12276'
+        media: 4521.1667
+        quartis: [1918, 2679, 5869]
+        top:
+        - [null, 1403]
+        - ['12276', 1]
+        - ['1706', 1]
+        - ['1918', 1]
+        - ['2434', 1]
+        - ['2924', 1]
+        - ['5869', 1]
+      votes2_29:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      vote_share1_29:
+        tipo: DOUBLE
+        nulos_pct: 99.57
+        distintos_aprox: 5
+        min: '0.02'
+        max: '0.25'
+        media: 0.09
+        quartis: [0.03, 0.045, 0.15]
+        top:
+        - [null, 1403]
+        - ['0.02', 1]
+        - ['0.03', 1]
+        - ['0.04', 1]
+        - ['0.05', 1]
+        - ['0.15', 1]
+        - ['0.25', 1]
+      vote_share2_29:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_votes_29:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_vote_share_29:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      candidate_30:
+        tipo: VARCHAR
+        nulos_pct: 99.57
+        distintos_aprox: 6
+        min: A, H, M, Alavi
+        max: Olivier Gabirault
+        top:
+        - [null, 1403]
+        - ['A, H, M, Alavi', 1]
+        - [Andriy Novak, 1]
+        - [Hedayat Amin Arsala, 1]
+        - [Jean Max Rakotomamomjy, 1]
+        - [Jovan Stojković, 1]
+        - [Olivier Gabirault, 1]
+      party_30:
+        tipo: VARCHAR
+        nulos_pct: 99.57
+        distintos_aprox: 4
+        min: Citizen's Group
+        max: Patriot Party
+        top:
+        - [null, 1403]
+        - [Independent, 2]
+        - [Citizen's Group, 1]
+        - [LEADER-Fanilo, 1]
+        - [National Islamic Front, 1]
+        - [Patriot Party, 1]
+      votes1_30:
+        tipo: BIGINT
+        nulos_pct: 99.57
+        distintos_aprox: 6
+        min: '1154'
+        max: '11377'
+        media: 4119
+        quartis: [1347, 2624, 5587]
+        top:
+        - [null, 1403]
+        - ['11377', 1]
+        - ['1154', 1]
+        - ['1347', 1]
+        - ['2346', 1]
+        - ['2903', 1]
+        - ['5587', 1]
+      votes2_30:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      vote_share1_30:
+        tipo: DOUBLE
+        nulos_pct: 99.57
+        distintos_aprox: 5
+        min: '0.02'
+        max: '0.23'
+        media: 0.0783
+        quartis: [0.02, 0.04, 0.12]
+        top:
+        - [null, 1403]
+        - ['0.02', 2]
+        - ['0.03', 1]
+        - ['0.05', 1]
+        - ['0.12', 1]
+        - ['0.23', 1]
+      vote_share2_30:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_votes_30:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_vote_share_30:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      candidate_31:
+        tipo: VARCHAR
+        nulos_pct: 99.65
+        distintos_aprox: 4
+        min: Abdul Majid Samim
+        max: Saman Perera
+        top:
+        - [null, 1404]
+        - [Abdul Majid Samim, 1]
+        - [Miomir Tošić, 1]
+        - [Oleksandr Vashchenko, 1]
+        - [Rolland Jules Etienne, 1]
+        - [Saman Perera, 1]
+      party_31:
+        tipo: VARCHAR
+        nulos_pct: 99.65
+        distintos_aprox: 4
+        min: Citizen's Group
+        max: Our Power of People Party
+        top:
+        - [null, 1404]
+        - [Independent, 2]
+        - [Citizen's Group, 1]
+        - [Madagasikara Fivoarana, 1]
+        - [Our Power of People Party, 1]
+      votes1_31:
+        tipo: BIGINT
+        nulos_pct: 99.65
+        distintos_aprox: 5
+        min: '904'
+        max: '10756'
+        media: 4345.8
+        quartis: [1874, 2368, 6816]
+        top:
+        - [null, 1404]
+        - ['10756', 1]
+        - ['2198', 1]
+        - ['2368', 1]
+        - ['5503', 1]
+        - ['904', 1]
+      votes2_31:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      vote_share1_31:
+        tipo: DOUBLE
+        nulos_pct: 99.65
+        distintos_aprox: 4
+        min: '0.02'
+        max: '0.22'
+        media: 0.068
+        quartis: [0.02, 0.03, 0.0925]
+        top:
+        - [null, 1404]
+        - ['0.02', 2]
+        - ['0.03', 1]
+        - ['0.05', 1]
+        - ['0.22', 1]
+      vote_share2_31:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_votes_31:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_vote_share_31:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      candidate_32:
+        tipo: VARCHAR
+        nulos_pct: 99.65
+        distintos_aprox: 5
+        min: Bruno Rabarihoela
+        max: Zia-ul-haq Hafizi
+        top:
+        - [null, 1404]
+        - [Bruno Rabarihoela, 1]
+        - [Hercen Radonjić, 1]
+        - [Mykola Haber, 1]
+        - [Priyantha Edirisinghe, 1]
+        - [Zia-ul-haq Hafizi, 1]
+      party_32:
+        tipo: VARCHAR
+        nulos_pct: 99.65
+        distintos_aprox: 4
+        min: Citizen's Group
+        max: Okkoma Wesiyo Okkoma Rajawaru Sanwidhanaya
+        top:
+        - [null, 1404]
+        - [Independent, 2]
+        - [Citizen's Group, 1]
+        - [Fahazavan'i Madagasikara, 1]
+        - [Okkoma Wesiyo Okkoma Rajawaru Sanwidhanaya, 1]
+      votes1_32:
+        tipo: BIGINT
+        nulos_pct: 99.65
+        distintos_aprox: 4
+        min: '847'
+        max: '9981'
+        media: 4015.8
+        quartis: [1471, 2139, 6570]
+        top:
+        - [null, 1404]
+        - ['1679', 1]
+        - ['2139', 1]
+        - ['5433', 1]
+        - ['847', 1]
+        - ['9981', 1]
+      votes2_32:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      vote_share1_32:
+        tipo: DOUBLE
+        nulos_pct: 99.65
+        distintos_aprox: 3
+        min: '0.02'
+        max: '0.2'
+        media: 0.062
+        quartis: [0.02, 0.03, 0.08]
+        top:
+        - [null, 1404]
+        - ['0.02', 2]
+        - ['0.03', 1]
+        - ['0.04', 1]
+        - ['0.2', 1]
+      vote_share2_32:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_votes_32:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_vote_share_32:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      candidate_33:
+        tipo: VARCHAR
+        nulos_pct: 99.79
+        distintos_aprox: 3
+        min: Oleksandr Solovyev
+        max: Samaraweera Weerawanni
+        top:
+        - [null, 1406]
+        - [Oleksandr Solovyev, 1]
+        - [Roseline Emma Rasolovoahangy, 1]
+        - [Samaraweera Weerawanni, 1]
+      party_33:
+        tipo: VARCHAR
+        nulos_pct: 99.79
+        distintos_aprox: 3
+        min: Ezaka Mampandroso Antsika
+        max: Reasonable Force
+        top:
+        - [null, 1406]
+        - [Ezaka Mampandroso Antsika, 1]
+        - [Independent, 1]
+        - [Reasonable Force, 1]
+      votes1_33:
+        tipo: BIGINT
+        nulos_pct: 99.79
+        distintos_aprox: 3
+        min: '2067'
+        max: '8578'
+        media: 5325.3333
+        quartis: [2883, 5331, 7766]
+        top:
+        - [null, 1406]
+        - ['2067', 1]
+        - ['5331', 1]
+        - ['8578', 1]
+      votes2_33:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      vote_share1_33:
+        tipo: DOUBLE
+        nulos_pct: 99.79
+        distintos_aprox: 3
+        min: '0.02'
+        max: '0.17'
+        media: 0.0733
+        quartis: [0.0225, 0.03, 0.135]
+        top:
+        - [null, 1406]
+        - ['0.02', 1]
+        - ['0.03', 1]
+        - ['0.17', 1]
+      vote_share2_33:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_votes_33:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_vote_share_33:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      candidate_34:
+        tipo: VARCHAR
+        nulos_pct: 99.79
+        distintos_aprox: 3
+        min: Bedde Gamage Nandimithra
+        max: Ruslan Rygovanov
+        top:
+        - [null, 1406]
+        - [Bedde Gamage Nandimithra, 1]
+        - [Jean Louis Zafivao, 1]
+        - [Ruslan Rygovanov, 1]
+      party_34:
+        tipo: VARCHAR
+        nulos_pct: 99.79
+        distintos_aprox: 3
+        min: Gasy Mifankatia
+        max: Nava Sama Samaja Party
+        top:
+        - [null, 1406]
+        - [Gasy Mifankatia, 1]
+        - [Independent, 1]
+        - [Nava Sama Samaja Party, 1]
+      votes1_34:
+        tipo: BIGINT
+        nulos_pct: 99.79
+        distintos_aprox: 3
+        min: '1841'
+        max: '6162'
+        media: 4411
+        quartis: [2688, 5230, 5929]
+        top:
+        - [null, 1406]
+        - ['1841', 1]
+        - ['5230', 1]
+        - ['6162', 1]
+      votes2_34:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      vote_share1_34:
+        tipo: DOUBLE
+        nulos_pct: 99.79
+        distintos_aprox: 3
+        min: '0.01'
+        max: '0.12'
+        media: 0.0533
+        quartis: [0.015, 0.03, 0.0975]
+        top:
+        - [null, 1406]
+        - ['0.01', 1]
+        - ['0.03', 1]
+        - ['0.12', 1]
+      vote_share2_34:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_votes_34:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_vote_share_34:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      candidate_35:
+        tipo: VARCHAR
+        nulos_pct: 99.79
+        distintos_aprox: 3
+        min: Oleksandr Danylyuk
+        max: Stephan Narison
+        top:
+        - [null, 1406]
+        - [Oleksandr Danylyuk, 1]
+        - [Samansiri Herath, 1]
+        - [Stephan Narison, 1]
+      party_35:
+        tipo: VARCHAR
+        nulos_pct: 99.79
+        distintos_aprox: 2
+        min: Antoko Gasy Miara Mandroso
+        max: Independent
+        top:
+        - [null, 1406]
+        - [Independent, 2]
+        - [Antoko Gasy Miara Mandroso, 1]
+      votes1_35:
+        tipo: BIGINT
+        nulos_pct: 99.79
+        distintos_aprox: 3
+        min: '976'
+        max: '5675'
+        media: 3766.3333
+        quartis: [1894, 4648, 5418]
+        top:
+        - [null, 1406]
+        - ['4648', 1]
+        - ['5675', 1]
+        - ['976', 1]
+      votes2_35:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      vote_share1_35:
+        tipo: DOUBLE
+        nulos_pct: 99.79
+        distintos_aprox: 3
+        min: '0.01'
+        max: '0.11'
+        media: 0.0467
+        quartis: [0.0125, 0.02, 0.0875]
+        top:
+        - [null, 1406]
+        - ['0.01', 1]
+        - ['0.02', 1]
+        - ['0.11', 1]
+      vote_share2_35:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_votes_35:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_vote_share_35:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      candidate_36:
+        tipo: VARCHAR
+        nulos_pct: 99.86
+        distintos_aprox: 2
+        min: Solo Norbert Randriamorasata
+        max: Vitalii Kuprii
+        top:
+        - [null, 1407]
+        - [Solo Norbert Randriamorasata, 1]
+        - [Vitalii Kuprii, 1]
+      party_36:
+        tipo: VARCHAR
+        nulos_pct: 99.86
+        distintos_aprox: 2
+        min: Democratic Union of the Christians of Madagascar
+        max: Independent
+        top:
+        - [null, 1407]
+        - [Democratic Union of the Christians of Madagascar, 1]
+        - [Independent, 1]
+      votes1_36:
+        tipo: BIGINT
+        nulos_pct: 99.86
+        distintos_aprox: 2
+        min: '4508'
+        max: '5086'
+        media: 4797
+        quartis: [4508, 4797, 5086]
+        top:
+        - [null, 1407]
+        - ['4508', 1]
+        - ['5086', 1]
+      votes2_36:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      vote_share1_36:
+        tipo: DOUBLE
+        nulos_pct: 99.86
+        distintos_aprox: 2
+        min: '0.02'
+        max: '0.1'
+        media: 0.06
+        quartis: [0.02, 0.06, 0.1]
+        top:
+        - [null, 1407]
+        - ['0.02', 1]
+        - ['0.1', 1]
+      vote_share2_36:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_votes_36:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_vote_share_36:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      candidate_37:
+        tipo: VARCHAR
+        nulos_pct: 99.93
+        distintos_aprox: 1
+        min: Arkadiy Kornatskiy
+        max: Arkadiy Kornatskiy
+        top:
+        - [null, 1408]
+        - [Arkadiy Kornatskiy, 1]
+      party_37:
+        tipo: VARCHAR
+        nulos_pct: 99.93
+        distintos_aprox: 1
+        min: Independent
+        max: Independent
+        top:
+        - [null, 1408]
+        - [Independent, 1]
+      votes1_37:
+        tipo: BIGINT
+        nulos_pct: 99.93
+        distintos_aprox: 1
+        min: '4494'
+        max: '4494'
+        media: 4494
+        quartis: [4494, 4494, 4494]
+        top:
+        - [null, 1408]
+        - ['4494', 1]
+      votes2_37:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      vote_share1_37:
+        tipo: DOUBLE
+        nulos_pct: 99.93
+        distintos_aprox: 1
+        min: '0.02'
+        max: '0.02'
+        media: 0.02
+        quartis: [0.02, 0.02, 0.02]
+        top:
+        - [null, 1408]
+        - ['0.02', 1]
+      vote_share2_37:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_votes_37:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_vote_share_37:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      candidate_38:
+        tipo: VARCHAR
+        nulos_pct: 99.93
+        distintos_aprox: 1
+        min: Serhiy Nosenko
+        max: Serhiy Nosenko
+        top:
+        - [null, 1408]
+        - [Serhiy Nosenko, 1]
+      party_38:
+        tipo: VARCHAR
+        nulos_pct: 99.93
+        distintos_aprox: 1
+        min: Independent
+        max: Independent
+        top:
+        - [null, 1408]
+        - [Independent, 1]
+      votes1_38:
+        tipo: BIGINT
+        nulos_pct: 99.93
+        distintos_aprox: 1
+        min: '3114'
+        max: '3114'
+        media: 3114
+        quartis: [3114, 3114, 3114]
+        top:
+        - [null, 1408]
+        - ['3114', 1]
+      votes2_38:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      vote_share1_38:
+        tipo: DOUBLE
+        nulos_pct: 99.93
+        distintos_aprox: 1
+        min: '0.02'
+        max: '0.02'
+        media: 0.02
+        quartis: [0.02, 0.02, 0.02]
+        top:
+        - [null, 1408]
+        - ['0.02', 1]
+      vote_share2_38:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_votes_38:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_vote_share_38:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      candidate_39:
+        tipo: VARCHAR
+        nulos_pct: 99.93
+        distintos_aprox: 1
+        min: Roman Nasirov
+        max: Roman Nasirov
+        top:
+        - [null, 1408]
+        - [Roman Nasirov, 1]
+      party_39:
+        tipo: VARCHAR
+        nulos_pct: 99.93
+        distintos_aprox: 1
+        min: Independent
+        max: Independent
+        top:
+        - [null, 1408]
+        - [Independent, 1]
+      votes1_39:
+        tipo: BIGINT
+        nulos_pct: 99.93
+        distintos_aprox: 1
+        min: '2579'
+        max: '2579'
+        media: 2579
+        quartis: [2579, 2579, 2579]
+        top:
+        - [null, 1408]
+        - ['2579', 1]
+      votes2_39:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      vote_share1_39:
+        tipo: DOUBLE
+        nulos_pct: 99.93
+        distintos_aprox: 1
+        min: '0.01'
+        max: '0.01'
+        media: 0.01
+        quartis: [0.01, 0.01, 0.01]
+        top:
+        - [null, 1408]
+        - ['0.01', 1]
+      vote_share2_39:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_votes_39:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      e_vote_share_39:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1409]
+      flag_two_round:
+        tipo: BOOLEAN
+        nulos_pct: 82.26
+        distintos_aprox: 1
+        min: 'true'
+        max: 'true'
+        top:
+        - [null, 1159]
+        - ['true', 250]
+      flag_inconsequential:
+        tipo: BOOLEAN
+        nulos_pct: 97.37
+        distintos_aprox: 1
+        min: 'true'
+        max: 'true'
+        top:
+        - [null, 1372]
+        - ['true', 37]
+      flag_inconsequential_note:
+        tipo: VARCHAR
+        nulos_pct: 97.37
+        distintos_aprox: 7
+        min: Cancelled
+        max: Results unclear, coup
+        top:
+        - [null, 1372]
+        - [Cancelled, 23]
+        - [Death, 5]
+        - [Invalid (turnout of less than 50%), 5]
+        - [Candidates resigned right after the election, 1]
+        - [Nullified, 1]
+        - [Postponed, 1]
+        - ['Results unclear, coup', 1]
+      flag_coup:
+        tipo: BOOLEAN
+        nulos_pct: 98.58
+        distintos_aprox: 1
+        min: 'true'
+        max: 'true'
+        top:
+        - [null, 1389]
+        - ['true', 20]
+      flag_plebiscite:
+        tipo: BOOLEAN
+        nulos_pct: 94.61
+        distintos_aprox: 1
+        min: 'true'
+        max: 'true'
+        top:
+        - [null, 1333]
+        - ['true', 76]
+      flag_unopposed:
+        tipo: BOOLEAN
+        nulos_pct: 88.57
+        distintos_aprox: 1
+        min: 'true'
+        max: 'true'
+        top:
+        - [null, 1248]
+        - ['true', 161]
+      flag_indirect:
+        tipo: BOOLEAN
+        nulos_pct: 95.81
+        distintos_aprox: 1
+        min: 'true'
+        max: 'true'
+        top:
+        - [null, 1350]
+        - ['true', 59]

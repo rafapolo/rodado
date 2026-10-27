@@ -1,0 +1,742 @@
+dataset: br_sfb_sicar
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  app:
+    linhas: 28143220
+    fonte_do_perfil: amostra de 7.107%. ~2.000.000 linhas
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '2026-06-02'
+        max: '2026-08-04'
+        top:
+        - ['2026-08-04', 538912]
+        - ['2026-08-03', 522240]
+        - ['2026-08-02', 444704]
+        - ['2026-08-01', 413696]
+        - ['2026-06-02', 188704]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 432416]
+        - [PR, 196896]
+        - [PA, 190464]
+        - [SP, 188704]
+        - [RS, 188416]
+        - [SC, 163840]
+        - [GO, 141312]
+        - [RO, 96256]
+        - [MT, 86016]
+        - [ES, 67584]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      id_imovel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1502140}
+      tipo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 35
+        min: APP_AREA_AC
+        max: VEREDA
+        top:
+        - [APP_RIO_ATE_10, 455119]
+        - [APP_ESCADINHA_RIO_ATE_10, 335320]
+        - [APP_AREA_VN, 285559]
+        - [APP_TOTAL, 263942]
+        - [APP_VAZIO, 177974]
+        - [APP_NASCENTE_OLHO_DAGUA, 159181]
+        - [APP_ESCADINHA, 147916]
+        - [APP_AREA_AC, 60033]
+        - [APP_ESCADINHA_NASCENTE_OLHO_DAGUA, 57513]
+        - [APP_RESERVATORIO_ARTIFICIAL_DECORRENTE_BARRAMENTO, 40872]
+      status:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: AT
+        max: SU
+        top:
+        - [AT, 1791235]
+        - [PE, 231577]
+        - [CA, 59172]
+        - [SU, 26272]
+      condicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: Aguardando analise
+        max: Em analise
+        top:
+        - [Aguardando analise, 1385472]
+        - ['Analisado, aguardando atendimento a notificacao', 314587]
+        - ['Analisado, aguardando regularizacao ambiental (Lei n 12.651/2012)', 137809]
+        - ['Analisado, em conformidade com a Lei n 12.651/2012, com ativos ambientais', 63849]
+        - ['Analisado, em conformidade com a Lei n 12.651/2012', 52536]
+        - [Cancelado por decisao administrativa, 46049]
+        - [Em analise, 43114]
+        - ['Aguardando analise, apos revisao ou atendimento da notificacao', 41563]
+        - [Cancelado por duplicidade, 10483]
+        - [Analisado sem pendencias, 6061]
+      area:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 216273
+        min: '0.0'
+        max: '166625.6365'
+        media: 3.6319
+        quartis: [0.101, 0.6562, 1.8594]
+  area_consolidada:
+    linhas: 6877840
+    fonte_do_perfil: amostra de 29.079%. ~2.000.000 linhas
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '2026-06-02'
+        max: '2026-08-04'
+        top:
+        - ['2026-08-04', 600352]
+        - ['2026-08-01', 529005]
+        - ['2026-08-02', 385339]
+        - ['2026-08-03', 359152]
+        - ['2026-06-02', 155340]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: AC
+        max: TO
+        top:
+        - [MG, 303104]
+        - [ES, 184608]
+        - [RS, 172032]
+        - [SP, 155340]
+        - [PR, 151404]
+        - [PA, 136164]
+        - [SC, 118784]
+        - [CE, 104448]
+        - [PE, 93164]
+        - [MA, 92500]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5500}
+      id_imovel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1600033}
+      tipo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: AREA_CONSOLIDADA
+        max: AREA_CONSOLIDADA
+        top:
+        - [AREA_CONSOLIDADA, 2029188]
+      status:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: AT
+        max: SU
+        top:
+        - [AT, 1753655]
+        - [PE, 211167]
+        - [CA, 49427]
+        - [SU, 14939]
+      condicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: Aguardando analise
+        max: Em analise
+        top:
+        - [Aguardando analise, 1213410]
+        - ['Analisado, aguardando atendimento a notificacao', 328780]
+        - ['Analisado, em conformidade com a Lei n 12.651/2012', 143301]
+        - ['Analisado, aguardando regularizacao ambiental (Lei n 12.651/2012)', 125306]
+        - ['Analisado, em conformidade com a Lei n 12.651/2012, com ativos ambientais', 74265]
+        - [Em analise, 45761]
+        - ['Aguardando analise, apos revisao ou atendimento da notificacao', 38838]
+        - [Cancelado por decisao administrativa, 36131]
+        - [Cancelado por duplicidade, 12200]
+        - [Analisado sem pendencias, 8593]
+      area:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 806603
+        min: '0.0'
+        max: '186618.6052'
+        media: 37.9758
+        quartis: [1.6651, 6.2593, 20.5639]
+  area_imovel:
+    linhas: 79325829
+    fonte_do_perfil: amostra de 2.521%. ~2.000.000 linhas
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '2024-10-04'
+        max: '2025-10-15'
+        top:
+        - ['2025-10-15', 234527]
+        - ['2025-08-15', 225880]
+        - ['2025-04-15', 216293]
+        - ['2025-09-15', 214513]
+        - ['2025-05-16', 212992]
+        - ['2024-10-04', 211935]
+        - ['2025-07-15', 207291]
+        - ['2025-02-21', 197659]
+        - ['2024-11-16', 179827]
+        - ['2024-12-19', 167751]
+      data_atualizacao_car: {tipo: DATE, nulos_pct: 0, distintos_aprox: 59, min: '2024-09-03', max: '2025-10-13'}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [BA, 318932]
+        - [MG, 280595]
+        - [RS, 196709]
+        - [PR, 159744]
+        - [SP, 134164]
+        - [PE, 106496]
+        - [SC, 97963]
+        - [CE, 87418]
+        - [PA, 78586]
+        - [MA, 77824]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      id_imovel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1920002}
+      modulos_fiscais: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 92382}
+      area:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 833905
+        min: '0.0'
+        max: '2696281.044'
+        media: 99.9238
+        quartis: [3.2766, 10.9336, 34.3455]
+      status:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: AT
+        max: SU
+        top:
+        - [AT, 1961478]
+        - [PE, 74183]
+        - [CA, 28716]
+        - [SU, 4291]
+      tipo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: AST
+        max: PCT
+        top:
+        - [IRU, 2058306]
+        - [AST, 9328]
+        - [PCT, 1034]
+      condicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: Aguardando analise
+        max: Em analise
+        top:
+        - [Aguardando analise, 1738602]
+        - ['Analisado, aguardando atendimento a notificacao', 188098]
+        - ['Aguardando analise, apos revisao ou atendimento da notificacao', 29234]
+        - [Cancelado por decisao administrativa, 25466]
+        - ['Analisado, em conformidade com a Lei n 12.651/2012', 23816]
+        - [Em analise, 22419]
+        - ['Analisado, aguardando regularizacao ambiental (Lei n 12.651/2012)', 20674]
+        - ['Analisado, em conformidade com a Lei n 12.651/2012, com ativos ambientais', 9234]
+        - [Analisado sem pendencias, 7472]
+        - [Cancelado por duplicidade, 2686]
+      geometria: {tipo: GEOMETRY, nulos_pct: 0, distintos_aprox: 2095832}
+  area_pousio:
+    linhas: 212315
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '2026-06-02'
+        max: '2026-08-04'
+        top:
+        - ['2026-08-01', 99038]
+        - ['2026-08-02', 51263]
+        - ['2026-08-04', 41784]
+        - ['2026-08-03', 19649]
+        - ['2026-06-02', 581]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [CE, 27853]
+        - [PI, 26726]
+        - [MG, 24297]
+        - [MA, 20173]
+        - [RS, 18332]
+        - [PE, 18242]
+        - [SC, 15600]
+        - [PR, 13764]
+        - [PB, 13578]
+        - [PA, 5770]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4983}
+      id_imovel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 189467}
+      tipo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: AREA_POUSIO
+        max: AREA_POUSIO
+        top:
+        - [AREA_POUSIO, 212315]
+      status:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: AT
+        max: SU
+        top:
+        - [AT, 188315]
+        - [PE, 21063]
+        - [CA, 2541]
+        - [SU, 396]
+      condicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: Aguardando analise
+        max: Em analise
+        top:
+        - [Aguardando analise, 152260]
+        - ['Analisado, aguardando atendimento a notificacao', 40641]
+        - ['Analisado, em conformidade com a Lei n 12.651/2012', 5197]
+        - [Em analise, 4483]
+        - ['Analisado, em conformidade com a Lei n 12.651/2012, com ativos ambientais', 3676]
+        - ['Aguardando analise, apos revisao ou atendimento da notificacao', 2770]
+        - [Cancelado por decisao administrativa, 1986]
+        - ['Analisado, aguardando regularizacao ambiental (Lei n 12.651/2012)', 456]
+        - [Cancelado por duplicidade, 417]
+        - [Analisado sem pendencias, 280]
+      area:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 128512
+        min: '0.0'
+        max: '48337.5025'
+        media: 12.0491
+        quartis: [0.8512, 2.5139, 7.3485]
+      geometria: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 271103}
+  hidrografia:
+    linhas: 4395034
+    fonte_do_perfil: amostra de 45.506%. ~2.000.000 linhas
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '2026-06-02'
+        max: '2026-08-04'
+        top:
+        - ['2026-08-04', 480957]
+        - ['2026-08-01', 464590]
+        - ['2026-08-02', 434189]
+        - ['2026-08-03', 386822]
+        - ['2026-06-02', 280864]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 372496]
+        - [SP, 280864]
+        - [PR, 219692]
+        - [RS, 180224]
+        - [SC, 153600]
+        - [GO, 149948]
+        - [MT, 138088]
+        - [CE, 72519]
+        - [ES, 71680]
+        - [PA, 68251]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5691}
+      id_imovel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1628470}
+      tipo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: LAGO_NATURAL
+        max: RIO_ATE_10
+        top:
+        - [RIO_ATE_10, 1595883]
+        - [RESERVATORIO_ARTIFICIAL_DECORRENTE_BARRAMENTO, 214231]
+        - [RIO_10_A_50, 99583]
+        - [LAGO_NATURAL, 94848]
+        - [RIO_50_A_200, 30238]
+        - [RIO_200_A_600, 8345]
+        - [RIO_ACIMA_600, 4294]
+      status:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: AT
+        max: SU
+        top:
+        - [AT, 1774736]
+        - [PE, 183566]
+        - [CA, 66068]
+        - [SU, 23052]
+      condicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: Aguardando analise
+        max: Em analise
+        top:
+        - [Aguardando analise, 1276126]
+        - ['Analisado, aguardando atendimento a notificacao', 325765]
+        - ['Analisado, aguardando regularizacao ambiental (Lei n 12.651/2012)', 106391]
+        - ['Analisado, em conformidade com a Lei n 12.651/2012', 89788]
+        - ['Analisado, em conformidade com a Lei n 12.651/2012, com ativos ambientais', 85437]
+        - [Cancelado por decisao administrativa, 52474]
+        - [Em analise, 45915]
+        - ['Aguardando analise, apos revisao ou atendimento da notificacao', 45136]
+        - [Cancelado por duplicidade, 11059]
+        - [Analisado sem pendencias, 4435]
+  reserva_legal:
+    linhas: 6421864
+    fonte_do_perfil: amostra de 31.144%. ~2.000.000 linhas
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '2026-06-02'
+        max: '2026-08-04'
+        top:
+        - ['2026-08-02', 668521]
+        - ['2026-08-01', 492815]
+        - ['2026-08-04', 457196]
+        - ['2026-08-03', 285003]
+        - ['2026-06-02', 112640]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [BA, 361581]
+        - [MG, 299500]
+        - [PR, 112640]
+        - [RS, 112640]
+        - [SP, 112640]
+        - [SC, 95996]
+        - [PI, 95260]
+        - [PA, 92160]
+        - [GO, 89248]
+        - [CE, 88064]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6835}
+      id_imovel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1817905}
+      tipo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: ARL_APROVADA_NAO_AVERBADA
+        max: ARL_PROPOSTA
+        top:
+        - [ARL_PROPOSTA, 1871439]
+        - [ARL_AVERBADA, 85534]
+        - [ARL_APROVADA_NAO_AVERBADA, 59202]
+      status:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: AT
+        max: SU
+        top:
+        - [AT, 1809886]
+        - [PE, 154323]
+        - [CA, 38738]
+        - [SU, 13228]
+      condicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: Aguardando analise
+        max: Em analise
+        top:
+        - [Aguardando analise, 1489157]
+        - ['Analisado, aguardando atendimento a notificacao', 248257]
+        - ['Analisado, em conformidade com a Lei n 12.651/2012', 65763]
+        - ['Analisado, em conformidade com a Lei n 12.651/2012, com ativos ambientais', 61663]
+        - ['Analisado, aguardando regularizacao ambiental (Lei n 12.651/2012)', 49922]
+        - [Em analise, 33990]
+        - [Cancelado por decisao administrativa, 29029]
+        - ['Aguardando analise, apos revisao ou atendimento da notificacao', 22532]
+        - [Cancelado por duplicidade, 7872]
+        - [Analisado sem pendencias, 5057]
+      area:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 507625
+        min: '0.0'
+        max: '2156930.7827'
+        media: 42.8396
+        quartis: [0.553, 2.0224, 7.5565]
+  servidao_administrativa:
+    linhas: 2175650
+    fonte_do_perfil: amostra de 91.927%. ~2.000.000 linhas
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '2026-06-02'
+        max: '2026-08-04'
+        top:
+        - ['2026-08-01', 767169]
+        - ['2026-08-02', 642399]
+        - ['2026-08-04', 298902]
+        - ['2026-08-03', 164779]
+        - ['2026-06-02', 138273]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [RS, 453834]
+        - [SC, 289709]
+        - [PR, 288482]
+        - [MG, 224394]
+        - [SP, 138273]
+        - [CE, 89144]
+        - [PI, 88550]
+        - [PA, 56955]
+        - [PB, 54381]
+        - [MA, 51183]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5686}
+      id_imovel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1002642}
+      tipo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: AREA_ENTORNO_RESERVATORIO_ENERGIA
+        max: RESERVATORIO_ENERGIA
+        top:
+        - [AREA_SERVIDAO_ADMINISTRATIVA_TOTAL, 1002831]
+        - [AREA_INFRAESTRUTURA_PUBLICA, 507011]
+        - [AREA_UTILIDADE_PUBLICA, 488114]
+        - [AREA_ENTORNO_RESERVATORIO_ENERGIA, 6792]
+        - [RESERVATORIO_ENERGIA, 6774]
+      status:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: AT
+        max: SU
+        top:
+        - [AT, 1823629]
+        - [PE, 156483]
+        - [CA, 25236]
+        - [SU, 6174]
+      condicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: Aguardando analise
+        max: Em analise
+        top:
+        - [Aguardando analise, 1577210]
+        - ['Analisado, aguardando atendimento a notificacao', 197699]
+        - ['Analisado, em conformidade com a Lei n 12.651/2012', 99209]
+        - ['Analisado, aguardando regularizacao ambiental (Lei n 12.651/2012)', 45123]
+        - ['Analisado, em conformidade com a Lei n 12.651/2012, com ativos ambientais', 23816]
+        - ['Aguardando analise, apos revisao ou atendimento da notificacao', 20129]
+        - [Cancelado por decisao administrativa, 18316]
+        - [Em analise, 17568]
+        - [Cancelado por duplicidade, 5795]
+        - [Analisado sem pendencias, 4345]
+      area:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 96670
+        min: '0.0'
+        max: '252876.275'
+        media: 2.0365
+        quartis: [0.0669, 0.1718, 0.4701]
+      geometria: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1331327}
+  uso_restrito:
+    linhas: 179748
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '2026-06-02'
+        max: '2026-08-04'
+        top:
+        - ['2026-08-01', 63737]
+        - ['2026-06-02', 45814]
+        - ['2026-08-03', 31549]
+        - ['2026-08-04', 24191]
+        - ['2026-08-02', 14457]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 45814]
+        - [RS, 25812]
+        - [GO, 25621]
+        - [MG, 16437]
+        - [CE, 12525]
+        - [RJ, 9505]
+        - [SC, 7057]
+        - [MT, 5022]
+        - [PE, 4828]
+        - [PR, 4478]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4734}
+      id_imovel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 109398}
+      tipo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: AREA_USO_RESTRITO_DECLIVIDADE_25_A_45
+        max: AREA_USO_RESTRITO_PANTANEIRA
+        top:
+        - [AREA_USO_RESTRITO_DECLIVIDADE_25_A_45, 170315]
+        - [AREA_USO_RESTRITO_PANTANEIRA, 9433]
+      status:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: AT
+        max: SU
+        top:
+        - [AT, 159162]
+        - [PE, 12108]
+        - [CA, 7799]
+        - [SU, 679]
+      condicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: Aguardando analise
+        max: Em analise
+        top:
+        - [Aguardando analise, 121179]
+        - ['Analisado, aguardando atendimento a notificacao', 32192]
+        - ['Analisado, aguardando regularizacao ambiental (Lei n 12.651/2012)', 4879]
+        - ['Aguardando analise, apos revisao ou atendimento da notificacao', 4788]
+        - [Cancelado por duplicidade, 4265]
+        - [Cancelado por decisao administrativa, 3538]
+        - ['Analisado, em conformidade com a Lei n 12.651/2012', 3144]
+        - ['Analisado, em conformidade com a Lei n 12.651/2012, com ativos ambientais', 2823]
+        - [Em analise, 2571]
+        - ['Analisado, em regularizacao ambiental (Lei n 12.651/2012)', 208]
+      area:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 93633
+        min: '0.0'
+        max: '105341.7474'
+        media: 47.6176
+        quartis: [0.3844, 1.5395, 5.4805]
+      geometria: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 191432}
+  vegetacao_nativa:
+    linhas: 5212615
+    fonte_do_perfil: amostra de 38.368%. ~2.000.000 linhas
+    colunas:
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '2026-06-02'
+        max: '2026-08-04'
+        top:
+        - ['2026-08-01', 543235]
+        - ['2026-08-04', 502450]
+        - ['2026-08-02', 448250]
+        - ['2026-08-03', 394313]
+        - ['2026-06-02', 188416]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 312114]
+        - [RS, 219528]
+        - [SP, 188416]
+        - [PR, 169984]
+        - [PA, 147205]
+        - [SC, 134040]
+        - [GO, 124109]
+        - [ES, 122752]
+        - [PI, 78643]
+        - [MA, 74303]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      id_imovel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1756823}
+      tipo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: VEGETACAO_NATIVA
+        max: VEGETACAO_NATIVA
+        top:
+        - [VEGETACAO_NATIVA, 2076664]
+      status:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: AT
+        max: SU
+        top:
+        - [AT, 1823607]
+        - [PE, 175870]
+        - [CA, 62847]
+        - [SU, 14340]
+      condicao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: Aguardando analise
+        max: Em analise
+        top:
+        - [Aguardando analise, 1325714]
+        - ['Analisado, aguardando atendimento a notificacao', 324372]
+        - ['Analisado, aguardando regularizacao ambiental (Lei n 12.651/2012)', 91082]
+        - ['Analisado, em conformidade com a Lei n 12.651/2012', 86865]
+        - ['Analisado, em conformidade com a Lei n 12.651/2012, com ativos ambientais', 75871]
+        - [Em analise, 62055]
+        - [Cancelado por decisao administrativa, 47461]
+        - ['Aguardando analise, apos revisao ou atendimento da notificacao', 38435]
+        - [Cancelado por duplicidade, 13031]
+        - [Analisado sem pendencias, 8116]
+      area:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 564303
+        min: '0.0'
+        max: '2012026.2013'
+        media: 59.0132
+        quartis: [0.7301, 2.823, 11.6314]

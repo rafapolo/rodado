@@ -1,0 +1,304 @@
+dataset: br_anatel_banda_larga_fixa
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  densidade_brasil:
+    linhas: 193
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: '2007'
+        max: '2025'
+        media: 2017.1036
+        quartis: [2013, 2017, 2021]
+        top:
+        - ['2011', 12]
+        - ['2012', 12]
+        - ['2013', 12]
+        - ['2014', 12]
+        - ['2015', 12]
+        - ['2016', 12]
+        - ['2017', 12]
+        - ['2018', 12]
+        - ['2019', 12]
+        - ['2020', 12]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.513
+        quartis: [3, 6, 9]
+        top:
+        - ['3', 19]
+        - ['6', 19]
+        - ['9', 19]
+        - ['12', 18]
+        - ['1', 15]
+        - ['2', 15]
+        - ['4', 15]
+        - ['5', 15]
+        - ['7', 15]
+        - ['8', 15]
+      densidade:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 188
+        min: '3.4660335730135'
+        max: '25.808618015253'
+        media: 14.8584
+        quartis: [10.9113, 13.6184, 19.096]
+  densidade_municipio:
+    linhas: 1072350
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: '2007'
+        max: '2025'
+        media: 2017.1247
+        quartis: [2013, 2017, 2021]
+        top:
+        - ['2018', 66840]
+        - ['2020', 66840]
+        - ['2021', 66840]
+        - ['2022', 66840]
+        - ['2023', 66840]
+        - ['2024', 66840]
+        - ['2019', 66839]
+        - ['2017', 66831]
+        - ['2016', 66814]
+        - ['2015', 66806]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.5132
+        quartis: [3, 6, 9]
+        top:
+        - ['9', 105364]
+        - ['6', 105323]
+        - ['3', 104916]
+        - ['12', 99812]
+        - ['8', 83517]
+        - ['7', 83516]
+        - ['5', 83512]
+        - ['4', 83506]
+        - ['2', 83502]
+        - ['1', 83486]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 164408]
+        - [SP, 124266]
+        - [RS, 95601]
+        - [BA, 80430]
+        - [PR, 77007]
+        - [SC, 56782]
+        - [GO, 47387]
+        - [PB, 42827]
+        - [PI, 42545]
+        - [MA, 41692]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      densidade:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 865734
+        min: '0.0024103936172777'
+        max: '2444.3994062571'
+        media: 7.7072
+        quartis: [1.3363, 4.2171, 10.8971]
+  densidade_uf:
+    linhas: 5211
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: '2007'
+        max: '2025'
+        media: 2017.1036
+        quartis: [2013, 2017, 2021]
+        top:
+        - ['2011', 324]
+        - ['2012', 324]
+        - ['2013', 324]
+        - ['2014', 324]
+        - ['2015', 324]
+        - ['2016', 324]
+        - ['2017', 324]
+        - ['2018', 324]
+        - ['2019', 324]
+        - ['2020', 324]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.513
+        quartis: [3, 6, 9]
+        top:
+        - ['3', 513]
+        - ['6', 513]
+        - ['9', 513]
+        - ['12', 486]
+        - ['1', 405]
+        - ['2', 405]
+        - ['4', 405]
+        - ['5', 405]
+        - ['7', 405]
+        - ['8', 405]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [AC, 193]
+        - [AL, 193]
+        - [AM, 193]
+        - [AP, 193]
+        - [BA, 193]
+        - [CE, 193]
+        - [DF, 193]
+        - [ES, 193]
+        - [GO, 193]
+        - [MA, 193]
+      densidade:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 4602
+        min: '0.22834538306991'
+        max: '39.028132116373'
+        media: 11.7307
+        quartis: [5.4266, 10.1235, 16.3667]
+  microdados:
+    linhas: 62572894
+    fonte_do_perfil: tabela inteira da última partição (ano = 2026)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
+        top:
+        - ['2026', 1397962]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        media: 1.5005
+        quartis: [1, 2, 2]
+        top:
+        - ['2', 699688]
+        - ['1', 698274]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 245088]
+        - [MG, 197877]
+        - [RS, 152879]
+        - [PR, 102658]
+        - [SC, 100345]
+        - [BA, 87770]
+        - [GO, 53285]
+        - [RJ, 53073]
+        - [CE, 52211]
+        - [PE, 41770]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      cnpj: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 9004, pessoal: 'só contagens: valores seriam dado pessoal'}
+      empresa: {tipo: VARCHAR, nulos_pct: 0.03, distintos_aprox: 10628}
+      porte_empresa:
+        tipo: VARCHAR
+        nulos_pct: 0.03
+        distintos_aprox: 2
+        min: Grande Porte
+        max: Pequeno Porte
+        top:
+        - [Pequeno Porte, 1058129]
+        - [Grande Porte, 339481]
+        - [null, 352]
+      tecnologia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 31
+        min: ADSL1
+        max: Wi-Fi
+        top:
+        - [FTTH, 795346]
+        - [ETHERNET, 198840]
+        - [Wi-Fi, 99647]
+        - [VSAT, 96047]
+        - [ADSL2, 49966]
+        - [FTTB, 38743]
+        - [HDSL, 37538]
+        - [HFC, 28753]
+        - [ADSL1, 22524]
+        - [FWA, 7906]
+      transmissao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Cabo Coaxial
+        max: Satelite
+        top:
+        - [Fibra, 972648]
+        - [Radio, 152741]
+        - [Cabo Metalico, 137789]
+        - [Satelite, 101797]
+        - [Cabo Coaxial, 32987]
+      velocidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: 0Kbps a 512Kbps
+        max: '> 34Mbps'
+        top:
+        - ['> 34Mbps', 916101]
+        - [2Mbps a 12Mbps, 200725]
+        - [12Mbps a 34Mbps, 175035]
+        - [512kbps a 2Mbps, 74091]
+        - [0Kbps a 512Kbps, 32010]
+      produto:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: internet
+        max: outros
+        top:
+        - [internet, 1191666]
+        - [linha dedicada, 170943]
+        - [outros, 27418]
+        - [m2m, 7935]
+      acessos:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 6302
+        min: '1'
+        max: '658092'
+        media: 80.3327
+        quartis: [1, 3, 13]

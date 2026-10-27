@@ -1,0 +1,229 @@
+dataset: br_bcb_scrdata
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  dados:
+    linhas: 43061984
+    fonte_do_perfil: amostra de 4.644%. ~2.000.000 linhas
+    colunas:
+      data_base: {tipo: DATE, nulos_pct: 0, distintos_aprox: 187, min: '2012-07-31', max: '2026-07-31'}
+      uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 176611]
+        - [RS, 143132]
+        - [PR, 135215]
+        - [MG, 130891]
+        - [SC, 128500]
+        - [ES, 105931]
+        - [RJ, 102311]
+        - [GO, 92551]
+        - [MT, 84686]
+        - [MS, 79480]
+      segmento:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: Arrendamento
+        max: Outros
+        top:
+        - [Banco, 1252140]
+        - [Cooperativa, 454833]
+        - [Financeira, 239991]
+        - [Outros, 52632]
+        - [Desenvolvimento/Fomento, 48884]
+        - [Instituição de pagamento, 42630]
+        - [Fintech, 41968]
+        - [Arrendamento, 25657]
+      cliente:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: PF
+        max: PJ
+        top:
+        - [PF, 1305082]
+        - [PJ, 853653]
+      cnae_ocupacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 31
+        min: Administração pública, defesa e seguridade social
+        max: Água, esgoto, atividades de gestão de resíduos e descontaminação
+        top:
+        - [Outros, 240598]
+        - [Empresário, 207323]
+        - [Servidor ou empregado público, 189527]
+        - [Autônomo, 186103]
+        - [Empregado de empresa privada, 177665]
+        - [Aposentado/pensionista, 150331]
+        - [Comércio; reparação de veículos automotores e motocicletas, 105582]
+        - [MEI, 96246]
+        - [Indústrias de transformação, 82511]
+        - [Construção, 63144]
+      porte:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: Acima de 20 salários mínimos
+        max: Sem rendimento
+        top:
+        - [Pequeno, 262283]
+        - [Micro, 239646]
+        - [Médio, 211353]
+        - [Mais de 5 a 10 salários mínimos, 181105]
+        - [Mais de 3 a 5 salários mínimos, 177548]
+        - [Mais de 1 a 2 salários mínimos, 172412]
+        - [Mais de 2 a 3 salários mínimos, 169859]
+        - [Mais de 10 a 20 salários mínimos, 163969]
+        - [Acima de 20 salários mínimos, 156369]
+        - [Até 1 salário mínimo, 144612]
+      modalidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: Adiantamentos a depositantes
+        max: Outros créditos
+        top:
+        - [Empréstimos, 933928]
+        - [Financiamentos, 475217]
+        - [Outros créditos, 234893]
+        - [Financiamentos rurais  (ex-financiamentos rurais e agroindustriais), 168273]
+        - [Financiamentos imobiliários, 126466]
+        - [Direitos creditórios descontados, 78565]
+        - [Adiantamentos a depositantes, 67795]
+        - [Operações de arrendamento, 46253]
+        - [Financiamentos à exportação, 13251]
+        - [Financiamentos de infraestrutura e desenvolvimento, 6404]
+      submodalidade: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 56, min: ARO - adiantamento de receitas orçamentárias, max: Vendor}
+      origem:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Com destinação específica
+        max: Sem destinação específica
+        top:
+        - [Sem destinação específica, 1727577]
+        - [Com destinação específica, 431158]
+      indexador:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: Flutuantes
+        max: Índices de preços
+        top:
+        - [Prefixado, 1414231]
+        - [Pós-fixado, 375735]
+        - [Flutuantes, 216269]
+        - [Outros indexadores, 83276]
+        - [Índices de preços, 59630]
+        - [TCR/TRFC, 9594]
+      numero_de_operacoes: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 47611, pessoal: 'só contagens: valores seriam dado pessoal'}
+      a_vencer_ate_90_dias:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1586158
+        min: '0.0'
+        max: '99182879452.16'
+        media: 2953945.0479
+        quartis: [2165.2934, 23694.3472, 243571.1585]
+      a_vencer_de_91_ate_360_dias:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1765084
+        min: '0.0'
+        max: '73207115807.02'
+        media: 3827883.185
+        quartis: [972.6779, 28968.8327, 320473.0255]
+      a_vencer_de_361_ate_1080_dias:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1172770
+        min: '0.0'
+        max: '12455160088.16'
+        media: 4258000.6723
+        quartis: [0, 10767.2009, 216469.7365]
+      a_vencer_de_1081_ate_1800_dias:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1217473
+        min: '0.0'
+        max: '22653424976.03'
+        media: 1989271.5005
+        quartis: [0, 0, 40571.9029]
+      a_vencer_de_1801_ate_5400_dias:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 476989
+        min: '0.0'
+        max: '30286596160.75'
+        media: 2726568.7817
+        quartis: [0, 0, 795.3224]
+      a_vencer_acima_de_5400_dias:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 332894
+        min: '0.0'
+        max: '8534775691.91'
+        media: 732096.259
+        quartis: [0, 0, 0]
+      carteira_a_vencer:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1702288
+        min: '0.0'
+        max: '102054388729.83'
+        media: 16487765.4464
+        quartis: [15348.6884, 156163.7376, 1414145.0817]
+      vencido_de_15_ate_90_dias:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1225055
+        min: '0.0'
+        max: '3624895893.88'
+        media: 134631.5193
+        quartis: [0, 0.0014, 9601.1321]
+      vencido_acima_de_90_dias:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 770089
+        min: '0.0'
+        max: '1699973228.97'
+        media: 274532.4831
+        quartis: [0, 0, 13707.266]
+      carteira_vencida:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 966968
+        min: '0.0'
+        max: '3624895893.88'
+        media: 409164.0024
+        quartis: [0, 469.4916, 31145.4724]
+      carteira_ativa:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2020981
+        min: '1.01'
+        max: '102309732456.13'
+        media: 16896914.238
+        quartis: [24819.5225, 198303.4697, 1629443.4091]
+      carteira_inadimplencia:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1024864
+        min: '0.0'
+        max: '2682186589.56'
+        media: 544911.8673
+        quartis: [0, 0, 33060.044]
+      ativo_problematico:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1103974
+        min: '0.0'
+        max: '4451625974.89'
+        media: 1176352.0621
+        quartis: [0, 2202.8492, 99866.8795]

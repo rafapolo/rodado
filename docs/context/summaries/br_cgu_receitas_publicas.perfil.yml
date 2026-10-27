@@ -1,0 +1,113 @@
+dataset: br_cgu_receitas_publicas
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  receitas:
+    linhas: 1529345
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano_exercicio:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '2013'
+        max: '2024'
+        media: 2019.7795
+        quartis: [2017, 2020, 2022]
+        top:
+        - ['2016', 194533]
+        - ['2017', 190479]
+        - ['2019', 176828]
+        - ['2018', 173944]
+        - ['2023', 169702]
+        - ['2022', 160767]
+        - ['2024', 160225]
+        - ['2021', 146945]
+        - ['2020', 142348]
+        - ['2014', 4553]
+      data_lancamento: {tipo: DATE, nulos_pct: 0.05, distintos_aprox: 3609, min: '2013-12-31', max: '2024-12-07'}
+      id_orgao_superior:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 35
+        min: '20000'
+        max: '84000'
+        top:
+        - ['26000', 534976]
+        - ['25000', 211565]
+        - ['52000', 139902]
+        - ['30000', 58981]
+        - ['36000', 49113]
+        - ['24000', 48679]
+        - ['32000', 48425]
+        - ['44000', 41886]
+        - ['39000', 40570]
+        - ['41000', 38195]
+      nome_orgao_superior: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 37, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_orgao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 248, min: '20101', max: '91214'}
+      nome_orgao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 321, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_unidade_gestora: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 528, min: '110005', max: '913001'}
+      nome_unidade_gestora: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 365, pessoal: 'só contagens: valores seriam dado pessoal'}
+      categoria_economica:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Receitas Correntes
+        max: Sem informação
+        top:
+        - [Receitas Correntes, 1462584]
+        - [Receitas de Capital, 42925]
+        - [Receitas Correntes - intra-orçamentárias, 23396]
+        - [Sem informação, 300]
+        - [Receitas de Capital - intra-orçamentárias, 140]
+      origem:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: Alienação de Bens
+        max: Transferências de Capital
+        top:
+        - [Receita de Serviços, 479518]
+        - [Outras Receitas Correntes, 464272]
+        - [Receita Patrimonial, 248374]
+        - ['Impostos, Taxas e Contribuições de Melhoria', 126155]
+        - [Contribuições, 105479]
+        - [Receita Industrial, 27628]
+        - [Receita Agropecuária, 21455]
+        - [Amortizações de Empréstimos, 17216]
+        - [Alienação de Bens, 16612]
+        - [Transferências Correntes, 8405]
+      especie: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 78, min: AMORTIZACAO DE EMPRESTIMOS, max: Valores Mobiliários}
+      detalhamento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2621}
+      valor_previsto:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 24403
+        min: '-214773743.0'
+        max: '2010264256580.0'
+        media: 28563167.6136
+        quartis: [0, 0, 0]
+      valor_lancado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 9614
+        min: '-281082317722.73'
+        max: '357160677863.97'
+        media: 3765036.8844
+        quartis: [0, 0, 0]
+      valor_realizado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 952402
+        min: '-156285934188.03'
+        max: '771117711060.95'
+        media: 25408118.1412
+        quartis: [281.7407, 3282.5438, 44098.0307]
+      percentual_realizado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 11711
+        min: '-114551.92913385827'
+        max: '72363772.5'
+        media: 65.292
+        quartis: [0, 0, 0]

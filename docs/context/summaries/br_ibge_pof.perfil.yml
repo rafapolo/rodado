@@ -1,0 +1,3741 @@
+dataset: br_ibge_pof
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  aluguel_estimado_2017:
+    linhas: 48935
+    fonte_do_perfil: tabela inteira
+    colunas:
+      V8000:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 223
+        min: '5.0'
+        max: '9999999.99'
+        media: 506962.8486
+        quartis: [300, 499.9412, 800]
+      V8000_deflacionado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 21895
+        min: '5.01'
+        max: '21265.56'
+        media: 604.0978
+        quartis: [296.9698, 454.12, 705.0639]
+      V9001:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '0000101'
+        max: '0000101'
+        top:
+        - ['0000101', 48935]
+      V9002:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '11'
+        max: '11'
+        top:
+        - ['11', 48935]
+      V9010:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: '1'
+        max: '9'
+        top:
+        - ['7', 4580]
+        - ['4', 4432]
+        - ['9', 4431]
+        - ['12', 4428]
+        - ['6', 4083]
+        - ['10', 4047]
+        - ['3', 3991]
+        - ['5', 3875]
+        - ['2', 3843]
+        - ['8', 3824]
+      V9011:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 14
+        min: '0'
+        max: '12'
+        media: 11.7247
+        quartis: [12, 12, 12]
+        top:
+        - ['12', 47137]
+        - ['1', 459]
+        - ['3', 232]
+        - ['6', 164]
+        - ['8', 150]
+        - ['2', 148]
+        - ['4', 136]
+        - ['5', 133]
+        - ['10', 112]
+        - ['7', 99]
+      deflator:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5501
+        min: '0.9712679972'
+        max: '1.0328251807'
+        media: 1.0015
+        quartis: [0.9957, 1.0007, 1.0084]
+      fator_anualizacao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        media: 1
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 48935]
+      id_codigo_5_bd:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '00001'
+        max: '00001'
+        top:
+        - ['00001', 48935]
+      id_domicilio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 53847}
+      id_estrato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 625, min: '1101', max: '5308'}
+      id_quadro:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '00'
+        max: '00'
+        top:
+        - ['00', 48935]
+      id_unidade_consumo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 59826}
+      id_unidade_primaria_amostragem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5458}
+      indicador_imputacao_valor:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0509
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 46446]
+        - ['1', 2489]
+      peso:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5648
+        min: '4.38709877'
+        max: '49579.04170268'
+        media: 965.6375
+        quartis: [361.6646, 636.8478, 1222.2927]
+      peso_final:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5809
+        min: '5.85111985'
+        max: '65991.32880959'
+        media: 1160.6612
+        quartis: [458.9778, 788.2996, 1449.3855]
+      renda_total:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 42042
+        min: '8.38'
+        max: '675212.2'
+        media: 4805.2064
+        quartis: [1804.7548, 2998.343, 5258.744]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 3835]
+        - [SP, 3384]
+        - [BA, 2707]
+        - [RJ, 2628]
+        - [RS, 2622]
+        - [PE, 2531]
+        - [ES, 2494]
+        - [PR, 2455]
+        - [SC, 2134]
+        - [CE, 2126]
+      situacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 36178]
+        - ['2', 12757]
+  cadastro_de_produtos_2017:
+    linhas: 13515
+    fonte_do_perfil: tabela inteira
+    colunas:
+      descricao_0_alimentacao:
+        tipo: VARCHAR
+        nulos_pct: 34.89
+        distintos_aprox: 1
+        min: Alimentacao
+        max: Alimentacao
+        top:
+        - [Alimentacao, 8800]
+        - [null, 4715]
+      descricao_0_despesa:
+        tipo: VARCHAR
+        nulos_pct: 0.3
+        distintos_aprox: 1
+        min: Despesa Total
+        max: Despesa Total
+        top:
+        - [Despesa Total, 13474]
+        - [null, 41]
+      descricao_0_rendimento:
+        tipo: VARCHAR
+        nulos_pct: 98.85
+        distintos_aprox: 1
+        min: Rendimento Total e Variação Patrimonial
+        max: Rendimento Total e Variação Patrimonial
+        top:
+        - [null, 13359]
+        - [Rendimento Total e Variação Patrimonial, 156]
+      descricao_1_alimentacao:
+        tipo: VARCHAR
+        nulos_pct: 34.89
+        distintos_aprox: 2
+        min: Alimentação fora do domicílio
+        max: Alimentação no domicílio
+        top:
+        - [Alimentação no domicílio, 8357]
+        - [null, 4715]
+        - [Alimentação fora do domicílio, 443]
+      descricao_1_aquisicao_alimentar:
+        tipo: VARCHAR
+        nulos_pct: 38.45
+        distintos_aprox: 17
+        min: Alimentos preparados  e misturas industriais
+        max: Óleos e Gorduras
+        top:
+        - [null, 5196]
+        - [Pescados, 1924]
+        - [Panificados, 833]
+        - ['Açúcares, doces e produtos de conf.', 809]
+        - [Bebidas e infusões, 609]
+        - [Hortaliças, 608]
+        - [Frutas, 599]
+        - [Carnes, 549]
+        - [Alimentos preparados  e misturas industriais, 437]
+        - [Laticínios, 425]
+      descricao_1_despesa:
+        tipo: VARCHAR
+        nulos_pct: 0.3
+        distintos_aprox: 3
+        min: Aumento do ativo
+        max: Diminuição do passivo
+        top:
+        - [Despesas Correntes, 13258]
+        - [Aumento do ativo, 208]
+        - [null, 41]
+        - [Diminuição do passivo, 8]
+      descricao_1_rendimento:
+        tipo: VARCHAR
+        nulos_pct: 98.85
+        distintos_aprox: 1
+        min: Rendimento Total
+        max: Rendimento Total
+        top:
+        - [null, 13359]
+        - [Rendimento Total, 156]
+      descricao_2_alimentacao:
+        tipo: VARCHAR
+        nulos_pct: 34.89
+        distintos_aprox: 25
+        min: Alimentação light e diet
+        max: Óleos e gorduras
+        top:
+        - [null, 4715]
+        - ['Carnes, vísceras e pescados', 2487]
+        - [Panificados, 846]
+        - [Açúcares e derivados, 788]
+        - [Bebidas e infusões, 676]
+        - [Frutas, 600]
+        - [Leites e derivados, 460]
+        - ['Cereais, leguminosas e oleaginosas', 439]
+        - [Legumes e verduras, 427]
+        - [Alimentos preparados, 345]
+      descricao_2_aquisicao_alimentar:
+        tipo: VARCHAR
+        nulos_pct: 38.62
+        distintos_aprox: 48
+        min: Alimentos preparados
+        max: Óleos
+        top:
+        - [null, 5219]
+        - [Pescados de água salgada, 1181]
+        - [Pescados de água doce, 735]
+        - [Doces e produtos de confeitaria, 574]
+        - [Frutas de clima tropical, 502]
+        - [Alimentos preparados, 413]
+        - ['Biscoitos, roscas, etc.', 401]
+        - [Bebidas não-alcoólicas, 375]
+        - [Pães, 336]
+        - [Condimentos, 285]
+      descricao_2_despesa:
+        tipo: VARCHAR
+        nulos_pct: 0.3
+        distintos_aprox: 7
+        min: Despesas de Consumo
+        max: Prestação de imóvel
+        top:
+        - [Despesas de Consumo, 12040]
+        - [Despesas de consumo, 862]
+        - [Outras despesas correntes, 356]
+        - [Imóvel (reforma), 194]
+        - [null, 41]
+        - [Imóvel (aquisição), 7]
+        - [Outros investimentos, 7]
+        - [Empréstimo, 6]
+        - [Prestação de imóvel, 2]
+      descricao_2_rendimento:
+        tipo: VARCHAR
+        nulos_pct: 98.85
+        distintos_aprox: 4
+        min: Outras rendas
+        max: Transferência
+        top:
+        - [null, 13359]
+        - [Transferência, 86]
+        - [Rendimento do Trabalho, 59]
+        - [Outras rendas, 8]
+        - [Rendimento de aluguel, 3]
+      descricao_3_alimentacao:
+        tipo: VARCHAR
+        nulos_pct: 42.53
+        distintos_aprox: 37
+        min: Alface
+        max: Óleo de soja
+        top:
+        - [null, 5748]
+        - [Outros, 1741]
+        - [Pescados frescos, 1632]
+        - [Light e Diet, 553]
+        - [Outras, 434]
+        - [Carnes e peixes industrializados, 426]
+        - [Outras frutas, 398]
+        - [Light e diet, 393]
+        - [Outros panificados, 240]
+        - [Bebidas não alcoólicas light e diet, 210]
+      descricao_3_aquisicao_alimentar: {tipo: VARCHAR, nulos_pct: 39.85, distintos_aprox: 288, min: Abacate, max: Óleo não especificado}
+      descricao_3_despesa:
+        tipo: VARCHAR
+        nulos_pct: 1.9
+        distintos_aprox: 17
+        min: Alimentacao
+        max: Vestuario
+        top:
+        - [Alimentacao, 8800]
+        - [Habitacao, 1645]
+        - [Assistencia a saude, 518]
+        - [Recreação e cultura, 407]
+        - [Despesas diversas, 376]
+        - [Vestuario, 341]
+        - [Educacao, 281]
+        - [Transporte, 258]
+        - [null, 257]
+        - [Outras, 210]
+      descricao_3_rendimento:
+        tipo: VARCHAR
+        nulos_pct: 98.93
+        distintos_aprox: 10
+        min: Aposentadoria e pensão INSS
+        max: Programas sociais federais
+        top:
+        - [null, 13370]
+        - [Outras Transferências, 54]
+        - [Empregado, 52]
+        - [Programas sociais federais, 11]
+        - [Aposentadoria e pensão previdência publica, 6]
+        - [Aposentadoria e pensão INSS, 5]
+        - [Aposentadoria e pensão previdência privada, 5]
+        - ['Pensão alimentícia, mesada ou doação', 5]
+        - [Empregador, 4]
+        - [Conta propria, 3]
+      descricao_4_despesa: {tipo: VARCHAR, nulos_pct: 69.86, distintos_aprox: 54, min: Aluguel, max: Álcool – veículo próprio}
+      descricao_5_despesa:
+        tipo: VARCHAR
+        nulos_pct: 99.39
+        distintos_aprox: 7
+        min: Agua e esgoto
+        max: Telefone fixo
+        top:
+        - [null, 13433]
+        - [Outros, 34]
+        - ['Pacote de telefone, tv e internet', 28]
+        - [Telefone celular, 6]
+        - [Agua e esgoto, 4]
+        - [Aluguel monetario, 4]
+        - [Gas domestico, 3]
+        - [Aluguel não monetario, 1]
+        - [Energia eletrica, 1]
+        - [Telefone fixo, 1]
+      descricao_do_produto: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 11953}
+      id_codigo_5_bd: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4069}
+      id_codigo_7_bd: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 11704}
+      id_quadro: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 57, min: '0', max: '9'}
+      nivel_0_alimentacao:
+        tipo: VARCHAR
+        nulos_pct: 34.89
+        distintos_aprox: 1
+        min: '0'
+        max: '0'
+        top:
+        - ['0', 8800]
+        - [null, 4715]
+      nivel_0_despesa:
+        tipo: VARCHAR
+        nulos_pct: 0.3
+        distintos_aprox: 1
+        min: '0'
+        max: '0'
+        top:
+        - ['0', 13474]
+        - [null, 41]
+      nivel_0_rendimento:
+        tipo: VARCHAR
+        nulos_pct: 98.85
+        distintos_aprox: 1
+        min: '0'
+        max: '0'
+        top:
+        - [null, 13359]
+        - ['0', 156]
+      nivel_1_alimentacao:
+        tipo: VARCHAR
+        nulos_pct: 34.89
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 8357]
+        - [null, 4715]
+        - ['2', 443]
+      nivel_1_aquisicao_alimentar:
+        tipo: VARCHAR
+        nulos_pct: 38.45
+        distintos_aprox: 20
+        min: '10'
+        max: '26'
+        top:
+        - [null, 5196]
+        - ['18', 1924]
+        - ['15', 833]
+        - ['21', 809]
+        - ['24', 609]
+        - ['11', 608]
+        - ['12', 599]
+        - ['16', 549]
+        - ['25', 437]
+        - ['20', 425]
+      nivel_1_despesa:
+        tipo: VARCHAR
+        nulos_pct: 0.3
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - ['1', 13258]
+        - ['2', 208]
+        - [null, 41]
+        - ['3', 8]
+      nivel_1_rendimento:
+        tipo: VARCHAR
+        nulos_pct: 98.85
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        top:
+        - [null, 13359]
+        - ['1', 156]
+      nivel_2_alimentacao:
+        tipo: VARCHAR
+        nulos_pct: 34.89
+        distintos_aprox: 23
+        min: '101'
+        max: '208'
+        top:
+        - [null, 4715]
+        - ['107', 2487]
+        - ['110', 846]
+        - ['104', 788]
+        - ['112', 676]
+        - ['106', 600]
+        - ['109', 460]
+        - ['101', 439]
+        - ['105', 427]
+        - ['115', 345]
+      nivel_2_aquisicao_alimentar: {tipo: VARCHAR, nulos_pct: 38.62, distintos_aprox: 51, min: '101', max: '252'}
+      nivel_2_despesa:
+        tipo: VARCHAR
+        nulos_pct: 0.3
+        distintos_aprox: 7
+        min: '11'
+        max: '32'
+        top:
+        - ['11', 12902]
+        - ['12', 356]
+        - ['22', 194]
+        - [null, 41]
+        - ['21', 7]
+        - ['23', 7]
+        - ['31', 6]
+        - ['32', 2]
+      nivel_2_rendimento:
+        tipo: VARCHAR
+        nulos_pct: 98.85
+        distintos_aprox: 4
+        min: '11'
+        max: '14'
+        top:
+        - [null, 13359]
+        - ['12', 86]
+        - ['11', 59]
+        - ['14', 8]
+        - ['13', 3]
+      nivel_3_alimentacao: {tipo: VARCHAR, nulos_pct: 42.53, distintos_aprox: 57, min: '1011', max: '1144'}
+      nivel_3_aquisicao_alimentar: {tipo: VARCHAR, nulos_pct: 39.85, distintos_aprox: 347, min: '10101', max: '25202'}
+      nivel_3_despesa:
+        tipo: VARCHAR
+        nulos_pct: 1.9
+        distintos_aprox: 15
+        min: '1101'
+        max: '1206'
+        top:
+        - ['1101', 8800]
+        - ['1102', 1645]
+        - ['1106', 518]
+        - ['1108', 407]
+        - ['1111', 376]
+        - ['1103', 341]
+        - ['1107', 281]
+        - ['1104', 258]
+        - [null, 257]
+        - ['1206', 210]
+      nivel_3_rendimento:
+        tipo: VARCHAR
+        nulos_pct: 98.93
+        distintos_aprox: 10
+        min: '111'
+        max: '126'
+        top:
+        - [null, 13370]
+        - ['126', 54]
+        - ['111', 52]
+        - ['124', 11]
+        - ['122', 6]
+        - ['121', 5]
+        - ['123', 5]
+        - ['125', 5]
+        - ['112', 4]
+        - ['113', 3]
+      nivel_4_despesa:
+        tipo: VARCHAR
+        nulos_pct: 69.86
+        distintos_aprox: 45
+        min: '110201'
+        max: '111106'
+        top:
+        - [null, 9442]
+        - ['110206', 765]
+        - ['110601', 252]
+        - ['110208', 220]
+        - ['110207', 206]
+        - ['110805', 203]
+        - ['111106', 203]
+        - ['110205', 195]
+        - ['110204', 175]
+        - ['110504', 144]
+      nivel_5_despesa:
+        tipo: VARCHAR
+        nulos_pct: 99.39
+        distintos_aprox: 10
+        min: '1102011'
+        max: '1102037'
+        top:
+        - [null, 13433]
+        - ['1102037', 34]
+        - ['1102034', 28]
+        - ['1102033', 6]
+        - ['1102011', 4]
+        - ['1102036', 4]
+        - ['1102035', 3]
+        - ['1102012', 1]
+        - ['1102031', 1]
+        - ['1102032', 1]
+      v9001: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 11103}
+      variavel_despesa:
+        tipo: VARCHAR
+        nulos_pct: 0.3
+        distintos_aprox: 5
+        min: V1904_DEFLA
+        max: V8501_DEFLA
+        top:
+        - [V8000_DEFLA, 13240]
+        - [V8501_DEFLA, 187]
+        - [null, 41]
+        - [V1904_DEFLA, 29]
+        - [V531112_DEFLA, 6]
+        - [V531122_DEFLA, 6]
+        - [V531132_DEFLA, 6]
+  caracteristicas_dieta_2017:
+    linhas: 46164
+    fonte_do_perfil: tabela inteira
+    colunas:
+      V7101:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        top:
+        - ['1', 37802]
+        - ['2', 3609]
+        - ['4', 2724]
+        - ['3', 2029]
+      V7102:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 40267]
+        - ['1', 5897]
+      V71031:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 43295]
+        - ['1', 2869]
+      V71032:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 44979]
+        - ['1', 1185]
+      V71033:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 45051]
+        - ['1', 1113]
+      V71034:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 43830]
+        - ['1', 2334]
+      V71035:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 44050]
+        - ['1', 2114]
+      V71036:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 43980]
+        - ['1', 2184]
+      V71037:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 45501]
+        - ['1', 663]
+      V71038:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 45127]
+        - ['1', 1037]
+      V7104:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 39689]
+        - ['1', 6475]
+      V71051:
+        tipo: VARCHAR
+        nulos_pct: 85.97
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 39689]
+        - ['2', 4226]
+        - ['1', 2249]
+      V71052:
+        tipo: VARCHAR
+        nulos_pct: 85.97
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 39689]
+        - ['2', 4076]
+        - ['1', 2399]
+      V71053:
+        tipo: VARCHAR
+        nulos_pct: 85.97
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 39689]
+        - ['2', 4974]
+        - ['1', 1501]
+      V71054:
+        tipo: VARCHAR
+        nulos_pct: 85.97
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 39689]
+        - ['2', 4844]
+        - ['1', 1631]
+      V71055:
+        tipo: VARCHAR
+        nulos_pct: 85.97
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 39689]
+        - ['2', 6024]
+        - ['1', 451]
+      V71056:
+        tipo: VARCHAR
+        nulos_pct: 85.97
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 39689]
+        - ['2', 5448]
+        - ['1', 1027]
+      V71A01:
+        tipo: VARCHAR
+        nulos_pct: 46.49
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 24317]
+        - [null, 21460]
+        - ['1', 387]
+      V71A02:
+        tipo: VARCHAR
+        nulos_pct: 46.49
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 23656]
+        - [null, 21460]
+        - ['1', 1048]
+      V72C01:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 136
+        min: '20'
+        max: '150'
+        media: 67.9497
+        quartis: [58, 67, 78]
+      V72C02:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 77
+        min: '115'
+        max: '204'
+        media: 164.0339
+        quartis: [158, 165, 170]
+      id_domicilio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 23454}
+      id_estrato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 625, min: '1101', max: '5308'}
+      id_informante: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 59452}
+      id_unidade_consumo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 23328}
+      id_unidade_primaria_amostragem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5458}
+      peso:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5378
+        min: '11.96481481'
+        max: '80957.59987656'
+        media: 2769.9848
+        quartis: [986.0754, 1754.5593, 3312.9031]
+      peso_final:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 21370
+        min: '1.65584941'
+        max: '107836.43297694'
+        media: 3896.9543
+        quartis: [1412.1662, 2539.4009, 4679.1966]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 3699]
+        - [SP, 3149]
+        - [RJ, 2516]
+        - [BA, 2444]
+        - [PE, 2441]
+        - [RS, 2135]
+        - [CE, 2134]
+        - [ES, 2107]
+        - [PR, 1988]
+        - [SC, 1897]
+      situacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 35391]
+        - ['2', 10773]
+  condicoes_vida_2017:
+    linhas: 58039
+    fonte_do_perfil: tabela inteira
+    colunas:
+      V6101:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '1'
+        max: '6'
+        top:
+        - ['3', 20750]
+        - ['2', 12514]
+        - ['4', 9099]
+        - ['1', 8044]
+        - ['5', 6946]
+        - ['6', 686]
+      V6102:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 509
+        min: '80.0'
+        max: '400000.0'
+        media: 3540.9245
+        quartis: [1619.3242, 2506.3219, 4001.4498]
+      V6103:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 246
+        min: '30.0'
+        max: '15000.0'
+        media: 983.9523
+        quartis: [500, 800, 1168.9805]
+      V61041:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - ['1', 33925]
+        - ['2', 20827]
+        - ['3', 3287]
+      V61042:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - ['1', 38066]
+        - ['2', 15616]
+        - ['3', 4357]
+      V61043:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - ['1', 32404]
+        - ['2', 21095]
+        - ['3', 4540]
+      V61044:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - ['1', 34762]
+        - ['2', 16294]
+        - ['3', 6983]
+      V61045:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - ['1', 25076]
+        - ['2', 17302]
+        - ['3', 15661]
+      V61046:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - ['1', 21086]
+        - ['3', 19060]
+        - ['2', 17893]
+      V61051:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        top:
+        - ['1', 37104]
+        - ['2', 9061]
+        - ['3', 6131]
+        - ['4', 5743]
+      V61052:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        top:
+        - ['1', 44843]
+        - ['2', 8791]
+        - ['3', 3814]
+        - ['4', 591]
+      V61053:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        top:
+        - ['1', 27403]
+        - ['3', 11165]
+        - ['2', 10041]
+        - ['4', 9430]
+      V61054:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        top:
+        - ['1', 37667]
+        - ['4', 8863]
+        - ['2', 7896]
+        - ['3', 3613]
+      V61055:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        top:
+        - ['1', 18663]
+        - ['4', 17154]
+        - ['3', 11925]
+        - ['2', 10297]
+      V61056:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        top:
+        - ['1', 26649]
+        - ['3', 12069]
+        - ['4', 10907]
+        - ['2', 8414]
+      V61057:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        top:
+        - ['1', 23545]
+        - ['4', 21681]
+        - ['2', 6922]
+        - ['3', 5891]
+      V61058:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        top:
+        - ['1', 18336]
+        - ['4', 17957]
+        - ['3', 11632]
+        - ['2', 10114]
+      V61061:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 40053]
+        - ['1', 17986]
+      V610610:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 56338]
+        - ['1', 1701]
+      V610611:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 37003]
+        - ['1', 21036]
+      V61062:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 44596]
+        - ['1', 13443]
+      V61063:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 39989]
+        - ['1', 18050]
+      V61064:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 41105]
+        - ['1', 16934]
+      V61065:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 43716]
+        - ['1', 14323]
+      V61066:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 36233]
+        - ['2', 21806]
+      V61067:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 44701]
+        - ['1', 13338]
+      V61068:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 49283]
+        - ['1', 8756]
+      V61069:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 52276]
+        - ['1', 5763]
+      V61071:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - ['3', 29718]
+        - ['2', 24719]
+        - ['1', 3602]
+      V61072:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - ['2', 36379]
+        - ['1', 20056]
+        - ['3', 1604]
+      V61073:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - ['2', 41656]
+        - ['1', 14400]
+        - ['3', 1983]
+      V6108:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 39584]
+        - ['1', 18455]
+      V6109:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 46388]
+        - ['1', 11651]
+      V6110:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 40706]
+        - ['1', 17333]
+      V6111:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 42233]
+        - ['1', 15806]
+      V6112:
+        tipo: VARCHAR
+        nulos_pct: 59.9
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 34766]
+        - ['2', 19239]
+        - ['1', 4034]
+      V6113:
+        tipo: VARCHAR
+        nulos_pct: 59.9
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 34766]
+        - ['2', 15368]
+        - ['1', 7905]
+      V6114:
+        tipo: VARCHAR
+        nulos_pct: 59.9
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 34766]
+        - ['2', 19566]
+        - ['1', 3707]
+      V6115:
+        tipo: VARCHAR
+        nulos_pct: 59.9
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 34766]
+        - ['2', 20455]
+        - ['1', 2818]
+      V6116:
+        tipo: VARCHAR
+        nulos_pct: 76.69
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 44512]
+        - ['2', 7849]
+        - ['1', 5678]
+      V6117:
+        tipo: VARCHAR
+        nulos_pct: 76.69
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 44512]
+        - ['2', 10070]
+        - ['1', 3457]
+      V6118:
+        tipo: VARCHAR
+        nulos_pct: 76.69
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 44512]
+        - ['2', 9908]
+        - ['1', 3619]
+      V6119:
+        tipo: VARCHAR
+        nulos_pct: 76.69
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 44512]
+        - ['2', 11993]
+        - ['1', 1534]
+      V6120:
+        tipo: VARCHAR
+        nulos_pct: 76.69
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 44512]
+        - ['2', 12149]
+        - ['1', 1378]
+      V6121:
+        tipo: VARCHAR
+        nulos_pct: 76.69
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 44512]
+        - ['2', 12576]
+        - ['1', 951]
+      id_domicilio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 60587}
+      id_estrato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 625, min: '1101', max: '5308'}
+      id_informante: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 55292}
+      id_unidade_consumo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 66027}
+      id_unidade_primaria_amostragem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5458}
+      peso:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5648
+        min: '4.38709877'
+        max: '49579.04170268'
+        media: 990.0198
+        quartis: [370.7681, 653.6685, 1251.2572]
+      peso_final:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5809
+        min: '5.85111985'
+        max: '65991.32880959'
+        media: 1189.1608
+        quartis: [469.8819, 803.7206, 1480.7874]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 4532]
+        - [SP, 4232]
+        - [RJ, 3191]
+        - [BA, 3130]
+        - [PE, 3114]
+        - [ES, 2998]
+        - [RS, 2952]
+        - [PR, 2904]
+        - [CE, 2668]
+        - [SC, 2512]
+      situacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 44874]
+        - ['2', 13165]
+  despesa_coletiva_2017:
+    linhas: 478572
+    fonte_do_perfil: tabela inteira
+    colunas:
+      V1904:
+        tipo: DOUBLE
+        nulos_pct: 99.7
+        distintos_aprox: 266
+        min: '30.0'
+        max: '9999999.99'
+        media: 4428481.0724
+        quartis: [123.2159, 350.6354, 9999999.99]
+      V1904_deflacionado:
+        tipo: DOUBLE
+        nulos_pct: 99.7
+        distintos_aprox: 1126
+        min: '1.99'
+        max: '1226.97'
+        media: 167.7939
+        quartis: [75.6144, 127.9915, 242.6561]
+      V1905:
+        tipo: VARCHAR
+        nulos_pct: 97.85
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 468295]
+        - ['3', 6826]
+        - ['1', 3342]
+        - ['9', 109]
+      V8000:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 20338
+        min: '0.01'
+        max: '9999999.99'
+        media: 518826.526
+        quartis: [59.991, 124.0395, 338.3371]
+      V8000_deflacionado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 85743
+        min: '0.04'
+        max: '1251794.09'
+        media: 404.8647
+        quartis: [57.8855, 116.5206, 281.9844]
+      V9001: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1035}
+      V9002:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: '1'
+        max: '9'
+        top:
+        - ['1', 373341]
+        - ['3', 57858]
+        - ['7', 31979]
+        - ['5', 4609]
+        - ['10', 3427]
+        - ['11', 2661]
+        - ['2', 1649]
+        - ['4', 1283]
+        - ['9', 1261]
+        - ['8', 384]
+      V9004: {tipo: VARCHAR, nulos_pct: 45.93, distintos_aprox: 554, min: '10001', max: '99902'}
+      V9005:
+        tipo: BIGINT
+        nulos_pct: 89.1
+        distintos_aprox: 1187
+        min: '13'
+        max: '2918'
+        media: 173.2808
+        quartis: [90, 138, 213]
+      V9010:
+        tipo: VARCHAR
+        nulos_pct: 90.71
+        distintos_aprox: 12
+        min: '1'
+        max: '9'
+        top:
+        - [null, 434102]
+        - ['1', 4951]
+        - ['3', 4805]
+        - ['2', 4472]
+        - ['9', 4050]
+        - ['4', 3975]
+        - ['12', 3663]
+        - ['5', 3530]
+        - ['7', 3267]
+        - ['6', 3221]
+      V9011:
+        tipo: BIGINT
+        nulos_pct: 90.71
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.6773
+        quartis: [1, 6, 12]
+        top:
+        - [null, 434102]
+        - ['12', 17847]
+        - ['1', 15228]
+        - ['6', 2127]
+        - ['10', 1641]
+        - ['3', 1594]
+        - ['2', 1306]
+        - ['4', 1296]
+        - ['5', 1014]
+        - ['8', 778]
+      V9012:
+        tipo: VARCHAR
+        nulos_pct: 71.08
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 340149]
+        - ['1', 110248]
+        - ['3', 27905]
+        - ['9', 270]
+      deflator:
+        tipo: DOUBLE
+        nulos_pct: 1.66
+        distintos_aprox: 42090
+        min: '0.771706138'
+        max: '1.2789258755'
+        media: 1.005
+        quartis: [0.9883, 1.0016, 1.0196]
+      fator_anualizacao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '12'
+        media: 4.3859
+        quartis: [1, 1, 12]
+        top:
+        - ['1', 271642]
+        - ['12', 124950]
+        - ['4', 81980]
+      id_codigo_5_bd: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 595, min: '06001', max: '19999'}
+      id_codigo_7_bd: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1125}
+      id_domicilio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 60587}
+      id_estrato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 625, min: '1101', max: '5308'}
+      id_quadro:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: '10'
+        max: '9'
+        top:
+        - ['6', 124950]
+        - ['15', 71302]
+        - ['7', 62892]
+        - ['17', 37220]
+        - ['10', 34193]
+        - ['12', 28546]
+        - ['11', 27282]
+        - ['13', 21861]
+        - ['8', 19088]
+        - ['18', 17155]
+      id_unidade_consumo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 66027}
+      id_unidade_primaria_amostragem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5458}
+      indicador_imputacao_qtd:
+        tipo: BIGINT
+        nulos_pct: 89.1
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.3513
+        quartis: [0, 0, 1]
+        top:
+        - [null, 426390]
+        - ['0', 33848]
+        - ['1', 18334]
+      indicador_imputacao_valor:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0518
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 453788]
+        - ['1', 24784]
+      peso:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5648
+        min: '4.38709877'
+        max: '49579.04170268'
+        media: 1049.9287
+        quartis: [398.8614, 699.5932, 1302.5158]
+      peso_final:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5809
+        min: '5.85111985'
+        max: '65991.32880959'
+        media: 1258.5675
+        quartis: [503.3726, 861.3404, 1550.0778]
+      renda_total:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 51243
+        min: '0.0'
+        max: '675212.2'
+        media: 5802.3908
+        quartis: [2089.5765, 3514.4491, 6306.6024]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 39932]
+        - [SP, 38971]
+        - [RS, 30009]
+        - [PE, 27128]
+        - [BA, 26679]
+        - [PR, 24490]
+        - [RJ, 22626]
+        - [SC, 22369]
+        - [ES, 21939]
+        - [CE, 21182]
+      situacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 388999]
+        - ['2', 89573]
+  domicilio_2017:
+    linhas: 57920
+    fonte_do_perfil: tabela inteira
+    colunas:
+      V0201:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - ['1', 52759]
+        - ['2', 5064]
+        - ['3', 97]
+      V0202:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '1'
+        max: '6'
+        top:
+        - ['1', 47952]
+        - ['4', 4676]
+        - ['2', 4533]
+        - ['3', 339]
+        - ['5', 319]
+        - ['6', 101]
+      V0203:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '1'
+        max: '6'
+        top:
+        - ['1', 37839]
+        - ['2', 12636]
+        - ['3', 5466]
+        - ['5', 1158]
+        - ['6', 514]
+        - ['4', 307]
+      V0204:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '1'
+        max: '5'
+        top:
+        - ['1', 40732]
+        - ['3', 11926]
+        - ['2', 4570]
+        - ['4', 467]
+        - ['5', 225]
+      V0205:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '1'
+        max: '30'
+        media: 5.9007
+        quartis: [5, 6, 7]
+        top:
+        - ['5', 16256]
+        - ['6', 12752]
+        - ['7', 7988]
+        - ['4', 7395]
+        - ['8', 4361]
+        - ['3', 3071]
+        - ['9', 2218]
+        - ['10', 1278]
+        - ['2', 885]
+        - ['11', 589]
+      V0206:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: '1'
+        max: '9'
+        media: 1.8428
+        quartis: [1, 2, 2]
+        top:
+        - ['2', 25037]
+        - ['1', 21805]
+        - ['3', 9679]
+        - ['4', 1215]
+        - ['5', 162]
+        - ['6', 11]
+        - ['7', 6]
+        - ['8', 4]
+        - ['9', 1]
+      V0207:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '1'
+        max: '6'
+        top:
+        - ['1', 44187]
+        - ['2', 6341]
+        - ['3', 3438]
+        - ['4', 2091]
+        - ['6', 1485]
+        - ['5', 378]
+      V0208:
+        tipo: VARCHAR
+        nulos_pct: 23.71
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        top:
+        - ['1', 35274]
+        - [null, 13733]
+        - ['2', 4671]
+        - ['3', 3091]
+        - ['4', 1151]
+      V0209:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - ['1', 54854]
+        - ['3', 1935]
+        - ['2', 1131]
+      V02101:
+        tipo: VARCHAR
+        nulos_pct: 5.29
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 31416]
+        - ['2', 23438]
+        - [null, 3066]
+      V02102:
+        tipo: VARCHAR
+        nulos_pct: 5.29
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 50294]
+        - ['1', 4560]
+        - [null, 3066]
+      V02103:
+        tipo: VARCHAR
+        nulos_pct: 5.29
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 54025]
+        - [null, 3066]
+        - ['1', 829]
+      V02104:
+        tipo: VARCHAR
+        nulos_pct: 5.29
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 53742]
+        - [null, 3066]
+        - ['1', 1112]
+      V02105:
+        tipo: VARCHAR
+        nulos_pct: 5.29
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 54660]
+        - [null, 3066]
+        - ['1', 194]
+      V02111:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: '0'
+        max: '10'
+        media: 1.3017
+        quartis: [1, 1, 2]
+        top:
+        - ['1', 40552]
+        - ['2', 11706]
+        - ['3', 2541]
+        - ['0', 2263]
+        - ['4', 578]
+        - ['5', 218]
+        - ['6', 42]
+        - ['7', 13]
+        - ['8', 3]
+        - ['10', 2]
+      V02112:
+        tipo: BIGINT
+        nulos_pct: 96.09
+        distintos_aprox: 4
+        min: '0'
+        max: '4'
+        media: 0.167
+        quartis: [0, 0, 0]
+        top:
+        - [null, 55657]
+        - ['0', 1910]
+        - ['1', 334]
+        - ['2', 16]
+        - ['4', 3]
+      V02113:
+        tipo: VARCHAR
+        nulos_pct: 96.7
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 56010]
+        - ['1', 1246]
+        - ['2', 664]
+      V0212:
+        tipo: VARCHAR
+        nulos_pct: 1.15
+        distintos_aprox: 5
+        min: '1'
+        max: '5'
+        top:
+        - ['1', 27495]
+        - ['2', 26856]
+        - ['3', 1693]
+        - ['4', 861]
+        - [null, 664]
+        - ['5', 351]
+      V0213:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '1'
+        max: '6'
+        top:
+        - ['1', 44245]
+        - ['3', 7659]
+        - ['2', 4429]
+        - ['5', 646]
+        - ['4', 498]
+        - ['6', 443]
+      V02141:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 57333]
+        - ['2', 587]
+      V02142:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 57078]
+        - ['1', 842]
+      V0215:
+        tipo: VARCHAR
+        nulos_pct: 1.01
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - ['1', 56150]
+        - ['2', 653]
+        - [null, 587]
+        - ['3', 530]
+      V02161:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 56309]
+        - ['2', 1611]
+      V02162:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 42988]
+        - ['1', 14932]
+      V02163:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 29046]
+        - ['1', 28874]
+      V02164:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 57815]
+        - ['1', 105]
+      V0217:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '1'
+        max: '7'
+        top:
+        - ['1', 39573]
+        - ['3', 8985]
+        - ['5', 3970]
+        - ['2', 2512]
+        - ['4', 1901]
+        - ['6', 744]
+        - ['7', 235]
+      V0219:
+        tipo: VARCHAR
+        nulos_pct: 84.49
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - [null, 48935]
+        - ['1', 5294]
+        - ['3', 2370]
+        - ['2', 1321]
+      V0220:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 39066]
+        - ['2', 18854]
+      V0221:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '1'
+        max: '5'
+        top:
+        - ['1', 41172]
+        - ['3', 11692]
+        - ['4', 2810]
+        - ['2', 1595]
+        - ['5', 651]
+      V6199:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        top:
+        - ['1', 34689]
+        - ['2', 14618]
+        - ['3', 5375]
+        - ['4', 3238]
+      id_domicilio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 60587}
+      id_estrato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 625, min: '1101', max: '5308'}
+      id_unidade_primaria_amostragem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5458}
+      peso:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5648
+        min: '4.38709877'
+        max: '49579.04170268'
+        media: 989.8131
+        quartis: [371.134, 655.1029, 1251.2467]
+      peso_final:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5809
+        min: '5.85111985'
+        max: '65991.32880959'
+        media: 1188.9208
+        quartis: [469.6805, 805.2237, 1480.1386]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 4532]
+        - [SP, 4219]
+        - [RJ, 3180]
+        - [BA, 3126]
+        - [PE, 3106]
+        - [ES, 2994]
+        - [RS, 2945]
+        - [PR, 2899]
+        - [CE, 2665]
+        - [SC, 2508]
+      situacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 44766]
+        - ['2', 13154]
+  inventario_2017:
+    linhas: 870354
+    fonte_do_perfil: tabela inteira
+    colunas:
+      V1404:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 92
+        min: '1930'
+        max: '2018'
+        media: 2011.9224
+        quartis: [2010, 2014, 2016]
+      V9001:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 35
+        min: '1400101'
+        max: '1403201'
+        top:
+        - ['1400101', 57181]
+        - ['1402301', 53746]
+        - ['1402501', 52501]
+        - ['1402701', 48490]
+        - ['1402601', 48203]
+        - ['1402801', 45056]
+        - ['1402201', 44597]
+        - ['1401101', 40698]
+        - ['1401401', 38332]
+        - ['1402401', 38013]
+      V9002:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: '1'
+        max: '9'
+        top:
+        - ['1', 370333]
+        - ['3', 329647]
+        - ['7', 138977]
+        - ['5', 10648]
+        - ['9', 6680]
+        - ['11', 6677]
+        - ['4', 2750]
+        - ['10', 2396]
+        - ['2', 1499]
+        - ['8', 379]
+      V9005:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: '1'
+        max: '34'
+        media: 1.5449
+        quartis: [1, 1, 2]
+        top:
+        - ['1', 641209]
+        - ['2', 139523]
+        - ['3', 37585]
+        - ['5', 17790]
+        - ['4', 12911]
+        - ['7', 11157]
+        - ['6', 3199]
+        - ['8', 1546]
+        - ['12', 1394]
+        - ['9', 1295]
+      V9012:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '3'
+        top:
+        - ['1', 710710]
+        - ['3', 159644]
+      id_codigo_5_bd:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: '14001'
+        max: '14032'
+        top:
+        - ['14001', 57181]
+        - ['14023', 53746]
+        - ['14025', 52501]
+        - ['14027', 48490]
+        - ['14026', 48203]
+        - ['14028', 45056]
+        - ['14022', 44597]
+        - ['14011', 40698]
+        - ['14014', 38332]
+        - ['14024', 38013]
+      id_domicilio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 60587}
+      id_estrato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 625, min: '1101', max: '5308'}
+      id_quadro:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '14'
+        max: '14'
+        top:
+        - ['14', 870354]
+      id_unidade_consumo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 66027}
+      id_unidade_primaria_amostragem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5458}
+      peso:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5648
+        min: '4.38709877'
+        max: '49579.04170268'
+        media: 1023.4649
+        quartis: [380.0775, 678.1485, 1287.2059]
+      peso_final:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5809
+        min: '5.85111985'
+        max: '65991.32880959'
+        media: 1227.7613
+        quartis: [480.1602, 834.4814, 1525.4743]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 72673]
+        - [SP, 69625]
+        - [RS, 51646]
+        - [RJ, 48153]
+        - [ES, 47221]
+        - [PR, 46675]
+        - [PE, 44935]
+        - [BA, 44633]
+        - [SC, 43775]
+        - [GO, 37377]
+      situacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 683871]
+        - ['2', 186483]
+  morador_2017:
+    linhas: 178431
+    fonte_do_perfil: tabela inteira
+    colunas:
+      V0306:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: '1'
+        max: '9'
+        top:
+        - ['1', 58039]
+        - ['4', 40124]
+        - ['2', 36787]
+        - ['5', 18835]
+        - ['10', 9242]
+        - ['6', 3409]
+        - ['14', 2935]
+        - ['8', 2674]
+        - ['12', 2579]
+        - ['7', 1796]
+      V0401:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 172210]
+        - ['2', 6221]
+      V0406:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 142996]
+        - ['1', 35435]
+      V0407:
+        tipo: VARCHAR
+        nulos_pct: 16.99
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 109633]
+        - ['2', 38483]
+        - [null, 30315]
+      V0408:
+        tipo: VARCHAR
+        nulos_pct: 16.99
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 128278]
+        - [null, 30315]
+        - ['2', 19838]
+      V0409:
+        tipo: BIGINT
+        nulos_pct: 28.11
+        distintos_aprox: 16
+        min: '0'
+        max: '13'
+        media: 0.3655
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 92702]
+        - [null, 50153]
+        - ['1', 27631]
+        - ['2', 5768]
+        - ['3', 1503]
+        - ['4', 422]
+        - ['5', 148]
+        - ['6', 45]
+        - ['8', 22]
+        - ['10', 19]
+      V0410:
+        tipo: BIGINT
+        nulos_pct: 28.11
+        distintos_aprox: 7
+        min: '0'
+        max: '6'
+        media: 0.4539
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 75637]
+        - [null, 50153]
+        - ['1', 47913]
+        - ['2', 3997]
+        - ['3', 627]
+        - ['4', 86]
+        - ['5', 15]
+        - ['6', 3]
+      V0411:
+        tipo: BIGINT
+        nulos_pct: 70.5
+        distintos_aprox: 9
+        min: '0'
+        max: '10'
+        media: 0.2635
+        quartis: [0, 0, 0]
+        top:
+        - [null, 125790]
+        - ['0', 40305]
+        - ['1', 11049]
+        - ['2', 1093]
+        - ['3', 161]
+        - ['4', 24]
+        - ['5', 6]
+        - ['10', 2]
+        - ['7', 1]
+      V0412:
+        tipo: VARCHAR
+        nulos_pct: 93.09
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 166095]
+        - ['2', 8567]
+        - ['1', 3769]
+      V0413:
+        tipo: BIGINT
+        nulos_pct: 28.11
+        distintos_aprox: 7
+        min: '0'
+        max: '9'
+        media: 0.3708
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 82860]
+        - [null, 50153]
+        - ['1', 43556]
+        - ['2', 1632]
+        - ['3', 186]
+        - ['4', 38]
+        - ['5', 5]
+        - ['9', 1]
+      V0414:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 148546]
+        - ['2', 29885]
+      V0415:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 128740]
+        - ['1', 49691]
+      V0416:
+        tipo: BIGINT
+        nulos_pct: 90.62
+        distintos_aprox: 6
+        min: '1'
+        max: '6'
+        media: 4.9929
+        quartis: [5, 5, 5]
+        top:
+        - [null, 161701]
+        - ['5', 16556]
+        - ['6', 65]
+        - ['4', 51]
+        - ['3', 45]
+        - ['2', 9]
+        - ['1', 4]
+      V041711:
+        tipo: VARCHAR
+        nulos_pct: 90.62
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 161701]
+        - ['2', 13692]
+        - ['1', 3038]
+      V041712:
+        tipo: VARCHAR
+        nulos_pct: 98.3
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 175393]
+        - ['1', 2682]
+        - ['2', 356]
+      V041721:
+        tipo: VARCHAR
+        nulos_pct: 90.62
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 161701]
+        - ['1', 14231]
+        - ['2', 2499]
+      V041722:
+        tipo: VARCHAR
+        nulos_pct: 92.02
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 164200]
+        - ['1', 10926]
+        - ['2', 3305]
+      V041731:
+        tipo: VARCHAR
+        nulos_pct: 90.62
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 161701]
+        - ['2', 13354]
+        - ['1', 3376]
+      V041732:
+        tipo: VARCHAR
+        nulos_pct: 98.11
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 175055]
+        - ['1', 3024]
+        - ['2', 352]
+      V041741:
+        tipo: VARCHAR
+        nulos_pct: 90.62
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 161701]
+        - ['2', 15982]
+        - ['1', 748]
+      V041742:
+        tipo: VARCHAR
+        nulos_pct: 99.58
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 177683]
+        - ['1', 641]
+        - ['2', 107]
+      V0418:
+        tipo: VARCHAR
+        nulos_pct: 72.15
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 128740]
+        - ['2', 38022]
+        - ['1', 11669]
+      V0419:
+        tipo: VARCHAR
+        nulos_pct: 72.15
+        distintos_aprox: 11
+        min: '1'
+        max: '9'
+        top:
+        - [null, 128740]
+        - ['4', 25903]
+        - ['6', 7683]
+        - ['8', 6452]
+        - ['2', 4567]
+        - ['1', 2374]
+        - ['9', 821]
+        - ['5', 756]
+        - ['7', 711]
+        - ['3', 181]
+      V0420:
+        tipo: VARCHAR
+        nulos_pct: 85.48
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 152528]
+        - ['2', 25856]
+        - ['1', 47]
+      V0421:
+        tipo: VARCHAR
+        nulos_pct: 96.38
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - [null, 171979]
+        - ['1', 6083]
+        - ['2', 332]
+        - ['3', 37]
+      V0422:
+        tipo: VARCHAR
+        nulos_pct: 76.74
+        distintos_aprox: 13
+        min: '1'
+        max: '9'
+        top:
+        - [null, 136926]
+        - ['1', 6551]
+        - ['3', 6397]
+        - ['2', 6272]
+        - ['6', 4046]
+        - ['4', 3900]
+        - ['7', 3647]
+        - ['5', 3610]
+        - ['8', 3504]
+        - ['9', 3045]
+      V0423:
+        tipo: VARCHAR
+        nulos_pct: 96.38
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 171979]
+        - ['2', 5905]
+        - ['1', 547]
+      V0424:
+        tipo: VARCHAR
+        nulos_pct: 27.85
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 113671]
+        - [null, 49691]
+        - ['2', 15069]
+      V0425:
+        tipo: VARCHAR
+        nulos_pct: 36.29
+        distintos_aprox: 16
+        min: '1'
+        max: '9'
+        top:
+        - [null, 64760]
+        - ['10', 38091]
+        - ['7', 34118]
+        - ['5', 14989]
+        - ['12', 12538]
+        - ['13', 3301]
+        - ['6', 2081]
+        - ['3', 1859]
+        - ['11', 1551]
+        - ['9', 1429]
+      V0426:
+        tipo: VARCHAR
+        nulos_pct: 80.88
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 144313]
+        - ['1', 31438]
+        - ['2', 2680]
+      V0427:
+        tipo: VARCHAR
+        nulos_pct: 92.67
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - [null, 165346]
+        - ['1', 10917]
+        - ['2', 2100]
+        - ['3', 68]
+      V0428:
+        tipo: VARCHAR
+        nulos_pct: 40.49
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - ['1', 100641]
+        - [null, 72253]
+        - ['2', 5280]
+        - ['3', 257]
+      V0429:
+        tipo: VARCHAR
+        nulos_pct: 43.29
+        distintos_aprox: 12
+        min: '1'
+        max: '9'
+        top:
+        - [null, 77243]
+        - ['3', 38085]
+        - ['4', 16233]
+        - ['8', 12209]
+        - ['2', 8009]
+        - ['5', 7754]
+        - ['1', 6408]
+        - ['6', 5027]
+        - ['7', 4451]
+        - ['10', 2052]
+      V0430:
+        tipo: VARCHAR
+        nulos_pct: 39.74
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 70903]
+        - ['1', 59739]
+        - ['2', 47789]
+      ano_nascimento:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 114
+        min: '1907'
+        max: '2018'
+        media: 1982.4088
+        quartis: [1966, 1984, 2000]
+      anos_estudo:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 20
+        min: '0'
+        max: '16'
+        media: 7.4339
+        quartis: [3, 8, 12]
+        top:
+        - ['12', 34565]
+        - ['0', 27725]
+        - ['5', 15768]
+        - ['16', 14100]
+        - ['9', 13573]
+        - ['6', 10378]
+        - ['4', 8201]
+        - ['8', 7457]
+        - ['7', 7137]
+        - ['3', 7069]
+      composicao_familiar:
+        tipo: VARCHAR
+        nulos_pct: 0.03
+        distintos_aprox: 6
+        min: '1'
+        max: '6'
+        top:
+        - ['4', 83856]
+        - ['3', 46580]
+        - ['6', 30959]
+        - ['5', 7308]
+        - ['1', 5298]
+        - ['2', 4368]
+        - [null, 62]
+      deducao_per_capita:
+        tipo: DOUBLE
+        nulos_pct: 0.03
+        distintos_aprox: 53284
+        min: '0.0'
+        max: '23414.94'
+        media: 127.233
+        quartis: [3.7439, 33.2647, 101.7653]
+      dia_nascimento:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: '1'
+        max: '99'
+        media: 17.1542
+        quartis: [8, 16, 23]
+        top:
+        - ['28', 7297]
+        - ['10', 6446]
+        - ['20', 6267]
+        - ['15', 6224]
+        - ['5', 6216]
+        - ['12', 6097]
+        - ['8', 6078]
+        - ['1', 5924]
+        - ['2', 5918]
+        - ['25', 5918]
+      id_domicilio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 60587}
+      id_estrato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 625, min: '1101', max: '5308'}
+      id_informante: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 170519}
+      id_unidade_consumo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 66027}
+      id_unidade_primaria_amostragem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5458}
+      idade:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 107
+        min: '0'
+        max: '111'
+        media: 34.6193
+        quartis: [17, 33, 51]
+      mes_nascimento:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 14
+        min: '1'
+        max: '99'
+        media: 8.3561
+        quartis: [4, 7, 10]
+        top:
+        - ['5', 15345]
+        - ['8', 15111]
+        - ['3', 15097]
+        - ['6', 14986]
+        - ['9', 14887]
+        - ['7', 14702]
+        - ['10', 14594]
+        - ['4', 14563]
+        - ['1', 14370]
+        - ['12', 14202]
+      nivel_instrucao:
+        tipo: VARCHAR
+        nulos_pct: 0.03
+        distintos_aprox: 7
+        min: '1'
+        max: '7'
+        top:
+        - ['2', 72345]
+        - ['5', 40940]
+        - ['7', 19442]
+        - ['1', 15826]
+        - ['3', 15223]
+        - ['4', 9417]
+        - ['6', 5176]
+        - [null, 62]
+      peso:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5648
+        min: '4.38709877'
+        max: '49579.04170268'
+        media: 964.45
+        quartis: [363.8847, 634.5528, 1215.6006]
+      peso_final:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5809
+        min: '5.85111985'
+        max: '65991.32880959'
+        media: 1160.694
+        quartis: [462.1583, 781.6689, 1446.7508]
+      raca_cor:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '1'
+        max: '9'
+        top:
+        - ['4', 90982]
+        - ['1', 67774]
+        - ['2', 17503]
+        - ['5', 888]
+        - ['3', 822]
+        - ['9', 462]
+      renda_disponivel_per_capita:
+        tipo: DOUBLE
+        nulos_pct: 0.03
+        distintos_aprox: 66020
+        min: '-1658.7363888889'
+        max: '237868.971666666'
+        media: 1403.6951
+        quartis: [556.053, 962.0624, 1608.0969]
+      renda_monetaria_per_capita:
+        tipo: DOUBLE
+        nulos_pct: 0.03
+        distintos_aprox: 44229
+        min: '0.0'
+        max: '238281.150833333'
+        media: 1192.8022
+        quartis: [360.374, 711.0145, 1301.8495]
+      renda_nao_monetaria_per_capita:
+        tipo: DOUBLE
+        nulos_pct: 0.03
+        distintos_aprox: 64967
+        min: '0.0'
+        max: '85137.0245833333'
+        media: 338.1259
+        quartis: [125.1024, 239.2154, 417.5315]
+      renda_total:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 51243
+        min: '0.0'
+        max: '675212.2'
+        media: 4864.5626
+        quartis: [1855.523, 3129.8686, 5432.6178]
+      sexo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 91062]
+        - ['1', 87369]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 13315]
+        - [SP, 12304]
+        - [PE, 9671]
+        - [BA, 9430]
+        - [RJ, 9239]
+        - [ES, 8546]
+        - [CE, 8431]
+        - [PR, 8253]
+        - [RS, 8081]
+        - [PA, 7647]
+      situacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 136686]
+        - ['2', 41745]
+  outros_rendimentos_2017:
+    linhas: 206108
+    fonte_do_perfil: tabela inteira
+    colunas:
+      V8500:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 14138
+        min: '1.0'
+        max: '9999999.0'
+        media: 393726.3271
+        quartis: [538.5467, 952.904, 2063.0961]
+      V8500_deflacionado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 43376
+        min: '0.99'
+        max: '7923464.71'
+        media: 3285.0914
+        quartis: [519.4271, 955.179, 1915.0162]
+      V8501:
+        tipo: DOUBLE
+        nulos_pct: 68.18
+        distintos_aprox: 5524
+        min: '0.98'
+        max: '9999999.0'
+        media: 5543612.6109
+        quartis: [126.6156, 9999999, 9999999]
+      V8501_deflacionado:
+        tipo: DOUBLE
+        nulos_pct: 85.12
+        distintos_aprox: 15417
+        min: '0.98'
+        max: '90687.44'
+        media: 377.77
+        quartis: [62.3657, 112.9134, 260.8932]
+      V9001: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 181, min: '5400101', max: '5700401'}
+      V9010:
+        tipo: VARCHAR
+        nulos_pct: 68.44
+        distintos_aprox: 12
+        min: '1'
+        max: '9'
+        top:
+        - [null, 141065]
+        - ['12', 7487]
+        - ['4', 5757]
+        - ['7', 5655]
+        - ['9', 5646]
+        - ['10', 5392]
+        - ['3', 5348]
+        - ['5', 5296]
+        - ['8', 4958]
+        - ['1', 4908]
+      V9011:
+        tipo: BIGINT
+        nulos_pct: 68.44
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 10.5883
+        quartis: [12, 12, 12]
+        top:
+        - [null, 141065]
+        - ['12', 51335]
+        - ['1', 2482]
+        - ['6', 1417]
+        - ['3', 1313]
+        - ['4', 1222]
+        - ['2', 1167]
+        - ['5', 1119]
+        - ['8', 1101]
+        - ['11', 1067]
+      deflator:
+        tipo: DOUBLE
+        nulos_pct: 6.35
+        distintos_aprox: 279
+        min: '0.9723904524'
+        max: '1.0594385286'
+        media: 1.0124
+        quartis: [1.0046, 1.011, 1.0195]
+      fator_anualizacao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        media: 1
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 206108]
+      id_codigo_5_bd: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 110, min: '54001', max: '57004'}
+      id_domicilio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 52676}
+      id_estrato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 625, min: '1101', max: '5308'}
+      id_informante: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 96621}
+      id_quadro:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '54'
+        max: '57'
+        top:
+        - ['55', 116520]
+        - ['54', 65043]
+        - ['56', 13186]
+        - ['57', 11359]
+      id_unidade_consumo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 58488}
+      id_unidade_primaria_amostragem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5458}
+      indicador_imputacao_valor:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0399
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 197874]
+        - ['1', 8234]
+      peso:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5648
+        min: '4.38709877'
+        max: '49579.04170268'
+        media: 1055.4346
+        quartis: [396.2357, 699.3496, 1315.1161]
+      peso_final:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5809
+        min: '5.85111985'
+        max: '65991.32880959'
+        media: 1261.6224
+        quartis: [499.0185, 856.3128, 1561.3049]
+      renda_total:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 47708
+        min: '25.53'
+        max: '675212.2'
+        media: 6561.742
+        quartis: [2563.4696, 4135.7039, 7152.4144]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 18289]
+        - [SP, 17582]
+        - [RS, 13100]
+        - [BA, 11216]
+        - [PE, 10952]
+        - [PR, 10271]
+        - [ES, 10116]
+        - [SC, 10070]
+        - [RJ, 9638]
+        - [CE, 8929]
+      situacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 166939]
+        - ['2', 39169]
+  rendimento_trabalho_2017:
+    linhas: 97075
+    fonte_do_perfil: tabela inteira
+    colunas:
+      V53011: {tipo: VARCHAR, nulos_pct: 15.33, distintos_aprox: 497, min: '0', max: '9999'}
+      V5302:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '1'
+        max: '7'
+        top:
+        - ['3', 40596]
+        - ['6', 30670]
+        - ['4', 10927]
+        - ['1', 7425]
+        - ['7', 3928]
+        - ['5', 2884]
+        - ['2', 645]
+      V53021:
+        tipo: VARCHAR
+        nulos_pct: 95.95
+        distintos_aprox: 4
+        min: '1'
+        max: '9'
+        top:
+        - [null, 93147]
+        - ['1', 3175]
+        - ['2', 631]
+        - ['3', 94]
+        - ['9', 28]
+      V5303:
+        tipo: VARCHAR
+        nulos_pct: 88.74
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 86148]
+        - ['1', 7378]
+        - ['2', 3549]
+      V5304:
+        tipo: VARCHAR
+        nulos_pct: 46.88
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 45505]
+        - ['1', 28041]
+        - ['2', 23529]
+      V5305:
+        tipo: VARCHAR
+        nulos_pct: 41.2
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 47461]
+        - [null, 39992]
+        - ['1', 9622]
+      V53061: {tipo: VARCHAR, nulos_pct: 15.33, distintos_aprox: 240, min: '0', max: '99999'}
+      V5307:
+        tipo: VARCHAR
+        nulos_pct: 4.05
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        top:
+        - ['1', 86899]
+        - ['2', 4349]
+        - [null, 3928]
+        - ['4', 1197]
+        - ['3', 702]
+      V531112:
+        tipo: DOUBLE
+        nulos_pct: 62.89
+        distintos_aprox: 1002
+        min: '2.0'
+        max: '9999999.0'
+        media: 1269296.5692
+        quartis: [99.9734, 133.2398, 328.8522]
+      V531112_deflacionado:
+        tipo: DOUBLE
+        nulos_pct: 62.35
+        distintos_aprox: 15417
+        min: '2.04'
+        max: '5667.03'
+        media: 203.0093
+        quartis: [95.1097, 120.0974, 206.6711]
+      V531122:
+        tipo: DOUBLE
+        nulos_pct: 92.12
+        distintos_aprox: 1458
+        min: '1.0'
+        max: '9999999.0'
+        media: 2357738.7452
+        quartis: [184.4988, 511.9487, 5390.5442]
+      V531122_deflacionado:
+        tipo: DOUBLE
+        nulos_pct: 91.98
+        distintos_aprox: 5513
+        min: '0.21'
+        max: '22000.0'
+        media: 693.7897
+        quartis: [128.3626, 284.8632, 776.5225]
+      V531132:
+        tipo: DOUBLE
+        nulos_pct: 99.3
+        distintos_aprox: 157
+        min: '1.0'
+        max: '9999999.0'
+        media: 2938820.4181
+        quartis: [64.1358, 234.86, 9999999]
+      V531132_deflacionado:
+        tipo: DOUBLE
+        nulos_pct: 99.49
+        distintos_aprox: 338
+        min: '1.0'
+        max: '4729.25'
+        media: 251.148
+        quartis: [51.9428, 120.5357, 295.411]
+      V5314:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 109
+        min: '1'
+        max: '999'
+        media: 46.2078
+        quartis: [24, 40, 44]
+      V5315:
+        tipo: VARCHAR
+        nulos_pct: 15.33
+        distintos_aprox: 5
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 37425]
+        - ['1', 25617]
+        - [null, 14884]
+        - ['3', 11784]
+        - ['4', 5128]
+        - ['5', 1349]
+        - ['9', 888]
+      V8500:
+        tipo: DOUBLE
+        nulos_pct: 6
+        distintos_aprox: 4476
+        min: '2.0'
+        max: '9999999.0'
+        media: 230619.6272
+        quartis: [599.8794, 1091.4216, 1919.9562]
+      V8500_deflacionado:
+        tipo: DOUBLE
+        nulos_pct: 6
+        distintos_aprox: 28853
+        min: '9.81'
+        max: '256179.2'
+        media: 1734.8679
+        quartis: [595.6524, 1066.0791, 1829.6151]
+      V9001:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '5300101'
+        max: '5300701'
+        top:
+        - ['5300301', 40596]
+        - ['5300601', 30670]
+        - ['5300401', 10927]
+        - ['5300101', 7425]
+        - ['5300701', 3928]
+        - ['5300501', 2884]
+        - ['5300201', 645]
+      V9010:
+        tipo: VARCHAR
+        nulos_pct: 6
+        distintos_aprox: 12
+        min: '1'
+        max: '9'
+        top:
+        - ['12', 9237]
+        - ['7', 8310]
+        - ['9', 8004]
+        - ['10', 7774]
+        - ['6', 7574]
+        - ['4', 7543]
+        - ['8', 7426]
+        - ['3', 7335]
+        - ['11', 7270]
+        - ['5', 7245]
+      V9011:
+        tipo: BIGINT
+        nulos_pct: 6
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 9.5813
+        quartis: [7, 12, 12]
+        top:
+        - ['12', 59202]
+        - [null, 5827]
+        - ['1', 4796]
+        - ['6', 3977]
+        - ['3', 3806]
+        - ['2', 3479]
+        - ['4', 3136]
+        - ['5', 2654]
+        - ['8', 2561]
+        - ['10', 2087]
+      deflator:
+        tipo: DOUBLE
+        nulos_pct: 11.23
+        distintos_aprox: 279
+        min: '0.9723904524'
+        max: '1.0594385286'
+        media: 1.0079
+        quartis: [0.9993, 1.0057, 1.0146]
+      fator_anualizacao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        media: 1
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 97075]
+      id_codigo_5_bd:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '53001'
+        max: '53007'
+        top:
+        - ['53003', 40596]
+        - ['53006', 30670]
+        - ['53004', 10927]
+        - ['53001', 7425]
+        - ['53007', 3928]
+        - ['53005', 2884]
+        - ['53002', 645]
+      id_domicilio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 53196}
+      id_estrato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 625, min: '1101', max: '5308'}
+      id_informante: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 83823}
+      id_quadro:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '53'
+        max: '53'
+        top:
+        - ['53', 97075]
+      id_sub_quadro:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 82191]
+        - ['2', 14884]
+      id_unidade_consumo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 50312}
+      id_unidade_primaria_amostragem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5458}
+      indicador_imputacao_valor:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0219
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 94945]
+        - ['1', 2130]
+      peso:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5648
+        min: '4.38709877'
+        max: '49579.04170268'
+        media: 993.4442
+        quartis: [376.0869, 654.695, 1252.436]
+      peso_final:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5809
+        min: '5.85111985'
+        max: '65991.32880959'
+        media: 1192.3279
+        quartis: [474.4623, 803.459, 1483.3161]
+      renda_total:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 46161
+        min: '0.0'
+        max: '675212.2'
+        media: 5608.9912
+        quartis: [2171.1114, 3668.7868, 6270.4111]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 8370]
+        - [SP, 7145]
+        - [BA, 5330]
+        - [PE, 5110]
+        - [RS, 4993]
+        - [ES, 4700]
+        - [PR, 4663]
+        - [RJ, 4410]
+        - [CE, 4227]
+        - [SC, 4014]
+      situacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 75061]
+        - ['2', 22014]
+  restricao_saude_2017:
+    linhas: 40863
+    fonte_do_perfil: tabela inteira
+    colunas:
+      V9001: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 397, min: '2900101', max: '4299901'}
+      V9013:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        top:
+        - ['1', 27697]
+        - ['2', 8734]
+        - ['4', 3363]
+        - ['3', 1069]
+      id_codigo_5_bd: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 137, min: '29001', max: '42999'}
+      id_domicilio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 20961}
+      id_estrato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 625, min: '1101', max: '5308'}
+      id_informante: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 27466}
+      id_quadro:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '29'
+        max: '42'
+        media: 38.0379
+        quartis: [29, 42, 42]
+        top:
+        - ['42', 28409]
+        - ['29', 12454]
+      id_unidade_consumo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 19783}
+      id_unidade_primaria_amostragem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4881}
+      peso:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 4655
+        min: '16.10457516'
+        max: '26070.61363636'
+        media: 906.4497
+        quartis: [372.5259, 626.9861, 1163.1459]
+      peso_final:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5072
+        min: '21.33857486'
+        max: '34938.75103995'
+        media: 1091.4374
+        quartis: [474.4272, 764.0045, 1405.5571]
+      renda_total:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 18631
+        min: '0.0'
+        max: '675212.2'
+        media: 3674.6998
+        quartis: [1624.7771, 2610.2518, 4204.8021]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [RS, 3374]
+        - [BA, 3180]
+        - [PE, 2858]
+        - [MA, 2614]
+        - [AL, 2571]
+        - [MG, 2329]
+        - [PA, 2067]
+        - [RN, 1897]
+        - [SP, 1809]
+        - [RJ, 1645]
+      situacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 30718]
+        - ['2', 10145]
+  servico_nao_monetario_pof2_2017:
+    linhas: 14711
+    fonte_do_perfil: tabela inteira
+    colunas:
+      V1904:
+        tipo: DOUBLE
+        nulos_pct: 99.54
+        distintos_aprox: 14
+        min: '74.0'
+        max: '9999999.99'
+        media: 7352976.6891
+        quartis: [285, 9999999.99, 9999999.99]
+        top:
+        - [null, 14643]
+        - ['9999999.99', 50]
+        - ['76.32', 3]
+        - ['104.0', 2]
+        - ['200.0', 2]
+        - ['75.0', 2]
+        - ['100.0', 1]
+        - ['130.0', 1]
+        - ['196.0', 1]
+        - ['202.4', 1]
+      V1904_deflacionado:
+        tipo: DOUBLE
+        nulos_pct: 99.56
+        distintos_aprox: 55
+        min: '10.22'
+        max: '667.86'
+        media: 189.2386
+        quartis: [76.39, 190.17, 239.825]
+      V1905:
+        tipo: VARCHAR
+        nulos_pct: 97.79
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 14386]
+        - ['3', 146]
+        - ['1', 142]
+        - ['9', 37]
+      V8000:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 937
+        min: '0.1'
+        max: '9999999.99'
+        media: 3980203.8675
+        quartis: [50.2021, 257.6601, 9999999.99]
+      V8000_deflacionado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5261
+        min: '0.1'
+        max: '82217.53'
+        media: 259.1851
+        quartis: [30.3396, 67.2293, 153.3016]
+      V9001: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 126, min: '1000101', max: '922601'}
+      V9002:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '10'
+        max: '9'
+        top:
+        - ['7', 12480]
+        - ['11', 1664]
+        - ['10', 404]
+        - ['9', 116]
+        - ['8', 47]
+      V9004: {tipo: VARCHAR, nulos_pct: 90.08, distintos_aprox: 61, min: '12401', max: '99901'}
+      V9010:
+        tipo: VARCHAR
+        nulos_pct: 82.92
+        distintos_aprox: 12
+        min: '1'
+        max: '9'
+        top:
+        - [null, 12199]
+        - ['1', 484]
+        - ['2', 320]
+        - ['3', 297]
+        - ['4', 254]
+        - ['9', 213]
+        - ['5', 197]
+        - ['12', 148]
+        - ['6', 142]
+        - ['10', 123]
+      V9011:
+        tipo: BIGINT
+        nulos_pct: 82.92
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 5.5195
+        quartis: [1, 6, 12]
+        top:
+        - [null, 12199]
+        - ['1', 1082]
+        - ['12', 706]
+        - ['6', 480]
+        - ['2', 46]
+        - ['3', 40]
+        - ['10', 38]
+        - ['5', 26]
+        - ['4', 21]
+        - ['7', 20]
+      deflator:
+        tipo: DOUBLE
+        nulos_pct: 1.43
+        distintos_aprox: 3443
+        min: '0.7762854841'
+        max: '1.27721387'
+        media: 1.0049
+        quartis: [0.9974, 1.0027, 1.0175]
+      fator_anualizacao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '12'
+        media: 5.9299
+        quartis: [1, 1, 12]
+        top:
+        - ['1', 7739]
+        - ['12', 6451]
+        - ['4', 521]
+      id_codigo_5_bd: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 88, min: '06001', max: '19999'}
+      id_codigo_7_bd: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 121, min: '0600101', max: '1999901'}
+      id_domicilio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 11318}
+      id_estrato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 625, min: '1101', max: '5308'}
+      id_quadro:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '10'
+        max: '9'
+        top:
+        - ['6', 6451]
+        - ['13', 3536]
+        - ['10', 2187]
+        - ['12', 752]
+        - ['11', 729]
+        - ['8', 521]
+        - ['19', 325]
+        - ['9', 210]
+      id_unidade_consumo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 11346}
+      id_unidade_primaria_amostragem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3357}
+      indicador_imputacao_valor:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.393
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 8929]
+        - ['1', 5782]
+      peso:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 3615
+        min: '16.10457516'
+        max: '15234.02714932'
+        media: 920.1094
+        quartis: [345.2531, 611.9577, 1170.4549]
+      peso_final:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 4477
+        min: '21.33857486'
+        max: '18972.95887229'
+        media: 1106.0457
+        quartis: [436.2564, 750.6064, 1416.1887]
+      renda_total:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 9111
+        min: '43.29'
+        max: '208527.6'
+        media: 3635.8631
+        quartis: [1606.7024, 2596.6504, 4190.7723]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 1454]
+        - [SP, 1367]
+        - [BA, 1167]
+        - [MS, 928]
+        - [MA, 836]
+        - [GO, 832]
+        - [RS, 739]
+        - [PI, 630]
+        - [PE, 604]
+        - [SE, 595]
+      situacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 9385]
+        - ['2', 5326]
+  servico_nao_monetario_pof4_2017:
+    linhas: 122684
+    fonte_do_perfil: tabela inteira
+    colunas:
+      V4104:
+        tipo: VARCHAR
+        nulos_pct: 97.33
+        distintos_aprox: 7
+        min: '1'
+        max: '9'
+        top:
+        - [null, 119414]
+        - ['1', 897]
+        - ['5', 819]
+        - ['2', 706]
+        - ['3', 416]
+        - ['7', 173]
+        - ['6', 159]
+        - ['4', 97]
+        - ['9', 3]
+      V4105:
+        tipo: VARCHAR
+        nulos_pct: 97.33
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 119414]
+        - ['1', 3215]
+        - ['2', 53]
+        - ['9', 2]
+      V8000:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1357
+        min: '0.15'
+        max: '9999999.99'
+        media: 2568996.4964
+        quartis: [66.5024, 200.0004, 9958787.8795]
+      V8000_deflacionado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 21232
+        min: '0.15'
+        max: '51143.84'
+        media: 274.6661
+        quartis: [46.7673, 143.595, 287.6744]
+      V9001: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 544, min: '2200101', max: '5099901'}
+      V9002:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '10'
+        max: '9'
+        top:
+        - ['7', 117603]
+        - ['11', 2692]
+        - ['10', 1624]
+        - ['9', 402]
+        - ['8', 363]
+      V9004: {tipo: VARCHAR, nulos_pct: 25.14, distintos_aprox: 288, min: '1001', max: '99902'}
+      V9010:
+        tipo: VARCHAR
+        nulos_pct: 66.55
+        distintos_aprox: 12
+        min: '1'
+        max: '9'
+        top:
+        - [null, 81643]
+        - ['12', 4929]
+        - ['1', 4834]
+        - ['2', 4292]
+        - ['4', 3582]
+        - ['3', 3515]
+        - ['5', 3408]
+        - ['9', 3032]
+        - ['10', 2948]
+        - ['11', 2883]
+      V9011:
+        tipo: BIGINT
+        nulos_pct: 66.55
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 8.8063
+        quartis: [5, 12, 12]
+        top:
+        - [null, 81643]
+        - ['12', 21680]
+        - ['1', 7600]
+        - ['10', 2777]
+        - ['11', 2670]
+        - ['9', 1169]
+        - ['8', 992]
+        - ['2', 811]
+        - ['3', 786]
+        - ['6', 765]
+      deflator:
+        tipo: DOUBLE
+        nulos_pct: 10.2
+        distintos_aprox: 25729
+        min: '0.515145271'
+        max: '1.6724150293'
+        media: 1.0037
+        quartis: [0.993, 1.0022, 1.0131]
+      fator_anualizacao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '1'
+        max: '52'
+        media: 8.6245
+        quartis: [1, 4, 4]
+        top:
+        - ['4', 63272]
+        - ['1', 41966]
+        - ['52', 13842]
+        - ['12', 3604]
+      id_codigo_5_bd: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 448, min: '22001', max: '50999'}
+      id_domicilio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 39925}
+      id_estrato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 625, min: '1101', max: '5308'}
+      id_informante: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 58130}
+      id_quadro:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 23
+        min: '22'
+        max: '50'
+        top:
+        - ['42', 48684]
+        - ['49', 37898]
+        - ['23', 13799]
+        - ['31', 10982]
+        - ['41', 3270]
+        - ['28', 2558]
+        - ['44', 1621]
+        - ['45', 925]
+        - ['29', 692]
+        - ['50', 688]
+      id_unidade_consumo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 41002}
+      id_unidade_primaria_amostragem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5458}
+      indicador_imputacao_valor:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.2318
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 94242]
+        - ['1', 28442]
+      peso:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5555
+        min: '16.10457516'
+        max: '26070.61363636'
+        media: 1001.3732
+        quartis: [375.5793, 658.4035, 1263.5284]
+      peso_final:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5721
+        min: '21.33857486'
+        max: '34938.75103995'
+        media: 1199.1209
+        quartis: [470.7792, 804.6862, 1493.6302]
+      renda_total:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 30436
+        min: '0.0'
+        max: '675212.2'
+        media: 4606.1982
+        quartis: [1958.2147, 3164.1499, 5228.6238]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 12265]
+        - [SP, 9705]
+        - [BA, 8903]
+        - [PE, 7563]
+        - [RS, 6569]
+        - [ES, 5597]
+        - [GO, 5588]
+        - [MS, 5539]
+        - [CE, 5272]
+        - [SE, 5161]
+      situacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 93083]
+        - ['2', 29601]

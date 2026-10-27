@@ -1,0 +1,78 @@
+dataset: br_me_estoque_divida_publica
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  microdados:
+    linhas: 124419
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '2017'
+        max: '2022'
+        media: 2019.3801
+        quartis: [2018, 2019, 2021]
+        top:
+        - ['2018', 31018]
+        - ['2019', 26657]
+        - ['2020', 22873]
+        - ['2021', 19011]
+        - ['2022', 13427]
+        - ['2017', 11433]
+      classe_carteira:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Banco Central
+        max: Mercado
+        top:
+        - [Mercado, 121647]
+        - [Banco Central, 2772]
+      id_divida: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2603}
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.6108
+        quartis: [4, 7, 10]
+        top:
+        - ['9', 12184]
+        - ['10', 12001]
+        - ['11', 10588]
+        - ['12', 10475]
+        - ['1', 10345]
+        - ['2', 10273]
+        - ['3', 10094]
+        - ['4', 9941]
+        - ['5', 9813]
+        - ['6', 9690]
+      quantidade_estoque:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 17407
+        min: '0'
+        max: '1698777373'
+        media: 2353901.0205
+        quartis: [651, 4690, 18535]
+      tipo_divida:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Dívida externa
+        max: Dívida interna
+        top:
+        - [Dívida interna, 120330]
+        - [Dívida externa, 4089]
+      valor_estoque:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 77875
+        min: '0.0'
+        max: '304570603149.85'
+        media: 3194949008.6762
+        quartis: [88447.3945, 479852.1985, 1830229.4231]
+      vencimento_divida: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 620, min: '1996-11-01', max: '2121-12-01'}

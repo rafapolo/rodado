@@ -1,0 +1,165 @@
+dataset: br_anvisa_consultas
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  agrotoxicos:
+    linhas: 9676
+    fonte_do_perfil: tabela inteira
+    colunas:
+      NO_SUBSTANCIA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 317, min: '1,4-dimetilnaftaleno', max: óxido de fembutatina}
+      TP_SUBSTANCIA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Quimico
+        max: Quimico
+        top:
+        - [Quimico, 9676]
+      NU_LMR:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 49
+        min: '0.0000000000'
+        max: '999.0000000000'
+        top:
+        - ['0.0100000000', 1343]
+        - ['0.1000000000', 993]
+        - ['0.0500000000', 952]
+        - ['0.2000000000', 748]
+        - ['0.5000000000', 645]
+        - ['0.0200000000', 508]
+        - ['0.3000000000', 489]
+        - ['999.0000000000', 446]
+        - ['1.0000000000', 442]
+        - ['2.0000000000', 370]
+      CO_MONOGRAFIA: {tipo: VARCHAR, nulos_pct: 2.15, distintos_aprox: 380, min: A02, max: Z04}
+      DS_INGREDIENTE_ATIVO: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 317, min: '1,4-dimetilnaftaleno', max: óxido de fembutatina}
+      NU_CAS: {tipo: VARCHAR, nulos_pct: 3.6, distintos_aprox: 344, min: 1003318-67-9, max: '999815'}
+      ST_AUTORIZADO:
+        tipo: VARCHAR
+        nulos_pct: 0.01
+        distintos_aprox: 2
+        min: NÃO
+        max: SIM
+        top:
+        - [SIM, 9202]
+        - [NÃO, 473]
+        - [null, 1]
+      NO_CULTURA: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 164, min: ' Alho-poró', max: Uva}
+      TIPO_LIMITE:
+        tipo: VARCHAR
+        nulos_pct: 0.01
+        distintos_aprox: 3
+        min: Limite de tolerância
+        max: Não estabelecido
+        top:
+        - [Limite máximo, 9011]
+        - [Não estabelecido, 433]
+        - [Limite de tolerância, 231]
+        - [null, 1]
+      NO_VALOR_REFERENCIA:
+        tipo: VARCHAR
+        nulos_pct: 0.01
+        distintos_aprox: 1
+        min: Limite Máximo de Resíduos
+        max: Limite Máximo de Resíduos
+        top:
+        - [Limite Máximo de Resíduos, 9675]
+        - [null, 1]
+      NO_UNIDADE_MEDIDA:
+        tipo: VARCHAR
+        nulos_pct: 0.01
+        distintos_aprox: 1
+        min: 'MILIGRAMA/KILOGRAMA  '
+        max: 'MILIGRAMA/KILOGRAMA  '
+        top:
+        - ['MILIGRAMA/KILOGRAMA  ', 9675]
+        - [null, 1]
+      DS_ATO_LEGAL: {tipo: VARCHAR, nulos_pct: 0.02, distintos_aprox: 1051}
+      DT_INICIO_VIGENCIA: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 316, min: '01/02/2015 00:00:00', max: '12/30/2019 00:00:00'}
+      DT_FIM_VIGENCIA: {tipo: VARCHAR, nulos_pct: 85.83, distintos_aprox: 199, min: '01/01/2015 00:00:00', max: '12/29/2019 00:00:00'}
+      DT_ATUALIZACAO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: 08/31/2026 00:00:00
+        max: 08/31/2026 00:00:00
+        top:
+        - ['08/31/2026 00:00:00', 9676]
+  alimentos:
+    linhas: 48956
+    fonte_do_perfil: tabela inteira
+    colunas:
+      NU_CNPJ_EMPRESA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6967, pessoal: 'só contagens: valores seriam dado pessoal'}
+      NO_RAZAO_SOCIAL_EMPRESA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 9900, pessoal: 'só contagens: valores seriam dado pessoal'}
+      NO_PRODUTO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 26745}
+      NU_PROCESSO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 53328}
+      DS_TIPO_PRODUTO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: ALIMENTO
+        max: ALIMENTO
+        top:
+        - [ALIMENTO, 48956]
+      DS_CATEGORIA_PRODUTO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 59, min: '', max: VEGETAIS EM CONSERVA (PALMITO)}
+      DT_FINALIZACAO_PROCESSO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2046}
+      NU_REGISTRO_PRODUTO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 51499}
+      DT_VENCIMENTO_REGISTRO: {tipo: DATE, nulos_pct: 0, distintos_aprox: 343, min: '1999-01-08', max: '2032-01-05'}
+      ST_SITUACAO_REGISTRO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Ativo
+        max: Inativo
+        top:
+        - [Inativo, 40256]
+        - [Ativo, 8700]
+  registros:
+    linhas: 42652
+    fonte_do_perfil: tabela inteira
+    colunas:
+      TIPO_PRODUTO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: MEDICAMENTO
+        max: MEDICAMENTO
+        top:
+        - [MEDICAMENTO, 42652]
+      NOME_PRODUTO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 22134, pessoal: 'só contagens: valores seriam dado pessoal'}
+      DATA_FINALIZACAO_PROCESSO: {tipo: VARCHAR, nulos_pct: 0.24, distintos_aprox: 5749}
+      CATEGORIA_REGULATORIA:
+        tipo: VARCHAR
+        nulos_pct: 4.3
+        distintos_aprox: 11
+        min: BAIXO RISCO
+        max: Similar
+        top:
+        - [Similar, 16344]
+        - [Genérico, 8888]
+        - [BAIXO RISCO, 6593]
+        - [Novo, 3633]
+        - [null, 1834]
+        - [Específico, 1761]
+        - [Fitoterápico, 1311]
+        - [Biológico, 1095]
+        - [DINAMIZADO, 686]
+        - [Dinamizado, 296]
+      NUMERO_REGISTRO_PRODUTO: {tipo: VARCHAR, nulos_pct: 17.42, distintos_aprox: 31686, pessoal: 'só contagens: valores seriam dado pessoal'}
+      DATA_VENCIMENTO_REGISTRO: {tipo: VARCHAR, nulos_pct: 9.2, distintos_aprox: 477, min: '000000', max: '122045'}
+      NUMERO_PROCESSO: {tipo: VARCHAR, nulos_pct: 17.18, distintos_aprox: 43020, pessoal: 'só contagens: valores seriam dado pessoal'}
+      CLASSE_TERAPEUTICA: {tipo: VARCHAR, nulos_pct: 19.2, distintos_aprox: 449, min: ACTH E SIMILARES, max: VÁRIOS PRODUTOS PARA O TRATO ALIMENTAR
+          E METABOLISMO}
+      EMPRESA_DETENTORA_REGISTRO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 872, min: 00009004000130 - PERFLORA INDUSTRIA FARMACEUTICA LTDA,
+        max: 97484711000110 - LABORATORIO INDUSTRIAL FARMACEUTICO GAÚCHO LTDA}
+      SITUACAO_REGISTRO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Ativo
+        max: Inativo
+        top:
+        - [Inativo, 28151]
+        - [Ativo, 14501]
+      PRINCIPIO_ATIVO: {tipo: VARCHAR, nulos_pct: 25.43, distintos_aprox: 5544}

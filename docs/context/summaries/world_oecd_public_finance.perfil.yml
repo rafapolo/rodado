@@ -1,0 +1,1560 @@
+dataset: world_oecd_public_finance
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  country:
+    linhas: 2646
+    fonte_do_perfil: tabela inteira
+    colunas:
+      year:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 74
+        min: '1945'
+        max: '2019'
+        media: 1983.373
+        quartis: [1966, 1984, 2002]
+      country:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 40
+        min: AUS
+        max: USA
+        top:
+        - [SVN, 146]
+        - [AUS, 75]
+        - [AUT, 75]
+        - [BEL, 75]
+        - [CAN, 75]
+        - [CHL, 75]
+        - [DEU, 75]
+        - [DNK, 75]
+        - [ESP, 75]
+        - [EST, 75]
+      revenue_personal_income_tax:
+        tipo: DOUBLE
+        nulos_pct: 49.66
+        distintos_aprox: 1261
+        min: '9661393.3'
+        max: '75340000000000.0'
+        media: 1556702208773.9478
+        quartis: [7275709224.5989, 38034348171.7011, 156306250000.0]
+      revenue_social_security_contribution:
+        tipo: DOUBLE
+        nulos_pct: 41.8
+        distintos_aprox: 223
+        min: '-2147483648.0'
+        max: '2140000000.0'
+        media: -1592504742.0123
+        quartis: [-2147483648, -2147483648, -2147483648]
+      revenue_corporate_tax:
+        tipo: DOUBLE
+        nulos_pct: 49.66
+        distintos_aprox: 1346
+        min: '2378364.2'
+        max: '58500000000000.0'
+        media: 1209291444182.4248
+        quartis: [1926009259.2593, 9048354588.3941, 41303732718.894]
+      revenue_environmental_tax:
+        tipo: DOUBLE
+        nulos_pct: 74.34
+        distintos_aprox: 88
+        min: '-2147483648.0'
+        max: '2147000000.0'
+        media: -1613322055.0162
+        quartis: [-2147483648, -2147483648, -2147483648]
+      revenue_other_consumption_tax:
+        tipo: DOUBLE
+        nulos_pct: 74.34
+        distintos_aprox: 32
+        min: '-2147483648.0'
+        max: '2132000000.0'
+        media: -1944297105.6259
+        quartis: [-2147483648, -2147483648, -2147483648]
+        top:
+        - [null, 1967]
+        - ['-2147483648.0', 640]
+        - ['1536000000.0', 2]
+        - ['1781000000.0', 2]
+        - ['1898000000.0', 2]
+        - ['2088000000.0', 2]
+        - ['2132000000.0', 2]
+        - ['1013000000.0', 1]
+        - ['1036000000.0', 1]
+        - ['1141000000.0', 1]
+      revenue_immovable_property_tax:
+        tipo: DOUBLE
+        nulos_pct: 49.66
+        distintos_aprox: 1703
+        min: '0.0'
+        max: '13030000000000.0'
+        media: 390509782978.1412
+        quartis: [291045098.0392, 2874070000.0, 17048106442.577]
+      revenue_other_property_tax:
+        tipo: DOUBLE
+        nulos_pct: 49.66
+        distintos_aprox: 1168
+        min: '-7922.2476'
+        max: '36550000000000.0'
+        media: 487305592320.6033
+        quartis: [666585684.0463, 3371760153.2567, 11278095238.0952]
+      revenue_sales_goods_services_tax:
+        tipo: DOUBLE
+        nulos_pct: 64.78
+        distintos_aprox: 161
+        min: '-2147483648.0'
+        max: '2050000000.0'
+        media: -1556578677.6395
+        quartis: [-2147483648, -2147483648, -2147483648]
+      revenue_other_non_property_tax:
+        tipo: DOUBLE
+        nulos_pct: 75.47
+        distintos_aprox: 181
+        min: '-2147483648.0'
+        max: '2139000000.0'
+        media: -1422623952.2265
+        quartis: [-2147483648, -2147483648, -553745304.9375]
+      revenue_property_income:
+        tipo: DOUBLE
+        nulos_pct: 42.86
+        distintos_aprox: 442
+        min: '-2147483648.0'
+        max: '2133000000.0'
+        media: -1225326558.7731
+        quartis: [-2147483648, -2147483648, 177700573.5493]
+      revenue_property_income_except_interest: {tipo: DOUBLE, nulos_pct: 42.86, distintos_aprox: 1486, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      expenditure_education:
+        tipo: DOUBLE
+        nulos_pct: 70.79
+        distintos_aprox: 114
+        min: '-2147483648.0'
+        max: '2057000000.0'
+        media: -1519214463.1307
+        quartis: [-2147483648, -2147483648, -2147483648]
+      expenditure_health:
+        tipo: DOUBLE
+        nulos_pct: 70.6
+        distintos_aprox: 139
+        min: '-2147483648.0'
+        max: '2136000000.0'
+        media: -1574661439.7532
+        quartis: [-2147483648, -2147483648, -2147483648]
+      expenditure_wage_intermediate_consumption:
+        tipo: DOUBLE
+        nulos_pct: 73.89
+        distintos_aprox: 57
+        min: '-2147483648.0'
+        max: '2127000000.0'
+        media: -1856146622.9812
+        quartis: [-2147483648, -2147483648, -2147483648]
+      expenditure_pension:
+        tipo: DOUBLE
+        nulos_pct: 68.07
+        distintos_aprox: 78
+        min: '-2147483648.0'
+        max: '2121000000.0'
+        media: -1813292279.1811
+        quartis: [-2147483648, -2147483648, -2147483648]
+      expenditure_sickness_disability:
+        tipo: DOUBLE
+        nulos_pct: 65.65
+        distintos_aprox: 759
+        min: '5227432.6'
+        max: '16400000000000.0'
+        media: 372913426942.5723
+        quartis: [2378370000, 15248888888.8889, 50296458333.3333]
+      expenditure_unemployment_benefit:
+        tipo: DOUBLE
+        nulos_pct: 66.36
+        distintos_aprox: 605
+        min: '909245.9'
+        max: '3862000000000.0'
+        media: 139567802879.6672
+        quartis: [1148461363.6364, 4878985207.1006, 16390395256.917]
+      expenditure_family_children:
+        tipo: DOUBLE
+        nulos_pct: 65.53
+        distintos_aprox: 272
+        min: '-2147483648.0'
+        max: '2111000000.0'
+        media: -1270406216.3827
+        quartis: [-2147483648, -2147483648, 227766666.6667]
+      expenditure_subsidies:
+        tipo: DOUBLE
+        nulos_pct: 41.16
+        distintos_aprox: 1569
+        min: '185628.8'
+        max: '5380000000000.0'
+        media: 154118914368.0204
+        quartis: [584958400.974, 4492132812.5, 19465515873.0159]
+      expenditure_public_investment:
+        tipo: DOUBLE
+        nulos_pct: 42.93
+        distintos_aprox: 262
+        min: '-2147483648.0'
+        max: '2144000000.0'
+        media: -1490998389.6331
+        quartis: [-2147483648, -2147483648, -2147483648]
+      expenditure_other_primary_expenditure:
+        tipo: DOUBLE
+        nulos_pct: 74.72
+        distintos_aprox: 104
+        min: '-2147483648.0'
+        max: '2141000000.0'
+        media: -1616928885.8595
+        quartis: [-2147483648, -2147483648, -2147483648]
+      expenditure_property_income:
+        tipo: DOUBLE
+        nulos_pct: 42.86
+        distintos_aprox: 1538
+        min: '8914137.7'
+        max: '32170000000000.0'
+        media: 716250979863.3892
+        quartis: [1795162820.5128, 10545944234.4045, 44315993055.5556]
+      expenditure_property_income_except_interest: {tipo: DOUBLE, nulos_pct: 42.86, distintos_aprox: 586, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      revenue_personal_income_tax_adjusted:
+        tipo: DOUBLE
+        nulos_pct: 56.27
+        distintos_aprox: 104
+        min: '-2147483648.0'
+        max: '2132000000.0'
+        media: -1833968105.1824
+        quartis: [-2147483648, -2147483648, -2147483648]
+      revenue_social_security_contribution_adjusted:
+        tipo: DOUBLE
+        nulos_pct: 51.1
+        distintos_aprox: 106
+        min: '-2147483648.0'
+        max: '2133000000.0'
+        media: -1801342331.4992
+        quartis: [-2147483648, -2147483648, -2147483648]
+      revenue_corporate_tax_adjusted:
+        tipo: DOUBLE
+        nulos_pct: 56.27
+        distintos_aprox: 225
+        min: '-2147483648.0'
+        max: '2143000000.0'
+        media: -1564957232.1988
+        quartis: [-2147483648, -2147483648, -2147483648]
+      revenue_environmental_tax_adjusted:
+        tipo: DOUBLE
+        nulos_pct: 75.62
+        distintos_aprox: 85
+        min: '-2147483648.0'
+        max: '2124000000.0'
+        media: -1640182751.5783
+        quartis: [-2147483648, -2147483648, -2147483648]
+      revenue_other_consumption_tax_adjusted:
+        tipo: DOUBLE
+        nulos_pct: 75.62
+        distintos_aprox: 24
+        min: '-2147483648.0'
+        max: '2093000000.0'
+        media: -2012780070.4
+        quartis: [-2147483648, -2147483648, -2147483648]
+        top:
+        - [null, 2001]
+        - ['-2147483648.0', 621]
+        - ['2093000000.0', 2]
+        - ['1026000000.0', 1]
+        - ['1077000000.0', 1]
+        - ['1107000000.0', 1]
+        - ['1212000000.0', 1]
+        - ['1289000000.0', 1]
+        - ['1345000000.0', 1]
+        - ['1448000000.0', 1]
+      revenue_immovable_property_tax_adjusted:
+        tipo: DOUBLE
+        nulos_pct: 75.66
+        distintos_aprox: 185
+        min: '-2147483648.0'
+        max: '2140000000.0'
+        media: -1178926204.3975
+        quartis: [-2147483648, -2147483648, 177584375]
+      revenue_other_property_tax_adjusted:
+        tipo: DOUBLE
+        nulos_pct: 75.66
+        distintos_aprox: 774
+        min: '0.0'
+        max: '28870000000000.0'
+        media: 722305557713.3519
+        quartis: [1076571875, 7702770000, 13931875000]
+      revenue_sales_goods_services_tax_adjusted:
+        tipo: DOUBLE
+        nulos_pct: 64.89
+        distintos_aprox: 161
+        min: '-2147483648.0'
+        max: '2050000000.0'
+        media: -1554670480.7492
+        quartis: [-2147483648, -2147483648, -2147483648]
+      revenue_other_non_property_tax_adjusted:
+        tipo: DOUBLE
+        nulos_pct: 76.68
+        distintos_aprox: 132
+        min: '-2147483648.0'
+        max: '2128000000.0'
+        media: -1445170601.363
+        quartis: [-2147483648, -2147483648, -1758607749.9297]
+      revenue_property_income_adjusted:
+        tipo: DOUBLE
+        nulos_pct: 42.86
+        distintos_aprox: 442
+        min: '-2147483648.0'
+        max: '2133000000.0'
+        media: -1225326558.7731
+        quartis: [-2147483648, -2147483648, 177700573.5493]
+      revenue_property_income_except_interest_adjusted: {tipo: DOUBLE, nulos_pct: 42.86, distintos_aprox: 1486, pessoal: 'só contagens: valores
+          seriam dado pessoal'}
+      expenditure_education_adjusted:
+        tipo: DOUBLE
+        nulos_pct: 70.79
+        distintos_aprox: 114
+        min: '-2147483648.0'
+        max: '2057000000.0'
+        media: -1519214463.1307
+        quartis: [-2147483648, -2147483648, -2147483648]
+      expenditure_health_adjusted:
+        tipo: DOUBLE
+        nulos_pct: 70.6
+        distintos_aprox: 139
+        min: '-2147483648.0'
+        max: '2136000000.0'
+        media: -1574661439.7532
+        quartis: [-2147483648, -2147483648, -2147483648]
+      expenditure_wage_intermediate_consumption_adjusted:
+        tipo: DOUBLE
+        nulos_pct: 73.89
+        distintos_aprox: 57
+        min: '-2147483648.0'
+        max: '2127000000.0'
+        media: -1856146622.9812
+        quartis: [-2147483648, -2147483648, -2147483648]
+      expenditure_pension_adjusted:
+        tipo: DOUBLE
+        nulos_pct: 68.07
+        distintos_aprox: 78
+        min: '-2147483648.0'
+        max: '2121000000.0'
+        media: -1813292279.1811
+        quartis: [-2147483648, -2147483648, -2147483648]
+      expenditure_sickness_disability_adjusted:
+        tipo: DOUBLE
+        nulos_pct: 65.65
+        distintos_aprox: 759
+        min: '5227432.6'
+        max: '16400000000000.0'
+        media: 372913426942.5723
+        quartis: [2378370000, 15248888888.8889, 50296458333.3333]
+      expenditure_unemployment_benefit_adjusted:
+        tipo: DOUBLE
+        nulos_pct: 69.92
+        distintos_aprox: 664
+        min: '-150400000000.0'
+        max: '3723000000000.0'
+        media: 153148873799.1943
+        quartis: [2068080000, 5528472222.2222, 17362000000]
+      expenditure_family_children_adjusted:
+        tipo: DOUBLE
+        nulos_pct: 69.01
+        distintos_aprox: 199
+        min: '-2147483648.0'
+        max: '2132000000.0'
+        media: -1360074403.7195
+        quartis: [-2147483648, -2147483648, 50640736.5537]
+      expenditure_subsidies_adjusted:
+        tipo: DOUBLE
+        nulos_pct: 41.16
+        distintos_aprox: 1569
+        min: '185628.8'
+        max: '5380000000000.0'
+        media: 154118914368.0204
+        quartis: [584958400.974, 4492132812.5, 19465515873.0159]
+      expenditure_public_investment_adjusted:
+        tipo: DOUBLE
+        nulos_pct: 42.93
+        distintos_aprox: 262
+        min: '-2147483648.0'
+        max: '2144000000.0'
+        media: -1490998389.6331
+        quartis: [-2147483648, -2147483648, -2147483648]
+      expenditure_other_primary_expenditure_adjusted:
+        tipo: DOUBLE
+        nulos_pct: 75.74
+        distintos_aprox: 74
+        min: '-2147483648.0'
+        max: '2129000000.0'
+        media: -1700185550.4174
+        quartis: [-2147483648, -2147483648, -2147483648]
+      expenditure_property_income_adjusted:
+        tipo: DOUBLE
+        nulos_pct: 42.86
+        distintos_aprox: 1538
+        min: '8914137.7'
+        max: '32170000000000.0'
+        media: 716250979863.3892
+        quartis: [1795162820.5128, 10545944234.4045, 44315993055.5556]
+      expenditure_property_income_except_interest_adjusted: {tipo: DOUBLE, nulos_pct: 42.86, distintos_aprox: 586, pessoal: 'só contagens: valores
+          seriam dado pessoal'}
+      current_receipt:
+        tipo: DOUBLE
+        nulos_pct: 49.24
+        distintos_aprox: 20
+        min: '-2147483648.0'
+        max: '2111000000.0'
+        media: -2087686670.892
+        quartis: [-2147483648, -2147483648, -2147483648]
+        top:
+        - ['-2147483648.0', 1321]
+        - [null, 1303]
+        - ['1052000000.0', 1]
+        - ['1086000000.0', 1]
+        - ['1115000000.0', 1]
+        - ['1157000000.0', 1]
+        - ['1278000000.0', 1]
+        - ['1330000000.0', 1]
+        - ['1381000000.0', 1]
+        - ['1412000000.0', 1]
+      current_receipt_except_interest: {tipo: DOUBLE, nulos_pct: 49.77, distintos_aprox: 26, pessoal: 'só contagens: valores seriam dado pessoal'}
+      current_receipt_adjusted:
+        tipo: DOUBLE
+        nulos_pct: 64.1
+        distintos_aprox: 1
+        min: '-2147483648.0'
+        max: '-2147483648.0'
+        media: -2147483648
+        quartis: [-2147483648, -2147483648, -2147483648]
+        top:
+        - [null, 1696]
+        - ['-2147483648.0', 950]
+      total_receipt:
+        tipo: DOUBLE
+        nulos_pct: 49.92
+        distintos_aprox: 26
+        min: '-2147483648.0'
+        max: '1991000000.0'
+        media: -2089768661.8808
+        quartis: [-2147483648, -2147483648, -2147483648]
+        top:
+        - [null, 1321]
+        - ['-2147483648.0', 1304]
+        - ['1053000000.0', 1]
+        - ['1091000000.0', 1]
+        - ['1117000000.0', 1]
+        - ['1169000000.0', 1]
+        - ['1290000000.0', 1]
+        - ['1331000000.0', 1]
+        - ['1388000000.0', 1]
+        - ['1422000000.0', 1]
+      current_expenditure:
+        tipo: DOUBLE
+        nulos_pct: 49.24
+        distintos_aprox: 25
+        min: '-2147483648.0'
+        max: '2110000000.0'
+        media: -2080247466.9129
+        quartis: [-2147483648, -2147483648, -2147483648]
+        top:
+        - ['-2147483648.0', 1318]
+        - [null, 1303]
+        - ['1077000000.0', 1]
+        - ['1083000000.0', 1]
+        - ['1137000000.0', 1]
+        - ['1227000000.0', 1]
+        - ['1316000000.0', 1]
+        - ['1379000000.0', 1]
+        - ['1382000000.0', 1]
+        - ['1386000000.0', 1]
+      current_expenditure_except_interest: {tipo: DOUBLE, nulos_pct: 50.87, distintos_aprox: 24, pessoal: 'só contagens: valores seriam dado pessoal'}
+      current_expenditure_adjusted:
+        tipo: DOUBLE
+        nulos_pct: 64.1
+        distintos_aprox: 2
+        min: '-2147483648.0'
+        max: '2055000000.0'
+        media: -2143059981.0021
+        quartis: [-2147483648, -2147483648, -2147483648]
+        top:
+        - [null, 1696]
+        - ['-2147483648.0', 949]
+        - ['2055000000.0', 1]
+      current_expenditure_except_interest_adjusted: {tipo: DOUBLE, nulos_pct: 64.1, distintos_aprox: 2, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      total_expenditure:
+        tipo: DOUBLE
+        nulos_pct: 50.15
+        distintos_aprox: 18
+        min: '-2147483648.0'
+        max: '2060000000.0'
+        media: -2092163501.7074
+        quartis: [-2147483648, -2147483648, -2147483648]
+        top:
+        - [null, 1327]
+        - ['-2147483648.0', 1299]
+        - ['1682000000.0', 2]
+        - ['1121000000.0', 1]
+        - ['1139000000.0', 1]
+        - ['1183000000.0', 1]
+        - ['1332000000.0', 1]
+        - ['1435000000.0', 1]
+        - ['1446000000.0', 1]
+        - ['1516000000.0', 1]
+      net_lending:
+        tipo: DOUBLE
+        nulos_pct: 49.55
+        distintos_aprox: 1425
+        min: '-53630000000000.0'
+        max: '48790000000000.0'
+        media: -315964296834.3636
+        quartis: [-34034865546.2185, -4598881250, 93693438.2135]
+      primary_balance:
+        tipo: DOUBLE
+        nulos_pct: 49.7
+        distintos_aprox: 1225
+        min: '-46990000000000.0'
+        max: '40760000000000.0'
+        media: -268051559238.4129
+        quartis: [-8229364583.3333, -188540735.6125, 5427051504.4728]
+      net_lending_adjusted:
+        tipo: DOUBLE
+        nulos_pct: 63.15
+        distintos_aprox: 903
+        min: '-49180000000000.0'
+        max: '60260000000000.0'
+        media: -232367384797.4398
+        quartis: [-35158865384.6154, -6804555555.5556, 538607100.5917]
+      primary_balance_adjusted:
+        tipo: DOUBLE
+        nulos_pct: 63.15
+        distintos_aprox: 968
+        min: '-42540000000000.0'
+        max: '52240000000000.0'
+        media: -190430990986.0567
+        quartis: [-10046926035.503, 431622666.6667, 10379735576.9231]
+      underlying_net_lending:
+        tipo: DOUBLE
+        nulos_pct: 64.25
+        distintos_aprox: 1017
+        min: '-42950000000000.0'
+        max: '60220000000000.0'
+        media: -208174042527.0499
+        quartis: [-35278666666.6667, -6818642857.1429, 508600347.2222]
+      underlying_primary_balance:
+        tipo: DOUBLE
+        nulos_pct: 63.34
+        distintos_aprox: 278
+        min: '-2147483648.0'
+        max: '2111000000.0'
+        media: -1630227633.3577
+        quartis: [-2147483648, -2147483648, -2119372888.8294]
+      net_financial_liabilities:
+        tipo: DOUBLE
+        nulos_pct: 59.49
+        distintos_aprox: 50
+        min: '-2147483648.0'
+        max: '1807000000.0'
+        media: -2060686492.9655
+        quartis: [-2147483648, -2147483648, -2147483648]
+        top:
+        - [null, 1574]
+        - ['-2147483648.0', 1017]
+        - ['-1083000000.0', 2]
+        - ['-1552000000.0', 2]
+        - ['-1926000000.0', 2]
+        - ['-1992000000.0', 2]
+        - ['-2016000000.0', 2]
+        - ['-81760000.0', 2]
+        - ['1629000000.0', 2]
+        - ['1751000000.0', 2]
+      financial_assets:
+        tipo: DOUBLE
+        nulos_pct: 58.5
+        distintos_aprox: 986
+        min: '3.6091959'
+        max: '350.81344'
+        media: 41.7637
+        quartis: [24.007, 34.8471, 47.4756]
+      gross_interest_paid:
+        tipo: DOUBLE
+        nulos_pct: 47.88
+        distintos_aprox: 1404
+        min: '9100000.0'
+        max: '32170000000000.0'
+        media: 769390481544.8259
+        quartis: [2188025462.963, 12056393728.223, 46927639086.4549]
+      gross_interest_received:
+        tipo: DOUBLE
+        nulos_pct: 49.4
+        distintos_aprox: 1383
+        min: '5651925.4'
+        max: '39940000000000.0'
+        media: 743408898580.2412
+        quartis: [525473066.8757, 2873441188.4412, 13579606481.4815]
+      net_interest_paid:
+        tipo: DOUBLE
+        nulos_pct: 47.88
+        distintos_aprox: 1934
+        min: '-10490000000000.0'
+        max: '6712000000000.0'
+        media: 47134889921.2731
+        quartis: [209610802.4691, 4406764610.3896, 23226936728.3951]
+      gross_domestic_product_current_prices:
+        tipo: DOUBLE
+        nulos_pct: 34.39
+        distintos_aprox: 1405
+        min: '91571.482'
+        max: '1898000000000000.0'
+        media: 31545900270105.453
+        quartis: [46227240075.6144, 291911478632.4786, 1610591787439.6135]
+      gross_domestic_product_volume:
+        tipo: DOUBLE
+        nulos_pct: 34.47
+        distintos_aprox: 1
+        min: '-2147483648.0'
+        max: '-2147483648.0'
+        media: -2147483648
+        quartis: [-2147483648, -2147483648, -2147483648]
+        top:
+        - ['-2147483648.0', 1734]
+        - [null, 912]
+      gross_domestic_product_potential_current_prices:
+        tipo: DOUBLE
+        nulos_pct: 62.89
+        distintos_aprox: 1
+        min: '-2147483648.0'
+        max: '-2147483648.0'
+        media: -2147483648
+        quartis: [-2147483648, -2147483648, -2147483648]
+        top:
+        - [null, 1664]
+        - ['-2147483648.0', 982]
+      gross_domestic_product_potential_volume:
+        tipo: DOUBLE
+        nulos_pct: 60.17
+        distintos_aprox: 1
+        min: '-2147483648.0'
+        max: '-2147483648.0'
+        media: -2147483648
+        quartis: [-2147483648, -2147483648, -2147483648]
+        top:
+        - [null, 1592]
+        - ['-2147483648.0', 1054]
+      output_gap:
+        tipo: DOUBLE
+        nulos_pct: 59.79
+        distintos_aprox: 1136
+        min: '-15.424261'
+        max: '14.478667'
+        media: -0.5461
+        quartis: [-2.0297, -0.5496, 1.2046]
+      short_term_interest_rate:
+        tipo: DOUBLE
+        nulos_pct: 46.64
+        distintos_aprox: 1077
+        min: '-0.78375'
+        max: '48.244167'
+        media: 6.1763
+        quartis: [2.1162, 4.8177, 9.0153]
+      long_term_interest_rate:
+        tipo: DOUBLE
+        nulos_pct: 46.94
+        distintos_aprox: 1477
+        min: '-0.362'
+        max: '29.741667'
+        media: 6.6253
+        quartis: [4.0494, 5.8501, 8.6987]
+      consumer_price_index:
+        tipo: DOUBLE
+        nulos_pct: 64.85
+        distintos_aprox: 777
+        min: '5.857e-07'
+        max: '2.3350309'
+        media: 0.5918
+        quartis: [0.1648, 0.6452, 0.9397]
+      exchange_rate:
+        tipo: DOUBLE
+        nulos_pct: 31.97
+        distintos_aprox: 1609
+        min: '0.00071934'
+        max: '91345.317'
+        media: 386.5991
+        quartis: [0.2167, 0.9767, 1.2965]
+      nominal_effective_exchange_rate:
+        tipo: DOUBLE
+        nulos_pct: 42.52
+        distintos_aprox: 1416
+        min: '12.764564'
+        max: '11801578.0'
+        media: 51078.0894
+        quartis: [84.9448, 98.2336, 106.0404]
+      real_effective_exchange_rate:
+        tipo: DOUBLE
+        nulos_pct: 66.14
+        distintos_aprox: 933
+        min: '0.57101605'
+        max: '1.7693195'
+        media: 0.999
+        quartis: [0.9361, 0.9953, 1.0483]
+      total_employment:
+        tipo: DOUBLE
+        nulos_pct: 40.36
+        distintos_aprox: 1677
+        min: '78919.303'
+        max: '157300000.0'
+        media: 15046078.6166
+        quartis: [2418657.3171, 4636899.4174, 19400369.0576]
+      government_employment:
+        tipo: DOUBLE
+        nulos_pct: 62.06
+        distintos_aprox: 1140
+        min: '21888.823'
+        max: '22552750.0'
+        media: 2768626.7596
+        quartis: [557370.9131, 960580.5197, 3545555.5477]
+      labor_force:
+        tipo: DOUBLE
+        nulos_pct: 40.78
+        distintos_aprox: 2104
+        min: '79637.973'
+        max: '163300000.0'
+        media: 16168081.2249
+        quartis: [2632703.3669, 4980258.3961, 21481322.0792]
+      unemployment_rate:
+        tipo: DOUBLE
+        nulos_pct: 39.04
+        distintos_aprox: 1379
+        min: '0.04284325'
+        max: '27.466424'
+        media: 6.4441
+        quartis: [3.6312, 5.8619, 8.4489]
+      export:
+        tipo: DOUBLE
+        nulos_pct: 34.73
+        distintos_aprox: 1703
+        min: '3512.6415'
+        max: '833900000000000.0'
+        media: 9714728984250.396
+        quartis: [17596134357.6332, 98704227891.1565, 456800000000]
+      import:
+        tipo: DOUBLE
+        nulos_pct: 34.73
+        distintos_aprox: 1842
+        min: '3733.0199'
+        max: '754000000000000.0'
+        media: 8986448783149.562
+        quartis: [18650175585.2843, 97509032880.8446, 442183272162.6201]
+      deflator_export:
+        tipo: DOUBLE
+        nulos_pct: 34.85
+        distintos_aprox: 1915
+        min: '8.004e-07'
+        max: '2.3956138'
+        media: 0.7188
+        quartis: [0.4114, 0.8194, 0.9992]
+      deflator_import:
+        tipo: DOUBLE
+        nulos_pct: 34.85
+        distintos_aprox: 1625
+        min: '6.885e-07'
+        max: '2.6220354'
+        media: 0.7137
+        quartis: [0.4297, 0.8317, 0.985]
+      deflator_gross_domestic_product:
+        tipo: DOUBLE
+        nulos_pct: 34.5
+        distintos_aprox: 1551
+        min: '7.689e-07'
+        max: '2.2411578'
+        media: 0.6347
+        quartis: [0.2812, 0.6976, 0.9665]
+      government_fixed_capital_formation:
+        tipo: DOUBLE
+        nulos_pct: 48.9
+        distintos_aprox: 219
+        min: '-2147483648.0'
+        max: '2144000000.0'
+        media: -1532585250.7574
+        quartis: [-2147483648, -2147483648, -2147483648]
+      capital_transfers:
+        tipo: DOUBLE
+        nulos_pct: 49.92
+        distintos_aprox: 487
+        min: '-2147483648.0'
+        max: '2125000000.0'
+        media: -1032907271.8626
+        quartis: [-2147483648, -2147483648, 295573356.4014]
+      government_consumption_fixed_capital:
+        tipo: DOUBLE
+        nulos_pct: 49.55
+        distintos_aprox: 290
+        min: '-2147483648.0'
+        max: '2142000000.0'
+        media: -1441134285.5213
+        quartis: [-2147483648, -2147483648, -2147483648]
+      capital_tax_transfers_receipts:
+        tipo: DOUBLE
+        nulos_pct: 49.77
+        distintos_aprox: 966
+        min: '-11750000000.0'
+        max: '14240000000000.0'
+        media: 255589439273.4959
+        quartis: [271730536.3322, 1357386250.0, 5463035714.2857]
+      term_trade:
+        tipo: DOUBLE
+        nulos_pct: 34.85
+        distintos_aprox: 1524
+        min: '0.53678447'
+        max: '2.4232671'
+        media: 1.0202
+        quartis: [0.9346, 0.9998, 1.0529]
+      trade_openness_ratio:
+        tipo: DOUBLE
+        nulos_pct: 34.73
+        distintos_aprox: 1673
+        min: '0.06465765'
+        max: '4.3556942'
+        media: 0.7473
+        quartis: [0.4297, 0.6327, 0.9116]
+      primary_total_expenditure_adjustred:
+        tipo: DOUBLE
+        nulos_pct: 64.25
+        distintos_aprox: 1
+        min: '-2147483648.0'
+        max: '-2147483648.0'
+        media: -2147483648
+        quartis: [-2147483648, -2147483648, -2147483648]
+        top:
+        - [null, 1700]
+        - ['-2147483648.0', 946]
+      total_expenditure_adjusted:
+        tipo: DOUBLE
+        nulos_pct: 64.25
+        distintos_aprox: 1
+        min: '-2147483648.0'
+        max: '-2147483648.0'
+        media: -2147483648
+        quartis: [-2147483648, -2147483648, -2147483648]
+        top:
+        - [null, 1700]
+        - ['-2147483648.0', 946]
+      total_receipt_adjusted:
+        tipo: DOUBLE
+        nulos_pct: 64.25
+        distintos_aprox: 1
+        min: '-2147483648.0'
+        max: '-2147483648.0'
+        media: -2147483648
+        quartis: [-2147483648, -2147483648, -2147483648]
+        top:
+        - [null, 1700]
+        - ['-2147483648.0', 946]
+      primary_total_receipt_adjusted:
+        tipo: DOUBLE
+        nulos_pct: 65.72
+        distintos_aprox: 1
+        min: '-2147483648.0'
+        max: '-2147483648.0'
+        media: -2147483648
+        quartis: [-2147483648, -2147483648, -2147483648]
+        top:
+        - [null, 1739]
+        - ['-2147483648.0', 907]
+      expenditure_labor_policy_active:
+        tipo: DOUBLE
+        nulos_pct: 68.41
+        distintos_aprox: 738
+        min: '6.071135'
+        max: '5541044.8'
+        media: 101995.7743
+        quartis: [762.0128, 2807.9128, 13497.3126]
+      expenditure_labor_policy_passive:
+        tipo: DOUBLE
+        nulos_pct: 66.4
+        distintos_aprox: 1035
+        min: '0.0'
+        max: '4959722.0'
+        media: 118807.6443
+        quartis: [1151.9971, 5861.285, 20365.8961]
+      size_municipalities:
+        tipo: DOUBLE
+        nulos_pct: 98.64
+        distintos_aprox: 32
+        min: '1685.3'
+        max: '222982.4'
+        media: 35774.5
+        quartis: [5939.85, 16076.3, 46434.1]
+        top:
+        - [null, 2610]
+        - ['9732.5', 2]
+        - ['12185.4', 1]
+        - ['149749.7', 1]
+        - ['15518.6', 1]
+        - ['16634.0', 1]
+        - ['166521.7', 1]
+        - ['1685.3', 1]
+        - ['17622.2', 1]
+        - ['1851.3', 1]
+      share_women_parliament:
+        tipo: DOUBLE
+        nulos_pct: 94.63
+        distintos_aprox: 108
+        min: '4.2'
+        max: '47.6'
+        media: 25.9563
+        quartis: [17.3, 25.9, 36]
+      share_women_minister:
+        tipo: DOUBLE
+        nulos_pct: 94.63
+        distintos_aprox: 66
+        min: '0.0'
+        max: '62.5'
+        media: 25.8528
+        quartis: [15.4, 23.1, 36]
+      government_confidence:
+        tipo: DOUBLE
+        nulos_pct: 97.24
+        distintos_aprox: 42
+        min: '13.0'
+        max: '82.0'
+        media: 42.8904
+        quartis: [29.5, 42, 56.25]
+        top:
+        - [null, 2573]
+        - ['24.0', 5]
+        - ['28.0', 4]
+        - ['30.0', 4]
+        - ['36.0', 4]
+        - ['42.0', 4]
+        - ['48.0', 3]
+        - ['57.0', 3]
+        - ['25.0', 2]
+        - ['27.0', 2]
+      rule_of_law_limited_power:
+        tipo: DOUBLE
+        nulos_pct: 98.94
+        distintos_aprox: 21
+        min: '0.32'
+        max: '0.93'
+        media: 0.7532
+        quartis: [0.69, 0.8, 0.855]
+        top:
+        - [null, 2618]
+        - ['0.68', 2]
+        - ['0.7', 2]
+        - ['0.8', 2]
+        - ['0.83', 2]
+        - ['0.85', 2]
+        - ['0.86', 2]
+        - ['0.89', 2]
+        - ['0.32', 1]
+        - ['0.46', 1]
+      rule_of_law_rights:
+        tipo: DOUBLE
+        nulos_pct: 98.94
+        distintos_aprox: 20
+        min: '0.34'
+        max: '0.92'
+        media: 0.7686
+        quartis: [0.745, 0.795, 0.845]
+        top:
+        - [null, 2618]
+        - ['0.75', 4]
+        - ['0.81', 3]
+        - ['0.77', 2]
+        - ['0.82', 2]
+        - ['0.88', 2]
+        - ['0.92', 2]
+        - ['0.34', 1]
+        - ['0.51', 1]
+        - ['0.62', 1]
+      expenditure_health_pc:
+        tipo: DOUBLE
+        nulos_pct: 98.64
+        distintos_aprox: 39
+        min: '541.0'
+        max: '6520.0'
+        media: 2795.6111
+        quartis: [1483, 2906, 3697]
+        top:
+        - [null, 2610]
+        - ['1910.0', 2]
+        - ['1049.0', 1]
+        - ['1201.0', 1]
+        - ['1236.0', 1]
+        - ['1360.0', 1]
+        - ['1378.0', 1]
+        - ['1384.0', 1]
+        - ['1582.0', 1]
+        - ['1663.0', 1]
+      judicial_confidence:
+        tipo: DOUBLE
+        nulos_pct: 97.32
+        distintos_aprox: 55
+        min: '15.0'
+        max: '84.0'
+        media: 52.6056
+        quartis: [40.25, 52, 67.75]
+      rule_of_law_justice_enforcement:
+        tipo: DOUBLE
+        nulos_pct: 98.94
+        distintos_aprox: 21
+        min: '0.4'
+        max: '0.92'
+        media: 0.6986
+        quartis: [0.53, 0.71, 0.88]
+        top:
+        - [null, 2618]
+        - ['0.89', 4]
+        - ['0.64', 2]
+        - ['0.88', 2]
+        - ['0.4', 1]
+        - ['0.42', 1]
+        - ['0.44', 1]
+        - ['0.48', 1]
+        - ['0.5', 1]
+        - ['0.51', 1]
+      rule_of_law_justice_government_influence:
+        tipo: DOUBLE
+        nulos_pct: 98.94
+        distintos_aprox: 20
+        min: '0.25'
+        max: '0.95'
+        media: 0.7657
+        quartis: [0.7, 0.785, 0.885]
+        top:
+        - [null, 2618]
+        - ['0.84', 3]
+        - ['0.7', 2]
+        - ['0.74', 2]
+        - ['0.78', 2]
+        - ['0.88', 2]
+        - ['0.89', 2]
+        - ['0.92', 2]
+        - ['0.95', 2]
+        - ['0.25', 1]
+      index_ourdata:
+        tipo: DOUBLE
+        nulos_pct: 98.83
+        distintos_aprox: 24
+        min: '0.13'
+        max: '0.94'
+        media: 0.5519
+        quartis: [0.435, 0.53, 0.6775]
+        top:
+        - [null, 2615]
+        - ['0.31', 2]
+        - ['0.39', 2]
+        - ['0.45', 2]
+        - ['0.48', 2]
+        - ['0.53', 2]
+        - ['0.79', 2]
+        - ['0.13', 1]
+        - ['0.22', 1]
+        - ['0.4', 1]
+      internet_interaction_authoriries:
+        tipo: DOUBLE
+        nulos_pct: 97.88
+        distintos_aprox: 45
+        min: '0.4'
+        max: '71.0'
+        media: 22.1964
+        quartis: [8.4, 17, 31.5]
+        top:
+        - [null, 2590]
+        - ['12.0', 2]
+        - ['15.0', 2]
+        - ['17.0', 2]
+        - ['17.3', 2]
+        - ['33.0', 2]
+        - ['35.0', 2]
+        - ['48.0', 2]
+        - ['6.1', 2]
+        - ['6.3', 2]
+      average_income_tax_rate:
+        tipo: DOUBLE
+        nulos_pct: 75.59
+        distintos_aprox: 601
+        min: '0.0'
+        max: '38.584203'
+        media: 15.5463
+        quartis: [10.9851, 15.3774, 19.7461]
+      average_employee_social_security_rate:
+        tipo: DOUBLE
+        nulos_pct: 75.59
+        distintos_aprox: 354
+        min: '0.0'
+        max: '24.043617'
+        media: 10.1302
+        quartis: [6.4778, 9.152, 14.041]
+      average_employer_social_security_rate:
+        tipo: DOUBLE
+        nulos_pct: 75.59
+        distintos_aprox: 389
+        min: '0.0'
+        max: '44.032298'
+        media: 18.1938
+        quartis: [10.0081, 16.1786, 28.7856]
+      average_income_social_security_rate:
+        tipo: DOUBLE
+        nulos_pct: 75.59
+        distintos_aprox: 600
+        min: '2.482772'
+        max: '43.367702'
+        media: 25.6764
+        quartis: [21.1565, 25.6472, 30.7836]
+      net_personal_average_tax_rate:
+        tipo: DOUBLE
+        nulos_pct: 75.59
+        distintos_aprox: 604
+        min: '2.482772'
+        max: '43.367702'
+        media: 25.6706
+        quartis: [21.1565, 25.6472, 30.7836]
+      average_tax_wedge:
+        tipo: DOUBLE
+        nulos_pct: 75.59
+        distintos_aprox: 634
+        min: '7.0'
+        max: '57.103642'
+        media: 36.313
+        quartis: [30.4235, 38.2603, 43.0566]
+      marginal_tax_wedge:
+        tipo: DOUBLE
+        nulos_pct: 75.59
+        distintos_aprox: 389
+        min: '7.0'
+        max: '77.153558'
+        media: 45.2193
+        quartis: [38.5413, 46.2993, 53.4417]
+      total_red_expenditure_intramural:
+        tipo: DOUBLE
+        nulos_pct: 81.07
+        distintos_aprox: 111
+        min: '-2147483648.0'
+        max: '2030000000.0'
+        media: -1437498821.7645
+        quartis: [-2147483648, -2147483648, -287485719.5]
+      total_red_expenditure_government:
+        tipo: DOUBLE
+        nulos_pct: 80.69
+        distintos_aprox: 255
+        min: '-2147483648.0'
+        max: '2094000000.0'
+        media: -697690837.6517
+        quartis: [-2147483648, 30616000, 264677777.7778]
+      budget_aproppriation_red:
+        tipo: DOUBLE
+        nulos_pct: 63.68
+        distintos_aprox: 330
+        min: '-2147483648.0'
+        max: '2139000000.0'
+        media: -1037088922.2893
+        quartis: [-2147483648, -2147483648, 268087692.3077]
+      basic_red_expenditure_intramural:
+        tipo: DOUBLE
+        nulos_pct: 85.94
+        distintos_aprox: 147
+        min: '-2147483648.0'
+        max: '2078000000.0'
+        media: -1007281840.6667
+        quartis: [-2147483648, -2147483648, 125840000]
+      basic_red_expenditure_government:
+        tipo: DOUBLE
+        nulos_pct: 83.48
+        distintos_aprox: 353
+        min: '-2147483648.0'
+        max: '1865000000.0'
+        media: -167298797.3638
+        quartis: [2202260, 40631416.6667, 573616000]
+      female_labor_participation_rate:
+        tipo: DOUBLE
+        nulos_pct: 50.04
+        distintos_aprox: 1432
+        min: '0.0'
+        max: '86.165118'
+        media: 59.9008
+        quartis: [51.8518, 62.2157, 69.4602]
+      male_labor_participation_rate:
+        tipo: DOUBLE
+        nulos_pct: 50.04
+        distintos_aprox: 1322
+        min: '0.0'
+        max: '91.830773'
+        media: 80.0881
+        quartis: [76.8678, 80.5471, 84.0604]
+      fertility_rate:
+        tipo: DOUBLE
+        nulos_pct: 82.99
+        distintos_aprox: 201
+        min: '1.08'
+        max: '6.72'
+        media: 1.8272
+        quartis: [1.4229, 1.7657, 2.0153]
+      life_expectancy:
+        tipo: DOUBLE
+        nulos_pct: 30.95
+        distintos_aprox: 187
+        min: '48.3'
+        max: '83.9'
+        media: 74.7361
+        quartis: [71.565, 74.9173, 78.1706]
+      gini_disposable_income:
+        tipo: DOUBLE
+        nulos_pct: 87.45
+        distintos_aprox: 147
+        min: '0.209'
+        max: '0.48'
+        media: 0.3023
+        quartis: [0.2637, 0.2961, 0.3363]
+      gini_market_income:
+        tipo: DOUBLE
+        nulos_pct: 87.45
+        distintos_aprox: 191
+        min: '0.336'
+        max: '0.58'
+        media: 0.4678
+        quartis: [0.4355, 0.4717, 0.5035]
+      gini_government_income:
+        tipo: DOUBLE
+        nulos_pct: 88.06
+        distintos_aprox: 139
+        min: '0.26'
+        max: '0.489'
+        media: 0.3376
+        quartis: [0.3024, 0.3295, 0.3706]
+      poverty_rate:
+        tipo: DOUBLE
+        nulos_pct: 87.41
+        distintos_aprox: 99
+        min: '0.042'
+        max: '0.195'
+        media: 0.1068
+        quartis: [0.0792, 0.1032, 0.131]
+      pmr_market_regulation_indicator:
+        tipo: DOUBLE
+        nulos_pct: 95.09
+        distintos_aprox: 112
+        min: '0.91503167'
+        max: '3.2822793'
+        media: 1.7422
+        quartis: [1.4366, 1.6014, 1.9535]
+      pmr_state_control:
+        tipo: DOUBLE
+        nulos_pct: 95.09
+        distintos_aprox: 121
+        min: '1.1534009'
+        max: '4.4233427'
+        media: 2.4281
+        quartis: [1.9781, 2.2746, 2.7477]
+      pmr_barriers_entrepeneurship:
+        tipo: DOUBLE
+        nulos_pct: 95.09
+        distintos_aprox: 114
+        min: '1.0917521'
+        max: '3.5674233'
+        media: 2.0596
+        quartis: [1.6842, 1.964, 2.4461]
+      pmr_barriers_trade_investment:
+        tipo: DOUBLE
+        nulos_pct: 95.05
+        distintos_aprox: 111
+        min: '0.11811931'
+        max: '3.1481252'
+        media: 0.7354
+        quartis: [0.3663, 0.6052, 0.9066]
+      employment_contract_protect_ex_collective_dismissal:
+        tipo: DOUBLE
+        nulos_pct: 69.2
+        distintos_aprox: 92
+        min: '0.25666666'
+        max: '5.0'
+        media: 2.1877
+        quartis: [1.6468, 2.2657, 2.6794]
+      employment_contract_protect_in_collective_dismissal:
+        tipo: DOUBLE
+        nulos_pct: 91.8
+        distintos_aprox: 72
+        min: '1.0068028'
+        max: '3.5119047'
+        media: 2.3482
+        quartis: [2.0967, 2.3895, 2.708]
+      cabinet_right:
+        tipo: DOUBLE
+        nulos_pct: 44.52
+        distintos_aprox: 441
+        min: '0.0'
+        max: '100.0'
+        media: 40.3966
+        quartis: [0, 36.7869, 73.6248]
+      cabinet_center:
+        tipo: DOUBLE
+        nulos_pct: 44.52
+        distintos_aprox: 432
+        min: '0.0'
+        max: '100.0'
+        media: 23.1264
+        quartis: [0, 4.7485, 44.2869]
+      cabinet_left:
+        tipo: DOUBLE
+        nulos_pct: 44.52
+        distintos_aprox: 386
+        min: '0.0'
+        max: '100.0'
+        media: 32.8648
+        quartis: [0, 23.4354, 55.0359]
+      cabinet_composition:
+        tipo: DOUBLE
+        nulos_pct: 44.56
+        distintos_aprox: 5
+        min: '1.0'
+        max: '5.0'
+        media: 2.4029
+        quartis: [1, 2, 3]
+        top:
+        - [null, 1179]
+        - ['1.0', 594]
+        - ['3.0', 272]
+        - ['2.0', 256]
+        - ['5.0', 223]
+        - ['4.0', 122]
+      cabinet_ideological_composition:
+        tipo: DOUBLE
+        nulos_pct: 44.56
+        distintos_aprox: 2
+        min: '0.0'
+        max: '1.0'
+        media: 0.2447
+        quartis: [0, 0, 0.195]
+        top:
+        - [null, 1179]
+        - ['0.0', 1108]
+        - ['1.0', 359]
+      cabinet_ideological_gap:
+        tipo: DOUBLE
+        nulos_pct: 49.09
+        distintos_aprox: 6
+        min: '-3.0'
+        max: '3.0'
+        media: 0.0831
+        quartis: [0, 0, 0]
+        top:
+        - [null, 1299]
+        - ['0.0', 1108]
+        - ['1.0', 117]
+        - ['-2.0', 36]
+        - ['3.0', 30]
+        - ['2.0', 29]
+        - ['-3.0', 27]
+      government_change:
+        tipo: DOUBLE
+        nulos_pct: 44.56
+        distintos_aprox: 5
+        min: '0.0'
+        max: '4.0'
+        media: 0.5222
+        quartis: [0, 0, 1]
+        top:
+        - [null, 1179]
+        - ['0.0', 809]
+        - ['1.0', 559]
+        - ['2.0', 91]
+        - ['3.0', 7]
+        - ['4.0', 1]
+      election_turnout:
+        tipo: DOUBLE
+        nulos_pct: 44.33
+        distintos_aprox: 272
+        min: '35.0'
+        max: '96.8'
+        media: 75.798
+        quartis: [67.5878, 77.811, 87.4043]
+      budget_perspective_medium_term:
+        tipo: DOUBLE
+        nulos_pct: 30.8
+        distintos_aprox: 20
+        min: '0.43'
+        max: '0.92'
+        media: 0.6899
+        quartis: [0.59, 0.7049, 0.81]
+        top:
+        - [null, 815]
+        - ['0.78', 190]
+        - ['0.61', 176]
+        - ['0.62', 133]
+        - ['0.46', 120]
+        - ['0.57', 120]
+        - ['0.73', 120]
+        - ['0.81', 120]
+        - ['0.82', 120]
+        - ['0.88', 71]
+      performance_budget:
+        tipo: DOUBLE
+        nulos_pct: 24
+        distintos_aprox: 28
+        min: '0.18'
+        max: '0.66'
+        media: 0.3911
+        quartis: [0.27, 0.4, 0.4607]
+        top:
+        - [null, 635]
+        - ['0.26', 180]
+        - ['0.43', 180]
+        - ['0.27', 120]
+        - ['0.31', 120]
+        - ['0.36', 120]
+        - ['0.46', 120]
+        - ['0.49', 116]
+        - ['0.33', 73]
+        - ['0.42', 71]
+      government_capital_stock:
+        tipo: DOUBLE
+        nulos_pct: 21.69
+        distintos_aprox: 1967
+        min: '1.42'
+        max: '10889.3'
+        media: 550.4453
+        quartis: [30.6949, 126.9943, 392.6108]
+      public_private_partnership_capital_stock:
+        tipo: DOUBLE
+        nulos_pct: 73.02
+        distintos_aprox: 342
+        min: '0.0'
+        max: '126.04'
+        media: 5.586
+        quartis: [0, 0.2044, 3.6133]
+      corporate_income_tax_rate:
+        tipo: DOUBLE
+        nulos_pct: 58.13
+        distintos_aprox: 212
+        min: '9.0'
+        max: '61.75'
+        media: 32.6628
+        quartis: [25, 30.9951, 39.4348]
+      vat_rate:
+        tipo: DOUBLE
+        nulos_pct: 53.25
+        distintos_aprox: 44
+        min: '3.0'
+        max: '30.0'
+        media: 17.8508
+        quartis: [15, 18.9967, 21]
+        top:
+        - [null, 1409]
+        - ['20.0', 159]
+        - ['18.0', 116]
+        - ['25.0', 100]
+        - ['15.0', 90]
+        - ['19.0', 88]
+        - ['10.0', 86]
+        - ['21.0', 76]
+        - ['22.0', 76]
+        - ['23.0', 55]
+      voice_accountability:
+        tipo: DOUBLE
+        nulos_pct: 74.87
+        distintos_aprox: 828
+        min: '-0.6348642'
+        max: '1.800992'
+        media: 1.1494
+        quartis: [0.9724, 1.1869, 1.454]
+      regulatory_quality:
+        tipo: DOUBLE
+        nulos_pct: 74.87
+        distintos_aprox: 635
+        min: '0.0437174'
+        max: '2.098008'
+        media: 1.259
+        quartis: [0.9603, 1.2801, 1.6333]
+      rule_of_law:
+        tipo: DOUBLE
+        nulos_pct: 74.87
+        distintos_aprox: 538
+        min: '-0.7266464'
+        max: '2.100273'
+        media: 1.2626
+        quartis: [0.8803, 1.3488, 1.7956]
+      political_stability:
+        tipo: DOUBLE
+        nulos_pct: 74.87
+        distintos_aprox: 573
+        min: '-1.99828'
+        max: '1.760102'
+        media: 0.7539
+        quartis: [0.5146, 0.9228, 1.1825]
+      government_effectiveness:
+        tipo: DOUBLE
+        nulos_pct: 74.87
+        distintos_aprox: 686
+        min: '-0.2648129'
+        max: '2.353998'
+        media: 1.3003
+        quartis: [0.8802, 1.3941, 1.7864]
+      corruption_control:
+        tipo: DOUBLE
+        nulos_pct: 74.87
+        distintos_aprox: 708
+        min: '-0.7661818'
+        max: '2.469991'
+        media: 1.2529
+        quartis: [0.5326, 1.3631, 1.9776]
+      indicator_fiscal_rule_expenditure:
+        tipo: BIGINT
+        nulos_pct: 60.17
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.2391
+        quartis: [0, 0, 0]
+        top:
+        - [null, 1592]
+        - ['0', 802]
+        - ['1', 252]
+      indicator_fiscal_rule_revenue:
+        tipo: BIGINT
+        nulos_pct: 60.17
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0693
+        quartis: [0, 0, 0]
+        top:
+        - [null, 1592]
+        - ['0', 981]
+        - ['1', 73]
+      indicator_fiscal_rule_balance:
+        tipo: BIGINT
+        nulos_pct: 60.17
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.5968
+        quartis: [0, 1, 1]
+        top:
+        - [null, 1592]
+        - ['1', 629]
+        - ['0', 425]
+      indicator_fiscal_rule_debt:
+        tipo: BIGINT
+        nulos_pct: 60.17
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.4839
+        quartis: [0, 0, 1]
+        top:
+        - [null, 1592]
+        - ['0', 544]
+        - ['1', 510]
+      indicator_fiscal_council:
+        tipo: BIGINT
+        nulos_pct: 24.87
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.2319
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 1527]
+        - [null, 658]
+        - ['1', 461]

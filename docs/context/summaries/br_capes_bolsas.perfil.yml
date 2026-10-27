@@ -1,0 +1,630 @@
+dataset: br_capes_bolsas
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  mobilidade_internacional:
+    linhas: 146036
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano_final:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '2010'
+        max: '2023'
+        media: 2014.8199
+        quartis: [2014, 2015, 2016]
+        top:
+        - ['2015', 38813]
+        - ['2014', 29488]
+        - ['2013', 21723]
+        - ['2016', 16362]
+        - ['2017', 10091]
+        - ['2012', 8042]
+        - ['2018', 6146]
+        - ['2019', 5707]
+        - ['2011', 3252]
+        - ['2020', 3024]
+      ano_inicial:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: '2005'
+        max: '2019'
+        media: 2013.6983
+        quartis: [2013, 2014, 2014]
+        top:
+        - ['2014', 43296]
+        - ['2013', 31816]
+        - ['2012', 23606]
+        - ['2015', 15845]
+        - ['2011', 6968]
+        - ['2017', 6502]
+        - ['2018', 4578]
+        - ['2019', 4040]
+        - ['2016', 3820]
+        - ['2010', 3162]
+      area_avaliacao: {tipo: VARCHAR, nulos_pct: 10.87, distintos_aprox: 60, min: 'ADMINISTRAÇÃO PÚBLICA E DE EMPRESAS, CIÊNCIAS CONTÁBEIS E TURISMO',
+        max: ZOOTECNIA / RECURSOS PESQUEIROS}
+      area_conhecimento: {tipo: VARCHAR, nulos_pct: 19.74, distintos_aprox: 82, min: ADMINISTRAÇÃO, max: ZOOTECNIA}
+      beneficiario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 89563, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 109833, pessoal: 'só contagens: valores seriam dado pessoal'}
+      deducao_mensalidade_programa_atracao_jovens:
+        tipo: DOUBLE
+        nulos_pct: 99.99
+        distintos_aprox: 15
+        min: '-77000.0'
+        max: '-2050.0'
+        media: -20292.5
+        quartis: [-28000, -14000, -7600]
+        top:
+        - [null, 146016]
+        - ['-10500.0', 3]
+        - ['-7000.0', 3]
+        - ['-14000.0', 2]
+        - ['-24500.0', 2]
+        - ['-17500.0', 1]
+        - ['-2050.0', 1]
+        - ['-20500.0', 1]
+        - ['-31500.0', 1]
+        - ['-35000.0', 1]
+      grande_area_conhecimento:
+        tipo: VARCHAR
+        nulos_pct: 3.59
+        distintos_aprox: 9
+        min: CIÊNCIAS AGRÁRIAS
+        max: MULTIDISCIPLINAR
+        top:
+        - [ENGENHARIAS, 46006]
+        - [CIÊNCIAS EXATAS E DA TERRA, 17367]
+        - [CIÊNCIAS HUMANAS, 17274]
+        - [CIÊNCIAS SOCIAIS APLICADAS, 13513]
+        - [CIÊNCIAS DA SAÚDE, 12889]
+        - [CIÊNCIAS AGRÁRIAS, 12228]
+        - [CIÊNCIAS BIOLÓGICAS, 9427]
+        - ['LINGÜÍSTICA, LETRAS E ARTES', 6052]
+        - [MULTIDISCIPLINAR, 6041]
+        - [null, 5239]
+      id_processo_concessao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 153755}
+      instituicao_ensino: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 3118}
+      instituicao_ensino_origem: {tipo: VARCHAR, nulos_pct: 1.97, distintos_aprox: 1692}
+      instituicao_ensino_principal: {tipo: VARCHAR, nulos_pct: 82.28, distintos_aprox: 1500}
+      mes_final:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.8784
+        quartis: [5, 7, 8]
+        top:
+        - ['8', 32483]
+        - ['7', 24396]
+        - ['12', 18028]
+        - ['2', 14337]
+        - ['6', 11637]
+        - ['9', 9272]
+        - ['1', 9227]
+        - ['5', 6929]
+        - ['3', 6452]
+        - ['11', 4802]
+      mes_inicial:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 7.117
+        quartis: [6, 8, 9]
+        top:
+        - ['8', 36412]
+        - ['9', 35884]
+        - ['7', 14341]
+        - ['3', 11463]
+        - ['10', 8483]
+        - ['6', 7462]
+        - ['1', 7420]
+        - ['2', 6542]
+        - ['4', 5681]
+        - ['11', 5227]
+      nivel_ensino:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 44
+        min: APERFEIÇOAMENTO
+        max: TIMOR LESTE TUTOR
+        top:
+        - [GRADUAÇÃO SANDUÍCHE, 85548]
+        - [DOUTORADO SANDUÍCHE, 34089]
+        - [DOUTORADO PLENO, 8653]
+        - [ESTÁGIO PÓS-DOUTORAL, 6789]
+        - [ESTÁGIO SÊNIOR, 2962]
+        - [PÓS-DOUTORADO, 1535]
+        - [PESQUISADOR VISITANTE ESPECIAL, 1179]
+        - [CAPACITAÇÃO PROFESSORES DA EDUCAÇÃO BÁSICA, 783]
+        - [MESTRADO PROFISSIONAL NOS EUA, 560]
+        - [PROFESSOR VISITANTE, 483]
+      pais_destino: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 105, min: ALEMANHA, max: ÍNDIA}
+      programa_capes: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 165, min: BJT/CSF - BOLSA JOVENS TALENTOS - PROGRAMA CIÊNCIA SEM FRONTEIRAS,
+        max: UNIVERSITY OF TEXAS}
+      sigla_moeda:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: AUD
+        max: USD
+        top:
+        - [USD, 72938]
+        - [EUR, 51020]
+        - [BRL, 8968]
+        - [GBP, 5111]
+        - [CAD, 3992]
+        - [AUD, 2182]
+        - [JPY, 550]
+        - [SEK, 485]
+        - [NOK, 321]
+        - [DKK, 261]
+      uf_instituicao_origem: {tipo: VARCHAR, nulos_pct: 2.46, distintos_aprox: 290, min: ACRE, max: WYOMING}
+      valor_adicional_pagos_doutorado_pleno_dependentes:
+        tipo: DOUBLE
+        nulos_pct: 99.4
+        distintos_aprox: 143
+        min: '0.0'
+        max: '59400.0'
+        media: 3559.6287
+        quartis: [1200, 2899.3935, 4498.6298]
+      valor_auxilio_deslocamento:
+        tipo: DOUBLE
+        nulos_pct: 35.23
+        distintos_aprox: 151
+        min: '0.0'
+        max: '513176.0'
+        media: 4122.0841
+        quartis: [1604, 2502.9183, 3208]
+      valor_auxilio_deslocamento_demanda:
+        tipo: DOUBLE
+        nulos_pct: 99.56
+        distintos_aprox: 102
+        min: '0.0'
+        max: '513176.0'
+        media: 4040.2145
+        quartis: [1386.7812, 2510, 3765]
+      valor_auxilio_deslocamento_pesquisa:
+        tipo: DOUBLE
+        nulos_pct: 99.99
+        distintos_aprox: 3
+        min: '1022.0'
+        max: '1604.0'
+        media: 1210.5714
+        quartis: [1022, 1255, 1255]
+        top:
+        - [null, 146015]
+        - ['1255.0', 12]
+        - ['1022.0', 7]
+        - ['1604.0', 2]
+      valor_auxilio_deslocamento_retorno:
+        tipo: DOUBLE
+        nulos_pct: 99.15
+        distintos_aprox: 27
+        min: '0.0'
+        max: '256588.0'
+        media: 2188.7146
+        quartis: [1255, 1437.6036, 2470.1283]
+        top:
+        - [null, 144792]
+        - ['1255.0', 437]
+        - ['1604.0', 212]
+        - ['2510.0', 160]
+        - ['1022.0', 150]
+        - ['3208.0', 62]
+        - ['2044.0', 51]
+        - ['1744.0', 30]
+        - ['3383.0', 29]
+        - ['3488.0', 25]
+      valor_auxilio_despesas_instalacao:
+        tipo: DOUBLE
+        nulos_pct: 98.12
+        distintos_aprox: 150
+        min: '0.0'
+        max: '162380.0'
+        media: 946.6051
+        quartis: [430, 640.2381, 888.4143]
+      valor_auxilio_instalacao:
+        tipo: DOUBLE
+        nulos_pct: 40.13
+        distintos_aprox: 149
+        min: '0.0'
+        max: '311300.0'
+        media: 2310.9666
+        quartis: [1300, 1320, 1320]
+      valor_auxilio_instalacao_dependente:
+        tipo: DOUBLE
+        nulos_pct: 99.98
+        distintos_aprox: 2
+        min: '200.0'
+        max: '600.0'
+        media: 222.2222
+        quartis: [200, 200, 200]
+        top:
+        - [null, 146000]
+        - ['200.0', 34]
+        - ['600.0', 2]
+      valor_auxilio_material_didatico:
+        tipo: DOUBLE
+        nulos_pct: 72.96
+        distintos_aprox: 14
+        min: '0.0'
+        max: '78870.0'
+        media: 1911.5914
+        quartis: [1000, 1000, 1000]
+        top:
+        - [null, 106543]
+        - ['1000.0', 38209]
+        - ['78870.0', 438]
+        - ['1360.0', 355]
+        - ['2000.0', 189]
+        - ['9040.0', 156]
+        - ['0.0', 83]
+        - ['8120.0', 56]
+        - ['3000.0', 2]
+        - ['1180.0', 1]
+      valor_auxilio_moradia:
+        tipo: DOUBLE
+        nulos_pct: 99.88
+        distintos_aprox: 13
+        min: '0.0'
+        max: '4000.0'
+        media: 2146.8066
+        quartis: [2000, 2000, 2000]
+        top:
+        - [null, 145855]
+        - ['2000.0', 115]
+        - ['4000.0', 34]
+        - ['900.0', 8]
+        - ['600.0', 5]
+        - ['834.0', 5]
+        - ['667.0', 4]
+        - ['1000.0', 2]
+        - ['450.0', 2]
+        - ['750.0', 2]
+      valor_auxilio_seguro_saude:
+        tipo: DOUBLE
+        nulos_pct: 78.03
+        distintos_aprox: 150
+        min: '-730.0'
+        max: '161160.0'
+        media: 2629.4138
+        quartis: [540, 990, 1080]
+      valor_auxilio_seguro_saude_anual:
+        tipo: DOUBLE
+        nulos_pct: 97.85
+        distintos_aprox: 210
+        min: '-720.0'
+        max: '407640.0'
+        media: 3003.1681
+        quartis: [1080, 2160, 3399.7507]
+      valor_auxilio_seguro_saude_capes_setec:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 1
+        min: '180.0'
+        max: '180.0'
+        media: 180
+        quartis: [180, 180, 180]
+        top:
+        - [null, 146035]
+        - ['180.0', 1]
+      valor_auxilio_seguro_saude_demanda:
+        tipo: DOUBLE
+        nulos_pct: 99.92
+        distintos_aprox: 33
+        min: '0.0'
+        max: '8040.0'
+        media: 610.4425
+        quartis: [360, 420, 720]
+        top:
+        - [null, 145923]
+        - ['360.0', 30]
+        - ['540.0', 10]
+        - ['720.0', 9]
+        - ['1080.0', 7]
+        - ['600.0', 7]
+        - ['90.0', 5]
+        - ['180.0', 4]
+        - ['420.0', 4]
+        - ['270.0', 3]
+      valor_auxilio_seguro_saude_dependente:
+        tipo: DOUBLE
+        nulos_pct: 99.8
+        distintos_aprox: 50
+        min: '0.0'
+        max: '6480.0'
+        media: 809.7423
+        quartis: [415, 720, 1046.6667]
+        top:
+        - [null, 145745]
+        - ['720.0', 76]
+        - ['360.0', 34]
+        - ['1440.0', 26]
+        - ['1080.0', 16]
+        - ['540.0', 14]
+        - ['510.0', 10]
+        - ['330.0', 7]
+        - ['570.0', 7]
+        - ['0.0', 6]
+      valor_recebido_adicional_localidade:
+        tipo: DOUBLE
+        nulos_pct: 79.16
+        distintos_aprox: 322
+        min: '-200.0'
+        max: '1695044.0'
+        media: 10090.5514
+        quartis: [1699.3232, 4022.6185, 5257.8538]
+      valor_recebido_ajuda_custo:
+        tipo: DOUBLE
+        nulos_pct: 99.9
+        distintos_aprox: 2
+        min: '0.0'
+        max: '400.0'
+        media: 397.2789
+        quartis: [400, 400, 400]
+        top:
+        - [null, 145889]
+        - ['400.0', 146]
+        - ['0.0', 1]
+      valor_recebido_ajuda_custo_capes_mtur:
+        tipo: DOUBLE
+        nulos_pct: 99.85
+        distintos_aprox: 3
+        min: '900.0'
+        max: '1260.0'
+        media: 1144.486
+        quartis: [900, 1200, 1260]
+        top:
+        - [null, 145822]
+        - ['1260.0', 102]
+        - ['900.0', 60]
+        - ['1200.0', 52]
+      valor_recebido_ajuda_custo_capes_setec:
+        tipo: DOUBLE
+        nulos_pct: 99.97
+        distintos_aprox: 1
+        min: '480.0'
+        max: '480.0'
+        media: 480
+        quartis: [480, 480, 480]
+        top:
+        - [null, 145987]
+        - ['480.0', 49]
+      valor_recebido_bolsa:
+        tipo: DOUBLE
+        nulos_pct: 78.93
+        distintos_aprox: 1725
+        min: '0.0'
+        max: '6496800.0'
+        media: 13320.9277
+        quartis: [3178.1725, 6907.2682, 13053.2624]
+      valor_recebido_capital:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 1
+        min: '150.0'
+        max: '150.0'
+        media: 150
+        quartis: [150, 150, 150]
+        top:
+        - [null, 146035]
+        - ['150.0', 1]
+      valor_recebido_custeio_taxas_escolares:
+        tipo: DOUBLE
+        nulos_pct: 98.67
+        distintos_aprox: 1170
+        min: '-2537.0'
+        max: '1913820.0'
+        media: 22354.0823
+        quartis: [2846.3847, 7953.4167, 28689.8099]
+      valor_recebido_custeio_taxas_escolares_menores:
+        tipo: DOUBLE
+        nulos_pct: 99.8
+        distintos_aprox: 157
+        min: '0.0'
+        max: '9000.0'
+        media: 433.2715
+        quartis: [108.5, 263.1875, 413.0833]
+      valor_recebido_despesas_adicional_dependente:
+        tipo: DOUBLE
+        nulos_pct: 99.93
+        distintos_aprox: 45
+        min: '0.0'
+        max: '4200.0'
+        media: 1037.1604
+        quartis: [600, 900, 1200]
+        top:
+        - [null, 145930]
+        - ['600.0', 16]
+        - ['800.0', 9]
+        - ['1000.0', 7]
+        - ['1130.0', 6]
+        - ['400.0', 6]
+        - ['1110.0', 5]
+        - ['1200.0', 5]
+        - ['1600.0', 4]
+        - ['1080.0', 3]
+      valor_recebido_despesas_auxilio_deslocamento:
+        tipo: DOUBLE
+        nulos_pct: 99.85
+        distintos_aprox: 30
+        min: '0.0'
+        max: '42008.0'
+        media: 1520.6306
+        quartis: [1004, 1255, 1602.6667]
+        top:
+        - [null, 145814]
+        - ['1255.0', 59]
+        - ['1004.0', 46]
+        - ['704.0', 24]
+        - ['1604.0', 16]
+        - ['2510.0', 15]
+        - ['1304.0', 10]
+        - ['1022.0', 7]
+        - ['1744.0', 6]
+        - ['1706.0', 5]
+      valor_recebido_despesas_extraordinarias:
+        tipo: DOUBLE
+        nulos_pct: 94.65
+        distintos_aprox: 468
+        min: '-1300.0'
+        max: '82535.0'
+        media: 1218.4164
+        quartis: [789.5387, 1000, 1340]
+      valor_recebido_despesas_mensalidade:
+        tipo: DOUBLE
+        nulos_pct: 98.72
+        distintos_aprox: 335
+        min: '0.0'
+        max: '19400.0'
+        media: 1705.7544
+        quartis: [400, 998.5731, 2078.0693]
+      valor_recebido_despesas_seguro_saude:
+        tipo: DOUBLE
+        nulos_pct: 97.79
+        distintos_aprox: 146
+        min: '0.0'
+        max: '18960.0'
+        media: 351.4493
+        quartis: [122.2917, 240, 409.2288]
+      valor_recebido_diarias:
+        tipo: DOUBLE
+        nulos_pct: 99.99
+        distintos_aprox: 1
+        min: '1480.0'
+        max: '1480.0'
+        media: 1480
+        quartis: [1480, 1480, 1480]
+        top:
+        - [null, 146018]
+        - ['1480.0', 18]
+      valor_recebido_escola_altos_estudos:
+        tipo: DOUBLE
+        nulos_pct: 99.92
+        distintos_aprox: 23
+        min: '2400.0'
+        max: '24000.0'
+        media: 8722.1239
+        quartis: [4000, 8000, 11200]
+        top:
+        - [null, 145923]
+        - ['4000.0', 16]
+        - ['2400.0', 13]
+        - ['12000.0', 11]
+        - ['8000.0', 10]
+        - ['5600.0', 9]
+        - ['11200.0', 8]
+        - ['10400.0', 7]
+        - ['6400.0', 7]
+        - ['7200.0', 7]
+      valor_recebido_licenca_maternidade:
+        tipo: DOUBLE
+        nulos_pct: 99.95
+        distintos_aprox: 18
+        min: '1300.0'
+        max: '28000.0'
+        media: 6350.8
+        quartis: [5200, 5200, 6225]
+        top:
+        - [null, 145961]
+        - ['5200.0', 41]
+        - ['1300.0', 4]
+        - ['8400.0', 4]
+        - ['16400.0', 3]
+        - ['2600.0', 3]
+        - ['5880.0', 3]
+        - ['6600.0', 3]
+        - ['3900.0', 2]
+        - ['8800.0', 2]
+      valor_recebido_mensalidade:
+        tipo: DOUBLE
+        nulos_pct: 51.14
+        distintos_aprox: 1315
+        min: '-21000.0'
+        max: '5955600.0'
+        media: 19454.4311
+        quartis: [4258.9876, 7798.4696, 12908.3624]
+      valor_recebido_mensalidade_agendadas:
+        tipo: DOUBLE
+        nulos_pct: 90.61
+        distintos_aprox: 211
+        min: '-6628.0'
+        max: '1637790.0'
+        media: 5427.3672
+        quartis: [2574.3341, 3635.3272, 5197.4775]
+      valor_recebido_mensalidade_demanda:
+        tipo: DOUBLE
+        nulos_pct: 99.66
+        distintos_aprox: 20
+        min: '7000.0'
+        max: '126000.0'
+        media: 31386.0887
+        quartis: [14000, 28000, 42000]
+        top:
+        - [null, 145540]
+        - ['28000.0', 109]
+        - ['14000.0', 102]
+        - ['7000.0', 74]
+        - ['42000.0', 52]
+        - ['21000.0', 42]
+        - ['35000.0', 33]
+        - ['56000.0', 19]
+        - ['70000.0', 12]
+        - ['84000.0', 12]
+      valor_recebido_outros_debitos:
+        tipo: DOUBLE
+        nulos_pct: 99.15
+        distintos_aprox: 330
+        min: '-74445.0'
+        max: '2100.0'
+        media: -1117.2029
+        quartis: [-1460.9724, -792.4864, -350]
+      valor_recebido_passagem_aerea:
+        tipo: DOUBLE
+        nulos_pct: 99.99
+        distintos_aprox: 12
+        min: '285.0'
+        max: '3193.0'
+        media: 1259.4286
+        quartis: [901.75, 1255, 1604]
+        top:
+        - [null, 146015]
+        - ['1255.0', 7]
+        - ['1604.0', 3]
+        - ['1706.0', 2]
+        - ['1062.0', 1]
+        - ['1595.0', 1]
+        - ['285.0', 1]
+        - ['3193.0', 1]
+        - ['515.0', 1]
+        - ['541.0', 1]
+      valor_recebido_reembolso_taxas_escolares:
+        tipo: DOUBLE
+        nulos_pct: 98.21
+        distintos_aprox: 504
+        min: '0.0'
+        max: '1651600.0'
+        media: 970.6628
+        quartis: [152.6334, 246.5659, 435.7227]
+      valor_recebido_seguro_saude:
+        tipo: DOUBLE
+        nulos_pct: 84.87
+        distintos_aprox: 187
+        min: '0.0'
+        max: '227520.0'
+        media: 964.3284
+        quartis: [452.502, 829.8878, 1080]
+      valor_recebido_total:
+        tipo: DOUBLE
+        nulos_pct: 7.24
+        distintos_aprox: 10644
+        min: '-18400.0'
+        max: '8818540.0'
+        media: 21168.6353
+        quartis: [3412, 9325.1685, 15036.0067]

@@ -1,0 +1,910 @@
+dataset: br_rf_arrecadacao
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  cnae:
+    linhas: 2496
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: '2016'
+        max: '2024'
+        media: 2019.8462
+        quartis: [2018, 2020, 2022]
+        top:
+        - ['2016', 288]
+        - ['2017', 288]
+        - ['2018', 288]
+        - ['2019', 288]
+        - ['2020', 288]
+        - ['2021', 288]
+        - ['2022', 288]
+        - ['2023', 288]
+        - ['2024', 192]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.3462
+        quartis: [3, 6, 9]
+        top:
+        - ['1', 216]
+        - ['2', 216]
+        - ['3', 216]
+        - ['4', 216]
+        - ['5', 216]
+        - ['6', 216]
+        - ['7', 216]
+        - ['8', 216]
+        - ['10', 192]
+        - ['11', 192]
+      secao_sigla:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: A
+        max: U
+        top:
+        - [A, 104]
+        - [B, 104]
+        - [C, 104]
+        - [D, 104]
+        - [E, 104]
+        - [F, 104]
+        - [G, 104]
+        - [H, 104]
+        - [I, 104]
+        - [IN, 104]
+      imposto_importacao:
+        tipo: DOUBLE
+        nulos_pct: 10.9
+        distintos_aprox: 2086
+        min: '0.0'
+        max: '3364239456.0'
+        media: 187106233.5623
+        quartis: [464794.5751, 3748559.0746, 41028254.8388]
+      imposto_exportacao:
+        tipo: DOUBLE
+        nulos_pct: 60.74
+        distintos_aprox: 742
+        min: '0.0'
+        max: '937524473.3'
+        media: 4566423.9935
+        quartis: [0, 856.7442, 9464.9058]
+      ipi:
+        tipo: DOUBLE
+        nulos_pct: 7.61
+        distintos_aprox: 2100
+        min: '0.0'
+        max: '4560098612.66'
+        media: 220015631.1949
+        quartis: [420638.5399, 3373026.8195, 19823208.0127]
+      irpf:
+        tipo: DOUBLE
+        nulos_pct: 37.62
+        distintos_aprox: 1474
+        min: '0.0'
+        max: '22975224602.0'
+        media: 278885270.1642
+        quartis: [480.9664, 2356.5938, 12017.3789]
+      irpj:
+        tipo: DOUBLE
+        nulos_pct: 3.93
+        distintos_aprox: 2428
+        min: '0.0'
+        max: '22539683494.98'
+        media: 711908845.0568
+        quartis: [24273342.9409, 190057201.0871, 743737897.2467]
+      irrf:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2036
+        min: '21.38'
+        max: '30788156295.0'
+        media: 930839563.0122
+        quartis: [64204638.8931, 254902387.497, 862023358.661]
+      iof:
+        tipo: DOUBLE
+        nulos_pct: 12.02
+        distintos_aprox: 1802
+        min: '0.0'
+        max: '5854339077.0'
+        media: 172509298.4571
+        quartis: [307539.4937, 1320586.1705, 3688105.4717]
+      itr:
+        tipo: DOUBLE
+        nulos_pct: 7.01
+        distintos_aprox: 2695
+        min: '0.0'
+        max: '1293725256.64'
+        media: 7107483.1862
+        quartis: [14043.7226, 148843.0375, 804324.9995]
+      cofins:
+        tipo: DOUBLE
+        nulos_pct: 0.64
+        distintos_aprox: 3242
+        min: '0.0'
+        max: '11557957628.0'
+        media: 829343808.8124
+        quartis: [22989932.9068, 208537493.9542, 787199538.1973]
+      pis_pasep: {tipo: DOUBLE, nulos_pct: 0, distintos_aprox: 2598, pessoal: 'só contagens: valores seriam dado pessoal'}
+      csll:
+        tipo: DOUBLE
+        nulos_pct: 2.8
+        distintos_aprox: 2426
+        min: '0.0'
+        max: '11930770991.0'
+        media: 357870486.2635
+        quartis: [9575606.4971, 91183214.3693, 349515659.7628]
+      cide_combustiveis:
+        tipo: DOUBLE
+        nulos_pct: 13.26
+        distintos_aprox: 2317
+        min: '0.0'
+        max: '2393937464.32'
+        media: 39071691.5479
+        quartis: [291384.5358, 2257422.7, 29097010.8664]
+      contribuicao_previdenciaria:
+        tipo: DOUBLE
+        nulos_pct: 2.16
+        distintos_aprox: 2984
+        min: '0.0'
+        max: '14138002831.0'
+        media: 933271512.8811
+        quartis: [13614537.6471, 259014675.6431, 963909855.3373]
+      cpsss:
+        tipo: DOUBLE
+        nulos_pct: 28.85
+        distintos_aprox: 1851
+        min: '0.0'
+        max: '10342435772.28'
+        media: 206793800.2294
+        quartis: [1091.7337, 50644.0723, 8070166.7012]
+      pagamento_unificado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2155
+        min: '0.0'
+        max: '6029956250.27'
+        media: 361367548.4017
+        quartis: [37432005.7284, 155491769.765, 436601906.9078]
+      outras_receitas_rfb:
+        tipo: DOUBLE
+        nulos_pct: 0.08
+        distintos_aprox: 2977
+        min: '0.0'
+        max: '22540234793.74'
+        media: 78220950.4436
+        quartis: [1964779.0838, 8349528.1742, 27546739.3869]
+      demais_receitas:
+        tipo: DOUBLE
+        nulos_pct: 0.88
+        distintos_aprox: 2340
+        min: '0.0'
+        max: '15669717273.66'
+        media: 290620139.5973
+        quartis: [2329274.2313, 8688726.1959, 38702060.6004]
+  ir_ipi:
+    linhas: 408
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '2019'
+        max: '2024'
+        media: 2021.3529
+        quartis: [2020, 2021, 2023]
+        top:
+        - ['2019', 72]
+        - ['2020', 72]
+        - ['2021', 72]
+        - ['2022', 72]
+        - ['2023', 72]
+        - ['2024', 48]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.2647
+        quartis: [3, 6, 9]
+        top:
+        - ['1', 36]
+        - ['2', 36]
+        - ['3', 36]
+        - ['4', 36]
+        - ['5', 36]
+        - ['6', 36]
+        - ['7', 36]
+        - ['8', 36]
+        - ['10', 30]
+        - ['11', 30]
+      tributo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: IPI
+        max: IR
+        top:
+        - [IPI, 204]
+        - [IR, 204]
+      decendio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: 1º decêndio
+        max: 3º decêndio
+        top:
+        - [1º decêndio, 136]
+        - [2º decêndio, 136]
+        - [3º decêndio, 136]
+      arrecadacao_bruta:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 440
+        min: '361708860.7'
+        max: '68136233800.71'
+        media: 9160653370.1215
+        quartis: [1238138601.921, 3494059773.44, 14683637679.755]
+      retificacao:
+        tipo: DOUBLE
+        nulos_pct: 0.49
+        distintos_aprox: 496
+        min: '-504786387.1'
+        max: '10245773080.75'
+        media: 42098565.855
+        quartis: [-348146.2784, 249671.2783, 4753942.3944]
+      compensacao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 402
+        min: '-4170259726.84'
+        max: '4569456926.6'
+        media: -174696923.8403
+        quartis: [-349658160.761, -67677779.3792, 82054152.379]
+      restituicao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 442
+        min: '-11421435642.07'
+        max: '1367442041.56'
+        media: -552152218.9395
+        quartis: [-139578142.054, -32909708.3967, -9594311.782]
+      outros:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 498
+        min: '-6573122759.31'
+        max: '2652746961.46'
+        media: 193318782.9128
+        quartis: [7381384.152, 64827045.1475, 276203859.226]
+      arrecadacao_liquida:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 357
+        min: '-8564517.98'
+        max: '66239676073.99'
+        media: 8680944033.8991
+        quartis: [1185497507.795, 3600656234.9175, 14059255489.022]
+  itr:
+    linhas: 516429
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '2017'
+        max: '2024'
+        media: 2020.3806
+        quartis: [2018, 2020, 2022]
+        top:
+        - ['2017', 66840]
+        - ['2018', 66840]
+        - ['2019', 66840]
+        - ['2020', 66840]
+        - ['2021', 66840]
+        - ['2022', 66053]
+        - ['2023', 66046]
+        - ['2024', 50130]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.3616
+        quartis: [3, 6, 9]
+        top:
+        - ['1', 44560]
+        - ['3', 44560]
+        - ['4', 44560]
+        - ['5', 44560]
+        - ['7', 44560]
+        - ['9', 44560]
+        - ['8', 44437]
+        - ['6', 43896]
+        - ['2', 43766]
+        - ['10', 38990]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 79215]
+        - [SP, 59795]
+        - [RS, 46083]
+        - [BA, 38701]
+        - [PR, 37060]
+        - [SC, 27388]
+        - [GO, 22855]
+        - [PI, 20717]
+        - [PB, 20571]
+        - [MA, 20101]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      valor_arrecadado:
+        tipo: DOUBLE
+        nulos_pct: 0.01
+        distintos_aprox: 238522
+        min: '0.0'
+        max: '17217284.66'
+        media: 29497.8469
+        quartis: [57.9266, 392.2373, 3268.9519]
+  natureza_juridica:
+    linhas: 8221
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: '2016'
+        max: '2024'
+        media: 2019.9251
+        quartis: [2018, 2020, 2022]
+        top:
+        - ['2023', 980]
+        - ['2020', 974]
+        - ['2022', 973]
+        - ['2021', 971]
+        - ['2019', 952]
+        - ['2018', 911]
+        - ['2016', 904]
+        - ['2017', 901]
+        - ['2024', 655]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.3502
+        quartis: [3, 6, 9]
+        top:
+        - ['5', 714]
+        - ['7', 714]
+        - ['6', 713]
+        - ['8', 712]
+        - ['4', 711]
+        - ['1', 710]
+        - ['2', 709]
+        - ['3', 708]
+        - ['11', 633]
+        - ['12', 633]
+      natureza_juridica_codigo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 96, min: '1015', max: '5037'}
+      imposto_importacao:
+        tipo: DOUBLE
+        nulos_pct: 56.77
+        distintos_aprox: 2289
+        min: '0.0'
+        max: '5695975959.0'
+        media: 116599198.0958
+        quartis: [0, 7678.0777, 1987842.3374]
+      imposto_exportacao:
+        tipo: DOUBLE
+        nulos_pct: 79.09
+        distintos_aprox: 491
+        min: '0.0'
+        max: '691187583.32'
+        media: 2602590.4889
+        quartis: [0, 0, 101.6726]
+      ipi:
+        tipo: DOUBLE
+        nulos_pct: 59.77
+        distintos_aprox: 2398
+        min: '0.0'
+        max: '5714879756.0'
+        media: 153121701.0039
+        quartis: [0, 9779.937, 659114.4481]
+      irpf:
+        tipo: DOUBLE
+        nulos_pct: 77.58
+        distintos_aprox: 755
+        min: '0.0'
+        max: '103309639.4'
+        media: 288594.8812
+        quartis: [0, 0, 634.837]
+      irpj:
+        tipo: DOUBLE
+        nulos_pct: 36.55
+        distintos_aprox: 4472
+        min: '0.0'
+        max: '26948890823.0'
+        media: 329910462.2832
+        quartis: [2514.7523, 88301.0118, 5910040.8]
+      irrf:
+        tipo: DOUBLE
+        nulos_pct: 4.5
+        distintos_aprox: 8748
+        min: '0.0'
+        max: '20841705045.0'
+        media: 295028505.5801
+        quartis: [28395.8119, 536015.6603, 47070218.3546]
+      iof:
+        tipo: DOUBLE
+        nulos_pct: 57.15
+        distintos_aprox: 2311
+        min: '0.0'
+        max: '2967888310.0'
+        media: 106731834.2752
+        quartis: [4.2572, 9350.6138, 3014780.397]
+      itr:
+        tipo: DOUBLE
+        nulos_pct: 56.54
+        distintos_aprox: 2391
+        min: '0.0'
+        max: '514070048.84'
+        media: 1545491.5047
+        quartis: [2.0975, 1742.1874, 38329.9617]
+      cofins:
+        tipo: DOUBLE
+        nulos_pct: 19.75
+        distintos_aprox: 7135
+        min: '0.0'
+        max: '20319606848.0'
+        media: 316198098.0461
+        quartis: [4385.0467, 83023.1598, 2441536.9959]
+      pis_pasep: {tipo: DOUBLE, nulos_pct: 7.03, distintos_aprox: 6094, pessoal: 'só contagens: valores seriam dado pessoal'}
+      csll:
+        tipo: DOUBLE
+        nulos_pct: 26.71
+        distintos_aprox: 4843
+        min: '0.0'
+        max: '12610001188.0'
+        media: 143907139.5034
+        quartis: [2003.7182, 26429.8446, 888343.3307]
+      cide_combustiveis:
+        tipo: DOUBLE
+        nulos_pct: 58.05
+        distintos_aprox: 2144
+        min: '0.0'
+        max: '1042690661.0'
+        media: 22077207.7954
+        quartis: [0, 16327.1316, 632180.6623]
+      contribuicao_previdenciaria:
+        tipo: DOUBLE
+        nulos_pct: 20.96
+        distintos_aprox: 6686
+        min: '0.0'
+        max: '35905633371.0'
+        media: 348512617.5344
+        quartis: [61343.0372, 1131315.2629, 31804296.0549]
+      cpsss:
+        tipo: DOUBLE
+        nulos_pct: 61.05
+        distintos_aprox: 1904
+        min: '0.0'
+        max: '2192954150.98'
+        media: 99032205.6177
+        quartis: [0, 3013.4169, 5630476.9301]
+      pagamento_unificado:
+        tipo: DOUBLE
+        nulos_pct: 5.79
+        distintos_aprox: 8514
+        min: '0.0'
+        max: '8671587351.19'
+        media: 115959986.6506
+        quartis: [19879.601, 426906.8079, 10552774.0336]
+      outras_receitas_rfb:
+        tipo: DOUBLE
+        nulos_pct: 16.98
+        distintos_aprox: 5535
+        min: '0.0'
+        max: '22537904596.78'
+        media: 27370325.2781
+        quartis: [3025.1519, 71387.5265, 894616.4972]
+      demais_receitas:
+        tipo: DOUBLE
+        nulos_pct: 18.88
+        distintos_aprox: 6233
+        min: '0.0'
+        max: '15562920822.38'
+        media: 106470019.9542
+        quartis: [7027.3663, 78326.7469, 912538.6261]
+  uf:
+    linhas: 7911
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '2000'
+        max: '2024'
+        media: 2011.7133
+        quartis: [2006, 2012, 2018]
+        top:
+        - ['2000', 324]
+        - ['2001', 324]
+        - ['2002', 324]
+        - ['2003', 324]
+        - ['2004', 324]
+        - ['2005', 324]
+        - ['2006', 324]
+        - ['2007', 324]
+        - ['2008', 324]
+        - ['2009', 324]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.4403
+        quartis: [3, 6, 9]
+        top:
+        - ['1', 675]
+        - ['2', 675]
+        - ['3', 675]
+        - ['4', 675]
+        - ['5', 675]
+        - ['10', 648]
+        - ['11', 648]
+        - ['12', 648]
+        - ['6', 648]
+        - ['7', 648]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [AC, 293]
+        - [AL, 293]
+        - [AM, 293]
+        - [AP, 293]
+        - [BA, 293]
+        - [CE, 293]
+        - [DF, 293]
+        - [ES, 293]
+        - [GO, 293]
+        - [MA, 293]
+      imposto_importacao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 7436
+        min: '-591595.0'
+        max: '2795288310.0'
+        media: 86128588.217
+        quartis: [90920.049, 3875984.4738, 58451486.5589]
+      imposto_exportacao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 7592
+        min: '-3379762.0'
+        max: '1206943782.0'
+        media: 632964.8978
+        quartis: [0, 340.4741, 8387.7436]
+      ipi_fumo:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5625
+        min: '-43291858.2'
+        max: '894477627.0'
+        media: 11953816.4009
+        quartis: [0, 14701.4128, 1624718.7516]
+      ipi_bebidas:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 6048
+        min: '-10797231.0'
+        max: '145645112.6'
+        media: 7416564.9515
+        quartis: [226053.2377, 2513378.7475, 8224143.7959]
+      ipi_automoveis:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 4643
+        min: '-5424603.3'
+        max: '347668565.9'
+        media: 11286051.9252
+        quartis: [0, 2780.3999, 505387.5515]
+      ipi_importacoes:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 7436
+        min: '0.0'
+        max: '1152146874.0'
+        media: 40245209.8934
+        quartis: [57237.4064, 1531680.2303, 31638890.1583]
+      ipi_outros:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 7475
+        min: '-3485777.06'
+        max: '1666052600.0'
+        media: 55645399.2294
+        quartis: [1065129.3862, 3909802.7178, 40029771.7879]
+      irpf:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5928
+        min: '103.641'
+        max: '10132151353.0'
+        media: 76527910.5796
+        quartis: [3590417.5266, 14366132.6151, 49776769.4422]
+      irpj_entidades_financeiras:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 7645
+        min: '-8099952.92'
+        max: '7729618874.0'
+        media: 47418470.7879
+        quartis: [3195.0607, 215717.4244, 7894384.366]
+      irpj_demais_empresas:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 7445
+        min: '303.76'
+        max: '22938668987.0'
+        media: 314411695.1388
+        quartis: [9853785.4851, 41029452.106, 184979388.7507]
+      irrf_rendimentos_trabalho:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 8063
+        min: '-74712501.0'
+        max: '9756349736.0'
+        media: 247447027.3488
+        quartis: [8988683.6048, 33077398.6673, 119759456.7381]
+      irrf_rendimentos_capital:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 8041
+        min: '-187213840.3'
+        max: '14463375195.0'
+        media: 122594371.5212
+        quartis: [574627.0758, 3182071.8167, 21737160.317]
+      irrf_remessas_exterior:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 7038
+        min: '-259045996.4'
+        max: '6713613018.0'
+        media: 61801973.0743
+        quartis: [95229.7089, 1320230.9578, 11604085.3205]
+      irrf_outros_rendimentos:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 7562
+        min: '-2555620.0'
+        max: '933800860.0'
+        media: 25879095.6522
+        quartis: [671772.6887, 2683105.7049, 10810214.9903]
+      iof:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 7418
+        min: '-268901.0'
+        max: '3763448587.0'
+        media: 78248621.9798
+        quartis: [159987.9639, 1708503.3731, 11248390.5547]
+      itr:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 7712
+        min: '-17756225.7'
+        max: '375149946.2'
+        media: 3062649.9241
+        quartis: [70436.6623, 261148.2775, 1086936.9324]
+      ipmf:
+        tipo: DOUBLE
+        nulos_pct: 91.81
+        distintos_aprox: 1
+        min: '0.0'
+        max: '0.0'
+        media: 0
+        quartis: [0, 0, 0]
+        top:
+        - [null, 7263]
+        - ['0.0', 648]
+      cpmf:
+        tipo: DOUBLE
+        nulos_pct: 49.49
+        distintos_aprox: 4060
+        min: '-3496452.0'
+        max: '2332493003.0'
+        media: 42275102.1072
+        quartis: [3733.6528, 95769.8321, 2431831.4044]
+      cofins:
+        tipo: DOUBLE
+        nulos_pct: 83.62
+        distintos_aprox: 1557
+        min: '1221.493'
+        max: '2299032749.0'
+        media: 79316137.4885
+        quartis: [149307.629, 9320214.3053, 50155440.5467]
+      cofins_entidades_financeiras:
+        tipo: DOUBLE
+        nulos_pct: 16.38
+        distintos_aprox: 6335
+        min: '-215772.07'
+        max: '6930298069.0'
+        media: 42864983.0286
+        quartis: [33397.2711, 375098.3186, 8910161.4756]
+      cofins_demais_empresas:
+        tipo: DOUBLE
+        nulos_pct: 16.38
+        distintos_aprox: 6884
+        min: '1455780.0'
+        max: '13198873824.0'
+        media: 548164143.513
+        quartis: [32095760.4121, 125618435.8413, 429561195.2815]
+      pis_pasep: {tipo: DOUBLE, nulos_pct: 83.62, distintos_aprox: 1550, pessoal: 'só contagens: valores seriam dado pessoal'}
+      pis_pasep_entidades_financeiras: {tipo: DOUBLE, nulos_pct: 16.38, distintos_aprox: 6117, pessoal: 'só contagens: valores seriam dado pessoal'}
+      pis_pasep_demais_empresas: {tipo: DOUBLE, nulos_pct: 16.38, distintos_aprox: 7357, pessoal: 'só contagens: valores seriam dado pessoal'}
+      csll:
+        tipo: DOUBLE
+        nulos_pct: 83.62
+        distintos_aprox: 1276
+        min: '248.907'
+        max: '782372683.0'
+        media: 22095610.9258
+        quartis: [32772.3672, 1998000.2984, 12530129.625]
+      csll_entidades_financeiras:
+        tipo: DOUBLE
+        nulos_pct: 16.38
+        distintos_aprox: 7106
+        min: '-7138003.93'
+        max: '6654076112.0'
+        media: 35528446.324
+        quartis: [6556.1481, 243597.6199, 5769373.7849]
+      csll_demais_empresas:
+        tipo: DOUBLE
+        nulos_pct: 16.38
+        distintos_aprox: 6277
+        min: '268850.0'
+        max: '8247556674.0'
+        media: 187095883.572
+        quartis: [11090084.0868, 39084109.2705, 131687231.1237]
+      cide_combustiveis_parcela_nao_dedutivel:
+        tipo: DOUBLE
+        nulos_pct: 95.9
+        distintos_aprox: 167
+        min: '-40066.0'
+        max: '633301590.0'
+        media: 24168743.8099
+        quartis: [0, 0, 149336.25]
+      cide_combustiveis:
+        tipo: DOUBLE
+        nulos_pct: 20.48
+        distintos_aprox: 3768
+        min: '-41133000.0'
+        max: '703614542.9'
+        media: 13105813.9204
+        quartis: [0, 183.9379, 234523.2901]
+      cpsss_1:
+        tipo: DOUBLE
+        nulos_pct: 83.62
+        distintos_aprox: 1317
+        min: '0.0'
+        max: '143273549.0'
+        media: 8038636.7773
+        quartis: [11954.8577, 3470734.8964, 8485929.3782]
+      cpsss_2:
+        tipo: DOUBLE
+        nulos_pct: 43.69
+        distintos_aprox: 4565
+        min: '1890173.93'
+        max: '2538340183.0'
+        media: 99406224.4627
+        quartis: [18070654.14, 30840737.545, 65474902.9849]
+      contribuicao_fundaf:
+        tipo: DOUBLE
+        nulos_pct: 38.57
+        distintos_aprox: 5076
+        min: '-19012698.85'
+        max: '31988474.94'
+        media: 1103145.9757
+        quartis: [3560.5381, 56869.2838, 407114.9056]
+      refis:
+        tipo: DOUBLE
+        nulos_pct: 95.9
+        distintos_aprox: 341
+        min: '-1797889.0'
+        max: '24589673.0'
+        media: 2163362.534
+        quartis: [293816.25, 763355.3, 2382547.5]
+      paes:
+        tipo: DOUBLE
+        nulos_pct: 95.9
+        distintos_aprox: 308
+        min: '136000.0'
+        max: '85323027.0'
+        media: 8472559.9846
+        quartis: [1139194.5, 2555584.8, 6629215]
+      retencoes_fonte:
+        tipo: DOUBLE
+        nulos_pct: 96.59
+        distintos_aprox: 326
+        min: '9309.0'
+        max: '213886298.0'
+        media: 12959346.5481
+        quartis: [515830, 2538987.3125, 8751453.3333]
+      pagamento_unificado:
+        tipo: DOUBLE
+        nulos_pct: 95.22
+        distintos_aprox: 370
+        min: '116195.0'
+        max: '103222157.0'
+        media: 9749743.0026
+        quartis: [1198920.88, 2982713.66, 8773400.6]
+      outras_receitas_rfb:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 8114
+        min: '-19912674543.0'
+        max: '22897541306.0'
+        media: 54885903.35
+        quartis: [773514.8257, 4495343.8641, 22642999.3544]
+      demais_receitas:
+        tipo: DOUBLE
+        nulos_pct: 72.7
+        distintos_aprox: 1944
+        min: '-19748374.0'
+        max: '4763000602.0'
+        media: 68668867.3239
+        quartis: [1275132.71, 3403752.3186, 10394752.5238]
+      receita_previdenciaria:
+        tipo: DOUBLE
+        nulos_pct: 70.31
+        distintos_aprox: 2490
+        min: '59490.302'
+        max: '29881089687.0'
+        media: 1477071644.1357
+        quartis: [234325840.6069, 511301518.4626, 1534196336.1046]
+      receita_previdenciaria_propria:
+        tipo: DOUBLE
+        nulos_pct: 81.91
+        distintos_aprox: 1705
+        min: '10174899.3'
+        max: '19493414569.0'
+        media: 960209786.6602
+        quartis: [120379746.6746, 257238877.0569, 845851926.2553]
+      receita_previdenciaria_demais:
+        tipo: DOUBLE
+        nulos_pct: 81.91
+        distintos_aprox: 1499
+        min: '310459.1735'
+        max: '2385163259.0'
+        media: 106465623.9171
+        quartis: [8064760.3271, 23764439.7038, 84579167.132]
+      receitas_outros_orgaos:
+        tipo: DOUBLE
+        nulos_pct: 43.69
+        distintos_aprox: 3781
+        min: '-581089706.1'
+        max: '22476429345.0'
+        media: 179818912.7111
+        quartis: [2721827.5133, 6887355.5405, 19284624.0861]

@@ -1,0 +1,596 @@
+dataset: br_cgu_beneficios_cidadao
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  auxilio_brasil:
+    linhas: 293954669
+    fonte_do_perfil: amostra de 0,68%. ~2.000.000 linhas
+    colunas:
+      cpf_favorecido: {tipo: VARCHAR, nulos_pct: 9.67, distintos_aprox: 111189, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ano_competencia:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '2021'
+        max: '2023'
+        media: 2022.0471
+        quartis: [2022, 2022, 2022]
+        top:
+        - ['2022', 1403882]
+        - ['2023', 266259]
+        - ['2021', 179203]
+      mes_competencia:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.4462
+        quartis: [2, 6, 10]
+        top:
+        - ['1', 243957]
+        - ['2', 241219]
+        - ['12', 223338]
+        - ['11', 219572]
+        - ['9', 126084]
+        - ['10', 126034]
+        - ['8', 122036]
+        - ['3', 112091]
+        - ['6', 109381]
+        - ['4', 108999]
+      ano_referencia:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '2021'
+        max: '2023'
+        media: 2022.0484
+        quartis: [2022, 2022, 2022]
+        top:
+        - ['2022', 1401478]
+        - ['2023', 268696]
+        - ['2021', 179170]
+      mes_referencia:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.4336
+        quartis: [2, 6, 10]
+        top:
+        - ['1', 246301]
+        - ['2', 241264]
+        - ['12', 221158]
+        - ['11', 219615]
+        - ['10', 126638]
+        - ['9', 126005]
+        - ['8', 121558]
+        - ['3', 111918]
+        - ['6', 109618]
+        - ['4', 108936]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6355}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [BA, 229575]
+        - [SP, 229442]
+        - [MG, 149953]
+        - [RJ, 147327]
+        - [PE, 143730]
+        - [CE, 136440]
+        - [MA, 117120]
+        - [PA, 106736]
+        - [PB, 59732]
+        - [AL, 53254]
+      nis_favorecido: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 180857, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_favorecido: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 123996, pessoal: 'só contagens: valores seriam dado pessoal'}
+      valor_parcela:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 874
+        min: '1.0'
+        max: '3361.0'
+        media: 313.3006
+        quartis: [204.3567, 400, 400]
+  auxilio_emergencial:
+    linhas: 491136014
+    fonte_do_perfil: tabela inteira da última partição (ano = 2021)
+    colunas:
+      cpf_beneficiario: {tipo: VARCHAR, nulos_pct: 0.02, distintos_aprox: 4193, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2021'
+        max: '2021'
+        media: 2021
+        quartis: [2021, 2021, 2021]
+        top:
+        - ['2021', 183365]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '1'
+        max: '7'
+        media: 4
+        quartis: [2, 4, 6]
+        top:
+        - ['1', 26195]
+        - ['2', 26195]
+        - ['3', 26195]
+        - ['4', 26195]
+        - ['5', 26195]
+        - ['6', 26195]
+        - ['7', 26195]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 34783]
+        - [RS, 21427]
+        - [MG, 16632]
+        - [RJ, 15666]
+        - [PR, 10031]
+        - [BA, 9996]
+        - [PE, 9205]
+        - [CE, 8372]
+        - [GO, 6818]
+        - [SC, 5551]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1223}
+      nis_beneficiario: {tipo: VARCHAR, nulos_pct: 88.22, distintos_aprox: 605, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_beneficiario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5021, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nis_responsavel: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf_responsavel: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_responsavel: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      enquadramento:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: CADUNICO
+        max: EXTRACAD
+        top:
+        - [EXTRACAD, 164619]
+        - [CADUNICO, 18746]
+      parcela:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: 1ª
+        max: 9ª
+        top:
+        - [6ª, 23086]
+        - [7ª, 22827]
+        - [8ª, 22099]
+        - [5ª, 21322]
+        - [9ª, 21301]
+        - [4ª, 19929]
+        - [3ª, 18739]
+        - [2ª, 17983]
+        - [1ª, 16079]
+      observacao:
+        tipo: VARCHAR
+        nulos_pct: 99.87
+        distintos_aprox: 1
+        min: Valor devolvido à União.
+        max: Valor devolvido à União.
+        top:
+        - [null, 183120]
+        - [Valor devolvido à União., 245]
+      valor_beneficio:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 26
+        min: '43.0'
+        max: '6000.0'
+        media: 511.1406
+        quartis: [300, 600, 600]
+        top:
+        - ['600.0', 100779]
+        - ['300.0', 73227]
+        - ['1200.0', 9016]
+        - ['3000.0', 63]
+        - ['150.0', 28]
+        - ['2400.0', 28]
+        - ['1800.0', 21]
+        - ['360.0', 21]
+        - ['100.0', 14]
+        - ['316.0', 14]
+  bolsa_familia_pagamento:
+    linhas: 1495223596
+    fonte_do_perfil: amostra de 0,134%. ~2.000.000 linhas
+    colunas:
+      cpf_favorecido: {tipo: VARCHAR, nulos_pct: 1.74, distintos_aprox: 43881, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ano_competencia:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: '2012'
+        max: '2021'
+        media: 2016.9747
+        quartis: [2015, 2017, 2019]
+        top:
+        - ['2014', 229332]
+        - ['2018', 228412]
+        - ['2020', 225782]
+        - ['2013', 225328]
+        - ['2015', 224859]
+        - ['2016', 224528]
+        - ['2019', 224483]
+        - ['2017', 219917]
+        - ['2021', 214545]
+        - ['2012', 94]
+      mes_competencia:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.4496
+        quartis: [3, 6, 9]
+        top:
+        - ['5', 170331]
+        - ['4', 170251]
+        - ['10', 170126]
+        - ['8', 170012]
+        - ['3', 169718]
+        - ['6', 169620]
+        - ['9', 169581]
+        - ['11', 169451]
+        - ['7', 169439]
+        - ['2', 169159]
+      ano_referencia:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: '2013'
+        max: '2021'
+        media: 2016.9755
+        quartis: [2015, 2017, 2019]
+        top:
+        - ['2014', 229657]
+        - ['2018', 228284]
+        - ['2020', 225915]
+        - ['2013', 225002]
+        - ['2015', 224738]
+        - ['2019', 224650]
+        - ['2016', 224572]
+        - ['2017', 219913]
+        - ['2021', 214549]
+      mes_referencia:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.4499
+        quartis: [3, 6, 9]
+        top:
+        - ['4', 170246]
+        - ['10', 170236]
+        - ['5', 170183]
+        - ['8', 170051]
+        - ['9', 169747]
+        - ['3', 169613]
+        - ['11', 169445]
+        - ['7', 169424]
+        - ['6', 169383]
+        - ['2', 169261]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5084}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [BA, 266794]
+        - [SP, 206211]
+        - [PE, 178769]
+        - [MG, 149463]
+        - [CE, 138146]
+        - [MA, 132897]
+        - [PA, 132170]
+        - [RJ, 124197]
+        - [PB, 86446]
+        - [PI, 67484]
+      nis_favorecido: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 35390, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_favorecido: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 45401, pessoal: 'só contagens: valores seriam dado pessoal'}
+      valor_parcela:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 728
+        min: '32.0'
+        max: '1542.0'
+        media: 175.3795
+        quartis: [103.5349, 153.3013, 217.0673]
+  bpc:
+    linhas: 419925687
+    fonte_do_perfil: amostra de 0,476%. ~2.000.000 linhas
+    colunas:
+      cpf_favorecido: {tipo: VARCHAR, nulos_pct: 22.71, distintos_aprox: 36720, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ano_competencia:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '2019'
+        max: '2025'
+        media: 2022.127
+        quartis: [2020, 2022, 2024]
+        top:
+        - ['2024', 325184]
+        - ['2023', 301268]
+        - ['2022', 270932]
+        - ['2025', 269821]
+        - ['2021', 257699]
+        - ['2020', 254578]
+        - ['2019', 249734]
+      mes_competencia:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.2107
+        quartis: [3, 6, 9]
+        top:
+        - ['3', 194483]
+        - ['4', 191564]
+        - ['7', 171939]
+        - ['6', 166534]
+        - ['5', 166199]
+        - ['1', 164967]
+        - ['2', 163558]
+        - ['10', 143975]
+        - ['11', 143739]
+        - ['12', 142284]
+      ano_referencia:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '2019'
+        max: '2025'
+        media: 2022.127
+        quartis: [2020, 2022, 2024]
+        top:
+        - ['2024', 325184]
+        - ['2023', 301268]
+        - ['2022', 270932]
+        - ['2025', 269821]
+        - ['2021', 257699]
+        - ['2020', 254578]
+        - ['2019', 249734]
+      mes_referencia:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.2107
+        quartis: [3, 6, 9]
+        top:
+        - ['3', 194483]
+        - ['4', 191564]
+        - ['7', 171939]
+        - ['6', 166534]
+        - ['5', 166199]
+        - ['1', 164967]
+        - ['2', 163558]
+        - ['10', 143975]
+        - ['11', 143739]
+        - ['12', 142284]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 4576}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0.01
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 299688]
+        - [MG, 199850]
+        - [BA, 175558]
+        - [PE, 138144]
+        - [RJ, 126229]
+        - [CE, 121682]
+        - [PA, 91621]
+        - [PR, 80514]
+        - [RS, 79534]
+        - [GO, 69345]
+      nis_favorecido: {tipo: VARCHAR, nulos_pct: 7.01, distintos_aprox: 43561, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_favorecido: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 36939, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nis_representante: {tipo: VARCHAR, nulos_pct: 0.1, distintos_aprox: 79322, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf_representante: {tipo: VARCHAR, nulos_pct: 17.04, distintos_aprox: 72411, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_representante: {tipo: VARCHAR, nulos_pct: 0.1, distintos_aprox: 83859, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_beneficio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 73626, pessoal: 'só contagens: valores seriam dado pessoal'}
+      concedido_judicialmente:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: NÃ
+        max: SIM
+        top:
+        - [NÃO, 1017613]
+        - [NÃ, 666296]
+        - [SIM, 245307]
+      valor_parcela:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 888
+        min: '998.0'
+        max: '2366.4'
+        media: 1239.7761
+        quartis: [1045.0141, 1212.0, 1412]
+  garantia_safra:
+    linhas: 32511026
+    fonte_do_perfil: amostra de 6.152%. ~2.000.000 linhas
+    colunas:
+      ano_referencia:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '2013'
+        max: '2026'
+        media: 2015.7964
+        quartis: [2013, 2015, 2017]
+        top:
+        - ['2013', 579837]
+        - ['2014', 405990]
+        - ['2016', 253243]
+        - ['2015', 234027]
+        - ['2017', 186683]
+        - ['2018', 147132]
+        - ['2019', 123935]
+        - ['2020', 58290]
+        - ['2025', 44968]
+        - ['2021', 44408]
+      mes_referencia:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 5.8154
+        quartis: [3, 5, 9]
+        top:
+        - ['3', 276019]
+        - ['1', 268298]
+        - ['2', 252222]
+        - ['4', 233045]
+        - ['12', 219130]
+        - ['11', 170574]
+        - ['5', 156241]
+        - ['10', 144494]
+        - ['6', 128193]
+        - ['9', 113926]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1246}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: AL
+        max: SE
+        top:
+        - [BA, 601647]
+        - [CE, 534536]
+        - [PE, 296000]
+        - [PI, 231842]
+        - [PB, 197577]
+        - [RN, 105256]
+        - [MG, 87723]
+        - [AL, 61860]
+        - [SE, 34589]
+        - [MA, 15608]
+      nis_favorecido: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1198951, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_favorecido: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 969236, pessoal: 'só contagens: valores seriam dado pessoal'}
+      valor_parcela:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 97
+        min: '15.0'
+        max: '5950.0'
+        media: 243.8454
+        quartis: [155, 170, 170]
+  novo_bolsa_familia:
+    linhas: 588460141
+    fonte_do_perfil: amostra de 0,34%. ~2.000.000 linhas
+    colunas:
+      cpf_favorecido: {tipo: VARCHAR, nulos_pct: 16.6, distintos_aprox: 84735, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ano_competencia:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '2023'
+        max: '2025'
+        media: 2023.8912
+        quartis: [2023, 2024, 2024]
+        top:
+        - ['2024', 814804]
+        - ['2023', 676938]
+        - ['2025', 464098]
+      mes_competencia:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.2577
+        quartis: [4, 6, 9]
+        top:
+        - ['3', 201650]
+        - ['4', 201233]
+        - ['5', 200362]
+        - ['6', 198724]
+        - ['7', 197406]
+        - ['12', 138107]
+        - ['11', 137434]
+        - ['1', 136848]
+        - ['10', 136601]
+        - ['9', 136353]
+      ano_referencia:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '2023'
+        max: '2025'
+        media: 2023.8901
+        quartis: [2023, 2024, 2024]
+        top:
+        - ['2024', 814169]
+        - ['2023', 678339]
+        - ['2025', 463332]
+      mes_referencia:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.2578
+        quartis: [4, 6, 9]
+        top:
+        - ['3', 201663]
+        - ['4', 201385]
+        - ['5', 200678]
+        - ['6', 199198]
+        - ['7', 196889]
+        - ['12', 138089]
+        - ['11', 137297]
+        - ['10', 136856]
+        - ['1', 136576]
+        - ['9', 136291]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6014}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 236545]
+        - [BA, 233515]
+        - [RJ, 167778]
+        - [PE, 165503]
+        - [MG, 150943]
+        - [CE, 134706]
+        - [PA, 127900]
+        - [MA, 112804]
+        - [PB, 60353]
+        - [AM, 58644]
+      nis_favorecido: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 89475, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_favorecido: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 86266, pessoal: 'só contagens: valores seriam dado pessoal'}
+      valor_parcela:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1176
+        min: '25.0'
+        max: '2880.0'
+        media: 660.9956
+        quartis: [600, 649.9987, 750]

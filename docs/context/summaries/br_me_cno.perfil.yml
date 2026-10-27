@@ -1,0 +1,37 @@
+dataset: br_me_cno
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  microdados_cnae:
+    linhas: 911426
+    fonte_do_perfil: tabela inteira
+    colunas:
+      cnae_2:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: '4120400'
+        max: '4399199'
+        top:
+        - ['4120400', 467630]
+        - ['4399103', 293872]
+        - ['4299599', 36333]
+        - ['4311801', 26599]
+        - ['4399199', 21782]
+        - ['4213800', 21225]
+        - ['4211101', 11973]
+        - ['4391600', 7405]
+        - ['4222701', 6678]
+        - ['4299501', 4495]
+      data_registro: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 912, min: '2018-11-19', max: '2021-05-11'}
+      id_cno: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 780984}
+  microdados_vinculo:
+    linhas: 109449
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_fim: {tipo: VARCHAR, nulos_pct: 99.75, distintos_aprox: 187, min: '1993-05-01', max: '2023-07-09'}
+      data_inicio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3913}
+      data_registro: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 886, min: '2018-11-19', max: '2021-05-11'}
+      id_cno: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 101860}
+      ni_responsavel: {tipo: VARCHAR, nulos_pct: 22.7, distintos_aprox: 22153, pessoal: 'só contagens: valores seriam dado pessoal'}
+      qualificacao_responsavel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4, pessoal: 'só contagens: valores seriam dado pessoal'}

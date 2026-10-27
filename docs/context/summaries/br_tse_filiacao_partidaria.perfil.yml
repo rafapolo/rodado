@@ -1,0 +1,231 @@
+dataset: br_tse_filiacao_partidaria
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  microdados:
+    linhas: 17534818
+    fonte_do_perfil: amostra de 11.406%. ~2.000.000 linhas
+    colunas:
+      registro_filiacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1622925}
+      sigla_partido:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 32
+        min: AGIR
+        max: UP
+        top:
+        - [MDB, 264852]
+        - [PT, 200734]
+        - [UNIÃO, 168787]
+        - [PP, 168387]
+        - [PRD, 167035]
+        - [PSDB, 159088]
+        - [PDT, 141023]
+        - [PL, 124238]
+        - [PODE, 104083]
+        - [PSB, 80656]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AC
+        max: ZZ
+        top:
+        - [SP, 393190]
+        - [MG, 215464]
+        - [RS, 167706]
+        - [RJ, 132983]
+        - [BA, 120292]
+        - [PR, 120247]
+        - [SC, 119956]
+        - [GO, 90716]
+        - [PA, 79000]
+        - [MA, 72680]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0.12, distintos_aprox: 6859}
+      id_municipio_tse: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4933}
+      zona: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 396, min: '1', max: '99'}
+      secao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2020}
+      titulo_eleitor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2129986}
+      cpf: {tipo: VARCHAR, nulos_pct: 2.4, distintos_aprox: 1947306, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1919110, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_social: {tipo: VARCHAR, nulos_pct: 99.99, distintos_aprox: 336, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sexo:
+        tipo: VARCHAR
+        nulos_pct: 0.03
+        distintos_aprox: 2
+        min: Feminino
+        max: Masculino
+        top:
+        - [Masculino, 1127424]
+        - [Feminino, 962634]
+        - [null, 630]
+      situacao_registro:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Cancelado
+        max: Suspenso
+        top:
+        - [Regular, 1992474]
+        - [Cancelado, 89513]
+        - [Suspenso, 8701]
+      motivo_desfiliacao:
+        tipo: VARCHAR
+        nulos_pct: 95.43
+        distintos_aprox: 4
+        min: '1'
+        max: '6'
+        top:
+        - [null, 1995196]
+        - ['6', 74097]
+        - ['2', 19109]
+        - ['1', 2238]
+        - ['4', 48]
+      motivo_cancelamento:
+        tipo: VARCHAR
+        nulos_pct: 99.92
+        distintos_aprox: 6
+        min: '1'
+        max: '6'
+        top:
+        - [null, 2089064]
+        - ['1', 802]
+        - ['2', 344]
+        - ['5', 294]
+        - ['4', 108]
+        - ['3', 41]
+        - ['6', 35]
+      indicador_origem:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['0', 1896903]
+        - ['1', 193785]
+      data_filiacao: {tipo: DATE, nulos_pct: 0.05, distintos_aprox: 16310, min: '1980-01-01', max: '2026-08-03'}
+      data_desfiliacao: {tipo: DATE, nulos_pct: 95.62, distintos_aprox: 4646, min: '1985-02-28', max: '2023-12-09'}
+      data_cadastro_desfiliacao: {tipo: DATE, nulos_pct: 99.82, distintos_aprox: 747, min: '2012-10-07', max: '2026-08-04'}
+      data_cancelamento: {tipo: DATE, nulos_pct: 99.93, distintos_aprox: 702, min: '2004-01-07', max: '2021-06-02'}
+      data_exclusao: {tipo: DATE, nulos_pct: 99.99, distintos_aprox: 142, min: '2007-05-13', max: '2019-04-02'}
+      data_extracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '2024-10-21'
+        max: '2026-08-04'
+        top:
+        - ['2026-08-04', 2010347]
+        - ['2024-10-21', 69015]
+        - ['2026-04-01', 11326]
+  microdados_antigos:
+    linhas: 24666625
+    fonte_do_perfil: amostra de 8.108%. ~2.000.000 linhas
+    colunas:
+      sigla_partido:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 35
+        min: AVANTE
+        max: UP
+        top:
+        - [MDB, 277360]
+        - [PT, 177027]
+        - [PSDB, 175658]
+        - [PP, 167210]
+        - [PDT, 153904]
+        - [PTB, 140166]
+        - [DEM, 134115]
+        - [PL, 91296]
+        - [PSB, 81464]
+        - [CIDADANIA, 69283]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AC
+        max: ZZ
+        top:
+        - [SP, 356586]
+        - [MG, 215040]
+        - [RS, 164327]
+        - [BA, 145408]
+        - [RJ, 142362]
+        - [PR, 127963]
+        - [SC, 108145]
+        - [GO, 94455]
+        - [PA, 80791]
+        - [MA, 73728]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0.1, distintos_aprox: 6767}
+      id_municipio_tse: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4631}
+      zona:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 466
+        min: '1'
+        max: '427'
+        media: 100.5887
+        quartis: [26, 67, 143]
+      secao:
+        tipo: BIGINT
+        nulos_pct: 4.2
+        distintos_aprox: 1489
+        min: '1'
+        max: '3068'
+        media: 149.1969
+        quartis: [43, 99, 202]
+      titulo_eleitoral: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1827960}
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1951599, pessoal: 'só contagens: valores seriam dado pessoal'}
+      data_filiacao: {tipo: DATE, nulos_pct: 0.53, distintos_aprox: 14113, min: '1980-01-01', max: '2023-10-01'}
+      situacao_registro:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: CANCELADO
+        max: SUB_JUDICE
+        top:
+        - [REGULAR, 1304785]
+        - [CANCELADO, 688808]
+        - [DESFILIADO, 70261]
+        - [SUB_JUDICE, 78]
+      tipo_registro:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: OFICIAL
+        max: OFICIAL
+        top:
+        - [OFICIAL, 2063932]
+      data_processamento:
+        tipo: DATE
+        nulos_pct: 88.1
+        distintos_aprox: 35
+        min: '2004-06-28'
+        max: '2021-06-15'
+        top:
+        - [null, 1818230]
+        - ['2020-04-16', 188559]
+        - ['2021-04-13', 37716]
+        - ['2020-12-01', 17167]
+        - ['2016-04-15', 851]
+        - ['2020-06-24', 547]
+        - ['2015-10-16', 133]
+        - ['2017-10-14', 122]
+        - ['2018-04-14', 81]
+        - ['2020-01-24', 77]
+      data_desfiliacao: {tipo: DATE, nulos_pct: 84.96, distintos_aprox: 6077, min: '1980-09-04', max: '2023-10-13'}
+      data_cancelamento: {tipo: DATE, nulos_pct: 71.81, distintos_aprox: 5972, min: '1980-01-01', max: '2021-06-30'}
+      data_regularizacao: {tipo: DATE, nulos_pct: 99.96, distintos_aprox: 256, min: '2009-10-28', max: '2021-06-11'}
+      motivo_cancelamento:
+        tipo: VARCHAR
+        nulos_pct: 77.81
+        distintos_aprox: 4
+        min: A PEDIDO DO ELEITOR
+        max: JUDICIAL
+        top:
+        - [null, 1605971]
+        - [CANCELAMENTO AUTOMÁTICO, 242267]
+        - [JUDICIAL, 138335]
+        - [A PEDIDO DO ELEITOR, 74295]
+        - [A PEDIDO DO PARTIDO, 3064]

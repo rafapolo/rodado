@@ -1,0 +1,406 @@
+dataset: br_incra_acervo
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  assentamentos:
+    linhas: 8216
+    fonte_do_perfil: tabela inteira
+    colunas:
+      OGC_FID:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 7631
+        min: '0'
+        max: '8215'
+        media: 4107.5
+        quartis: [2054, 4108, 6162]
+      cd_sipra: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7451}
+      uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [PA, 1082]
+        - [MA, 824]
+        - [PE, 601]
+        - [BA, 561]
+        - [PI, 471]
+        - [CE, 422]
+        - [MT, 407]
+        - [TO, 341]
+        - [PR, 311]
+        - [GO, 303]
+      nome_proje: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 8083, pessoal: 'só contagens: valores seriam dado pessoal'}
+      municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2340}
+      area_hecta:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 7479
+        min: '14.9296'
+        max: '2450381.0558'
+        media: 8810.4349
+        quartis: [659.7859, 1447.5083, 3693.7071]
+      capacidade:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 601
+        min: '1'
+        max: '6500'
+        media: 119.6831
+        quartis: [30, 55, 113]
+      num_famili:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 750
+        min: '0'
+        max: '5593'
+        media: 104.0445
+        quartis: [26, 49, 101]
+      fase:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '3'
+        max: '10'
+        media: 4.4147
+        quartis: [3, 4, 5]
+        top:
+        - ['3', 2996]
+        - ['5', 2315]
+        - ['6', 1210]
+        - ['4', 1140]
+        - ['7', 554]
+        - ['10', 1]
+      data_de_cr: {tipo: DATE, nulos_pct: 0, distintos_aprox: 2117, min: '1930-10-07', max: '2021-09-29'}
+      forma_obte:
+        tipo: VARCHAR
+        nulos_pct: 0.04
+        distintos_aprox: 19
+        min: Adjudicação
+        max: Transferência
+        top:
+        - [Desapropriação, 5578]
+        - [Reconhecimento, 725]
+        - [Arrecadação, 648]
+        - [Compra e Venda, 509]
+        - [Em Obtenção - T.Coop.Tec. SPU, 290]
+        - [Doação, 132]
+        - [Transferência, 123]
+        - [Discriminação, 54]
+        - [Confisco, 38]
+        - [Adjudicação, 34]
+      data_obten: {tipo: DATE, nulos_pct: 0.07, distintos_aprox: 1939, min: '1899-12-31', max: '2021-03-22'}
+      area_calc_:
+        tipo: DOUBLE
+        nulos_pct: 3.21
+        distintos_aprox: 7353
+        min: '0.4012'
+        max: '2429511.295'
+        media: 8813.885
+        quartis: [659.9164, 1442.2362, 3668.8099]
+      sr:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 8216]
+      descricao_:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 8216]
+      lat:
+        tipo: DOUBLE
+        nulos_pct: 0.01
+        distintos_aprox: 7678
+        min: '-32.191181713625085'
+        max: '3.925836863790184'
+        media: -10.467
+        quartis: [-14.782, -8.5591, -4.9652]
+      lon:
+        tipo: DOUBLE
+        nulos_pct: 0.01
+        distintos_aprox: 10823
+        min: '-73.3416794192844'
+        max: '-34.82511398937802'
+        media: -46.6733
+        quartis: [-51.2321, -46.6393, -40.0186]
+      area_ha:
+        tipo: DOUBLE
+        nulos_pct: 0.01
+        distintos_aprox: 7980
+        min: '0.40637043877523304'
+        max: '2511398.4064112976'
+        media: 8807.2802
+        quartis: [671.7371, 1472.0642, 3707.7566]
+  assentamentos_poligono:
+    linhas: 8214
+    fonte_do_perfil: tabela inteira
+    colunas:
+      cd_sipra: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7451}
+      geometria: {tipo: 'GEOMETRY(''OGC:CRS84'')', nulos_pct: 0.01, distintos_aprox: 8447}
+  sigef_parcelas:
+    linhas: 1841258
+    fonte_do_perfil: tabela inteira
+    colunas:
+      OGC_FID:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 301026
+        min: '0'
+        max: '320806'
+        media: 74829.0515
+        quartis: [21026, 53057, 105196]
+      parcela_co: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1418573}
+      rt: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 13339}
+      art: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 862996}
+      situacao_i:
+        tipo: VARCHAR
+        nulos_pct: 0.15
+        distintos_aprox: 3
+        min: NAO_TITULADA
+        max: TITULADA_NAO_REGISTRADA
+        top:
+        - [REGISTRADA, 1680843]
+        - [NAO_TITULADA, 96050]
+        - [TITULADA_NAO_REGISTRADA, 61662]
+        - [null, 2703]
+      codigo_imo: {tipo: VARCHAR, nulos_pct: 0.02, distintos_aprox: 953208}
+      data_submi: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4839, min: '2013-11-19', max: '2026-09-22'}
+      data_aprov: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4839, min: '2013-11-19', max: '2026-09-22'}
+      status:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: CERTIFICADA
+        max: REGISTRADA
+        top:
+        - [CERTIFICADA, 1029281]
+        - [REGISTRADA, 811977]
+      nome_area: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 1442013, pessoal: 'só contagens: valores seriam dado pessoal'}
+      registro_m: {tipo: VARCHAR, nulos_pct: 5.31, distintos_aprox: 361428}
+      registro_d: {tipo: DATE, nulos_pct: 56.66, distintos_aprox: 3817, min: '2013-12-06', max: '2026-09-22'}
+      municipio_:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 6308
+        min: '1100015'
+        max: '5300108'
+        media: 3516624.6083
+        quartis: [2918215, 3513284, 4276630]
+      uf_id:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: '11'
+        max: '53'
+        media: 35.0029
+        quartis: [29, 35, 43]
+        top:
+        - ['31', 320807]
+        - ['35', 221093]
+        - ['41', 172585]
+        - ['52', 144589]
+        - ['43', 114898]
+        - ['42', 112923]
+        - ['51', 111108]
+        - ['29', 93619]
+        - ['50', 85371]
+        - ['21', 68952]
+      lat:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2148309
+        min: '-33.73083925232623'
+        max: '4.2767607564323'
+        media: -17.6503
+        quartis: [-22.8152, -18.9333, -12.1271]
+      lon:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2793341
+        min: '-73.44730986086631'
+        max: '-34.80946665326338'
+        media: -48.4536
+        quartis: [-52.2348, -48.9059, -44.6225]
+      area_ha:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2054485
+        min: '0.00014149804707100288'
+        max: '1346399.759386211'
+        media: 174.8833
+        quartis: [8.3151, 26.897, 94.4123]
+      sigla_uf_arquivo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 320807]
+        - [SP, 221093]
+        - [PR, 172585]
+        - [GO, 144589]
+        - [RS, 114898]
+        - [SC, 112923]
+        - [MT, 111108]
+        - [BA, 93619]
+        - [MS, 85371]
+        - [MA, 68952]
+  sigef_poligono:
+    linhas: 1867095
+    fonte_do_perfil: tabela inteira
+    colunas:
+      parcela_co: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1315010}
+      codigo_imo: {tipo: VARCHAR, nulos_pct: 0.02, distintos_aprox: 992286}
+      sigla_uf_arquivo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 325581]
+        - [SP, 224076]
+        - [PR, 175993]
+        - [GO, 146017]
+        - [RS, 116806]
+        - [SC, 114532]
+        - [MT, 112103]
+        - [BA, 94806]
+        - [MS, 85839]
+        - [MA, 70029]
+      geometria: {tipo: 'GEOMETRY(''OGC:CRS84'')', nulos_pct: 0, distintos_aprox: 1672649}
+  snci_parcelas:
+    linhas: 52817
+    fonte_do_perfil: tabela inteira
+    colunas:
+      OGC_FID:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 8978
+        min: '0'
+        max: '10974'
+        media: 3182.5939
+        quartis: [787, 2273, 4977]
+      num_proces: {tipo: VARCHAR, nulos_pct: 0.03, distintos_aprox: 59725}
+      sr:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 29
+        min: '01'
+        max: '30'
+        top:
+        - [08, 10981]
+        - ['16', 9720]
+        - ['13', 7414]
+        - ['04', 3816]
+        - ['06', 3442]
+        - ['05', 2792]
+        - ['28', 2169]
+        - ['26', 2087]
+        - [09, 1988]
+        - ['11', 1871]
+      num_certif: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 51294}
+      data_certi: {tipo: DATE, nulos_pct: 0.02, distintos_aprox: 2635, min: '2004-04-26', max: '2027-08-19'}
+      qtd_area_p:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 50282
+        min: '0.0'
+        max: '1995397.9924'
+        media: 1894.5845
+        quartis: [99.4921, 512.4474, 1223.5941]
+      cod_profis: {tipo: VARCHAR, nulos_pct: 0.03, distintos_aprox: 2744}
+      cod_imovel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 53698}
+      nome_imove: {tipo: VARCHAR, nulos_pct: 0.02, distintos_aprox: 34305, pessoal: 'só contagens: valores seriam dado pessoal'}
+      uf_municip:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 10975]
+        - [MS, 9720]
+        - [MT, 7413]
+        - [GO, 5012]
+        - [MG, 4104]
+        - [BA, 2798]
+        - [TO, 2089]
+        - [PR, 1987]
+        - [RS, 1871]
+        - [PA, 1118]
+      lat:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 56701
+        min: '-33.72858255276946'
+        max: '3.367224825657178'
+        media: -17.4153
+        quartis: [-21.8237, -18.3883, -13.1531]
+      lon:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 40165
+        min: '-73.23653106668414'
+        max: '-34.818825971084706'
+        media: -50.5222
+        quartis: [-54.1433, -50.4793, -47.386]
+      area_ha:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 57069
+        min: '5.198766444674231e-06'
+        max: '1993435.8551149769'
+        media: 1896.6563
+        quartis: [100.7296, 513.5143, 1225.4551]
+      sigla_uf_arquivo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 10975]
+        - [MS, 9720]
+        - [MT, 7413]
+        - [GO, 5012]
+        - [MG, 4104]
+        - [BA, 2798]
+        - [TO, 2089]
+        - [PR, 1987]
+        - [RS, 1871]
+        - [PA, 1118]
+  snci_poligono:
+    linhas: 52761
+    fonte_do_perfil: tabela inteira
+    colunas:
+      num_certif: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 51294}
+      cod_imovel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 53698}
+      sigla_uf_arquivo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 10962]
+        - [MS, 9691]
+        - [MT, 7395]
+        - [GO, 4997]
+        - [MG, 4102]
+        - [BA, 2790]
+        - [TO, 2088]
+        - [PR, 1983]
+        - [RS, 1869]
+        - [PA, 1115]
+      geometria: {tipo: 'GEOMETRY(''OGC:CRS84'')', nulos_pct: 0, distintos_aprox: 55340}

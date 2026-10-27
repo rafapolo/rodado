@@ -1,0 +1,155 @@
+dataset: br_anvisa_medicamentos_industrializados
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  microdados:
+    linhas: 10000000
+    fonte_do_perfil: tabela inteira da última partição (ano = 2021)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2021'
+        max: '2021'
+        media: 2021
+        quartis: [2021, 2021, 2021]
+        top:
+        - ['2021', 386527]
+      cid10:
+        tipo: VARCHAR
+        nulos_pct: 99.94
+        distintos_aprox: 17
+        min: A000
+        max: T43
+        top:
+        - [null, 386306]
+        - [K113, 197]
+        - [F51, 6]
+        - [G35, 3]
+        - [F32, 2]
+        - [G40, 2]
+        - [T43, 2]
+        - [A000, 1]
+        - [A048, 1]
+        - [A28, 1]
+      conselho_prescritor:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: CRM
+        max: RMS
+        top:
+        - [CRM, 349559]
+        - [CRO, 23637]
+        - [CRMV, 6824]
+        - [RMS, 6507]
+      descricao_apresentacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1815}
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 235, min: '1100015', max: '5201504'}
+      idade:
+        tipo: BIGINT
+        nulos_pct: 34.29
+        distintos_aprox: 279
+        min: '0'
+        max: '999'
+        media: 42.2644
+        quartis: [26, 39, 55]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '2'
+        max: '3'
+        media: 2.5002
+        quartis: [2, 3, 3]
+        top:
+        - ['3', 193335]
+        - ['2', 193192]
+      principio_ativo: {tipo: VARCHAR, nulos_pct: 0.22, distintos_aprox: 344, min: ACARBOSE, max: ÁCIDO VALPRÓICO + VALPROATO DE SÓDIO}
+      quantidade_vendida:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 487
+        min: '1'
+        max: '789295'
+        media: 5.9116
+        quartis: [1, 1, 3]
+      sexo:
+        tipo: VARCHAR
+        nulos_pct: 34.29
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 145315]
+        - [null, 132527]
+        - ['1', 108685]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: AC
+        max: TO
+        top:
+        - [GO, 71992]
+        - [SP, 60721]
+        - [MG, 51739]
+        - [PA, 31044]
+        - [RS, 30665]
+        - [PR, 23605]
+        - [RN, 13961]
+        - [BA, 11530]
+        - [MT, 10863]
+        - [PE, 10580]
+      sigla_uf_conselho_prescritor:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [GO, 67930]
+        - [SP, 61885]
+        - [MG, 50428]
+        - [RS, 30610]
+        - [PA, 30302]
+        - [PR, 23617]
+        - [RN, 13562]
+        - [BA, 11522]
+        - [RJ, 11098]
+        - [PE, 10684]
+      tipo_receituario:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '1'
+        max: '5'
+        media: 3.5994
+        quartis: [1, 5, 5]
+        top:
+        - ['5', 236848]
+        - ['1', 110440]
+        - ['2', 23491]
+        - ['3', 13374]
+        - ['4', 2374]
+      unidade_idade:
+        tipo: BIGINT
+        nulos_pct: 34.29
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        media: 1.01
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 251470]
+        - [null, 132527]
+        - ['2', 2530]
+      unidade_medida:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: caixa
+        max: frasco
+        top:
+        - [caixa, 336879]
+        - [frasco, 49648]

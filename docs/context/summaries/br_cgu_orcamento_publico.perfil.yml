@@ -1,0 +1,143 @@
+dataset: br_cgu_orcamento_publico
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  orcamento:
+    linhas: 341269
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano_exercicio:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: '2014'
+        max: '2026'
+        media: 2019.8786
+        quartis: [2017, 2020, 2023]
+        top:
+        - ['2014', 28641]
+        - ['2015', 27989]
+        - ['2020', 27363]
+        - ['2016', 27119]
+        - ['2024', 26457]
+        - ['2019', 26444]
+        - ['2025', 26174]
+        - ['2017', 26085]
+        - ['2018', 25847]
+        - ['2023', 25268]
+      id_orgao_superior:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 40
+        min: '03000'
+        max: '84000'
+        top:
+        - ['26000', 143686]
+        - ['52000', 25488]
+        - ['36000', 18873]
+        - ['53000', 14684]
+        - ['24000', 12311]
+        - ['39000', 11679]
+        - ['25000', 11363]
+        - ['32000', 10863]
+        - ['42000', 9469]
+        - ['30000', 8434]
+      nome_orgao_superior: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 41, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_orgao_subordinado: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 243, min: '03000', max: '91214'}
+      nome_orgao_subordinado: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 305, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_unidade_orcamentaria: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 748, min: '03101', max: '93496'}
+      nome_unidade_orcamentaria: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 557, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_funcao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '01'
+        max: '99'
+        top:
+        - ['12', 126486]
+        - ['05', 23909]
+        - ['04', 22721]
+        - ['28', 21163]
+        - ['10', 18024]
+        - [09, 17295]
+        - ['26', 13803]
+        - ['19', 12728]
+        - ['18', 12609]
+        - ['20', 10005]
+      nome_funcao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 31, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_subfuncao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 100, min: '031', max: '999'}
+      nome_subfuncao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 112, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_programa_orcamentario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 372, min: '0032', max: '9090'}
+      nome_programa_orcamentario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 279, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_acao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3430}
+      nome_acao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3902, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_categoria_economica:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '3'
+        max: I
+        top:
+        - ['3', 279492]
+        - ['4', 60899]
+        - ['9', 877]
+        - [I, 1]
+      nome_categoria_economica: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_grupo_despesa:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '1'
+        max: I
+        top:
+        - ['3', 224046]
+        - ['4', 58641]
+        - ['1', 55067]
+        - ['5', 1942]
+        - ['9', 877]
+        - ['2', 379]
+        - ['6', 316]
+        - [I, 1]
+      nome_grupo_despesa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 9, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_elemento_despesa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 75, min: '-3', max: '99'}
+      nome_elemento_despesa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 81, pessoal: 'só contagens: valores seriam dado pessoal'}
+      orcamento_inicial:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 298675
+        min: '-839909727716.07'
+        max: '1797458935118.0'
+        media: 154020306.0798
+        quartis: [18477.818, 268724.1648, 2525832.3498]
+      orcamento_atualizado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 301069
+        min: '-7933774178.0'
+        max: '1797458935118.0'
+        media: 159963669.0151
+        quartis: [14369.5461, 216331.8693, 2019281.1323]
+      orcamento_empenhado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 281892
+        min: '-201664633.0'
+        max: '1438778978596.39'
+        media: 134649958.842
+        quartis: [4.2042, 78841.2917, 1274485.8391]
+      orcamento_realizado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 250213
+        min: '-27663924.56'
+        max: '1438778978596.39'
+        media: 125995689.4969
+        quartis: [0, 28702.6549, 687975.3797]
+      porcentagem_realizado_orcamento:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 8890
+        min: '-23657.0'
+        max: '606559.0'
+        media: 53.0605
+        quartis: [0, 63.2149, 94.6708]

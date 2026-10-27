@@ -1,0 +1,2310 @@
+dataset: br_mdr_snis
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  municipio_agua_esgoto:
+    linhas: 119256
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '1995'
+        max: '2022'
+        media: 2010.6113
+        quartis: [2005, 2011, 2017]
+        top:
+        - ['2022', 5425]
+        - ['2020', 5338]
+        - ['2021', 5313]
+        - ['2019', 5177]
+        - ['2016', 5161]
+        - ['2014', 5141]
+        - ['2018', 5136]
+        - ['2017', 5117]
+        - ['2015', 5093]
+        - ['2012', 5086]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 17736]
+        - [SP, 13446]
+        - [RS, 9966]
+        - [BA, 9613]
+        - [PR, 9465]
+        - [SC, 6643]
+        - [GO, 5863]
+        - [PB, 4787]
+        - [PE, 4467]
+        - [CE, 4214]
+      populacao_atendida_agua:
+        tipo: BIGINT
+        nulos_pct: 16.68
+        distintos_aprox: 36563
+        min: '0'
+        max: '12396372'
+        media: 36929.3226
+        quartis: [3343, 7394, 19099]
+      populacao_atentida_esgoto:
+        tipo: BIGINT
+        nulos_pct: 64.67
+        distintos_aprox: 23752
+        min: '0'
+        max: '12396372'
+        media: 50389.432
+        quartis: [2895, 7720, 24357]
+      populacao_urbana:
+        tipo: BIGINT
+        nulos_pct: 4.55
+        distintos_aprox: 37324
+        min: '162'
+        max: '12284940'
+        media: 33546.7606
+        quartis: [2967, 6599, 16820]
+      populacao_urbana_residente_agua:
+        tipo: BIGINT
+        nulos_pct: 4.7
+        distintos_aprox: 37324
+        min: '162'
+        max: '12284940'
+        media: 33590.1731
+        quartis: [2971, 6608, 16843]
+      populacao_urbana_atendida_agua:
+        tipo: BIGINT
+        nulos_pct: 23.92
+        distintos_aprox: 39908
+        min: '0'
+        max: '12284940'
+        media: 33165.1445
+        quartis: [2931, 6497, 16967]
+      populacao_urbana_atendida_agua_ibge:
+        tipo: BIGINT
+        nulos_pct: 0.15
+        distintos_aprox: 41160
+        min: '711'
+        max: '12396372'
+        media: 39477.2206
+        quartis: [5735, 11856, 25340]
+      populacao_urbana_residente_esgoto:
+        tipo: BIGINT
+        nulos_pct: 63.83
+        distintos_aprox: 29109
+        min: '162'
+        max: '12284940'
+        media: 73071.9539
+        quartis: [5189, 14152, 42518]
+      populacao_urbana_atendida_esgoto:
+        tipo: BIGINT
+        nulos_pct: 68.25
+        distintos_aprox: 20052
+        min: '0'
+        max: '12284940'
+        media: 46926.6338
+        quartis: [2692, 7220, 22563]
+      populacao_urbana_residente_esgoto_ibge:
+        tipo: BIGINT
+        nulos_pct: 61.4
+        distintos_aprox: 31929
+        min: '724'
+        max: '12396372'
+        media: 78029.1296
+        quartis: [8106, 19656, 50918]
+      extensao_rede_agua:
+        tipo: DOUBLE
+        nulos_pct: 17.07
+        distintos_aprox: 21789
+        min: '0.0'
+        max: '4883646.0'
+        media: 211.5122
+        quartis: [16.766, 35.9786, 89.5748]
+      extensao_rede_esgoto:
+        tipo: DOUBLE
+        nulos_pct: 64.54
+        distintos_aprox: 11223
+        min: '0.0'
+        max: '1791797.0'
+        media: 242.4985
+        quartis: [13.0746, 33.529, 98.3033]
+      quantidade_sede_municipal_agua:
+        tipo: BIGINT
+        nulos_pct: 3.33
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.9984
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 115109]
+        - [null, 3967]
+        - ['0', 180]
+      quantidade_sede_municipal_esgoto:
+        tipo: BIGINT
+        nulos_pct: 63.35
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.9903
+        quartis: [1, 1, 1]
+        top:
+        - [null, 75549]
+        - ['1', 43282]
+        - ['0', 425]
+      quantidade_localidade_agua:
+        tipo: BIGINT
+        nulos_pct: 0.8
+        distintos_aprox: 118
+        min: '0'
+        max: '3348'
+        media: 1.5653
+        quartis: [0, 0, 1]
+      quantidade_localidade_esgoto:
+        tipo: BIGINT
+        nulos_pct: 61.82
+        distintos_aprox: 43
+        min: '0'
+        max: '5000'
+        media: 1.3224
+        quartis: [0, 0, 0]
+        top:
+        - [null, 73720]
+        - ['0', 34262]
+        - ['1', 5576]
+        - ['2', 2425]
+        - ['3', 1085]
+        - ['4', 784]
+        - ['5', 367]
+        - ['6', 258]
+        - ['7', 160]
+        - ['8', 129]
+      quantidade_ligacao_ativa_agua:
+        tipo: BIGINT
+        nulos_pct: 16.72
+        distintos_aprox: 21757
+        min: '0'
+        max: '3308131'
+        media: 9947.0545
+        quartis: [1119, 2413, 6051]
+      quantidade_ligacao_ativa_esgoto:
+        tipo: BIGINT
+        nulos_pct: 64.46
+        distintos_aprox: 15987
+        min: '0'
+        max: '2997737'
+        media: 12665.6501
+        quartis: [932, 2462, 7549]
+      quantidade_ligacao_total_agua:
+        tipo: BIGINT
+        nulos_pct: 19.32
+        distintos_aprox: 24108
+        min: '0'
+        max: '3755238'
+        media: 10640.195
+        quartis: [1296, 2719, 6671]
+      quantidade_ligacao_total_esgoto:
+        tipo: BIGINT
+        nulos_pct: 65.46
+        distintos_aprox: 14777
+        min: '0'
+        max: '3294368'
+        media: 13175.3884
+        quartis: [1021, 2660, 7962]
+      quantidade_economia_ativa_agua:
+        tipo: BIGINT
+        nulos_pct: 16.88
+        distintos_aprox: 23532
+        min: '0'
+        max: '5244059'
+        media: 12885.4619
+        quartis: [1169, 2535, 6502]
+      quantidade_economia_ativa_esgoto:
+        tipo: BIGINT
+        nulos_pct: 67.76
+        distintos_aprox: 15156
+        min: '0'
+        max: '5930147'
+        media: 19563.1152
+        quartis: [1027, 2845, 9529]
+      quantidade_ligacao_micromedia_ativa_agua:
+        tipo: BIGINT
+        nulos_pct: 16.89
+        distintos_aprox: 21194
+        min: '0'
+        max: '3308068'
+        media: 8966.9276
+        quartis: [856, 2055, 5392]
+      quantidade_economia_residencial_ativa_agua:
+        tipo: BIGINT
+        nulos_pct: 19.11
+        distintos_aprox: 19615
+        min: '0'
+        max: '4876789'
+        media: 11992.0452
+        quartis: [1076, 2356, 6076]
+      quantidade_economia_residencial_ativa_esgoto:
+        tipo: BIGINT
+        nulos_pct: 68.12
+        distintos_aprox: 15180
+        min: '0'
+        max: '4534461'
+        media: 17675.3182
+        quartis: [941, 2586, 8743]
+      quantidade_economia_micromedida_ativa_agua:
+        tipo: BIGINT
+        nulos_pct: 19.11
+        distintos_aprox: 21066
+        min: '0'
+        max: '5183315'
+        media: 11313.66
+        quartis: [907, 2147, 5676]
+      quantidade_economia_residencial_micromedida_ativa_agua:
+        tipo: BIGINT
+        nulos_pct: 21.72
+        distintos_aprox: 19840
+        min: '0'
+        max: '4818597'
+        media: 10504.4942
+        quartis: [849, 2017, 5324]
+      volume_agua_produzido:
+        tipo: DOUBLE
+        nulos_pct: 17.57
+        distintos_aprox: 59649
+        min: '0.0'
+        max: '7114442.76'
+        media: 3294.0981
+        quartis: [208.2981, 481.0173, 1382.3731]
+      volume_agua_tratada_eta:
+        tipo: DOUBLE
+        nulos_pct: 18.2
+        distintos_aprox: 45484
+        min: '0.0'
+        max: '4980110.0'
+        media: 2610.0781
+        quartis: [0, 221.5709, 915.7676]
+      volume_agua_micromedido:
+        tipo: DOUBLE
+        nulos_pct: 17.64
+        distintos_aprox: 56531
+        min: '0.0'
+        max: '1286217.66'
+        media: 1807.5305
+        quartis: [98.5293, 250.7024, 739.313]
+      volume_agua_consumido:
+        tipo: DOUBLE
+        nulos_pct: 17.45
+        distintos_aprox: 67229
+        min: '0.0'
+        max: '2408408.7'
+        media: 2271.11
+        quartis: [143.1519, 324.1537, 908.1171]
+      volume_agua_faturado:
+        tipo: DOUBLE
+        nulos_pct: 17.33
+        distintos_aprox: 67510
+        min: '0.0'
+        max: '2468324.18'
+        media: 2350.3543
+        quartis: [151.5413, 351.9436, 974.3002]
+      volume_agua_macromedido:
+        tipo: DOUBLE
+        nulos_pct: 18.95
+        distintos_aprox: 54403
+        min: '0.0'
+        max: '5595085.0'
+        media: 2982.7153
+        quartis: [0, 190.6109, 732.2607]
+      volume_agua_tratada_desinfeccao:
+        tipo: DOUBLE
+        nulos_pct: 18.58
+        distintos_aprox: 29734
+        min: '0.0'
+        max: '2134332.75'
+        media: 605.5677
+        quartis: [0, 2.6896, 250.2555]
+      volume_agua_bruta_exportado:
+        tipo: DOUBLE
+        nulos_pct: 20.22
+        distintos_aprox: 318
+        min: '0.0'
+        max: '78000.0'
+        media: 11.2511
+        quartis: [0, 0, 0]
+      volume_agua_tratada_importado:
+        tipo: DOUBLE
+        nulos_pct: 20.07
+        distintos_aprox: 4294
+        min: '0.0'
+        max: '1345024.84'
+        media: 521.1162
+        quartis: [0, 0, 0]
+      volume_agua_tratada_exportado:
+        tipo: DOUBLE
+        nulos_pct: 21.01
+        distintos_aprox: 2582
+        min: '0.0'
+        max: '1382878.0'
+        media: 159.197
+        quartis: [0, 0, 0]
+      volume_agua_micromedido_economia_ativa:
+        tipo: DOUBLE
+        nulos_pct: 23.61
+        distintos_aprox: 47867
+        min: '-15.01'
+        max: '667023.09'
+        media: 1434.1939
+        quartis: [81.7954, 213.9175, 620.9015]
+      volume_servico_agua:
+        tipo: DOUBLE
+        nulos_pct: 25.89
+        distintos_aprox: 14856
+        min: '0.0'
+        max: '219176.51'
+        media: 135.7925
+        quartis: [0, 0.9146, 10.1284]
+      volume_agua_fluoretada:
+        tipo: DOUBLE
+        nulos_pct: 23.11
+        distintos_aprox: 38502
+        min: '0.0'
+        max: '1345024.84'
+        media: 2448.0709
+        quartis: [0, 148.5576, 691.9632]
+      consumo_eletrico_sistemas_agua:
+        tipo: DOUBLE
+        nulos_pct: 28.76
+        distintos_aprox: 53979
+        min: '0.0'
+        max: '7823015.0'
+        media: 2430.0558
+        quartis: [135.7713, 344.4808, 1020.3334]
+      volume_esgoto_coletado:
+        tipo: DOUBLE
+        nulos_pct: 64.92
+        distintos_aprox: 24201
+        min: '0.0'
+        max: '47452063.0'
+        media: 5270.6589
+        quartis: [119.4125, 357.6881, 1231.9515]
+      volume_esgoto_tratado:
+        tipo: DOUBLE
+        nulos_pct: 64.99
+        distintos_aprox: 22094
+        min: '0.0'
+        max: '47452063.0'
+        media: 4305.1751
+        quartis: [0.1063, 153.3315, 639.1803]
+      volume_esgoto_faturado:
+        tipo: DOUBLE
+        nulos_pct: 64.73
+        distintos_aprox: 26252
+        min: '0.0'
+        max: '47452063.0'
+        media: 6239.4203
+        quartis: [36.3405, 271.5485, 1127.5281]
+      volume_esgoto_bruto_exportado:
+        tipo: DOUBLE
+        nulos_pct: 69.89
+        distintos_aprox: 310
+        min: '0.0'
+        max: '42564.47'
+        media: 21.2905
+        quartis: [0, 0, 0]
+      volume_esgoto_bruto_importado:
+        tipo: DOUBLE
+        nulos_pct: 69.89
+        distintos_aprox: 349
+        min: '0.0'
+        max: '35000.0'
+        media: 9.9963
+        quartis: [0, 0, 0]
+      volume_esgoto_importado:
+        tipo: DOUBLE
+        nulos_pct: 69.89
+        distintos_aprox: 182
+        min: '0.0'
+        max: '10187.68'
+        media: 5.1994
+        quartis: [0, 0, 0]
+      volume_esgoto_bruto_exportado_tratamento_importador:
+        tipo: DOUBLE
+        nulos_pct: 72.15
+        distintos_aprox: 165
+        min: '0.0'
+        max: '42564.47'
+        media: 17.1306
+        quartis: [0, 0, 0]
+      consumo_eletrico_sistemas_esgoto:
+        tipo: DOUBLE
+        nulos_pct: 70.68
+        distintos_aprox: 18952
+        min: '0.0'
+        max: '534172.0'
+        media: 539.5049
+        quartis: [0.7508, 30.4469, 174.3761]
+      indice_agua_ligacao:
+        tipo: DOUBLE
+        nulos_pct: 17.17
+        distintos_aprox: 333
+        min: '0.08'
+        max: '69.0'
+        media: 1.0835
+        quartis: [1.01, 1.03, 1.0899]
+      indice_hidrometracao:
+        tipo: DOUBLE
+        nulos_pct: 17.21
+        distintos_aprox: 6930
+        min: '0.0'
+        max: '100.0'
+        media: 84.4059
+        quartis: [86.6009, 99.6317, 100]
+      indice_macromedicao_volume_disponibilizado:
+        tipo: DOUBLE
+        nulos_pct: 21.52
+        distintos_aprox: 7761
+        min: '-4600.0'
+        max: '1111.98'
+        media: 56.1748
+        quartis: [42.1938, 63.3899, 75.3662]
+      indice_macromedicao:
+        tipo: DOUBLE
+        nulos_pct: 22.42
+        distintos_aprox: 6367
+        min: '-1603.63'
+        max: '154250.0'
+        media: 60.8039
+        quartis: [0, 91.1592, 100]
+      indice_perda_faturamento:
+        tipo: DOUBLE
+        nulos_pct: 20.75
+        distintos_aprox: 9352
+        min: '-5375.0'
+        max: '100.0'
+        media: 26.6357
+        quartis: [10.0326, 24.0094, 40.804]
+      indice_micromedido_economia:
+        tipo: DOUBLE
+        nulos_pct: 23.55
+        distintos_aprox: 774
+        min: '0.0'
+        max: '11363.3'
+        media: 11.1991
+        quartis: [8.495, 9.9632, 11.9676]
+      indice_coleta_esgoto:
+        tipo: DOUBLE
+        nulos_pct: 66.93
+        distintos_aprox: 7451
+        min: '-30.22'
+        max: '5452.56'
+        media: 60.4225
+        quartis: [32.1666, 66.4795, 83.6689]
+      indice_tratamento_esgoto:
+        tipo: DOUBLE
+        nulos_pct: 65.77
+        distintos_aprox: 3839
+        min: '0.0'
+        max: '162555.56'
+        media: 77.626
+        quartis: [1.9571, 100, 100]
+      indice_consumo_agua_faturado:
+        tipo: DOUBLE
+        nulos_pct: 21.32
+        distintos_aprox: 731
+        min: '-1001.9'
+        max: '11363.3'
+        media: 12.986
+        quartis: [10.1446, 11.9887, 13.7734]
+      indice_extensao_agua_ligacao:
+        tipo: DOUBLE
+        nulos_pct: 18.65
+        distintos_aprox: 1490
+        min: '0.0'
+        max: '18017.2'
+        media: 15.6683
+        quartis: [9.1645, 12.7097, 17.1523]
+      indice_extensao_esgoto_ligacao:
+        tipo: DOUBLE
+        nulos_pct: 65.58
+        distintos_aprox: 3982
+        min: '0.0'
+        max: '42000.0'
+        media: 30.5835
+        quartis: [8.7163, 11.8232, 16.7103]
+      indice_consumo_agua_per_capita:
+        tipo: DOUBLE
+        nulos_pct: 20.99
+        distintos_aprox: 3782
+        min: '-623.9'
+        max: '105263.2'
+        media: 139.4518
+        quartis: [98.6713, 121.7009, 151.9314]
+      indice_atendimento_urbano_agua:
+        tipo: DOUBLE
+        nulos_pct: 21.28
+        distintos_aprox: 1380
+        min: '0.0'
+        max: '1031.0'
+        media: 91.9464
+        quartis: [92.1941, 100, 100]
+      indice_atendimento_agua_esgoto:
+        tipo: DOUBLE
+        nulos_pct: 67.16
+        distintos_aprox: 7419
+        min: '0.0'
+        max: '1397.98'
+        media: 66.5532
+        quartis: [35.881, 79.7799, 99.0999]
+      indice_volume_agua_economia:
+        tipo: DOUBLE
+        nulos_pct: 21.52
+        distintos_aprox: 1110
+        min: '0.0'
+        max: '23858.3'
+        media: 20.4199
+        quartis: [12.7824, 15.8573, 22.006]
+      indice_faturamento_agua:
+        tipo: DOUBLE
+        nulos_pct: 20.75
+        distintos_aprox: 8600
+        min: '0.0'
+        max: '5475.0'
+        media: 73.3643
+        quartis: [59.1893, 75.9782, 89.9965]
+      indice_participacao_economia_agua:
+        tipo: DOUBLE
+        nulos_pct: 18.91
+        distintos_aprox: 2809
+        min: '0.0'
+        max: '2600.85'
+        media: 91.9002
+        quartis: [89.5578, 92.2778, 95.2207]
+      indice_micromedicao_relativo_agua:
+        tipo: DOUBLE
+        nulos_pct: 21.34
+        distintos_aprox: 6879
+        min: '-418.18'
+        max: '100.0'
+        media: 82.246
+        quartis: [79.5768, 99.0318, 100]
+      indice_esgotamento_agua_consumida:
+        tipo: DOUBLE
+        nulos_pct: 67.11
+        distintos_aprox: 7312
+        min: '-12.09'
+        max: '875.23'
+        media: 37.9701
+        quartis: [0.1851, 29.8829, 71.5937]
+      indice_atendimento_esgoto_esgoto:
+        tipo: DOUBLE
+        nulos_pct: 67.43
+        distintos_aprox: 7419
+        min: '0.0'
+        max: '1397.98'
+        media: 66.7428
+        quartis: [36.2414, 79.8991, 99.1297]
+      indice_perda_distribuicao_agua:
+        tipo: DOUBLE
+        nulos_pct: 21.11
+        distintos_aprox: 7402
+        min: '-5375.0'
+        max: '100.0'
+        media: 32.5037
+        quartis: [20.0689, 30.3751, 44.0525]
+      indice_perda_linear_agua:
+        tipo: DOUBLE
+        nulos_pct: 20.98
+        distintos_aprox: 8879
+        min: '-2624.87'
+        max: '28395.07'
+        media: 21.7606
+        quartis: [5.5709, 11.1537, 23.8822]
+      indice_perda_ligacao_agua:
+        tipo: DOUBLE
+        nulos_pct: 21.05
+        distintos_aprox: 42989
+        min: '-46164.38'
+        max: '167835.62'
+        media: 280.149
+        quartis: [90.4883, 160.9418, 316.0729]
+      indice_consumo_agua:
+        tipo: DOUBLE
+        nulos_pct: 20.98
+        distintos_aprox: 6923
+        min: '0.0'
+        max: '5475.0'
+        media: 67.5691
+        quartis: [55.9618, 69.6799, 79.9702]
+      indice_consumo_medio_agua:
+        tipo: DOUBLE
+        nulos_pct: 21.62
+        distintos_aprox: 857
+        min: '-60.3'
+        max: '19666.7'
+        media: 12.2767
+        quartis: [8.8987, 10.3638, 12.4938]
+      indice_atendimento_total_agua:
+        tipo: DOUBLE
+        nulos_pct: 19.33
+        distintos_aprox: 7060
+        min: '0.0'
+        max: '100.0'
+        media: 67.8479
+        quartis: [50.1084, 71.0959, 89.1802]
+      indice_atendimento_esgoto_agua:
+        tipo: DOUBLE
+        nulos_pct: 65.88
+        distintos_aprox: 7761
+        min: '0.0'
+        max: '100.0'
+        media: 54.3407
+        quartis: [25.6712, 56.373, 83.7795]
+      indice_fluoretacao_agua:
+        tipo: DOUBLE
+        nulos_pct: 24.22
+        distintos_aprox: 4143
+        min: '0.0'
+        max: '3627.39'
+        media: 56.2788
+        quartis: [0, 96.2421, 100]
+      indice_consumo_energia_agua:
+        tipo: DOUBLE
+        nulos_pct: 29.99
+        distintos_aprox: 1026
+        min: '0.0'
+        max: '477.34'
+        media: 0.9075
+        quartis: [0.4507, 0.6971, 1.0328]
+      indice_consumo_energia_esgoto:
+        tipo: DOUBLE
+        nulos_pct: 71.39
+        distintos_aprox: 577
+        min: '0.0'
+        max: '16000.0'
+        media: 0.8403
+        quartis: [0, 0.1089, 0.3123]
+      receita_operacional_direta:
+        tipo: DOUBLE
+        nulos_pct: 19.54
+        distintos_aprox: 90505
+        min: '-27576.04'
+        max: '8339004396.0'
+        media: 9181933.2335
+        quartis: [382310.5156, 977292.8173, 2979239.3998]
+      receita_operacional_direta_agua:
+        tipo: DOUBLE
+        nulos_pct: 17.2
+        distintos_aprox: 115880
+        min: '-154486.19'
+        max: '4173030169.98'
+        media: 6047986.9614
+        quartis: [347971.3618, 875483.1951, 2531741.1893]
+      receita_operacional_direta_esgoto:
+        tipo: DOUBLE
+        nulos_pct: 64.31
+        distintos_aprox: 34677
+        min: '-59659.95'
+        max: '4165974226.02'
+        media: 7085506.027
+        quartis: [56764.1987, 426459.4771, 1883709.9823]
+      receita_operacional_indireta:
+        tipo: DOUBLE
+        nulos_pct: 20.02
+        distintos_aprox: 84519
+        min: '-4415614.0'
+        max: '196536905.2'
+        media: 352081.6816
+        quartis: [7750.2436, 28480.7144, 104779.5825]
+      receita_operacional_direta_agua_exportada:
+        tipo: DOUBLE
+        nulos_pct: 20.76
+        distintos_aprox: 785
+        min: '0.0'
+        max: '2114351425.28'
+        media: 55535.5473
+        quartis: [0, 0, 0]
+      receita_operacional:
+        tipo: DOUBLE
+        nulos_pct: 19.32
+        distintos_aprox: 105653
+        min: '-207310.6'
+        max: '8409304441.1'
+        media: 9454369.111
+        quartis: [396563.2068, 1008083.0808, 3103828.9729]
+      receita_operacional_direta_esgoto_importado:
+        tipo: DOUBLE
+        nulos_pct: 69.83
+        distintos_aprox: 255
+        min: '0.0'
+        max: '28761252.16'
+        media: 5661.5151
+        quartis: [0, 0, 0]
+      arrecadacao_total:
+        tipo: DOUBLE
+        nulos_pct: 17.58
+        distintos_aprox: 96757
+        min: '0.0'
+        max: '7884150196.6'
+        media: 8903131.3036
+        quartis: [361767.6522, 947445.8705, 2955905.7959]
+      credito_areceber:
+        tipo: DOUBLE
+        nulos_pct: 25.78
+        distintos_aprox: 83662
+        min: '-869921808.78'
+        max: '2765089197.59'
+        media: 3185333.269
+        quartis: [46456.8317, 198023.0495, 759100.9562]
+      despesa_pessoal:
+        tipo: DOUBLE
+        nulos_pct: 17.95
+        distintos_aprox: 95563
+        min: '-2075436.4'
+        max: '1040574909.0'
+        media: 2443436.8512
+        quartis: [150213.613, 403299.2154, 1126542.721]
+      quantidade_empregado:
+        tipo: BIGINT
+        nulos_pct: 17.04
+        distintos_aprox: 1221
+        min: '0'
+        max: '6454'
+        media: 31.8318
+        quartis: [3, 6, 16]
+      despesa_produto_quimico:
+        tipo: DOUBLE
+        nulos_pct: 18.32
+        distintos_aprox: 81222
+        min: '-95141.89'
+        max: '180699539.45'
+        media: 222178.2023
+        quartis: [3336.9059, 16622.5764, 67554.5298]
+      despesa_energia:
+        tipo: DOUBLE
+        nulos_pct: 17.95
+        distintos_aprox: 81832
+        min: '-595149.75'
+        max: '501867699.7'
+        media: 910407.4481
+        quartis: [57883.6796, 148671.0566, 426176.2254]
+      despesa_servico_terceiro:
+        tipo: DOUBLE
+        nulos_pct: 18.05
+        distintos_aprox: 99504
+        min: '-1018199.95'
+        max: '714278349.46'
+        media: 1201779.3874
+        quartis: [29260.8247, 109983.7555, 405839.1517]
+      despesa_exploracao:
+        tipo: DOUBLE
+        nulos_pct: 18.91
+        distintos_aprox: 89833
+        min: '-1989822.14'
+        max: '4846305189.64'
+        media: 6302360.8093
+        quartis: [384810.722, 922363.7925, 2623173.1955]
+      despesas_juros_divida:
+        tipo: DOUBLE
+        nulos_pct: 23.29
+        distintos_aprox: 54236
+        min: '-18512583.57'
+        max: '1011373759.84'
+        media: 511069.5805
+        quartis: [0, 12659.4959, 86061.4702]
+      despesa_total_servico:
+        tipo: DOUBLE
+        nulos_pct: 22.66
+        distintos_aprox: 80164
+        min: '-1941765.71'
+        max: '7266639141.59'
+        media: 8859853.2776
+        quartis: [481832.5861, 1157630.1742, 3336339.4191]
+      despesa_ativo:
+        tipo: DOUBLE
+        nulos_pct: 23.86
+        distintos_aprox: 76272
+        min: '-70149122.62'
+        max: '1625073743.67'
+        media: 1151083.4157
+        quartis: [9615.6181, 60569.3058, 248081.4651]
+      despesa_agua_importada:
+        tipo: DOUBLE
+        nulos_pct: 21.47
+        distintos_aprox: 8158
+        min: '-535319.32'
+        max: '2038791529.44'
+        media: 107421.8515
+        quartis: [0, 0, 0]
+      despesa_fiscal:
+        tipo: DOUBLE
+        nulos_pct: 21.23
+        distintos_aprox: 81332
+        min: '-19300715.08'
+        max: '700170898.97'
+        media: 624552.7304
+        quartis: [12998.0912, 57836.8386, 188229.8319]
+      despesa_fiscal_nao_computada:
+        tipo: DOUBLE
+        nulos_pct: 27.64
+        distintos_aprox: 53343
+        min: '-191682549.59'
+        max: '733427370.21'
+        media: 331384.2028
+        quartis: [0, 0.0919, 39431.674]
+      despesa_exploracao_outro:
+        tipo: DOUBLE
+        nulos_pct: 22.48
+        distintos_aprox: 91144
+        min: '-602680811.0'
+        max: '1126522774.06'
+        media: 823459.8555
+        quartis: [8764.983, 64715.5596, 251509.1044]
+      despesa_servico_outro:
+        tipo: DOUBLE
+        nulos_pct: 27.87
+        distintos_aprox: 57272
+        min: '-189462530.52'
+        max: '1172529479.7'
+        media: 492102.3763
+        quartis: [0, 9059.0797, 79088.2233]
+      despesa_amortizacao_divida:
+        tipo: DOUBLE
+        nulos_pct: 27.85
+        distintos_aprox: 33420
+        min: '-771519205.85'
+        max: '1432326923.03'
+        media: 718432.8989
+        quartis: [0, 0, 49356.367]
+      despesas_juros_divida_excecao:
+        tipo: DOUBLE
+        nulos_pct: 24.45
+        distintos_aprox: 52469
+        min: '-2128171.75'
+        max: '987462520.49'
+        media: 423498.724
+        quartis: [0, 10133.2583, 68519.2366]
+      despesa_divida_variacao:
+        tipo: DOUBLE
+        nulos_pct: 24.74
+        distintos_aprox: 40049
+        min: '-102423461.92'
+        max: '602320230.99'
+        media: 79277.4699
+        quartis: [0, 0.0, 6953.2187]
+      despesa_divida_total:
+        tipo: DOUBLE
+        nulos_pct: 42.8
+        distintos_aprox: 38992
+        min: '-4663426.3'
+        max: '1639453540.32'
+        media: 1313226.3073
+        quartis: [0, 27384.1383, 180428.563]
+      despesa_esgoto_exportado:
+        tipo: DOUBLE
+        nulos_pct: 69.58
+        distintos_aprox: 329
+        min: '0.0'
+        max: '14643831.45'
+        media: 12884.7045
+        quartis: [0, 0, 0]
+      despesa_capitalizavel_municipio:
+        tipo: DOUBLE
+        nulos_pct: 60.98
+        distintos_aprox: 1071
+        min: '0.0'
+        max: '95734509.63'
+        media: 12892.7297
+        quartis: [0, 0, 0]
+      despesa_capitalizavel_estado:
+        tipo: DOUBLE
+        nulos_pct: 58.4
+        distintos_aprox: 132
+        min: '0.0'
+        max: '48810358.0'
+        media: 5268.4027
+        quartis: [0, 0, 0]
+      despesa_capitalizavel_prestador:
+        tipo: DOUBLE
+        nulos_pct: 32.17
+        distintos_aprox: 31503
+        min: '-14438.99'
+        max: '114418573.33'
+        media: 105701.7807
+        quartis: [0, 0, 12636.6198]
+      investimento_agua_prestador:
+        tipo: DOUBLE
+        nulos_pct: 26.42
+        distintos_aprox: 72485
+        min: '-12721324.93'
+        max: '26465758127.0'
+        media: 1228267.858
+        quartis: [0, 24899.1513, 179210.5177]
+      investimento_esgoto_prestador:
+        tipo: DOUBLE
+        nulos_pct: 27.79
+        distintos_aprox: 42740
+        min: '-1997793.31'
+        max: '1378100802.31'
+        media: 968136.3947
+        quartis: [0, 0, 40279.9769]
+      investimento_outro_prestador:
+        tipo: DOUBLE
+        nulos_pct: 29.12
+        distintos_aprox: 33191
+        min: '-164160.0'
+        max: '1336908104.21'
+        media: 174653.9102
+        quartis: [0, 0, 10613.8086]
+      investimento_recurso_proprio_prestador:
+        tipo: DOUBLE
+        nulos_pct: 38.71
+        distintos_aprox: 45278
+        min: '-163195.0'
+        max: '887973920.66'
+        media: 885308.1328
+        quartis: [23.1878, 23067.6053, 182187.1477]
+      investimento_recurso_oneroso_prestador:
+        tipo: DOUBLE
+        nulos_pct: 40.51
+        distintos_aprox: 16453
+        min: '-287711.0'
+        max: '263547958.8'
+        media: 531602.7247
+        quartis: [0, 0, 0]
+      investimento_recurso_nao_oneroso_prestador:
+        tipo: DOUBLE
+        nulos_pct: 39.51
+        distintos_aprox: 9632
+        min: '0.0'
+        max: '318286369.64'
+        media: 265465.8273
+        quartis: [0, 0, 0]
+      investimento_total_prestador:
+        tipo: DOUBLE
+        nulos_pct: 28.83
+        distintos_aprox: 72399
+        min: '-11810538.78'
+        max: '2625398495.15'
+        media: 2116330.5897
+        quartis: [5401.4667, 56253.0613, 407105.0344]
+      investimento_agua_municipio:
+        tipo: DOUBLE
+        nulos_pct: 61.71
+        distintos_aprox: 3301
+        min: '0.0'
+        max: '343417844.0'
+        media: 54269.3017
+        quartis: [0, 0, 0]
+      investimento_esgoto_municipio:
+        tipo: DOUBLE
+        nulos_pct: 61.8
+        distintos_aprox: 1900
+        min: '0.0'
+        max: '150718000.0'
+        media: 47423.9312
+        quartis: [0, 0, 0]
+      investimento_outro_municipio:
+        tipo: DOUBLE
+        nulos_pct: 61.8
+        distintos_aprox: 1117
+        min: '0.0'
+        max: '25454726.72'
+        media: 9109.4882
+        quartis: [0, 0, 0]
+      investimento_recurso_proprio_municipio:
+        tipo: DOUBLE
+        nulos_pct: 63.04
+        distintos_aprox: 3083
+        min: '0.0'
+        max: '343436884.0'
+        media: 60756.7753
+        quartis: [0, 0, 0]
+      investimento_recurso_oneroso_municipio:
+        tipo: DOUBLE
+        nulos_pct: 63.18
+        distintos_aprox: 503
+        min: '0.0'
+        max: '33806033.22'
+        media: 14906.3859
+        quartis: [0, 0, 0]
+      investimento_recurso_nao_oneroso_municipio:
+        tipo: DOUBLE
+        nulos_pct: 63.08
+        distintos_aprox: 760
+        min: '0.0'
+        max: '31424214.78'
+        media: 23762.8206
+        quartis: [0, 0, 0]
+      investimento_total_municipio:
+        tipo: DOUBLE
+        nulos_pct: 61.81
+        distintos_aprox: 4591
+        min: '0.0'
+        max: '343436884.0'
+        media: 123181.2835
+        quartis: [0, 0, 0]
+      investimento_agua_estado:
+        tipo: DOUBLE
+        nulos_pct: 58.51
+        distintos_aprox: 1944
+        min: '0.0'
+        max: '180906788.79'
+        media: 89871.5469
+        quartis: [0, 0, 0]
+      investimento_esgoto_estado:
+        tipo: DOUBLE
+        nulos_pct: 58.62
+        distintos_aprox: 681
+        min: '0.0'
+        max: '773789796.0'
+        media: 67174.5897
+        quartis: [0, 0, 0]
+      investimento_outro_estado:
+        tipo: DOUBLE
+        nulos_pct: 58.5
+        distintos_aprox: 748
+        min: '0.0'
+        max: '23881111.22'
+        media: 7624.2601
+        quartis: [0, 0, 0]
+      investimento_recurso_proprio_estado:
+        tipo: DOUBLE
+        nulos_pct: 58.77
+        distintos_aprox: 1049
+        min: '0.0'
+        max: '50266998.76'
+        media: 26210.5532
+        quartis: [0, 0, 0]
+      investimento_recurso_oneroso_estado:
+        tipo: DOUBLE
+        nulos_pct: 58.82
+        distintos_aprox: 536
+        min: '0.0'
+        max: '99184580.03'
+        media: 37431.4163
+        quartis: [0, 0, 0]
+      investimento_recurso_nao_oneroso_estado:
+        tipo: DOUBLE
+        nulos_pct: 58.6
+        distintos_aprox: 952
+        min: '0.0'
+        max: '223274533.95'
+        media: 79297.6883
+        quartis: [0, 0, 0]
+      investimento_total_estado:
+        tipo: DOUBLE
+        nulos_pct: 58.78
+        distintos_aprox: 2458
+        min: '0.0'
+        max: '223274533.95'
+        media: 146670.7769
+        quartis: [0, 0, 0]
+  prestador_agua_esgoto:
+    linhas: 125845
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '1995'
+        max: '2022'
+        media: 2010.9442
+        quartis: [2005, 2011, 2017]
+        top:
+        - ['2022', 6440]
+        - ['2020', 5995]
+        - ['2021', 5978]
+        - ['2019', 5704]
+        - ['2016', 5686]
+        - ['2018', 5627]
+        - ['2017', 5580]
+        - ['2014', 5528]
+        - ['2015', 5485]
+        - ['2012', 5467]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 20573]
+        - [SP, 13489]
+        - [RS, 10402]
+        - [BA, 10134]
+        - [PR, 9485]
+        - [SC, 6827]
+        - [GO, 5903]
+        - [PB, 5272]
+        - [PE, 4886]
+        - [CE, 4533]
+      id_prestador: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2523}
+      prestador: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2654}
+      sigla_prestador: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 746, min: AA, max: pmsim}
+      abrangencia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Local
+        max: Regional
+        top:
+        - [Regional, 100031]
+        - [Local, 24828]
+        - [Microrregional, 986]
+      tipo_servico:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: 'Agua         '
+        max: 'Esgotos      '
+        top:
+        - ['Agua         ', 79402]
+        - [Agua e Esgoto, 41002]
+        - ['Esgotos      ', 3032]
+        - ['Esgoto       ', 2409]
+      natureza_juridica:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: Administracao publica direta
+        max: Sociedade de economia mista com administracao publica
+        top:
+        - [Sociedade de economia mista com administracao publica, 89901]
+        - [Administracao publica direta, 14806]
+        - [Autarquia, 9574]
+        - [Sociedade de economia mista com administracao privada, 6547]
+        - [Empresa privada, 3670]
+        - [Empresa publica, 1040]
+        - [Organizacao social, 307]
+      populacao_atendida_agua:
+        tipo: BIGINT
+        nulos_pct: 20.08
+        distintos_aprox: 40442
+        min: '0'
+        max: '12396372'
+        media: 36494.5507
+        quartis: [3264, 7263, 18865]
+      populacao_atentida_esgoto:
+        tipo: BIGINT
+        nulos_pct: 60.13
+        distintos_aprox: 23752
+        min: '0'
+        max: '12396372'
+        media: 42353.1171
+        quartis: [1403, 5412, 18562]
+      populacao_urbana:
+        tipo: BIGINT
+        nulos_pct: 5.12
+        distintos_aprox: 37324
+        min: '162'
+        max: '12284940'
+        media: 33731.2699
+        quartis: [3003, 6651, 16754]
+      populacao_urbana_atendida_agua:
+        tipo: BIGINT
+        nulos_pct: 27.23
+        distintos_aprox: 39908
+        min: '0'
+        max: '12284940'
+        media: 32930.0558
+        quartis: [2893, 6499, 16801]
+      populacao_urbana_atendida_esgoto:
+        tipo: BIGINT
+        nulos_pct: 63.63
+        distintos_aprox: 21175
+        min: '0'
+        max: '12284940'
+        media: 38855.114
+        quartis: [1140, 4920, 16894]
+      extensao_rede_agua:
+        tipo: DOUBLE
+        nulos_pct: 20.43
+        distintos_aprox: 21789
+        min: '0.0'
+        max: '4883646.0'
+        media: 209.0263
+        quartis: [16.5779, 35.5964, 88.3966]
+      extensao_rede_esgoto:
+        tipo: DOUBLE
+        nulos_pct: 62.68
+        distintos_aprox: 11203
+        min: '0.0'
+        max: '1791797.0'
+        media: 218.4719
+        quartis: [9.0319, 27.6309, 84.5851]
+      ano_vencimento_delegacao_agua:
+        tipo: BIGINT
+        nulos_pct: 50.9
+        distintos_aprox: 138
+        min: '1'
+        max: '9999'
+        media: 2061.6268
+        quartis: [2017, 2030, 2038]
+      ano_vencimento_delegacao_esgoto:
+        tipo: BIGINT
+        nulos_pct: 63.47
+        distintos_aprox: 133
+        min: '1900'
+        max: '9999'
+        media: 2287.3282
+        quartis: [2019, 2033, 2040]
+      quantidade_municipios_agua_delegacao_vigor:
+        tipo: BIGINT
+        nulos_pct: 40.07
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.8659
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 65302]
+        - [null, 50430]
+        - ['0', 10113]
+      quantidade_municipios_esgoto_delegacao_vigor:
+        tipo: BIGINT
+        nulos_pct: 65.44
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.6544
+        quartis: [0, 1, 1]
+        top:
+        - [null, 82359]
+        - ['1', 28457]
+        - ['0', 15029]
+      quantidade_municipios_agua_delegacao_vencida:
+        tipo: BIGINT
+        nulos_pct: 63.63
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.2686
+        quartis: [0, 0, 1]
+        top:
+        - [null, 80081]
+        - ['0', 33474]
+        - ['1', 12290]
+      quantidade_municipios_esgoto_delegacao_vencida:
+        tipo: BIGINT
+        nulos_pct: 75.18
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.1219
+        quartis: [0, 0, 0]
+        top:
+        - [null, 94606]
+        - ['0', 27431]
+        - ['1', 3808]
+      quantidade_municipios_agua_sem_delegacao:
+        tipo: BIGINT
+        nulos_pct: 68
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.1763
+        quartis: [0, 0, 0]
+        top:
+        - [null, 85572]
+        - ['0', 33172]
+        - ['1', 7101]
+      quantidade_municipios_esgoto_sem_delegacao:
+        tipo: BIGINT
+        nulos_pct: 76.3
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.2698
+        quartis: [0, 0, 1]
+        top:
+        - [null, 96022]
+        - ['0', 21777]
+        - ['1', 8046]
+      quantidade_municipios_sem_esgoto_sem_delegacao:
+        tipo: BIGINT
+        nulos_pct: 86.57
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.7484
+        quartis: [0, 1, 1]
+        top:
+        - [null, 108940]
+        - ['1', 12651]
+        - ['0', 4254]
+      quantidade_sede_municipal_agua:
+        tipo: BIGINT
+        nulos_pct: 7.39
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.9916
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 115564]
+        - [null, 9301]
+        - ['0', 980]
+      quantidade_sede_municipal_esgoto:
+        tipo: BIGINT
+        nulos_pct: 64.93
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.9862
+        quartis: [1, 1, 1]
+        top:
+        - [null, 81717]
+        - ['1', 43517]
+        - ['0', 611]
+      quantidade_localidade_agua:
+        tipo: BIGINT
+        nulos_pct: 4.94
+        distintos_aprox: 114
+        min: '0'
+        max: '3348'
+        media: 1.5514
+        quartis: [0, 0, 1]
+      quantidade_localidade_esgoto:
+        tipo: BIGINT
+        nulos_pct: 63.43
+        distintos_aprox: 43
+        min: '0'
+        max: '5000'
+        media: 1.31
+        quartis: [0, 0, 0]
+        top:
+        - [null, 79820]
+        - ['0', 34703]
+        - ['1', 5612]
+        - ['2', 2434]
+        - ['3', 1090]
+        - ['4', 778]
+        - ['5', 372]
+        - ['6', 260]
+        - ['7', 160]
+        - ['8', 123]
+      quantidade_ligacao_total_agua:
+        tipo: BIGINT
+        nulos_pct: 22.55
+        distintos_aprox: 24108
+        min: '0'
+        max: '3755238'
+        media: 10517.8989
+        quartis: [1272, 2680, 6577]
+      quantidade_ligacao_total_esgoto:
+        tipo: BIGINT
+        nulos_pct: 63.59
+        distintos_aprox: 14777
+        min: '0'
+        max: '3294368'
+        media: 11852.2863
+        quartis: [698, 2189, 6839]
+      quantidade_ligacao_ativa_agua:
+        tipo: BIGINT
+        nulos_pct: 20.12
+        distintos_aprox: 21875
+        min: '0'
+        max: '3308131'
+        media: 9838.0355
+        quartis: [1103, 2394, 5964]
+      quantidade_ligacao_ativa_esgoto:
+        tipo: BIGINT
+        nulos_pct: 62.58
+        distintos_aprox: 16266
+        min: '0'
+        max: '2997737'
+        media: 11409.6154
+        quartis: [621, 2018, 6515]
+      quantidade_economia_ativa_agua:
+        tipo: BIGINT
+        nulos_pct: 20.26
+        distintos_aprox: 23578
+        min: '0'
+        max: '5244059'
+        media: 12742.5076
+        quartis: [1152, 2499, 6402]
+      quantidade_economia_ativa_esgoto:
+        tipo: BIGINT
+        nulos_pct: 65.72
+        distintos_aprox: 15387
+        min: '0'
+        max: '5930147'
+        media: 17472.3007
+        quartis: [663, 2268, 7974]
+      quantidade_ligacao_micromedia_ativa_agua:
+        tipo: BIGINT
+        nulos_pct: 20.26
+        distintos_aprox: 21419
+        min: '0'
+        max: '3308068'
+        media: 8863.7774
+        quartis: [837, 2024, 5319]
+      quantidade_economia_residencial_ativa_agua:
+        tipo: BIGINT
+        nulos_pct: 22.38
+        distintos_aprox: 19615
+        min: '0'
+        max: '4876789'
+        media: 11871.3262
+        quartis: [1066, 2341, 6010]
+      quantidade_economia_micromedida_ativa_agua:
+        tipo: BIGINT
+        nulos_pct: 22.36
+        distintos_aprox: 20221
+        min: '0'
+        max: '5183315'
+        media: 11180.6967
+        quartis: [884, 2113, 5577]
+      quantidade_economia_residencial_micromedida_ativa_agua:
+        tipo: BIGINT
+        nulos_pct: 24.85
+        distintos_aprox: 19840
+        min: '0'
+        max: '4818597'
+        media: 10394.579
+        quartis: [836, 1998, 5259]
+      quantidade_economia_residencial_ativa_esgoto:
+        tipo: BIGINT
+        nulos_pct: 66.07
+        distintos_aprox: 15256
+        min: '0'
+        max: '4534461'
+        media: 15771.6558
+        quartis: [604, 2059, 7258]
+      volume_agua_produzido:
+        tipo: DOUBLE
+        nulos_pct: 20.88
+        distintos_aprox: 59649
+        min: '0.0'
+        max: '7114442.76'
+        media: 3256.6148
+        quartis: [202.9801, 473.0307, 1365.856]
+      volume_agua_tratada_eta:
+        tipo: DOUBLE
+        nulos_pct: 21.48
+        distintos_aprox: 45484
+        min: '0.0'
+        max: '4980110.0'
+        media: 2580.6991
+        quartis: [0, 215.4908, 900.3572]
+      volume_agua_micromedido:
+        tipo: DOUBLE
+        nulos_pct: 20.96
+        distintos_aprox: 56531
+        min: '0.0'
+        max: '1286217.66'
+        media: 1786.3512
+        quartis: [96.276, 246.2437, 730.0873]
+      volume_agua_consumido:
+        tipo: DOUBLE
+        nulos_pct: 20.78
+        distintos_aprox: 66490
+        min: '0.0'
+        max: '2408408.7'
+        media: 2244.9771
+        quartis: [140.6933, 319.5376, 895.0514]
+      volume_agua_faturado:
+        tipo: DOUBLE
+        nulos_pct: 20.65
+        distintos_aprox: 67510
+        min: '0.0'
+        max: '2468324.18'
+        media: 2323.0817
+        quartis: [148.5801, 350.1033, 966.4393]
+      volume_agua_macromedido:
+        tipo: DOUBLE
+        nulos_pct: 22.19
+        distintos_aprox: 53919
+        min: '0.0'
+        max: '5595085.0'
+        media: 2946.9698
+        quartis: [0, 184.4365, 719.4322]
+      volume_agua_tratada_desinfeccao:
+        tipo: DOUBLE
+        nulos_pct: 21.83
+        distintos_aprox: 30330
+        min: '0.0'
+        max: '2134332.75'
+        media: 597.9699
+        quartis: [0, 1.9402, 247.4596]
+      volume_agua_bruta_exportado:
+        tipo: DOUBLE
+        nulos_pct: 23.41
+        distintos_aprox: 318
+        min: '0.0'
+        max: '78000.0'
+        media: 11.1064
+        quartis: [0, 0, 0]
+      volume_agua_tratada_importado:
+        tipo: DOUBLE
+        nulos_pct: 23.27
+        distintos_aprox: 4445
+        min: '0.0'
+        max: '1345024.84'
+        media: 514.4523
+        quartis: [0, 0, 0]
+      volume_agua_tratada_exportado:
+        tipo: DOUBLE
+        nulos_pct: 24.16
+        distintos_aprox: 2582
+        min: '0.0'
+        max: '1382878.0'
+        media: 157.1321
+        quartis: [0, 0, 0]
+      volume_agua_micromedido_economia_ativa:
+        tipo: DOUBLE
+        nulos_pct: 26.66
+        distintos_aprox: 50886
+        min: '-15.01'
+        max: '667023.09'
+        media: 1419.5817
+        quartis: [80.8389, 212.9905, 614.447]
+      volume_servico_agua:
+        tipo: DOUBLE
+        nulos_pct: 29.27
+        distintos_aprox: 14856
+        min: '0.0'
+        max: '219176.51'
+        media: 134.8423
+        quartis: [0, 0.9104, 9.9745]
+      volume_agua_fluoretada:
+        tipo: DOUBLE
+        nulos_pct: 26.14
+        distintos_aprox: 38625
+        min: '0.0'
+        max: '1345024.84'
+        media: 2417.8514
+        quartis: [0, 142.7849, 678.5261]
+      consumo_eletrico_sistemas_agua:
+        tipo: DOUBLE
+        nulos_pct: 31.53
+        distintos_aprox: 53979
+        min: '0.0'
+        max: '7823015.0'
+        media: 2404.9452
+        quartis: [134.4873, 342.1029, 1012.6056]
+      volume_esgoto_coletado:
+        tipo: DOUBLE
+        nulos_pct: 63.3
+        distintos_aprox: 22917
+        min: '0.0'
+        max: '47452063.0'
+        media: 4781.6235
+        quartis: [80.8777, 293.1448, 1043.1475]
+      volume_esgoto_tratado:
+        tipo: DOUBLE
+        nulos_pct: 63.33
+        distintos_aprox: 22094
+        min: '0.0'
+        max: '47452063.0'
+        media: 4046.4173
+        quartis: [0, 114.7503, 545.5026]
+      volume_esgoto_faturado:
+        tipo: DOUBLE
+        nulos_pct: 63.08
+        distintos_aprox: 26716
+        min: '0.0'
+        max: '47452063.0'
+        media: 5718.7677
+        quartis: [0.0, 210.3763, 933.8978]
+      volume_esgoto_bruto_exportado:
+        tipo: DOUBLE
+        nulos_pct: 71.14
+        distintos_aprox: 325
+        min: '0.0'
+        max: '42564.47'
+        media: 21.0762
+        quartis: [0, 0, 0]
+      volume_esgoto_bruto_importado:
+        tipo: DOUBLE
+        nulos_pct: 71.14
+        distintos_aprox: 349
+        min: '0.0'
+        max: '35000.0'
+        media: 9.8826
+        quartis: [0, 0, 0]
+      volume_esgoto_importado:
+        tipo: DOUBLE
+        nulos_pct: 71.14
+        distintos_aprox: 182
+        min: '0.0'
+        max: '10187.68'
+        media: 5.1405
+        quartis: [0, 0, 0]
+      volume_esgoto_bruto_exportado_tratamento_importador:
+        tipo: DOUBLE
+        nulos_pct: 73.3
+        distintos_aprox: 165
+        min: '0.0'
+        max: '42564.47'
+        media: 16.9307
+        quartis: [0, 0, 0]
+      consumo_eletrico_sistemas_esgoto:
+        tipo: DOUBLE
+        nulos_pct: 69.55
+        distintos_aprox: 19162
+        min: '0.0'
+        max: '534172.0'
+        media: 494.2725
+        quartis: [0, 21.8709, 147.9102]
+      indice_agua_ligacao:
+        tipo: DOUBLE
+        nulos_pct: 22.92
+        distintos_aprox: 281
+        min: '0.54'
+        max: '69.0'
+        media: 1.0805
+        quartis: [1.01, 1.03, 1.0829]
+      indice_hidrometracao:
+        tipo: DOUBLE
+        nulos_pct: 21.35
+        distintos_aprox: 6390
+        min: '0.0'
+        max: '325.77'
+        media: 84.579
+        quartis: [87.2749, 99.6957, 100]
+      indice_macromedicao_volume_disponibilizado:
+        tipo: DOUBLE
+        nulos_pct: 23.61
+        distintos_aprox: 8072
+        min: '-34200.81'
+        max: '1111.97'
+        media: 55.3143
+        quartis: [42.3258, 63.3112, 75.3249]
+      indice_macromedicao:
+        tipo: DOUBLE
+        nulos_pct: 25.22
+        distintos_aprox: 6587
+        min: '-10857.53'
+        max: '1000.0'
+        media: 57.8857
+        quartis: [0, 91.391, 100]
+      indice_perda_faturamento:
+        tipo: DOUBLE
+        nulos_pct: 22.57
+        distintos_aprox: 9521
+        min: '-5375.0'
+        max: '38788.45'
+        media: 27.7506
+        quartis: [10.1403, 24.2033, 41.0775]
+      indice_micromedido_economia:
+        tipo: DOUBLE
+        nulos_pct: 27.75
+        distintos_aprox: 2653
+        min: '0.0'
+        max: '17892.5'
+        media: 11.6798
+        quartis: [8.4421, 9.9002, 11.8994]
+      indice_coleta_esgoto:
+        tipo: DOUBLE
+        nulos_pct: 72.31
+        distintos_aprox: 7156
+        min: '-30.22'
+        max: '2539.75'
+        media: 56.8229
+        quartis: [30.0373, 63.3779, 80.0035]
+      indice_tratamento_esgoto:
+        tipo: DOUBLE
+        nulos_pct: 67.77
+        distintos_aprox: 3686
+        min: '0.0'
+        max: '162555.6'
+        media: 71.6457
+        quartis: [1.4586, 100, 100]
+      indice_consumo_agua_faturado:
+        tipo: DOUBLE
+        nulos_pct: 24.86
+        distintos_aprox: 2900
+        min: '-1001.8'
+        max: '51740.0'
+        media: 13.6924
+        quartis: [10.087, 11.9376, 13.7349]
+      indice_extensao_agua_ligacao:
+        tipo: DOUBLE
+        nulos_pct: 23.49
+        distintos_aprox: 4649
+        min: '0.0'
+        max: '1462.0'
+        media: 15.3001
+        quartis: [9.1422, 12.6918, 17.1737]
+      indice_extensao_esgoto_ligacao:
+        tipo: DOUBLE
+        nulos_pct: 67.92
+        distintos_aprox: 3836
+        min: '0.0'
+        max: '42000.0'
+        media: 27.4936
+        quartis: [8.7115, 11.8258, 16.6776]
+      indice_consumo_agua_per_capita:
+        tipo: DOUBLE
+        nulos_pct: 24.32
+        distintos_aprox: 22700
+        min: '-623.9'
+        max: '1586082.2'
+        media: 163.2988
+        quartis: [98.3797, 121.5489, 151.8068]
+      indice_atendimento_urbano_agua:
+        tipo: DOUBLE
+        nulos_pct: 26.24
+        distintos_aprox: 5784
+        min: '0.0'
+        max: '258.1'
+        media: 91.2354
+        quartis: [91.7135, 99.9768, 100]
+      indice_atendimento_agua_esgoto:
+        tipo: DOUBLE
+        nulos_pct: 69.18
+        distintos_aprox: 7567
+        min: '0.0'
+        max: '136.47'
+        media: 66.2732
+        quartis: [35.5117, 79.4647, 99.0459]
+      indice_volume_agua_economia:
+        tipo: DOUBLE
+        nulos_pct: 24.64
+        distintos_aprox: 5861
+        min: '0.0'
+        max: '24810.2'
+        media: 21.982
+        quartis: [12.7182, 15.8073, 21.9406]
+      indice_faturamento_agua:
+        tipo: DOUBLE
+        nulos_pct: 23.69
+        distintos_aprox: 8605
+        min: '-38688.45'
+        max: '5475.0'
+        media: 72.3589
+        quartis: [59.1234, 76.0792, 89.994]
+      indice_participacao_economia_agua:
+        tipo: DOUBLE
+        nulos_pct: 24.63
+        distintos_aprox: 2778
+        min: '0.0'
+        max: '124.94'
+        media: 91.899
+        quartis: [89.5675, 92.2905, 95.2566]
+      indice_micromedicao_relativo_agua:
+        tipo: DOUBLE
+        nulos_pct: 24.62
+        distintos_aprox: 6784
+        min: '-418.18'
+        max: '942.62'
+        media: 82.4019
+        quartis: [80.0395, 99.1187, 100]
+      indice_esgotamento_agua_consumida:
+        tipo: DOUBLE
+        nulos_pct: 72.36
+        distintos_aprox: 7106
+        min: '-12.08'
+        max: '2539.75'
+        media: 41.2454
+        quartis: [4.9819, 37.419, 74.0611]
+      indice_atendimento_esgoto_esgoto:
+        tipo: DOUBLE
+        nulos_pct: 69.39
+        distintos_aprox: 7682
+        min: '0.0'
+        max: '153.89'
+        media: 66.4663
+        quartis: [35.8153, 79.9239, 99.1018]
+      indice_perda_distribuicao_agua:
+        tipo: DOUBLE
+        nulos_pct: 23.91
+        distintos_aprox: 7261
+        min: '-5375.0'
+        max: '34300.81'
+        media: 33.32
+        quartis: [20.0449, 30.3207, 44.1078]
+      indice_perda_linear_agua:
+        tipo: DOUBLE
+        nulos_pct: 24.16
+        distintos_aprox: 10022
+        min: '-2624.87'
+        max: '28395.15'
+        media: 21.9203
+        quartis: [5.5139, 11.096, 23.839]
+      indice_perda_ligacao_agua:
+        tipo: DOUBLE
+        nulos_pct: 24.24
+        distintos_aprox: 39612
+        min: '-46183.7'
+        max: '863658.34'
+        media: 317.2057
+        quartis: [90.3481, 160.2659, 316.9297]
+      indice_consumo_agua:
+        tipo: DOUBLE
+        nulos_pct: 22.72
+        distintos_aprox: 6923
+        min: '-34200.81'
+        max: '5475.0'
+        media: 66.6238
+        quartis: [55.69, 69.5319, 79.9049]
+      indice_consumo_medio_agua:
+        tipo: DOUBLE
+        nulos_pct: 23.53
+        distintos_aprox: 3036
+        min: '-60.3'
+        max: '19666.7'
+        media: 12.7548
+        quartis: [8.8877, 10.3667, 12.5396]
+      indice_atendimento_total_agua:
+        tipo: DOUBLE
+        nulos_pct: 22.67
+        distintos_aprox: 7126
+        min: '0.0'
+        max: '100.0'
+        media: 67.0642
+        quartis: [49.1144, 70.3341, 88.7665]
+      indice_atendimento_esgoto_agua:
+        tipo: DOUBLE
+        nulos_pct: 67.27
+        distintos_aprox: 7761
+        min: '0.0'
+        max: '100.0'
+        media: 53.7071
+        quartis: [24.6214, 55.4767, 83.3823]
+      indice_fluoretacao_agua:
+        tipo: DOUBLE
+        nulos_pct: 29.7
+        distintos_aprox: 4999
+        min: '0.0'
+        max: '90000.0'
+        media: 86.8294
+        quartis: [0, 96.8467, 100]
+      indice_consumo_energia_agua:
+        tipo: DOUBLE
+        nulos_pct: 34.8
+        distintos_aprox: 1497
+        min: '0.0'
+        max: '477.34'
+        media: 1.0524
+        quartis: [0.452, 0.703, 1.0528]
+      indice_consumo_energia_esgoto:
+        tipo: DOUBLE
+        nulos_pct: 73.14
+        distintos_aprox: 948
+        min: '0.0'
+        max: '103071.0'
+        media: 30.7651
+        quartis: [0, 0.1098, 0.3275]
+      receita_operacional_direta:
+        tipo: DOUBLE
+        nulos_pct: 18.51
+        distintos_aprox: 98920
+        min: '-27576.04'
+        max: '8339004396.0'
+        media: 8591424.4547
+        quartis: [312045.6998, 867629.0543, 2718860.4944]
+      receita_operacional_direta_agua:
+        tipo: DOUBLE
+        nulos_pct: 20.52
+        distintos_aprox: 111349
+        min: '-154486.19'
+        max: '4173030169.98'
+        media: 5975199.3589
+        quartis: [340588.7748, 862248.9406, 2495000.2085]
+      receita_operacional_direta_esgoto:
+        tipo: DOUBLE
+        nulos_pct: 54.91
+        distintos_aprox: 34877
+        min: '-59659.95'
+        max: '4165974226.02'
+        media: 5319128.6788
+        quartis: [0, 147921.4824, 1095622.1383]
+      receita_operacional_indireta:
+        tipo: DOUBLE
+        nulos_pct: 18.97
+        distintos_aprox: 79260
+        min: '-4415614.0'
+        max: '196536905.2'
+        media: 329352.5654
+        quartis: [5525.1291, 24519.6017, 95232.1623]
+      receita_operacional_direta_agua_exportada:
+        tipo: DOUBLE
+        nulos_pct: 23.93
+        distintos_aprox: 798
+        min: '0.0'
+        max: '2114351425.28'
+        media: 54820.4294
+        quartis: [0, 0, 0]
+      receita_operacional:
+        tipo: DOUBLE
+        nulos_pct: 18.23
+        distintos_aprox: 100603
+        min: '-207310.6'
+        max: '8409304441.1'
+        media: 8848993.6781
+        quartis: [327295.964, 900073.2135, 2827204.1274]
+      receita_operacional_direta_esgoto_importado:
+        tipo: DOUBLE
+        nulos_pct: 66.36
+        distintos_aprox: 255
+        min: '0.0'
+        max: '28761252.16'
+        media: 4812.3547
+        quartis: [0, 0, 0]
+      arrecadacao_total:
+        tipo: DOUBLE
+        nulos_pct: 16.62
+        distintos_aprox: 93941
+        min: '0.0'
+        max: '7884150196.6'
+        media: 8344389.1647
+        quartis: [294725.2953, 845921.4333, 2693054.9718]
+      credito_areceber:
+        tipo: DOUBLE
+        nulos_pct: 25.6
+        distintos_aprox: 83662
+        min: '-869921808.78'
+        max: '2765089197.59'
+        media: 3020220.7231
+        quartis: [34168.9572, 176798.5185, 714420.1818]
+      despesa_pessoal:
+        tipo: DOUBLE
+        nulos_pct: 16.95
+        distintos_aprox: 105682
+        min: '-2075436.4'
+        max: '1040574909.0'
+        media: 2289320.6792
+        quartis: [125915.4878, 360607.0961, 1033912.91]
+      quantidade_empregado:
+        tipo: BIGINT
+        nulos_pct: 16.12
+        distintos_aprox: 1251
+        min: '0'
+        max: '6454'
+        media: 29.8796
+        quartis: [2, 6, 14]
+      despesa_produto_quimico:
+        tipo: DOUBLE
+        nulos_pct: 17.35
+        distintos_aprox: 85377
+        min: '-95141.89'
+        max: '180699539.45'
+        media: 208309.7964
+        quartis: [2455.7434, 14314.5394, 60842.4366]
+      despesa_energia:
+        tipo: DOUBLE
+        nulos_pct: 16.99
+        distintos_aprox: 84770
+        min: '-595149.75'
+        max: '501867699.7'
+        media: 853482.657
+        quartis: [47746.5575, 133168.6002, 391767.3375]
+      despesa_servico_terceiro:
+        tipo: DOUBLE
+        nulos_pct: 17.03
+        distintos_aprox: 99658
+        min: '-1018199.95'
+        max: '714278349.46'
+        media: 1126051.0679
+        quartis: [22816.2767, 95262.1994, 369996.7608]
+      despesa_exploracao:
+        tipo: DOUBLE
+        nulos_pct: 17.86
+        distintos_aprox: 92361
+        min: '-1989822.14'
+        max: '4214356474.45'
+        media: 5901175.0196
+        quartis: [325095.0091, 831192.9902, 2399015.3431]
+      despesas_juros_divida:
+        tipo: DOUBLE
+        nulos_pct: 22.14
+        distintos_aprox: 55734
+        min: '-18512583.57'
+        max: '801631355.38'
+        media: 477131.085
+        quartis: [0, 8287.7416, 75734.5964]
+      despesa_total_servico:
+        tipo: DOUBLE
+        nulos_pct: 21.5
+        distintos_aprox: 102155
+        min: '-1941765.71'
+        max: '7089974466.35'
+        media: 8278953.1026
+        quartis: [403539.0689, 1034623.6847, 3052615.9772]
+      despesa_ativo:
+        tipo: DOUBLE
+        nulos_pct: 23.32
+        distintos_aprox: 78498
+        min: '-70149122.62'
+        max: '1543016289.37'
+        media: 1085985.0874
+        quartis: [3069.4032, 52384.4348, 225770.433]
+      despesa_agua_importada:
+        tipo: DOUBLE
+        nulos_pct: 24.58
+        distintos_aprox: 8158
+        min: '-535319.32'
+        max: '1271508020.0'
+        media: 106000.323
+        quartis: [0, 0, 0]
+      despesa_fiscal:
+        tipo: DOUBLE
+        nulos_pct: 20.07
+        distintos_aprox: 88466
+        min: '-19300715.08'
+        max: '700170898.97'
+        media: 583970.7337
+        quartis: [7482.3207, 50095.9681, 172172.4584]
+      despesa_fiscal_nao_computada:
+        tipo: DOUBLE
+        nulos_pct: 26.28
+        distintos_aprox: 52193
+        min: '-191682549.59'
+        max: '733427370.21'
+        media: 308280.1903
+        quartis: [0, 0, 34080.1013]
+      despesa_exploracao_outro:
+        tipo: DOUBLE
+        nulos_pct: 21.44
+        distintos_aprox: 81070
+        min: '-602680811.0'
+        max: '1126522774.06'
+        media: 770082.0439
+        quartis: [5596.6217, 55123.0616, 226162.9368]
+      despesa_servico_outro:
+        tipo: DOUBLE
+        nulos_pct: 27.4
+        distintos_aprox: 55198
+        min: '-189462530.52'
+        max: '1172529479.7'
+        media: 463287.6754
+        quartis: [0, 6619.2441, 71123.2974]
+      despesa_amortizacao_divida:
+        tipo: DOUBLE
+        nulos_pct: 26.47
+        distintos_aprox: 33420
+        min: '-771519205.85'
+        max: '1432326923.03'
+        media: 668529.9566
+        quartis: [0, 0, 39612.4119]
+      despesas_juros_divida_excecao:
+        tipo: DOUBLE
+        nulos_pct: 23.19
+        distintos_aprox: 49977
+        min: '-2128171.75'
+        max: '710716600.95'
+        media: 395086.2307
+        quartis: [0, 6714.5713, 60186.6171]
+      despesa_divida_variacao:
+        tipo: DOUBLE
+        nulos_pct: 23.47
+        distintos_aprox: 40049
+        min: '-102423461.92'
+        max: '602320230.99'
+        media: 74566.0959
+        quartis: [0, 0, 5720.0226]
+      despesa_divida_total:
+        tipo: DOUBLE
+        nulos_pct: 40.71
+        distintos_aprox: 38743
+        min: '-4663426.3'
+        max: '1639453540.32'
+        media: 1200517.3673
+        quartis: [0, 16911.6892, 154645.1389]
+      despesa_esgoto_exportado:
+        tipo: DOUBLE
+        nulos_pct: 67.9
+        distintos_aprox: 329
+        min: '0.0'
+        max: '14643831.45'
+        media: 11582.8308
+        quartis: [0, 0, 0]
+      despesa_capitalizavel_municipio:
+        tipo: DOUBLE
+        nulos_pct: 60.08
+        distintos_aprox: 1071
+        min: '0.0'
+        max: '95734509.63'
+        media: 11935.5225
+        quartis: [0, 0, 0]
+      despesa_capitalizavel_estado:
+        tipo: DOUBLE
+        nulos_pct: 57.64
+        distintos_aprox: 132
+        min: '0.0'
+        max: '48810358.0'
+        media: 4903.5381
+        quartis: [0, 0, 0]
+      despesa_capitalizavel_prestador:
+        tipo: DOUBLE
+        nulos_pct: 34.67
+        distintos_aprox: 31668
+        min: '-14438.99'
+        max: '114418573.33'
+        media: 104009.2617
+        quartis: [0, 0, 12478.4931]
+      investimento_agua_prestador:
+        tipo: DOUBLE
+        nulos_pct: 29.22
+        distintos_aprox: 72485
+        min: '-12721324.93'
+        max: '26465758127.0'
+        media: 1210139.0379
+        quartis: [0, 23903.916, 174331.1457]
+      investimento_esgoto_prestador:
+        tipo: DOUBLE
+        nulos_pct: 30.59
+        distintos_aprox: 42740
+        min: '-1997793.31'
+        max: '1378100802.31'
+        media: 954518.9455
+        quartis: [0, 0, 38566.6679]
+      investimento_outro_prestador:
+        tipo: DOUBLE
+        nulos_pct: 31.84
+        distintos_aprox: 32653
+        min: '-164160.0'
+        max: '1336908104.21'
+        media: 172128.2574
+        quartis: [0, 0, 10211.2676]
+      investimento_recurso_proprio_prestador:
+        tipo: DOUBLE
+        nulos_pct: 41
+        distintos_aprox: 44942
+        min: '-163195.0'
+        max: '431060222.21'
+        media: 871815.2282
+        quartis: [7.6305, 22622.691, 178752.6253]
+      investimento_recurso_oneroso_prestador:
+        tipo: DOUBLE
+        nulos_pct: 42.75
+        distintos_aprox: 16453
+        min: '-287711.0'
+        max: '263547958.8'
+        media: 523500.2845
+        quartis: [0, 0, 0]
+      investimento_recurso_nao_oneroso_prestador:
+        tipo: DOUBLE
+        nulos_pct: 41.8
+        distintos_aprox: 9632
+        min: '0.0'
+        max: '318286369.64'
+        media: 261478.9992
+        quartis: [0, 0, 0]
+      investimento_total_prestador:
+        tipo: DOUBLE
+        nulos_pct: 31.53
+        distintos_aprox: 72399
+        min: '-11810538.78'
+        max: '2625398495.15'
+        media: 2084517.3571
+        quartis: [4977.8867, 55060.5865, 399736.9533]
+      investimento_agua_municipio:
+        tipo: DOUBLE
+        nulos_pct: 60.74
+        distintos_aprox: 3345
+        min: '0.0'
+        max: '343417844.0'
+        media: 48255.924
+        quartis: [0, 0, 0]
+      investimento_esgoto_municipio:
+        tipo: DOUBLE
+        nulos_pct: 60.82
+        distintos_aprox: 1900
+        min: '0.0'
+        max: '150718000.0'
+        media: 42602.7741
+        quartis: [0, 0, 0]
+      investimento_outro_municipio:
+        tipo: DOUBLE
+        nulos_pct: 60.82
+        distintos_aprox: 1117
+        min: '0.0'
+        max: '25454726.72'
+        media: 8413.4873
+        quartis: [0, 0, 0]
+      investimento_recurso_proprio_municipio:
+        tipo: DOUBLE
+        nulos_pct: 62.44
+        distintos_aprox: 3083
+        min: '0.0'
+        max: '343436884.0'
+        media: 56657.005
+        quartis: [0, 0, 0]
+      investimento_recurso_oneroso_municipio:
+        tipo: DOUBLE
+        nulos_pct: 62.64
+        distintos_aprox: 503
+        min: '0.0'
+        max: '33806033.22'
+        media: 13918.1654
+        quartis: [0, 0, 0]
+      investimento_recurso_nao_oneroso_municipio:
+        tipo: DOUBLE
+        nulos_pct: 62.59
+        distintos_aprox: 765
+        min: '0.0'
+        max: '31424214.78'
+        media: 22222.6155
+        quartis: [0, 0, 0]
+      investimento_total_municipio:
+        tipo: DOUBLE
+        nulos_pct: 60.84
+        distintos_aprox: 4591
+        min: '0.0'
+        max: '343436884.0'
+        media: 110715.8465
+        quartis: [0, 0, 0]
+      investimento_agua_estado:
+        tipo: DOUBLE
+        nulos_pct: 57.78
+        distintos_aprox: 1944
+        min: '0.0'
+        max: '180906788.79'
+        media: 83707.6883
+        quartis: [0, 0, 0]
+      investimento_esgoto_estado:
+        tipo: DOUBLE
+        nulos_pct: 57.9
+        distintos_aprox: 694
+        min: '0.0'
+        max: '773789796.0'
+        media: 62565.5041
+        quartis: [0, 0, 0]
+      investimento_outro_estado:
+        tipo: DOUBLE
+        nulos_pct: 57.84
+        distintos_aprox: 748
+        min: '0.0'
+        max: '23881111.22'
+        media: 7111.9719
+        quartis: [0, 0, 0]
+      investimento_recurso_proprio_estado:
+        tipo: DOUBLE
+        nulos_pct: 58.09
+        distintos_aprox: 1073
+        min: '0.0'
+        max: '50266998.76'
+        media: 24434.8397
+        quartis: [0, 0, 0]
+      investimento_recurso_oneroso_estado:
+        tipo: DOUBLE
+        nulos_pct: 58.17
+        distintos_aprox: 536
+        min: '0.0'
+        max: '99184580.03'
+        media: 34920.5607
+        quartis: [0, 0, 0]
+      investimento_recurso_nao_oneroso_estado:
+        tipo: DOUBLE
+        nulos_pct: 57.97
+        distintos_aprox: 952
+        min: '0.0'
+        max: '223274533.95'
+        media: 74026.8821
+        quartis: [0, 0, 0]
+      investimento_total_estado:
+        tipo: DOUBLE
+        nulos_pct: 58.12
+        distintos_aprox: 2458
+        min: '0.0'
+        max: '223274533.95'
+        media: 136803.0703
+        quartis: [0, 0, 0]

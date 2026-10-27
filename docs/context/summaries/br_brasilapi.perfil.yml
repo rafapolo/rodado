@@ -1,0 +1,105 @@
+dataset: br_brasilapi
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  bancos:
+    linhas: 473
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ispb: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 485, min: '00000000', max: '94968518'}
+      name: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 398, pessoal: 'só contagens: valores seriam dado pessoal'}
+      code:
+        tipo: BIGINT
+        nulos_pct: 1.69
+        distintos_aprox: 439
+        min: '0'
+        max: '804'
+        media: 425.8151
+        quartis: [259, 445, 600]
+      fullName: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 487, min: 321 SOCIEDADE DE CRÉDITO DIRETO S.A., max: ÓTIMO SOCIEDADE DE CRÉDITO
+          DIRETO S.A.}
+  ddd_cidades:
+    linhas: 5565
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ddd: {tipo: BIGINT, nulos_pct: 0, distintos_aprox: 59, pessoal: 'só contagens: valores seriam dado pessoal'}
+      state:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 853]
+        - [SP, 645]
+        - [RS, 497]
+        - [BA, 417]
+        - [SC, 353]
+        - [PR, 341]
+        - [GO, 234]
+        - [PB, 223]
+        - [PI, 222]
+        - [MA, 217]
+      city: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5652}
+  feriados:
+    linhas: 108
+    fonte_do_perfil: tabela inteira
+    colunas:
+      date: {tipo: DATE, nulos_pct: 0, distintos_aprox: 127, min: '2020-01-01', max: '2027-12-25'}
+      name: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 12, pessoal: 'só contagens: valores seriam dado pessoal'}
+      type:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: national
+        max: national
+        top:
+        - [national, 108]
+      weekday:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: domingo
+        max: terça-feira
+        top:
+        - [segunda-feira, 20]
+        - [domingo, 17]
+        - [sexta-feira, 17]
+        - [terça-feira, 17]
+        - [quinta-feira, 16]
+        - [quarta-feira, 11]
+        - [sábado, 10]
+      year:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '2020'
+        max: '2027'
+        media: 2023.5741
+        quartis: [2022, 2024, 2026]
+        top:
+        - ['2024', 14]
+        - ['2025', 14]
+        - ['2026', 14]
+        - ['2027', 14]
+        - ['2020', 13]
+        - ['2021', 13]
+        - ['2022', 13]
+        - ['2023', 13]
+  taxas_referencia:
+    linhas: 3
+    fonte_do_perfil: tabela inteira
+    colunas:
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3, pessoal: 'só contagens: valores seriam dado pessoal'}
+      valor:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '4.22'
+        max: '13.75'
+        media: 10.54
+        quartis: [6.5775, 13.65, 13.725]
+        top:
+        - ['13.65', 1]
+        - ['13.75', 1]
+        - ['4.22', 1]

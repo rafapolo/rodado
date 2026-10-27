@@ -1,0 +1,57 @@
+dataset: br_tcu_dadosabertos
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  dados:
+    linhas: 37698
+    fonte_do_perfil: tabela inteira
+    colunas:
+      key: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 39309}
+      tipo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: ACÓRDÃO
+        max: ACÓRDÃO DE RELAÇÃO
+        top:
+        - [ACÓRDÃO DE RELAÇÃO, 25698]
+        - [ACÓRDÃO, 12000]
+      anoAcordao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '2024'
+        max: '2026'
+        top:
+        - ['2025', 18556]
+        - ['2026', 13068]
+        - ['2024', 6074]
+      titulo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 38615}
+      numeroAcordao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 9584, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numeroAta: {tipo: VARCHAR, nulos_pct: 0.23, distintos_aprox: 110, pessoal: 'só contagens: valores seriam dado pessoal'}
+      colegiado:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Plenário
+        max: Segunda Câmara
+        top:
+        - [Primeira Câmara, 16883]
+        - [Segunda Câmara, 14190]
+        - [Plenário, 6625]
+      dataSessao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 198, min: '2024-07-02', max: '2026-10-06'}
+      relator: {tipo: VARCHAR, nulos_pct: 0.23, distintos_aprox: 15, pessoal: 'só contagens: valores seriam dado pessoal'}
+      situacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: INVALIDADO
+        max: SIGILOSO
+        top:
+        - [OFICIALIZADO, 37594]
+        - [INVALIDADO, 87]
+        - [SIGILOSO, 17]
+      sumario: {tipo: VARCHAR, nulos_pct: 68.19, distintos_aprox: 9520}
+      urlArquivo: {tipo: VARCHAR, nulos_pct: 0.29, distintos_aprox: 35111}
+      urlArquivoPdf: {tipo: VARCHAR, nulos_pct: 0.29, distintos_aprox: 34792}
+      urlAcordao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 40834}

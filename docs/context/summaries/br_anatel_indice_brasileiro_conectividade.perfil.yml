@@ -1,0 +1,105 @@
+dataset: br_anatel_indice_brasileiro_conectividade
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  municipio:
+    linhas: 22280
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '2021'
+        max: '2024'
+        media: 2022.5
+        quartis: [2021, 2022, 2023]
+        top:
+        - ['2021', 5570]
+        - ['2022', 5570]
+        - ['2023', 5570]
+        - ['2024', 5570]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 3412]
+        - [SP, 2580]
+        - [RS, 1988]
+        - [BA, 1668]
+        - [PR, 1596]
+        - [SC, 1180]
+        - [GO, 984]
+        - [PI, 896]
+        - [PB, 892]
+        - [MA, 868]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      ibc:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 4281
+        min: '9.81'
+        max: '94.57'
+        media: 51.9063
+        quartis: [43.1141, 54.3136, 62.2867]
+      cobertura_pop_4g5g:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 20287
+        min: '0.0'
+        max: '120.0309'
+        media: 80.0047
+        quartis: [68.5684, 84.709, 95.5026]
+      fibra:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '0'
+        max: '50'
+        top:
+        - ['100', 16356]
+        - ['0', 4674]
+        - ['50', 1250]
+      densidade_smp:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5756
+        min: '0.0'
+        max: '100.0'
+        media: 59.9239
+        quartis: [46.2254, 60.1727, 74.5993]
+      hhi_smp:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 47.3906
+        quartis: [27, 50, 67]
+      densidade_scm:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5067
+        min: '0.0'
+        max: '100.0'
+        media: 16.6176
+        quartis: [3.8628, 11.4764, 23.2863]
+      hhi_scm:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 98
+        min: '0'
+        max: '100'
+        media: 56.1861
+        quartis: [43, 60, 72]
+      adensamento_estacoes:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 4297
+        min: '0.0'
+        max: '100.0'
+        media: 16.1502
+        quartis: [6.7011, 11.2428, 20.0647]

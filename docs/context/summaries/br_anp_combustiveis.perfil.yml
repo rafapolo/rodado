@@ -1,0 +1,68 @@
+dataset: br_anp_combustiveis
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  precos:
+    linhas: 2205259
+    fonte_do_perfil: amostra de 90.692%. ~2.000.000 linhas
+    colunas:
+      cnpj: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 17527, pessoal: 'só contagens: valores seriam dado pessoal'}
+      razao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 18134, pessoal: 'só contagens: valores seriam dado pessoal'}
+      fantasia: {tipo: VARCHAR, nulos_pct: 58.8, distintos_aprox: 5340}
+      endereco: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 14012, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 5360, pessoal: 'só contagens: valores seriam dado pessoal'}
+      complemento: {tipo: VARCHAR, nulos_pct: 76.73, distintos_aprox: 3180, pessoal: 'só contagens: valores seriam dado pessoal'}
+      bairro: {tipo: VARCHAR, nulos_pct: 0.15, distintos_aprox: 7562, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cep: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 11154, pessoal: 'só contagens: valores seriam dado pessoal'}
+      municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 451, min: ABAETETUBA, max: XINGUARA}
+      estado:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 24
+        min: ACRE
+        max: TOCANTINS
+        top:
+        - [SAO PAULO, 539265]
+        - [MINAS GERAIS, 208919]
+        - [RIO DE JANEIRO, 158362]
+        - [RIO GRANDE DO SUL, 146530]
+        - [PARANA, 131062]
+        - [BAHIA, 107145]
+        - [GOIAS, 81689]
+        - [PERNAMBUCO, 74479]
+        - [SANTA CATARINA, 71187]
+        - [CEARA, 55574]
+      bandeira: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 70, min: ALE, max: WATT}
+      produto:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: DIESEL S10
+        max: GNV
+        top:
+        - [GASOLINA COMUM, 448331]
+        - [ETANOL, 378416]
+        - [GASOLINA ADITIVADA, 347156]
+        - [DIESEL S10, 312783]
+        - [GLP, 287184]
+        - [DIESEL S500, 187856]
+        - [GNV, 36685]
+      unidade_medida:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: R$ / 13 kg
+        max: R$ / m³
+        top:
+        - [R$ / litro, 1674542]
+        - [R$ / 13 kg, 287184]
+        - [R$ / m³, 36685]
+      preco_revenda:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1089
+        min: '2.69'
+        max: '170.0'
+        media: 20.7707
+        quartis: [5.6947, 6.2328, 6.8831]
+      data_coleta: {tipo: DATE, nulos_pct: 0, distintos_aprox: 641, min: '2024-03-11', max: '2026-10-02'}

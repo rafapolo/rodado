@@ -1,0 +1,474 @@
+dataset: br_mec_sisu
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  microdados:
+    linhas: 34700256
+    fonte_do_perfil: amostra de 56.485% da última partição (ano = 2022). ~2.000.000 linhas
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2022'
+        max: '2022'
+        media: 2022
+        quartis: [2022, 2022, 2022]
+        top:
+        - ['2022', 1990928]
+      semestre:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 1513075]
+        - ['2', 477853]
+      etapa:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Chamada Regular
+        max: Lista de Espera
+        top:
+        - [Chamada Regular, 1522200]
+        - [Lista de Espera, 468728]
+      sigla_uf_ies:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 273903]
+        - [RJ, 255022]
+        - [BA, 173636]
+        - [SP, 142007]
+        - [PB, 122034]
+        - [CE, 110902]
+        - [PE, 107445]
+        - [PR, 90955]
+        - [RS, 84595]
+        - [RN, 76019]
+      id_ies: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 130, min: '1', max: '9'}
+      sigla_ies: {tipo: VARCHAR, nulos_pct: 0.04, distintos_aprox: 125, min: CEFET/MG, max: UTFPR}
+      sigla_uf_campus:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 273903]
+        - [RJ, 255022]
+        - [BA, 177702]
+        - [SP, 142007]
+        - [PB, 122034]
+        - [CE, 110683]
+        - [PE, 103314]
+        - [PR, 92733]
+        - [RS, 89730]
+        - [RN, 76019]
+      id_municipio_campus: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 608, min: '1200203', max: '5300108'}
+      id_campus: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1185}
+      campus: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 757, min: Alcântara, max: unidades dispersas - MADEIREIRA}
+      id_curso: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5729}
+      nome_curso: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 601, pessoal: 'só contagens: valores seriam dado pessoal'}
+      turno:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: EaD
+        max: Vespertino
+        top:
+        - [Integral, 1165863]
+        - [Noturno, 480704]
+        - [Matutino, 219705]
+        - [Vespertino, 117212]
+        - [EaD, 7444]
+      periodicidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Anual
+        max: Trimestral
+        top:
+        - [Semestral, 1881150]
+        - [Anual, 98296]
+        - [Quadrimestral, 11274]
+        - [Trimestral, 208]
+      tipo_cota:
+        tipo: VARCHAR
+        nulos_pct: 56.2
+        distintos_aprox: 7
+        min: 'D   '
+        max: PPID
+        top:
+        - [null, 1118980]
+        - ['PPI ', 457473]
+        - ['D   ', 375370]
+        - ['PP  ', 25620]
+        - [PPID, 6122]
+        - ['DD  ', 4763]
+        - ['I   ', 2360]
+        - ['PPD ', 240]
+      modalidade_concorrencia: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 260, min: (as) autodeclarados pretos. pardos ou indígenas com renda
+          familiar bruta per capita igual ou inferior a 1.5 salário mínimo. que tenham cursado integralmente o ensino médio em escolas públicas
+          brasileiras. (L2), max: terão direito ao bônus de inclusão regional (acréscimo de dez por cento à nota final do ENEM) aqueles que tenham
+          cursado a totalidade dos anos do Ensino Médio em escolas (públicas ou privadas) das Regiões Geográficas Intermediárias nas quais a UNIVASF
+          possui campus nos termos do Edital PS-ICG 2022}
+      quantidade_vagas_concorrencia:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 87
+        min: '1'
+        max: '307'
+        media: 15.7584
+        quartis: [5, 11, 20]
+      percentual_bonus:
+        tipo: DOUBLE
+        nulos_pct: 95.47
+        distintos_aprox: 7
+        min: '3.0'
+        max: '20.0'
+        media: 13.0231
+        quartis: [10, 10, 20]
+        top:
+        - [null, 1900749]
+        - ['10.0', 54839]
+        - ['20.0', 24401]
+        - ['15.0', 8200]
+        - ['5.0', 1383]
+        - ['7.0', 999]
+        - ['3.0', 334]
+        - ['4.0', 23]
+      peso_l:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1.0'
+        max: '5.0'
+        media: 1.8457
+        quartis: [1, 1.3536, 2]
+        top:
+        - ['1.0', 988766]
+        - ['2.0', 529798]
+        - ['3.0', 162567]
+        - ['5.0', 107363]
+        - ['4.0', 95828]
+        - ['1.5', 51017]
+        - ['2.5', 50407]
+        - ['3.5', 3012]
+        - ['2.25', 833]
+        - ['1.75', 536]
+      peso_ch:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '1.0'
+        max: '5.0'
+        media: 1.6046
+        quartis: [1, 1, 2]
+        top:
+        - ['1.0', 1212441]
+        - ['2.0', 372058]
+        - ['3.0', 154894]
+        - ['1.5', 81000]
+        - ['4.0', 76477]
+        - ['2.5', 46926]
+        - ['5.0', 44436]
+        - ['1.25', 566]
+        - ['1.75', 536]
+        - ['3.75', 536]
+      peso_cn:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1.0'
+        max: '5.0'
+        media: 1.765
+        quartis: [1, 1, 2]
+        top:
+        - ['1.0', 1151591]
+        - ['2.0', 350363]
+        - ['3.0', 223131]
+        - ['4.0', 145255]
+        - ['5.0', 50302]
+        - ['1.5', 28961]
+        - ['2.5', 23810]
+        - ['3.5', 15140]
+        - ['1.3', 670]
+        - ['1.25', 566]
+      peso_m:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1990928]
+      peso_r:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: '1.0'
+        max: '5.0'
+        media: 1.9511
+        quartis: [1, 2, 3]
+        top:
+        - ['1.0', 852558]
+        - ['2.0', 439035]
+        - ['3.0', 410870]
+        - ['4.0', 93772]
+        - ['1.5', 82684]
+        - ['5.0', 56890]
+        - ['2.5', 49375]
+        - ['3.5', 3082]
+        - ['1.2', 2397]
+        - ['2.2', 265]
+      nota_minima_l:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 45
+        min: '0.0'
+        max: '600.0'
+        media: 91.0682
+        quartis: [0, 0.01, 105.6433]
+        top:
+        - ['0.0', 726848]
+        - ['0.01', 603672]
+        - ['400.0', 138203]
+        - ['300.0', 83578]
+        - ['1.0', 70698]
+        - ['20.0', 59254]
+        - ['450.0', 57708]
+        - ['350.0', 46468]
+        - ['100.0', 45284]
+        - ['500.0', 44227]
+      nota_minima_ch:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 42
+        min: '0.0'
+        max: '650.0'
+        media: 89.0104
+        quartis: [0, 0.01, 100.7047]
+        top:
+        - ['0.0', 747834]
+        - ['0.01', 625943]
+        - ['400.0', 141540]
+        - ['300.0', 80837]
+        - ['1.0', 71107]
+        - ['100.0', 50116]
+        - ['350.0', 50057]
+        - ['450.0', 49623]
+        - ['500.0', 36595]
+        - ['250.0', 31743]
+      nota_minima_cn:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 38
+        min: '0.0'
+        max: '650.0'
+        media: 87.3901
+        quartis: [0, 0.01, 100]
+        top:
+        - ['0.0', 746606]
+        - ['0.01', 613358]
+        - ['400.0', 128302]
+        - ['300.0', 72354]
+        - ['1.0', 70689]
+        - ['100.0', 62109]
+        - ['350.0', 57628]
+        - ['450.0', 51124]
+        - ['500.0', 36555]
+        - ['20.0', 30598]
+      nota_minima_m:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 41
+        min: '0.0'
+        max: '750.0'
+        media: 88.6923
+        quartis: [0, 0.01, 100.6981]
+        top:
+        - ['0.0', 725880]
+        - ['0.01', 651202]
+        - ['400.0', 131445]
+        - ['300.0', 81258]
+        - ['1.0', 70602]
+        - ['100.0', 56613]
+        - ['450.0', 55176]
+        - ['350.0', 52555]
+        - ['500.0', 34400]
+        - ['250.0', 33724]
+      nota_minima_r:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 31
+        min: '0.01'
+        max: '660.0'
+        media: 141.8213
+        quartis: [0.01, 0.01, 300]
+        top:
+        - ['0.01', 1062034]
+        - ['400.0', 230508]
+        - ['300.0', 218955]
+        - ['200.0', 96583]
+        - ['500.0', 80615]
+        - ['1.0', 78832]
+        - ['450.0', 70178]
+        - ['100.0', 39502]
+        - ['250.0', 30317]
+        - ['350.0', 24625]
+      media_minima:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 134
+        min: '0.0'
+        max: '630.0'
+        media: 99.5959
+        quartis: [0, 0.01, 109.5048]
+      cpf: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 609635, pessoal: 'só contagens: valores seriam dado pessoal'}
+      inscricao_enem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2751}
+      candidato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 826397, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sexo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: F
+        max: M
+        top:
+        - [F, 1263232]
+        - [M, 727696]
+      data_nascimento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 19172}
+      sigla_uf_candidato: {tipo: VARCHAR, nulos_pct: 0.13, distintos_aprox: 28, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_municipio_candidato: {tipo: VARCHAR, nulos_pct: 0.13, distintos_aprox: 6767, pessoal: 'só contagens: valores seriam dado pessoal'}
+      opcao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 1114326]
+        - ['2', 876602]
+      nota_l:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 4136
+        min: '0.0'
+        max: '826.1'
+        media: 524.076
+        quartis: [473.5473, 528.0157, 577.493]
+      nota_ch:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 4539
+        min: '0.0'
+        max: '846.9'
+        media: 548.0985
+        quartis: [479.4168, 554.2391, 614.9325]
+      nota_cn:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5055
+        min: '0.0'
+        max: '867.1'
+        media: 510.4922
+        quartis: [448.0668, 503.765, 570.0183]
+      nota_m:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5813
+        min: '0.0'
+        max: '953.1'
+        media: 557.7756
+        quartis: [462.4782, 546.9248, 644.8173]
+      nota_r:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 47
+        min: '40.0'
+        max: '1000.0'
+        media: 689.3471
+        quartis: [579.9978, 679.9964, 819.9963]
+        top:
+        - ['600.0', 122884]
+        - ['560.0', 107032]
+        - ['580.0', 105134]
+        - ['640.0', 102058]
+        - ['620.0', 99538]
+        - ['680.0', 84059]
+        - ['880.0', 81129]
+        - ['920.0', 78157]
+        - ['660.0', 76867]
+        - ['540.0', 76358]
+      nota_l_peso:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 24632
+        min: '0.0'
+        max: '4040.0'
+        media: 964.8617
+        quartis: [528.0053, 688.869, 1199.5796]
+      nota_ch_peso:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 24557
+        min: '0.0'
+        max: '4234.5'
+        media: 876.1655
+        quartis: [531.0328, 633.7322, 1123.855]
+      nota_cn_peso:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 30035
+        min: '0.0'
+        max: '4103.5'
+        media: 910.7443
+        quartis: [482.7214, 599.3152, 1188.7775]
+      nota_m_peso:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 31573
+        min: '0.0'
+        max: '4765.5'
+        media: 932.3304
+        quartis: [510.8754, 674.0248, 1166.1367]
+      nota_r_peso:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 245
+        min: '40.0'
+        max: '5000.0'
+        media: 1352.5214
+        quartis: [699.9973, 1100.2839, 1799.7945]
+      nota_candidato: {tipo: DOUBLE, nulos_pct: 0, distintos_aprox: 41269, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nota_corte:
+        tipo: DOUBLE
+        nulos_pct: 0.81
+        distintos_aprox: 27135
+        min: '203.76'
+        max: '919.7'
+        media: 659.6838
+        quartis: [598.8871, 661.4116, 723.2412]
+      classificacao:
+        tipo: BIGINT
+        nulos_pct: 4.35
+        distintos_aprox: 6274
+        min: '1'
+        max: '7418'
+        media: 181.3571
+        quartis: [18, 56, 166]
+      status_aprovado:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['false', 1371501]
+        - ['true', 619427]
+      status_matricula: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7, pessoal: 'só contagens: valores seriam dado pessoal'}

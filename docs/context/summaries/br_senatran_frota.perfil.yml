@@ -1,0 +1,79 @@
+dataset: br_senatran_frota
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  municipio_tipo:
+    linhas: 20101202
+    fonte_do_perfil: tabela inteira da última partição (ano = 2026)
+    colunas:
+      mes:
+        tipo: TINYINT
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '1'
+        max: '8'
+        media: 4.5
+        quartis: [3, 4, 7]
+        top:
+        - ['1', 122584]
+        - ['2', 122584]
+        - ['3', 122584]
+        - ['4', 122584]
+        - ['5', 122584]
+        - ['6', 122584]
+        - ['7', 122584]
+        - ['8', 122584]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0.02, distintos_aprox: 6859}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 150128]
+        - [SP, 113696]
+        - [RS, 87472]
+        - [BA, 73392]
+        - [PR, 70224]
+        - [SC, 51920]
+        - [GO, 43296]
+        - [PI, 39424]
+        - [PB, 39248]
+        - [MA, 38192]
+      municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5153}
+      tipo_veiculo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 23
+        min: automovel
+        max: utilitario
+        top:
+        - [automovel, 44576]
+        - [bonde, 44576]
+        - [caminhao, 44576]
+        - [caminhao_trator, 44576]
+        - [caminhonete, 44576]
+        - [camioneta, 44576]
+        - [chassi_plataf, 44576]
+        - [ciclomotor, 44576]
+        - [micro_onibus, 44576]
+        - [motocicleta, 44576]
+      quantidade:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 31333
+        min: '0'
+        max: '10138862'
+        media: 2138.9595
+        quartis: [0, 24, 301]
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
+        top:
+        - ['2026', 980672]

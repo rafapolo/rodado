@@ -1,0 +1,1304 @@
+dataset: br_minc_salic
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  areas:
+    linhas: 7
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '1'
+        max: '7'
+        media: 4
+        quartis: [2, 4, 6]
+        top:
+        - ['1', 1]
+        - ['2', 1]
+        - ['3', 1]
+        - ['4', 1]
+        - ['5', 1]
+        - ['6', 1]
+        - ['7', 1]
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7, pessoal: 'só contagens: valores seriam dado pessoal'}
+      urlized:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: artes-cenicas
+        max: patrimonio-cultural
+        top:
+        - [artes-cenicas, 1]
+        - [artes-integradas, 1]
+        - [artes-visuais, 1]
+        - [audiovisual, 1]
+        - [humanidades, 1]
+        - [musica, 1]
+        - [patrimonio-cultural, 1]
+  captacoes:
+    linhas: 194557
+    fonte_do_perfil: tabela inteira
+    colunas:
+      pronac: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 17508}
+      cgccpf: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 36888, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_doador: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 34751, pessoal: 'só contagens: valores seriam dado pessoal'}
+      valor:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 38538
+        min: '0.0038'
+        max: '36000000.0'
+        media: 80067.0406
+        quartis: [1236.1058, 4938.4114, 38089.7903]
+      data_recibo: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1882, min: '2012-12-27', max: '2026-10-22'}
+  captacoes_detalhe:
+    linhas: 0
+    fonte_do_perfil: tabela inteira
+    colunas:
+      pronac: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 17508}
+      projeto: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 22560}
+      doador_cgccpf: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 36888, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_doador: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 34751, pessoal: 'só contagens: valores seriam dado pessoal'}
+      proponente_cgccpf: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7982, pessoal: 'só contagens: valores seriam dado pessoal'}
+      proponente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 9082, pessoal: 'só contagens: valores seriam dado pessoal'}
+      uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 52859]
+        - [MG, 50729]
+        - [RS, 22092]
+        - [PR, 16293]
+        - [SC, 15492]
+        - [RJ, 12482]
+        - [DF, 6787]
+        - [ES, 5775]
+        - [CE, 3688]
+        - [PE, 2620]
+      segmento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 109, min: Acervo Bibliográfico, max: Ópera}
+      valor:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 38538
+        min: '0.0038'
+        max: '36000000.0'
+        media: 80067.0406
+        quartis: [1236.1058, 4938.4114, 38089.7903]
+      data_recibo: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1882, min: '2012-12-27', max: '2026-10-22'}
+  cidades:
+    linhas: 5599
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5661
+        min: '1'
+        max: '10000'
+        media: 2800.7873
+        quartis: [1400, 2800, 4200]
+      estado_id:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 29
+        min: '1'
+        max: '100'
+        media: 15.6892
+        quartis: [11, 15, 23]
+        top:
+        - ['11', 855]
+        - ['26', 646]
+        - ['23', 496]
+        - ['5', 417]
+        - ['18', 399]
+        - ['24', 293]
+        - ['9', 246]
+        - ['17', 224]
+        - ['15', 223]
+        - ['10', 217]
+      impressions_count:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 37
+        min: '0'
+        max: '154'
+        media: 0.6251
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 4496]
+        - ['1', 634]
+        - ['2', 210]
+        - ['3', 81]
+        - ['4', 40]
+        - ['5', 25]
+        - ['6', 21]
+        - ['7', 13]
+        - ['10', 10]
+        - ['8', 10]
+      latitude:
+        tipo: DOUBLE
+        nulos_pct: 0.02
+        distintos_aprox: 5313
+        min: '-33.6871306'
+        max: '4.6028228'
+        media: -16.4506
+        quartis: [-22.8432, -17.9593, -8.5742]
+      longitude:
+        tipo: DOUBLE
+        nulos_pct: 0.02
+        distintos_aprox: 5440
+        min: '-72.9002755'
+        max: '-32.4111209'
+        media: -46.2381
+        quartis: [-50.8239, -46.5811, -41.4487]
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5886, pessoal: 'só contagens: valores seriam dado pessoal'}
+      urlized: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5317}
+  entidades:
+    linhas: 217643
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 201232
+        min: '94'
+        max: '217736'
+        media: 108915
+        quartis: [54504, 108915, 163326]
+      cep: {tipo: VARCHAR, nulos_pct: 44.45, distintos_aprox: 60023, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cidade_id:
+        tipo: BIGINT
+        nulos_pct: 44.5
+        distintos_aprox: 4335
+        min: '1'
+        max: '10000'
+        media: 3147.6512
+        quartis: [1439, 3666, 4787]
+      cidade_nome: {tipo: VARCHAR, nulos_pct: 52.93, distintos_aprox: 6584, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpjcpf: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 183492, pessoal: 'só contagens: valores seriam dado pessoal'}
+      created_at: {tipo: TIMESTAMP, nulos_pct: 44.45, distintos_aprox: 120382, min: '2013-11-18 00:06:32', max: '2016-05-16 10:01:31'}
+      email: {tipo: VARCHAR, nulos_pct: 88.18, distintos_aprox: 20004, pessoal: 'só contagens: valores seriam dado pessoal'}
+      empresa:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.2455
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 164221]
+        - ['1', 53422]
+      estado_id:
+        tipo: BIGINT
+        nulos_pct: 0.04
+        distintos_aprox: 29
+        min: '1'
+        max: '100'
+        media: 17.3313
+        quartis: [11, 19, 25]
+        top:
+        - ['26', 54139]
+        - ['11', 35795]
+        - ['19', 24375]
+        - ['7', 23331]
+        - ['23', 22614]
+        - ['18', 12175]
+        - ['24', 9512]
+        - ['5', 6311]
+        - ['8', 4530]
+        - ['16', 3802]
+      impressions_count:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 85
+        min: '0'
+        max: '255'
+        media: 1.8092
+        quartis: [0, 0, 1]
+      incentivos_count:
+        tipo: BIGINT
+        nulos_pct: 44.45
+        distintos_aprox: 145
+        min: '0'
+        max: '2782'
+        media: 1.4104
+        quartis: [0, 0, 1]
+      incentivos_sum:
+        tipo: DOUBLE
+        nulos_pct: 44.45
+        distintos_aprox: 19929
+        min: '0.0'
+        max: '1320028462.3'
+        media: 82391.852
+        quartis: [0, 0, 510.109]
+      last_incentivo: {tipo: DATE, nulos_pct: 77.97, distintos_aprox: 2547, min: '2000-04-25', max: '2014-12-30'}
+      logradouro: {tipo: VARCHAR, nulos_pct: 44.45, distintos_aprox: 105602, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 200906, pessoal: 'só contagens: valores seriam dado pessoal'}
+      patrocinador:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.702
+        quartis: [0, 1, 1]
+        top:
+        - ['1', 152793]
+        - ['0', 64850]
+      projetos_count:
+        tipo: BIGINT
+        nulos_pct: 44.45
+        distintos_aprox: 96
+        min: '0'
+        max: '1352'
+        media: 1.174
+        quartis: [0, 0, 1]
+      projetos_liberados:
+        tipo: BIGINT
+        nulos_pct: 44.45
+        distintos_aprox: 48
+        min: '0'
+        max: '101'
+        media: 0.2238
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 109670]
+        - [null, 96744]
+        - ['1', 7123]
+        - ['2', 1705]
+        - ['3', 774]
+        - ['4', 408]
+        - ['5', 275]
+        - ['6', 192]
+        - ['8', 118]
+        - ['7', 106]
+      projetos_sum:
+        tipo: DOUBLE
+        nulos_pct: 44.45
+        distintos_aprox: 7117
+        min: '0.0'
+        max: '318920020.93'
+        media: 96711.5609
+        quartis: [0, 0, 0]
+      proponente: {tipo: BIGINT, nulos_pct: 44.45, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsavel: {tipo: VARCHAR, nulos_pct: 42.65, distintos_aprox: 51281, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tel_cel: {tipo: VARCHAR, nulos_pct: 96.22, distintos_aprox: 7601}
+      tel_com: {tipo: VARCHAR, nulos_pct: 86.23, distintos_aprox: 33384}
+      tel_fax: {tipo: VARCHAR, nulos_pct: 91.6, distintos_aprox: 23079, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tel_res: {tipo: VARCHAR, nulos_pct: 92.85, distintos_aprox: 13139}
+      uf: {tipo: VARCHAR, nulos_pct: 0.03, distintos_aprox: 53, min: '&nbsp;', max: Tocantins}
+      updated_at: {tipo: TIMESTAMP, nulos_pct: 44.45, distintos_aprox: 94525, min: '2014-01-24 15:23:01', max: '2016-07-16 17:02:16'}
+      urlized: {tipo: VARCHAR, nulos_pct: 44.45, distintos_aprox: 111766}
+      origem:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: api_salic
+        max: dump_2017
+        top:
+        - [dump_2017, 120899]
+        - [api_salic, 96744]
+  entidades_2014:
+    linhas: 102448
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 96025
+        min: '94'
+        max: '102541'
+        media: 51317.5
+        quartis: [25706, 51318, 76930]
+      cep: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 48689, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cidade_id:
+        tipo: BIGINT
+        nulos_pct: 0.75
+        distintos_aprox: 4335
+        min: '1'
+        max: '5599'
+        media: 3086.517
+        quartis: [1434, 3637, 4689]
+      cidade_nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6584, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpjcpf: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 118567, pessoal: 'só contagens: valores seriam dado pessoal'}
+      created_at: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 104923, min: '2013-11-18 00:06:32', max: '2014-02-08 15:21:54'}
+      email: {tipo: VARCHAR, nulos_pct: 75.08, distintos_aprox: 20004, pessoal: 'só contagens: valores seriam dado pessoal'}
+      empresa:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.3467
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 66929]
+        - ['1', 35519]
+      estado_id:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 29
+        min: '0'
+        max: '27'
+        media: 17.2126
+        quartis: [11, 19, 25]
+        top:
+        - ['26', 25488]
+        - ['11', 14664]
+        - ['19', 12602]
+        - ['7', 11354]
+        - ['23', 9073]
+        - ['18', 5853]
+        - ['24', 4140]
+        - ['5', 3539]
+        - ['16', 2174]
+        - ['6', 1926]
+      incentivos_count:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 123
+        min: '0'
+        max: '2759'
+        media: 1.348
+        quartis: [0, 0, 1]
+      incentivos_sum:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 17726
+        min: '0.0'
+        max: '1306891663.91'
+        media: 83953.7562
+        quartis: [0, 0.2076, 641.37]
+      last_incentivo: {tipo: DATE, nulos_pct: 51.56, distintos_aprox: 2496, min: '2000-04-25', max: '2013-11-20'}
+      logradouro: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 91267, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 97155, pessoal: 'só contagens: valores seriam dado pessoal'}
+      patrocinador:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.4914
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 52104]
+        - ['1', 50344]
+      projetos_count:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 85
+        min: '0'
+        max: '1128'
+        media: 1.2393
+        quartis: [0, 1, 1]
+      projetos_liberados:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 47
+        min: '0'
+        max: '80'
+        media: 0.1585
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 95706]
+        - ['1', 4238]
+        - ['2', 1033]
+        - ['3', 456]
+        - ['4', 251]
+        - ['5', 168]
+        - ['6', 99]
+        - ['7', 94]
+        - ['8', 75]
+        - ['9', 61]
+      projetos_sum:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 7330
+        min: '0.0'
+        max: '252017428.38'
+        media: 97244.507
+        quartis: [0, 0, 0]
+      proponente: {tipo: BIGINT, nulos_pct: 0, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsavel: {tipo: VARCHAR, nulos_pct: 48.23, distintos_aprox: 43222, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tel_cel: {tipo: VARCHAR, nulos_pct: 92.05, distintos_aprox: 7601}
+      tel_com: {tipo: VARCHAR, nulos_pct: 71.04, distintos_aprox: 33384}
+      tel_fax: {tipo: VARCHAR, nulos_pct: 82.31, distintos_aprox: 22395, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tel_res: {tipo: VARCHAR, nulos_pct: 84.95, distintos_aprox: 13139}
+      uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 26
+        min: '&nbsp;'
+        max: Tocantins
+        top:
+        - [São Paulo, 25488]
+        - [Minas Gerais, 14664]
+        - [Rio de Janeiro, 12602]
+        - [Distrito Federal, 11354]
+        - [Rio Grande do Sul, 9073]
+        - [Paraná, 5853]
+        - [Santa Catarina, 4140]
+        - [Bahia, 3539]
+        - [Pernambuco, 2174]
+        - [Ceará, 1926]
+      updated_at: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 85321, min: '2014-01-24 04:28:59', max: '2014-02-11 20:14:52'}
+      urlized: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 96793}
+  estados:
+    linhas: 28
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 29
+        min: '1'
+        max: '100'
+        media: 17.0714
+        quartis: [8, 14, 22]
+        top:
+        - ['1', 1]
+        - ['10', 1]
+        - ['100', 1]
+        - ['11', 1]
+        - ['12', 1]
+        - ['13', 1]
+        - ['14', 1]
+        - ['15', 1]
+        - ['16', 1]
+        - ['17', 1]
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 26, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sigla:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AC
+        max: XX
+        top:
+        - [AC, 1]
+        - [AL, 1]
+        - [AM, 1]
+        - [AP, 1]
+        - [BA, 1]
+        - [CE, 1]
+        - [DF, 1]
+        - [ES, 1]
+        - [GO, 1]
+        - [MA, 1]
+  incentivadores:
+    linhas: 114020
+    fonte_do_perfil: tabela inteira
+    colunas:
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 110728, pessoal: 'só contagens: valores seriam dado pessoal'}
+      municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6213}
+      uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 32
+        min: '  '
+        max: TO
+        top:
+        - [SP, 29865]
+        - [MG, 20865]
+        - [RS, 14176]
+        - [DF, 11817]
+        - [RJ, 10802]
+        - [PR, 6455]
+        - [SC, 5559]
+        - [ES, 3039]
+        - [BA, 2193]
+        - [PE, 1375]
+      responsavel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 15586, pessoal: 'só contagens: valores seriam dado pessoal'}
+      total_doado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 33518
+        min: '0.01'
+        max: '2574312550.5483'
+        media: 315285.7554
+        quartis: [221.0822, 1059.1868, 9480.0316]
+      tipo_pessoa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cgccpf: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 93850, pessoal: 'só contagens: valores seriam dado pessoal'}
+  incentivos:
+    linhas: 173754
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 149151
+        min: '1'
+        max: '173754'
+        media: 86877.5
+        quartis: [43439, 86878, 130316]
+      created_at: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 42557, min: '2013-11-18 23:57:22', max: '2016-05-16 10:01:31'}
+      entidade_id:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 51547
+        min: '98'
+        max: '120992'
+        media: 41534.0875
+        quartis: [10180, 42776, 63280]
+      last_recibo_at: {tipo: DATE, nulos_pct: 6.87, distintos_aprox: 3043, min: '2000-01-29', max: '2014-12-30'}
+      projeto_id:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 19884
+        min: '19'
+        max: '153940'
+        media: 80917.9716
+        quartis: [55609, 77807, 109190]
+      recibos_count:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 52
+        min: '0'
+        max: '131'
+        media: 1.4137
+        quartis: [1, 1, 1]
+      updated_at: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 69428, min: '2013-11-22 00:04:10', max: '2016-05-16 10:01:31'}
+      valor:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 26378
+        min: '1.0'
+        max: '23000000.0'
+        media: 57865.614
+        quartis: [150.2688, 670.1091, 15901.3447]
+  incentivos_detalhe:
+    linhas: 0
+    fonte_do_perfil: tabela inteira
+    colunas:
+      incentivo_id:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 149151
+        min: '1'
+        max: '173754'
+        media: 86877.5
+        quartis: [43501, 86897, 130039]
+      pronac: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 24931}
+      projeto: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 20857}
+      patrocinador_cnpjcpf: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 62561, pessoal: 'só contagens: valores seriam dado pessoal'}
+      patrocinador: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 62142}
+      proponente_cnpjcpf: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 9158, pessoal: 'só contagens: valores seriam dado pessoal'}
+      proponente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 8889, pessoal: 'só contagens: valores seriam dado pessoal'}
+      uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [DF, 69441]
+        - [SP, 33625]
+        - [MG, 29551]
+        - [RJ, 13067]
+        - [RS, 12938]
+        - [PR, 5113]
+        - [SC, 4502]
+        - [CE, 1494]
+        - [PE, 895]
+        - [BA, 707]
+      valor:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 26378
+        min: '1.0'
+        max: '23000000.0'
+        media: 57865.614
+        quartis: [150.2072, 667.467, 16069.1616]
+      recibos_count:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 52
+        min: '0'
+        max: '131'
+        media: 1.4137
+        quartis: [1, 1, 1]
+      last_recibo_at: {tipo: DATE, nulos_pct: 6.87, distintos_aprox: 3043, min: '2000-01-29', max: '2014-12-30'}
+      projeto_id:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 19884
+        min: '19'
+        max: '153940'
+        media: 80917.9716
+        quartis: [55063, 77796, 109190]
+      patrocinador_id:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 51547
+        min: '98'
+        max: '120992'
+        media: 41534.0875
+        quartis: [10224, 42776, 63693]
+      proponente_id: {tipo: BIGINT, nulos_pct: 0, distintos_aprox: 10183, pessoal: 'só contagens: valores seriam dado pessoal'}
+  pagamentos:
+    linhas: 2848765
+    fonte_do_perfil: amostra de 70.206%. ~2.000.000 linhas
+    colunas:
+      pronac: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 11922}
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2427, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_comprovante_pagamento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2223696}
+      id_planilha_aprovacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 375991}
+      cgccpf: {tipo: VARCHAR, nulos_pct: 0.29, distintos_aprox: 339450, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_fornecedor: {tipo: VARCHAR, nulos_pct: 0.34, distintos_aprox: 295063, pessoal: 'só contagens: valores seriam dado pessoal'}
+      data_aprovacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 3228, min: '1900-01-27', max: '5025-12-26'}
+      tipo_documento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nr_comprovante: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 430301}
+      data_pagamento: {tipo: DATE, nulos_pct: 0, distintos_aprox: 3896, min: '1900-01-26', max: '9093-09-18'}
+      tipo_forma_pagamento:
+        tipo: VARCHAR
+        nulos_pct: 0.29
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - ['2', 1907849]
+        - ['1', 79360]
+        - ['3', 10224]
+        - [null, 5777]
+      nr_documento_pagamento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 198244, pessoal: 'só contagens: valores seriam dado pessoal'}
+      valor_pagamento:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 277414
+        min: '-42212025.3'
+        max: '5644016.6'
+        media: 4700.7107
+        quartis: [484.4005, 1499.8012, 3892.0057]
+      id_arquivo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1804405}
+      justificativa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 502867}
+      nm_arquivo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1426082, pessoal: 'só contagens: valores seriam dado pessoal'}
+  pagamentos_detalhe:
+    linhas: 0
+    fonte_do_perfil: tabela inteira
+    colunas:
+      pronac: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 14632}
+      projeto: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 14739}
+      fornecedor_cgccpf: {tipo: VARCHAR, nulos_pct: 0.28, distintos_aprox: 372689, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_fornecedor: {tipo: VARCHAR, nulos_pct: 0.33, distintos_aprox: 344394, pessoal: 'só contagens: valores seriam dado pessoal'}
+      proponente_cgccpf: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5536, pessoal: 'só contagens: valores seriam dado pessoal'}
+      proponente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6826, pessoal: 'só contagens: valores seriam dado pessoal'}
+      uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 1053415]
+        - [RJ, 480571]
+        - [MG, 428455]
+        - [RS, 192553]
+        - [PR, 168113]
+        - [SC, 116853]
+        - [ES, 69923]
+        - [CE, 59532]
+        - [PA, 47686]
+        - [PE, 43626]
+      item: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2686}
+      valor_pagamento:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 364276
+        min: '-42212025.3'
+        max: '5644016.6'
+        media: 4659.8523
+        quartis: [487.3784, 1499.5545, 3862.6424]
+      data_pagamento: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4908, min: '1900-01-26', max: '9093-09-18'}
+      id_comprovante_pagamento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3411018}
+      tipo_documento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nr_comprovante: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 569515}
+  projetos:
+    linhas: 214030
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 198753
+        min: '16'
+        max: '2516129'
+        media: 280102.7256
+        quartis: [53531, 107053, 203768]
+      apoiado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 64309
+        min: '-6891608.5885'
+        max: '533368189.3125'
+        media: 337912.1514
+        quartis: [0, 0, 202578.9189]
+      apoiadores:
+        tipo: BIGINT
+        nulos_pct: 87.67
+        distintos_aprox: 255
+        min: '0'
+        max: '12216'
+        media: 6.5805
+        quartis: [1, 1, 2]
+      aprovado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 149757
+        min: '-6891608.5885'
+        max: '533368189.3125'
+        media: 582657.6535
+        quartis: [0, 187968.3635, 510373.8869]
+      area_id:
+        tipo: BIGINT
+        nulos_pct: 27.75
+        distintos_aprox: 7
+        min: '1'
+        max: '7'
+        media: 3.985
+        quartis: [2, 4, 5]
+        top:
+        - [null, 59392]
+        - ['5', 43377]
+        - ['2', 30052]
+        - ['3', 27077]
+        - ['7', 20519]
+        - ['1', 12697]
+        - ['4', 11909]
+        - ['6', 9007]
+      created_at:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 45
+        min: '2013-12-15'
+        max: '2026-01-01'
+        top:
+        - ['2013-12-15', 60906]
+        - ['2013-12-16', 36183]
+        - ['2013-12-17', 26480]
+        - ['2025-01-01', 15415]
+        - ['2024-01-01', 14215]
+        - ['2023-01-01', 10722]
+        - ['2016-05-14', 8134]
+        - ['2026-01-01', 6411]
+        - ['2020-01-01', 4683]
+        - ['2014-02-23', 3740]
+      enquadramento:
+        tipo: VARCHAR
+        nulos_pct: 34.4
+        distintos_aprox: 4
+        min: Artigo 18
+        max: Nao enquadrado
+        top:
+        - [null, 73621]
+        - [Artigo 18 (100%), 61670]
+        - [Artigo 18, 55794]
+        - [Artigo 26, 22600]
+        - [Nao enquadrado, 345]
+      entidade_id:
+        tipo: BIGINT
+        nulos_pct: 19.54
+        distintos_aprox: 63445
+        min: '0'
+        max: '152717'
+        media: 45127.7909
+        quartis: [10439, 31765, 78710]
+      estado_id:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '1'
+        max: '27'
+        media: 18.2219
+        quartis: [11, 19, 26]
+        top:
+        - ['26', 58316]
+        - ['19', 37115]
+        - ['11', 23479]
+        - ['23', 16885]
+        - ['18', 13373]
+        - ['24', 9854]
+        - ['5', 9056]
+        - ['7', 8197]
+        - ['16', 5721]
+        - ['6', 5292]
+      impressions_count:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 76
+        min: '0'
+        max: '495'
+        media: 0.4407
+        quartis: [0, 0, 0]
+      liberado_at: {tipo: VARCHAR, nulos_pct: 91.02, distintos_aprox: 3132}
+      mecanismo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Audiovisual
+        max: Recurso do Tesouro
+        top:
+        - [Mecenato, 156360]
+        - [FNC, 54414]
+        - [Recurso do Tesouro, 2836]
+        - [Audiovisual, 241]
+        - [Mecenato/Audiovisual, 179]
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 173937, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 214435, pessoal: 'só contagens: valores seriam dado pessoal'}
+      processo: {tipo: VARCHAR, nulos_pct: 28.17, distintos_aprox: 160427}
+      providencia: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 56851}
+      segmento_id:
+        tipo: BIGINT
+        nulos_pct: 27.75
+        distintos_aprox: 105
+        min: '1'
+        max: '106'
+        media: 28.8576
+        quartis: [5, 9, 60]
+      sintese: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 229222}
+      situacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 205, min: Aguarda Análise/Redimensionamento, max: Vistoria in loco}
+      situacao_at: {tipo: DATE, nulos_pct: 28.25, distintos_aprox: 3899, min: '1900-01-01', max: '2016-05-16'}
+      solicitado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 164726
+        min: '0.0'
+        max: '999999999.99'
+        media: 769407.4018
+        quartis: [71897.2644, 260923.9191, 652363.5018]
+      uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 58316]
+        - [RJ, 37115]
+        - [MG, 23479]
+        - [RS, 16885]
+        - [PR, 13373]
+        - [SC, 9854]
+        - [BA, 9056]
+        - [DF, 8197]
+        - [PE, 5721]
+        - [CE, 5292]
+      updated_at:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 39
+        min: '2013-12-15'
+        max: '2026-01-01'
+        top:
+        - ['2013-12-15', 50686]
+        - ['2013-12-16', 30088]
+        - ['2013-12-17', 23589]
+        - ['2014-02-08', 19373]
+        - ['2025-01-01', 15415]
+        - ['2024-01-01', 14215]
+        - ['2023-01-01', 10722]
+        - ['2016-05-16', 7348]
+        - ['2015-01-05', 6603]
+        - ['2026-01-01', 6411]
+      urlized: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 181988}
+      origem:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: api_salic
+        max: dump_2017
+        top:
+        - [dump_2017, 153748]
+        - [api_salic, 60282]
+  projetos_2014:
+    linhas: 126969
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 118034
+        min: '16'
+        max: '127161'
+        media: 63514.5568
+        quartis: [31762, 63513, 95263]
+      apoiado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 11154
+        min: '0.0'
+        max: '115904585.8'
+        media: 78464.078
+        quartis: [0, 0, 0]
+      apoiadores:
+        tipo: BIGINT
+        nulos_pct: 81.24
+        distintos_aprox: 211
+        min: '0'
+        max: '12216'
+        media: 5.797
+        quartis: [1, 1, 2]
+      aprovado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 79294
+        min: '0.0'
+        max: '64543555.65'
+        media: 299157.1027
+        quartis: [0, 52619.6719, 297319.2555]
+      area_id:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '1'
+        max: '7'
+        media: 3.9435
+        quartis: [2, 4, 5]
+        top:
+        - ['5', 30605]
+        - ['2', 26155]
+        - ['3', 22230]
+        - ['7', 18118]
+        - ['4', 11339]
+        - ['1', 10928]
+        - ['6', 7594]
+      created_at:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '2013-12-15'
+        max: '2014-01-24'
+        top:
+        - ['2013-12-15', 60906]
+        - ['2013-12-16', 36183]
+        - ['2013-12-17', 26480]
+        - ['2014-01-19', 2555]
+        - ['2014-01-18', 564]
+        - ['2014-01-24', 281]
+      enquadramento:
+        tipo: VARCHAR
+        nulos_pct: 46.98
+        distintos_aprox: 2
+        min: Artigo 18 (100%)
+        max: Artigo 26
+        top:
+        - [null, 59656]
+        - [Artigo 18 (100%), 50916]
+        - [Artigo 26, 16397]
+      entidade_id:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 49957
+        min: '0'
+        max: '102541'
+        media: 35048.0309
+        quartis: [8035, 23219, 63094]
+      estado_id:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '1'
+        max: '27'
+        media: 18.0695
+        quartis: [11, 19, 26]
+        top:
+        - ['26', 33785]
+        - ['19', 23945]
+        - ['11', 13303]
+        - ['23', 8949]
+        - ['18', 7709]
+        - ['5', 5953]
+        - ['7', 5551]
+        - ['24', 5150]
+        - ['16', 3632]
+        - ['6', 3036]
+      liberado_at: {tipo: VARCHAR, nulos_pct: 87.21, distintos_aprox: 2553}
+      mecanismo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Audiovisual
+        max: Recurso do Tesouro
+        top:
+        - [Mecenato, 82178]
+        - [FNC, 41901]
+        - [Recurso do Tesouro, 2470]
+        - [Audiovisual, 241]
+        - [Mecenato/Audiovisual, 179]
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 107203, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 140417, pessoal: 'só contagens: valores seriam dado pessoal'}
+      processo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 145481}
+      providencia: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 52080}
+      segmento_id:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 105
+        min: '1'
+        max: '106'
+        media: 33.0881
+        quartis: [6, 15, 61]
+      sintese: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 115156}
+      situacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 178, min: ., max: Vistoria in loco}
+      situacao_at: {tipo: DATE, nulos_pct: 0.14, distintos_aprox: 3506, min: '2000-01-17', max: '2014-01-24'}
+      solicitado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 107426
+        min: '0.0'
+        max: '999999999.99'
+        media: 581374.5957
+        quartis: [38529.4012, 192632.6193, 480716.4052]
+      uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 33785]
+        - [RJ, 23945]
+        - [MG, 13303]
+        - [RS, 8949]
+        - [PR, 7709]
+        - [BA, 5953]
+        - [DF, 5551]
+        - [SC, 5150]
+        - [PE, 3632]
+        - [CE, 3036]
+      updated_at:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '2013-12-15'
+        max: '2014-02-10'
+        top:
+        - ['2013-12-15', 50827]
+        - ['2013-12-16', 30119]
+        - ['2013-12-17', 23589]
+        - ['2014-02-08', 21271]
+        - ['2014-02-10', 636]
+        - ['2014-02-09', 527]
+      urlized: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 102670}
+  projetos_api:
+    linhas: 63350
+    fonte_do_perfil: tabela inteira
+    colunas:
+      pronac: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 73878}
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 53328, pessoal: 'só contagens: valores seriam dado pessoal'}
+      providencia: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3426}
+      cgccpf: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 31953, pessoal: 'só contagens: valores seriam dado pessoal'}
+      situacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 60, min: Aguarda análise financeira, max: Solicitação de arquivamento feito pelo
+          proponente}
+      tipicidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: Arte Religiosa
+        max: Singulares, até R$ 4.000.000,00 (Art. 6º)
+        top:
+        - [Projetos Normais, 28429]
+        - [Projetos Específicos, 9206]
+        - ['Singulares, até R $ 1.000.000,00 (Art. 4º, alínea d)', 8472]
+        - [Projetos Especiais, 7137]
+        - [Planos Anuais, 2078]
+        - ['Normais, até R$ 500.000,00 (Art. 5º)', 1867]
+        - ['Específicos, até R $ 6.000.000,00 (Art. 4º, § 3º)', 1119]
+        - [Editais Compartilhados, 1082]
+        - ['Especiais, sem limite (Art. 4º, § 2º)', 826]
+        - ['Singulares, até R$ 4.000.000,00 (Art. 6º)', 587]
+      tipologia: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 112, min: Andirobeiras, max: Óperas}
+      uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 17879]
+        - [RJ, 8928]
+        - [MG, 7677]
+        - [RS, 6220]
+        - [PR, 4206]
+        - [SC, 3716]
+        - [BA, 2114]
+        - [CE, 1595]
+        - [DF, 1435]
+        - [PE, 1397]
+      municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2591}
+      segmento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 123, min: Acervo Bibliográfico, max: Ópera}
+      data_inicio: {tipo: DATE, nulos_pct: 0.51, distintos_aprox: 2628, min: '1900-01-01', max: '2030-09-05'}
+      data_termino: {tipo: DATE, nulos_pct: 0.52, distintos_aprox: 4056, min: '1900-01-01', max: '2035-12-31'}
+      valor_outras_fontes:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1220
+        min: '0.0'
+        max: '79686000.0'
+        media: 19922.504
+        quartis: [0, 0, 0]
+      proponente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 32359, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ano_projeto:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: '16'
+        max: '26'
+        top:
+        - ['25', 15415]
+        - ['24', 14216]
+        - ['23', 10722]
+        - ['26', 9478]
+        - ['20', 4683]
+        - ['19', 3508]
+        - ['22', 2681]
+        - ['21', 2645]
+        - ['16', 1]
+        - ['18', 1]
+      local_realizacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 15079}
+      valor_solicitado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 61219
+        min: '0.0'
+        max: '533368189.3125'
+        media: 1289825.7054
+        quartis: [200887.9583, 511425.82, 1016814.9231]
+      valor_aprovado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 65840
+        min: '-6891608.5885'
+        max: '533368189.3125'
+        media: 1283765.4157
+        quartis: [200059.9629, 507747.1362, 1024095.8177]
+      valor_projeto:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 68836
+        min: '-6891608.5885'
+        max: '533368189.3125'
+        media: 1303687.9197
+        quartis: [200758.7853, 512414.588, 1028071.3677]
+      valor_captado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 10050
+        min: '0.0'
+        max: '147548414.29'
+        media: 245897.4462
+        quartis: [0, 0, 47972.7925]
+      valor_proposta:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 65175
+        min: '0.0'
+        max: '533368189.3125'
+        media: 1308083.1496
+        quartis: [200757.7267, 514694.8461, 1033134.9325]
+      mecanismo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: FNC
+        max: Mecenato
+        top:
+        - [Mecenato, 63026]
+        - [FNC, 324]
+      enquadramento:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Artigo 18
+        max: Nao enquadrado
+        top:
+        - [Artigo 18, 58742]
+        - [Artigo 26, 4263]
+        - [Nao enquadrado, 345]
+  projetos_texto:
+    linhas: 63350
+    fonte_do_perfil: tabela inteira
+    colunas:
+      pronac: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 73878}
+      acessibilidade: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 51650}
+      democratizacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 48312}
+      especificacao_tecnica: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 41477}
+      estrategia_execucao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 38735}
+      etapa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 50523}
+      ficha_tecnica: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 62544}
+      impacto_ambiental: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 820, min: '', max: '• Como forma de amenizar o impacto ambiental do projeto,
+          o Teatro Portátil selecionará, dentro do possível, trajetos mais eficientes entre as cidades contempladas, a fim de evitar o desperdício
+          de combustível e a emissão de gases poluentes; • O Teatro Portátil possui todo equipamento necessário para realizar o espetáculo teatral,
+          utilizando somente um ponto de energia 220V e pouco consumo elétrico, já que a iluminação é feita com lâmpadas de led, que consomem
+          pouquíssima energia e ventiladores e aparelhos de ar condicionado que também consomem pouca energia; • O Teatro Portátil possui lixeiras
+          no seu interior para coleta seletiva de lixo; • Nunca será retirada vegetação local para a instalação do Teatro Portátil; • Os folhetos,
+          programas e outros materiais de distribuição serão confeccionados em papel reciclado; • O próprio tema do espetáculo (Bichos Vermelhos)
+          traz uma conscientização acerca da preservação das espécies.'}
+      justificativa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 57019}
+      objetivos: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 60801}
+      resumo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 60379}
+      sinopse: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 63518}
+  recibos:
+    linhas: 245640
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 215569
+        min: '25'
+        max: '245664'
+        media: 122844.5
+        quartis: [61434, 122844, 184254]
+      created_at: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 114425, min: '2013-11-21 16:31:00', max: '2015-01-08 11:50:42'}
+      data: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 4000, min: '1999-05-16 00:00:00', max: '2014-12-30 02:00:00'}
+      incentivo_id:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 143566
+        min: '1'
+        max: '165725'
+        media: 75325.5769
+        quartis: [30238, 74778, 120661]
+      updated_at: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 114425, min: '2013-11-21 16:31:00', max: '2015-01-08 11:50:42'}
+      valor:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 10053
+        min: '0.0'
+        max: '999.0'
+        media: 156.8367
+        quartis: [17.2152, 60.0775, 202.5923]
+  segmentos:
+    linhas: 106
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 105
+        min: '1'
+        max: '106'
+        media: 53.5
+        quartis: [27, 54, 80]
+      area_id:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '1'
+        max: '7'
+        media: 3.8019
+        quartis: [1, 4, 6]
+        top:
+        - ['1', 29]
+        - ['4', 26]
+        - ['7', 16]
+        - ['6', 15]
+        - ['3', 7]
+        - ['5', 7]
+        - ['2', 6]
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 102, pessoal: 'só contagens: valores seriam dado pessoal'}
+      urlized: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 90, min: acervo, max: videofonografica}

@@ -1,0 +1,499 @@
+dataset: br_bd_diretorios_us
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  cbsa_2023:
+    linhas: 937
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_cbsa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 914, min: '10100', max: 'Source: File prepared by U.S. Census Bureau, Population
+          Division, based on OMB, July 2023 delineations <https://www.whitehouse.gov/wp-content/uploads/2023/07/OMB-Bulletin-23-01.pdf>.'}
+      id_csa: {tipo: VARCHAR, nulos_pct: 37.89, distintos_aprox: 215, min: '101', max: '566'}
+      name: {tipo: VARCHAR, nulos_pct: 0.21, distintos_aprox: 987, pessoal: 'só contagens: valores seriam dado pessoal'}
+      name_csa: {tipo: VARCHAR, nulos_pct: 37.89, distintos_aprox: 182, min: 'Abilene-Sweetwater, TX', max: 'Youngstown-Warren-Salem, OH'}
+      type:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: metropolitan
+        max: micropolitan
+        top:
+        - [micropolitan, 544]
+        - [metropolitan, 393]
+  census_tract_2020:
+    linhas: 85396
+    fonte_do_perfil: tabela inteira
+    colunas:
+      area_land_km2:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 77929
+        min: '0.0'
+        max: '221506.333133'
+        media: 107.2759
+        quartis: [1.693, 4.5144, 28.2256]
+      area_water_km2:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 48132
+        min: '0.0'
+        max: '25676.773493'
+        media: 8.2208
+        quartis: [0, 0.0224, 0.4466]
+      centroid: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 79940}
+      id_census_tract: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 122237}
+      id_county: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2816}
+      id_state: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 54, min: '01', max: '72'}
+  congress_member:
+    linhas: 12767
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ballotpedia: {tipo: VARCHAR, nulos_pct: 91.27, distintos_aprox: 899, min: Aaron Bean, max: Zoe Lofgren}
+      birthday: {tipo: VARCHAR, nulos_pct: 4.25, distintos_aprox: 11444}
+      gender:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: F
+        max: M
+        top:
+        - [M, 12316]
+        - [F, 451]
+      id_bioguide: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 12143}
+      id_cspan: {tipo: VARCHAR, nulos_pct: 93.29, distintos_aprox: 895, min: '1000221', max: '994'}
+      id_fec: {tipo: VARCHAR, nulos_pct: 88.02, distintos_aprox: 1835}
+      id_govtrack: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 12769}
+      id_icpsr: {tipo: VARCHAR, nulos_pct: 3.67, distintos_aprox: 12142}
+      id_lis: {tipo: VARCHAR, nulos_pct: 97.44, distintos_aprox: 338, min: S009, max: S440}
+      id_opensecrets: {tipo: VARCHAR, nulos_pct: 88.71, distintos_aprox: 1291}
+      id_thomas: {tipo: VARCHAR, nulos_pct: 82.92, distintos_aprox: 2256}
+      id_votesmart: {tipo: VARCHAR, nulos_pct: 89.47, distintos_aprox: 1219}
+      id_wikidata: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 10769}
+      name_first: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2055}
+      name_last: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5115}
+      name_middle: {tipo: VARCHAR, nulos_pct: 31.32, distintos_aprox: 3563}
+      name_official_full: {tipo: VARCHAR, nulos_pct: 91.1, distintos_aprox: 1347}
+      name_suffix:
+        tipo: VARCHAR
+        nulos_pct: 96.43
+        distintos_aprox: 4
+        min: II
+        max: Sr.
+        top:
+        - [null, 12311]
+        - [Jr., 392]
+        - [III, 34]
+        - [Sr., 15]
+        - [II, 11]
+        - [IV, 4]
+      wikipedia: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 15048}
+  congressional_district_119:
+    linhas: 440
+    fonte_do_perfil: tabela inteira
+    colunas:
+      abbreviation_state: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 57, min: AK, max: WY}
+      district: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 54, min: '00', max: ZZ}
+      id_congressional_district: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 479, min: '0101', max: '7298'}
+      id_state: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 54, min: '01', max: '72'}
+      type:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: delegate
+        max: voting
+        top:
+        - [voting, 435]
+        - [not defined, 3]
+        - [delegate, 1]
+        - [resident_commissioner, 1]
+  county:
+    linhas: 3236
+    fonte_do_perfil: tabela inteira
+    colunas:
+      abbreviation_state: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 64, min: AK, max: WY}
+      area_land_km2:
+        tipo: DOUBLE
+        nulos_pct: 0.43
+        distintos_aprox: 3832
+        min: '5.300259'
+        max: '377536.045709'
+        media: 2843.2446
+        quartis: [1085.1393, 1564.3304, 2374.5258]
+      area_water_km2:
+        tipo: DOUBLE
+        nulos_pct: 0.43
+        distintos_aprox: 3682
+        min: '0.0'
+        max: '25676.773493'
+        media: 217.8839
+        quartis: [6.9848, 19.4413, 60.5295]
+      central_outlying:
+        tipo: VARCHAR
+        nulos_pct: 40.82
+        distintos_aprox: 2
+        min: central
+        max: outlying
+        top:
+        - [central, 1325]
+        - [null, 1321]
+        - [outlying, 590]
+      centroid: {tipo: VARCHAR, nulos_pct: 0.43, distintos_aprox: 3034}
+      id_cbsa: {tipo: VARCHAR, nulos_pct: 40.82, distintos_aprox: 914, min: '10100', max: '49820'}
+      id_county: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2848}
+      id_csa: {tipo: VARCHAR, nulos_pct: 58.56, distintos_aprox: 215, min: '101', max: '566'}
+      id_gnis: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3814}
+      id_state: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 59, min: '01', max: '78'}
+      name: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1749, pessoal: 'só contagens: valores seriam dado pessoal'}
+      name_cbsa: {tipo: VARCHAR, nulos_pct: 40.82, distintos_aprox: 987, min: 'Aberdeen, SD', max: 'Zapata, TX'}
+      name_csa: {tipo: VARCHAR, nulos_pct: 58.56, distintos_aprox: 182, min: 'Abilene-Sweetwater, TX', max: 'Youngstown-Warren-Salem, OH'}
+      name_state: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 65, min: Alabama, max: Wyoming}
+      type:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: borough
+        max: planning region
+        top:
+        - [county, 2999]
+        - [municipio, 78]
+        - [parish, 64]
+        - [city, 41]
+        - [borough, 17]
+        - [census area, 11]
+        - [planning region, 9]
+        - [island, 7]
+        - [municipality, 6]
+        - [district, 4]
+  higher_education_institution:
+    linhas: 6072
+    fonte_do_perfil: tabela inteira
+    colunas:
+      abbreviation_state: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 69, min: AK, max: WY}
+      city: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1918}
+      control:
+        tipo: VARCHAR
+        nulos_pct: 0.36
+        distintos_aprox: 3
+        min: private for-profit
+        max: public
+        top:
+        - [private for-profit, 2257]
+        - [public, 1980]
+        - [private not-for-profit, 1813]
+        - [null, 22]
+      id_county: {tipo: VARCHAR, nulos_pct: 0.05, distintos_aprox: 1239}
+      id_institution: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5786}
+      id_opeid: {tipo: VARCHAR, nulos_pct: 0.63, distintos_aprox: 6657}
+      id_state: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 64, min: '01', max: '78'}
+      level:
+        tipo: VARCHAR
+        nulos_pct: 0.36
+        distintos_aprox: 3
+        min: 2-year
+        max: less-than-2-year
+        top:
+        - [4-year or above, 2851]
+        - [less-than-2-year, 1700]
+        - [2-year, 1499]
+        - [null, 22]
+      name: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5777, pessoal: 'só contagens: valores seriam dado pessoal'}
+      operational_status:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: active
+        max: closed
+        top:
+        - [active, 5994]
+        - [closed, 78]
+      sector:
+        tipo: VARCHAR
+        nulos_pct: 0.36
+        distintos_aprox: 10
+        min: administrative unit
+        max: public less-than-2-year
+        top:
+        - [private not-for-profit 4-year or above, 1618]
+        - [private for-profit less-than-2-year, 1413]
+        - [public 4-year or above, 848]
+        - [public 2-year, 838]
+        - [private for-profit 2-year, 510]
+        - [private for-profit 4-year or above, 330]
+        - [public less-than-2-year, 230]
+        - [private not-for-profit 2-year, 135]
+        - [administrative unit, 71]
+        - [private not-for-profit less-than-2-year, 57]
+      zip: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4346}
+  naics_2022:
+    linhas: 2125
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_industry_group: {tipo: VARCHAR, nulos_pct: 19.95, distintos_aprox: 352, min: '1111', max: '9281'}
+      id_naics: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2560}
+      id_naics_industry: {tipo: VARCHAR, nulos_pct: 52.38, distintos_aprox: 850, min: '11111', max: '92812'}
+      id_sector:
+        tipo: VARCHAR
+        nulos_pct: 0.94
+        distintos_aprox: 20
+        min: '11'
+        max: '92'
+        top:
+        - [31-33, 629]
+        - ['42', 160]
+        - [48-49, 139]
+        - [44-45, 138]
+        - ['11', 130]
+        - ['54', 94]
+        - ['81', 92]
+        - ['62', 91]
+        - ['56', 86]
+        - ['52', 78]
+      id_subsector: {tipo: VARCHAR, nulos_pct: 5.46, distintos_aprox: 102, min: '111', max: '928'}
+      level:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '2'
+        max: '6'
+        media: 5.2127
+        quartis: [5, 5, 6]
+        top:
+        - ['6', 1012]
+        - ['5', 689]
+        - ['4', 308]
+        - ['3', 96]
+        - ['2', 20]
+      name: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1283, pessoal: 'só contagens: valores seriam dado pessoal'}
+      name_industry_group: {tipo: VARCHAR, nulos_pct: 19.95, distintos_aprox: 254, min: 'Accounting, Tax Preparation, Bookkeeping, and Payroll
+          Services', max: Wired and Wireless Telecommunications (except Satellite)}
+      name_naics_industry: {tipo: VARCHAR, nulos_pct: 52.38, distintos_aprox: 757, min: Abrasive Product Manufacturing, max: Zoos and Botanical
+          Gardens}
+      name_sector:
+        tipo: VARCHAR
+        nulos_pct: 0.94
+        distintos_aprox: 19
+        min: Accommodation and Food Services
+        max: Wholesale Trade
+        top:
+        - [Manufacturing, 629]
+        - [Wholesale Trade, 160]
+        - [Transportation and Warehousing, 139]
+        - [Retail Trade, 138]
+        - ['Agriculture, Forestry, Fishing and Hunting', 130]
+        - ['Professional, Scientific, and Technical Services', 94]
+        - [Other Services (except Public Administration), 92]
+        - [Health Care and Social Assistance, 91]
+        - [Administrative and Support and Waste Management and Remediation Services, 86]
+        - [Finance and Insurance, 78]
+      name_subsector: {tipo: VARCHAR, nulos_pct: 5.46, distintos_aprox: 90, min: Accommodation, max: Wood Product Manufacturing}
+  place:
+    linhas: 32350
+    fonte_do_perfil: tabela inteira
+    colunas:
+      abbreviation_state: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 57, min: AK, max: WY}
+      area_land_km2:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 33832
+        min: '0.013088'
+        max: '7433.786701'
+        media: 16.2041
+        quartis: [1.7723, 4.4922, 12.2299]
+      area_water_km2:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 14886
+        min: '0.0'
+        max: '4931.993422'
+        media: 1.2428
+        quartis: [0, 0.0081, 0.1371]
+      centroid: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 35679}
+      class_code:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 17
+        min: '00'
+        max: UG
+        top:
+        - ['57', 12540]
+        - ['25', 10232]
+        - ['43', 4325]
+        - ['47', 3717]
+        - ['21', 1214]
+        - ['55', 214]
+        - ['62', 78]
+        - ['00', 13]
+        - ['37', 7]
+        - ['53', 3]
+      id_gnis: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 27944}
+      id_place: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 29640}
+      id_state: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 54, min: '01', max: '72'}
+      name: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 29352, pessoal: 'só contagens: valores seriam dado pessoal'}
+      type:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: census designated place
+        max: incorporated place
+        top:
+        - [incorporated place, 19810]
+        - [census designated place, 12540]
+  puma_2020:
+    linhas: 2487
+    fonte_do_perfil: tabela inteira
+    colunas:
+      abbreviation_state: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 60, min: AK, max: WY}
+      area_land_km2:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 3214
+        min: '3.554261'
+        max: '1138520.714942'
+        media: 3683.7466
+        quartis: [96.4607, 322.718, 2288.2163]
+      area_water_km2:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2727
+        min: '0.0'
+        max: '195684.012748'
+        media: 282.6523
+        quartis: [1.7046, 11.2127, 60.9839]
+      centroid: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2342}
+      id_puma: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2622}
+      id_state: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 55, min: '01', max: '72'}
+      name: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2720, pessoal: 'só contagens: valores seriam dado pessoal'}
+  school:
+    linhas: 102274
+    fonte_do_perfil: tabela inteira
+    colunas:
+      abbreviation_state: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 62, min: AK, max: WY}
+      charter:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: 'No'
+        max: 'Yes'
+        top:
+        - ['No', 90165]
+        - ['Yes', 8352]
+        - [Not applicable, 3757]
+      id_county:
+        tipo: INTEGER
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 102274]
+      id_school: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 98492}
+      id_school_district: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 18339}
+      id_state: {tipo: VARCHAR, nulos_pct: 0.17, distintos_aprox: 59, min: '01', max: '78'}
+      level:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: Adult Education
+        max: Ungraded
+        top:
+        - [Elementary, 53002]
+        - [High, 23790]
+        - [Middle, 16299]
+        - [Other, 4519]
+        - [Not reported, 2200]
+        - [Prekindergarten, 1625]
+        - [Secondary, 417]
+        - [Not applicable, 292]
+        - [Ungraded, 122]
+        - [Adult Education, 8]
+      name: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 114366, pessoal: 'só contagens: valores seriam dado pessoal'}
+      operational_status:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: Added
+        max: Reopened
+        top:
+        - [Open, 99596]
+        - [Closed, 1029]
+        - [New, 767]
+        - [Inactive, 450]
+        - [Future, 337]
+        - [Reopened, 35]
+        - [Added, 30]
+        - [Changed Boundary/Agency, 30]
+      type:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Alternative School
+        max: Special Education School
+        top:
+        - [Regular School, 92887]
+        - [Alternative School, 5798]
+        - [Special Education School, 1941]
+        - [Career and Technical School, 1648]
+  school_district:
+    linhas: 19637
+    fonte_do_perfil: tabela inteira
+    colunas:
+      abbreviation_state: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 62, min: AK, max: WY}
+      id_county:
+        tipo: INTEGER
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 19637]
+      id_school_district: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 19974}
+      id_state: {tipo: VARCHAR, nulos_pct: 0.89, distintos_aprox: 59, min: '01', max: '78'}
+      level:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: Adult Education
+        max: Ungraded
+        top:
+        - [Other, 12199]
+        - [Elementary, 4107]
+        - [High, 1902]
+        - [Not applicable, 743]
+        - [Not reported, 343]
+        - [Middle, 245]
+        - [Prekindergarten, 50]
+        - [Secondary, 27]
+        - [Ungraded, 12]
+        - [Adult Education, 9]
+      name: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 18088, pessoal: 'só contagens: valores seriam dado pessoal'}
+      operational_status:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: Added
+        max: Reopened
+        top:
+        - [Open, 19278]
+        - [Closed, 137]
+        - [New, 109]
+        - [Future, 49]
+        - [Inactive, 48]
+        - [Changed Boundary/Agency, 10]
+        - [Reopened, 4]
+        - [Added, 2]
+      type:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: Federal operated agency
+        max: Supervisory union
+        top:
+        - [Regular public school district that is not a component of a supervisory union, 13374]
+        - [Independent charter district, 4380]
+        - [Service agency, 698]
+        - [Specialized public school district, 445]
+        - [Other local education agency, 249]
+        - [State operated agency, 199]
+        - [Regular public school district that is a component of a supervisory union, 173]
+        - [Supervisory union, 114]
+        - [Federal operated agency, 5]

@@ -1,0 +1,278 @@
+dataset: br_cvm_oferta_publica_distribuicao
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  dia:
+    linhas: 27486
+    fonte_do_perfil: tabela inteira
+    colunas:
+      numero_processo: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_registro_oferta: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_oferta:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Primaria
+        max: Secundaria
+        top:
+        - [Primaria, 27162]
+        - [Secundaria, 324]
+      tipo_componente_oferta_mista:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 27486]
+      tipo_ativo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 22
+        min: ACOES ORDINARIAS
+        max: WARRANTS AGROPECUARIOS
+        top:
+        - [COTAS DE FUNDOS DE INVESTIMENTO FECHADOS, 18166]
+        - [DEBENTURES SIMPLES, 3283]
+        - [CERTIFICADOS DE RECEBIVEIS IMOBILIARIOS - CRI, 3263]
+        - [NOTAS PROMISSORIAS, 1370]
+        - [CERTIFICADOS DE RECEBIVEIS DO AGRONEGOCIO - CRA, 832]
+        - [ACOES ORDINARIAS, 214]
+        - [NOTAS COMERCIAIS, 165]
+        - [LETRAS FINANCEIRAS, 107]
+        - [DEBENTURES CONVERSIVEIS, 27]
+        - [ACOES PREFERENCIAIS, 18]
+      cnpj_emissor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 13780, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_emissor: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 12603, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpj_lider: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 245, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_lider: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 257, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_vendedor: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpj_ofertante: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 10185, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_ofertante: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 10390, pessoal: 'só contagens: valores seriam dado pessoal'}
+      rito_oferta:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: ICVM 476
+        max: ICVM 476
+        top:
+        - [ICVM 476, 27486]
+      modalidade_oferta:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Dispensada de Registro
+        max: Dispensada de Registro
+        top:
+        - [Dispensada de Registro, 27486]
+      modalidade_registro:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 27486]
+      modalidade_dispensa_registro:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Automatica
+        max: Automatica
+        top:
+        - [Automatica, 27486]
+      data_abertura_processo:
+        tipo: DATE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 27486]
+      data_protocolo:
+        tipo: DATE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 27486]
+      data_dispensa_oferta:
+        tipo: DATE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 27486]
+      data_registro_oferta:
+        tipo: DATE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 27486]
+      data_inicio_oferta: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1815, min: '2008-06-17', max: '2022-12-30'}
+      data_encerramento_oferta: {tipo: DATE, nulos_pct: 0, distintos_aprox: 2656, min: '2012-06-21', max: '2025-01-24'}
+      emissao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 225, min: '1', max: '99'}
+      classe_ativo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Nao Aplicavel
+        max: Subordinada Mezanino
+        top:
+        - [Nao Aplicavel, 21484]
+        - [Senior, 2649]
+        - [Subordinada, 1432]
+        - [Outros, 1130]
+        - [Subordinada Mezanino, 791]
+      serie: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 738, min: '0', max: Serie Unica}
+      especie_ativo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Garantia Flutuante
+        max: Subordinada
+        top:
+        - [Nao Aplicavel, 22101]
+        - [Garantia Real, 3086]
+        - [Sem Preferencia, 1909]
+        - [Subordinada, 347]
+        - [Garantia Flutuante, 43]
+      forma_ativo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Escritural
+        max: Nominativa e Escritural
+        top:
+        - [Nominativa e Escritural, 24001]
+        - [Escritural, 2086]
+        - [Nominativa, 1399]
+      data_emissao:
+        tipo: DATE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 27486]
+      data_vencimento:
+        tipo: DATE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 27486]
+      quantidade_sem_lote_suplementar:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 27486]
+      quantidade_no_lote_suplementar:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 27486]
+      quantidade_total: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 12813}
+      preco_unitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6084}
+      valor_total: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 14481}
+      oferta_inicial:
+        tipo: VARCHAR
+        nulos_pct: 33.91
+        distintos_aprox: 2
+        min: Nao
+        max: Sim
+        top:
+        - [Sim, 12315]
+        - [null, 9320]
+        - [Nao, 5851]
+      oferta_incentivo_fiscal:
+        tipo: VARCHAR
+        nulos_pct: 61.65
+        distintos_aprox: 2
+        min: Nao
+        max: Sim
+        top:
+        - [null, 16944]
+        - [Nao, 9575]
+        - [Sim, 967]
+      oferta_regime_fiduciario:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 27486]
+      atualizacao_monetaria:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 27486]
+      juros:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 27486]
+      projeto_audiovisual:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 27486]
+      tipo_societario_emissor:
+        tipo: VARCHAR
+        nulos_pct: 2.2
+        distintos_aprox: 4
+        min: Fundo de Investimento
+        max: Sociedade de Responsabilidade Limitada
+        top:
+        - [Fundo de Investimento, 18047]
+        - [Sociedade Anonima de Capital Aberto, 6217]
+        - [Sociedade Anonima de Capital Fechado, 2616]
+        - [null, 605]
+        - [Sociedade de Responsabilidade Limitada, 1]
+      tipo_fundo_investimento:
+        tipo: VARCHAR
+        nulos_pct: 33.9
+        distintos_aprox: 11
+        min: FICFIDC - Fundo de Investimento em Cotas de FIDC
+        max: Outros
+        top:
+        - [null, 9319]
+        - [FMM - Fundos Multimercado, 9289]
+        - [FIP - Fundo de Investimento em Participacao, 2646]
+        - [FIDC - Fundo de Investimento em Direitos Creditorios, 2377]
+        - [FIDC NP - Fundo de Investimento em Direitos Creditorios Nao Padronizados, 1358]
+        - [FII - Fundo de Investimento Imobiliario, 1347]
+        - [Outros, 876]
+        - [FICFIDC - Fundo de Investimento em Cotas de FIDC, 234]
+        - [FICFIP - Fundo de Investimento em Cotas de FIP, 20]
+        - [FUNCINE - Fundo de Financiamento da Industria Cinematografica Nacional, 18]
+      ultimo_comunicado:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Comunicado de Encerramento
+        max: Comunicado de Encerramento
+        top:
+        - [Comunicado de Encerramento, 27486]
+      data_comunicado: {tipo: DATE, nulos_pct: 0, distintos_aprox: 2369, min: '2015-12-02', max: '2025-01-24'}

@@ -1,0 +1,616 @@
+dataset: br_ibge_pas
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  sidra:
+    linhas: 811865
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_tabela:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 259
+        min: '1'
+        max: '10762'
+        media: 2690.6266
+        quartis: [2617, 2642, 2696]
+      id_nivel:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '3'
+        top:
+        - ['1', 788537]
+        - ['3', 23328]
+      nivel:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Brasil
+        max: Unidade da Federação
+        top:
+        - [Brasil, 788537]
+        - [Unidade da Federação, 23328]
+      id_localidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 32
+        min: '1'
+        max: '53'
+        top:
+        - ['1', 788537]
+        - ['11', 864]
+        - ['12', 864]
+        - ['13', 864]
+        - ['14', 864]
+        - ['15', 864]
+        - ['16', 864]
+        - ['17', 864]
+        - ['21', 864]
+        - ['22', 864]
+      localidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: Acre
+        max: Tocantins
+        top:
+        - [Brasil, 788537]
+        - [Acre, 864]
+        - [Alagoas, 864]
+        - [Amapá, 864]
+        - [Amazonas, 864]
+        - [Bahia, 864]
+        - [Ceará, 864]
+        - [Distrito Federal, 864]
+        - [Espírito Santo, 864]
+        - [Goiás, 864]
+      periodo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '1998'
+        max: '2024'
+        top:
+        - ['2007', 58411]
+        - ['2000', 32833]
+        - ['1998', 30809]
+        - ['1999', 30809]
+        - ['2004', 29453]
+        - ['2005', 29453]
+        - ['2008', 29422]
+        - ['2009', 29422]
+        - ['2010', 29422]
+        - ['2011', 29422]
+      id_variavel:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 381
+        min: '151'
+        max: '1002269'
+        media: 445806.0424
+        quartis: [841, 1598, 1000674]
+      variavel: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 366, min: Aluguel de imóveis, max: 'Vigilância, segurança e transporte de valores
+          - percentual do total geral'}
+      unidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: ''
+        max: Unidades
+        top:
+        - [Percentual, 352319]
+        - [Mil Reais, 341673]
+        - [Pessoas, 46723]
+        - ['%', 33955]
+        - [Unidades, 19521]
+        - ['', 17674]
+      valor:
+        tipo: DOUBLE
+        nulos_pct: 7.51
+        distintos_aprox: 198473
+        min: '-15228771.0'
+        max: '3811278359.0'
+        media: 2096920.8595
+        quartis: [4.051, 114.8114, 92963.115]
+      simbolo:
+        tipo: VARCHAR
+        nulos_pct: 92.49
+        distintos_aprox: 10
+        min: ..
+        max: Z
+        top:
+        - [null, 750870]
+        - ['...', 30587]
+        - [A, 13153]
+        - [B, 6086]
+        - [.., 5319]
+        - [X, 3499]
+        - [C, 1174]
+        - [Z, 748]
+        - [D, 290]
+        - [E, 139]
+      classificacao_1:
+        tipo: VARCHAR
+        nulos_pct: 0.14
+        distintos_aprox: 20
+        min: Atividades
+        max: Transportes, serviços auxiliares aos transportes e correios
+        top:
+        - ['Transportes, serviços auxiliares aos transportes e correios', 165536]
+        - [Serviços prestados às empresas, 129860]
+        - [Serviços de informação, 111144]
+        - [Tipo de atividade, 108640]
+        - [Serviços prestados às famílias, 101542]
+        - [Serviços de manutenção e reparação, 39122]
+        - [Atividades de serviços, 38264]
+        - [Outras atividades de serviços, 33894]
+        - [Atividades imobiliárias, 29128]
+        - [Produtos ou serviços prestados, 16131]
+      id_categoria_1:
+        tipo: BIGINT
+        nulos_pct: 0.14
+        distintos_aprox: 1212
+        min: '0'
+        max: '120856'
+        media: 59689.4368
+        quartis: [9384, 93049, 106922]
+      categoria_1: {tipo: VARCHAR, nulos_pct: 0.14, distintos_aprox: 1414}
+      classificacao_2:
+        tipo: VARCHAR
+        nulos_pct: 91.08
+        distintos_aprox: 5
+        min: Atividades
+        max: Tipo de gasto
+        top:
+        - [null, 739481]
+        - [Grupos de pessoal ocupado, 55680]
+        - [Atividades de serviços, 12672]
+        - [Tipo de consumo, 2480]
+        - [Tipo de gasto, 1488]
+        - [Atividades, 64]
+      id_categoria_2:
+        tipo: BIGINT
+        nulos_pct: 91.08
+        distintos_aprox: 45
+        min: '0'
+        max: '107071'
+        media: 82889.7929
+        quartis: [93012, 93014, 93016]
+        top:
+        - [null, 739481]
+        - ['0', 9776]
+        - ['93012', 9280]
+        - ['93013', 9280]
+        - ['93014', 9280]
+        - ['93015', 9280]
+        - ['93016', 9280]
+        - ['106869', 792]
+        - ['106870', 792]
+        - ['106871', 792]
+      categoria_2:
+        tipo: VARCHAR
+        nulos_pct: 91.08
+        distintos_aprox: 44
+        min: 1. Serviços prestados às famílias
+        max: Transporte rodoviário
+        top:
+        - [null, 739481]
+        - [Total, 10576]
+        - [100 e mais pessoas, 9280]
+        - [Até 5 pessoas, 9280]
+        - [De 20 a 49 pessoas, 9280]
+        - [De 50 a 99 pessoas, 9280]
+        - [De 6 a 19 pessoas, 9280]
+        - [1. Serviços prestados às famílias, 792]
+        - [1.1 Serviços de alojamento e alimentação, 792]
+        - [1.2 Atividades recreativas e culturais, 792]
+      classificacao_3:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 811865]
+      id_categoria_3:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 811865]
+      categoria_3:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 811865]
+      classificacao_4:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 811865]
+      id_categoria_4:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 811865]
+      categoria_4:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 811865]
+      classificacao_5:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 811865]
+      id_categoria_5:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 811865]
+      categoria_5:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 811865]
+      classificacao_6:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 811865]
+      id_categoria_6:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 811865]
+      categoria_6:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 811865]
+      classificacao_7:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 811865]
+      id_categoria_7:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 811865]
+      categoria_7:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 811865]
+  sidra_tabelas:
+    linhas: 307
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_tabela:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 259
+        min: '1'
+        max: '10762'
+        media: 2374.8436
+        quartis: [1596, 2637, 2763]
+      tabela: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 365, min: 'Aluguéis e arrendamentos de veículos, máquinas e equipamentos e Outros
+          custos e despesas operacionais das empresas de alimentação', max: 'Variação trimestral do pessoal ocupado das empresas de transportes,
+          serviços auxiliares aos transportes e correios, total e empresas com 20 ou mais pessoas ocupadas, segundo as atividades - CNAE 2.0'}
+      pesquisa:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Pesquisa Anual de Serviços
+        max: Pesquisa Anual de Serviços
+        top:
+        - [Pesquisa Anual de Serviços, 307]
+      assunto:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 20
+        min: Alojamento e/ou alimentação
+        max: Transportes
+        top:
+        - [Transportes, 50]
+        - [Atividades imobiliárias, 37]
+        - [Outras atividades de serviços, 37]
+        - [Serviços prestados às empresas, 26]
+        - [Alojamento e/ou alimentação, 25]
+        - [Informação e comunicação, 22]
+        - [Manutenção e reparação, 22]
+        - [Serviços prestados às famílias, 22]
+        - [Correio e/ou telecomunicações, 18]
+        - [Informática, 17]
+      periodicidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: anual
+        max: anual
+        top:
+        - [anual, 307]
+      periodo_inicio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '1998'
+        max: '2024'
+        top:
+        - ['1998', 108]
+        - ['2007', 81]
+        - ['2002', 59]
+        - ['2003', 32]
+        - ['2000', 13]
+        - ['2001', 6]
+        - ['2024', 5]
+        - ['2004', 3]
+      periodo_fim:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '2000'
+        max: '2024'
+        top:
+        - ['2001', 92]
+        - ['2007', 90]
+        - ['2023', 81]
+        - ['2002', 26]
+        - ['2000', 10]
+        - ['2024', 5]
+        - ['2005', 3]
+      periodos:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: 1998,1999,2000
+        max: '2024'
+        top:
+        - ['1998,1999,2000,2001', 86]
+        - ['2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023', 81]
+        - ['2002,2003,2004,2005,2006,2007', 58]
+        - ['2003,2004,2005,2006,2007', 32]
+        - ['1998,1999,2000,2001,2002', 16]
+        - ['2000,2001,2002', 9]
+        - ['1998,1999,2000', 6]
+        - ['2001', 6]
+        - ['2024', 5]
+        - ['2000', 4]
+      n_periodos:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '1'
+        max: '17'
+        media: 7.7394
+        quartis: [4, 5, 17]
+        top:
+        - ['4', 86]
+        - ['17', 81]
+        - ['6', 58]
+        - ['5', 48]
+        - ['1', 16]
+        - ['3', 15]
+        - ['2', 3]
+      niveis:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: N1
+        max: N1,N2,N3
+        top:
+        - [N1, 293]
+        - ['N1,N2,N3', 14]
+      tem_municipio:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: 'false'
+        max: 'false'
+        top:
+        - ['false', 307]
+      variaveis:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 48
+        min: Aluguéis e arrendamento de veículos, máquinas e equipamentos (Mil Reais) | Aluguéis e arrendamento de veículos, máquinas e equipamentos
+          - percentual do total geral (%) | Mercadorias, materiais de consumo e de reposição (Mil Reais) | Mercadorias, materiais de consumo e
+          de reposição - percentual do total geral (%) | Combustíveis e lubrificantes (Mil Reais) | Combustíveis e lubrificantes - percentual
+          do total geral (%) | Serviços de comunicação (Mil Reais) | Serviços de comunicação - percentual do total geral (%) | Energia elétrica,
+          gás, água e esgoto (Mil Reais) | Energia elétrica, gás, água e esgoto - percentual do total geral (%) | Serviços prestados por profissionais
+          liberais ou autônomos (Mil Reais) | Serviços prestados por profissionais liberais ou autônomos - percentual do total geral (%) | Serviços
+          prestados por pessoas jurídicas (Mil Reais) | Serviços prestados por pessoas jurídicas - percentual do total geral (%) | Prêmios de
+          seguros (Mil Reais) | Prêmios de seguros - percentual do total geral (%) | Impostos e taxas (IPTU, IPVA, IOF, alvarás, etc.) (Mil Reais)
+          | Impostos e taxas (IPTU, IPVA, IOF, alvarás, etc.) - percentual do total geral (%) | Depreciação e amortização (Mil Reais) | Depreciação
+          e amortização - percentual do total geral (%) | Custo das mercadorias revendidas (Mil Reais) | Custo das mercadorias revendidas - percentual
+          do total geral (%) | Despesas financeiras e variações monetárias passivas (Mil Reais) | Despesas financeiras e variações monetárias
+          passivas - percentual do total geral (%) | Resultado negativo em participações societárias (Mil Reais) | Resultado negativo em participações
+          societárias - percentual do total geral (%) | Outros custos e despesas operacionais (Mil Reais) | Outros custos e despesas operacionais
+          - percentual do total geral (%) | Despesas não-operacionais (Mil Reais) | Despesas não-operacionais - percentual do total geral (%)
+        max: Total de gastos de pessoal (Mil Reais) | Total de gastos de pessoal - percentual do total geral (%) | Salários e outras remunerações
+          (Mil Reais) | Salários e outras remunerações - percentual do total geral (%) | Participação nos lucros e honorários da diretoria (Mil
+          Reais) | Participação nos lucros e honorários da diretoria - percentual do total geral (%) | Remuneração dos sócios cooperados (Mil
+          Reais) | Remuneração dos sócios cooperados - percentual do total geral (%) | Retiradas prolabore dos proprietários e sócios (Mil Reais)
+          | Retiradas prolabore dos proprietários e sócios - percentual do total geral (%) | Contribuições para a previdência social (Mil Reais)
+          | Contribuições para a previdência social - percentual do total geral (%) | FGTS - Fundo de Garantia do Tempo de Serviço (Mil Reais)
+          | FGTS - Fundo de Garantia do Tempo de Serviço - percentual do total geral (%) | Contribuições para a previdência privada (Mil Reais)
+          | Contribuições para a previdência privada - percentual do total geral (%) | Indenizações por dispensa (Mil Reais) | Indenizações por
+          dispensa - percentual do total geral (%) | Benefícios concedidos aos empregados (Mil Reais) | Benefícios concedidos aos empregados -
+          percentual do total geral (%) | PIS sobre folha de pagamento (Mil Reais) | PIS sobre folha de pagamento - percentual do total geral
+          (%)
+        top:
+        - ['Aluguéis e arrendamento de veículos, máquinas e equipamentos (Mil Reais) | Aluguéis e arrendamento de veículos, máquinas e equipamentos
+            - percentual do total geral (%) | Mercadorias, materiais de consumo e de reposição (Mil Reais) | Mercadorias, materiais de consumo
+            e de reposição - percentual do total geral (%) | Combustíveis e lubrificantes (Mil Reais) | Combustíveis e lubrificantes - percentual
+            do total geral (%) | Serviços de comunicação (Mil Reais) | Serviços de comunicação - percentual do total geral (%) | Energia elétrica,
+            gás, água e esgoto (Mil Reais) | Energia elétrica, gás, água e esgoto - percentual do total geral (%) | Serviços prestados por profissionais
+            liberais ou autônomos (Mil Reais) | Serviços prestados por profissionais liberais ou autônomos - percentual do total geral (%) | Serviços
+            prestados por pessoas jurídicas (Mil Reais) | Serviços prestados por pessoas jurídicas - percentual do total geral (%) | Prêmios de
+            seguros (Mil Reais) | Prêmios de seguros - percentual do total geral (%) | Impostos e taxas (IPTU, IPVA, IOF, alvarás, etc.) (Mil
+            Reais) | Impostos e taxas (IPTU, IPVA, IOF, alvarás, etc.) - percentual do total geral (%) | Depreciação e amortização (Mil Reais)
+            | Depreciação e amortização - percentual do total geral (%) | Custo das mercadorias revendidas (Mil Reais) | Custo das mercadorias
+            revendidas - percentual do total geral (%) | Despesas financeiras e variações monetárias passivas (Mil Reais) | Despesas financeiras
+            e variações monetárias passivas - percentual do total geral (%) | Resultado negativo em participações societárias (Mil Reais) | Resultado
+            negativo em participações societárias - percentual do total geral (%) | Outros custos e despesas operacionais (Mil Reais) | Outros
+            custos e despesas operacionais - percentual do total geral (%) | Despesas não-operacionais (Mil Reais) | Despesas não-operacionais
+            - percentual do total geral (%)', 16]
+        - ['Aluguéis e arrendamento de veículos, máquinas e equipamentos (Mil Reais) | Aluguéis e arrendamento de veículos, máquinas e equipamentos
+            - percentual do total geral (%) | Outros custos e despesas operacionais (Mil Reais) | Outros custos e despesas operacionais - percentual
+            do total geral (%)', 16]
+        - [Número de empresas (Unidades) | Número de empresas - percentual do total geral (%) | Pessoal ocupado em 31/12 (Pessoas) | Pessoal ocupado
+            em 31/12 - percentual do total geral (%) | Pessoal ocupado em 31/12 - assalariado (Pessoas) | Pessoal ocupado em 31/12 - assalariado
+            - percentual do total geral (%) | Pessoal ocupado em 31/12 - proprietários ou sócios (Pessoas) | Pessoal ocupado em 31/12 - proprietários
+            ou sócios - percentual do total geral (%) | Pessoal ocupado em 31/12 - membros da família sem remuneração (Pessoas) | Pessoal ocupado
+            em 31/12 - membros da família sem remuneração - percentual do total geral (%) | Média mensal do pessoal ocupado assalariado (Pessoas),
+          16]
+        - ['Receita bruta - prestação de serviços (Mil Reais) | Receita bruta - prestação de serviços - percentual do total geral (%) | Receita
+            bruta - revenda de mercadorias (Mil Reais) | Receita bruta - revenda de mercadorias - percentual do total geral (%) | Receita bruta
+            - outras atividades (Mil Reais) | Receita bruta - outras atividades - percentual do total geral (%) | Deduções (Mil Reais) | Deduções
+            - percentual do total geral (%) | Receita operacional líquida (Mil Reais) | Receita operacional líquida - percentual do total geral
+            (%) | Subvenções e dotações orçamentárias recebidas de governos (Mil Reais) | Subvenções e dotações orçamentárias recebidas de governos
+            - percentual do total geral (%) | Receitas financeiras, variações monetárias ativas e resultado positivo em participações societárias
+            (Mil Reais) | Receitas financeiras, variações monetárias ativas e resultado positivo em participações societárias - percentual do
+            total geral (%) | Receitas financeiras e variações monetárias ativas (Mil Reais) | Receitas financeiras e variações monetárias ativas
+            - percentual do total geral (%) | Resultado positivo em participações societárias (Mil Reais) | Resultado positivo em participações
+            societárias - percentual do total geral (%) | Outras receitas operacionais (Mil Reais) | Outras receitas operacionais - percentual
+            do total geral (%) | Receitas não-operacionais (Mil Reais) | Receitas não-operacionais - percentual do total geral (%)', 16]
+        - [Salários e outras remunerações (Mil Reais) | Salários e outras remunerações - percentual do total geral (%) | Retiradas prolabore (Mil
+            Reais) | Retiradas prolabore - percentual do total geral (%) | Contribuições para a previdência social (Mil Reais) | Contribuições
+            para a previdência social - percentual do total geral (%) | Fundo de garantia do tempo de serviço - FGTS (Mil Reais) | Fundo de garantia
+            do tempo de serviço - FGTS - percentual do total geral (%) | Indenizações por dispensa (Mil Reais) | Indenizações por dispensa - percentual
+            do total geral (%) | Benefícios concedidos aos empregados (Mil Reais) | Benefícios concedidos aos empregados - percentual do total
+            geral (%), 16]
+        - [Pessoal ocupado em 31/03 (Pessoas) | Pessoal ocupado em 31/03 - percentual do total geral (%) | Pessoal ocupado em 30/06 (Pessoas)
+            | Pessoal ocupado em 30/06 - percentual do total geral (%) | Pessoal ocupado em 30/09 (Pessoas) | Pessoal ocupado em 30/09 - percentual
+            do total geral (%) | Pessoal ocupado em 31/12 (Pessoas) | Pessoal ocupado em 31/12 - percentual do total geral (%), 14]
+        - ['Total de aquisições (Mil Reais) | Total de aquisições - percentual do total geral (%) | Terrenos (Mil Reais) | Terrenos - percentual
+            do total geral (%) | Edificações (Mil Reais) | Edificações - percentual do total geral (%) | Maquinas, equipamentos e instalações
+            (Mil Reais) | Maquinas, equipamentos e instalações - percentual do total geral (%) | Meios de transporte (Mil Reais) | Meios de transporte
+            - percentual do total geral (%) | Outras aquisições (Mil Reais) | Outras aquisições - percentual do total geral (%)', 14]
+        - ['Total de baixas (Mil Reais) | Total de baixas - percentual do total geral (%) | Terrenos (Mil Reais) | Terrenos - percentual do total
+            geral (%) | Edificações (Mil Reais) | Edificações - percentual do total geral (%) | Maquinas, equipamentos e instalações (Mil Reais)
+            | Maquinas, equipamentos e instalações - percentual do total geral (%) | Meios de transporte (Mil Reais) | Meios de transporte - percentual
+            do total geral (%) | Outras baixas (Mil Reais) | Outras baixas - percentual do total geral (%)', 14]
+        - ['Total de depreciação, amortização, despesas não-operacionais e constituição de provisões (Mil Reais) | Total de depreciação, amortização,
+            despesas não-operacionais e constituição de provisões - percentual do total geral (%) | Depreciação e amortização (Mil Reais) | Depreciação
+            e amortização - percentual do total geral (%) | Despesas não-operacionais (Mil Reais) | Despesas não-operacionais - percentual do
+            total geral (%) | Provisão para imposto de renda e contribuição social (Mil Reais) | Provisão para imposto de renda e contribuição
+            social - percentual do total geral (%) | Outras provisões (Mil Reais) | Outras provisões - percentual do total geral (%)', 14]
+        - ['Total de despesas financeiras, arrendamento mercantil e de participações acionárias (Mil Reais) | Total de despesas financeiras, arrendamento
+            mercantil e de participações acionárias - percentual do total geral (%) | Arrendamento mercantil (leasing) de máquinas, equipamentos
+            e veículos (Mil Reais) | Arrendamento mercantil (leasing) de máquinas, equipamentos e veículos - percentual do total geral (%) | Despesas
+            financeiras e variações monetárias passivas (Mil Reais) | Despesas financeiras e variações monetárias passivas - percentual do total
+            geral (%) | Despesas financeiras (Mil Reais) | Despesas financeiras - percentual do total geral (%) | Variações monetárias passivas
+            (Mil Reais) | Variações monetárias passivas - percentual do total geral (%) | Comissões pagas à administradoras de cartão de crédito
+            (Mil Reais) | Comissões pagas à administradoras de cartão de crédito - percentual do total geral (%) | Resultado negativo em participações
+            societárias (Mil Reais) | Resultado negativo em participações societárias - percentual do total geral (%)', 14]
+      classificacoes: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 82, min: '', max: 'Transportes, serviços auxiliares aos transportes e correios
+          (8)'}
+      celulas_uf:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 166
+        min: '112'
+        max: '1005312'
+        media: 75193.316
+        quartis: [12344, 33579, 79348]
+      celulas_municipio:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '0'
+        max: '0'
+        media: 0
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 307]
+      nclass:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '0'
+        max: '2'
+        media: 1.1042
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 259]
+        - ['2', 40]
+        - ['0', 8]
+      municipio_no_espelho:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: 'false'
+        max: 'false'
+        top:
+        - ['false', 307]
+      linhas:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 146
+        min: '0'
+        max: '31416'
+        media: 2644.5114
+        quartis: [487, 1268, 3025]
+      fora:
+        tipo: VARCHAR
+        nulos_pct: 99.67
+        distintos_aprox: 1
+        min: 1,005,312 células em UF (teto 1,000,000)
+        max: 1,005,312 células em UF (teto 1,000,000)
+        top:
+        - [null, 306]
+        - ['1,005,312 células em UF (teto 1,000,000)', 1]
+      no_espelho:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['true', 306]
+        - ['false', 1]

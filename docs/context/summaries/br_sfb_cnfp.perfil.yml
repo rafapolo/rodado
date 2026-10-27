@@ -1,0 +1,182 @@
+dataset: br_sfb_cnfp
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  florestas_publicas:
+    linhas: 12874
+    fonte_do_perfil: tabela inteira
+    colunas:
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 13506, pessoal: 'só contagens: valores seriam dado pessoal'}
+      categoria: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 128, min: APA, max: USO MILITAR / REBIO}
+      protecao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: OUTROS USOS
+        max: USO SUSTENTAVEL
+        top:
+        - [USO SUSTENTAVEL, 9662]
+        - [SEM DESTINACAO, 1742]
+        - [PROTECAO INTEGRAL, 1302]
+        - [USO MILITAR, 128]
+        - [OUTROS USOS, 40]
+      tipo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: TIPO A
+        max: TIPO B
+        top:
+        - [TIPO A, 11132]
+        - [TIPO B, 1742]
+      governo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: ESTADUAL
+        max: MUNICIPAL
+        top:
+        - [FEDERAL, 10560]
+        - [ESTADUAL, 1498]
+        - [MUNICIPAL, 816]
+      comunitari:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: NAO
+        max: SIM
+        top:
+        - [SIM, 9025]
+        - [NAO, 3849]
+      classe:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 33
+        min: AREAMILIT
+        max: UCMUN
+        top:
+        - [ASSENTFED, 6564]
+        - [GLEBAFED, 1460]
+        - [UCEST, 837]
+        - [UCMUN, 816]
+        - [TI, 664]
+        - [ASSENTFED / UCEST, 554]
+        - [UCFED, 404]
+        - [ASSENTEST, 379]
+        - [GLEBAEST, 282]
+        - [ASSENTFED / UCFED, 177]
+      orgao: {tipo: VARCHAR, nulos_pct: 4.23, distintos_aprox: 512, min: AGÊNCIA DO MEIO AMBIENTE DO MUNICÍPIO DE RESENDE - RJ, max: SUPERINTENDÊNCIA
+          MUNICIPAL DE MEIO AMBIENTE DE BATAGUASSU - MS}
+      sobreposic:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: NÃO
+        max: SIM
+        top:
+        - [NÃO, 11590]
+        - [SIM, 1284]
+      atolegal: {tipo: VARCHAR, nulos_pct: 70.9, distintos_aprox: 1910}
+      anocriacao: {tipo: VARCHAR, nulos_pct: 10.35, distintos_aprox: 5666}
+      estagio:
+        tipo: VARCHAR
+        nulos_pct: 56.21
+        distintos_aprox: 30
+        min: APROVACAO_FISCAL
+        max: TITULACAO
+        top:
+        - [null, 7236]
+        - [ATIVO, 2891]
+        - [CERTIFICADA, 809]
+        - [REGULARIZADA, 569]
+        - [ARRECADADA, 523]
+        - [REGULARIZADA / ATIVO, 208]
+        - [IDENTIFICACAO, 97]
+        - [DEMARCACAO, 93]
+        - [DECLARADA, 88]
+        - [REGISTRADA, 82]
+      codigo:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 12874]
+      observacao:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 12874]
+      uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [PA, 1807]
+        - [MT, 959]
+        - [AM, 850]
+        - [BA, 763]
+        - [MA, 739]
+        - [PE, 729]
+        - [TO, 683]
+        - [MG, 575]
+        - [CE, 510]
+        - [GO, 497]
+      Shape_Leng:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 12772
+        min: '7.24381374664e-05'
+        max: '141.201122408'
+        media: 1.2793
+        quartis: [0.1236, 0.3158, 0.8603]
+      Shape_Area:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 13284
+        min: '4.21050234389e-11'
+        max: '6.96066320103'
+        media: 0.0205
+        quartis: [0.0001, 0.0006, 0.0025]
+      bioma:
+        tipo: VARCHAR
+        nulos_pct: 0.01
+        distintos_aprox: 13
+        min: AMAZÔNIA
+        max: PANTANAL
+        top:
+        - [AMAZÔNIA, 4319]
+        - [CERRADO, 2843]
+        - [MATA ATLÂNTICA, 2791]
+        - [CAATINGA, 2278]
+        - [PAMPA, 212]
+        - [AMAZÔNIA/CERRADO, 168]
+        - [CERRADO/MATA ATLÂNTICA, 90]
+        - [CAATINGA/CERRADO, 50]
+        - [CAATINGA/MATA ATLÂNTICA, 42]
+        - [PANTANAL, 34]
+      municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6482}
+      geocodigo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5729}
+      area_ha:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 10868
+        min: '5.11263519242e-05'
+        max: '8523914.75047'
+        media: 25043.3479
+        quartis: [145.7249, 670.4654, 2935.1294]
+      geometria: {tipo: 'GEOMETRY(''OGC:CRS84'')', nulos_pct: 0, distintos_aprox: 12753}
+      area_calc_ha:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 11699
+        min: '5.251871093477205e-05'
+        max: '8915253.19502672'
+        media: 25349.8463
+        quartis: [148.0449, 679.7243, 2975.2477]

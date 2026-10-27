@@ -1,0 +1,698 @@
+dataset: br_ibge_pib
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  brasil_antigo:
+    linhas: 14
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: '1999'
+        max: '2012'
+        top:
+        - ['1999', 1]
+        - ['2000', 1]
+        - ['2001', 1]
+        - ['2002', 1]
+        - ['2003', 1]
+        - ['2004', 1]
+        - ['2005', 1]
+        - ['2006', 1]
+        - ['2007', 1]
+        - ['2008', 1]
+      impostos_liquidos:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: '137161505000'
+        max: '667024541000'
+        media: 351440704285.7143
+        quartis: [204692769000, 320024419000, 451754490000]
+        top:
+        - ['137161505000', 1]
+        - ['157834000000', 1]
+        - ['183522029000', 1]
+        - ['204692769000', 1]
+        - ['229333694000', 1]
+        - ['275240358000', 1]
+        - ['304986292000', 1]
+        - ['335062546000', 1]
+        - ['373486525000', 1]
+        - ['445025053000', 1]
+      pib:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1064999712000'
+        max: '4392093997000'
+        media: 2458625119571.4287
+        quartis: [1477821769000, 2258361419000, 3239404053000]
+        top:
+        - ['1064999712000', 1]
+        - ['1179482000000', 1]
+        - ['1302135029000', 1]
+        - ['1477821769000', 1]
+        - ['1699947694000', 1]
+        - ['1941498358000', 1]
+        - ['2147239292000', 1]
+        - ['2369483546000', 1]
+        - ['2661344525000', 1]
+        - ['3032203490000', 1]
+      va:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '927838207000'
+        max: '3725069456000'
+        media: 2107184415285.7144
+        quartis: [1273129000000, 1938337000000, 2794379000000]
+        top:
+        - ['1021648000000', 1]
+        - ['1118613000000', 1]
+        - ['1273129000000', 1]
+        - ['1470614000000', 1]
+        - ['1666258000000', 1]
+        - ['1842253000000', 1]
+        - ['2034421000000', 1]
+        - ['2287858000000', 1]
+        - ['2580449000000', 1]
+        - ['2794379000000', 1]
+      va_adespss:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 14
+        min: '141462000000'
+        max: '618463710000'
+        media: 332532068071.4286
+        quartis: [197728000000, 294288500000, 456426000000]
+        top:
+        - ['141462000000', 1]
+        - ['152521000000', 1]
+        - ['173568000000', 1]
+        - ['197728000000', 1]
+        - ['222277000000', 1]
+        - ['244427000000', 1]
+        - ['277196000000', 1]
+        - ['311381000000', 1]
+        - ['353723000000', 1]
+        - ['406958000000', 1]
+      va_agropecuaria:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: '50782029000'
+        max: '198137110000'
+        media: 121336709000
+        quartis: [84251000000, 113380000000, 157232000000]
+        top:
+        - ['105163000000', 1]
+        - ['108619000000', 1]
+        - ['111566000000', 1]
+        - ['115194000000', 1]
+        - ['127267000000', 1]
+        - ['152612000000', 1]
+        - ['157232000000', 1]
+        - ['171177392000', 1]
+        - ['192653395000', 1]
+        - ['198137110000', 1]
+      va_industria:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 14
+        min: '240734966000'
+        max: '972156032000'
+        media: 582739359285.7142
+        quartis: [344406000000, 562117500000, 749699000000]
+        top:
+        - ['240734966000', 1]
+        - ['283321000000', 1]
+        - ['301171000000', 1]
+        - ['344406000000', 1]
+        - ['409504000000', 1]
+        - ['501771000000', 1]
+        - ['539283000000', 1]
+        - ['584952000000', 1]
+        - ['636280000000', 1]
+        - ['719987000000', 1]
+      va_servicos:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: '636321212000'
+        max: '2557698505000'
+        media: 1403108347000
+        quartis: [844472000000, 1267855000000, 1887448000000]
+        top:
+        - ['1049293000000', 1]
+        - ['1197807000000', 1]
+        - ['1337903000000', 1]
+        - ['1524311000000', 1]
+        - ['1707850000000', 1]
+        - ['1887448000000', 1]
+        - ['2150151084000', 1]
+        - ['2366062057000', 1]
+        - ['2557698505000', 1]
+        - ['636321212000', 1]
+  gini:
+    linhas: 520
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 29
+        min: '11'
+        max: '52'
+        top:
+        - ['11', 20]
+        - ['12', 20]
+        - ['13', 20]
+        - ['14', 20]
+        - ['15', 20]
+        - ['16', 20]
+        - ['17', 20]
+        - ['21', 20]
+        - ['22', 20]
+        - ['23', 20]
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 20
+        min: '2002'
+        max: '2021'
+        media: 2011.5
+        quartis: [2006, 2012, 2017]
+        top:
+        - ['2002', 26]
+        - ['2003', 26]
+        - ['2004', 26]
+        - ['2005', 26]
+        - ['2006', 26]
+        - ['2007', 26]
+        - ['2008', 26]
+        - ['2009', 26]
+        - ['2010', 26]
+        - ['2011', 26]
+      gini_pib:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 629
+        min: '0.642692'
+        max: '0.907582'
+        media: 0.7666
+        quartis: [0.7298, 0.7707, 0.7949]
+      gini_va_agro:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 583
+        min: '0.278119'
+        max: '0.762634'
+        media: 0.5051
+        quartis: [0.4379, 0.5053, 0.581]
+      gini_va_industria:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 508
+        min: '0.730139'
+        max: '0.975159'
+        media: 0.8671
+        quartis: [0.8405, 0.8688, 0.8972]
+      gini_va_servicos:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 615
+        min: '0.759653'
+        max: '0.945006'
+        media: 0.8468
+        quartis: [0.8243, 0.851, 0.867]
+      gini_va_adespss:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 481
+        min: '0.513773'
+        max: '0.797559'
+        media: 0.636
+        quartis: [0.5909, 0.6203, 0.6771]
+  municipio:
+    linhas: 122466
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 23
+        min: '2002'
+        max: '2023'
+        media: 2012.5038
+        quartis: [2007, 2013, 2018]
+        top:
+        - ['2013', 5570]
+        - ['2014', 5570]
+        - ['2015', 5570]
+        - ['2016', 5570]
+        - ['2017', 5570]
+        - ['2018', 5570]
+        - ['2019', 5570]
+        - ['2020', 5570]
+        - ['2021', 5570]
+        - ['2022', 5570]
+      pib:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 111475
+        min: '-19046000'
+        max: '1066825105000'
+        media: 930738461.2546
+        quartis: [47850539, 115116502, 336103620]
+      impostos_liquidos:
+        tipo: BIGINT
+        nulos_pct: 9.1
+        distintos_aprox: 42496
+        min: '-15088000'
+        max: '168184034000'
+        media: 119485386.3248
+        quartis: [1703516, 5320336, 21694675]
+      va:
+        tipo: BIGINT
+        nulos_pct: 9.1
+        distintos_aprox: 93362
+        min: '-510593000'
+        max: '660796712000'
+        media: 715546811.0864
+        quartis: [42072824, 97983759, 275823890]
+      va_agropecuaria:
+        tipo: BIGINT
+        nulos_pct: 9.1
+        distintos_aprox: 60587
+        min: '-2299000'
+        max: '5004239000'
+        media: 40166574.978
+        quartis: [6705621, 16908153, 40593046]
+      va_industria:
+        tipo: BIGINT
+        nulos_pct: 9.1
+        distintos_aprox: 46862
+        min: '-2897193000'
+        max: '66893050000'
+        media: 173881738.6594
+        quartis: [2188956, 7295197, 41098165]
+      va_servicos:
+        tipo: BIGINT
+        nulos_pct: 9.1
+        distintos_aprox: 65087
+        min: '372000'
+        max: '549767525000'
+        media: 381742108.9413
+        quartis: [10074884, 27703265, 94434159]
+      va_adespss:
+        tipo: BIGINT
+        nulos_pct: 9.1
+        distintos_aprox: 60247
+        min: '1447000'
+        max: '116809198000'
+        media: 119756384.8786
+        quartis: [14559907, 29450693, 68544797]
+  municipio_antigo:
+    linhas: 77910
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1999'
+        max: '2012'
+        media: 2005.5
+        quartis: [2002, 2005, 2009]
+        top:
+        - ['1999', 5565]
+        - ['2000', 5565]
+        - ['2001', 5565]
+        - ['2002', 5565]
+        - ['2003', 5565]
+        - ['2004', 5565]
+        - ['2005', 5565]
+        - ['2006', 5565]
+        - ['2007', 5565]
+        - ['2008', 5565]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      impostos_liquidos:
+        tipo: BIGINT
+        nulos_pct: 0.18
+        distintos_aprox: 28177
+        min: '11000'
+        max: '92730408000'
+        media: 63265654.3912
+        quartis: [824417, 2428041, 9380264]
+      pib:
+        tipo: BIGINT
+        nulos_pct: 0.18
+        distintos_aprox: 53402
+        min: '1422000'
+        max: '499375401000'
+        media: 442596781.6253
+        quartis: [25113248, 56045877, 150218666]
+      va:
+        tipo: BIGINT
+        nulos_pct: 0.18
+        distintos_aprox: 53196
+        min: '1400000'
+        max: '406644993000'
+        media: 379331127.247
+        quartis: [24098378, 52846841, 139392181]
+      va_adespss:
+        tipo: BIGINT
+        nulos_pct: 0.18
+        distintos_aprox: 52447
+        min: '715000'
+        max: '82213017000'
+        media: 59861758.5316
+        quartis: [6939523, 13737128, 31349337]
+      va_agropecuaria:
+        tipo: BIGINT
+        nulos_pct: 0.18
+        distintos_aprox: 36925
+        min: '0'
+        max: '1143505000'
+        media: 21842792.0278
+        quartis: [4665689, 10878415, 23914144]
+      va_industria:
+        tipo: BIGINT
+        nulos_pct: 0.18
+        distintos_aprox: 31011
+        min: '-1189156000'
+        max: '77162027000'
+        media: 104903576.4562
+        quartis: [2136432, 5662033, 23037840]
+      va_servicos:
+        tipo: BIGINT
+        nulos_pct: 0.18
+        distintos_aprox: 53284
+        min: '1194000'
+        max: '332969808000'
+        media: 252584761.5019
+        quartis: [13723996, 29760110, 77692143]
+  regiao_antigo:
+    linhas: 70
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1999'
+        max: '2012'
+        media: 2005.5
+        quartis: [2002, 2006, 2009]
+        top:
+        - ['1999', 5]
+        - ['2000', 5]
+        - ['2001', 5]
+        - ['2002', 5]
+        - ['2003', 5]
+        - ['2004', 5]
+        - ['2005', 5]
+        - ['2006', 5]
+        - ['2007', 5]
+        - ['2008', 5]
+      id_regiao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '1'
+        max: '5'
+        top:
+        - ['1', 14]
+        - ['2', 14]
+        - ['3', 14]
+        - ['4', 14]
+        - ['5', 14]
+      impostos_liquidos:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 71
+        min: '4189624000'
+        max: '400166563000'
+        media: 70288140885.7143
+        quartis: [19101172000, 35493183000, 78149726000]
+      pib:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 72
+        min: '44417659000'
+        max: '2424005324000'
+        media: 491725023957.1429
+        quartis: [163207956000, 290701866000, 595382228000]
+      va:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 78
+        min: '40228035000'
+        max: '2023838762000'
+        media: 421436883042.8571
+        quartis: [143642947000, 255008398000, 517232502000]
+      va_adespss:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 79
+        min: '9680960000'
+        max: '247841544000'
+        media: 66506413657.1429
+        quartis: [30457146000, 50031250000, 87362830000]
+      va_agropecuaria:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 84
+        min: '4451816000'
+        max: '61114977000'
+        media: 24267341785.7143
+        quartis: [14708524000, 21269430500, 31758152000]
+      va_industria:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 71
+        min: '9626242000'
+        max: '565951920000'
+        media: 116547871828.5714
+        quartis: [31608060000, 60990583000, 139245675000]
+      va_servicos:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 67
+        min: '26149977000'
+        max: '1400250892000'
+        media: 280621669457.1429
+        quartis: [96799386000, 165846154000, 340138588000]
+  uf:
+    linhas: 513
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 18
+        min: '2002'
+        max: '2020'
+        media: 2011
+        quartis: [2006, 2011, 2016]
+        top:
+        - ['2002', 27]
+        - ['2003', 27]
+        - ['2004', 27]
+        - ['2005', 27]
+        - ['2006', 27]
+        - ['2007', 27]
+        - ['2008', 27]
+        - ['2009', 27]
+        - ['2010', 27]
+        - ['2011', 27]
+      id_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: '11'
+        max: '53'
+        top:
+        - ['11', 19]
+        - ['12', 19]
+        - ['13', 19]
+        - ['14', 19]
+        - ['15', 19]
+        - ['16', 19]
+        - ['17', 19]
+        - ['21', 19]
+        - ['22', 19]
+        - ['23', 19]
+      impostos_liquidos:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 724
+        min: '174359460'
+        max: '373027516062'
+        media: 23399000400.9123
+        quartis: [2897849769, 7843868706, 21312602578]
+      pib:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 423
+        min: '2392032671'
+        max: '2377638979835'
+        media: 163642597326.6433
+        quartis: [26379927032, 62573123408, 162117329497]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [AC, 19]
+        - [AL, 19]
+        - [AM, 19]
+        - [AP, 19]
+        - [BA, 19]
+        - [CE, 19]
+        - [DF, 19]
+        - [ES, 19]
+        - [GO, 19]
+        - [MA, 19]
+      va:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 512
+        min: '2217673211'
+        max: '2014850308310'
+        media: 140243596926.0253
+        quartis: [23236277084, 55250838924, 141604328117]
+      va_adespss:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 544
+        min: '1032382508'
+        max: '197274126779'
+        media: 23612170576.7193
+        quartis: [5905834269, 12262695429, 27146591802]
+      va_agropecuaria:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 503
+        min: '39602849'
+        max: '56493860969'
+        media: 7564325841.8343
+        quartis: [1317149972, 3834429701, 10338216675]
+      va_industria:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 562
+        min: '225335273'
+        max: '416873007358'
+        media: 33847484236.1189
+        quartis: [4294986227, 10954218116, 34138540003]
+      va_servicos:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 524
+        min: '773172275'
+        max: '1356311969181'
+        media: 75219616270.883
+        quartis: [9333160252, 24532339473, 67882099066]
+  uf_antigo:
+    linhas: 378
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1999'
+        max: '2012'
+        media: 2005.5
+        quartis: [2002, 2005, 2009]
+        top:
+        - ['1999', 27]
+        - ['2000', 27]
+        - ['2001', 27]
+        - ['2002', 27]
+        - ['2003', 27]
+        - ['2004', 27]
+        - ['2005', 27]
+        - ['2006', 27]
+        - ['2007', 27]
+        - ['2008', 27]
+      id_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: '11'
+        max: '53'
+        top:
+        - ['11', 14]
+        - ['12', 14]
+        - ['13', 14]
+        - ['14', 14]
+        - ['15', 14]
+        - ['16', 14]
+        - ['17', 14]
+        - ['21', 14]
+        - ['22', 14]
+        - ['23', 14]
+      impostos_liquidos:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 500
+        min: '91761000'
+        max: '253730759000'
+        media: 13016322383.5979
+        quartis: [1409692960, 4022907380, 11824757520]
+      pib:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 409
+        min: '1569597000'
+        max: '1408903866000'
+        media: 91060189629.6296
+        quartis: [13411249680, 34560362140, 89915315000]
+      va:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 389
+        min: '1477835000'
+        max: '1155173107000'
+        media: 78043867230.1587
+        quartis: [11962240440, 30203950500, 78802779280]
+      va_adespss:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 432
+        min: '658805000'
+        max: '109740254000'
+        media: 12316002552.9101
+        quartis: [2901024400, 5968189560, 12903370840]
+      va_agropecuaria:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 373
+        min: '74318000'
+        max: '31092362000'
+        media: 4493952169.3122
+        quartis: [999548520, 2247995120, 6018003920]
+      va_industria:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 364
+        min: '115010000'
+        max: '304129308000'
+        media: 21582939222.2222
+        quartis: [2430443080, 6308468860, 21455186400]
+      va_servicos:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 453
+        min: '1166047000'
+        max: '844706943000'
+        media: 51966975788.3598
+        quartis: [7732632480, 18838067820, 49211512080]

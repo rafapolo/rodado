@@ -1,0 +1,22 @@
+dataset: br_fipe_veiculos
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  precos:
+    linhas: 11425
+    fonte_do_perfil: tabela inteira
+    colunas:
+      vehicle_type:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: cars
+        max: trucks
+        top:
+        - [cars, 7386]
+        - [motorcycles, 2038]
+        - [trucks, 2001]
+      brand_code: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 229, min: '1', max: '99'}
+      brand_name: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 268, min: ADLY, max: smart}
+      model_code: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 10453}
+      model_name: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 12909}

@@ -1,0 +1,330 @@
+dataset: br_mj_sinesp
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  municipio_mes:
+    linhas: 8806170
+    fonte_do_perfil: tabela inteira da última partição (ano = 2026)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
+        top:
+        - ['2026', 529150]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '1'
+        max: '8'
+        media: 4.4632
+        quartis: [2, 4, 6]
+        top:
+        - ['1', 66840]
+        - ['2', 66840]
+        - ['3', 66840]
+        - ['4', 66840]
+        - ['5', 66840]
+        - ['6', 66840]
+        - ['7', 66840]
+        - ['8', 61270]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 81035]
+        - [SP, 61275]
+        - [RS, 47215]
+        - [BA, 39615]
+        - [PR, 37905]
+        - [SC, 28025]
+        - [GO, 23370]
+        - [PI, 21280]
+        - [PB, 21185]
+        - [MA, 20615]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      tipo_ocorrencia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: feminicidio
+        max: tentativa_de_homicidio
+        top:
+        - [mandado_de_prisao_cumprido, 89120]
+        - [feminicidio, 44560]
+        - [homicidio_doloso, 44560]
+        - [latrocinio, 44560]
+        - [lesao_corporal_seguida_de_morte, 44560]
+        - [morte_a_esclarecer, 44560]
+        - [morte_no_transito_exceto_homicidio_doloso, 44560]
+        - [suicidio, 44560]
+        - [tentativa_de_feminicidio, 44560]
+        - [tentativa_de_homicidio, 44560]
+      abrangencia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Estadual
+        max: Polícia Rodoviária Federal
+        top:
+        - [Estadual, 445600]
+        - [Polícia Federal, 44560]
+        - [Polícia Rodoviária Federal, 38990]
+      situacao_registro:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: reportado
+        max: zero_estrutural
+        top:
+        - [reportado, 519334]
+        - [zero_estrutural, 9816]
+      quantidade_ocorrencias:
+        tipo: BIGINT
+        nulos_pct: 83.38
+        distintos_aprox: 353
+        min: '0'
+        max: '4226'
+        media: 2.4605
+        quartis: [0, 0, 0]
+      quantidade_vitimas:
+        tipo: BIGINT
+        nulos_pct: 16.84
+        distintos_aprox: 94
+        min: '0'
+        max: '160'
+        media: 0.1932
+        quartis: [0, 0, 0]
+      quantidade_vitimas_feminino:
+        tipo: BIGINT
+        nulos_pct: 18
+        distintos_aprox: 33
+        min: '0'
+        max: '54'
+        media: 0.0381
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 422302]
+        - [null, 95249]
+        - ['1', 9336]
+        - ['2', 1424]
+        - ['3', 401]
+        - ['4', 170]
+        - ['5', 90]
+        - ['6', 38]
+        - ['7', 24]
+        - ['8', 18]
+      quantidade_vitimas_masculino:
+        tipo: BIGINT
+        nulos_pct: 17.95
+        distintos_aprox: 80
+        min: '0'
+        max: '137'
+        media: 0.1541
+        quartis: [0, 0, 0]
+      quantidade_vitimas_sexo_nao_informado:
+        tipo: BIGINT
+        nulos_pct: 18.03
+        distintos_aprox: 15
+        min: '0'
+        max: '14'
+        media: 0.0036
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 432611]
+        - [null, 95396]
+        - ['1', 945]
+        - ['2', 116]
+        - ['3', 35]
+        - ['4', 15]
+        - ['5', 12]
+        - ['6', 6]
+        - ['7', 5]
+        - ['9', 3]
+  uf_mes:
+    linhas: 291662
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '2015'
+        max: '2026'
+        media: 2020.3523
+        quartis: [2017, 2020, 2023]
+        top:
+        - ['2025', 25461]
+        - ['2016', 25216]
+        - ['2017', 24948]
+        - ['2019', 24948]
+        - ['2020', 24948]
+        - ['2021', 24948]
+        - ['2022', 24948]
+        - ['2023', 24948]
+        - ['2024', 24948]
+        - ['2018', 24945]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.3803
+        quartis: [3, 6, 9]
+        top:
+        - ['2', 25064]
+        - ['3', 25064]
+        - ['5', 25064]
+        - ['1', 25037]
+        - ['4', 25037]
+        - ['6', 24983]
+        - ['7', 24956]
+        - ['8', 24902]
+        - ['9', 22904]
+        - ['10', 22901]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [AC, 10823]
+        - [AL, 10823]
+        - [AM, 10823]
+        - [AP, 10823]
+        - [BA, 10823]
+        - [CE, 10823]
+        - [DF, 10823]
+        - [GO, 10823]
+        - [MA, 10823]
+        - [MG, 10823]
+      tipo_ocorrencia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: apreensao_de_arma_de_fogo
+        max: trafico_de_drogas
+        top:
+        - [apreensao_de_arma_de_fogo, 67932]
+        - [morte_de_agente_do_estado, 33855]
+        - [suicidio_de_agente_do_estado, 33855]
+        - [pessoa_desaparecida, 11304]
+        - [pessoa_localizada, 11304]
+        - [morte_por_intervencao_de_agente_do_estado, 11259]
+        - [apreensao_de_cocaina, 7548]
+        - [apreensao_de_maconha, 7548]
+        - [furto_de_veiculo, 7548]
+        - [roubo_a_instituicao_financeira, 7548]
+      abrangencia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Estadual
+        max: Polícia Rodoviária Federal
+        top:
+        - [Estadual, 203563]
+        - [Polícia Federal, 73249]
+        - [Polícia Rodoviária Federal, 14850]
+      arma:
+        tipo: VARCHAR
+        nulos_pct: 76.71
+        distintos_aprox: 10
+        min: Carabina
+        max: Submetralhadora
+        top:
+        - [null, 223730]
+        - [Carabina, 7548]
+        - [Espingarda, 7548]
+        - [Fuzil, 7548]
+        - [Metralhadora, 7548]
+        - [Outra, 7548]
+        - [Pistola, 7548]
+        - [Revolver, 7548]
+        - [Rifle, 7548]
+        - [Submetralhadora, 7548]
+      agente:
+        tipo: VARCHAR
+        nulos_pct: 76.78
+        distintos_aprox: 7
+        min: Agente de Trânsito
+        max: Profissionais de Perícia
+        top:
+        - [null, 223952]
+        - [PF, 7560]
+        - [Agente de Trânsito, 7536]
+        - [Bombeiro Militar, 7536]
+        - [Guarda Municipal, 7536]
+        - [Polícia Civil, 7536]
+        - [Polícia Militar, 7536]
+        - [Polícia Penal, 7536]
+        - [Profissionais de Perícia, 7536]
+        - [PRF, 7398]
+      faixa_etaria:
+        tipo: VARCHAR
+        nulos_pct: 92.25
+        distintos_aprox: 3
+        min: Idade Não Informada
+        max: Menor de Idade
+        top:
+        - [null, 269054]
+        - [Idade Não Informada, 7536]
+        - [Maior de Idade, 7536]
+        - [Menor de Idade, 7536]
+      quantidade_ocorrencias:
+        tipo: BIGINT
+        nulos_pct: 64.3
+        distintos_aprox: 5245
+        min: '0'
+        max: '41076'
+        media: 489.5708
+        quartis: [0, 3, 104]
+      quantidade_vitimas:
+        tipo: BIGINT
+        nulos_pct: 49.57
+        distintos_aprox: 983
+        min: '0'
+        max: '1539'
+        media: 16.2702
+        quartis: [0, 0, 0]
+      quantidade_vitimas_feminino:
+        tipo: BIGINT
+        nulos_pct: 59.47
+        distintos_aprox: 613
+        min: '0'
+        max: '1029'
+        media: 11.0076
+        quartis: [0, 0, 0]
+      quantidade_vitimas_masculino:
+        tipo: BIGINT
+        nulos_pct: 59.46
+        distintos_aprox: 591
+        min: '0'
+        max: '1171'
+        media: 8.8178
+        quartis: [0, 0, 0]
+      quantidade_vitimas_sexo_nao_informado:
+        tipo: BIGINT
+        nulos_pct: 59.56
+        distintos_aprox: 184
+        min: '0'
+        max: '264'
+        media: 0.4188
+        quartis: [0, 0, 0]
+      peso_apreendido:
+        tipo: DOUBLE
+        nulos_pct: 95.34
+        distintos_aprox: 14173
+        min: '0.0'
+        max: '191974.202'
+        media: 1809.9003
+        quartis: [1.4086, 37.6701, 396.7838]

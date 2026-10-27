@@ -1,0 +1,2050 @@
+dataset: br_bcb_sicor
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  empreendimento:
+    linhas: 3316
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_empreendimento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3433}
+      data_inicio: {tipo: DATE, nulos_pct: 0, distintos_aprox: 466, min: '1984-01-01', max: '2026-09-24'}
+      data_fim: {tipo: DATE, nulos_pct: 51.3, distintos_aprox: 151, min: '2012-06-30', max: '2099-12-31'}
+      finalidade:
+        tipo: VARCHAR
+        nulos_pct: 0.03
+        distintos_aprox: 4
+        min: Comercialização
+        max: Investimento
+        top:
+        - [Custeio, 1647]
+        - [Comercialização, 911]
+        - [Investimento, 632]
+        - [Industrialização, 125]
+        - [null, 1]
+      atividade:
+        tipo: VARCHAR
+        nulos_pct: 0.03
+        distintos_aprox: 2
+        min: Agrícola
+        max: Pecuário(a)
+        top:
+        - [Agrícola, 2639]
+        - [Pecuário(a), 676]
+        - [null, 1]
+      modalidade: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 60, min: APICULTURA, max: TAXA DE RETENÇÃO}
+      produto: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 618, min: ABACATE, max: 'ÔNIBUS, MICRO-ÔNIBUS E VANS'}
+      variedade: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 448, min: '(RES.2896, DE 24.10.2001)', max: ÓLEO BRUTO DEGOMADO}
+      cesta_safra:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Ano Civil / Ano de Exploração
+        max: Safrinha (2ª Safra)
+        top:
+        - [Ano Civil / Ano de Exploração, 1780]
+        - [Fruticultura / Olericultura, 627]
+        - [Irrigadas, 497]
+        - [Safra de Verão (1ª Safra), 257]
+        - [Safra de Inverno (3ª Safra), 87]
+        - [Safrinha (2ª Safra), 68]
+      zoneamento:
+        tipo: VARCHAR
+        nulos_pct: 33.78
+        distintos_aprox: 2
+        min: Não zoneado
+        max: Zoneado
+        top:
+        - [Não zoneado, 1826]
+        - [null, 1120]
+        - [Zoneado, 370]
+      unidade_medida:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: Arroba
+        max: Unidade Animal (450kg)
+        top:
+        - [Hectare, 1611]
+        - [Tonelada, 546]
+        - [Unidade, 488]
+        - [Quilograma, 381]
+        - [Quantidade, 80]
+        - [Cabeça, 48]
+        - [Litro, 34]
+        - [Caixa, 21]
+        - [Metro Cúbico, 17]
+        - [Metro Quadrado, 17]
+      unidade_medida_previsao_producao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 23
+        min: Arroba
+        max: Unidade
+        top:
+        - [Tonelada, 1509]
+        - [Unidade, 1180]
+        - [Quilograma, 221]
+        - [Quantidade, 153]
+        - [Cabeça, 103]
+        - [Metro Cúbico, 45]
+        - [Litro, 21]
+        - [Mil Mudas, 18]
+        - [Hectare, 16]
+        - [Mil Unidades, 11]
+      consorcio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Consorciado
+        max: Valor inválido
+        top:
+        - [Não consorciado, 2538]
+        - [Valor inválido, 705]
+        - [Consorciado, 73]
+      cedula_mae:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['0', 3303]
+        - ['1', 13]
+      id_tipo_cultura:
+        tipo: VARCHAR
+        nulos_pct: 19.72
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        top:
+        - ['3', 1441]
+        - ['2', 736]
+        - [null, 654]
+        - ['4', 302]
+        - ['1', 183]
+  fonte_recurso:
+    linhas: 37
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_fonte_recurso:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 37
+        min: '100'
+        max: '990'
+        top:
+        - ['100', 1]
+        - ['201', 1]
+        - ['202', 1]
+        - ['222', 1]
+        - ['225', 1]
+        - ['226', 1]
+        - ['250', 1]
+        - ['260', 1]
+        - ['300', 1]
+        - ['301', 1]
+      descricao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 38
+        min: ATIVIDADE NÃO FINANCIADA ENQUADRADA NO PROAGRO (MCR 16.8)
+        max: TESOURO NACIONAL - DIRECIONADA/CONTROLADA
+        top:
+        - [ATIVIDADE NÃO FINANCIADA ENQUADRADA NO PROAGRO (MCR 16.8), 1]
+        - [BNDES - LIVRE/NÃO CONTROLADA, 1]
+        - [BNDES/FINAME - EQUALIZADA - DIRECIONADA/CONTROLADA, 1]
+        - [CAPTAÇÃO EXTERNA - LIVRE/NÃO CONTROLADA, 1]
+        - [COMPULSÓRIO SOBRE RECURSOS À VISTA - REFORÇO DO INVESTIMENTO (CIRC 3.745), 1]
+        - [EXIGIBILIDADE ADICIONAL DA POUPANÇA RURAL, 1]
+        - [EXIGIBILIDADE ADICIONAL DOS RECURSOS À VISTA, 1]
+        - [Exigibilidade Adicional dos Recursos à Vista - Resolução 5030 ENCERRADO, 1]
+        - [Exigibilidade Adicional dos Recursos à Vista - Resolução 5087 - ENCERRADO, 1]
+        - [Exigibilidade Adicional dos Recursos à Vista - Resolução 5157, 1]
+      indicador_recurso_publico:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['0', 21]
+        - ['1', 16]
+      data_inicio:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: '2011-11-01'
+        max: '2026-07-24'
+        top:
+        - ['2011-11-01', 22]
+        - ['2013-01-01', 3]
+        - ['2019-02-01', 2]
+        - ['2023-07-03', 2]
+        - ['2012-01-23', 1]
+        - ['2012-09-20', 1]
+        - ['2016-07-01', 1]
+        - ['2021-08-09', 1]
+        - ['2022-07-01', 1]
+        - ['2024-07-01', 1]
+      data_fim:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: '2012-09-30'
+        max: '2099-12-31'
+        top:
+        - ['2099-12-31', 22]
+        - ['2013-12-31', 2]
+        - ['2017-06-30', 2]
+        - ['2019-06-30', 2]
+        - ['2012-09-30', 1]
+        - ['2015-05-15', 1]
+        - ['2015-12-31', 1]
+        - ['2019-01-31', 1]
+        - ['2021-06-30', 1]
+        - ['2023-06-30', 1]
+  instituicao_financeira:
+    linhas: 650
+    fonte_do_perfil: tabela inteira
+    colunas:
+      cnpj_basico: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 690, min: '00000000', max: '97489280'}
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 768, pessoal: 'só contagens: valores seriam dado pessoal'}
+      segmento:
+        tipo: VARCHAR
+        nulos_pct: 2.31
+        distintos_aprox: 6
+        min: BANCO COOPERATIVO
+        max: SOCIEDADE DE CRÉDITO, FINANCIAMENTO E INVESTIMENTO
+        top:
+        - [COOPERATIVA DE CRÉDITO, 566]
+        - [BANCO PRIVADO, 45]
+        - [null, 15]
+        - [BANCO DE DESENVOLVIMENTO E AGÊNCIA DE FOMENTO, 10]
+        - [BANCO PÚBLICO, 8]
+        - ['SOCIEDADE DE CRÉDITO, FINANCIAMENTO E INVESTIMENTO', 4]
+        - [BANCO COOPERATIVO, 2]
+  liberacao:
+    linhas: 22373115
+    fonte_do_perfil: tabela inteira da última partição (ano = 2029)
+    colunas:
+      ano_emissao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2024'
+        max: '2024'
+        media: 2024
+        quartis: [2024, 2024, 2024]
+        top:
+        - ['2024', 1]
+      mes_emissao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2'
+        max: '2'
+        media: 2
+        quartis: [2, 2, 2]
+        top:
+        - ['2', 1]
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2029'
+        max: '2029'
+        media: 2029
+        quartis: [2029, 2029, 2029]
+        top:
+        - ['2029', 1]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '12'
+        max: '12'
+        media: 12
+        quartis: [12, 12, 12]
+        top:
+        - ['12', 1]
+      data_liberacao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2029-12-03'
+        max: '2029-12-03'
+        top:
+        - ['2029-12-03', 1]
+      id_referencia_bacen:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '517457121'
+        max: '517457121'
+        top:
+        - ['517457121', 1]
+      numero_ordem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1, pessoal: 'só contagens: valores seriam dado pessoal'}
+      valor_liberado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '166742.15'
+        max: '166742.15'
+        media: 166742.15
+        quartis: [166742.15, 166742.15, 166742.15]
+        top:
+        - ['166742.15', 1]
+  operacao:
+    linhas: 28440266
+    fonte_do_perfil: amostra de 7.032%. ~2.000.000 linhas
+    colunas:
+      ano_emissao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '2013'
+        max: '2026'
+        media: 2018.9755
+        quartis: [2015, 2019, 2023]
+        top:
+        - ['2013', 208045]
+        - ['2014', 182817]
+        - ['2025', 179544]
+        - ['2024', 171777]
+        - ['2015', 171691]
+        - ['2017', 158033]
+        - ['2023', 156530]
+        - ['2021', 155488]
+        - ['2018', 151582]
+        - ['2022', 150739]
+      mes_emissao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.9747
+        quartis: [4, 7, 10]
+        top:
+        - ['8', 266675]
+        - ['9', 223417]
+        - ['10', 195688]
+        - ['7', 185882]
+        - ['11', 180533]
+        - ['12', 176247]
+        - ['6', 170527]
+        - ['5', 159453]
+        - ['1', 138565]
+        - ['4', 137320]
+      ano_safra_emissao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: 2012/2013
+        max: 2025/2026
+        top:
+        - [2014/2015, 190859]
+        - [2013/2014, 186423]
+        - [2024/2025, 173692]
+        - [2023/2024, 172577]
+        - [2016/2017, 160266]
+        - [2017/2018, 153910]
+        - [2022/2023, 150882]
+        - [2021/2022, 150230]
+        - [2020/2021, 149860]
+        - [2018/2019, 140025]
+      data_emissao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 3391, min: '2013-01-02', max: '2026-02-27'}
+      ano_vencimento:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 49
+        min: '2013'
+        max: '2051'
+        media: 2022.1656
+        quartis: [2018, 2022, 2026]
+        top:
+        - ['2023', 184884]
+        - ['2024', 156068]
+        - ['2022', 137887]
+        - ['2019', 135132]
+        - ['2026', 127253]
+        - ['2025', 125530]
+        - ['2028', 125406]
+        - ['2016', 125048]
+        - ['2020', 122185]
+        - ['2017', 120291]
+      mes_vencimento:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.796
+        quartis: [4, 7, 9]
+        top:
+        - ['7', 236180]
+        - ['8', 225937]
+        - ['6', 196217]
+        - ['9', 192494]
+        - ['10', 190585]
+        - ['5', 176927]
+        - ['11', 169842]
+        - ['12', 157133]
+        - ['4', 145117]
+        - ['1', 144560]
+      ano_safra_vencimento:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 37
+        min: 2012/2013
+        max: 2050/2051
+        top:
+        - [2022/2023, 169501]
+        - [2023/2024, 166239]
+        - [2024/2025, 153118]
+        - [2018/2019, 135765]
+        - [2026/2027, 132824]
+        - [2019/2020, 132128]
+        - [2021/2022, 124973]
+        - [2016/2017, 122452]
+        - [2020/2021, 120241]
+        - [2015/2016, 120027]
+      data_vencimento: {tipo: DATE, nulos_pct: 0, distintos_aprox: 10830, min: '2013-01-16', max: '2051-02-26'}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [RS, 319269]
+        - [MG, 250891]
+        - [BA, 234811]
+        - [PR, 203253]
+        - [SC, 134805]
+        - [CE, 116023]
+        - [PI, 108071]
+        - [PE, 102195]
+        - [MA, 92052]
+        - [PB, 73331]
+      id_referencia_bacen: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1832284}
+      numero_ordem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 58, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_categoria_emitente:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '2222'
+        max: '8888'
+        top:
+        - ['2222', 1670132]
+        - ['3333', 320107]
+        - ['4444', 115331]
+        - ['8888', 368]
+        - ['5555', 189]
+        - ['7777', 49]
+      id_empreendimento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1750}
+      id_fonte_recurso:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 33
+        min: '100'
+        max: '990'
+        top:
+        - ['502', 847130]
+        - ['300', 473525]
+        - ['201', 368319]
+        - ['505', 102539]
+        - ['430', 52322]
+        - ['403', 38672]
+        - ['402', 38647]
+        - ['303', 38373]
+        - ['501', 34641]
+        - ['503', 30903]
+      id_instrumento_credito:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: '1'
+        max: '8'
+        top:
+        - ['5', 880102]
+        - ['4', 336837]
+        - ['1', 317819]
+        - ['10', 291941]
+        - ['8', 164057]
+        - ['3', 62560]
+        - ['2', 46662]
+        - ['7', 6191]
+        - ['6', 7]
+      id_programa:
+        tipo: VARCHAR
+        nulos_pct: 2.67
+        distintos_aprox: 24
+        min: '1'
+        max: '999'
+        top:
+        - ['1', 1552620]
+        - ['999', 263511]
+        - ['50', 183547]
+        - [null, 56212]
+        - ['154', 17109]
+        - ['157', 8674]
+        - ['70', 7010]
+        - ['156', 4301]
+        - ['162', 3806]
+        - ['153', 3309]
+      id_subprograma: {tipo: VARCHAR, nulos_pct: 40.63, distintos_aprox: 70, min: '1', max: '9999'}
+      id_referencia_bacen_investimento: {tipo: VARCHAR, nulos_pct: 96.13, distintos_aprox: 81806}
+      id_tipo_agricultura:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '0'
+        max: '9'
+        top:
+        - ['0', 1554488]
+        - ['3', 307400]
+        - ['7', 189636]
+        - ['5', 36890]
+        - ['1', 14449]
+        - ['8', 2007]
+        - ['9', 1267]
+        - ['4', 27]
+        - ['6', 12]
+      id_tipo_cultivo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: ''
+        max: '9'
+        top:
+        - ['', 1752511]
+        - ['2', 181107]
+        - ['1', 126598]
+        - ['3', 22035]
+        - ['10', 6361]
+        - ['5', 4955]
+        - ['11', 4433]
+        - ['15', 3163]
+        - ['4', 1512]
+        - ['6', 912]
+      id_tipo_solo:
+        tipo: VARCHAR
+        nulos_pct: 93.71
+        distintos_aprox: 17
+        min: ''
+        max: '9'
+        top:
+        - [null, 1973681]
+        - ['3', 50993]
+        - ['2', 34839]
+        - ['15', 18070]
+        - ['14', 13679]
+        - ['16', 4016]
+        - ['1', 3177]
+        - ['13', 2992]
+        - ['9', 2143]
+        - ['12', 1053]
+      id_tipo_ciclo_cultivar:
+        tipo: VARCHAR
+        nulos_pct: 93.71
+        distintos_aprox: 12
+        min: '1'
+        max: '99'
+        top:
+        - [null, 1973681]
+        - ['1', 74609]
+        - ['2', 26328]
+        - ['11', 22015]
+        - ['99', 4572]
+        - ['3', 4099]
+        - ['4', 496]
+        - ['16', 203]
+        - ['17', 97]
+        - ['5', 59]
+      id_tipo_encargo_financeiro:
+        tipo: VARCHAR
+        nulos_pct: 52.36
+        distintos_aprox: 10
+        min: ''
+        max: '9'
+        top:
+        - [null, 1102692]
+        - ['9', 953842]
+        - ['3', 30559]
+        - ['1', 10318]
+        - ['5', 5282]
+        - ['', 1806]
+        - ['2', 1092]
+        - ['4', 298]
+        - ['10', 236]
+        - ['8', 50]
+      id_tipo_grao_semente:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: ''
+        max: '8'
+        top:
+        - ['', 1716027]
+        - ['8', 347876]
+        - ['3', 42273]
+      id_tipo_integracao_consorcio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: ''
+        max: '7'
+        top:
+        - ['', 1595622]
+        - ['2', 504342]
+        - ['1', 3238]
+        - ['4', 1336]
+        - ['3', 1049]
+        - ['5', 469]
+        - ['7', 61]
+        - ['6', 59]
+      id_tipo_irrigacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: ''
+        max: '9'
+        top:
+        - ['', 1547893]
+        - ['1', 505594]
+        - ['2', 17736]
+        - ['4', 12617]
+        - ['10', 9184]
+        - ['3', 5831]
+        - ['6', 3660]
+        - ['9', 3012]
+        - ['7', 353]
+        - ['5', 124]
+      id_fase_ciclo_producao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 32
+        min: ''
+        max: '90'
+        top:
+        - ['', 1483861]
+        - ['22', 426010]
+        - ['57', 61618]
+        - ['1', 58484]
+        - ['24', 19236]
+        - ['55', 17136]
+        - ['51', 10394]
+        - ['23', 9670]
+        - ['21', 5658]
+        - ['56', 3231]
+      id_tipo_seguro:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: ''
+        max: '9'
+        top:
+        - ['9', 1348867]
+        - ['', 306274]
+        - ['2', 288731]
+        - ['3', 124528]
+        - ['1', 37776]
+      id_contrato_sistema_tesouro_nacional: {tipo: VARCHAR, nulos_pct: 90.84, distintos_aprox: 1615}
+      cnpj_basico_agente_investimento: {tipo: VARCHAR, nulos_pct: 96.13, distintos_aprox: 97, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpj_basico_instituicao_financeira: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 659, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpj_basico_cadastrante: {tipo: VARCHAR, nulos_pct: 83.29, distintos_aprox: 33, pessoal: 'só contagens: valores seriam dado pessoal'}
+      data_fim_colheita: {tipo: DATE, nulos_pct: 82.41, distintos_aprox: 3795, min: '0001-12-01', max: '2033-07-20'}
+      data_fim_plantio: {tipo: DATE, nulos_pct: 82.87, distintos_aprox: 3716, min: '0001-12-01', max: '2036-01-31'}
+      data_inicio_colheita: {tipo: DATE, nulos_pct: 82.41, distintos_aprox: 3873, min: '0001-11-29', max: '2033-06-25'}
+      data_inicio_plantio: {tipo: DATE, nulos_pct: 82.87, distintos_aprox: 3567, min: '0001-11-29', max: '2027-02-27'}
+      area_financiada:
+        tipo: DOUBLE
+        nulos_pct: 0.25
+        distintos_aprox: 39178
+        min: '0.0'
+        max: '450000.0'
+        media: 16.8648
+        quartis: [0, 0, 3.1662]
+      area_informada:
+        tipo: DOUBLE
+        nulos_pct: 0.25
+        distintos_aprox: 35295
+        min: '0.0'
+        max: '700000.0'
+        media: 21.0281
+        quartis: [0, 0, 5.4005]
+      valor_aliquota_proagro:
+        tipo: DOUBLE
+        nulos_pct: 84.49
+        distintos_aprox: 313
+        min: '0.0'
+        max: '613.31'
+        media: 4.1668
+        quartis: [2.0448, 3, 5.8705]
+      valor_parcela_credito:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 735906
+        min: '0.0'
+        max: '706127000.0'
+        media: 112481.6137
+        quartis: [4000.3253, 11783.1357, 54722.9181]
+      valor_prestacao_investimento:
+        tipo: DOUBLE
+        nulos_pct: 96.13
+        distintos_aprox: 40851
+        min: '0.0'
+        max: '5000.0'
+        media: 3144.9229
+        quartis: [1436.8786, 3238.6511, 5000]
+      valor_recurso_proprio:
+        tipo: DOUBLE
+        nulos_pct: 54.07
+        distintos_aprox: 135032
+        min: '0.0'
+        max: '426279320.0'
+        media: 24717.9496
+        quartis: [0, 0, 218.802]
+      valor_receita_bruta_esperada:
+        tipo: DOUBLE
+        nulos_pct: 57.69
+        distintos_aprox: 433416
+        min: '0.0'
+        max: '7523031250000000.0'
+        media: 9310182096.7607
+        quartis: [29979.1514, 76159.5361, 220789.7779]
+      valor_recurso_proprio_srv:
+        tipo: DOUBLE
+        nulos_pct: 88.44
+        distintos_aprox: 114104
+        min: '0.0'
+        max: '40000.0'
+        media: 10143.2633
+        quartis: [2497.1513, 7108.0375, 16951.9038]
+      valor_quantidade_itens_financiados:
+        tipo: DOUBLE
+        nulos_pct: 32.25
+        distintos_aprox: 19250
+        min: '0.0'
+        max: '16484760000.0'
+        media: 44150.2679
+        quartis: [1, 2, 18.0644]
+      valor_produtividade_obtida:
+        tipo: DOUBLE
+        nulos_pct: 97.47
+        distintos_aprox: 8067
+        min: '0.0'
+        max: '1853600000.0'
+        media: 47821.975
+        quartis: [1.1462, 5.0848, 47.0131]
+      valor_previsao_producao:
+        tipo: DOUBLE
+        nulos_pct: 33.34
+        distintos_aprox: 111783
+        min: '0.0'
+        max: '110025005478.0'
+        media: 162778.7306
+        quartis: [0, 20.8818, 533.7855]
+      taxa_juro:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2262
+        min: '-0.23'
+        max: '62.4'
+        media: 3.7935
+        quartis: [0.5, 2.9999, 5.941]
+      percentual_bonus_car:
+        tipo: DOUBLE
+        nulos_pct: 99.78
+        distintos_aprox: 2
+        min: '0.0'
+        max: '0.5'
+        media: 0.0505
+        quartis: [0, 0, 0]
+        top:
+        - [null, 2101548]
+        - ['0.0', 4161]
+        - ['0.5', 467]
+      taxa_juro_encargo_financeiro_posfixado:
+        tipo: DOUBLE
+        nulos_pct: 99.8
+        distintos_aprox: 318
+        min: '0.0'
+        max: '41.13'
+        media: 7.4747
+        quartis: [4.1283, 7.5, 8.5111]
+      valor_percentual_custo_efetivo_total:
+        tipo: DOUBLE
+        nulos_pct: 69.05
+        distintos_aprox: 3350
+        min: '-7.52'
+        max: '822.61'
+        media: 6.1182
+        quartis: [0.5, 4.7039, 8.5992]
+      valor_percentual_risco_fundo_constitucional:
+        tipo: DOUBLE
+        nulos_pct: 23.58
+        distintos_aprox: 7
+        min: '0.0'
+        max: '100.0'
+        media: 47.6317
+        quartis: [0, 50, 100]
+        top:
+        - ['0.0', 733755]
+        - ['100.0', 657964]
+        - [null, 496667]
+        - ['50.0', 209998]
+        - ['50.5', 7269]
+        - ['0.5', 374]
+        - ['1.0', 148]
+        - ['8.75', 1]
+      valor_percentual_risco_stn:
+        tipo: DOUBLE
+        nulos_pct: 41.04
+        distintos_aprox: 3
+        min: '0.0'
+        max: '100.0'
+        media: 0.8423
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 1231317]
+        - [null, 864394]
+        - ['100.0', 10460]
+        - ['1.0', 5]
+  operacoes_desclassificadas:
+    linhas: 15852
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano_emissao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '2013'
+        max: '2026'
+        media: 2021.6313
+        quartis: [2020, 2023, 2024]
+        top:
+        - ['2024', 3033]
+        - ['2023', 2939]
+        - ['2022', 2292]
+        - ['2025', 2067]
+        - ['2021', 1098]
+        - ['2020', 857]
+        - ['2017', 805]
+        - ['2019', 678]
+        - ['2018', 637]
+        - ['2016', 590]
+      mes_emissao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.7902
+        quartis: [4, 7, 10]
+        top:
+        - ['8', 1752]
+        - ['9', 1711]
+        - ['6', 1498]
+        - ['10', 1438]
+        - ['12', 1334]
+        - ['5', 1294]
+        - ['11', 1211]
+        - ['2', 1210]
+        - ['3', 1181]
+        - ['4', 1110]
+      data_desclassificacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1628, min: '2016-09-20', max: '2026-10-06'}
+      id_referencia_bacen: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 13076}
+      numero_ordem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 9, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_motivo_desclassificacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '0'
+        max: '999'
+        top:
+        - ['999', 7406]
+        - ['1', 3491]
+        - ['6', 2415]
+        - ['13', 949]
+        - ['7', 635]
+        - ['3', 519]
+        - ['5', 165]
+        - ['14', 139]
+        - ['8', 62]
+        - ['0', 26]
+      valor_desclassificado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 11460
+        min: '0.01'
+        max: '34646833.94'
+        media: 385747.663
+        quartis: [29563.9519, 101317.8224, 327502.8118]
+      tipo_desclassificacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Parcial
+        max: Total
+        top:
+        - [Total, 10432]
+        - [Parcial, 5420]
+  proagro_complemento_cop:
+    linhas: 1007340
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano_emissao:
+        tipo: INTEGER
+        nulos_pct: 1.01
+        distintos_aprox: 16
+        min: '2013'
+        max: '2026'
+        media: 2020.4917
+        quartis: [2018, 2021, 2023]
+        top:
+        - ['2022', 140872]
+        - ['2023', 136888]
+        - ['2021', 135145]
+        - ['2024', 120307]
+        - ['2025', 70345]
+        - ['2020', 67585]
+        - ['2019', 67234]
+        - ['2015', 51574]
+        - ['2014', 50730]
+        - ['2018', 48165]
+      mes_emissao:
+        tipo: INTEGER
+        nulos_pct: 1.01
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.463
+        quartis: [4, 7, 8]
+        top:
+        - ['8', 183318]
+        - ['7', 142538]
+        - ['9', 93666]
+        - ['5', 93204]
+        - ['4', 85748]
+        - ['3', 77284]
+        - ['6', 62895]
+        - ['2', 61526]
+        - ['1', 56900]
+        - ['10', 49833]
+      id_referencia_bacen: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1050047}
+      numero_ordem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_evento:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '103'
+        max: '93'
+        top:
+        - ['48', 541010]
+        - ['17', 236921]
+        - ['24', 107594]
+        - ['31', 32617]
+        - ['86', 30811]
+        - ['79', 27805]
+        - ['110', 26786]
+        - ['61', 1406]
+        - ['135', 1041]
+        - ['62', 794]
+      cpf_periciadora: {tipo: VARCHAR, nulos_pct: 79.82, distintos_aprox: 2690, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpj_periciadora: {tipo: VARCHAR, nulos_pct: 20.18, distintos_aprox: 3985, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf_perito: {tipo: VARCHAR, nulos_pct: 74.23, distintos_aprox: 2919, pessoal: 'só contagens: valores seriam dado pessoal'}
+  proagro_complemento_rcp:
+    linhas: 848652
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano_emissao:
+        tipo: INTEGER
+        nulos_pct: 0.9
+        distintos_aprox: 15
+        min: '2014'
+        max: '2026'
+        media: 2021.6439
+        quartis: [2020, 2022, 2023]
+        top:
+        - ['2022', 140944]
+        - ['2023', 136700]
+        - ['2021', 135732]
+        - ['2024', 120108]
+        - ['2025', 70277]
+        - ['2020', 68797]
+        - ['2019', 68316]
+        - ['2018', 48037]
+        - ['2017', 43275]
+        - [null, 7596]
+      mes_emissao:
+        tipo: INTEGER
+        nulos_pct: 0.9
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.5979
+        quartis: [4, 7, 8]
+        top:
+        - ['8', 166398]
+        - ['7', 135126]
+        - ['9', 81142]
+        - ['5', 67508]
+        - ['3', 61797]
+        - ['4', 59977]
+        - ['6', 51989]
+        - ['1', 48837]
+        - ['2', 47787]
+        - ['10', 43190]
+      id_referencia_bacen: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 810507}
+      numero_ordem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf_periciadora: {tipo: VARCHAR, nulos_pct: 43.23, distintos_aprox: 5518, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpj_periciadora: {tipo: VARCHAR, nulos_pct: 56.77, distintos_aprox: 1930, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf_perito: {tipo: VARCHAR, nulos_pct: 69.25, distintos_aprox: 3217, pessoal: 'só contagens: valores seriam dado pessoal'}
+  proagro_cop:
+    linhas: 1007340
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano_emissao:
+        tipo: INTEGER
+        nulos_pct: 1.01
+        distintos_aprox: 16
+        min: '2013'
+        max: '2026'
+        media: 2020.4917
+        quartis: [2018, 2021, 2023]
+        top:
+        - ['2022', 140872]
+        - ['2023', 136888]
+        - ['2021', 135145]
+        - ['2024', 120307]
+        - ['2025', 70345]
+        - ['2020', 67585]
+        - ['2019', 67234]
+        - ['2015', 51574]
+        - ['2014', 50730]
+        - ['2018', 48165]
+      mes_emissao:
+        tipo: INTEGER
+        nulos_pct: 1.01
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.463
+        quartis: [4, 7, 8]
+        top:
+        - ['8', 183318]
+        - ['7', 142538]
+        - ['9', 93666]
+        - ['5', 93204]
+        - ['4', 85748]
+        - ['3', 77284]
+        - ['6', 62895]
+        - ['2', 61526]
+        - ['1', 56900]
+        - ['10', 49833]
+      id_referencia_bacen: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1050047}
+      numero_ordem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_evento:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '103'
+        max: '93'
+        top:
+        - ['48', 541010]
+        - ['17', 236921]
+        - ['24', 107594]
+        - ['31', 32617]
+        - ['86', 30811]
+        - ['79', 27805]
+        - ['110', 26786]
+        - ['61', 1406]
+        - ['135', 1041]
+        - ['62', 794]
+      id_status:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '1'
+        max: '6'
+        top:
+        - ['2', 939105]
+        - ['3', 37319]
+        - ['4', 18840]
+        - ['1', 8213]
+        - ['5', 3849]
+        - ['6', 14]
+      id_tipo_ciclo_cultivar:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 17
+        min: '1'
+        max: '99'
+        top:
+        - ['1', 480454]
+        - ['3', 177669]
+        - ['2', 147976]
+        - ['99', 133120]
+        - ['11', 22006]
+        - ['6', 15300]
+        - ['8', 14811]
+        - ['5', 7244]
+        - ['4', 2755]
+        - ['9', 2602]
+      id_tipo_solo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: '0'
+        max: '9'
+        top:
+        - ['3', 635435]
+        - ['2', 152607]
+        - ['15', 78293]
+        - ['9', 68563]
+        - ['14', 32063]
+        - ['16', 17812]
+        - ['1', 17725]
+        - ['13', 3553]
+        - ['12', 937]
+        - ['11', 333]
+      data_comunicacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4236, min: '2013-01-25', max: '2026-10-13'}
+      data_inicio_plantio: {tipo: DATE, nulos_pct: 0, distintos_aprox: 5671, min: '1914-07-02', max: '2026-10-05'}
+      data_fim_plantio: {tipo: DATE, nulos_pct: 0, distintos_aprox: 6024, min: '1935-08-15', max: '2026-11-30'}
+      data_inicio_colheita: {tipo: DATE, nulos_pct: 0, distintos_aprox: 5315, min: '1996-04-05', max: '8202-09-01'}
+      data_fim_colheita: {tipo: DATE, nulos_pct: 0, distintos_aprox: 5434, min: '2013-02-15', max: '9202-10-20'}
+  proagro_parcela:
+    linhas: 13432346
+    fonte_do_perfil: amostra de 14.889%. ~2.000.000 linhas
+    colunas:
+      ano_emissao:
+        tipo: INTEGER
+        nulos_pct: 2.71
+        distintos_aprox: 16
+        min: '2013'
+        max: '2026'
+        media: 2019.0702
+        quartis: [2016, 2019, 2022]
+        top:
+        - ['2022', 202752]
+        - ['2023', 192512]
+        - ['2021', 186368]
+        - ['2013', 167936]
+        - ['2015', 158814]
+        - ['2014', 151552]
+        - ['2024', 144145]
+        - ['2020', 135168]
+        - ['2016', 134050]
+        - ['2017', 131072]
+      mes_emissao:
+        tipo: INTEGER
+        nulos_pct: 2.71
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 7.1385
+        quartis: [5, 8, 9]
+        top:
+        - ['8', 495069]
+        - ['7', 274849]
+        - ['9', 246329]
+        - ['10', 136670]
+        - ['2', 126535]
+        - ['11', 124979]
+        - ['5', 120832]
+        - ['4', 113063]
+        - ['12', 101194]
+        - ['1', 86028]
+      id_referencia_bacen: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 729581}
+      numero_ordem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 9, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_natureza_parcela:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 35
+        min: '110'
+        max: '550'
+        top:
+        - ['410', 685218]
+        - ['450', 453236]
+        - ['440', 170937]
+        - ['156', 149073]
+        - ['127', 146726]
+        - ['110', 141403]
+        - ['420', 121020]
+        - ['115', 85488]
+        - ['114', 30927]
+        - ['111', 23809]
+      id_instancia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '5'
+        max: '9'
+        top:
+        - ['9', 1581837]
+        - ['5', 402874]
+        - ['6', 50848]
+        - ['7', 4229]
+        - ['8', 20]
+      id_status:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '1'
+        max: '9'
+        top:
+        - ['6', 2037756]
+        - ['9', 1496]
+        - ['7', 323]
+        - ['1', 230]
+        - ['8', 3]
+      data_base: {tipo: DATE, nulos_pct: 0, distintos_aprox: 3361, min: '2013-01-03', max: '2026-10-13'}
+      data_remessa: {tipo: DATE, nulos_pct: 0, distintos_aprox: 3422, min: '2013-01-02', max: '2026-10-13'}
+      data_pagamento: {tipo: DATE, nulos_pct: 0.1, distintos_aprox: 2158, min: '2013-01-04', max: '2026-10-13'}
+      data_atualizacao: {tipo: DATE, nulos_pct: 0.05, distintos_aprox: 2302, min: '2013-01-04', max: '2026-10-13'}
+      valor_base:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 615937
+        min: '0.0'
+        max: '361622.9'
+        media: 4144.219
+        quartis: [161.1643, 444.9916, 1672.7523]
+      valor_atual:
+        tipo: DOUBLE
+        nulos_pct: 0.04
+        distintos_aprox: 514560
+        min: '0.0'
+        max: '362184.74'
+        media: 4153.1672
+        quartis: [161.9087, 445.9356, 1674.0857]
+      valor_pago:
+        tipo: DOUBLE
+        nulos_pct: 0.08
+        distintos_aprox: 514560
+        min: '0.0'
+        max: '362184.74'
+        media: 4149.8892
+        quartis: [161.8671, 445.9445, 1642.6218]
+      valor_imposto:
+        tipo: DOUBLE
+        nulos_pct: 92.7
+        distintos_aprox: 186
+        min: '7.05'
+        max: '19.82'
+        media: 16.3812
+        quartis: [8.9333, 19.05, 19.06]
+  proagro_rcp:
+    linhas: 848652
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano_emissao:
+        tipo: INTEGER
+        nulos_pct: 0.9
+        distintos_aprox: 15
+        min: '2014'
+        max: '2026'
+        media: 2021.6439
+        quartis: [2020, 2022, 2023]
+        top:
+        - ['2022', 140944]
+        - ['2023', 136700]
+        - ['2021', 135732]
+        - ['2024', 120108]
+        - ['2025', 70277]
+        - ['2020', 68797]
+        - ['2019', 68316]
+        - ['2018', 48037]
+        - ['2017', 43275]
+        - [null, 7596]
+      mes_emissao:
+        tipo: INTEGER
+        nulos_pct: 0.9
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.5979
+        quartis: [4, 7, 8]
+        top:
+        - ['8', 166398]
+        - ['7', 135126]
+        - ['9', 81142]
+        - ['5', 67508]
+        - ['3', 61797]
+        - ['4', 59977]
+        - ['6', 51989]
+        - ['1', 48837]
+        - ['2', 47787]
+        - ['10', 43190]
+      id_referencia_bacen: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 810507}
+      numero_ordem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_evento:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '103'
+        max: '93'
+        top:
+        - ['48', 499855]
+        - ['17', 177902]
+        - ['24', 73866]
+        - ['86', 29249]
+        - ['110', 24677]
+        - ['31', 22614]
+        - ['79', 17882]
+        - ['61', 783]
+        - ['135', 744]
+        - ['62', 652]
+      id_status:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        top:
+        - ['1', 848652]
+      id_tipo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 844292]
+        - ['1', 4360]
+      data_entrega: {tipo: DATE, nulos_pct: 0, distintos_aprox: 3577, min: '2014-10-28', max: '2026-10-13'}
+      data_visita: {tipo: DATE, nulos_pct: 0, distintos_aprox: 3577, min: '2014-10-17', max: '2026-10-13'}
+      data_inicio_evento: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4087, min: '0018-08-26', max: '2026-10-08'}
+      data_fim_evento: {tipo: DATE, nulos_pct: 0, distintos_aprox: 3753, min: '2002-05-05', max: '2026-10-09'}
+      data_inicio_plantio: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4972, min: '0201-02-10', max: '2026-09-24'}
+      data_fim_plantio: {tipo: DATE, nulos_pct: 0, distintos_aprox: 5170, min: '1950-07-22', max: '2027-01-30'}
+      data_inicio_colheita: {tipo: DATE, nulos_pct: 0, distintos_aprox: 3928, min: '2014-10-10', max: '4280-04-02'}
+      data_fim_colheita: {tipo: DATE, nulos_pct: 0, distintos_aprox: 3858, min: '2014-10-18', max: '9023-09-26'}
+      area:
+        tipo: DOUBLE
+        nulos_pct: 0.29
+        distintos_aprox: 13286
+        min: '0.0'
+        max: '307249.0'
+        media: 18.082
+        quartis: [5.1272, 10.811, 21.9916]
+      valor_previsao_producao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 55049
+        min: '0.0'
+        max: '622319056091.9'
+        media: 743961.8424
+        quartis: [3.8359, 10.8687, 28.2604]
+      valor_receita_prevista:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 365522
+        min: '0.0'
+        max: '8960127000.0'
+        media: 49720.7336
+        quartis: [4959.261, 12435.2863, 28265.6425]
+      quantidade_dias_ciclo_cultivar:
+        tipo: BIGINT
+        nulos_pct: 65.23
+        distintos_aprox: 693
+        min: '30'
+        max: '27052017'
+        media: 285.6021
+        quartis: [120, 130, 140]
+  proagro_rcp_gleba:
+    linhas: 1764450
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano_emissao:
+        tipo: INTEGER
+        nulos_pct: 0.8
+        distintos_aprox: 13
+        min: '2015'
+        max: '2026'
+        media: 2021.8766
+        quartis: [2021, 2022, 2024]
+        top:
+        - ['2024', 306060]
+        - ['2022', 288821]
+        - ['2023', 287986]
+        - ['2021', 270887]
+        - ['2025', 165206]
+        - ['2019', 129088]
+        - ['2020', 129018]
+        - ['2018', 83106]
+        - ['2017', 73981]
+        - [null, 14185]
+      mes_emissao:
+        tipo: INTEGER
+        nulos_pct: 0.8
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.6555
+        quartis: [4, 7, 8]
+        top:
+        - ['8', 351687]
+        - ['7', 274166]
+        - ['9', 176691]
+        - ['5', 137818]
+        - ['3', 123433]
+        - ['4', 121360]
+        - ['6', 116494]
+        - ['1', 98249]
+        - ['2', 95413]
+        - ['10', 94898]
+      id_referencia_bacen: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 810507}
+      numero_ordem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5, pessoal: 'só contagens: valores seriam dado pessoal'}
+      indice_gleba:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 1921193
+        min: '20'
+        max: '4737544'
+        media: 3431994.0682
+        quartis: [3056768, 3500993, 4049896]
+      geometria_original: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1457531}
+      geometria: {tipo: 'GEOMETRY(''OGC:CRS84'')', nulos_pct: 2.1, distintos_aprox: 1903926}
+  proagro_sumula_julgamento:
+    linhas: 838859
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano_emissao:
+        tipo: INTEGER
+        nulos_pct: 0.46
+        distintos_aprox: 12
+        min: '2016'
+        max: '2026'
+        media: 2021.674
+        quartis: [2020, 2022, 2023]
+        top:
+        - ['2022', 141011]
+        - ['2023', 136870]
+        - ['2021', 135681]
+        - ['2024', 120260]
+        - ['2025', 69972]
+        - ['2020', 68733]
+        - ['2019', 68305]
+        - ['2018', 48354]
+        - ['2017', 39576]
+        - ['2026', 4734]
+      mes_emissao:
+        tipo: INTEGER
+        nulos_pct: 0.46
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.6039
+        quartis: [4, 7, 8]
+        top:
+        - ['8', 166402]
+        - ['7', 135016]
+        - ['9', 81107]
+        - ['5', 66848]
+        - ['3', 61248]
+        - ['4', 59364]
+        - ['6', 51799]
+        - ['1', 47593]
+        - ['2', 47068]
+        - ['10', 43075]
+      id_referencia_bacen: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 810507}
+      numero_ordem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_decisao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '2'
+        max: '6'
+        top:
+        - ['2', 788243]
+        - ['3', 25264]
+        - ['6', 14970]
+        - ['4', 10277]
+        - ['5', 105]
+      id_instancia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '5'
+        max: '9'
+        top:
+        - ['5', 700914]
+        - ['6', 125681]
+        - ['7', 12263]
+        - ['9', 1]
+      id_status:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        top:
+        - ['1', 838859]
+      indicador_segunda_vistoria:
+        tipo: VARCHAR
+        nulos_pct: 59.47
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - [null, 498888]
+        - ['0', 252310]
+        - ['1', 87661]
+      data_base: {tipo: DATE, nulos_pct: 0, distintos_aprox: 2548, min: '2016-11-28', max: '2026-10-13'}
+      data_inclusao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 2246, min: '2017-04-05', max: '2026-10-13'}
+      data_decisao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 2548, min: '2017-03-01', max: '2026-10-13'}
+      valor_orcamento_enquadrado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 512157
+        min: '0.0'
+        max: '335000.0'
+        media: 66439.9307
+        quartis: [21605.0113, 43046.8071, 85003.7636]
+      valor_credito_custeio_utilizado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 685435
+        min: '0.0'
+        max: '335000.0'
+        media: 58572.0651
+        quartis: [18567.2413, 37761.0951, 75445.5397]
+      valor_recurso_proprio_utilizado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 85443
+        min: '0.0'
+        max: '313242.44'
+        media: 1782.3844
+        quartis: [0, 0, 0]
+      valor_receitas_consideradas:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 402346
+        min: '0.0'
+        max: '8960127000.0'
+        media: 33611.0376
+        quartis: [4643.4853, 12012.5651, 27332.1379]
+      valor_encargos_credito_utilizado:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 420832
+        min: '0.0'
+        max: '142293.1'
+        media: 2302.9062
+        quartis: [450.7737, 1147.9768, 2638.3052]
+      valor_cobertura_anterior_credito_custeio:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 92582
+        min: '0.0'
+        max: '347229.36'
+        media: 4934.8789
+        quartis: [0, 0, 0]
+      valor_cobertura_anterior_recurso_proprio:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 20635
+        min: '0.0'
+        max: '310644.27'
+        media: 185.7234
+        quartis: [0, 0, 0]
+      valor_cobertura_anterior_garantia_renda_minima:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 40731
+        min: '0.0'
+        max: '40000.0'
+        media: 373.2295
+        quartis: [0, 0, 0]
+      valor_cobertura_anterior_parcela_investimento_proagro_mais:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 12507
+        min: '0.0'
+        max: '5000.0'
+        media: 30.1489
+        quartis: [0, 0, 0]
+      valor_remuneracao_encarregado_comprovacao_perdas:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 100456
+        min: '0.0'
+        max: '2033.65'
+        media: 595.5709
+        quartis: [330, 425.5587, 819.1884]
+      valor_remuneracao_anterior_encarregado_comprovacao_perdas:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 47664
+        min: '0.0'
+        max: '9936.0'
+        media: 89.6425
+        quartis: [0, 0, 0]
+      valor_demais_despesas_comprovacao_perdas:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 57
+        min: '0.0'
+        max: '33002.67'
+        media: 0.172
+        quartis: [0, 0, 0]
+      valor_demais_despesas_anteriores_comprovacao_perdas:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 71
+        min: '0.0'
+        max: '309448.89'
+        media: 0.4558
+        quartis: [0, 0, 0]
+      valor_perdas_nao_amparadas:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5653
+        min: '0.0'
+        max: '5601732.28'
+        media: 234.6076
+        quartis: [0, 0, 0]
+      valor_bonus_pgpaf:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 491
+        min: '0.0'
+        max: '5000.0'
+        media: 2.9285
+        quartis: [0, 0, 0]
+      valor_deducoes_legais:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1045
+        min: '0.0'
+        max: '276432.13'
+        media: 23.7859
+        quartis: [0, 0, 0]
+      percentual_redutor_cobertura:
+        tipo: DOUBLE
+        nulos_pct: 16.89
+        distintos_aprox: 7
+        min: '0.0'
+        max: '35.0'
+        media: 0.0267
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 695578]
+        - [null, 141708]
+        - ['10.0', 1094]
+        - ['20.0', 311]
+        - ['5.0', 142]
+        - ['30.0', 16]
+        - ['25.0', 6]
+        - ['15.0', 3]
+        - ['35.0', 1]
+      quantidade_dias_uteis_atraso_perito:
+        tipo: BIGINT
+        nulos_pct: 59.47
+        distintos_aprox: 361
+        min: '0'
+        max: '1068'
+        media: 4.7763
+        quartis: [0, 0, 5]
+  recurso_publico_complemento_operacao:
+    linhas: 23034485
+    fonte_do_perfil: amostra de 8.683%. ~2.000.000 linhas
+    colunas:
+      ano_emissao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '2013'
+        max: '2026'
+        media: 2018.928
+        quartis: [2015, 2019, 2023]
+        top:
+        - ['2013', 198008]
+        - ['2014', 191361]
+        - ['2025', 183736]
+        - ['2015', 179394]
+        - ['2024', 171994]
+        - ['2017', 161937]
+        - ['2018', 149220]
+        - ['2023', 148205]
+        - ['2020', 138514]
+        - ['2021', 138207]
+      mes_emissao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.9885
+        quartis: [4, 8, 10]
+        top:
+        - ['8', 271197]
+        - ['9', 236489]
+        - ['10', 198857]
+        - ['11', 174756]
+        - ['12', 171588]
+        - ['7', 160147]
+        - ['5', 156221]
+        - ['6', 150613]
+        - ['4', 148288]
+        - ['2', 142022]
+      id_referencia_bacen: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1874551}
+      numero_ordem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 39, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_referencia_bacen_efetivo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2103302}
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      cnpj_agencia: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 8725, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_cedula: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1904804, pessoal: 'só contagens: valores seriam dado pessoal'}
+  recurso_publico_cooperado:
+    linhas: 154179
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano_emissao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: '2017'
+        max: '2025'
+        media: 2021.8911
+        quartis: [2021, 2022, 2025]
+        top:
+        - ['2025', 41004]
+        - ['2022', 29808]
+        - ['2021', 26052]
+        - ['2018', 21901]
+        - ['2023', 11033]
+        - ['2024', 9480]
+        - ['2019', 9099]
+        - ['2017', 5744]
+        - ['2020', 58]
+      mes_emissao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 8.229
+        quartis: [8, 9, 10]
+        top:
+        - ['8', 38263]
+        - ['10', 32038]
+        - ['9', 31323]
+        - ['6', 11162]
+        - ['12', 10497]
+        - ['11', 9853]
+        - ['2', 8373]
+        - ['1', 4463]
+        - ['3', 3257]
+        - ['5', 2221]
+      id_referencia_bacen: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 602, min: '505043468', max: '521302610'}
+      numero_ordem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_programa:
+        tipo: VARCHAR
+        nulos_pct: 1.59
+        distintos_aprox: 4
+        min: '1'
+        max: '999'
+        top:
+        - ['999', 62390]
+        - ['1', 43193]
+        - ['50', 36407]
+        - ['70', 9731]
+        - [null, 2458]
+      cpf: {tipo: VARCHAR, nulos_pct: 1.22, distintos_aprox: 108570, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpj_basico: {tipo: VARCHAR, nulos_pct: 98.78, distintos_aprox: 1295}
+      tipo_pessoa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      valor_parcela:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 80816
+        min: '-3959.24'
+        max: '162173196.0'
+        media: 30560.8746
+        quartis: [974.7044, 4696.2154, 18452.9023]
+  recurso_publico_gleba:
+    linhas: 7326833
+    fonte_do_perfil: amostra de 27.297%. ~2.000.000 linhas
+    colunas:
+      ano_emissao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '2014'
+        max: '2025'
+        media: 2021.5075
+        quartis: [2020, 2022, 2023]
+        top:
+        - ['2023', 331940]
+        - ['2022', 302311]
+        - ['2024', 299356]
+        - ['2021', 273467]
+        - ['2020', 237568]
+        - ['2019', 163840]
+        - ['2025', 161518]
+        - ['2018', 139264]
+        - ['2017', 73728]
+        - ['2016', 28672]
+      mes_emissao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 7.0391
+        quartis: [5, 8, 9]
+        top:
+        - ['8', 415989]
+        - ['7', 282766]
+        - ['9', 205842]
+        - ['6', 159508]
+        - ['10', 156573]
+        - ['3', 131581]
+        - ['11', 125172]
+        - ['5', 122081]
+        - ['4', 118163]
+        - ['12', 117139]
+      id_referencia_bacen: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1333404}
+      numero_ordem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 27, pessoal: 'só contagens: valores seriam dado pessoal'}
+      indice_gleba: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 255, min: '0', max: '99'}
+      geometria_original: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1992068}
+      geometria: {tipo: GEOMETRY, nulos_pct: 0.01, distintos_aprox: 1556769}
+  recurso_publico_mutuario:
+    linhas: 17774614
+    fonte_do_perfil: amostra de 11.252%. ~2.000.000 linhas
+    colunas:
+      ano_emissao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '2013'
+        max: '2026'
+        media: 2019.0225
+        quartis: [2015, 2019, 2022]
+        top:
+        - ['2013', 187245]
+        - ['2014', 186309]
+        - ['2024', 171861]
+        - ['2015', 171211]
+        - ['2025', 170732]
+        - ['2017', 160335]
+        - ['2023', 158413]
+        - ['2022', 157989]
+        - ['2021', 155135]
+        - ['2018', 152496]
+      mes_emissao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.9949
+        quartis: [4, 8, 10]
+        top:
+        - ['8', 281673]
+        - ['9', 226898]
+        - ['10', 195443]
+        - ['7', 187606]
+        - ['11', 179234]
+        - ['12', 174123]
+        - ['6', 157118]
+        - ['5', 152099]
+        - ['1', 139501]
+        - ['2', 137047]
+      id_referencia_bacen: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2277172}
+      id_dap: {tipo: VARCHAR, nulos_pct: 16.1, distintos_aprox: 1422481}
+      cpf: {tipo: VARCHAR, nulos_pct: 0.22, distintos_aprox: 1310421, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpj: {tipo: VARCHAR, nulos_pct: 99.79, distintos_aprox: 1868, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpj_basico:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 22
+        min: 05459177
+        max: '91288399'
+        top:
+        - [null, 2098287]
+        - ['45631926', 3]
+        - [05459177, 1]
+        - [07028528, 1]
+        - [07078042, 1]
+        - [07654938, 1]
+        - [08840956, 1]
+        - ['14368453', 1]
+        - ['14386776', 1]
+        - ['20770566', 1]
+      tipo_beneficiario: {tipo: VARCHAR, nulos_pct: 26.83, distintos_aprox: 18, pessoal: 'só contagens: valores seriam dado pessoal'}
+      primeiro_mutuario:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: N
+        max: S
+        top:
+        - [S, 2094522]
+        - [N, 3787]
+      sexo:
+        tipo: VARCHAR
+        nulos_pct: 0.22
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 1489246]
+        - ['1', 604535]
+        - [null, 4528]
+  recurso_publico_propriedade:
+    linhas: 26577798
+    fonte_do_perfil: amostra de 7.525%. ~2.000.000 linhas
+    colunas:
+      ano_emissao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '2013'
+        max: '2026'
+        media: 2019.1104
+        quartis: [2015, 2019, 2023]
+        top:
+        - ['2025', 184274]
+        - ['2013', 182955]
+        - ['2024', 181690]
+        - ['2015', 180274]
+        - ['2014', 179354]
+        - ['2021', 161428]
+        - ['2017', 154771]
+        - ['2019', 150970]
+        - ['2023', 150397]
+        - ['2022', 150291]
+      mes_emissao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 7.0139
+        quartis: [4, 8, 10]
+        top:
+        - ['8', 273487]
+        - ['9', 230736]
+        - ['10', 199122]
+        - ['11', 183752]
+        - ['7', 181265]
+        - ['12', 179262]
+        - ['6', 153244]
+        - ['5', 151306]
+        - ['1', 141494]
+        - ['2', 138561]
+      id_referencia_bacen: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1716078}
+      numero_ordem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 35, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf: {tipo: VARCHAR, nulos_pct: 1.41, distintos_aprox: 1643152, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpj_basico: {tipo: VARCHAR, nulos_pct: 98.59, distintos_aprox: 10002}
+      id_sncr: {tipo: VARCHAR, nulos_pct: 95.25, distintos_aprox: 76107}
+      id_cib: {tipo: VARCHAR, nulos_pct: 94.07, distintos_aprox: 88559}
+      id_car: {tipo: VARCHAR, nulos_pct: 46.24, distintos_aprox: 678975}
+  saldo:
+    linhas: 638317660
+    fonte_do_perfil: amostra de 49.906% da última partição (ano = 2026). ~2.000.000 linhas
+    colunas:
+      ano_emissao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: '2013'
+        max: '2025'
+        media: 2021.4139
+        quartis: [2019, 2022, 2024]
+        top:
+        - ['2024', 347459]
+        - ['2025', 340588]
+        - ['2023', 242669]
+        - ['2021', 218283]
+        - ['2022', 197913]
+        - ['2020', 167493]
+        - ['2018', 126970]
+        - ['2019', 126047]
+        - ['2017', 110242]
+        - ['2016', 53093]
+      mes_emissao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 7.1783
+        quartis: [5, 8, 10]
+        top:
+        - ['8', 303040]
+        - ['9', 203846]
+        - ['6', 196608]
+        - ['11', 186922]
+        - ['5', 184320]
+        - ['12', 182411]
+        - ['10', 176063]
+        - ['7', 147456]
+        - ['4', 139264]
+        - ['3', 129024]
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
+        top:
+        - ['2026', 2037370]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        media: 1
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 2037370]
+      id_referencia_bacen: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1604435}
+      numero_ordem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 58, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_situacao_operacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: '1'
+        max: '9'
+        top:
+        - ['1', 1542782]
+        - ['12', 150460]
+        - ['3', 144932]
+        - ['4', 92257]
+        - ['2', 46990]
+        - ['7', 32271]
+        - ['9', 16013]
+        - ['6', 5973]
+        - ['5', 4987]
+        - ['13', 564]
+      valor_medio_diario:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1974611
+        min: '0.0'
+        max: '9897770999.17'
+        media: 230340.8702
+        quartis: [8421.8024, 34675.2322, 114127.3438]
+      valor_medio_diario_vincendo:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1683556
+        min: '0.0'
+        max: '3259855434.0'
+        media: 168803.2209
+        quartis: [6972.7589, 31874.0245, 108238.5041]
+      valor_ultimo_dia:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1625693
+        min: '0.0'
+        max: '3276029060.12'
+        media: 176426.1665
+        quartis: [7955.1608, 33603.1271, 111777.086]

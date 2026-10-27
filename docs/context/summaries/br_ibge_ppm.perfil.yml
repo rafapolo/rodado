@@ -1,0 +1,248 @@
+dataset: br_ibge_ppm
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  efetivo_rebanhos:
+    linhas: 1974149
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 53
+        min: '1974'
+        max: '2025'
+        media: 2002.1586
+        quartis: [1990, 2003, 2015]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 305956]
+        - [SP, 229713]
+        - [RS, 170834]
+        - [BA, 152477]
+        - [PR, 149399]
+        - [SC, 106369]
+        - [GO, 91373]
+        - [PB, 76692]
+        - [MA, 72622]
+        - [PE, 69970]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      tipo_rebanho:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: Bovino
+        max: Suíno - total
+        top:
+        - [Bovino, 258144]
+        - [Suíno - total, 256983]
+        - [Equino, 256539]
+        - [Galináceos - total, 256399]
+        - [Galináceos - galinhas, 255085]
+        - [Ovino, 240905]
+        - [Caprino, 239861]
+        - [Bubalino, 100077]
+        - [Suíno - matrizes de suínos, 69904]
+        - [Codornas, 40252]
+      quantidade:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 147028
+        min: '0'
+        max: '30225675'
+        media: 35620.8152
+        quartis: [331, 2126, 12455]
+  producao_aquicultura:
+    linhas: 117294
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: '2013'
+        max: '2025'
+        media: 2019.3001
+        quartis: [2016, 2019, 2022]
+        top:
+        - ['2025', 10081]
+        - ['2023', 9709]
+        - ['2022', 9603]
+        - ['2021', 9508]
+        - ['2024', 9503]
+        - ['2018', 9369]
+        - ['2020', 9343]
+        - ['2019', 9270]
+        - ['2017', 9188]
+        - ['2016', 8310]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [RS, 19600]
+        - [PR, 13148]
+        - [SC, 9461]
+        - [MG, 9338]
+        - [MT, 7733]
+        - [GO, 7501]
+        - [MA, 6339]
+        - [PI, 4900]
+        - [SP, 4808]
+        - [PA, 4633]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4749}
+      produto:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: Alevinos
+        max: Tucunaré
+        top:
+        - [Tilápia, 30616]
+        - [Tambaqui, 13909]
+        - [Carpa, 13030]
+        - [Pacu e patinga, 8396]
+        - ['Tambacu, tambatinga', 8079]
+        - [Outros peixes, 7149]
+        - ['Pintado, cachara, cachapira e pintachara, surubim', 5620]
+        - [Traíra e trairão, 4682]
+        - ['Piau, piapara, piauçu, piava', 4666]
+        - [Alevinos, 4595]
+      quantidade:
+        tipo: BIGINT
+        nulos_pct: 0.28
+        distintos_aprox: 17357
+        min: '1'
+        max: '32400000'
+        media: 75781.4379
+        quartis: [1083, 4916, 20760]
+      valor:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 6971
+        min: '0'
+        max: '488593'
+        media: 749.1822
+        quartis: [12, 51, 212]
+  producao_origem_animal:
+    linhas: 763045
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 53
+        min: '1974'
+        max: '2025'
+        media: 2001.9274
+        quartis: [1991, 2003, 2014]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 117563]
+        - [RS, 89668]
+        - [SP, 85096]
+        - [PR, 78392]
+        - [SC, 52565]
+        - [BA, 52387]
+        - [GO, 28924]
+        - [PB, 24391]
+        - [PI, 24006]
+        - [CE, 23761]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      produto:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Casulos do bicho-da-seda
+        max: Ovos de galinha
+        top:
+        - [Leite, 257243]
+        - [Ovos de galinha, 254926]
+        - [Mel de abelha, 147866]
+        - [Lã, 52272]
+        - [Ovos de codorna, 35820]
+        - [Casulos do bicho-da-seda, 14918]
+      unidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Mil dúzias
+        max: Quilogramas
+        top:
+        - [Mil dúzias, 290746]
+        - [Mil litros, 257243]
+        - [Quilogramas, 215056]
+      quantidade:
+        tipo: BIGINT
+        nulos_pct: 0.1
+        distintos_aprox: 34889
+        min: '0'
+        max: '4351758'
+        media: 5383.3113
+        quartis: [65, 501, 2899]
+      valor:
+        tipo: BIGINT
+        nulos_pct: 0.24
+        distintos_aprox: 60511
+        min: '0'
+        max: '202346120'
+        media: 48452.4933
+        quartis: [33, 266, 2426]
+  producao_pecuaria:
+    linhas: 257259
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 53
+        min: '1974'
+        max: '2025'
+        media: 2001.316
+        quartis: [1989, 2002, 2014]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 41397]
+        - [SP, 30768]
+        - [RS, 20853]
+        - [BA, 20460]
+        - [PR, 18804]
+        - [SC, 13360]
+        - [GO, 11527]
+        - [PB, 10397]
+        - [MA, 9294]
+        - [PI, 9254]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      ovinos_tosquiados:
+        tipo: BIGINT
+        nulos_pct: 79.68
+        distintos_aprox: 5261
+        min: '1'
+        max: '1435512'
+        media: 6445.223
+        quartis: [89, 246, 796]
+      vacas_ordenhadas:
+        tipo: BIGINT
+        nulos_pct: 0.01
+        distintos_aprox: 15682
+        min: '1'
+        max: '150501'
+        media: 3643.691
+        quartis: [769, 1949, 4284]

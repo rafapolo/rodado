@@ -1,0 +1,279 @@
+dataset: br_saude_farmaciapopular
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  estabelecimentos:
+    linhas: 32592
+    fonte_do_perfil: tabela inteira
+    colunas:
+      codigo_cnes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 33044
+        min: '3441'
+        max: '9999760'
+        media: 5471178.3216
+        quartis: [3221679, 5534375, 8294451]
+      numero_cnpj_entidade: {tipo: VARCHAR, nulos_pct: 86.28, distintos_aprox: 3399, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_razao_social: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 20181, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_fantasia: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 31373, pessoal: 'só contagens: valores seriam dado pessoal'}
+      natureza_organizacao_entidade:
+        tipo: INTEGER
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 32592]
+      tipo_gestao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: D
+        max: M
+        top:
+        - [M, 32075]
+        - [E, 508]
+        - [D, 9]
+      descricao_nivel_hierarquia:
+        tipo: INTEGER
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 32592]
+      descricao_esfera_administrativa:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: DUPLA
+        max: MUNICIPAL
+        top:
+        - [MUNICIPAL, 32075]
+        - [ESTADUAL, 508]
+        - [DUPLA, 9]
+      codigo_tipo_unidade:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '43'
+        max: '43'
+        media: 43
+        quartis: [43, 43, 43]
+        top:
+        - ['43', 32592]
+      codigo_cep_estabelecimento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 15788, pessoal: 'só contagens: valores seriam dado pessoal'}
+      endereco_estabelecimento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 15150, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_estabelecimento: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 4581, pessoal: 'só contagens: valores seriam dado pessoal'}
+      bairro_estabelecimento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6026, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_telefone_estabelecimento: {tipo: VARCHAR, nulos_pct: 20.44, distintos_aprox: 18080, pessoal: 'só contagens: valores seriam dado pessoal'}
+      latitude_estabelecimento_decimo_grau:
+        tipo: DOUBLE
+        nulos_pct: 1.28
+        distintos_aprox: 34400
+        min: '-33.736412'
+        max: '4.595145641066299'
+        media: -19.2301
+        quartis: [-24.5546, -21.1256, -14.526]
+      longitude_estabelecimento_decimo_grau:
+        tipo: DOUBLE
+        nulos_pct: 1.29
+        distintos_aprox: 39453
+        min: '-72.79085040092468'
+        max: '-32.41435110569'
+        media: -47.2168
+        quartis: [-51.1525, -47.6257, -43.1714]
+      endereco_email_estabelecimento: {tipo: VARCHAR, nulos_pct: 28.53, distintos_aprox: 15712, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_cnpj: {tipo: VARCHAR, nulos_pct: 13.14, distintos_aprox: 25411, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_identificador_turno_atendimento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7, pessoal: 'só contagens: valores seriam dado pessoal'}
+      descricao_turno_atendimento:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: ATENDIMENTO COM TURNOS INTERMITENTES
+        max: ATENDIMENTOS NOS TURNOS DA MANHA E A TARDE
+        top:
+        - ['ATENDIMENTO NOS TURNOS DA MANHA, TARDE E NOITE', 18390]
+        - [ATENDIMENTOS NOS TURNOS DA MANHA E A TARDE, 12807]
+        - ['ATENDIMENTO CONTINUO DE 24 HORAS/DIA (PLANTAO:INCLUI SABADOS, DOMINGOS E FERIADOS)', 731]
+        - [ATENDIMENTO COM TURNOS INTERMITENTES, 303]
+        - [ATENDIMENTO SOMENTE PELA MANHA, 229]
+        - [ATENDIMENTO SOMENTE A TARDE, 88]
+        - [ATENDIMENTO SOMENTE A NOITE, 44]
+      estabelecimento_faz_atendimento_ambulatorial_sus:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: NAO
+        max: SIM
+        top:
+        - [NAO, 30150]
+        - [SIM, 2442]
+      codigo_estabelecimento_saude: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 33432}
+      codigo_uf:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: '11'
+        max: '53'
+        media: 34.5579
+        quartis: [31, 35, 42]
+        top:
+        - ['35', 5078]
+        - ['31', 4970]
+        - ['43', 3799]
+        - ['41', 2666]
+        - ['42', 2627]
+        - ['29', 1707]
+        - ['33', 1377]
+        - ['51', 1201]
+        - ['32', 1078]
+        - ['52', 1069]
+      codigo_municipio:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3818
+        min: '110001'
+        max: '530010'
+        media: 347281.8219
+        quartis: [307425, 351110, 420787]
+      descricao_natureza_juridica_estabelecimento:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 31
+        min: '1000'
+        max: '3999'
+        top:
+        - ['2062', 17693]
+        - ['2046', 5722]
+        - ['1244', 4094]
+        - ['2054', 2542]
+        - ['2135', 1874]
+        - ['1023', 167]
+        - ['1031', 124]
+        - ['2143', 120]
+        - ['3077', 84]
+        - ['2305', 41]
+      codigo_motivo_desabilitacao_estabelecimento:
+        tipo: VARCHAR
+        nulos_pct: 94.09
+        distintos_aprox: 12
+        min: '01'
+        max: '13'
+        top:
+        - [null, 30667]
+        - ['10', 766]
+        - [08, 469]
+        - ['04', 446]
+        - ['06', 80]
+        - ['11', 77]
+        - ['07', 48]
+        - ['01', 13]
+        - ['03', 12]
+        - ['13', 9]
+      estabelecimento_possui_centro_cirurgico:
+        tipo: BIGINT
+        nulos_pct: 42.86
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0001
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 18620]
+        - [null, 13970]
+        - ['1', 2]
+      estabelecimento_possui_centro_obstetrico:
+        tipo: BIGINT
+        nulos_pct: 42.86
+        distintos_aprox: 1
+        min: '0'
+        max: '0'
+        media: 0
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 18622]
+        - [null, 13970]
+      estabelecimento_possui_centro_neonatal:
+        tipo: BIGINT
+        nulos_pct: 42.86
+        distintos_aprox: 1
+        min: '0'
+        max: '0'
+        media: 0
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 18622]
+        - [null, 13970]
+      estabelecimento_possui_atendimento_hospitalar:
+        tipo: BIGINT
+        nulos_pct: 42.86
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0001
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 18620]
+        - [null, 13970]
+        - ['1', 2]
+      estabelecimento_possui_servico_apoio:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.3972
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 19646]
+        - ['1', 12946]
+      estabelecimento_possui_atendimento_ambulatorial:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '0'
+        max: '0'
+        media: 0
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 32592]
+      codigo_atividade_ensino_unidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '01'
+        max: '04'
+        top:
+        - ['04', 32371]
+        - ['03', 120]
+        - ['01', 52]
+        - ['02', 49]
+      codigo_natureza_organizacao_unidade:
+        tipo: INTEGER
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 32592]
+      codigo_nivel_hierarquia_unidade:
+        tipo: INTEGER
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 32592]
+      codigo_esfera_administrativa_unidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: 'D '
+        max: 'M '
+        top:
+        - ['M ', 32075]
+        - ['E ', 508]
+        - ['D ', 9]
+      data_atualizacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 282, min: '2025-09-03', max: '2026-10-07'}

@@ -1,0 +1,897 @@
+dataset: br_transferegov
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  planos_acao:
+    linhas: 25969
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_plano_acao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 26482
+        min: '1'
+        max: '28612'
+        media: 14042.53
+        quartis: [6857, 13743, 21247]
+      codigo_plano_acao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 34814}
+      data_inicio_vigencia_plano_acao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 541, min: '0023-02-01', max: '2029-04-15'}
+      data_fim_vigencia_plano_acao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 339, min: '2020-07-27', max: '2252-05-30'}
+      diagnostico_plano_acao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 12649}
+      objetivos_plano_acao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 13737}
+      situacao_plano_acao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: ADITIVACAO_ENVIADA_CONSELHO_LOCAL
+        max: REPLANEJAMENTO_ENVIADO_PARA_ANALISE
+        top:
+        - [AUTORIZADO, 22809]
+        - [EM_ELABORACAO, 2110]
+        - [REJEITADO, 369]
+        - [ENVIADO_ANALISE, 227]
+        - [EM_COMPLEMENTACAO, 222]
+        - [ADITIVACAO_ENVIADA_PARA_ANALISE, 54]
+        - [EM_ADITIVACAO, 46]
+        - [ADITIVACAO_SOLICITADA, 42]
+        - [REPLANEJAMENTO_ENVIADO_PARA_ANALISE, 33]
+        - [ENVIADO_ANALISE_CONSELHO, 24]
+      valor_repasse_emenda_plano_acao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '0.0'
+        max: '29612094.0'
+        media: 4649.7526
+        quartis: [0, 0, 0]
+        top:
+        - ['0.0', 25933]
+        - ['300000.0', 7]
+        - ['2000000.0', 3]
+        - ['200000.0', 2]
+        - ['450000.0', 2]
+        - ['500000.0', 2]
+        - ['9000000.0', 2]
+        - ['100000.0', 1]
+        - ['101733.0', 1]
+        - ['13542438.0', 1]
+      valor_repasse_especifico_plano_acao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 19934
+        min: '0.0'
+        max: '842034108.59'
+        media: 1342021.4125
+        quartis: [62377.7253, 158116.9108, 390511.9502]
+      valor_repasse_voluntario_plano_acao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 77
+        min: '0.0'
+        max: '12759751.85'
+        media: 5543.5193
+        quartis: [0, 0, 0]
+      valor_total_repasse_plano_acao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 20200
+        min: '0.0'
+        max: '842034108.59'
+        media: 1352214.6844
+        quartis: [62986.8327, 160478.2386, 396566.9598]
+      valor_recursos_proprios_plano_acao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 574
+        min: '0.0'
+        max: '61104750.0'
+        media: 11201.2629
+        quartis: [0, 0, 0]
+      valor_outros_plano_acao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 586
+        min: '0.0'
+        max: '57500023.28'
+        media: 54255.5621
+        quartis: [0, 0, 0]
+      valor_rendimentos_aplicacao_plano_acao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 286
+        min: '0.0'
+        max: '73981792.27'
+        media: 40128.1727
+        quartis: [0, 0, 0]
+      valor_total_plano_acao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 20897
+        min: '0.0'
+        max: '842034108.59'
+        media: 1457799.6821
+        quartis: [66108.1876, 164416.2306, 414726.103]
+      valor_total_investimento_plano_acao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 704
+        min: '0.0'
+        max: '300853210.95'
+        media: 310646.3939
+        quartis: [0, 0, 0]
+      valor_total_custeio_plano_acao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 19206
+        min: '0.0'
+        max: '842034108.59'
+        media: 1111033.7841
+        quartis: [60913.8771, 157303.314, 384821.9203]
+      valor_saldo_disponivel_plano_acao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 236
+        min: '0.0'
+        max: '95447562.86'
+        media: 5768.579
+        quartis: [0, 0, 0]
+      id_orgao_repassador_plano_acao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '253'
+        max: '308821'
+        media: 293092.4788
+        quartis: [308821, 308821, 308821]
+        top:
+        - ['308821', 23645]
+        - ['308798', 904]
+        - ['2208', 584]
+        - ['9053', 536]
+        - ['89690', 264]
+        - ['253', 35]
+        - ['263749', 1]
+      sigla_orgao_repassador_plano_acao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: DIRPP
+        max: SPPE
+        top:
+        - [MinC, 23645]
+        - [MCID, 904]
+        - [SPPE, 584]
+        - [SENASP, 537]
+        - [DIRPP, 264]
+        - [FNDE, 35]
+      cnpj_orgao_repassador_plano_acao: {tipo: VARCHAR, nulos_pct: 94.32, distintos_aprox: 3, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_orgao_repassador_plano_acao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_ente_repassador_plano_acao:
+        tipo: INTEGER
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 25969]
+      cnpj_ente_repassador_plano_acao: {tipo: INTEGER, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_ente_repassador_plano_acao: {tipo: INTEGER, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      uf_ente_repassador_plano_acao:
+        tipo: INTEGER
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 25969]
+      nome_municipio_ente_repassador_plano_acao: {tipo: INTEGER, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      codigo_ibge_municipio_ente_repassador_plano_acao:
+        tipo: INTEGER
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 25969]
+      id_ente_recebedor_plano_acao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5830
+        min: '1'
+        max: '78046'
+        media: 3034.6195
+        quartis: [1406, 2878, 4358]
+      cnpj_ente_recebedor_plano_acao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4780, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_ente_recebedor_plano_acao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5831, pessoal: 'só contagens: valores seriam dado pessoal'}
+      uf_ente_recebedor_plano_acao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 3924]
+        - [SP, 2957]
+        - [RS, 2222]
+        - [BA, 1940]
+        - [PR, 1841]
+        - [SC, 1319]
+        - [MA, 1028]
+        - [PB, 1027]
+        - [GO, 1019]
+        - [PI, 979]
+      nome_municipio_ente_recebedor_plano_acao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5894, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      codigo_ibge_municipio_ente_recebedor_plano_acao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 6308
+        min: '1100015'
+        max: '5300108'
+        media: 3232733.2689
+        quartis: [2510029, 3145526, 4115084]
+      id_fundo_repassador_plano_acao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '26'
+        max: '77758'
+        media: 17660.5066
+        quartis: [928, 21873, 21873]
+        top:
+        - ['21873', 17360]
+        - ['928', 6285]
+        - ['77756', 904]
+        - ['49', 584]
+        - ['26', 535]
+        - ['36', 264]
+        - ['77758', 35]
+        - ['6476', 2]
+      cnpj_fundo_repassador_plano_acao: {tipo: VARCHAR, nulos_pct: 70.47, distintos_aprox: 4, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_fundo_repassador_plano_acao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6, pessoal: 'só contagens: valores seriam dado pessoal'}
+      uf_fundo_repassador_plano_acao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: DF
+        max: DF
+        top:
+        - [DF, 25969]
+      municipio_fundo_repassador_plano_acao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: BRASÍLIA
+        max: BRASÍLIA
+        top:
+        - [BRASÍLIA, 25969]
+      codigo_ibge_fundo_repassador_plano_acao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '5300108'
+        max: '5300108'
+        media: 5300108
+        quartis: [5300108, 5300108, 5300108]
+        top:
+        - ['5300108', 25969]
+      id_fundo_recebedor_plano_acao:
+        tipo: BIGINT
+        nulos_pct: 77.69
+        distintos_aprox: 1587
+        min: '24'
+        max: '300001'
+        media: 8235.912
+        quartis: [1702, 4049, 6456]
+      cnpj_fundo_recebedor_plano_acao: {tipo: VARCHAR, nulos_pct: 85.9, distintos_aprox: 870, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_fundo_recebedor_plano_acao: {tipo: VARCHAR, nulos_pct: 77.8, distintos_aprox: 1380, pessoal: 'só contagens: valores seriam dado pessoal'}
+      uf_fundo_recebedor_plano_acao:
+        tipo: VARCHAR
+        nulos_pct: 77.8
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [null, 20204]
+        - [MG, 624]
+        - [SP, 560]
+        - [BA, 383]
+        - [PR, 359]
+        - [RS, 353]
+        - [SC, 315]
+        - [CE, 314]
+        - [RJ, 281]
+        - [MA, 241]
+      municipio_fundo_recebedor_plano_acao: {tipo: VARCHAR, nulos_pct: 77.8, distintos_aprox: 1642}
+      codigo_ibge_fundo_recebedor_plano_acao:
+        tipo: BIGINT
+        nulos_pct: 77.8
+        distintos_aprox: 1409
+        min: '1100049'
+        max: '5300108'
+        media: 3177012.1155
+        quartis: [2368084, 3138833, 4113206]
+      id_programa:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 107
+        min: '2'
+        max: '133'
+        media: 56.124
+        quartis: [21, 47, 63]
+  programas:
+    linhas: 129
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_programa:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 123
+        min: '1'
+        max: '134'
+        media: 70.8837
+        quartis: [41, 72, 104]
+      ano_programa:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '2019'
+        max: '2026'
+        media: 2023.062
+        quartis: [2023, 2023, 2024]
+        top:
+        - ['2023', 59]
+        - ['2024', 15]
+        - ['2025', 13]
+        - ['2026', 11]
+        - ['2020', 10]
+        - ['2022', 10]
+        - ['2021', 9]
+        - ['2019', 2]
+      modalidade_programa:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: FUNDO_A_FUNDO
+        max: FUNDO_A_FUNDO
+        top:
+        - [FUNDO_A_FUNDO, 129]
+      codigo_programa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 142, min: '00025320220001', max: '30882120250006'}
+      nome_programa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 85, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_unidade_gestora_programa:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: '22'
+        max: '540035'
+        media: 269505.4186
+        quartis: [200324, 200324, 380908]
+        top:
+        - ['200324', 41]
+        - ['380908', 35]
+        - ['200277', 18]
+        - ['40054', 8]
+        - ['540032', 5]
+        - ['200331', 4]
+        - ['400054', 4]
+        - ['540035', 4]
+        - ['340034', 3]
+        - ['153173', 1]
+      nome_institucional_programa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 63, pessoal: 'só contagens: valores seriam dado pessoal'}
+      permite_transferencia_sem_fundo_programa:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['false', 113]
+        - ['true', 16]
+      objetivo_programa:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 47
+        min: ' A realização das ações de financiamento referente à área temática de Redução das Mortes Violentas Intencionais, do Enfrentamento
+          ao Crime Organizado e da Proteção Patrimonial por meio de Ações de Prevenção de Criminalidade e Fomento à Defesa Social, conforme previsto
+          na Portaria MJSP nº 685, de 16 de maio de 2024, do Ministério da Justiça e Segurança Pública, para a execução de recursos do Fundo Nacional
+          de Segurança Pública (FNSP), transferidos obrigatoriamente na modalidade fundo a fundo, de acordo com a Lei nº 13.756/2018 e a Portaria
+          MJSP nº 737/2024.'
+        max: x
+        top:
+        - ["A transferência voluntária, via fundo a fundo, possibilita que os recursos do Funpen sejam repassados diretamente ao fundo estadual,\
+            \ com destinação às ações e objetos específicos, que têm como objetivo garantir a descentralização de recursos e fortalecer a execução\
+            \ de políticas penais.  \nCada política penal se baseia em EIXO composta de aquisições diretas por parte do órgão repassador (doação)\
+            \ e a descentralização de recursos (fundo a fundo), os quais, em sua grande parte, são rubricados na natureza de despesa de custeio,\
+            \ da qual a formalização desse repasse se justifica para a continuidade de fomento às políticas penais na unidade federada eleita. ",
+          26]
+        - ['Articular órgãos e entidades da administração pública federal, dos Estados, do Distrito Federal, dos Municípios, do setor privado
+            e da sociedade civil na promoção da intermediação de mão de obra para o aumento da produtividade e da empregabilidade.', 14]
+        - [Aumentar a participação do SINE no total de admissões no mercado de trabalho formal por meio da promoção de ações de qualificação social
+            e profissional em alinhamento com as demandas do setor produtivo apuradas por meio de solicitações diretas na plataforma SuperTec
+            ou previstas em contratos com incentivos de desempenho., 7]
+        - ['O programa está voltado ao desenvolvimento de ações de qualificação social e profissional a jovens e trabalhadores, de forma a contribuir
+            com a formação geral, acesso e permanência no mundo de trabalho. ', 4]
+        - ['Promover a execução descentralizada de atividades de assessoramento estatístico em âmbito local, observados os termos da Lei n° 13.667,
+            de 2018, da Resolução CODEFAT n° 994, de 15/02/2024, e demais normativos que regulamentam a matéria.', 4]
+        - ['Executar a Lei nº 14.399, de 08 de julho de 2022 (Política Nacional Aldir Blanc de Fomento à Cultura), regulamentada pelo Decreto
+            nº 11.740, de 18 de outubro de 2023.', 3]
+        - ['Execução da Lei 14.017, de 29 de junho de 2020 (Lei Aldir Blanc).', 3]
+        - ['I - construção, reforma, ampliação e aprimoramento de estabelecimentos penais;
+
+            II - manutenção dos serviços e realização de investimentos penitenciários, inclusive em informação e segurança;
+
+            III - formação, aperfeiçoamento e especialização do serviço penitenciário;
+
+            IV - aquisição de material permanente, equipamentos e veículos especializados, imprescindíveis ao funcionamento e à segurança dos
+            estabelecimentos penais;
+
+            V - implantação de medidas pedagógicas relacionadas ao trabalho profissionalizante do preso e do internado;
+
+            VI - formação educacional e cultural do preso e do internado;
+
+            VII - elaboração e execução de projetos destinados à reinserção social de presos, internados e egressos, inclusive por meio da realização
+            de cursos técnicos e profissionalizantes;
+
+            VIII - programas de assistência jurídica aos presos e internados carentes;
+
+            IX - programa de assistência às vítimas de crime;
+
+            X - programa de assistência aos dependentes de presos e internados;
+
+            XI - participação de representantes oficiais em eventos científicos sobre matéria penal, penitenciária ou criminológica, realizados
+            no Brasil ou no exterior;
+
+            XII - publicações e programas de pesquisa científica na área penal, penitenciária ou criminológica;
+
+            XIII - custos de sua própria gestão, excetuando-se despesas de pessoal relativas a servidores públicos já remunerados pelos cofres
+            públicos.
+
+            XIV - manutenção de casas de abrigo destinadas a acolher vítimas de violência doméstica.
+
+            XV – implantação e manutenção de berçário, creche e seção destinada à gestante e à parturiente nos estabelecimentos penais, nos termos
+            do § 2º do art. 83 e do art. 89 da Lei nº 7.210, de 11 de julho de 1984 – Lei de Execução Penal.
+
+            XVI - programas de alternativas penais à prisão com o intuito do cumprimento de penas restritivas de direitos e de prestação de serviços
+            à comunidade, executados diretamente ou mediante parcerias, inclusive por meio da viabilização de convênios e acordos de cooperação;
+            e
+
+            XVII - financiamento e apoio a políticas e atividades preventivas, inclusive da inteligência policial, vocacionadas à redução da criminalidade
+            e da população carcerária.', 3]
+        - ['Promover a execução descentralizada de atividades de assessoramento estatístico em âmbito local,
+
+            observados os termos da Lei n° 13.667, de 2018, da Resolução Codefat n° 921, de 2021, e demais
+
+            normativos que regulamentam a matéria.', 3]
+        - ['Promover a integração de programas fomento de geração de emprego e renda locais, que inclui apoio à concessão de microcrédito produtivo
+            orientado e de assessoramento técnico ao trabalho autônomo, autogestionário ou associado, no âmbito do Sistema Nacional de Emprego
+            - Sine', 3]
+      descricao_programa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 93, min: '- Eixo Trabalho, direcionado ao Kit Dignidade Mestrual e Kit
+          Cidade Digna, visando à aquisição de insumos para confecção de fraldas e absorventes e fabricação de blocos, respectivamente;  ', max: x}
+      situacao_programa:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: DISPONIBILIZADO
+        max: NAO_DISPONIBILIZADO
+        top:
+        - [DISPONIBILIZADO, 118]
+        - [NAO_DISPONIBILIZADO, 11]
+      valor_global_programa:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 91
+        min: '0.0'
+        max: '6000000000.0'
+        media: 281092544.1139
+        quartis: [1020250.75, 11046577.8462, 102237786.6525]
+      quantidade_parcelas_programa:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '0'
+        max: '4'
+        media: 1.2558
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 110]
+        - ['2', 7]
+        - ['3', 6]
+        - ['4', 5]
+        - ['0', 1]
+      id_orgao_superior_programa:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '253'
+        max: '308821'
+        media: 62741.5271
+        quartis: [2208, 9053, 89690]
+        top:
+        - ['2208', 51]
+        - ['89690', 42]
+        - ['9053', 22]
+        - ['308821', 12]
+        - ['253', 1]
+        - ['308798', 1]
+      sigla_orgao_superior_programa:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: DIRPP
+        max: SPPE
+        top:
+        - [SPPE, 51]
+        - [DIRPP, 42]
+        - [SENASP, 22]
+        - [MinC, 12]
+        - [FNDE, 1]
+        - [MCID, 1]
+      cnpj_orgao_superior_programa: {tipo: VARCHAR, nulos_pct: 81.4, distintos_aprox: 3, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_orgao_superior_programa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_fundo_programa:
+        tipo: BIGINT
+        nulos_pct: 1.55
+        distintos_aprox: 7
+        min: '26'
+        max: '77758'
+        media: 2667.252
+        quartis: [36, 49, 49]
+        top:
+        - ['49', 51]
+        - ['36', 42]
+        - ['26', 20]
+        - ['21873', 8]
+        - ['928', 4]
+        - [null, 2]
+        - ['77756', 1]
+        - ['77758', 1]
+      cnpj_fundo_programa: {tipo: VARCHAR, nulos_pct: 9.3, distintos_aprox: 4, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_fundo_programa: {tipo: VARCHAR, nulos_pct: 1.55, distintos_aprox: 5, pessoal: 'só contagens: valores seriam dado pessoal'}
+      uf_fundo_programa:
+        tipo: VARCHAR
+        nulos_pct: 1.55
+        distintos_aprox: 1
+        min: DF
+        max: DF
+        top:
+        - [DF, 127]
+        - [null, 2]
+      municipio_fundo_programa:
+        tipo: VARCHAR
+        nulos_pct: 1.55
+        distintos_aprox: 1
+        min: BRASÍLIA
+        max: BRASÍLIA
+        top:
+        - [BRASÍLIA, 127]
+        - [null, 2]
+      codigo_ibge_fundo_programa:
+        tipo: BIGINT
+        nulos_pct: 1.55
+        distintos_aprox: 1
+        min: '5300108'
+        max: '5300108'
+        media: 5300108
+        quartis: [5300108, 5300108, 5300108]
+        top:
+        - ['5300108', 127]
+        - [null, 2]
+      grupo_natureza_despesa_programa:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: CUSTEIO
+        max: INVESTIMENTO
+        top:
+        - [CUSTEIO, 67]
+        - ['CUSTEIO, INVESTIMENTO', 56]
+        - [INVESTIMENTO, 6]
+      codigo_descricao_orcamentaria_programa:
+        tipo: VARCHAR
+        nulos_pct: 1.55
+        distintos_aprox: 16
+        min: ' 20Z'
+        max: 2B12
+        top:
+        - [21BP, 32]
+        - [00R2, 22]
+        - [20JT, 15]
+        - [20Z1, 14]
+        - [00R3, 10]
+        - [20YY, 9]
+        - [00UV, 5]
+        - [2B12, 5]
+        - [00S8, 4]
+        - [20yy, 3]
+      descricao_acao_orcamentaria_programa:
+        tipo: VARCHAR
+        nulos_pct: 1.55
+        distintos_aprox: 27
+        min: ' Gestão do Sistema Nacional de Emprego - Sine'
+        max: Transferências aos Entes Federativos para Aprimoramento do Sistema Penitenciário
+        top:
+        - ['Aprimoramento do Sistema Penitenciário Nacional e Incentivo ao Desenvolvimento da Inteligência Penitenciária ', 24]
+        - [APRIMORAMENTO DA SEGURANÇA PÚBLICA NACIONAL, 16]
+        - ['Estudos, Pesquisas e Geração de Informações sobre Trabalho, Emprego e Renda', 11]
+        - [Qualificação Social e Profissional, 9]
+        - [Gestão do Sistema Nacional de Emprego - Sine, 8]
+        - [Aprimoramento do Sistema Penitenciário Nacional e Incentivo ao Desenvolvimento da Inteligência Penitenciária, 7]
+        - ['Bloco de Ações e Serviços da Qualificação Profissional, do Sistema Nacional de Emprego', 5]
+        - [Fomento à Inclusão Produtiva, 5]
+        - [Implementação da Política Nacional Aldir Blanc de Fomento à Cultura, 5]
+        - [Racionalização e Modernização do Sistema Penal, 5]
+      valor_acao_orcamentaria_programa:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 93
+        min: '0.0'
+        max: '8006588315.0'
+        media: 431121390.2907
+        quartis: [1081125.8125, 11300264.5962, 288073712.69]
+      data_inicio_recebimento_planos_acao_beneficiarios_especificos: {tipo: DATE, nulos_pct: 24.81, distintos_aprox: 57, pessoal: 'só contagens:
+          valores seriam dado pessoal'}
+      data_fim_recebimento_planos_acao_beneficiarios_especificos: {tipo: DATE, nulos_pct: 24.81, distintos_aprox: 50, pessoal: 'só contagens:
+          valores seriam dado pessoal'}
+      data_inicio_recebimento_planos_acao_beneficiarios_emendas: {tipo: DATE, nulos_pct: 84.5, distintos_aprox: 17, pessoal: 'só contagens: valores
+          seriam dado pessoal'}
+      data_fim_recebimento_planos_acao_beneficiarios_emendas: {tipo: DATE, nulos_pct: 84.5, distintos_aprox: 17, pessoal: 'só contagens: valores
+          seriam dado pessoal'}
+      data_inicio_recebimento_planos_acao_beneficiarios_voluntarios: {tipo: DATE, nulos_pct: 93.02, distintos_aprox: 9, pessoal: 'só contagens:
+          valores seriam dado pessoal'}
+      data_fim_recebimento_planos_acao_beneficiarios_voluntarios: {tipo: DATE, nulos_pct: 93.02, distintos_aprox: 7, pessoal: 'só contagens: valores
+          seriam dado pessoal'}
+      nome_gestao_agil_programa: {tipo: VARCHAR, nulos_pct: 3.88, distintos_aprox: 37, pessoal: 'só contagens: valores seriam dado pessoal'}
+  transferencias:
+    linhas: 4248
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_empenho:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3750
+        min: '1'
+        max: '12748'
+        media: 10620.4981
+        quartis: [9564, 10633, 11684]
+      numero_empenho: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 48, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ano_empenho:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '2019'
+        max: '2020'
+        media: 2019.9995
+        quartis: [2020, 2020, 2020]
+        top:
+        - ['2020', 4246]
+        - ['2019', 2]
+      gestao_emitente_empenho:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '00001'
+        max: '00001'
+        top:
+        - ['00001', 4248]
+      ug_emitente_empenho:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '200277'
+        max: '540035'
+        top:
+        - ['540035', 4246]
+        - ['200277', 2]
+      data_emissao_empenho:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '2019-12-24'
+        max: '2021-01-08'
+        top:
+        - ['2021-01-08', 4246]
+        - ['2019-12-24', 2]
+      fonte_recurso_empenho:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 0118309110
+        max: '144000000'
+        top:
+        - ['144000000', 4246]
+        - [0118309110, 2]
+      esfera_orcamentaria_empenho:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        media: 1
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 4248]
+      descricao_esfera_orcamentaria_empenho:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Estadual
+        max: Estadual
+        top:
+        - [Estadual, 4248]
+      plano_interno_empenho:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 0929CEAUXEM
+        max: SP9990VPSP6
+        top:
+        - [0929CEAUXEM, 4246]
+        - [SP9990VPSP6, 2]
+      unidade_gestora_responsavel_empenho: {tipo: VARCHAR, nulos_pct: 0.05, distintos_aprox: 1, pessoal: 'só contagens: valores seriam dado pessoal'}
+      observacao_empenho:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: ' IMPORTÂNCIA QUE SE EMPENHA VISANDO O REPASSE OBRIGATÓRIO NA MODALIDADE FUNDO A  FUNDO/DISTRITO FEDERAL, DESPACHO Nº 272/2019/COAT/CGTFF/DIAD/SENASP/MJENASP/MJ.
+          PROCESSO Nº 08020.008225/2019-04. EIXO VALORIZAÇÃO PROFISSIONAL..'
+        max: PAGAMENTO DE AUXÍLIO EMERGENCIAL, CONFORME LEI 14.017, DE 29 DE JUNHO DE 2020.
+        top:
+        - ['PAGAMENTO DE AUXÍLIO EMERGENCIAL, CONFORME LEI 14.017, DE 29 DE JUNHO DE 2020 PARA OS MUNICÍPIOS DO ESTADO DE MINAS GERAIS.', 613]
+        - ['PAGAMENTO DE AUXÍLIO EMERGENCIAL, CONFORME LEI 14.017, DE 29 DE JUNHO DE 2020, PARA OS MUNICÍPIOS DO ESTADO DE SÃO PAULO.                                    ',
+          462]
+        - ['PAGAMENTO DE AUXÍLIO EMERGENCIAL, CONFORME LEI 14.017, DE 29 DE JUNHO DE 2020 PARA OS MUNICÍPIOS DO ESTADO DO RIO GRANDE DO SUL.',
+          397]
+        - ['PAGAMENTO DE AUXÍLIO EMERGENCIAL, CONFORME LEI 14.017, DE 29 DE JUNHO DE 2020 PARA OS MUNICÍPIOS DO ESTADO DA BAHIA.', 359]
+        - ['PAGAMENTO DE AUXÍLIO EMERGENCIAL, CONFORME LEI 14.017, DE 29 DE JUNHO DE 2020 PARA OS MUNICÍPIOS DO ESTADO DO PARANÁ.', 243]
+        - ['PAGAMENTO DE AUXÍLIO EMERGENCIAL, CONFORME LEI 14.017, DE 29 DE JUNHO DE 2020, PARA OS MUNICÍPIOS DO ESTADO DE SANTA CATARINA.', 234]
+        - ['PAGAMENTO DE AUXÍLIO EMERGENCIAL, CONFORME LEI 14.017, DE 29 DE JUNHO DE 2020 PARA OS MUNICÍPIOS DO ESTADO DA PARAÍBA.', 215]
+        - ['PAGAMENTO DE AUXÍLIO EMERGENCIAL, CONFORME LEI 14.017, DE 29 DE JUNHO DE 2020 PARA OS MUNICÍPIOS DO ESTADO DE PERNAMBUCO.', 181]
+        - ['PAGAMENTO DE AUXÍLIO EMERGENCIAL, CONFORME LEI 14.017, DE 29 DE JUNHO DE 2020 PARA OS MUNICÍPIOS DO ESTADO DO CEARÁ.', 176]
+        - ['PAGAMENTO DE AUXÍLIO EMERGENCIAL, CONFORME LEI 14.017, DE 29 DE JUNHO DE 2020 PARA OS MUNICÍPIOS DO ESTADO DO PIAUÍ.', 167]
+      cnpj_favorecido_empenho: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 26, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_lista_empenho: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 71, pessoal: 'só contagens: valores seriam dado pessoal'}
+      unidade_gestora_referencia_empenho:
+        tipo: VARCHAR
+        nulos_pct: 0.05
+        distintos_aprox: 1
+        min: '540035'
+        max: '540035'
+        top:
+        - ['540035', 4246]
+        - [null, 2]
+      gestao_referencia_empenho:
+        tipo: VARCHAR
+        nulos_pct: 0.05
+        distintos_aprox: 1
+        min: '00001'
+        max: '00001'
+        top:
+        - ['00001', 4246]
+        - [null, 2]
+      numero_interno_empenho: {tipo: BIGINT, nulos_pct: 99.95, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      objeto_empenho:
+        tipo: VARCHAR
+        nulos_pct: 0.05
+        distintos_aprox: 27
+        min: PAGAMENTO DE AUXÍLIO EMERGENCIAL, CONFORME LEI 14.017, DE 29 DE JUNHO DE 2020 PARA O DISTRITO FEDERAL.
+        max: PAGAMENTO DE AUXÍLIO EMERGENCIAL, CONFORME LEI 14.017, DE 29 DE JUNHO DE 2020.
+        top:
+        - ['PAGAMENTO DE AUXÍLIO EMERGENCIAL, CONFORME LEI 14.017, DE 29 DE JUNHO DE 2020 PARA OS MUNICÍPIOS DO ESTADO DE MINAS GERAIS.', 613]
+        - ['PAGAMENTO DE AUXÍLIO EMERGENCIAL, CONFORME LEI 14.017, DE 29 DE JUNHO DE 2020, PARA OS MUNICÍPIOS DO ESTADO DE SÃO PAULO.                                    ',
+          462]
+        - ['PAGAMENTO DE AUXÍLIO EMERGENCIAL, CONFORME LEI 14.017, DE 29 DE JUNHO DE 2020 PARA OS MUNICÍPIOS DO ESTADO DO RIO GRANDE DO SUL.',
+          397]
+        - ['PAGAMENTO DE AUXÍLIO EMERGENCIAL, CONFORME LEI 14.017, DE 29 DE JUNHO DE 2020 PARA OS MUNICÍPIOS DO ESTADO DA BAHIA.', 359]
+        - ['PAGAMENTO DE AUXÍLIO EMERGENCIAL, CONFORME LEI 14.017, DE 29 DE JUNHO DE 2020 PARA OS MUNICÍPIOS DO ESTADO DO PARANÁ.', 243]
+        - ['PAGAMENTO DE AUXÍLIO EMERGENCIAL, CONFORME LEI 14.017, DE 29 DE JUNHO DE 2020, PARA OS MUNICÍPIOS DO ESTADO DE SANTA CATARINA.', 234]
+        - ['PAGAMENTO DE AUXÍLIO EMERGENCIAL, CONFORME LEI 14.017, DE 29 DE JUNHO DE 2020 PARA OS MUNICÍPIOS DO ESTADO DA PARAÍBA.', 215]
+        - ['PAGAMENTO DE AUXÍLIO EMERGENCIAL, CONFORME LEI 14.017, DE 29 DE JUNHO DE 2020 PARA OS MUNICÍPIOS DO ESTADO DE PERNAMBUCO.', 181]
+        - ['PAGAMENTO DE AUXÍLIO EMERGENCIAL, CONFORME LEI 14.017, DE 29 DE JUNHO DE 2020 PARA OS MUNICÍPIOS DO ESTADO DO CEARÁ.', 176]
+        - ['PAGAMENTO DE AUXÍLIO EMERGENCIAL, CONFORME LEI 14.017, DE 29 DE JUNHO DE 2020 PARA OS MUNICÍPIOS DO ESTADO DO PIAUÍ.', 167]
+      numero_sistema_empenho: {tipo: VARCHAR, nulos_pct: 0.05, distintos_aprox: 727, pessoal: 'só contagens: valores seriam dado pessoal'}
+      natureza_despesa_empenho:
+        tipo: VARCHAR
+        nulos_pct: 0.05
+        distintos_aprox: 2
+        min: '333041'
+        max: '334041'
+        top:
+        - ['334041', 4218]
+        - ['333041', 28]
+        - [null, 2]
+      natureza_despesa_sub_item_empenho:
+        tipo: BIGINT
+        nulos_pct: 99.95
+        distintos_aprox: 2
+        min: '3875'
+        max: '3876'
+        media: 3875.5
+        quartis: [3875, 3876, 3876]
+        top:
+        - [null, 4246]
+        - ['3875', 1]
+        - ['3876', 1]
+      tipo_empenho:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '3'
+        media: 1.0009
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 4246]
+        - ['3', 2]
+      descricao_tipo_empenho:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Empenho Ordinário
+        max: Estimado
+        top:
+        - [Empenho Ordinário, 4246]
+        - [Estimado, 2]
+      codigo_tipo_nota_empenho:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '01'
+        max: '01'
+        top:
+        - ['01', 4248]
+      descricao_tipo_nota_empenho:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Empenho Original
+        max: Empenho Original
+        top:
+        - [Empenho Original, 4248]
+      situacao_empenho:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '6'
+        max: '6'
+        media: 6
+        quartis: [6, 6, 6]
+        top:
+        - ['6', 4248]
+      descricao_situacao_empenho:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Registrado no SIAFI
+        max: Registrado no SIAFI
+        top:
+        - [Registrado no SIAFI, 4248]
+      valor_empenho:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 3671
+        min: '0.04'
+        max: '264155074.63'
+        media: 706619.4132
+        quartis: [63739.9892, 127794.507, 255659.4974]
+      versao_empenho:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '2'
+        max: '11'
+        media: 2.0021
+        quartis: [2, 2, 2]
+        top:
+        - ['2', 4247]
+        - ['11', 1]
+      id_plano_acao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 4449
+        min: '1'
+        max: '5822'
+        media: 3093.2032
+        quartis: [1736, 3202, 4499]
+      razao_social_favorecido: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 35, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_fantasia_favorecido: {tipo: VARCHAR, nulos_pct: 0.07, distintos_aprox: 23, pessoal: 'só contagens: valores seriam dado pessoal'}

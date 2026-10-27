@@ -1,0 +1,70 @@
+dataset: br_tce_to
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  pautas:
+    linhas: 50
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 22
+        min: '2026-06-08'
+        max: '2026-10-19'
+        top:
+        - ['2026-06-15', 3]
+        - ['2026-06-22', 3]
+        - ['2026-08-03', 3]
+        - ['2026-08-17', 3]
+        - ['2026-08-24', 3]
+        - ['2026-08-31', 3]
+        - ['2026-09-14', 3]
+        - ['2026-09-21', 3]
+        - ['2026-09-28', 3]
+        - ['2026-10-05', 3]
+      hora:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: 10:00:00:000
+        max: 14:30:00:000
+        top:
+        - ['12:00:00:000', 30]
+        - ['10:00:00:000', 12]
+        - ['14:30:00:000', 7]
+        - ['10:30:00:000', 1]
+      tipo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: ADMINISTRATIVA/VIDEOCONFERÊNCIA
+        max: ORDINÁRIA/VIRTUAL
+        top:
+        - [ORDINÁRIA/VIRTUAL, 37]
+        - [ORDINÁRIA/VIDEOCONFERÊNCIA, 9]
+        - [ADMINISTRATIVA/VIDEOCONFERÊNCIA, 2]
+        - [ESPECIAL/VIDEOCONFERÊNCIA, 1]
+        - [EXTRAORDINÁRIA/VIDEOCONFERÊNCIA, 1]
+      origem:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: PLENO
+        max: SEGUNDA CÂMARA
+        top:
+        - [PLENO, 20]
+        - [SEGUNDA CÂMARA, 16]
+        - [PRIMEIRA CÂMARA, 14]
+      codigo_origem:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - ['3', 20]
+        - ['2', 16]
+        - ['1', 14]
+      url: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 51, min: 'https://www.tceto.tc.br/sistemas_scp2/blank_visualiza_pauta_castor/blank_visualiza_pauta_castor.php?idCastorPautaVisualiza=04bb19cadfdac7b2a906960f13ca7057',
+        max: 'https://www.tceto.tc.br/sistemas_scp2/blank_visualiza_pauta_castor/blank_visualiza_pauta_castor.php?idCastorPautaVisualiza=f7301d06a3182cc365db04fc2bf8c5e8'}

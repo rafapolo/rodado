@@ -1,0 +1,183 @@
+dataset: br_ibge_pevs
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  producao_extracao_vegetal:
+    linhas: 463825
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 39
+        min: '1986'
+        max: '2024'
+        media: 2003.9161
+        quartis: [1994, 2003, 2013]
+        top:
+        - ['1997', 14025]
+        - ['1998', 13785]
+        - ['1999', 13519]
+        - ['1993', 13390]
+        - ['2000', 13286]
+        - ['1994', 13281]
+        - ['1995', 13214]
+        - ['1996', 13106]
+        - ['1989', 13087]
+        - ['2001', 13041]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6662}
+      tipo_produto:
+        tipo: VARCHAR
+        nulos_pct: 70.47
+        distintos_aprox: 9
+        min: Alimentícios
+        max: Tanantes
+        top:
+        - [null, 326856]
+        - [Alimentícios, 85468]
+        - [Oleaginosos, 25354]
+        - [Ceras, 9615]
+        - [Fibras, 6767]
+        - [Borrachas, 3422]
+        - [Tanantes, 3076]
+        - ['Aromáticos, medicinais, tóxicos e corantes', 2924]
+        - [Gomas não elásticas, 343]
+      produto:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 40
+        min: Angico (casca)
+        max: Urucum (semente)
+        top:
+        - [Lenha, 139399]
+        - [Carvão vegetal, 89026]
+        - [Madeira em tora, 80957]
+        - [Erva-mate, 16368]
+        - [Umbu (fruto), 16028]
+        - [Castanha-de-caju, 13781]
+        - [Pinhão, 12729]
+        - [Babaçu (amêndoa), 10715]
+        - [Açaí (fruto), 8348]
+        - [Pinheiro brasileiro (madeira em tora), 7753]
+      unidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Metros cúbicos
+        max: Toneladas
+        top:
+        - [Metros cúbicos, 230077]
+        - [Toneladas, 225995]
+        - [Mil árvores, 7753]
+      quantidade:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 28293
+        min: '0'
+        max: '30723421'
+        media: 7195.1087
+        quartis: [10, 126, 2021]
+      valor:
+        tipo: DOUBLE
+        nulos_pct: 3.29
+        distintos_aprox: 13365
+        min: '0.0'
+        max: '721440.0'
+        media: 271.0387
+        quartis: [0.0834, 6.6413, 51.0285]
+  producao_silvicultura:
+    linhas: 94626
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 39
+        min: '1986'
+        max: '2024'
+        media: 2017.7649
+        quartis: [2015, 2018, 2021]
+        top:
+        - ['2023', 7945]
+        - ['2024', 7903]
+        - ['2022', 7862]
+        - ['2021', 7768]
+        - ['2018', 7606]
+        - ['2020', 7586]
+        - ['2019', 7513]
+        - ['2016', 7404]
+        - ['2017', 7389]
+        - ['2014', 7199]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4170}
+      categoria_produto:
+        tipo: VARCHAR
+        nulos_pct: 93.47
+        distintos_aprox: 1
+        min: Outros produtos
+        max: Outros produtos
+        top:
+        - [null, 88444]
+        - [Outros produtos, 6182]
+      tipo_produto:
+        tipo: VARCHAR
+        nulos_pct: 6.53
+        distintos_aprox: 3
+        min: Carvão vegetal
+        max: Madeira em tora
+        top:
+        - [Madeira em tora, 40995]
+        - [Lenha, 35768]
+        - [Carvão vegetal, 11681]
+        - [null, 6182]
+      subtipo_produto:
+        tipo: VARCHAR
+        nulos_pct: 56.68
+        distintos_aprox: 2
+        min: Madeira em tora para outras finalidades
+        max: Madeira em tora para papel e celulose
+        top:
+        - [null, 53631]
+        - [Madeira em tora para outras finalidades, 33150]
+        - [Madeira em tora para papel e celulose, 7845]
+      produto:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: Acácia-negra (casca)
+        max: Resina
+        top:
+        - [Lenha de eucalipto, 28513]
+        - [Madeira em tora de eucalipto para outras finalidades, 23384]
+        - [Carvão vegetal de eucalipto, 10246]
+        - [Madeira em tora de pinus para outras finalidades, 6254]
+        - [Madeira em tora de eucalipto para papel e celulose, 5413]
+        - [Lenha de outras espécies, 4383]
+        - [Madeira em tora de outras espécies para outras finalidades, 3512]
+        - [Acácia-negra (casca), 3097]
+        - [Lenha de pinus, 2872]
+        - [Resina, 2474]
+      unidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Metros cúbicos
+        max: Toneladas
+        top:
+        - [Metros cúbicos, 76763]
+        - [Toneladas, 17863]
+      quantidade:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 16544
+        min: '0'
+        max: '5645610'
+        media: 26189.1306
+        quartis: [407, 2208, 11954]
+      valor:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 10583
+        min: '0.0'
+        max: '567948.0'
+        media: 2581.0389
+        quartis: [39.6835, 206.2459, 1031.3626]

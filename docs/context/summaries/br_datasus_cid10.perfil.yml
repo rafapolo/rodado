@@ -1,0 +1,267 @@
+dataset: br_datasus_cid10
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  capitulos:
+    linhas: 22
+    fonte_do_perfil: tabela inteira
+    colunas:
+      NUMCAP:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 22
+        min: '1'
+        max: '22'
+        media: 11.5
+        quartis: [6, 12, 17]
+        top:
+        - ['1', 1]
+        - ['10', 1]
+        - ['11', 1]
+        - ['12', 1]
+        - ['13', 1]
+        - ['14', 1]
+        - ['15', 1]
+        - ['16', 1]
+        - ['17', 1]
+        - ['18', 1]
+      CATINIC:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: A00
+        max: Z00
+        top:
+        - [A00, 1]
+        - [C00, 1]
+        - [D50, 1]
+        - [E00, 1]
+        - [F00, 1]
+        - [G00, 1]
+        - [H00, 1]
+        - [H60, 1]
+        - [I00, 1]
+        - [J00, 1]
+      CATFIM:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: B99
+        max: Z99
+        top:
+        - [B99, 1]
+        - [D48, 1]
+        - [D89, 1]
+        - [E90, 1]
+        - [F99, 1]
+        - [G99, 1]
+        - [H59, 1]
+        - [H95, 1]
+        - [I99, 1]
+        - [J99, 1]
+      DESCRICAO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: Capítulo I - Algumas doenças infecciosas e parasitárias
+        max: Capítulo XXII - Códigos para propósitos especiais
+        top:
+        - [Capítulo I - Algumas doenças infecciosas e parasitárias, 1]
+        - ['Capítulo II - Neoplasias [tumores]', 1]
+        - [Capítulo III  - Doenças do sangue e dos órgãos hematopoéticos e alguns transtornos imunitários, 1]
+        - ['Capítulo IV - Doenças endócrinas, nutricionais e metabólicas', 1]
+        - [Capítulo IX - Doenças do aparelho circulatório, 1]
+        - [Capítulo V - Transtornos mentais e comportamentais, 1]
+        - [Capítulo VI - Doenças do sistema nervoso, 1]
+        - [Capítulo VII - Doenças do olho e anexos, 1]
+        - [Capítulo VIII - Doenças do ouvido e da apófise mastóide, 1]
+        - [Capítulo X - Doenças do aparelho respiratório, 1]
+      DESCRABREV:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: I.   Algumas doenças infecciosas e parasitárias
+        max: XXII.Códigos para propósitos especiais
+        top:
+        - [I.   Algumas doenças infecciosas e parasitárias, 1]
+        - [II.  Neoplasias (tumores), 1]
+        - [III. Doenças sangue órgãos hemat e transt imunitár, 1]
+        - [IV.  Doenças endócrinas nutricionais e metabólicas, 1]
+        - [IX.  Doenças do aparelho circulatório, 1]
+        - [V.   Transtornos mentais e comportamentais, 1]
+        - [VI.  Doenças do sistema nervoso, 1]
+        - [VII. Doenças do olho e anexos, 1]
+        - [VIII.Doenças do ouvido e da apófise mastóide, 1]
+        - [X.   Doenças do aparelho respiratório, 1]
+      C5:
+        tipo: INTEGER
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 22]
+  cid_o_categorias:
+    linhas: 816
+    fonte_do_perfil: tabela inteira
+    colunas:
+      CAT: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 774, min: M8000/0, max: M9989/1}
+      DESCRICAO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 846, min: Acrospiroma écrino, max: Xantoastrocitoma pleomórfico}
+      REFER: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 168, min: '', max: Q85.0}
+      C3:
+        tipo: INTEGER
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 816]
+  cid_o_grupos:
+    linhas: 63
+    fonte_do_perfil: tabela inteira
+    colunas:
+      CATINIC: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 55, min: M800, max: M998}
+      CATFIM: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 55, min: M800, max: M998}
+      DESCRICAO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 60, min: Adenomas e adenocarcinomas, max: Tumores ósseos diversos}
+      REFER:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: ''
+        max: C40.-,C41.-
+        top:
+        - ['', 62]
+        - ['C40.-,C41.-', 1]
+      C4:
+        tipo: INTEGER
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 63]
+  codigos:
+    linhas: 2045
+    fonte_do_perfil: tabela inteira
+    colunas:
+      CAT: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2105}
+      CLASSIF:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: ''
+        max: +
+        top:
+        - ['', 1960]
+        - ['*', 83]
+        - [+, 2]
+      DESCRICAO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1984}
+      DESCRABREV: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2930}
+      REFER:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: ''
+        max: J17.3*
+        top:
+        - ['', 2041]
+        - [E84.1+, 1]
+        - [G30.-+, 1]
+        - [I60-I67+, 1]
+        - [J17.3*, 1]
+      EXCLUIDOS:
+        tipo: INTEGER
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2045]
+      C6:
+        tipo: INTEGER
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2045]
+  grupos:
+    linhas: 275
+    fonte_do_perfil: tabela inteira
+    colunas:
+      CATINIC: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 270, min: A00, max: Z80}
+      CATFIM: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 339, min: A09, max: Z99}
+      DESCRICAO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 302, min: 'Achados anormais de exames de sangue, sem diagnóstico', max: Urticária
+          e eritema}
+      DESCRABREV: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 296, min: 'Achad anorm exam diag imagem estud função, s/diag', max: Urticária
+          e eritema}
+      C4:
+        tipo: INTEGER
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 275]
+  subcategorias:
+    linhas: 12451
+    fonte_do_perfil: tabela inteira
+    colunas:
+      SUBCAT: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 13101}
+      CLASSIF:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: ''
+        max: +
+        top:
+        - ['', 12073]
+        - ['*', 300]
+        - [+, 78]
+      RESTRSEXO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: ''
+        max: M
+        top:
+        - ['', 11577]
+        - [F, 758]
+        - [M, 116]
+      CAUSAOBITO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: ''
+        max: N
+        top:
+        - ['', 11160]
+        - [N, 1291]
+      DESCRICAO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 11959}
+      DESCRABREV: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 12888}
+      REFER: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 105, min: '', max: T86.-+}
+      EXCLUIDOS:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: ''
+        max: Y448
+        top:
+        - ['', 12435]
+        - [B501, 1]
+        - [B656, 1]
+        - [C141, 1]
+        - [M723, 1]
+        - [M725, 1]
+        - [N975, 1]
+        - [Q314, 1]
+        - [Q350, 1]
+        - [Q352, 1]
+      C8:
+        tipo: INTEGER
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 12451]

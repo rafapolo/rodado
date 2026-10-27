@@ -1,0 +1,209 @@
+dataset: politicos
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  contato:
+    linhas: 7664
+    fonte_do_perfil: tabela inteira
+    colunas:
+      casa:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: camara
+        max: senado
+        top:
+        - [camara, 7583]
+        - [senado, 81]
+      id: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 8671}
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7790, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_completo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 9187, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_eleitoral: {tipo: VARCHAR, nulos_pct: 1.06, distintos_aprox: 7750, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sexo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: F
+        max: Masculino
+        top:
+        - [M, 7236]
+        - [F, 347]
+        - [Masculino, 66]
+        - [Feminino, 15]
+      partido: {tipo: VARCHAR, nulos_pct: 30.6, distintos_aprox: 100, min: ARENA, max: UPF}
+      uf:
+        tipo: VARCHAR
+        nulos_pct: 0.46
+        distintos_aprox: 30
+        min: AC
+        max: TO
+        top:
+        - [SP, 900]
+        - [MG, 870]
+        - [RJ, 692]
+        - [BA, 551]
+        - [RS, 466]
+        - [PE, 450]
+        - [CE, 365]
+        - [PR, 353]
+        - [MA, 279]
+        - [SC, 232]
+      email: {tipo: VARCHAR, nulos_pct: 92.29, distintos_aprox: 800, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf: {tipo: VARCHAR, nulos_pct: 51.62, distintos_aprox: 4152, pessoal: 'só contagens: valores seriam dado pessoal'}
+      em_exercicio:
+        tipo: BOOLEAN
+        nulos_pct: 36.7
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['false', 4244]
+        - [null, 2813]
+        - ['true', 607]
+      situacao:
+        tipo: VARCHAR
+        nulos_pct: 36.7
+        distintos_aprox: 7
+        min: Afastado
+        max: Vacância
+        top:
+        - [null, 2813]
+        - [Vacância, 2719]
+        - [Fim de Mandato, 986]
+        - [Exercício, 607]
+        - [Suplência, 324]
+        - [Afastado, 189]
+        - [Licença, 22]
+        - [Convocado, 4]
+      condicao_eleitoral:
+        tipo: VARCHAR
+        nulos_pct: 10.78
+        distintos_aprox: 5
+        min: Efetivado
+        max: Titular
+        top:
+        - [Titular, 5383]
+        - [Suplente, 1238]
+        - [null, 826]
+        - [Efetivado, 209]
+        - [Não Eleito, 6]
+        - [Eleito, 2]
+      telefone: {tipo: VARCHAR, nulos_pct: 93.31, distintos_aprox: 425, pessoal: 'só contagens: valores seriam dado pessoal'}
+      gabinete_nome: {tipo: VARCHAR, nulos_pct: 93.31, distintos_aprox: 605, pessoal: 'só contagens: valores seriam dado pessoal'}
+      gabinete_predio:
+        tipo: VARCHAR
+        nulos_pct: 93.31
+        distintos_aprox: 3
+        min: '3'
+        max: x
+        top:
+        - [null, 7151]
+        - ['4', 427]
+        - ['3', 82]
+        - [x, 4]
+      gabinete_andar:
+        tipo: VARCHAR
+        nulos_pct: 94.43
+        distintos_aprox: 7
+        min: '2'
+        max: '9'
+        top:
+        - [null, 7237]
+        - ['3', 54]
+        - ['4', 54]
+        - ['8', 54]
+        - ['2', 53]
+        - ['5', 53]
+        - ['6', 53]
+        - ['7', 53]
+        - ['9', 53]
+      gabinete_sala: {tipo: VARCHAR, nulos_pct: 93.31, distintos_aprox: 605, min: '17', max: '987'}
+      escolaridade:
+        tipo: VARCHAR
+        nulos_pct: 27.1
+        distintos_aprox: 15
+        min: Doutorado
+        max: Superior Incompleto
+        top:
+        - [Superior, 4602]
+        - [null, 2077]
+        - [Secundário, 244]
+        - [Superior Incompleto, 204]
+        - [Pós-Graduação, 177]
+        - [Ensino Médio, 102]
+        - [Mestrado, 84]
+        - [Primário, 44]
+        - [Doutorado, 42]
+        - [Ensino Fundamental, 25]
+      data_nascimento: {tipo: VARCHAR, nulos_pct: 12.32, distintos_aprox: 6536}
+      data_falecimento:
+        tipo: VARCHAR
+        nulos_pct: 99.49
+        distintos_aprox: 33
+        min: '2003-05-03'
+        max: '2024-05-12'
+        top:
+        - [null, 7625]
+        - ['2003-05-03', 1]
+        - ['2003-06-17', 1]
+        - ['2003-07-27', 1]
+        - ['2003-10-04', 1]
+        - ['2003-12-27', 1]
+        - ['2004-08-09', 1]
+        - ['2005-04-26', 1]
+        - ['2005-08-13', 1]
+        - ['2005-12-12', 1]
+      uf_nascimento:
+        tipo: VARCHAR
+        nulos_pct: 13.26
+        distintos_aprox: 30
+        min: AC
+        max: TO
+        top:
+        - [null, 1016]
+        - [MG, 846]
+        - [SP, 822]
+        - [RJ, 691]
+        - [BA, 527]
+        - [RS, 510]
+        - [PE, 424]
+        - [CE, 384]
+        - [PR, 260]
+        - [MA, 236]
+      municipio_nascimento: {tipo: VARCHAR, nulos_pct: 18.1, distintos_aprox: 1192}
+      id_legislatura: {tipo: VARCHAR, nulos_pct: 1.06, distintos_aprox: 57, min: '1', max: '9'}
+      rede_social: {tipo: VARCHAR, nulos_pct: 92.67, distintos_aprox: 617, min: 'http://facebook.com/bernardosantana1; http://twitter.com/santanabernardo;
+          http://www.youtube.com/depbernardosantana', max: 'https://www.instagram.com/wellingtonroberto.pb'}
+      data_status: {tipo: VARCHAR, nulos_pct: 72.98, distintos_aprox: 377, min: '2003-02-25', max: '2026-09-30'}
+      url_foto: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7717}
+      url_pagina: {tipo: VARCHAR, nulos_pct: 98.88, distintos_aprox: 87, min: 'http://deputadohirangoncalves.com.br/', max: www.deputadoflavianomelo.com.br}
+      forma_tratamento:
+        tipo: VARCHAR
+        nulos_pct: 98.94
+        distintos_aprox: 2
+        min: 'Senador '
+        max: 'Senadora '
+        top:
+        - [null, 7583]
+        - ['Senador ', 66]
+        - ['Senadora ', 15]
+      membro_mesa:
+        tipo: VARCHAR
+        nulos_pct: 98.94
+        distintos_aprox: 2
+        min: Não
+        max: Sim
+        top:
+        - [null, 7583]
+        - [Não, 70]
+        - [Sim, 11]
+      membro_lideranca:
+        tipo: VARCHAR
+        nulos_pct: 98.94
+        distintos_aprox: 2
+        min: Não
+        max: Sim
+        top:
+        - [null, 7583]
+        - [Não, 49]
+        - [Sim, 32]

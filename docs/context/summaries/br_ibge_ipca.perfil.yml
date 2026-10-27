@@ -1,0 +1,376 @@
+dataset: br_ibge_ipca
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  mes_brasil:
+    linhas: 555
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 46
+        min: '1979'
+        max: '2026'
+        media: 2002.5423
+        quartis: [1991, 2003, 2014]
+        top:
+        - ['1980', 12]
+        - ['1981', 12]
+        - ['1982', 12]
+        - ['1983', 12]
+        - ['1984', 12]
+        - ['1985', 12]
+        - ['1986', 12]
+        - ['1987', 12]
+        - ['1988', 12]
+        - ['1989', 12]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.4919
+        quartis: [3, 6, 9]
+        top:
+        - ['1', 47]
+        - ['12', 47]
+        - ['2', 47]
+        - ['10', 46]
+        - ['11', 46]
+        - ['3', 46]
+        - ['4', 46]
+        - ['5', 46]
+        - ['6', 46]
+        - ['7', 46]
+      indice:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 477
+        min: '7.6183e-09'
+        max: '7479.71'
+        media: 2428.2278
+        quartis: [0.1466, 2048.0566, 3991.2243]
+      variacao_mensal:
+        tipo: DOUBLE
+        nulos_pct: 0.18
+        distintos_aprox: 290
+        min: '-0.68'
+        max: '82.39'
+        media: 5.5567
+        quartis: [0.3586, 0.7047, 6.3933]
+      variacao_trimestral:
+        tipo: DOUBLE
+        nulos_pct: 0.54
+        distintos_aprox: 341
+        min: '-1.32'
+        max: '437.02'
+        media: 21.1116
+        quartis: [1.1183, 2.0442, 20.6563]
+      variacao_semestral:
+        tipo: DOUBLE
+        nulos_pct: 1.08
+        distintos_aprox: 548
+        min: '-0.93'
+        max: '1580.94'
+        media: 62.5224
+        quartis: [2.3669, 3.8648, 46.5261]
+      variacao_anual:
+        tipo: DOUBLE
+        nulos_pct: 0.18
+        distintos_aprox: 394
+        min: '-0.16'
+        max: '2477.15'
+        media: 89.8964
+        quartis: [2.4057, 4.7573, 41.6651]
+      variacao_doze_meses:
+        tipo: DOUBLE
+        nulos_pct: 2.16
+        distintos_aprox: 465
+        min: '1.65'
+        max: '6821.31'
+        media: 294.4341
+        quartis: [5.0836, 7.4641, 123.5935]
+  mes_categoria_brasil:
+    linhas: 33818
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '2020'
+        max: '2026'
+        media: 2022.5946
+        quartis: [2021, 2023, 2024]
+        top:
+        - ['2020', 5484]
+        - ['2021', 5484]
+        - ['2022', 5484]
+        - ['2023', 5484]
+        - ['2024', 5484]
+        - ['2025', 5484]
+        - ['2026', 914]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.3649
+        quartis: [3, 6, 9]
+        top:
+        - ['1', 3199]
+        - ['2', 3199]
+        - ['10', 2742]
+        - ['11', 2742]
+        - ['12', 2742]
+        - ['3', 2742]
+        - ['4', 2742]
+        - ['5', 2742]
+        - ['6', 2742]
+        - ['7', 2742]
+      id_categoria: {tipo: VARCHAR, nulos_pct: 0.22, distintos_aprox: 451, min: '1', max: '9101116'}
+      categoria: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 431, min: Abacate, max: Ônibus urbano}
+      peso_mensal:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 10468
+        min: '0.0003'
+        max: '100.0'
+        media: 1.0941
+        quartis: [0.0227, 0.1232, 0.4636]
+      variacao_mensal:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2428
+        min: '-36.45'
+        max: '55.41'
+        media: 0.5383
+        quartis: [-0.2319, 0.3336, 1.1237]
+      variacao_anual:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 3851
+        min: '-57.86'
+        max: '174.67'
+        media: 3.5137
+        quartis: [0.0427, 2.247, 5.584]
+      variacao_doze_meses:
+        tipo: DOUBLE
+        nulos_pct: 14.86
+        distintos_aprox: 4095
+        min: '-47.2'
+        max: '178.02'
+        media: 6.9183
+        quartis: [1.7093, 5.4122, 10.0663]
+  mes_categoria_municipio:
+    linhas: 304362
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '2020'
+        max: '2026'
+        media: 2022.5946
+        quartis: [2021, 2023, 2024]
+        top:
+        - ['2020', 49356]
+        - ['2021', 49356]
+        - ['2022', 49356]
+        - ['2023', 49356]
+        - ['2024', 49356]
+        - ['2025', 49356]
+        - ['2026', 8226]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.3649
+        quartis: [3, 6, 9]
+        top:
+        - ['1', 28791]
+        - ['2', 28791]
+        - ['10', 24678]
+        - ['11', 24678]
+        - ['12', 24678]
+        - ['3', 24678]
+        - ['4', 24678]
+        - ['5', 24678]
+        - ['6', 24678]
+        - ['7', 24678]
+      id_municipio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '1200401'
+        max: '5300108'
+        top:
+        - ['1200401', 33818]
+        - ['2111300', 33818]
+        - ['2401305', 33818]
+        - ['2701506', 33818]
+        - ['2800308', 33818]
+        - ['5002704', 33818]
+        - ['5107206', 33818]
+        - ['5208707', 33818]
+        - ['5300108', 33818]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: AC
+        max: SE
+        top:
+        - [MS, 101454]
+        - [AC, 67636]
+        - [DF, 33818]
+        - [GO, 33818]
+        - [MA, 33818]
+        - [SE, 33818]
+      id_categoria: {tipo: VARCHAR, nulos_pct: 0.22, distintos_aprox: 451, min: '1', max: '9101116'}
+      categoria: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 431, min: Abacate, max: Ônibus urbano}
+      peso_mensal:
+        tipo: DOUBLE
+        nulos_pct: 33.14
+        distintos_aprox: 34284
+        min: '0.0107'
+        max: '100.0'
+        media: 1.6364
+        quartis: [0.1268, 0.2864, 0.9424]
+      variacao_mensal:
+        tipo: DOUBLE
+        nulos_pct: 33.14
+        distintos_aprox: 3015
+        min: '-43.88'
+        max: '88.62'
+        media: 0.5207
+        quartis: [-0.4343, 0.2818, 1.4173]
+      variacao_anual:
+        tipo: DOUBLE
+        nulos_pct: 33.14
+        distintos_aprox: 6005
+        min: '-61.03'
+        max: '204.0'
+        media: 3.2506
+        quartis: [-0.046, 2.0888, 5.63]
+      variacao_doze_meses:
+        tipo: DOUBLE
+        nulos_pct: 43.08
+        distintos_aprox: 7016
+        min: '-58.66'
+        max: '254.51'
+        media: 6.8882
+        quartis: [1.1227, 5.3611, 10.5505]
+  mes_categoria_rm:
+    linhas: 338180
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '2020'
+        max: '2026'
+        media: 2022.5946
+        quartis: [2021, 2023, 2024]
+        top:
+        - ['2020', 54840]
+        - ['2021', 54840]
+        - ['2022', 54840]
+        - ['2023', 54840]
+        - ['2024', 54840]
+        - ['2025', 54840]
+        - ['2026', 9140]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.3649
+        quartis: [3, 6, 9]
+        top:
+        - ['1', 31990]
+        - ['2', 31990]
+        - ['10', 27420]
+        - ['11', 27420]
+        - ['12', 27420]
+        - ['3', 27420]
+        - ['4', 27420]
+        - ['5', 27420]
+        - ['6', 27420]
+        - ['7', 27420]
+      regiao_metropolitana:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: Belo Horizonte
+        max: São Paulo
+        top:
+        - [Belo Horizonte, 33818]
+        - [Belém, 33818]
+        - [Curitiba, 33818]
+        - [Fortaleza, 33818]
+        - [Grande Vitória, 33818]
+        - [Porto Alegre, 33818]
+        - [Recife, 33818]
+        - [Rio de Janeiro, 33818]
+        - [Salvador, 33818]
+        - [São Paulo, 33818]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: BA
+        max: SP
+        top:
+        - [BA, 33818]
+        - [CE, 33818]
+        - [ES, 33818]
+        - [MG, 33818]
+        - [PA, 33818]
+        - [PE, 33818]
+        - [PR, 33818]
+        - [RJ, 33818]
+        - [RS, 33818]
+        - [SP, 33818]
+      id_categoria: {tipo: VARCHAR, nulos_pct: 0.22, distintos_aprox: 451, min: '1', max: '9101116'}
+      categoria: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 431, min: Abacate, max: Ônibus urbano}
+      peso_mensal:
+        tipo: DOUBLE
+        nulos_pct: 31.71
+        distintos_aprox: 58642
+        min: '0.0079'
+        max: '100.0'
+        media: 1.6021
+        quartis: [0.1193, 0.2709, 0.8749]
+      variacao_mensal:
+        tipo: DOUBLE
+        nulos_pct: 31.71
+        distintos_aprox: 3430
+        min: '-86.18'
+        max: '358.36'
+        media: 0.5354
+        quartis: [-0.4281, 0.2953, 1.4053]
+      variacao_anual:
+        tipo: DOUBLE
+        nulos_pct: 31.71
+        distintos_aprox: 6475
+        min: '-86.06'
+        max: '247.77'
+        media: 3.5478
+        quartis: [-0.0131, 2.2567, 5.8786]
+      variacao_doze_meses:
+        tipo: DOUBLE
+        nulos_pct: 41.86
+        distintos_aprox: 9065
+        min: '-86.06'
+        max: '633.65'
+        media: 6.8969
+        quartis: [1.3994, 5.4971, 10.5924]

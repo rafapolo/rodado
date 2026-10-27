@@ -1,0 +1,438 @@
+dataset: br_cnj_improbidade_administrativa
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  condenacao:
+    linhas: 53342
+    fonte_do_perfil: tabela inteira
+    colunas:
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 36166, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_processo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 33168, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_condenacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 79965}
+      id_processo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 34955}
+      tipo_pessoa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_pessoa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 38588, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sexo:
+        tipo: VARCHAR
+        nulos_pct: 5.26
+        distintos_aprox: 2
+        min: Feminino
+        max: Masculino
+        top:
+        - [Masculino, 43906]
+        - [Feminino, 6632]
+        - [null, 2804]
+      funcionario_publico:
+        tipo: BOOLEAN
+        nulos_pct: 0.33
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['false', 33041]
+        - ['true', 20124]
+        - [null, 177]
+      esfera_funcionario:
+        tipo: VARCHAR
+        nulos_pct: 61.69
+        distintos_aprox: 4
+        min: Distrital
+        max: Municipal
+        top:
+        - [null, 32909]
+        - [Municipal, 17054]
+        - [Estadual, 1703]
+        - [Federal, 1620]
+        - [Distrital, 56]
+      orgao: {tipo: VARCHAR, nulos_pct: 64.72, distintos_aprox: 6412}
+      cargo: {tipo: VARCHAR, nulos_pct: 65.37, distintos_aprox: 2079}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 8.4
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [AC, 28600]
+        - [SP, 5184]
+        - [null, 4479]
+        - [MG, 1675]
+        - [MA, 1606]
+        - [PR, 1541]
+        - [RJ, 985]
+        - [RS, 918]
+        - [RN, 852]
+        - [GO, 764]
+      instancia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: 1 grau
+        max: Militar
+        top:
+        - [1 grau, 46567]
+        - [2 grau, 6773]
+        - [Militar, 1]
+        - [null, 1]
+      tribunal:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 35
+        min: Tribunal Regional Federal da 1ª Região
+        max: Tribunal de Justiça do Estado do Rio de Janeiro
+        top:
+        - [Tribunal de Justiça do Estado de Minas Gerais, 9018]
+        - [Tribunal de Justiça do Estado de São Paulo, 7945]
+        - [Tribunal de Justiça do Distrito Federal e dos Territórios, 7791]
+        - [Tribunal de Justiça do Estado de Santa Catarina, 7616]
+        - [Tribunal Regional Federal da 1ª Região, 3196]
+        - [Tribunal Regional Federal da 5ª Região, 2893]
+        - [Tribunal de Justiça do Estado do Paraná, 1930]
+        - [Tribunal Regional Federal da 2ª Região, 1298]
+        - [Tribunal de Justiça do Estado do Rio Grande do Sul, 1255]
+        - [Tribunal de Justiça do Estado do Maranhão, 1189]
+      esfera_processo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Estadual
+        max: Militar
+        top:
+        - [Estadual, 43979]
+        - [Federal, 9362]
+        - [Militar, 1]
+      comarca: {tipo: VARCHAR, nulos_pct: 30.24, distintos_aprox: 1574}
+      data_propositura: {tipo: DATE, nulos_pct: 0, distintos_aprox: 5549, min: '1992-01-01', max: '2024-02-15'}
+      data_cadastro: {tipo: DATE, nulos_pct: 0, distintos_aprox: 3489, min: '2008-12-02', max: '2024-02-26'}
+      esfera_gabinete_desembargador:
+        tipo: VARCHAR
+        nulos_pct: 87.3
+        distintos_aprox: 2
+        min: Estadual
+        max: Federal
+        top:
+        - [null, 46569]
+        - [Estadual, 6767]
+        - [Federal, 6]
+      gabinete_desembargador:
+        tipo: VARCHAR
+        nulos_pct: 87.3
+        distintos_aprox: 21
+        min: 1ª CÂMARA REGIONAL DE CARUARU - 1ª TURMA
+        max: Terceira Câmara Criminal - Gabinetes
+        top:
+        - [null, 46569]
+        - [SECRETARIA DA SEGUNDA TURMA CRIMINAL, 2726]
+        - [SECRETARIA DA PRIMEIRA TURMA CRIMINAL, 2699]
+        - [SECRETARIA DA TERCEIRA TURMA CRIMINAL, 1273]
+        - [GABINETE DA JUIZA SUBSTITUTA EM 2º GRAU CRISTIANE SANTOS LEITE, 18]
+        - [Terceira Câmara Criminal - Gabinetes, 14]
+        - [Segunda Câmara Criminal - Gabinetes, 9]
+        - [GABINETE DA DESEMBARGADORA REGINA HELENA AFONSO DE OLIVEIRA PORTES, 7]
+        - [21CÂMARA CÍVEL, 6]
+        - [SECRETARIA DA CÂMARA CRIMINAL, 6]
+      secao_judiciaria:
+        tipo: VARCHAR
+        nulos_pct: 82.46
+        distintos_aprox: 27
+        min: SEÇÃO JUDICIÁRIA DE SANTA CATARINA
+        max: Seção Judiciária do Rio de Janeiro
+        top:
+        - [null, 43986]
+        - [Seção Judiciária do Rio de Janeiro, 1047]
+        - [Seção Judiciária do Rio Grande do Norte, 783]
+        - [Seção Judiciária da Paraíba, 761]
+        - [SEÇÃO JUDICIÁRIA DO PARANÁ, 648]
+        - [Seção Judiciária Bahia - SJBA, 616]
+        - [Seção Judiciária Maranhão - SJMA, 594]
+        - [Seção Judiciária Minas Gerais - SJMG, 572]
+        - [Seção Judiciária de Pernambuco, 555]
+        - [Seção Judiciária do Ceará, 515]
+      subsecao_1: {tipo: VARCHAR, nulos_pct: 82.55, distintos_aprox: 221, min: (excluída)Subseção Judiciária de Rondonópolis, max: Varas / Juízo}
+      subsecao_2:
+        tipo: VARCHAR
+        nulos_pct: 99.97
+        distintos_aprox: 3
+        min: 2ª SUBSEÇÃO DE DOURADOS
+        max: 6ª SUBSEÇÃO DE NAVIRAÍ
+        top:
+        - [null, 53326]
+        - [2ª SUBSEÇÃO DE DOURADOS, 10]
+        - [4ª SUBSEÇÃO DE CORUMBÁ, 3]
+        - [6ª SUBSEÇÃO DE NAVIRAÍ, 3]
+      esfera_vara_juizado:
+        tipo: VARCHAR
+        nulos_pct: 12.71
+        distintos_aprox: 2
+        min: Estadual
+        max: Federal
+        top:
+        - [Estadual, 37209]
+        - [Federal, 9353]
+        - [null, 6780]
+      vara_juizados_1: {tipo: VARCHAR, nulos_pct: 12.71, distintos_aprox: 3118}
+      vara_juizados_2:
+        tipo: VARCHAR
+        nulos_pct: 99.88
+        distintos_aprox: 10
+        min: 1VARA FEDERAL DE PITANGA
+        max: Vara Federal de Janaúba
+        top:
+        - [null, 53278]
+        - [1VARA FEDERAL DE PITANGA, 17]
+        - [VARA UNICA DE NAZARE PAULISTA, 12]
+        - [Vara Federal de Janaúba, 12]
+        - [1ª VARA FEDERAL DE DOURADOS COM JUIZADO ESPECIAL FEDERAL CRIMINAL ADJUNTO, 9]
+        - [1VARA UNICA DA SSJ EUNÁPOLIS (JEF), 5]
+        - [1ª VARA FEDERAL DE CORUMBÁ COM JUIZADO ESPECIAL FEDERAL CÍVEL E CRIMINAL ADJUNTO, 3]
+        - [1ª VARA FEDERAL DE NAVIRAÍ COM JUIZADO ESPECIAL FEDERAL CÍVEL E CRIMINAL ADJUNTO, 3]
+        - [1ª Vara Federal de Ijuí, 2]
+        - [2ª VARA FEDERAL DE DOURADOS COM JUIZADO ESPECIAL FEDERAL CRIMINAL ADJUNTO, 1]
+      auditoria_militar:
+        tipo: VARCHAR
+        nulos_pct: 99.99
+        distintos_aprox: 4
+        min: 16ª VARA FEDERAL - JOAO PESSOA/PB
+        max: SERVENTIA JUDICIÁRIA DO 2º GRAU
+        top:
+        - [null, 53336]
+        - [16ª VARA FEDERAL - JOAO PESSOA/PB, 2]
+        - [2IZADO ESPECIAL MISTO DE SOUSA (INATIVO), 2]
+        - [3ª VARA FEDERAL - NATAL/RN, 1]
+        - [SERVENTIA JUDICIÁRIA DO 2º GRAU, 1]
+      data_pena: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4327, min: '1993-07-01', max: '2024-02-23'}
+      teve_inelegivel:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['true', 27733]
+        - ['false', 25609]
+      teve_multa:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['true', 34314]
+        - ['false', 19028]
+      valor_multa:
+        tipo: DOUBLE
+        nulos_pct: 35.67
+        distintos_aprox: 13003
+        min: '0.0'
+        max: '111111111111.11'
+        media: 3347985.6466
+        quartis: [0, 1862.9296, 20620.2274]
+      teve_pena:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['false', 38377]
+        - ['true', 14965]
+      inicio_pena: {tipo: DATE, nulos_pct: 74.97, distintos_aprox: 3664, min: '1992-08-14', max: '2501-05-18'}
+      fim_pena: {tipo: DATE, nulos_pct: 77, distintos_aprox: 6951, min: '1954-03-12', max: '2069-09-10'}
+      duracao_pena: {tipo: VARCHAR, nulos_pct: 71.95, distintos_aprox: 1394}
+      teve_perda_bens:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['false', 51584]
+        - ['true', 1758]
+      valor_perda_bens:
+        tipo: DOUBLE
+        nulos_pct: 96.7
+        distintos_aprox: 981
+        min: '0.0'
+        max: '888888888.88'
+        media: 1651317.2291
+        quartis: [197.2117, 7189.3228, 76763.6539]
+      teve_perda_cargo:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['false', 45533]
+        - ['true', 7809]
+      proibicao:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['false', 32954]
+        - ['true', 20388]
+      inicio_proibicao:
+        tipo: DATE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 53342]
+      fim_proibicao:
+        tipo: DATE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 53342]
+      proibicao_contratar_poder_publico:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: 'false'
+        max: 'false'
+        top:
+        - ['false', 53342]
+      inicio_proibicao_contratar_poder_publico: {tipo: DATE, nulos_pct: 74.59, distintos_aprox: 2127, min: '1999-05-05', max: '2024-02-21'}
+      fim_proibicao_contratar_poder_publico: {tipo: DATE, nulos_pct: 74.59, distintos_aprox: 3548, min: '2002-05-05', max: '2037-12-12'}
+      proibicao_receber_incentivos_fiscais:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: 'false'
+        max: 'false'
+        top:
+        - ['false', 53342]
+      inicio_proibicao_receber_incentivos_fiscais: {tipo: DATE, nulos_pct: 75.84, distintos_aprox: 1893, min: '1999-05-05', max: '2024-02-21'}
+      fim_proibicao_receber_incentivos_fiscais: {tipo: DATE, nulos_pct: 75.84, distintos_aprox: 3420, min: '2002-05-05', max: '2037-12-12'}
+      proibicao_receber_incentivos_crediticios:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: 'false'
+        max: 'false'
+        top:
+        - ['false', 53342]
+      inicio_proibicao_receber_incentivos_crediticios: {tipo: DATE, nulos_pct: 76.04, distintos_aprox: 1893, min: '1999-05-05', max: '2024-02-21'}
+      fim_proibicao_receber_incentivos_crediticios: {tipo: DATE, nulos_pct: 76.04, distintos_aprox: 3549, min: '2002-05-05', max: '2037-12-12'}
+      teve_ressarcimento:
+        tipo: BOOLEAN
+        nulos_pct: 70.57
+        distintos_aprox: 1
+        min: 'true'
+        max: 'true'
+        top:
+        - [null, 37642]
+        - ['true', 15700]
+      valor_ressarcimento:
+        tipo: DOUBLE
+        nulos_pct: 70.57
+        distintos_aprox: 6921
+        min: '0.0'
+        max: '888888888888.88'
+        media: 62868978.966
+        quartis: [2223.0674, 25735.7274, 126009.8825]
+      teve_suspensao:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['false', 37642]
+        - ['true', 15700]
+      inicio_suspensao:
+        tipo: DATE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 53342]
+      fim_suspensao:
+        tipo: DATE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 53342]
+      comunicado_tse:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['false', 33995]
+        - ['true', 19347]
+      situacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Ativo
+        max: Ativo
+        top:
+        - [Ativo, 53342]
+      tipo_julgamento:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Trânsito em julgado
+        max: Trânsito em julgado
+        top:
+        - [Trânsito em julgado, 53342]
+      assunto_1: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 237, min: '"Lavagem" ou Ocultação de Bens, Direitos ou Valores Oriundos de Corrupção',
+        max: de Abuso de Autoridade}
+      assunto_2: {tipo: VARCHAR, nulos_pct: 89.68, distintos_aprox: 140, min: Adulteração de Sinal Identificador de Veículo Automotor, max: Violação
+          dos Princípios Administrativos}
+      assunto_3:
+        tipo: VARCHAR
+        nulos_pct: 98.48
+        distintos_aprox: 44
+        min: Adulteração de Sinal Identificador de Veículo Automotor
+        max: Violação dos Princípios Administrativos
+        top:
+        - [null, 52530]
+        - [Violação dos Princípios Administrativos, 580]
+        - [Enriquecimento ilícito, 75]
+        - [Dano ao Erário, 26]
+        - [Falsificação de documento público, 16]
+        - [Adulteração de Sinal Identificador de Veículo Automotor, 15]
+        - [Receptação, 12]
+        - [Improbidade Administrativa, 11]
+        - ['Uso de documento falso ', 9]
+        - ['Desacato ', 7]
+      assunto_4:
+        tipo: VARCHAR
+        nulos_pct: 99.93
+        distintos_aprox: 12
+        min: Adulteração de Sinal Identificador de Veículo Automotor
+        max: Violação dos Princípios Administrativos
+        top:
+        - [null, 53303]
+        - [Violação dos Princípios Administrativos, 19]
+        - [Improbidade Administrativa, 4]
+        - ['Uso de documento falso ', 4]
+        - [Adulteração de Sinal Identificador de Veículo Automotor, 3]
+        - [Estelionato, 2]
+        - ['Crimes de &quot;Lavagem&quot; ou Ocultação de Bens, Direitos ou Valores', 1]
+        - ['Desobediência ', 1]
+        - [Enriquecimento ilícito, 1]
+        - ['Falsa identidade ', 1]
+      assunto_5:
+        tipo: VARCHAR
+        nulos_pct: 99.99
+        distintos_aprox: 3
+        min: 'Comunicação falsa de crime ou de contravenção '
+        max: Roubo Majorado
+        top:
+        - [null, 53339]
+        - ['Comunicação falsa de crime ou de contravenção ', 1]
+        - ['Desacato ', 1]
+        - [Roubo Majorado, 1]

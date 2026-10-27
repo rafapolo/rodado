@@ -1,0 +1,228 @@
+dataset: br_rf_dirpf
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  fundos_habilitados:
+    linhas: 6471
+    fonte_do_perfil: tabela inteira
+    colunas:
+      numero: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4914, pessoal: 'só contagens: valores seriam dado pessoal'}
+      uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AC
+        max: TO
+        top:
+        - [MG, 967]
+        - [SP, 907]
+        - [PR, 717]
+        - [RS, 645]
+        - [SC, 463]
+        - [GO, 339]
+        - [BA, 290]
+        - [PE, 234]
+        - [CE, 228]
+        - [PB, 189]
+      nome_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4230, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5875}
+      tipo_fundo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: E
+        max: N
+        top:
+        - [M, 6419]
+        - [E, 50]
+        - [N, 2]
+      cnpj_fundo: {tipo: BIGINT, nulos_pct: 0, distintos_aprox: 7429, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_banco:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: '001'
+        max: nan
+        top:
+        - ['001', 5094]
+        - ['104', 798]
+        - ['041', 440]
+        - ['021', 76]
+        - ['037', 29]
+        - ['047', 17]
+        - [nan, 9]
+        - ['004', 3]
+        - ['070', 2]
+        - [GRU, 2]
+      codigo_agencia: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2823}
+      numero_conta: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5919, pessoal: 'só contagens: valores seriam dado pessoal'}
+      vai_pgd:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: SIM
+        max: SIM
+        top:
+        - [SIM, 6471]
+      e_classe:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: A
+        max: Q
+        top:
+        - [A, 6464]
+        - [Q, 7]
+      nome_empresarial: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2389, pessoal: 'só contagens: valores seriam dado pessoal'}
+      anexo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: FDCA
+        max: FDI
+        top:
+        - [FDCA, 4286]
+        - [FDI, 2185]
+      ano_dirpf:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2025'
+        max: '2025'
+        media: 2025
+        quartis: [2025, 2025, 2025]
+        top:
+        - ['2025', 6471]
+  repasses:
+    linhas: 28885
+    fonte_do_perfil: tabela inteira
+    colunas:
+      fundo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: fdca
+        max: fdi
+        top:
+        - [fdca, 20486]
+        - [fdi, 8399]
+      ano_pagina:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '2022'
+        max: '2023'
+        media: 2022.3058
+        quartis: [2022, 2022, 2023]
+        top:
+        - ['2022', 20052]
+        - ['2023', 8833]
+      arquivo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 23
+        min: 4-fdca-fundos-habilitados-2023-ade-v3
+        max: fdi-repasse-multiexercicio-2023-fundos-selecionados-v2
+        top:
+        - [anexo-i-fdca-fundos-com-dados-corretos-final, 5186]
+        - [4-fdca-fundos-habilitados-2023-ade-v3, 3689]
+        - [anexo-i-apuracao-nota-codar-fdca-rc-2022, 3040]
+        - [anexo-ii-fundos-que-receberam-valores-nota-codar-fdca-rc-2022, 2637]
+        - [anexo-ii-fdi-fundos-com-dados-corretos-final, 2112]
+        - [4-fdi-fundos-habilitados-2023-ade-v2-1, 1554]
+        - [anexo-iv-pendentes-todos-os-anos, 1403]
+        - [fdca-rm-2023-fundos-selecionados-v2, 1284]
+        - [anexo-i-apuracao-fdi-rc-2022, 1195]
+        - [anexo-ii-fundos-que-receberam-valores-fdi-rc-2022, 1065]
+      Nº: {tipo: VARCHAR, nulos_pct: 0.03, distintos_aprox: 4016}
+      CNPJ: {tipo: VARCHAR, nulos_pct: 0.83, distintos_aprox: 7144, pessoal: 'só contagens: valores seriam dado pessoal'}
+      UF:
+        tipo: VARCHAR
+        nulos_pct: 0.08
+        distintos_aprox: 32
+        min: AC
+        max: TOTAL
+        top:
+        - [SP, 4539]
+        - [MG, 4366]
+        - [PR, 3450]
+        - [RS, 2830]
+        - [SC, 2140]
+        - [GO, 1551]
+        - [BA, 1465]
+        - [CE, 1140]
+        - [MT, 794]
+        - [PE, 729]
+      Município/Estado: {tipo: VARCHAR, nulos_pct: 25.46, distintos_aprox: 4569}
+      Doação: {tipo: VARCHAR, nulos_pct: 77.61, distintos_aprox: 243, min: '-', max: '98'}
+      Valor: {tipo: VARCHAR, nulos_pct: 54.03, distintos_aprox: 6929}
+      Banco:
+        tipo: VARCHAR
+        nulos_pct: 19.64
+        distintos_aprox: 17
+        min: '0'
+        max: GRU
+        top:
+        - ['001', 18112]
+        - [null, 5673]
+        - ['104', 3087]
+        - ['041', 1498]
+        - ['021', 217]
+        - ['037', 79]
+        - ['047', 70]
+        - ['237', 51]
+        - ['000', 17]
+        - ['070', 17]
+      Agência: {tipo: VARCHAR, nulos_pct: 15.27, distintos_aprox: 2578}
+      Conta: {tipo: VARCHAR, nulos_pct: 15.3, distintos_aprox: 5465}
+      Município / Estado: {tipo: VARCHAR, nulos_pct: 78.74, distintos_aprox: 884, min: Abaiara, max: Óleo}
+      DIRPF/Ano:
+        tipo: VARCHAR
+        nulos_pct: 78.74
+        distintos_aprox: 9
+        min: '2013'
+        max: '2022'
+        top:
+        - [null, 22745]
+        - ['2021', 1290]
+        - ['2022', 1195]
+        - ['2020', 969]
+        - ['2019', 736]
+        - ['2018', 527]
+        - ['2017', 398]
+        - ['2016', 394]
+        - ['2015', 299]
+        - ['2013', 170]
+      Doações: {tipo: VARCHAR, nulos_pct: 67.81, distintos_aprox: 464, min: ' 7.693 ', max: '99 '}
+      CNPJ_1: {tipo: VARCHAR, nulos_pct: 88.21, distintos_aprox: 1565, pessoal: 'só contagens: valores seriam dado pessoal'}
+      Inconsistências: {tipo: VARCHAR, nulos_pct: 81.41, distintos_aprox: 55, min: Agência Inexistente na Tabela, max: Não Recebeu Doações}
+      IBGE: {tipo: VARCHAR, nulos_pct: 80.02, distintos_aprox: 5925}
+      Estado/Município: {tipo: VARCHAR, nulos_pct: 95.89, distintos_aprox: 984, min: Abaetetuba, max: Álvares Florence}
+      Valores: {tipo: VARCHAR, nulos_pct: 95.88, distintos_aprox: 1255}
+      Ano:
+        tipo: VARCHAR
+        nulos_pct: 97.71
+        distintos_aprox: 3
+        min: '2020'
+        max: '2022'
+        top:
+        - [null, 28224]
+        - ['2022', 331]
+        - ['2021', 225]
+        - ['2020', 105]
+      CNC:
+        tipo: VARCHAR
+        nulos_pct: 95.52
+        distintos_aprox: 7
+        min: '001'
+        max: GRU
+        top:
+        - [null, 27592]
+        - ['001', 956]
+        - ['104', 217]
+        - ['041', 101]
+        - ['021', 15]
+        - ['037', 2]
+        - ['070', 1]
+        - [GRU, 1]
+      Valor Doado: {tipo: VARCHAR, nulos_pct: 95.52, distintos_aprox: 1272}

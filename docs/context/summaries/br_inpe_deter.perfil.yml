@@ -1,0 +1,204 @@
+dataset: br_inpe_deter
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  avisos:
+    linhas: 699077
+    fonte_do_perfil: tabela inteira
+    colunas:
+      OGC_FID:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 484618
+        min: '0'
+        max: '461073'
+        media: 169882.3063
+        quartis: [50209, 122276, 286079]
+      FID: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 578393}
+      CLASSNAME:
+        tipo: VARCHAR
+        nulos_pct: 14.85
+        distintos_aprox: 9
+        min: CICATRIZ_DE_QUEIMADA
+        max: MINERACAO
+        top:
+        - [DESMATAMENTO_CR, 405560]
+        - [CICATRIZ_DE_QUEIMADA, 117971]
+        - [null, 103838]
+        - [DEGRADACAO, 40439]
+        - [DESMATAMENTO_VEG, 9972]
+        - [MINERACAO, 8827]
+        - [CS_DESORDENADO, 6944]
+        - [CS_GEOMETRICO, 5525]
+        - [CORTE_SELETIVO, 1]
+      QUADRANT:
+        tipo: VARCHAR
+        nulos_pct: 92.92
+        distintos_aprox: 4
+        min: A
+        max: D
+        top:
+        - [null, 649561]
+        - [C, 18374]
+        - [A, 12851]
+        - [D, 10585]
+        - [B, 7706]
+      PATH_ROW: {tipo: VARCHAR, nulos_pct: 7.41, distintos_aprox: 828, min: '000_000', max: '332078'}
+      VIEW_DATE: {tipo: DATE, nulos_pct: 0, distintos_aprox: 3199, min: '2016-08-02', max: '2026-09-25'}
+      SENSOR:
+        tipo: VARCHAR
+        nulos_pct: 8.46
+        distintos_aprox: 3
+        min: AWFI
+        max: WFI
+        top:
+        - [AWFI, 334530]
+        - [WFI, 255454]
+        - [null, 59154]
+        - [AWIFS, 49939]
+      SATELLITE:
+        tipo: VARCHAR
+        nulos_pct: 1.62
+        distintos_aprox: 4
+        min: AMAZONIA-1
+        max: RESOURCESAT-2
+        top:
+        - [CBERS-4, 334544]
+        - [AMAZONIA-1, 271005]
+        - [RESOURCESAT-2, 49939]
+        - [CBERS-4A, 32290]
+        - [null, 11299]
+      AREAUCKM:
+        tipo: DOUBLE
+        nulos_pct: 33.01
+        distintos_aprox: 31826
+        min: '0.0'
+        max: '144.870927281647'
+        media: 0.0362
+        quartis: [0, 0, 0]
+      UC: {tipo: VARCHAR, nulos_pct: 95.57, distintos_aprox: 220, min: Apa Corumbataí Botucatu Tejupa Perimetro Botucatu, max: Área De Proteção
+          Ambiental Águas Vertentes}
+      AREAMUNKM:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 717791
+        min: '2.2509286645799875e-10'
+        max: '615.671471580231'
+        media: 0.5896
+        quartis: [0.0915, 0.1673, 0.3955]
+      MUNICIPALI: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1922}
+      GEOCODIBGE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1495}
+      UF:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 17
+        min: AC
+        max: TO
+        top:
+        - [PA, 207897]
+        - [MT, 120109]
+        - [AM, 68846]
+        - [RO, 57487]
+        - [RR, 55954]
+        - [MA, 45603]
+        - [TO, 31651]
+        - [AC, 31475]
+        - [MS, 22976]
+        - [MG, 13433]
+      lat_centroide:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 803720
+        min: '-24.583287351461294'
+        max: '5.208663663807973'
+        media: -7.6114
+        quartis: [-10.6406, -8.0765, -4.0071]
+      lon_centroide:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 748168
+        min: '-73.66450665836179'
+        max: '-41.36535839443142'
+        media: -55.4696
+        quartis: [-60.4031, -55.1828, -50.552]
+      bioma_arquivo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: amazonia
+        max: pantanal
+        top:
+        - [amazonia, 461074]
+        - [cerrado, 134165]
+        - [nao_floresta_amz, 79683]
+        - [pantanal, 24155]
+      class_name:
+        tipo: VARCHAR
+        nulos_pct: 85.15
+        distintos_aprox: 4
+        min: cicatriz de queimada
+        max: supressão com vegetação
+        top:
+        - [null, 595239]
+        - [cicatriz de queimada, 89860]
+        - [supressão com solo exposto, 13605]
+        - [supressão com vegetação, 261]
+        - [mineração, 112]
+      area_km:
+        tipo: DOUBLE
+        nulos_pct: 85.15
+        distintos_aprox: 80461
+        min: '0.030000326072392985'
+        max: '357.99537819214936'
+        media: 0.9596
+        quartis: [0.0904, 0.2084, 0.5648]
+  avisos_poligono:
+    linhas: 699077
+    fonte_do_perfil: tabela inteira
+    colunas:
+      bioma_arquivo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: amazonia
+        max: pantanal
+        top:
+        - [amazonia, 461074]
+        - [cerrado, 134165]
+        - [nao_floresta_amz, 79683]
+        - [pantanal, 24155]
+      OGC_FID:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 484618
+        min: '0'
+        max: '461073'
+        media: 169882.3063
+        quartis: [50177, 122779, 286304]
+      classe:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: CICATRIZ DE QUEIMADA
+        max: SUPRESSÃO COM VEGETAÇÃO
+        top:
+        - [DESMATAMENTO_CR, 405560]
+        - [CICATRIZ_DE_QUEIMADA, 117971]
+        - [CICATRIZ DE QUEIMADA, 89860]
+        - [DEGRADACAO, 40439]
+        - [SUPRESSÃO COM SOLO EXPOSTO, 13605]
+        - [DESMATAMENTO_VEG, 9972]
+        - [MINERACAO, 8827]
+        - [CS_DESORDENADO, 6944]
+        - [CS_GEOMETRICO, 5525]
+        - [SUPRESSÃO COM VEGETAÇÃO, 261]
+      view_date: {tipo: DATE, nulos_pct: 0, distintos_aprox: 3199, min: '2016-08-02', max: '2026-09-25'}
+      area_km:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 717791
+        min: '2.2509286645799875e-10'
+        max: '615.671471580231'
+        media: 0.5896
+        quartis: [0.0917, 0.1673, 0.3958]
+      geometria: {tipo: 'GEOMETRY(''OGC:CRS84'')', nulos_pct: 0, distintos_aprox: 596949}

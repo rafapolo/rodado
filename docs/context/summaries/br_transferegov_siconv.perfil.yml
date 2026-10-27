@@ -1,0 +1,3635 @@
+dataset: br_transferegov_siconv
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  app_parceriasgov_necessidades:
+    linhas: 4196
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_necessidade: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4883}
+      sigla_uf_filtro:
+        tipo: VARCHAR
+        nulos_pct: 0.33
+        distintos_aprox: 30
+        min: AC
+        max: TO
+        top:
+        - [SP, 977]
+        - [MG, 540]
+        - [RJ, 318]
+        - [PI, 249]
+        - [BA, 243]
+        - [PE, 200]
+        - [PA, 176]
+        - [CE, 174]
+        - [PR, 149]
+        - [SC, 136]
+      estado_necessidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 32
+        min: ACRE
+        max: TRÊS LAGOAS
+        top:
+        - [SÃO PAULO, 977]
+        - [MINAS GERAIS, 540]
+        - [RIO DE JANEIRO, 318]
+        - [PIAUÍ, 249]
+        - [BAHIA, 243]
+        - [PERNAMBUCO, 200]
+        - [PARÁ, 176]
+        - [CEARÁ, 174]
+        - [PARANÁ, 149]
+        - [SANTA CATARINA, 136]
+      nome_municipio_filtro: {tipo: VARCHAR, nulos_pct: 40.44, distintos_aprox: 615, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_municipio_necessidade: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1404, pessoal: 'só contagens: valores seriam dado pessoal'}
+      endereco_necessidade: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1682, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_municipio: {tipo: VARCHAR, nulos_pct: 40.44, distintos_aprox: 567, min: '1100023', max: '5300108'}
+      codigo_uf_ibge_municipio:
+        tipo: VARCHAR
+        nulos_pct: 40.44
+        distintos_aprox: 30
+        min: '11'
+        max: '53'
+        top:
+        - [null, 1697]
+        - ['35', 623]
+        - ['31', 227]
+        - ['22', 223]
+        - ['26', 146]
+        - ['15', 140]
+        - ['33', 129]
+        - ['29', 125]
+        - ['53', 108]
+        - ['23', 92]
+      numero_cep_municipio: {tipo: VARCHAR, nulos_pct: 40.44, distintos_aprox: 771, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_ddd_municipio: {tipo: VARCHAR, nulos_pct: 40.44, distintos_aprox: 63, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_categoria_necessidade: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 13, pessoal: 'só contagens: valores seriam dado pessoal'}
+      descricao_categoria_necessidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: Investimentos em Agricultura
+        max: Outros tipos de Investimento
+        top:
+        - [Investimentos em Obras, 980]
+        - [Investimentos em Saúde, 595]
+        - [Investimentos em Meio Ambiente, 394]
+        - [Investimentos em segurança, 391]
+        - [Investimentos em educação, 338]
+        - [Investimentos em Cidadania, 295]
+        - [Investimentos em Turismo, 239]
+        - [Investimentos em Esporte, 232]
+        - [Investimentos em Cultura, 228]
+        - [Outros tipos de Investimento, 194]
+      tipo_necessidade: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 123, min: Abastecimento de água - Saneamento, max: Unidades de Compostagem}
+      latitude_necessidade: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1974}
+      longitude_necessidade: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1285}
+      data_criacao_necessidade: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 3883, min: '2018-06-19 05:47:29.296', max: '2026-07-06 20:08:33.778'}
+      codigo_funcao_necessidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '10'
+        max: '900'
+        top:
+        - ['15', 980]
+        - ['10', 595]
+        - ['18', 394]
+        - ['6', 391]
+        - ['12', 338]
+        - ['14', 295]
+        - ['23', 239]
+        - ['27', 232]
+        - ['13', 228]
+        - ['900', 194]
+  app_parceriasgov_necessidades_aprovadas:
+    linhas: 3624
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_necessidade: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2231}
+      dt_avaliacao: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 3795, min: '2018-08-07 20:23:30.893', max: '2026-07-12 23:20:26.915'}
+      st_avaliacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: dislike
+        max: like
+        top:
+        - [like, 3508]
+        - [dislike, 116]
+  siconv_acomp_obras_contratos_medicoes:
+    linhas: 27713
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_PROPOSTA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 28022}
+      ID_CONTRATO_MEDICAO_ACOMPANHAMENTO_OBRA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 23929}
+      ID_MEDICAO_ACOMPANHAMENTO_OBRA: {tipo: VARCHAR, nulos_pct: 12.17, distintos_aprox: 23853}
+      DATA_INICIO_OBRA_CONTRATO_ACOMPANHAMENTO_OBRA: {tipo: VARCHAR, nulos_pct: 11.76, distintos_aprox: 1954}
+      CNPJ_FORNECEDOR_CONTRATO_ACOMPANHAMENTO_OBRA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 10254, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      NUMERO_MEDICAO_ACOMPANHAMENTO_OBRA: {tipo: VARCHAR, nulos_pct: 12.17, distintos_aprox: 40, pessoal: 'só contagens: valores seriam dado pessoal'}
+      NR_ULTIMA_MEDICAO_ACOMPANHAMENTO_OBRA:
+        tipo: VARCHAR
+        nulos_pct: 12.17
+        distintos_aprox: 40
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 5234]
+        - ['1', 5149]
+        - ['3', 4876]
+        - ['4', 3568]
+        - [null, 3373]
+        - ['5', 2081]
+        - ['6', 1266]
+        - ['7', 757]
+        - ['8', 419]
+        - ['9', 288]
+      SITUACAO_MEDICAO_ACOMPANHAMENTO_OBRA:
+        tipo: VARCHAR
+        nulos_pct: 12.17
+        distintos_aprox: 7
+        min: Aceita
+        max: Enviada para o Convenente
+        top:
+        - [Aceita, 12080]
+        - [Atestada, 8406]
+        - [null, 3373]
+        - [Em Análise pelo Concedente/Mandatária, 1397]
+        - [Enviada para o Convenente, 1235]
+        - [Em Ateste pelo Convenente, 598]
+        - [Enviada para Complementação do Convenente, 456]
+        - [Em Complementação pelo Convenente, 126]
+        - [Enviada para Complementação da Empresa, 42]
+      DATA_INICIO_MEDICAO_OBJETO_ACOMPANHAMENTO_OBRA: {tipo: VARCHAR, nulos_pct: 12.17, distintos_aprox: 2011}
+      DATA_FIM_MEDICAO_OBJETO_ACOMPANHAMENTO_OBRA: {tipo: DATE, nulos_pct: 12.17, distintos_aprox: 1773, min: '2020-12-31', max: '2026-07-16'}
+      QTD_DIAS_SEM_MEDICAO_ACOMPANHAMENTO_OBRA:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 1704
+        min: '1'
+        max: '2024'
+        media: 536.5923
+        quartis: [75, 437, 897]
+  siconv_acomp_obras_valores_itens_medicao:
+    linhas: 25909
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_SUBMETA_VRPL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 21463}
+      ID_CONTRATO_MEDICAO_ACOMPANHAMENTO_OBRA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 19233}
+      VALOR_EXECUCAO_FISICA_ACUMULADA_TOTAL_ACOMPANHAMENTO_OBRA:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 36425
+        min: '0.0'
+        max: '1099279953.35'
+        media: 1257372.4427
+        quartis: [246905.8992, 430024.5089, 945689.0766]
+      VALOR_EXECUCAO_FISICA_ACUMULADA_CONCEDENTE_ACOMPANHAMENTO_OBRA:
+        tipo: DOUBLE
+        nulos_pct: 42.41
+        distintos_aprox: 17706
+        min: '0.01'
+        max: '196106885.34'
+        media: 628216.1104
+        quartis: [221522.7841, 345601.8102, 600399.9356]
+      VALOR_EXECUCAO_FISICA_ACUMULADA_CONVENENTE_ACOMPANHAMENTO_OBRA:
+        tipo: DOUBLE
+        nulos_pct: 15.85
+        distintos_aprox: 26613
+        min: '0.01'
+        max: '196106885.34'
+        media: 598319.2193
+        quartis: [194341.3693, 333556.976, 592618.1663]
+      VALOR_EXECUCAO_FISICA_ACUMULADA_EMPRESA_ACOMPANHAMENTO_OBRA:
+        tipo: DOUBLE
+        nulos_pct: 13.82
+        distintos_aprox: 26909
+        min: '0.0'
+        max: '196106885.34'
+        media: 609753.9125
+        quartis: [196215.9744, 337536.0422, 602334.7578]
+  siconv_apoiadores_emendas_programas:
+    linhas: 291954
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_CNPJ_PROGRAMA_EMENDA_APOIADORES_EMENDAS: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 282473, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      NUMERO_EMENDA_APOIADORES_EMENDAS: {tipo: VARCHAR, nulos_pct: 2.42, distintos_aprox: 26201, pessoal: 'só contagens: valores seriam dado pessoal'}
+      NOME_PARLAMENTAR_APOIADORES_EMENDAS: {tipo: VARCHAR, nulos_pct: 10.77, distintos_aprox: 2119, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      INDICACAO_APOIADORES_EMENDAS:
+        tipo: VARCHAR
+        nulos_pct: 95.8
+        distintos_aprox: 4
+        min: BANCADA
+        max: RELATOR
+        top:
+        - [null, 279698]
+        - [INDIVIDUAL, 11406]
+        - [COMISSAO, 464]
+        - [BANCADA, 298]
+        - [RELATOR, 88]
+      PARLAMENTAR_SOLICITANTE_APOIADORES_EMENDAS: {tipo: VARCHAR, nulos_pct: 96.09, distintos_aprox: 602, min: Acácio Favacho, max: Átila Lira}
+      CPF_PF_SOLICITANTE_APOIADORES_EMENDAS: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      NOME_PF_SOLICITANTE_APOIADORES_EMENDAS: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      CNPJ_PJ_SOLICITANTE_APOIADORES_EMENDAS: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      NOME_PJ_SOLICITANTE_APOIADORES_EMENDAS: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      CNPJ_PROPONENTE_APOIADORES_EMENDAS: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 19630, pessoal: 'só contagens: valores seriam dado pessoal'}
+      NOME_PROPONENTE_APOIADORES_EMENDAS: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 14647, pessoal: 'só contagens: valores seriam dado pessoal'}
+      VALOR_REPASSE_PROPOSTA_APOIADORES_EMENDAS: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 18821}
+      ID_PROGRAMA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 18347}
+  siconv_consorcios:
+    linhas: 151688
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_PROPOSTA: {tipo: VARCHAR, nulos_pct: 0.79, distintos_aprox: 1470}
+      CNPJ_CONSORCIO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 213, pessoal: 'só contagens: valores seriam dado pessoal'}
+      NOME_CONSORCIO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 247, pessoal: 'só contagens: valores seriam dado pessoal'}
+      CODIGO_CNAE_PRIMARIO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 29
+        min: 0161099
+        max: '9499500'
+        top:
+        - ['9430800', 49018]
+        - ['8411600', 42132]
+        - ['3811400', 24812]
+        - ['3821100', 9166]
+        - ['8412400', 8753]
+        - ['8610101', 4813]
+        - ['8690999', 3480]
+        - ['8630599', 1608]
+        - ['8630502', 1557]
+        - ['8800600', 1216]
+      DESC_CNAE_PRIMARIO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 24
+        min: Administração de consórcios para aquisição de bens e direitos
+        max: Tratamento e disposição de resíduos não-perigosos
+        top:
+        - [Atividades de associações de defesa de direitos sociais, 49018]
+        - [Administração pública em geral, 42132]
+        - [Coleta de resíduos não-perigosos, 24812]
+        - [Tratamento e disposição de resíduos não-perigosos, 9166]
+        - ['Regulação das atividades de saúde, educação, serviços culturais e outros serviços sociais', 8753]
+        - ['Atividades de atendimento hospitalar, exceto pronto-socorro e unidades para atendimento a urgências', 4813]
+        - [Outras atividades de atenção à saúde humana não especificadas anteriormente, 3480]
+        - [Atividades de atenção ambulatorial não especificadas anteriormente, 1608]
+        - [Atividade médica ambulatorial com recursos para realização de exames complementares, 1557]
+        - [Serviços de assistência social sem alojamento, 1216]
+      CODIGO_CNAE_SECUNDARIO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 213, min: '0161001', max: '9499500'}
+      DESC_CNAE_SECUNDARIO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 153, min: Abate de pequenos animais, max: Usinas de compostagem}
+      CNPJ_PARTICIPANTE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2052, pessoal: 'só contagens: valores seriam dado pessoal'}
+      NOME_PARTICIPANTE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2473, pessoal: 'só contagens: valores seriam dado pessoal'}
+  siconv_contrato:
+    linhas: 726602
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_LICITACAO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 526540}
+      ID_CONTRATO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 696843}
+      NR_CONTRATO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 62222}
+      DATA_PUBLICACAO_CONTRATO: {tipo: VARCHAR, nulos_pct: 32.12, distintos_aprox: 5555}
+      DATA_ASSINATURA_CONTRATO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7700}
+      DATA_INICIO_VIGENCIA_CONTRATO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7346}
+      DATA_FIM_VIGENCIA_CONTRATO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 8248}
+      OBJETO_CONTRATO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 631602}
+      TIPO_AQUISICAO_CONTRATO:
+        tipo: VARCHAR
+        nulos_pct: 4.5
+        distintos_aprox: 5
+        min: Material
+        max: Serviço de Engenharia
+        top:
+        - [Serviço, 326416]
+        - [Material, 269987]
+        - [Material e Serviço, 62412]
+        - [null, 32697]
+        - [Obras, 30049]
+        - [Serviço de Engenharia, 5041]
+      VALOR_GLOBAL_CONTRATO:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 300443
+        min: '0.0'
+        max: '2244213000.0'
+        media: 281590.3496
+        quartis: [3516.9675, 17239.9247, 122129.1179]
+      ID_FORNECEDOR_CONTRATO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 218720, pessoal: 'só contagens: valores seriam dado pessoal'}
+      NOME_FORNECEDOR_CONTRATO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 305118, pessoal: 'só contagens: valores seriam dado pessoal'}
+  siconv_contrato_cipi:
+    linhas: 33083
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_CONTRATO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 21693}
+      NR_CONTRATO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 13215}
+      DATA_INICIO_VIGENCIA_CONTRATO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1620}
+      DATA_FIM_VIGENCIA_CONTRATO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2512}
+      DATA_ASSINATURA_CONTRATO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1699}
+      DATA_PUBLICACAO_CONTRATO: {tipo: DATE, nulos_pct: 0, distintos_aprox: 2075, min: '2013-03-06', max: '2026-07-15'}
+      OBJETO_CONTRATO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 28301}
+      NR_PROCESSO_LICITACAO: {tipo: VARCHAR, nulos_pct: 0.03, distintos_aprox: 10108}
+      RECEITA_DESPESA:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 33083]
+      COD_ORGAO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 41
+        min: '20411'
+        max: '81000'
+        top:
+        - ['56000', 14012]
+        - ['53000', 3639]
+        - ['51000', 2751]
+        - ['54000', 2463]
+        - ['22000', 2098]
+        - ['26298', 1952]
+        - ['22203', 1731]
+        - ['52000', 1193]
+        - ['55000', 755]
+        - ['36000', 614]
+      DESC_ORGAO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 32
+        min: AGENCIA NACIONAL DE AGUAS
+        max: UNIVERSIDADE FEDERAL DO RIO DE JANEIRO
+        top:
+        - [MINISTERIO DAS CIDADES, 14012]
+        - [MINISTÉRIO DA INTEGRAÇÃO E DO DESENVOLVIMENTO REGIONAL, 3639]
+        - [MINISTERIO DO ESPORTE, 2751]
+        - [MINISTERIO DO TURISMO, 2463]
+        - [MINISTÉRIO DA AGRICULTURA E PECUÁRIA, 2098]
+        - [FUNDO NACIONAL DE DESENVOLVIMENTO DA EDUCACAO, 1952]
+        - [COMPANHIA DE DESENV. DO VALE DO SAO FRANCISCO, 1731]
+        - [MINISTERIO DA DEFESA, 1193]
+        - ['MINISTÉRIO DO DESENVOLVIMENTO E ASSISTÊNCIA SOCIAL, FAMÍLIA E COMBATE FOME', 755]
+        - [MINISTERIO DA SAUDE, 614]
+      ID_FORNECEDOR_CONTRATO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 11409, pessoal: 'só contagens: valores seriam dado pessoal'}
+      NOME_FORNECEDOR_CONTRATO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 12355, pessoal: 'só contagens: valores seriam dado pessoal'}
+      TIPO_AQUISICAO_CONTRATO:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 33083]
+      NR_LICITACAO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5852}
+      VALOR_GLOBAL_CONTRATO:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 28866
+        min: '389.0'
+        max: '1099279953.35'
+        media: 2472335.439
+        quartis: [349702.3321, 714893.7526, 2149741.6358]
+      VALOR_ACUMULADO:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 33083]
+      ID_PROJETO_INVESTIMENTO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 23814}
+      LINK_TRANSPARENCIA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 27371}
+      MODALIDADE_LICITACAO:
+        tipo: VARCHAR
+        nulos_pct: 6.3
+        distintos_aprox: 5
+        min: Concorrência
+        max: Tomada de Preços
+        top:
+        - [Concorrência, 18652]
+        - [Tomada de Preços, 9648]
+        - [Pregão, 2446]
+        - [null, 2083]
+        - [Convite, 137]
+        - [RDC, 114]
+        - [Concurso, 3]
+      SITUACAO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Concluído
+        max: Rascunho
+        top:
+        - [Concluído, 29395]
+        - [Outros, 2942]
+        - [Rascunho, 746]
+      SISTEMA_ORIGEM:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: PMBDISCRICIONARIAS
+        max: PMBDISCRICIONARIAS
+        top:
+        - [PMBDISCRICIONARIAS, 33083]
+  siconv_convenio:
+    linhas: 285743
+    fonte_do_perfil: tabela inteira
+    colunas:
+      NR_CONVENIO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 284496}
+      ID_PROPOSTA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 257170}
+      DIA:
+        tipo: VARCHAR
+        nulos_pct: 17.54
+        distintos_aprox: 34
+        min: '1'
+        max: '9'
+        top:
+        - [null, 50118]
+        - ['31', 49051]
+        - ['30', 28910]
+        - ['29', 17672]
+        - ['28', 12757]
+        - ['27', 10248]
+        - ['26', 8225]
+        - ['23', 7228]
+        - ['22', 6757]
+        - ['20', 5916]
+      MES:
+        tipo: VARCHAR
+        nulos_pct: 17.54
+        distintos_aprox: 12
+        min: '1'
+        max: '9'
+        top:
+        - ['12', 144837]
+        - [null, 50118]
+        - ['11', 19322]
+        - ['7', 13186]
+        - ['10', 12506]
+        - ['6', 12455]
+        - ['8', 11470]
+        - ['9', 10377]
+        - ['5', 6176]
+        - ['4', 2053]
+      ANO:
+        tipo: VARCHAR
+        nulos_pct: 17.54
+        distintos_aprox: 18
+        min: '2008'
+        max: '2026'
+        top:
+        - [null, 50118]
+        - ['2009', 20687]
+        - ['2010', 19853]
+        - ['2017', 16887]
+        - ['2018', 15403]
+        - ['2025', 15046]
+        - ['2013', 14773]
+        - ['2021', 14379]
+        - ['2019', 13299]
+        - ['2016', 12967]
+      DIA_ASSIN_CONV: {tipo: DATE, nulos_pct: 17.54, distintos_aprox: 4054, min: '2008-09-15', max: '2026-07-17'}
+      SIT_CONVENIO:
+        tipo: VARCHAR
+        nulos_pct: 6.32
+        distintos_aprox: 20
+        min: Aguardando Prestação de Contas
+        max: Proposta/Plano de Trabalho Complementado em Análise
+        top:
+        - [Prestação de Contas Concluída, 90951]
+        - [Em execução, 45873]
+        - [Prestação de Contas Aprovada, 42968]
+        - [Proposta/Plano de Trabalho Aprovado, 23320]
+        - [Convênio Anulado, 23101]
+        - [null, 18047]
+        - [Prestação de Contas enviada para Análise, 8611]
+        - [Cancelado, 7453]
+        - [Prestação de Contas em Análise, 6262]
+        - [Prestação de Contas Aprovada com Ressalvas, 3939]
+      SUBSITUACAO_CONV:
+        tipo: VARCHAR
+        nulos_pct: 99.46
+        distintos_aprox: 7
+        min: Em Complementação Prorroga
+        max: Em processo de TCE
+        top:
+        - [null, 284212]
+        - [Em ajuste do Plano de Trabalho, 539]
+        - [Em Prorrogação, 437]
+        - [Em aditivação, 262]
+        - [Em processo de TCE, 181]
+        - [Em ajustes pelo convenente, 61]
+        - [Em ajuste pelo concedente, 29]
+        - [Em Complementação Prorroga, 19]
+        - [Em Prorrogação e Em Processo de TCE, 2]
+        - [Em aditivação e Em Processo de TCE, 1]
+      SITUACAO_PUBLICACAO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Publicado
+        max: Transferido para IN
+        top:
+        - [Publicado, 285711]
+        - [Transferido para IN, 32]
+      INSTRUMENTO_ATIVO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: NÃO
+        max: SIM
+        top:
+        - [NÃO, 172723]
+        - [SIM, 113020]
+      IND_OPERA_OBTV:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: NÃO
+        max: SIM
+        top:
+        - [SIM, 206346]
+        - [NÃO, 79397]
+      NR_PROCESSO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 256832}
+      UG_EMITENTE: {tipo: VARCHAR, nulos_pct: 12.14, distintos_aprox: 626, min: '070003', max: '885340'}
+      DIA_PUBL_CONV: {tipo: DATE, nulos_pct: 17.7, distintos_aprox: 3934, min: '2001-01-11', max: '2026-07-16'}
+      DIA_INIC_VIGENC_CONV: {tipo: DATE, nulos_pct: 0, distintos_aprox: 5444, min: '1900-04-15', max: '2027-07-27'}
+      DIA_FIM_VIGENC_CONV: {tipo: DATE, nulos_pct: 0, distintos_aprox: 8341, min: '2008-10-12', max: '2035-12-19'}
+      DIA_FIM_VIGENC_ORIGINAL_CONV: {tipo: DATE, nulos_pct: 0, distintos_aprox: 8341, min: '2008-10-12', max: '2035-12-19'}
+      DIAS_PREST_CONTAS:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 978
+        min: '0'
+        max: '4685'
+        media: 46.5526
+        quartis: [30, 60, 60]
+      DIA_LIMITE_PREST_CONTAS: {tipo: DATE, nulos_pct: 0, distintos_aprox: 8505, min: '2008-10-31', max: '2036-01-18'}
+      DATA_SUSPENSIVA: {tipo: VARCHAR, nulos_pct: 93.12, distintos_aprox: 2640}
+      DATA_RETIRADA_SUSPENSIVA: {tipo: DATE, nulos_pct: 56.37, distintos_aprox: 4302, min: '2010-04-20', max: '2026-07-16'}
+      DIAS_CLAUSULA_SUSPENSIVA:
+        tipo: INTEGER
+        nulos_pct: 92.28
+        distintos_aprox: 1185
+        min: '0'
+        max: '3561'
+        media: 481.0594
+        quartis: [271, 538, 636]
+      SITUACAO_CONTRATACAO:
+        tipo: VARCHAR
+        nulos_pct: 22.43
+        distintos_aprox: 4
+        min: Cláusula Suspensiva
+        max: Sob Liminar Judicial e Cláusula Suspensiva
+        top:
+        - [Normal, 199587]
+        - [null, 64094]
+        - [Cláusula Suspensiva, 19062]
+        - [Liminar Judicial, 2407]
+        - [Sob Liminar Judicial e Cláusula Suspensiva, 593]
+      IND_ASSINADO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: NÃO
+        max: SIM
+        top:
+        - [SIM, 235625]
+        - [NÃO, 50118]
+      MOTIVO_SUSPENSAO: {tipo: VARCHAR, nulos_pct: 93.12, distintos_aprox: 729, min: ., max: em conformidade a portaria nº 99 de 16.12.2025}
+      IND_FOTO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: NÃO
+        max: SIM
+        top:
+        - [NÃO, 268300]
+        - [SIM, 17443]
+      QTDE_CONVENIOS:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        media: 1
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 285743]
+      QTD_TA:
+        tipo: INTEGER
+        nulos_pct: 48.47
+        distintos_aprox: 40
+        min: '1'
+        max: '92'
+        media: 3.0916
+        quartis: [1, 2, 4]
+        top:
+        - [null, 138501]
+        - ['1', 50019]
+        - ['2', 32588]
+        - ['3', 21030]
+        - ['4', 13460]
+        - ['5', 9363]
+        - ['6', 6334]
+        - ['7', 4243]
+        - ['8', 2913]
+        - ['9', 2058]
+      QTD_PRORROGA:
+        tipo: INTEGER
+        nulos_pct: 69.91
+        distintos_aprox: 24
+        min: '1'
+        max: '29'
+        media: 1.8104
+        quartis: [1, 1, 2]
+        top:
+        - [null, 199767]
+        - ['1', 51912]
+        - ['2', 18012]
+        - ['3', 7940]
+        - ['4', 3950]
+        - ['5', 1756]
+        - ['6', 841]
+        - ['7', 487]
+        - ['8', 339]
+        - ['9', 237]
+      VL_GLOBAL_CONV:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 209995
+        min: '0.0'
+        max: '1518586194.68'
+        media: 1241057.0518
+        quartis: [206816.9563, 342779.2754, 697515.7067]
+      VL_REPASSE_CONV:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 50670
+        min: '0.0'
+        max: '1518586194.68'
+        media: 1152290.0346
+        quartis: [197977.645, 300555.2643, 634417.0704]
+      VL_CONTRAPARTIDA_CONV:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 102371
+        min: '-78764.95'
+        max: '243321813.12'
+        media: 82401.4979
+        quartis: [875.2955, 7217.0484, 32027.4848]
+      VL_EMPENHADO_CONV: {tipo: VARCHAR, nulos_pct: 4.71, distintos_aprox: 43705}
+      VL_DESEMBOLSADO_CONV:
+        tipo: DOUBLE
+        nulos_pct: 34.45
+        distintos_aprox: 53065
+        min: '0.0'
+        max: '625983887.9'
+        media: 802182.2442
+        quartis: [178839.4117, 280980.7374, 498067.6385]
+      VL_SALDO_REMAN_TESOURO:
+        tipo: DOUBLE
+        nulos_pct: 49.78
+        distintos_aprox: 170980
+        min: '0.0'
+        max: '116637024.0'
+        media: 83955.9492
+        quartis: [4399.2629, 16223.9109, 52622.8662]
+      VL_SALDO_REMAN_CONVENENTE:
+        tipo: DOUBLE
+        nulos_pct: 73.65
+        distintos_aprox: 66610
+        min: '0.0'
+        max: '13131622.9'
+        media: 14446.613
+        quartis: [94.0511, 610.991, 3560.692]
+      VL_RENDIMENTO_APLICACAO:
+        tipo: DOUBLE
+        nulos_pct: 97.08
+        distintos_aprox: 7896
+        min: '0.04'
+        max: '95772543.21'
+        media: 218308.0393
+        quartis: [8927.3086, 26044.7032, 94882.0706]
+      VL_INGRESSO_CONTRAPARTIDA:
+        tipo: DOUBLE
+        nulos_pct: 48.65
+        distintos_aprox: 111461
+        min: '0.0'
+        max: '196791990.24'
+        media: 89713.69
+        quartis: [3812.3814, 12458.2328, 48195.4784]
+      VL_SALDO_CONTA:
+        tipo: DOUBLE
+        nulos_pct: 19.85
+        distintos_aprox: 35724
+        min: '0.0'
+        max: '170372114.81'
+        media: 81279.2219
+        quartis: [0, 0, 0]
+      VALOR_GLOBAL_ORIGINAL_CONV:
+        tipo: DOUBLE
+        nulos_pct: 70.32
+        distintos_aprox: 28153
+        min: '19631.8'
+        max: '565951268.6'
+        media: 1035707.8538
+        quartis: [239259.3456, 303178.4417, 542810.0962]
+  siconv_coordenadas_obra:
+    linhas: 122946
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_PROPOSTA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 54913}
+      NOME_PROJETO_CADASTRO_OBRA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 46084, pessoal: 'só contagens: valores seriam dado pessoal'}
+      LATITUDE_CADASTRO_OBRA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 121098}
+      LONGITUDE_CADASTRO_OBRA:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 104951
+        min: '-98.59606'
+        max: '96.84882'
+        media: -44.8945
+        quartis: [-49.7173, -44.6225, -40.7098]
+  siconv_cronograma_desembolso:
+    linhas: 2732825
+    fonte_do_perfil: amostra de 73.184%. ~2.000.000 linhas
+    colunas:
+      ID_PROPOSTA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 783527}
+      NR_CONVENIO: {tipo: VARCHAR, nulos_pct: 70.41, distintos_aprox: 187995}
+      NR_PARCELA_CRONO_DESEMBOLSO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 236, min: '1', max: '99'}
+      MES_CRONO_DESEMBOLSO:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 7.5337
+        quartis: [5, 8, 11]
+        top:
+        - ['12', 487431]
+        - ['6', 196604]
+        - ['7', 157699]
+        - ['11', 148034]
+        - ['1', 147031]
+        - ['8', 146022]
+        - ['5', 138852]
+        - ['3', 128464]
+        - ['10', 126474]
+        - ['9', 124403]
+      ANO_CRONO_DESEMBOLSO:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 34
+        min: '9'
+        max: '2035'
+        media: 2016.517
+        quartis: [2012, 2016, 2021]
+        top:
+        - ['2010', 188054]
+        - ['2017', 153536]
+        - ['2018', 147901]
+        - ['2013', 141761]
+        - ['2009', 133095]
+        - ['2011', 130229]
+        - ['2014', 127619]
+        - ['2025', 114846]
+        - ['2012', 111453]
+        - ['2019', 107492]
+      TIPO_RESP_CRONO_DESEMBOLSO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Concedente
+        max: Rendimento de Aplicação
+        top:
+        - [Concedente, 1106305]
+        - [Convenente, 907007]
+        - [Rendimento de Aplicação, 8154]
+      VALOR_PARCELA_CRONO_DESEMBOLSO:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 327536
+        min: '0.0'
+        max: '10584000000.0'
+        media: 473148.7673
+        quartis: [6531.9992, 93939.7561, 351028.5275]
+  siconv_dados_obrasgov_geral:
+    linhas: 40493
+    fonte_do_perfil: tabela inteira
+    colunas:
+      id_projeto_investimento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 37216}
+      nr_instrumento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 37730}
+      programa_governo:
+        tipo: VARCHAR
+        nulos_pct: 87.3
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        top:
+        - [null, 35349]
+        - ['1', 5144]
+      link_transparencia: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 35503}
+  siconv_desbloqueio_cr:
+    linhas: 520479
+    fonte_do_perfil: tabela inteira
+    colunas:
+      NR_CONVENIO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 66538}
+      NR_OB: {tipo: VARCHAR, nulos_pct: 39.76, distintos_aprox: 100773}
+      DATA_CADASTRO: {tipo: TIMESTAMP, nulos_pct: 2.67, distintos_aprox: 525113, min: '2013-02-25 00:00:00', max: '2026-07-16 20:07:41'}
+      DATA_ENVIO: {tipo: TIMESTAMP, nulos_pct: 87.41, distintos_aprox: 14219, min: '2013-06-14 18:36:42', max: '2017-02-17 18:08:05'}
+      TIPO_RECURSO_DESBLOQUEIO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: INGRESSO CONTRAPARTIDA
+        max: RENDIMENTO APLICAÇÃO
+        top:
+        - [OB, 313553]
+        - [INGRESSO CONTRAPARTIDA, 205974]
+        - [RENDIMENTO APLICAÇÃO, 952]
+      VL_TOTAL_DESBLOQUEIO:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 101766
+        min: '0.01'
+        max: '117408961.84'
+        media: 366437.9288
+        quartis: [28840.0903, 117356.8588, 254167.5819]
+      VL_DESBLOQUEADO:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 497367
+        min: '0.0'
+        max: '35761553.79'
+        media: 87426.2964
+        quartis: [3042.2481, 26119.8271, 81798.5087]
+      VL_BLOQUEADO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 73042}
+  siconv_desembolso:
+    linhas: 378212
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_DESEMBOLSO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 430779}
+      NR_CONVENIO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 177790}
+      DT_ULT_DESEMBOLSO: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4183, min: '2008-10-30', max: '2026-07-16'}
+      QTD_DIAS_SEM_DESEMBOLSO:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '0'
+        max: '365'
+        media: 337.9299
+        quartis: [365, 365, 365]
+        top:
+        - ['365', 339854]
+        - ['180', 16323]
+        - ['0', 12876]
+        - ['90', 9159]
+      DATA_DESEMBOLSO: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4278, min: '1900-06-24', max: '2026-07-16'}
+      ANO_DESEMBOLSO:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 23
+        min: '1900'
+        max: '2026'
+        media: 2017.821
+        quartis: [2014, 2018, 2022]
+        top:
+        - ['2020', 32553]
+        - ['2012', 29464]
+        - ['2019', 29380]
+        - ['2016', 24807]
+        - ['2025', 24570]
+        - ['2015', 23599]
+        - ['2013', 22816]
+        - ['2018', 22805]
+        - ['2011', 21042]
+        - ['2023', 20534]
+      MES_DESEMBOLSO:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 7.583
+        quartis: [5, 7, 11]
+        top:
+        - ['12', 75430]
+        - ['6', 42743]
+        - ['7', 34669]
+        - ['11', 31728]
+        - ['5', 31112]
+        - ['3', 28309]
+        - ['9', 27774]
+        - ['10', 27571]
+        - ['8', 25798]
+        - ['4', 25253]
+      NR_SIAFI: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 186188}
+      UG_EMITENTE_DH: {tipo: VARCHAR, nulos_pct: 0.04, distintos_aprox: 648, min: '070003', max: '885340'}
+      OBSERVACAO_DH: {tipo: VARCHAR, nulos_pct: 0.12, distintos_aprox: 367516}
+      VL_DESEMBOLSADO:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 154414
+        min: '0.01'
+        max: '135719747.19'
+        media: 397254.259
+        quartis: [67502.2545, 141330.4925, 300577.3817]
+  siconv_dl:
+    linhas: 7487823
+    fonte_do_perfil: amostra de 26.71%. ~2.000.000 linhas
+    colunas:
+      ID_DL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1826478}
+      ID_PROPOSTA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 108221}
+      ID_LICITACAO: {tipo: VARCHAR, nulos_pct: 52.86, distintos_aprox: 327640}
+      ID_CONTRATO: {tipo: VARCHAR, nulos_pct: 69.11, distintos_aprox: 258353}
+      DATA_DE_EMISSAO: {tipo: VARCHAR, nulos_pct: 0.02, distintos_aprox: 7364}
+      NUMERO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 759726, pessoal: 'só contagens: valores seriam dado pessoal'}
+      DESCRICAO: {tipo: VARCHAR, nulos_pct: 0.07, distintos_aprox: 6391}
+      RAZAO_SOCIAL: {tipo: VARCHAR, nulos_pct: 7.6, distintos_aprox: 300990, pessoal: 'só contagens: valores seriam dado pessoal'}
+      VALOR_ORIGINAL:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 370949
+        min: '-42.0'
+        max: '46468796.07'
+        media: 18884.4165
+        quartis: [515.5668, 1511.0709, 4234.4179]
+      VALOR: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 500906}
+      STATUS:
+        tipo: VARCHAR
+        nulos_pct: 0.02
+        distintos_aprox: 3
+        min: Ativo
+        max: Inativo
+        top:
+        - [Ativo, 1986189]
+        - [Inativo, 36550]
+        - [Em Elaboração, 2504]
+        - [null, 384]
+  siconv_emenda:
+    linhas: 297828
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_PROPOSTA: {tipo: VARCHAR, nulos_pct: 38.34, distintos_aprox: 127601}
+      QUALIF_PROPONENTE: {tipo: VARCHAR, nulos_pct: 38.34, distintos_aprox: 1, pessoal: 'só contagens: valores seriam dado pessoal'}
+      COD_PROGRAMA_EMENDA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 22807}
+      NR_EMENDA: {tipo: VARCHAR, nulos_pct: 2.37, distintos_aprox: 26201}
+      NOME_PARLAMENTAR: {tipo: VARCHAR, nulos_pct: 3.58, distintos_aprox: 1466, pessoal: 'só contagens: valores seriam dado pessoal'}
+      BENEFICIARIO_EMENDA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 19630, pessoal: 'só contagens: valores seriam dado pessoal'}
+      IND_IMPOSITIVO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: NÃO
+        max: SIM
+        top:
+        - [NÃO, 195748]
+        - [SIM, 102080]
+      TIPO_PARLAMENTAR:
+        tipo: VARCHAR
+        nulos_pct: 3.58
+        distintos_aprox: 3
+        min: BANCADA
+        max: RELATOR GERAL
+        top:
+        - [INDIVIDUAL, 238893]
+        - [COMISSAO, 24926]
+        - [RELATOR GERAL, 13792]
+        - [null, 10654]
+        - [BANCADA, 9563]
+      VALOR_REPASSE_PROPOSTA_EMENDA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 19807}
+      VALOR_REPASSE_EMENDA:
+        tipo: DOUBLE
+        nulos_pct: 38.34
+        distintos_aprox: 23534
+        min: '0.0'
+        max: '250610691.26'
+        media: 642788.0115
+        quartis: [199275.4558, 284733.9002, 492067.5379]
+  siconv_empenho:
+    linhas: 434899
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_EMPENHO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 357921}
+      NR_CONVENIO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 270582}
+      NR_EMPENHO: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 98242}
+      TIPO_NOTA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '01'
+        max: '18'
+        top:
+        - ['01', 254820]
+        - ['05', 97232]
+        - ['13', 43977]
+        - ['03', 32773]
+        - ['02', 5113]
+        - ['15', 477]
+        - ['17', 151]
+        - ['07', 108]
+        - ['14', 107]
+        - ['04', 55]
+      DESC_TIPO_NOTA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 22
+        min: Anulação de Empenho
+        max: Reforço de Pré-Empenho
+        top:
+        - [Empenho Original, 199829]
+        - [Global, 96433]
+        - [Ordinário, 54991]
+        - [OUTROS CANC DE RP, 43977]
+        - [Anulação de Empenho, 25386]
+        - [Estimativo, 7342]
+        - [Reforço de Empenho, 5110]
+        - [Estorno de Anulação de Empenho, 799]
+        - [Estorno de Cancelamento de Empenho de Restos a Pagar, 477]
+        - [Cancelamento de Restos a Pagar não Processados em Liquidação, 151]
+      DATA_EMISSAO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4575}
+      COD_SITUACAO_EMPENHO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '4'
+        max: ENVIADO
+        top:
+        - ['4', 252075]
+        - [ENVIADO, 158766]
+        - ['6', 24058]
+      DESC_SITUACAO_EMPENHO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Enviado
+        max: Registrado no SIAFI
+        top:
+        - [Enviado, 410841]
+        - [Registrado no SIAFI, 24058]
+      UG_EMITENTE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 681, min: '070003', max: '885340'}
+      UG_RESPONSAVEL: {tipo: VARCHAR, nulos_pct: 39.62, distintos_aprox: 703, pessoal: 'só contagens: valores seriam dado pessoal'}
+      FONTE_RECURSO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1089}
+      NATUREZA_DESPESA: {tipo: VARCHAR, nulos_pct: 1.01, distintos_aprox: 1480}
+      PLANO_INTERNO: {tipo: VARCHAR, nulos_pct: 22.75, distintos_aprox: 31665}
+      PTRES: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 40173}
+      VALOR_EMPENHO:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 115880
+        min: '-135719747.19'
+        max: '271439494.38'
+        media: 445204.549
+        quartis: [6223.5694, 199183.3429, 418222.4237]
+      RESULTADO_PRIMARIO:
+        tipo: VARCHAR
+        nulos_pct: 0.92
+        distintos_aprox: 17
+        min: '-9'
+        max: F
+        top:
+        - ['2', 245822]
+        - ['6', 114505]
+        - ['3', 23503]
+        - [09, 20532]
+        - ['8', 15100]
+        - ['7', 6420]
+        - ['1', 4223]
+        - [null, 4014]
+        - ['-9', 405]
+        - ['@', 175]
+      OBSERVACAO_EMPENHO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 260503}
+      DESCRICAO_EMENDA_SIAFI: {tipo: VARCHAR, nulos_pct: 95.85, distintos_aprox: 6923}
+  siconv_empenho_cipi:
+    linhas: 48091
+    fonte_do_perfil: tabela inteira
+    colunas:
+      UG_EMITENTE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 135, min: '110591', max: '810023'}
+      NR_EMPENHO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 22313}
+      FONTE_RECURSO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 96, min: '0100', max: '8280262410'}
+      NATUREZA_DESPESA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '333041'
+        max: '449051'
+        top:
+        - ['444042', 36958]
+        - ['444041', 4391]
+        - ['443042', 2815]
+        - ['443041', 1299]
+        - ['444251', 1280]
+        - ['334041', 510]
+        - ['335043', 266]
+        - ['333041', 150]
+        - ['443251', 134]
+        - ['447170', 80]
+      PLANO_INTERNO: {tipo: VARCHAR, nulos_pct: 13.25, distintos_aprox: 6042}
+      PTRES: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4273}
+      VALOR_EMPENHO:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 11670
+        min: '0.0'
+        max: '129530865.0'
+        media: 1217717.9198
+        quartis: [280015.2669, 481476.4537, 965941.051]
+      INFORMACOES_COMPLEMENTARES:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 48091]
+      DATA_EMISSAO: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1381, min: '2012-06-14', max: '2026-07-16'}
+      ID_PROJETO_INVESTIMENTO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 36764}
+      SISTEMA_ORIGEM:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: PMBDISCRICIONARIAS
+        max: PMBDISCRICIONARIAS
+        top:
+        - [PMBDISCRICIONARIAS, 48091]
+      DATA_ENVIO_XML: {tipo: TIMESTAMP, nulos_pct: 21.15, distintos_aprox: 47436, min: '2021-02-24 14:59:12', max: '2026-07-16 15:58:57'}
+  siconv_empenho_desembolso:
+    linhas: 382787
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_DESEMBOLSO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 430779}
+      ID_EMPENHO: {tipo: VARCHAR, nulos_pct: 36.16, distintos_aprox: 157299}
+      VALOR_GRUPO:
+        tipo: DOUBLE
+        nulos_pct: 36.13
+        distintos_aprox: 95670
+        min: '0.0'
+        max: '135719747.19'
+        media: 292511.0003
+        quartis: [53435.6451, 116745.5575, 223696.369]
+  siconv_etapa_crono_fisico:
+    linhas: 3272439
+    fonte_do_perfil: amostra de 61.116%. ~2.000.000 linhas
+    colunas:
+      ID_META: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1043416}
+      ID_ETAPA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1808619}
+      NR_ETAPA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 340, min: '1', max: '99'}
+      DESC_ETAPA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1436330}
+      DATA_INICIO_ETAPA: {tipo: DATE, nulos_pct: 0.06, distintos_aprox: 6300, min: '2007-09-11', max: '2035-09-01'}
+      DATA_FIM_ETAPA: {tipo: DATE, nulos_pct: 0.06, distintos_aprox: 8669, min: '2008-05-11', max: '2035-12-19'}
+      UF_ETAPA:
+        tipo: VARCHAR
+        nulos_pct: 33.7
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [null, 673671]
+        - [SP, 159123]
+        - [RS, 127968]
+        - [MG, 126826]
+        - [PR, 92188]
+        - [BA, 69962]
+        - [RJ, 67233]
+        - [SC, 58829]
+        - [MT, 52288]
+        - [CE, 52243]
+      MUNICIPIO_ETAPA: {tipo: VARCHAR, nulos_pct: 33.7, distintos_aprox: 5894}
+      ENDERECO_ETAPA: {tipo: VARCHAR, nulos_pct: 42.24, distintos_aprox: 333261, pessoal: 'só contagens: valores seriam dado pessoal'}
+      CEP_ETAPA: {tipo: VARCHAR, nulos_pct: 41.44, distintos_aprox: 28697, pessoal: 'só contagens: valores seriam dado pessoal'}
+      QTD_ETAPA:
+        tipo: DOUBLE
+        nulos_pct: 7.81
+        distintos_aprox: 25121
+        min: '0.0'
+        max: '2417331008.58'
+        media: 3572.8253
+        quartis: [1, 1, 4.018]
+      UND_FORNECIMENTO_ETAPA: {tipo: VARCHAR, nulos_pct: 7.68, distintos_aprox: 7920}
+      VL_ETAPA:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 566081
+        min: '0.0'
+        max: '10584000000.0'
+        media: 400271.5027
+        quartis: [6032.8945, 35136.3942, 251933.1108]
+  siconv_execucao_fisica_cipi:
+    linhas: 23626
+    fonte_do_perfil: tabela inteira
+    colunas:
+      cpf_responsavel_operacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1, pessoal: 'só contagens: valores seriam dado pessoal'}
+      especificacao_outros: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 18921}
+      id_projeto_investimento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 20406}
+      id_situacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '3'
+        max: '8'
+        top:
+        - ['6', 11523]
+        - ['3', 9969]
+        - ['5', 1157]
+        - ['8', 917]
+        - ['4', 60]
+      data_situacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1488}
+      percentual_execucao:
+        tipo: DOUBLE
+        nulos_pct: 14.76
+        distintos_aprox: 4645
+        min: '0.0'
+        max: '101.94'
+        media: 66.5269
+        quartis: [23.2539, 95.2625, 100]
+      id_tipo_indicativo_paralisada:
+        tipo: VARCHAR
+        nulos_pct: 99.75
+        distintos_aprox: 5
+        min: '1'
+        max: '5'
+        top:
+        - [null, 23566]
+        - ['5', 36]
+        - ['2', 10]
+        - ['4', 10]
+        - ['3', 3]
+        - ['1', 1]
+      id_motivo_paralisada:
+        tipo: VARCHAR
+        nulos_pct: 99.75
+        distintos_aprox: 16
+        min: '1'
+        max: '9'
+        top:
+        - [null, 23566]
+        - ['23', 12]
+        - ['20', 10]
+        - ['3', 8]
+        - ['9', 8]
+        - ['25', 6]
+        - ['27', 3]
+        - ['8', 3]
+        - ['11', 2]
+        - ['13', 2]
+      justificativa: {tipo: VARCHAR, nulos_pct: 99.75, distintos_aprox: 56, min: '"informa-se que a obra vinculada ao Contrato nº 202/2025 encontra-se
+          paralisada em razão da rescisão unilateral, promovida pela Administração Pública, em decorrência da inexecução contratual por parte
+          da empresa originalmente contratada, caracterizada pelo descumprimento do cronograma físico-financeiro e paralisação das frentes de
+          serviço.A rescisão foi formalizada após a adoção das medidas administrativas cabíveis, com observância do contraditório e da ampla defesa.Como
+          ação para retomada da obra, a Administração Municipal encontra-se em fase de convocação da empresa classificada em segundo lugar no
+          certame, visando à continuidade da execução do saldo remanescente do contrato, nos termos da legislação vigente."', max: 'análise dos
+          questionamentos técnicos apresentados pela contratada (R & R LTDA) no Ofício nº 570/2025, sob a alegação de que a competência de projeto
+          estaria preclusa'}
+  siconv_historico_projeto_basico:
+    linhas: 1061746
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_PROPOSTA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 50677}
+      DATA_HIST_PB_TR: {tipo: DATE, nulos_pct: 0, distintos_aprox: 3071, min: '2018-03-12', max: '2026-07-16'}
+      SITUACAO_HIST_PB_TR:
+        tipo: VARCHAR
+        nulos_pct: 4.82
+        distintos_aprox: 9
+        min: Aceito / Fase de Análise
+        max: Rejeitada
+        top:
+        - [Enviada para Análise, 293120]
+        - [Em Análise, 284624]
+        - [Em complementacao, 176541]
+        - [Complementação Solicitada, 153128]
+        - [Aceito / Fase de Análise, 65040]
+        - [null, 51171]
+        - [Em Elaboracao, 30418]
+        - [Homologada, 6618]
+        - [Rejeitada, 1086]
+      EVENTO_HIST_PB_TR:
+        tipo: VARCHAR
+        nulos_pct: 12.91
+        distintos_aprox: 11
+        min: Aceite realizado pela Mandatária/Concedente
+        max: Solicitação de Complementação pela Mandatária/Concedente
+        top:
+        - [Enviado para Análise da Mandatária/Concedente, 251449]
+        - [Análise iniciada pela Mandatária/Concedente, 195731]
+        - [Solicitação de Complementação pela Mandatária/Concedente, 153122]
+        - [Em Complementação pelo Proponente, 143606]
+        - [null, 137099]
+        - [Emitir Laudo de Análise do Empreendimento, 60828]
+        - [Aceite realizado pela Mandatária/Concedente, 55567]
+        - [Envio da documentação orçamentária para análise foi cancelado. Situação retornada para "em complementação", 29383]
+        - [Envio da documentação orçamentária para análise foi cancelado. Situação retornada para "em elaboração", 25475]
+        - [Documentação homologada, 6053]
+      VERSAO_DOC_PB_TR:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 29
+        min: '0'
+        max: '9'
+        top:
+        - ['3', 159703]
+        - ['4', 147000]
+        - ['2', 133744]
+        - ['5', 126043]
+        - ['6', 97102]
+        - ['1', 90838]
+        - ['7', 71086]
+        - ['0', 59552]
+        - ['8', 54123]
+        - ['9', 38189]
+  siconv_historico_situacao:
+    linhas: 8957864
+    fonte_do_perfil: amostra de 22.327%. ~2.000.000 linhas
+    colunas:
+      ID_PROPOSTA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 231204}
+      NR_CONVENIO: {tipo: VARCHAR, nulos_pct: 36.58, distintos_aprox: 65717}
+      DIA_HISTORICO_SIT: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 1759321, min: '1991-12-05 00:00:00', max: '2026-07-16 22:50:45'}
+      HISTORICO_SIT:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 32
+        min: AGUARDANDO_PRESTACAO_CONTAS
+        max: RASCUNHO
+        top:
+        - [PROPOSTA_CADASTRADA, 255154]
+        - [PROPOSTA_ENVIADA_ANALISE, 205718]
+        - [PLANO_TRABALHO_APROVADO, 168390]
+        - [PROPOSTA_EM_ANALISE, 168143]
+        - [EM_EXECUCAO, 149508]
+        - [PROPOSTA_EM_COMPLEMENTACAO, 144397]
+        - [PROPOSTA_COMPLEMENTADA_ENVIADA_ANALISE, 131116]
+        - [PROPOSTA_COMPLEMENTADA_EM_ANALISE, 120959]
+        - [PLANO_TRABALHO_EM_ANALISE, 98396]
+        - [ASSINADA, 82936]
+      DIAS_HISTORICO_SIT:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 6187
+        min: '0'
+        max: '12389'
+        media: 444.6101
+        quartis: [0, 4, 85]
+      COD_HISTORICO_SIT:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 37
+        min: '-1'
+        max: '54'
+        top:
+        - ['10', 255154]
+        - ['11', 205718]
+        - ['24', 168390]
+        - ['12', 168143]
+        - ['32', 149508]
+        - ['13', 144397]
+        - ['14', 131116]
+        - ['15', 120959]
+        - ['20', 98396]
+        - ['31', 82936]
+  siconv_ingresso_contrapartida:
+    linhas: 343600
+    fonte_do_perfil: tabela inteira
+    colunas:
+      NR_CONVENIO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 133899}
+      DT_INGRESSO_CONTRAPARTIDA: {tipo: DATE, nulos_pct: 0, distintos_aprox: 5519, min: '2000-01-01', max: '2026-07-16'}
+      VL_INGRESSO_CONTRAPARTIDA:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 227305
+        min: '0.0'
+        max: '104412654.17'
+        media: 38309.5211
+        quartis: [1255.0007, 4938.1415, 18949.7757]
+  siconv_inst_cont_contratos_lotes_empresas:
+    linhas: 36613
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_CONTRATO_INSTRUMENTO_CONTRATUAL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 29763}
+      ID_PROPOSTA_INSTRUMENTO_CONTRATUAL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 23765}
+      ID_LOTE_INSTRUMENTO_CONTRATUAL: {tipo: VARCHAR, nulos_pct: 8.97, distintos_aprox: 32413}
+      NUMERO_INSTRUMENTO_CONTRATUAL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 14745, pessoal: 'só contagens: valores seriam dado pessoal'}
+      SITUACAO_INSTRUMENTO_CONTRATUAL:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Concluído
+        max: Rascunho
+        top:
+        - [Concluído, 32677]
+        - [Outros, 3254]
+        - [Rascunho, 682]
+      DATA_ASSINATURA_INSTRUMENTO_CONTRATUAL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1849}
+      DATA_INICIO_VIGENCIA_INSTRUMENTO_CONTRATUAL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2060}
+      DATA_FIM_VIGENCIA_INSTRUMENTO_CONTRATUAL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2526}
+      NUMERO_LOTE_INSTRUMENTO_CONTRATUAL: {tipo: VARCHAR, nulos_pct: 8.97, distintos_aprox: 43, pessoal: 'só contagens: valores seriam dado pessoal'}
+      RAZAO_SOCIAL_EMPRESA_EXECUTORA_INSTRUMENTO_CONTRATUAL: {tipo: VARCHAR, nulos_pct: 8.97, distintos_aprox: 13926, pessoal: 'só contagens:
+          valores seriam dado pessoal'}
+      TIPO_IDENTIFICACAO_EMPRESA_EXECUTORA_INSTRUMENTO_CONTRATUAL: {tipo: VARCHAR, nulos_pct: 8.97, distintos_aprox: 3, pessoal: 'só contagens:
+          valores seriam dado pessoal'}
+      IDENTIFICACAO_EMPRESA_EXECUTORA_INSTRUMENTO_CONTRATUAL: {tipo: VARCHAR, nulos_pct: 8.97, distintos_aprox: 12851, pessoal: 'só contagens:
+          valores seriam dado pessoal'}
+  siconv_inst_cont_metas_submetas_po:
+    linhas: 45729
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_META_INSTRUMENTO_CONTRATUAL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 31201}
+      ID_SUBMETA_INSTRUMENTO_CONTRATUAL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 41181}
+      ID_PO_INSTRUMENTO_CONTRATUAL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 41181}
+      ID_PROPOSTA_INSTRUMENTO_CONTRATUAL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 25358}
+      ID_LOTE_INSTRUMENTO_CONTRATUAL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 32588}
+      NUMERO_META_INSTRUMENTO_CONTRATUAL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 35, pessoal: 'só contagens: valores seriam dado pessoal'}
+      DESCRICAO_META_INSTRUMENTO_CONTRATUAL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 24520}
+      NUMERO_SUBMETA_INSTRUMENTO_CONTRATUAL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 376, pessoal: 'só contagens: valores seriam dado pessoal'}
+      DESCRICAO_SUBMETA_INSTRUMENTO_CONTRATUAL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 33460}
+      SITUACAO_SUBMETA_INSTRUMENTO_CONTRATUAL:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: AAI
+        max: ACT
+        top:
+        - [AAI, 42346]
+        - [ACT, 3383]
+      VALOR_TOTAL_LICITADO_INSTRUMENTO_CONTRATUAL:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 60930
+        min: '0.0'
+        max: '1099279953.35'
+        media: 1516067.5851
+        quartis: [193038.1859, 426713.5302, 1091347.2954]
+      DATA_PREVISAO_INICIO_OBRA_INSTRUMENTO_CONTRATUAL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 101, min: '2018-08-01', max: '3024-03-01'}
+      DATABASE_PO_VRPL_INSTRUMENTO_CONTRATUAL: {tipo: DATE, nulos_pct: 0, distintos_aprox: 85, min: '2018-01-01', max: '2029-11-01'}
+      SIGLA_LOCALIDADE_PO_INSTRUMENTO_CONTRATUAL:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [MG, 4476]
+        - [SP, 4422]
+        - [RS, 3650]
+        - [PB, 3107]
+        - [PI, 2994]
+        - [BA, 2923]
+        - [MA, 2466]
+        - [PE, 2342]
+        - [PR, 2023]
+        - [CE, 1763]
+      ACOMPANHADO_POR_EVENTO_PO_INSTRUMENTO_CONTRATUAL:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['1', 28652]
+        - ['0', 17077]
+  siconv_inst_cont_proposta_aio:
+    linhas: 31739
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_PROPOSTA_INSTRUMENTO_CONTRATUAL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 25358}
+      ID_PROPOSTA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 32326}
+      ID_AIO_INSTRUMENTO_CONTRATUAL: {tipo: VARCHAR, nulos_pct: 5.84, distintos_aprox: 23835}
+      SITUACAO_AIO_INSTRUMENTO_CONTRATUAL:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Emitida
+        max: Não Emitida
+        top:
+        - [Emitida, 29885]
+        - [Não Emitida, 1854]
+      DATA_EMISSAO_AIO_INSTRUMENTO_CONTRATUAL: {tipo: DATE, nulos_pct: 5.84, distintos_aprox: 1483, min: '2021-06-28', max: '2026-07-15'}
+  siconv_itens_dl:
+    linhas: 9805615
+    fonte_do_perfil: amostra de 20.396%. ~2.000.000 linhas
+    colunas:
+      ID_ITEM_DL: {tipo: VARCHAR, nulos_pct: 0.61, distintos_aprox: 1550633}
+      NOME_ITEM_DL: {tipo: VARCHAR, nulos_pct: 6.11, distintos_aprox: 444181, pessoal: 'só contagens: valores seriam dado pessoal'}
+      QTD_ITEM_DL: {tipo: VARCHAR, nulos_pct: 0.61, distintos_aprox: 28459}
+      UNIDADE_ITEM_DL: {tipo: VARCHAR, nulos_pct: 0.62, distintos_aprox: 2204}
+      VALOR_TOTAL_ITEM_DL:
+        tipo: DOUBLE
+        nulos_pct: 2.42
+        distintos_aprox: 363592
+        min: '-42.0'
+        max: '28493875.46'
+        media: 15172.797
+        quartis: [387.2, 1224.1092, 3588.7461]
+      DESCRICAO_ITEM_DL: {tipo: VARCHAR, nulos_pct: 0.61, distintos_aprox: 893084}
+      ID_DL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1936958}
+  siconv_itens_licitacao:
+    linhas: 3053227
+    fonte_do_perfil: amostra de 65.504%. ~2.000.000 linhas
+    colunas:
+      ID_LICITACAO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 707990}
+      ID_ITEM_LICITACAO: {tipo: VARCHAR, nulos_pct: 0.3, distintos_aprox: 1633164}
+      SEQUENCIAL_ITEM_LICITACAO: {tipo: VARCHAR, nulos_pct: 0.3, distintos_aprox: 9031}
+      DESCRICAO_ITEM_LICITACAO: {tipo: VARCHAR, nulos_pct: 0.3, distintos_aprox: 1358546}
+      TIPO_UNIDADE_ITEM_LICITACAO: {tipo: VARCHAR, nulos_pct: 0.3, distintos_aprox: 2436}
+      QUANTIDADE_ITEM_LICITACAO:
+        tipo: DOUBLE
+        nulos_pct: 0.3
+        distintos_aprox: 34837
+        min: '0.0'
+        max: '1002410078.38'
+        media: 2921.145
+        quartis: [1, 5.5825, 51.1348]
+      PRECO_UNITARIO_ITEM_LICITACAO:
+        tipo: DOUBLE
+        nulos_pct: 12.1
+        distintos_aprox: 248589
+        min: '0.0'
+        max: '803831076260.0'
+        media: 590298.1615
+        quartis: [12.8215, 272.9115, 2721.648]
+      NOME_FORNECEDOR_ITEM_LICITACAO: {tipo: VARCHAR, nulos_pct: 12.16, distintos_aprox: 402516, pessoal: 'só contagens: valores seriam dado pessoal'}
+      IDENTIFICACAO_FORNECEDOR_ITEM_LICITACAO: {tipo: VARCHAR, nulos_pct: 12.16, distintos_aprox: 235226, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      IDENTIFICACAO_FORNECEDOR_ITEM_LICITACAO_LOGADO: {tipo: VARCHAR, nulos_pct: 12.16, distintos_aprox: 399608, pessoal: 'só contagens: valores
+          seriam dado pessoal'}
+      VALOR_TOTAL_ITEM_LICITACAO:
+        tipo: DOUBLE
+        nulos_pct: 17.96
+        distintos_aprox: 340308
+        min: '0.0'
+        max: '1251487455530.0'
+        media: 5153229.3879
+        quartis: [346.4569, 1864.6321, 12366.9086]
+  siconv_justificativas_proposta:
+    linhas: 1153701
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_PROPOSTA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1281756}
+      CARACTERIZACAO_INTERESSES_RECI: {tipo: VARCHAR, nulos_pct: 67.39, distintos_aprox: 218642}
+      PUBLICO_ALVO: {tipo: VARCHAR, nulos_pct: 67.39, distintos_aprox: 241666}
+      PROBLEMA_A_SER_RESOLVIDO: {tipo: VARCHAR, nulos_pct: 67.39, distintos_aprox: 206599}
+      RESULTADOS_ESPERADOS: {tipo: VARCHAR, nulos_pct: 67.39, distintos_aprox: 151870}
+      RELACAO_PROPOSTA_OBJETIVOS_PRO: {tipo: VARCHAR, nulos_pct: 67.4, distintos_aprox: 155906}
+      CAPACIDADE_TECNICA: {tipo: VARCHAR, nulos_pct: 29.25, distintos_aprox: 456956}
+      JUSTIFICATIVA: {tipo: VARCHAR, nulos_pct: 32.61, distintos_aprox: 663987}
+  siconv_licitacao:
+    linhas: 952712
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_LICITACAO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 952695}
+      NR_CONVENIO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 179938}
+      NR_LICITACAO: {tipo: VARCHAR, nulos_pct: 2.02, distintos_aprox: 227907}
+      MODALIDADE_LICITACAO:
+        tipo: VARCHAR
+        nulos_pct: 71.1
+        distintos_aprox: 6
+        min: Concorrência
+        max: Tomada de Preços
+        top:
+        - [null, 677402]
+        - [Pregão, 142715]
+        - [Tomada de Preços, 83143]
+        - [Concorrência, 33712]
+        - [Convite, 10682]
+        - [Concurso, 4746]
+        - [RDC, 309]
+        - [DIALOGO_COMPETI, 3]
+      TP_PROCESSO_COMPRA:
+        tipo: VARCHAR
+        nulos_pct: 3.46
+        distintos_aprox: 6
+        min: Cotação Eletrônica
+        max: Pesquisa de Mercado (valor abaixo de R$ 8.000,00)
+        top:
+        - [Licitação, 271876]
+        - [Cotação Prévia de Preços, 219703]
+        - [Dispensa de Licitação, 193726]
+        - ['Pesquisa de Mercado (valor abaixo de R$ 8.000,00)', 93408]
+        - [Inexigibilidade, 93151]
+        - [Cotação Eletrônica, 47878]
+        - [null, 32970]
+      TIPO_LICITACAO:
+        tipo: VARCHAR
+        nulos_pct: 71.42
+        distintos_aprox: 12
+        min: Eletrônico
+        max: Técnica e Preço
+        top:
+        - [null, 680387]
+        - [Menor Preço, 126221]
+        - [Eletrônico, 63613]
+        - [Presencial, 39999]
+        - [Eletrônico para Registro de Preço, 14404]
+        - [Menor Valor, 11045]
+        - [Presencial para Registro de Preço, 5716]
+        - [Eletrônico por Maior Desconto, 3531]
+        - [Técnica e Preço, 3156]
+        - [Presencial por Maior Desconto, 2744]
+      NR_PROCESSO_LICITACAO: {tipo: VARCHAR, nulos_pct: 20.56, distintos_aprox: 271650}
+      DATA_PUBLICACAO_LICITACAO: {tipo: VARCHAR, nulos_pct: 69.93, distintos_aprox: 7761}
+      DATA_ABERTURA_LICITACAO: {tipo: VARCHAR, nulos_pct: 72.85, distintos_aprox: 6254}
+      DATA_ENCERRAMENTO_LICITACAO: {tipo: DATE, nulos_pct: 83.48, distintos_aprox: 5161, min: '1984-09-03', max: '2055-10-20'}
+      DATA_HOMOLOGACAO_LICITACAO: {tipo: VARCHAR, nulos_pct: 48.27, distintos_aprox: 7329}
+      STATUS_LICITACAO:
+        tipo: VARCHAR
+        nulos_pct: 0.04
+        distintos_aprox: 2
+        min: CONCLUIDO
+        max: EM_ELABORACAO
+        top:
+        - [CONCLUIDO, 926993]
+        - [EM_ELABORACAO, 25357]
+        - [null, 362]
+      SITUACAO_ACEITE_PROCESSO_EXECU:
+        tipo: VARCHAR
+        nulos_pct: 81.92
+        distintos_aprox: 3
+        min: Aceito
+        max: Rejeitado
+        top:
+        - [null, 780434]
+        - [Aceito, 143701]
+        - [Rejeitado, 20246]
+        - [Aguardando Aceite, 8331]
+      SISTEMA_ORIGEM:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: LICITACOES_E
+        max: Sistema Externo
+        top:
+        - [Plataforma +Brasil, 936470]
+        - [Sistema Externo, 15837]
+        - [SIASG/COMPRASNET, 401]
+        - [LICITACOES_E, 4]
+      SITUACAO_SISTEMA:
+        tipo: VARCHAR
+        nulos_pct: 98.3
+        distintos_aprox: 13
+        min: ABERTO
+        max: SUSPENSO
+        top:
+        - [null, 936470]
+        - [EM_ANDAMENTO, 9517]
+        - [CONCLUIDA, 6320]
+        - [HOMOLOGADO, 355]
+        - [ABERTO, 17]
+        - [DESERTO, 11]
+        - [DIVULGADO, 5]
+        - [FECHADO, 5]
+        - [ENCERRADO, 4]
+        - [SUSPENSO, 4]
+      VALOR_LICITACAO: {tipo: VARCHAR, nulos_pct: 0.11, distintos_aprox: 341508}
+      DATA_ANALISE_ACEITE: {tipo: DATE, nulos_pct: 82.79, distintos_aprox: 2403, min: '2017-11-10', max: '2026-07-16'}
+      DATA_ENVIO_ANALISE: {tipo: DATE, nulos_pct: 81.68, distintos_aprox: 2336, min: '2019-07-06', max: '2026-07-16'}
+  siconv_meta_crono_fisico:
+    linhas: 1554236
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_META: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1610900}
+      ID_PROPOSTA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1066448}
+      NR_CONVENIO: {tipo: VARCHAR, nulos_pct: 70.01, distintos_aprox: 284496}
+      COD_PROGRAMA: {tipo: VARCHAR, nulos_pct: 0.75, distintos_aprox: 26489}
+      NOME_PROGRAMA: {tipo: VARCHAR, nulos_pct: 0.75, distintos_aprox: 13552, pessoal: 'só contagens: valores seriam dado pessoal'}
+      NR_META: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1010}
+      TIPO_META:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: APLICACAO
+        max: NORMAL
+        top:
+        - [NORMAL, 1542534]
+        - [APLICACAO, 11702]
+      DESC_META: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1206450}
+      DATA_INICIO_META: {tipo: DATE, nulos_pct: 0.06, distintos_aprox: 6194, min: '2005-05-02', max: '2031-06-01'}
+      DATA_FIM_META: {tipo: DATE, nulos_pct: 0.06, distintos_aprox: 8620, min: '2008-05-20', max: '2035-12-19'}
+      UF_META:
+        tipo: VARCHAR
+        nulos_pct: 30.59
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [null, 475503]
+        - [SP, 139613]
+        - [RS, 116537]
+        - [MG, 107262]
+        - [PR, 90608]
+        - [SC, 58244]
+        - [BA, 56560]
+        - [CE, 46205]
+        - [MA, 45090]
+        - [RJ, 42183]
+      MUNICIPIO_META: {tipo: VARCHAR, nulos_pct: 30.59, distintos_aprox: 5894}
+      ENDERECO_META: {tipo: VARCHAR, nulos_pct: 40.44, distintos_aprox: 384722, pessoal: 'só contagens: valores seriam dado pessoal'}
+      CEP_META: {tipo: VARCHAR, nulos_pct: 39.53, distintos_aprox: 33556, pessoal: 'só contagens: valores seriam dado pessoal'}
+      QTD_META:
+        tipo: DOUBLE
+        nulos_pct: 7.22
+        distintos_aprox: 16900
+        min: '0.0'
+        max: '52796790000.0'
+        media: 1084855.511
+        quartis: [1, 1, 1]
+      UND_FORNECIMENTO_META: {tipo: VARCHAR, nulos_pct: 7.08, distintos_aprox: 8637}
+      VL_META:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 433552
+        min: '0.0'
+        max: '10584000000.0'
+        media: 820381.1246
+        quartis: [75023.1788, 251019.3071, 565843.6573]
+  siconv_obtv_convenente:
+    linhas: 3051514
+    fonte_do_perfil: amostra de 65.541%. ~2.000.000 linhas
+    colunas:
+      NR_MOV_FIN: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 229086}
+      IDENTIF_FAVORECIDO_OBTV_CONV: {tipo: VARCHAR, nulos_pct: 1.17, distintos_aprox: 83680, pessoal: 'só contagens: valores seriam dado pessoal'}
+      NM_FAVORECIDO_OBTV_CONV: {tipo: VARCHAR, nulos_pct: 1.34, distintos_aprox: 132946, pessoal: 'só contagens: valores seriam dado pessoal'}
+      TP_AQUISICAO: {tipo: VARCHAR, nulos_pct: 1.17, distintos_aprox: 41313}
+      VL_PAGO_OBTV_CONV:
+        tipo: DOUBLE
+        nulos_pct: 1.17
+        distintos_aprox: 315078
+        min: '-23953.09'
+        max: '21440508.33'
+        media: 3398.3567
+        quartis: [185.0132, 497.8744, 1578.4792]
+  siconv_pagamento:
+    linhas: 7359136
+    fonte_do_perfil: amostra de 27.177%. ~2.000.000 linhas
+    colunas:
+      NR_MOV_FIN: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1919259}
+      NR_CONVENIO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 110515}
+      IDENTIF_FORNECEDOR: {tipo: VARCHAR, nulos_pct: 7.79, distintos_aprox: 173188, pessoal: 'só contagens: valores seriam dado pessoal'}
+      NOME_FORNECEDOR: {tipo: VARCHAR, nulos_pct: 12.66, distintos_aprox: 382962, pessoal: 'só contagens: valores seriam dado pessoal'}
+      TP_MOV_FINANCEIRA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: PAGAMENTO A FAVORECIDO
+        max: PAGAMENTO A FAVORECIDO COM OBTV
+        top:
+        - [PAGAMENTO A FAVORECIDO COM OBTV, 1514069]
+        - [PAGAMENTO A FAVORECIDO, 504142]
+      DATA_PAG: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4870, min: '2001-01-19', max: '2026-07-16'}
+      NR_DL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 722635}
+      DESC_DL:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: BOLSA
+        max: Transferência para Subconveniado
+        top:
+        - [FOLHA DE PAGAMENTO, 702046]
+        - [NOTA FISCAL, 587674]
+        - [DIÁRIAS, 336706]
+        - [OBTV PARA O CONVENENTE, 98389]
+        - [RECIBO DE PAGAMENTO A AUTONOMO, 95047]
+        - [OUTROS, 81208]
+        - [NOTA FISCAL / FATURA, 34431]
+        - [BOLSA, 33386]
+        - [GUIA DE RECOLHIMENTO, 24120]
+        - [PASSAGENS, 12472]
+      VL_PAGO:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 494993
+        min: '-13433.77'
+        max: '46468796.07'
+        media: 18123.6125
+        quartis: [513.1876, 1429.2582, 4005.7208]
+      ID_DL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1836765}
+      DATA_EMISSAO_DL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6743}
+  siconv_pagamento_tributo:
+    linhas: 450477
+    fonte_do_perfil: tabela inteira
+    colunas:
+      NR_CONVENIO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 86517}
+      DATA_TRIBUTO: {tipo: VARCHAR, nulos_pct: 1.65, distintos_aprox: 6267}
+      VL_PAG_TRIBUTOS:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 313167
+        min: '0.0'
+        max: '134497603.74'
+        media: 9935.252
+        quartis: [780.7203, 2347.3065, 6340.4127]
+  siconv_pergunta_selecao_pac:
+    linhas: 2567
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_PERGUNTA_SELECAO_PAC: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2586}
+      ID_PROGRAMA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 73, min: '51928', max: '56726'}
+      PERGUNTA_SELECAO_PAC: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1287}
+  siconv_plano_aplicacao:
+    linhas: 4855746
+    fonte_do_perfil: amostra de 41.188%. ~2.000.000 linhas
+    colunas:
+      ID_PROPOSTA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 383531}
+      SIGLA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 251154]
+        - [RS, 175079]
+        - [MG, 166034]
+        - [RJ, 143870]
+        - [PR, 141853]
+        - [BA, 106474]
+        - [CE, 103375]
+        - [PE, 101543]
+        - [SC, 85425]
+        - [GO, 77190]
+      MUNICIPIO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5894}
+      NATUREZA_AQUISICAO:
+        tipo: VARCHAR
+        nulos_pct: 0.03
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - ['1', 2054583]
+        - ['2', 20648]
+        - ['3', 12134]
+        - [null, 668]
+      DESCRICAO_ITEM: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1583928}
+      CEP_ITEM: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 24005, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ENDERECO_ITEM: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 320058, pessoal: 'só contagens: valores seriam dado pessoal'}
+      TIPO_DESPESA_ITEM:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: BEM
+        max: TRIBUTO
+        top:
+        - [BEM, 919365]
+        - [SERVICO, 550111]
+        - [OBRA, 345420]
+        - [OUTROS, 253028]
+        - [TRIBUTO, 13320]
+        - [DESPESA_ADMINISTRATIVA, 6789]
+      NATUREZA_DESPESA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 619, min: 13 SALARIO - PESSOAL CIVIL, max: VISTOS CONSULARES}
+      SIT_ITEM:
+        tipo: VARCHAR
+        nulos_pct: 53.36
+        distintos_aprox: 2
+        min: APROVADO
+        max: EM_COMPLEMENTACAO
+        top:
+        - [null, 1114222]
+        - [APROVADO, 956207]
+        - [EM_COMPLEMENTACAO, 17604]
+      COD_NATUREZA_DESPESA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1975}
+      QTD_ITEM:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 26826
+        min: '0.01'
+        max: '64187189.39'
+        media: 1254.7565
+        quartis: [1, 2.0183, 21.1253]
+      VALOR_UNITARIO_ITEM:
+        tipo: DOUBLE
+        nulos_pct: 0.03
+        distintos_aprox: 281767
+        min: '0.008'
+        max: '4200000000.0'
+        media: 243573.6255
+        quartis: [73.5798, 1392.6076, 30548.8161]
+      VALOR_TOTAL_ITEM:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 406597
+        min: '0.005'
+        max: '4200000000.0'
+        media: 246764.8632
+        quartis: [1339.8571, 8263.9833, 76942.916]
+      ID_ITEM_PAD: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1932126}
+  siconv_programa:
+    linhas: 1255214
+    fonte_do_perfil: tabela inteira
+    colunas:
+      COD_ORGAO_SUP_PROGRAMA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 36
+        min: '12000'
+        max: '84000'
+        top:
+        - ['36000', 288250]
+        - ['22000', 104782]
+        - ['49000', 96048]
+        - ['56000', 87831]
+        - ['42000', 83476]
+        - ['53000', 78016]
+        - ['55000', 61680]
+        - ['51000', 51716]
+        - ['20000', 51211]
+        - ['54000', 50811]
+      DESC_ORGAO_SUP_PROGRAMA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 43
+        min: ADVOCACIA-GERAL DA UNIAO
+        max: SEC.ESPEC.DE AGRIC.FAMIL.E DO DESENV.AGRARIO
+        top:
+        - [MINISTERIO DA SAUDE, 288250]
+        - [MINISTÉRIO DA AGRICULTURA E PECUÁRIA, 104782]
+        - [MINISTÉRIO DO DESENVOLVIMENTO AGRÁRIO E AGRICULTURA FAMILIAR, 96048]
+        - [MINISTERIO DAS CIDADES, 87831]
+        - [MINISTERIO DA CULTURA, 83476]
+        - [MINISTÉRIO DA INTEGRAÇÃO E DO DESENVOLVIMENTO REGIONAL, 78016]
+        - ['MINISTÉRIO DO DESENVOLVIMENTO E ASSISTÊNCIA SOCIAL, FAMÍLIA E COMBATE FOME', 61680]
+        - [MINISTERIO DO ESPORTE, 51716]
+        - [PRESIDENCIA DA REPÚBLICA, 51211]
+        - [MINISTERIO DO TURISMO, 50811]
+      ID_PROGRAMA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 41714}
+      COD_PROGRAMA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 46885}
+      NOME_PROGRAMA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 18984, pessoal: 'só contagens: valores seriam dado pessoal'}
+      SIT_PROGRAMA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: CADASTRADO
+        max: INATIVO
+        top:
+        - [DISPONIBILIZADO, 1004603]
+        - [CADASTRADO, 128234]
+        - [INATIVO, 122377]
+      DATA_DISPONIBILIZACAO: {tipo: DATE, nulos_pct: 10.13, distintos_aprox: 4358, min: '2008-06-18', max: '2026-07-16'}
+      ANO_DISPONIBILIZACAO:
+        tipo: INTEGER
+        nulos_pct: 10.13
+        distintos_aprox: 21
+        min: '2008'
+        max: '2026'
+        media: 2014.9018
+        quartis: [2010, 2014, 2019]
+        top:
+        - [null, 127109]
+        - ['2009', 113907]
+        - ['2010', 103136]
+        - ['2008', 93843]
+        - ['2012', 91085]
+        - ['2011', 84168]
+        - ['2013', 74323]
+        - ['2014', 55240]
+        - ['2017', 54149]
+        - ['2016', 52517]
+      DT_PROG_INI_RECEB_PROP: {tipo: VARCHAR, nulos_pct: 53.18, distintos_aprox: 2609}
+      DT_PROG_FIM_RECEB_PROP: {tipo: VARCHAR, nulos_pct: 53.18, distintos_aprox: 2525}
+      DT_PROG_INI_EMENDA_PAR: {tipo: DATE, nulos_pct: 65.89, distintos_aprox: 2147, min: '2009-01-01', max: '2026-07-16'}
+      DT_PROG_FIM_EMENDA_PAR: {tipo: DATE, nulos_pct: 65.9, distintos_aprox: 1462, min: '2010-04-30', max: '2026-12-31'}
+      DT_PROG_INI_BENEF_ESP: {tipo: DATE, nulos_pct: 76.93, distintos_aprox: 2762, min: '2008-06-27', max: '2026-07-16'}
+      DT_PROG_FIM_BENEF_ESP: {tipo: DATE, nulos_pct: 76.93, distintos_aprox: 1755, min: '2009-12-31', max: '2026-12-31'}
+      MODALIDADE_PROGRAMA:
+        tipo: VARCHAR
+        nulos_pct: 0.05
+        distintos_aprox: 6
+        min: CONTRATO DE REPASSE
+        max: TERMO DE PARCERIA
+        top:
+        - [CONVENIO, 809113]
+        - [CONTRATO DE REPASSE, 290972]
+        - [CONVENIO OU CONTRATO DE REPASSE, 75397]
+        - [TERMO DE FOMENTO, 38630]
+        - [TERMO DE COLABORACAO, 14147]
+        - [TERMO DE PARCERIA, 10640]
+        - [TERMO DE COMPROMISSO, 9938]
+        - [TERMO DE COOPERACAO, 5777]
+        - [null, 600]
+      NATUREZA_JURIDICA_PROGRAMA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: Administração Pública Estadual ou do Distrito Federal
+        max: Organização da Sociedade Civil
+        top:
+        - [Administração Pública Estadual ou do Distrito Federal, 366466]
+        - [Administração Pública Municipal, 365174]
+        - [Organização da Sociedade Civil, 293760]
+        - [Consórcio Público, 128010]
+        - [Empresa pública/Sociedade de economia mista, 95562]
+        - [Administração Pública Federal, 5642]
+        - [Natureza Jurídica a Classificar, 600]
+      UF_PROGRAMA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 51194]
+        - [MG, 49636]
+        - [BA, 48604]
+        - [RS, 48259]
+        - [RJ, 47996]
+        - [PE, 47493]
+        - [PR, 47294]
+        - [RO, 46616]
+        - [GO, 46376]
+        - [PA, 46172]
+      ACAO_ORCAMENTARIA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 9630}
+      NOME_SUBTIPO_PROGRAMA: {tipo: VARCHAR, nulos_pct: 99.13, distintos_aprox: 9, pessoal: 'só contagens: valores seriam dado pessoal'}
+      DESCRICAO_SUBTIPO_PROGRAMA:
+        tipo: VARCHAR
+        nulos_pct: 99.13
+        distintos_aprox: 9
+        min: Convênios ECTI - Decreto 8240, de 21 de maio de 2014.
+        max: Termo de Execução Cultural - Lei nº 14.903/2024 e no Decreto nº 11.453/2023
+        top:
+        - [null, 1244327]
+        - [SELEÇÃO, 4456]
+        - ['DECRETO Nº 11.855, DE 26 DE DEZEMBRO DE 2023. Dispõe sobre termos de compromisso relativos às transferências obrigatórias de recursos
+            da União para a execução de ações do Programa de Aceleração do Crescimento - Novo PAC.', 3801]
+        - ['Convênios ECTI - Decreto 8240, de 21 de maio de 2014.', 1656]
+        - ['DECRETO Nº 12.157, DE 29 DE AGOSTO DE 2024Institui o Fundo Nacional de Investimento em Infraestrutura Social.', 540]
+        - ["Programa Minha Casa, Minha Vida. Fundo Nacional de Habitação de Interesse Social \x96 FNHIS.", 217]
+        - [Termo de Execução Cultural - Lei nº 14.903/2024 e no Decreto nº 11.453/2023, 82]
+        - ['Termo de Compromisso Cultural - TCC - Lei nº 13.018, de 22 de julho de 2014', 81]
+        - [Lei Complementar nº 201/2023, 54]
+  siconv_programa_proponentes:
+    linhas: 524375
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_PROGRAMA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 23074}
+      ID_PROPONENTE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 21241, pessoal: 'só contagens: valores seriam dado pessoal'}
+  siconv_programa_proposta:
+    linhas: 1155057
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_PROGRAMA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 30218}
+      ID_PROPOSTA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1281756}
+  siconv_projeto_basico_acffo:
+    linhas: 63644
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_ACFFO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 67871}
+      ID_PROPOSTA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 64784}
+      ULTIMA_VERSAO_PROJETO_BASICO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 29
+        min: '0'
+        max: '9'
+        top:
+        - ['0', 19549]
+        - ['2', 8713]
+        - ['1', 8582]
+        - ['3', 8059]
+        - ['4', 6016]
+        - ['5', 4354]
+        - ['6', 2912]
+        - ['7', 1884]
+        - ['8', 1293]
+        - ['9', 834]
+      APELIDO_EMPREENDIMENTO_PROJETO_BASICO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 52073}
+      SITUACAO_PROJETO_BASICO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: ACT
+        max: SCP
+        top:
+        - [HAS, 42637]
+        - [ELA, 9169]
+        - [HOM, 5506]
+        - [EAN, 2167]
+        - [SCP, 1718]
+        - [COM, 906]
+        - [REJ, 743]
+        - [ANL, 728]
+        - [ACT, 42]
+        - [SCC, 18]
+      SITUACAO_SPA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Homologada
+        max: Não Homologada
+        top:
+        - [Homologada, 48143]
+        - [Não Homologada, 15501]
+      DATA_ACEITE_PROJETO_BASICO: {tipo: TIMESTAMP, nulos_pct: 23.7, distintos_aprox: 46207, min: '2018-08-24 09:38:46.192', max: '2026-07-16
+          17:26:43.544'}
+  siconv_projeto_basico_lae:
+    linhas: 219059
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_QCI_ACFFO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 209562}
+      ID_ACFFO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 241140}
+      ID_PROPOSTA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 52434}
+      SITUACAO_LAE_PROJETO_BASICO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Inexistente
+        max: Viável
+        top:
+        - [Inexistente, 126185]
+        - [Viável, 91095]
+        - [Inviável, 1779]
+      EMISSAO_LAE_PROJETO_BASICO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Não
+        max: Sim
+        top:
+        - [Não, 139344]
+        - [Sim, 79715]
+      DATA_EMISSAO_LAE_PROJETO_BASICO: {tipo: TIMESTAMP, nulos_pct: 63.61, distintos_aprox: 63135, min: '2018-06-13 16:50:19.812', max: '2026-07-16
+          17:20:19.914'}
+      IND_PARAMETRICA:
+        tipo: VARCHAR
+        nulos_pct: 71.3
+        distintos_aprox: 2
+        min: Não
+        max: Sim
+        top:
+        - [null, 156192]
+        - [Não, 58878]
+        - [Sim, 3989]
+  siconv_projeto_basico_metas:
+    linhas: 273336
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_META_PROJETO_BASICO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 274174}
+      ID_QCI_ACFFO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 209562}
+      NUMERO_META_PROJETO_BASICO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 141, pessoal: 'só contagens: valores seriam dado pessoal'}
+      DESCRICAO_META_PROJETO_BASICO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 51203}
+      NOME_ITEM_INVESTIMENTO_META: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 17, pessoal: 'só contagens: valores seriam dado pessoal'}
+      DESCRICAO_SUBITEM_INVESTIMENTO_META: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 73, min: Acondicionamento, max: Veículos sobre Trilhos}
+      QUANTIDADE_ITENS_META_PROJETO_BASICO:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 41269
+        min: '0.0'
+        max: '1072258610.73'
+        media: 125064.9916
+        quartis: [5.3297, 1186.3605, 4662.3754]
+      UNIDADE_ITEM_INVESTIMENTO_META:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '%CT'
+        max: UN
+        top:
+        - [M2, 193500]
+        - [UN, 57266]
+        - [M, 14583]
+        - [Nº FAM, 2710]
+        - [M3/S, 2574]
+        - [M3, 1086]
+        - ['%CT', 815]
+        - [KM, 621]
+        - [T, 181]
+  siconv_projeto_basico_proposta:
+    linhas: 101260
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_PROPOSTA_ACFFO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 96624}
+      ID_PROPOSTA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 111802}
+      VALOR_GLOBAL_PROPOSTA_PROJETO_BASICO:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 34528
+        min: '0.0'
+        max: '10401152500.0'
+        media: 2753738.929
+        quartis: [398195.2208, 933167.0377, 2253858.466]
+  siconv_projeto_basico_submetas:
+    linhas: 417785
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_SUBMETA_PROJETO_BASICO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 484391}
+      ID_META_PROJETO_BASICO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 274174}
+      LOTE_SUBMETA_PROJETO_BASICO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 66, min: '0', max: '99'}
+      NUMERO_SUBMETA_PROJETO_BASICO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1978, pessoal: 'só contagens: valores seriam dado pessoal'}
+      DESCRICAO_SUBMETA_PROJETO_BASICO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 80572}
+      SITUACAO_SUBMETA_PROJETO_BASICO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: ACL
+        max: SCP
+        top:
+        - [COM, 277349]
+        - [HAS, 70838]
+        - [ANL, 44188]
+        - [HOM, 13672]
+        - [EAN, 4147]
+        - [SCP, 3488]
+        - [ELA, 1979]
+        - [REJ, 1833]
+        - [ACL, 184]
+        - [SCC, 65]
+      VALOR_REPASSE_SUBMETA_PROJETO_BASICO:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 120121
+        min: '0.0'
+        max: '14782447000.0'
+        media: 1592908.4788
+        quartis: [41512.2109, 255691.8746, 923885.6739]
+      VALOR_CONTRAPARTIDA_SUBMETA_PROJETO_BASICO:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 141909
+        min: '0.0'
+        max: '547000000.0'
+        media: 154650.4526
+        quartis: [83.3233, 4399.9225, 45111.5589]
+      VALOR_OUTROS_SUBMETA_PROJETO_BASICO:
+        tipo: DOUBLE
+        nulos_pct: 82.95
+        distintos_aprox: 758
+        min: '0.0'
+        max: '350000000.0'
+        media: 40175.1935
+        quartis: [0, 0, 0]
+      VALOR_TOTAL_SUBMETA_PROJETO_BASICO:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 190956
+        min: '0.0'
+        max: '14932447000.0'
+        media: 1754409.9229
+        quartis: [53577.4592, 300087.4382, 981318.3346]
+      DATA_PREVISAO_INICIO_OBRA_PROJETO_BASICO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 127, min: '2018-04-01', max: '6202-06-01'}
+      QUANTIDADE_MESES_DURACAO_OBRA_PROJETO_BASICO:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 66
+        min: '1'
+        max: '920'
+        media: 6.9538
+        quartis: [3, 5, 8]
+      DATABASE_OBRA_PROJETO_BASICO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 126, min: '0002-09-01', max: '2919-11-01'}
+      SIGLA_LOCALIDADE_OBRA_PROJETO_BASICO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 44549]
+        - [MG, 43563]
+        - [RS, 27786]
+        - [PE, 25863]
+        - [PB, 25173]
+        - [PI, 24391]
+        - [BA, 24077]
+        - [MA, 17959]
+        - [CE, 15920]
+        - [RJ, 15722]
+      OBRA_ACOMPANHADA_POR_EVENTO_PROJETO_BASICO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Não
+        max: Sim
+        top:
+        - [Sim, 221666]
+        - [Não, 196119]
+  siconv_prop_inst_indicadores_estados:
+    linhas: 12349
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_PROPOSTA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 12578}
+      NR_PROPOSTA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 13877}
+      NR_CONVENIO: {tipo: VARCHAR, nulos_pct: 27.22, distintos_aprox: 10255}
+      LINK_ACESSO_LIVRE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 13272}
+      UF_PROPONENTE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 28, pessoal: 'só contagens: valores seriam dado pessoal'}
+      MUNIC_PROPONENTE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 51, pessoal: 'só contagens: valores seriam dado pessoal'}
+      COD_MUNIC_IBGE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 77, min: '1100205', max: '5300108'}
+      SIT_PROPOSTA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Proposta/Plano de Trabalho Aprovados
+        max: Proposta/Plano de Trabalho Rejeitados por Impedimento técnico
+        top:
+        - [Proposta/Plano de Trabalho Aprovados, 10171]
+        - [Proposta/Plano de Trabalho Rejeitados, 1555]
+        - [Proposta/Plano de Trabalho Rejeitados por Impedimento técnico, 623]
+      CD_IDENTIF_PROPONENTE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 672, pessoal: 'só contagens: valores seriam dado pessoal'}
+      NM_PROPONENTE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 795, pessoal: 'só contagens: valores seriam dado pessoal'}
+      NATUREZA_JURIDICA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Administração Pública Estadual ou do Distrito Federal
+        max: Administração Pública Estadual ou do Distrito Federal
+        top:
+        - [Administração Pública Estadual ou do Distrito Federal, 12349]
+      SIT_CONVENIO:
+        tipo: VARCHAR
+        nulos_pct: 27.22
+        distintos_aprox: 16
+        min: Aguardando Prestação de Contas
+        max: Proposta/Plano de Trabalho Aprovado
+        top:
+        - [Em execução, 4262]
+        - [null, 3361]
+        - [Prestação de Contas Concluída, 2490]
+        - [Prestação de Contas enviada para Análise, 660]
+        - [Prestação de Contas Comprovada em Análise, 355]
+        - [Prestação de Contas em Análise, 319]
+        - [Prestação de Contas Aprovada, 290]
+        - [Aguardando Prestação de Contas, 158]
+        - [Convênio Anulado, 150]
+        - [Prestação de Contas em Complementação, 110]
+      TOTAL_GASTO:
+        tipo: DOUBLE
+        nulos_pct: 27.22
+        distintos_aprox: 4874
+        min: '0.0'
+        max: '240520198.44'
+        media: 1854949.7681
+        quartis: [0, 158216.1889, 781819.0464]
+      DT_APROVACAO_PROPOSTA: {tipo: TIMESTAMP, nulos_pct: 17.27, distintos_aprox: 7910, min: '2008-12-31 14:59:40', max: '2026-06-30 18:06:28'}
+      DT_APROVACAO_REJEICAO_PROPOSTA: {tipo: DATE, nulos_pct: 0.01, distintos_aprox: 1723, min: '2012-07-05', max: '2026-06-30'}
+      VL_DESEMBOLSADO_CONV:
+        tipo: DOUBLE
+        nulos_pct: 48.24
+        distintos_aprox: 4185
+        min: '1250.0'
+        max: '196106885.34'
+        media: 2835987.7113
+        quartis: [258441.5269, 582665.6541, 1712159.4557]
+      QTDE_CONVENIOS:
+        tipo: INTEGER
+        nulos_pct: 27.22
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        media: 1
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 8988]
+        - [null, 3361]
+      IND_FOTO:
+        tipo: VARCHAR
+        nulos_pct: 27.22
+        distintos_aprox: 2
+        min: NÃO
+        max: SIM
+        top:
+        - [NÃO, 7645]
+        - [null, 3361]
+        - [SIM, 1343]
+      MIN_DT_ACEITE: {tipo: DATE, nulos_pct: 62.54, distintos_aprox: 1618, min: '2018-02-20', max: '2026-06-30'}
+      DATA_RETIRADA_SUSPENSIVA: {tipo: DATE, nulos_pct: 73.93, distintos_aprox: 1424, min: '2012-12-12', max: '2026-06-30'}
+      SITUACAO_CONTRATACAO:
+        tipo: VARCHAR
+        nulos_pct: 27.25
+        distintos_aprox: 4
+        min: Cláusula Suspensiva
+        max: Sob Liminar Judicial e Cláusula Suspensiva
+        top:
+        - [Normal, 7993]
+        - [null, 3365]
+        - [Cláusula Suspensiva, 864]
+        - [Liminar Judicial, 109]
+        - [Sob Liminar Judicial e Cláusula Suspensiva, 18]
+      DIA_ASSIN_CONV: {tipo: DATE, nulos_pct: 27.22, distintos_aprox: 1171, min: '2012-10-05', max: '2026-06-30'}
+      TEM_TA_VIGENCIA:
+        tipo: VARCHAR
+        nulos_pct: 61.14
+        distintos_aprox: 1
+        min: SIM
+        max: SIM
+        top:
+        - [null, 7550]
+        - [SIM, 4799]
+      QTD_TAS_CONVENIO:
+        tipo: INTEGER
+        nulos_pct: 50.94
+        distintos_aprox: 23
+        min: '1'
+        max: '26'
+        media: 3.2342
+        quartis: [1, 3, 4]
+        top:
+        - [null, 6290]
+        - ['1', 1707]
+        - ['2', 1309]
+        - ['3', 969]
+        - ['4', 641]
+        - ['5', 522]
+        - ['6', 338]
+        - ['7', 212]
+        - ['8', 125]
+        - ['9', 78]
+      VALOR_GLOBAL_ORIGINAL_CONV:
+        tipo: DOUBLE
+        nulos_pct: 84.87
+        distintos_aprox: 1353
+        min: '90720.0'
+        max: '565951268.6'
+        media: 7274725.4664
+        quartis: [545913.9137, 1515270.2976, 3899985.9804]
+      VL_GLOBAL_CONV:
+        tipo: DOUBLE
+        nulos_pct: 27.22
+        distintos_aprox: 7815
+        min: '78000.0'
+        max: '1518586194.68'
+        media: 6147680.4163
+        quartis: [423437.164, 1017767.4253, 3168533.3918]
+      VL_PAGAMENTOS:
+        tipo: DOUBLE
+        nulos_pct: 55.17
+        distintos_aprox: 5150
+        min: '0.0'
+        max: '240520198.44'
+        media: 2957610.6338
+        quartis: [205666.5854, 513694.6172, 1661270.6566]
+      VL_TRIBUTOS:
+        tipo: DOUBLE
+        nulos_pct: 77.37
+        distintos_aprox: 3030
+        min: '0.1'
+        max: '13779161.67'
+        media: 106999.3009
+        quartis: [3150.7701, 13213.984, 47147.6347]
+      CUMPRIMENTO_OBJETO:
+        tipo: VARCHAR
+        nulos_pct: 66.87
+        distintos_aprox: 3
+        min: INTEGRALMENTE
+        max: PARCIALMENTE
+        top:
+        - [null, 8258]
+        - [INTEGRALMENTE, 2780]
+        - [PARCIALMENTE, 795]
+        - [NAO, 516]
+      REALIZACAO_OBJETIVOS_CONV:
+        tipo: VARCHAR
+        nulos_pct: 63.57
+        distintos_aprox: 3
+        min: INTEGRALMENTE
+        max: PARCIALMENTE
+        top:
+        - [null, 7850]
+        - [INTEGRALMENTE, 3109]
+        - [PARCIALMENTE, 812]
+        - [NAO, 578]
+      DIA_FIM_VIGENC_CONV: {tipo: DATE, nulos_pct: 27.22, distintos_aprox: 2479, min: '2013-03-26', max: '2031-12-29'}
+      FIM_VIGENCIA_ORIGINAL_CONV: {tipo: DATE, nulos_pct: 27.22, distintos_aprox: 1866, min: '2013-02-28', max: '2031-12-29'}
+      DIA_INIC_VIGENC_CONV: {tipo: DATE, nulos_pct: 27.22, distintos_aprox: 1329, min: '2012-10-05', max: '2026-06-30'}
+      QTD_DIAS_PRORROGA:
+        tipo: INTEGER
+        nulos_pct: 76.39
+        distintos_aprox: 966
+        min: '1'
+        max: '3160'
+        media: 381.3774
+        quartis: [94, 240, 510]
+      DT_APROVACAO_REJEICAO_PRESTACAO_CONTAS: {tipo: TIMESTAMP, nulos_pct: 78.56, distintos_aprox: 2471, min: '2018-09-06 15:04:12', max: '2026-06-30
+          16:23:28'}
+      DT_APROVACAO_PRESTACAO_CONTAS: {tipo: TIMESTAMP, nulos_pct: 83.83, distintos_aprox: 1677, min: '2018-09-06 15:04:12', max: '2026-06-30 16:23:28'}
+      DT_APROVACAO_COM_RESSALVAS_PRESTACAO_CONTAS: {tipo: TIMESTAMP, nulos_pct: 94.73, distintos_aprox: 596, min: '2017-01-24 18:29:39', max: '2026-06-19
+          11:37:07'}
+      DT_CONCLUSAO_PRESTACAO_CONTAS: {tipo: TIMESTAMP, nulos_pct: 79.73, distintos_aprox: 2565, min: '2019-03-25 10:59:38', max: '2026-06-30 16:45:31'}
+  siconv_prop_inst_indicadores_municipios:
+    linhas: 236467
+    fonte_do_perfil: tabela inteira
+    colunas:
+      COD_MUNIC_IBGE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      ID_PROPOSTA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 243392}
+      NR_PROPOSTA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 249209}
+      NR_CONVENIO: {tipo: VARCHAR, nulos_pct: 63.94, distintos_aprox: 89105}
+      LINK_ACESSO_LIVRE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 204035}
+      UF_PROPONENTE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 27, pessoal: 'só contagens: valores seriam dado pessoal'}
+      MUNIC_PROPONENTE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5153, pessoal: 'só contagens: valores seriam dado pessoal'}
+      SIT_PROPOSTA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Proposta/Plano de Trabalho Aprovados
+        max: Proposta/Plano de Trabalho em Complementação
+        top:
+        - [Proposta/Plano de Trabalho Rejeitados, 122055]
+        - [Proposta/Plano de Trabalho Aprovados, 101916]
+        - [Proposta/Plano de Trabalho Rejeitados por Impedimento técnico, 12495]
+        - [Proposta/Plano de Trabalho em Complementação, 1]
+      CD_IDENTIF_PROPONENTE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7087, pessoal: 'só contagens: valores seriam dado pessoal'}
+      NM_PROPONENTE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6153, pessoal: 'só contagens: valores seriam dado pessoal'}
+      NATUREZA_JURIDICA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Administração Pública Municipal
+        max: Administração Pública Municipal
+        top:
+        - [Administração Pública Municipal, 236467]
+      SIT_CONVENIO:
+        tipo: VARCHAR
+        nulos_pct: 63.94
+        distintos_aprox: 17
+        min: Aguardando Prestação de Contas
+        max: Proposta/Plano de Trabalho Aprovado
+        top:
+        - [null, 151197]
+        - [Prestação de Contas Concluída, 39302]
+        - [Em execução, 30020]
+        - [Prestação de Contas Aprovada, 4849]
+        - [Prestação de Contas enviada para Análise, 3320]
+        - [Prestação de Contas em Análise, 1536]
+        - [Aguardando Prestação de Contas, 1352]
+        - [Convênio Anulado, 1245]
+        - [Prestação de Contas Comprovada em Análise, 1136]
+        - [Prestação de Contas Aprovada com Ressalvas, 632]
+      TOTAL_GASTO:
+        tipo: DOUBLE
+        nulos_pct: 63.94
+        distintos_aprox: 56785
+        min: '0.0'
+        max: '81576091.36'
+        media: 500991.2521
+        quartis: [0, 256842.0691, 487251.0471]
+      DT_APROVACAO_PROPOSTA: {tipo: TIMESTAMP, nulos_pct: 56.55, distintos_aprox: 67002, min: '2008-12-22 17:10:10', max: '2026-06-30 21:06:03'}
+      DT_APROVACAO_REJEICAO_PROPOSTA: {tipo: DATE, nulos_pct: 0, distintos_aprox: 3106, min: '2012-05-28', max: '2026-06-30'}
+      VL_DESEMBOLSADO_CONV:
+        tipo: DOUBLE
+        nulos_pct: 71.59
+        distintos_aprox: 22921
+        min: '1620.0'
+        max: '100571360.0'
+        media: 722997.9762
+        quartis: [241971.7435, 375924.1303, 670855.2192]
+      QTDE_CONVENIOS:
+        tipo: INTEGER
+        nulos_pct: 63.94
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        media: 1
+        quartis: [1, 1, 1]
+        top:
+        - [null, 151196]
+        - ['1', 85271]
+      IND_FOTO:
+        tipo: VARCHAR
+        nulos_pct: 63.94
+        distintos_aprox: 2
+        min: NÃO
+        max: SIM
+        top:
+        - [null, 151196]
+        - [NÃO, 76681]
+        - [SIM, 8590]
+      MIN_DT_ACEITE: {tipo: DATE, nulos_pct: 74.85, distintos_aprox: 2232, min: '2017-12-14', max: '2026-06-30'}
+      DATA_RETIRADA_SUSPENSIVA: {tipo: DATE, nulos_pct: 73.61, distintos_aprox: 3191, min: '2013-02-28', max: '2026-06-30'}
+      SITUACAO_CONTRATACAO:
+        tipo: VARCHAR
+        nulos_pct: 63.95
+        distintos_aprox: 4
+        min: Cláusula Suspensiva
+        max: Sob Liminar Judicial e Cláusula Suspensiva
+        top:
+        - [null, 151221]
+        - [Normal, 78043]
+        - [Cláusula Suspensiva, 5999]
+        - [Liminar Judicial, 953]
+        - [Sob Liminar Judicial e Cláusula Suspensiva, 251]
+      DIA_ASSIN_CONV: {tipo: DATE, nulos_pct: 63.94, distintos_aprox: 2202, min: '2012-10-10', max: '2026-06-30'}
+      TEM_TA_VIGENCIA:
+        tipo: VARCHAR
+        nulos_pct: 86.25
+        distintos_aprox: 1
+        min: SIM
+        max: SIM
+        top:
+        - [null, 203949]
+        - [SIM, 32518]
+      QTD_TAS_CONVENIO:
+        tipo: INTEGER
+        nulos_pct: 76.09
+        distintos_aprox: 25
+        min: '1'
+        max: '32'
+        media: 2.8079
+        quartis: [1, 2, 4]
+        top:
+        - [null, 179934]
+        - ['1', 19401]
+        - ['2', 14098]
+        - ['3', 8516]
+        - ['4', 5105]
+        - ['5', 3327]
+        - ['6', 2084]
+        - ['7', 1302]
+        - ['8', 837]
+        - ['9', 627]
+      VALOR_GLOBAL_ORIGINAL_CONV:
+        tipo: DOUBLE
+        nulos_pct: 82.87
+        distintos_aprox: 11903
+        min: '88362.62'
+        max: '165607200.0'
+        media: 978078.6938
+        quartis: [250839.9206, 395526.8834, 713316.2424]
+      VL_GLOBAL_CONV:
+        tipo: DOUBLE
+        nulos_pct: 63.94
+        distintos_aprox: 65482
+        min: '37758.0'
+        max: '356488225.0'
+        media: 1451942.2379
+        quartis: [292187.1465, 488924.193, 1011725.7704]
+      VL_PAGAMENTOS:
+        tipo: DOUBLE
+        nulos_pct: 74.47
+        distintos_aprox: 44784
+        min: '-24786.06'
+        max: '77099556.42'
+        media: 682623.4691
+        quartis: [237781.2134, 357480.2521, 617076.3298]
+      VL_TRIBUTOS:
+        tipo: DOUBLE
+        nulos_pct: 81.03
+        distintos_aprox: 42063
+        min: '2.94'
+        max: '7785084.78'
+        media: 33831.7078
+        quartis: [6235.1992, 13601.3587, 28926.9825]
+      CUMPRIMENTO_OBJETO:
+        tipo: VARCHAR
+        nulos_pct: 79.13
+        distintos_aprox: 3
+        min: INTEGRALMENTE
+        max: PARCIALMENTE
+        top:
+        - [null, 187115]
+        - [INTEGRALMENTE, 44006]
+        - [NAO, 2776]
+        - [PARCIALMENTE, 2570]
+      REALIZACAO_OBJETIVOS_CONV:
+        tipo: VARCHAR
+        nulos_pct: 77.65
+        distintos_aprox: 3
+        min: INTEGRALMENTE
+        max: PARCIALMENTE
+        top:
+        - [null, 183612]
+        - [INTEGRALMENTE, 47648]
+        - [NAO, 2940]
+        - [PARCIALMENTE, 2267]
+      DIA_FIM_VIGENC_CONV: {tipo: DATE, nulos_pct: 63.94, distintos_aprox: 5171, min: '2013-04-04', max: '2032-04-20'}
+      FIM_VIGENCIA_ORIGINAL_CONV: {tipo: DATE, nulos_pct: 63.94, distintos_aprox: 4775, min: '2013-03-04', max: '2032-04-20'}
+      DIA_INIC_VIGENC_CONV: {tipo: DATE, nulos_pct: 63.94, distintos_aprox: 2455, min: '2012-10-10', max: '2026-09-27'}
+      QTD_DIAS_PRORROGA:
+        tipo: INTEGER
+        nulos_pct: 90.69
+        distintos_aprox: 1745
+        min: '1'
+        max: '4202'
+        media: 439.0627
+        quartis: [180, 348, 585]
+      DT_APROVACAO_REJEICAO_PRESTACAO_CONTAS: {tipo: TIMESTAMP, nulos_pct: 81.58, distintos_aprox: 62716, min: '2017-10-02 14:59:13', max: '2026-06-30
+          16:16:07'}
+      DT_APROVACAO_PRESTACAO_CONTAS: {tipo: TIMESTAMP, nulos_pct: 83.91, distintos_aprox: 49861, min: '2015-06-16 08:50:58', max: '2026-06-30
+          16:16:07'}
+      DT_APROVACAO_COM_RESSALVAS_PRESTACAO_CONTAS: {tipo: TIMESTAMP, nulos_pct: 97.79, distintos_aprox: 5857, min: '2014-11-18 10:45:53', max: '2026-06-30
+          10:37:46'}
+      DT_CONCLUSAO_PRESTACAO_CONTAS: {tipo: TIMESTAMP, nulos_pct: 83.35, distintos_aprox: 48403, min: '2018-08-16 14:48:46', max: '2026-06-30
+          17:18:27'}
+      POPULACAO:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 4100
+        min: '854'
+        max: '11895578'
+        media: 61001.1064
+        quartis: [6106, 14053, 32171]
+      GRUPO_IGM:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: Grupo 1
+        max: Grupo 8
+        top:
+        - [Grupo 2, 77826]
+        - [Grupo 1, 69376]
+        - [Grupo 3, 26175]
+        - [Grupo 4, 24980]
+        - [Grupo 7, 11280]
+        - [Grupo 8, 9696]
+        - [Grupo 5, 9305]
+        - [Grupo 6, 7829]
+      IDHM: {tipo: VARCHAR, nulos_pct: 0.08, distintos_aprox: 430, min: '0,418', max: '0,862'}
+  siconv_proponentes:
+    linhas: 69222
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_PROPONENTE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 68422, pessoal: 'só contagens: valores seriam dado pessoal'}
+      IDENTIF_PROPONENTE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 86134, pessoal: 'só contagens: valores seriam dado pessoal'}
+      NM_PROPONENTE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 58602, pessoal: 'só contagens: valores seriam dado pessoal'}
+      MUNICIPIO_PROPONENTE: {tipo: VARCHAR, nulos_pct: 0.33, distintos_aprox: 5894, pessoal: 'só contagens: valores seriam dado pessoal'}
+      UF_PROPONENTE: {tipo: VARCHAR, nulos_pct: 0.33, distintos_aprox: 28, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ENDERECO_PROPONENTE: {tipo: VARCHAR, nulos_pct: 0.33, distintos_aprox: 81172, pessoal: 'só contagens: valores seriam dado pessoal'}
+      BAIRRO_PROPONENTE: {tipo: VARCHAR, nulos_pct: 0.04, distintos_aprox: 16112, pessoal: 'só contagens: valores seriam dado pessoal'}
+      CEP_PROPONENTE: {tipo: VARCHAR, nulos_pct: 0.33, distintos_aprox: 33790, pessoal: 'só contagens: valores seriam dado pessoal'}
+      EMAIL_PROPONENTE: {tipo: VARCHAR, nulos_pct: 0.34, distintos_aprox: 62534, pessoal: 'só contagens: valores seriam dado pessoal'}
+      TELEFONE_PROPONENTE: {tipo: VARCHAR, nulos_pct: 5.53, distintos_aprox: 62393, pessoal: 'só contagens: valores seriam dado pessoal'}
+      FAX_PROPONENTE: {tipo: VARCHAR, nulos_pct: 67.13, distintos_aprox: 25596, pessoal: 'só contagens: valores seriam dado pessoal'}
+  siconv_proposta:
+    linhas: 1153701
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_PROPOSTA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1281756}
+      UF_PROPONENTE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 28, pessoal: 'só contagens: valores seriam dado pessoal'}
+      MUNIC_PROPONENTE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5894, pessoal: 'só contagens: valores seriam dado pessoal'}
+      COD_MUNIC_IBGE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      COD_ORGAO_SUP:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 33
+        min: '14000'
+        max: '84000'
+        top:
+        - ['22000', 265472]
+        - ['54000', 198787]
+        - ['51000', 134581]
+        - ['53000', 110379]
+        - ['56000', 107367]
+        - ['36000', 104155]
+        - ['49000', 40150]
+        - ['55000', 35630]
+        - ['30000', 26913]
+        - ['42000', 20980]
+      DESC_ORGAO_SUP:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 41
+        min: ADVOCACIA-GERAL DA UNIAO
+        max: SEC.ESPEC.DE AGRIC.FAMIL.E DO DESENV.AGRARIO
+        top:
+        - [MINISTÉRIO DA AGRICULTURA E PECUÁRIA, 265472]
+        - [MINISTERIO DO TURISMO, 198787]
+        - [MINISTERIO DO ESPORTE, 134581]
+        - [MINISTÉRIO DA INTEGRAÇÃO E DO DESENVOLVIMENTO REGIONAL, 110379]
+        - [MINISTERIO DAS CIDADES, 107367]
+        - [MINISTERIO DA SAUDE, 104155]
+        - [MINISTÉRIO DO DESENVOLVIMENTO AGRÁRIO E AGRICULTURA FAMILIAR, 40150]
+        - ['MINISTÉRIO DO DESENVOLVIMENTO E ASSISTÊNCIA SOCIAL, FAMÍLIA E COMBATE FOME', 35630]
+        - [MINISTERIO DA JUSTICA E SEGURANCA PUBLICA, 26913]
+        - [MINISTERIO DA CULTURA, 20980]
+      NATUREZA_JURIDICA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Administração Pública Estadual ou do Distrito Federal
+        max: Organização da Sociedade Civil
+        top:
+        - [Administração Pública Municipal, 1008381]
+        - [Organização da Sociedade Civil, 90773]
+        - [Administração Pública Estadual ou do Distrito Federal, 47933]
+        - [Consórcio Público, 3607]
+        - [Empresa pública/Sociedade de economia mista, 3007]
+      NR_PROPOSTA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 920292}
+      DIA_PROP:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 34
+        min: '1'
+        max: '9'
+        top:
+        - ['30', 59157]
+        - ['29', 57552]
+        - ['28', 46417]
+        - ['15', 45707]
+        - ['27', 41745]
+        - ['14', 41089]
+        - ['22', 40174]
+        - ['18', 39389]
+        - ['10', 39338]
+        - ['26', 39314]
+      MES_PROP:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.6435
+        quartis: [4, 6, 10]
+        top:
+        - ['3', 166059]
+        - ['5', 152875]
+        - ['12', 126547]
+        - ['6', 119877]
+        - ['4', 103309]
+        - ['11', 97888]
+        - ['7', 82042]
+        - ['8', 81713]
+        - ['9', 69994]
+        - ['2', 69539]
+      ANO_PROP:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: '2008'
+        max: '2026'
+        media: 2015.9295
+        quartis: [2011, 2015, 2021]
+        top:
+        - ['2009', 127287]
+        - ['2010', 100626]
+        - ['2017', 98962]
+        - ['2013', 91503]
+        - ['2011', 74854]
+        - ['2023', 69922]
+        - ['2025', 68107]
+        - ['2018', 62725]
+        - ['2021', 57835]
+        - ['2019', 54026]
+      DIA_PROPOSTA: {tipo: DATE, nulos_pct: 0, distintos_aprox: 5661, min: '2008-01-01', max: '2026-07-16'}
+      COD_ORGAO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 169, min: '14000', max: '84000'}
+      DESC_ORGAO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 200, min: ADVOCACIA-GERAL DA UNIAO, max: 'VALEC-ENGENHARIA, CONSTRUCOES E FERROVIAS
+          S/A'}
+      MODALIDADE:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: CONTRATO DE REPASSE
+        max: TERMO DE PARCERIA
+        top:
+        - [CONTRATO DE REPASSE, 540581]
+        - [CONVENIO, 497298]
+        - [CONVENIO OU CONTRATO DE REPASSE, 52004]
+        - [TERMO DE COMPROMISSO, 31525]
+        - [TERMO DE FOMENTO, 27090]
+        - [TERMO DE COLABORACAO, 3352]
+        - [TERMO DE PARCERIA, 1851]
+      IDENTIF_PROPONENTE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 33420, pessoal: 'só contagens: valores seriam dado pessoal'}
+      NM_PROPONENTE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 28900, pessoal: 'só contagens: valores seriam dado pessoal'}
+      CEP_PROPONENTE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 17322, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ENDERECO_PROPONENTE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 28344, pessoal: 'só contagens: valores seriam dado pessoal'}
+      BAIRRO_PROPONENTE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7696, pessoal: 'só contagens: valores seriam dado pessoal'}
+      NM_BANCO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5, pessoal: 'só contagens: valores seriam dado pessoal'}
+      SITUACAO_CONTA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: A Verificar
+        max: Regularizada
+        top:
+        - [Cadastrada, 886240]
+        - [Regularizada, 238152]
+        - [Pendente de Regularização, 17053]
+        - [Registrada, 6395]
+        - [Erro na Abertura de Conta, 5501]
+        - [Aguardando Retorno do Banco, 153]
+        - [Enviada, 105]
+        - [A Verificar, 85]
+        - [Aguardando Envio, 17]
+      SITUACAO_PROJETO_BASICO:
+        tipo: VARCHAR
+        nulos_pct: 13.57
+        distintos_aprox: 15
+        min: Aceito / Fase de Análise
+        max: Solicitada Complementação pelo Concedente
+        top:
+        - [Não Cadastrado, 700226]
+        - [null, 156610]
+        - [Em Análise, 121161]
+        - [Aprovado, 102103]
+        - [Homologado Automaticamente pelo Sistema, 42636]
+        - [Aguardando, 9302]
+        - [Em Elaboração, 8258]
+        - [Homologada, 5505]
+        - [Em Complementação, 2266]
+        - [Enviada para Análise, 2158]
+      SIT_PROPOSTA:
+        tipo: VARCHAR
+        nulos_pct: 0.02
+        distintos_aprox: 20
+        min: Classificada em Análise Preliminar
+        max: Proposta/Plano de Trabalho em Complementação
+        top:
+        - [Proposta/Plano de Trabalho Enviado para Análise, 371965]
+        - [Proposta/Plano de Trabalho Aprovados, 276081]
+        - [Proposta/Plano de Trabalho Rejeitados, 211713]
+        - [Proposta/Plano de Trabalho Cadastrados, 98054]
+        - [Proposta/Plano de Trabalho em Análise, 92509]
+        - [Proposta/Plano de Trabalho Rejeitados por Impedimento técnico, 27200]
+        - [Proposta/Plano de Trabalho em Complementação, 23124]
+        - [Proposta/Plano de Trabalho Complementado Enviado para Análise, 18946]
+        - [Proposta Aprovada e Plano de Trabalho em Análise, 14583]
+        - [Proposta/Plano de Trabalho Complementado em Análise, 5156]
+      DIA_INIC_VIGENCIA_PROPOSTA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 8115}
+      DIA_FIM_VIGENCIA_PROPOSTA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 8575}
+      OBJETO_PROPOSTA: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 736606}
+      ITEM_INVESTIMENTO:
+        tipo: VARCHAR
+        nulos_pct: 62.67
+        distintos_aprox: 6
+        min: Equipamentos
+        max: Obras e Serviços de Engenharia
+        top:
+        - [null, 722997]
+        - [Obras e Serviços de Engenharia, 206430]
+        - [Equipamentos, 149810]
+        - [Execução de Custeio, 46011]
+        - ['Equipamentos, Execução de Custeio', 15557]
+        - ['Equipamentos, Obras e Serviços de Engenharia', 7371]
+        - ['Execução de Custeio, Obras e Serviços de Engenharia', 4291]
+        - ['Equipamentos, Execução de Custeio, Obras e Serviços de Engenharia', 1234]
+      ENVIADA_MANDATARIA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: NÃO
+        max: SIM
+        top:
+        - [NÃO APLICÁVEL, 603896]
+        - [NÃO, 404436]
+        - [SIM, 145369]
+      NOME_SUBTIPO_PROPOSTA: {tipo: VARCHAR, nulos_pct: 99.15, distintos_aprox: 7, pessoal: 'só contagens: valores seriam dado pessoal'}
+      DESCRICAO_SUBTIPO_PROPOSTA:
+        tipo: VARCHAR
+        nulos_pct: 99.15
+        distintos_aprox: 7
+        min: Convênios ECTI - Decreto 8240, de 21 de maio de 2014.
+        max: Termo de Execução Cultural - Lei nº 14.903/2024 e no Decreto nº 11.453/2023
+        top:
+        - [null, 1143894]
+        - ['DECRETO Nº 11.855, DE 26 DE DEZEMBRO DE 2023. Dispõe sobre termos de compromisso relativos às transferências obrigatórias de recursos
+            da União para a execução de ações do Programa de Aceleração do Crescimento - Novo PAC.', 5323]
+        - ["Programa Minha Casa, Minha Vida. Fundo Nacional de Habitação de Interesse Social \x96 FNHIS.", 3957]
+        - ['Convênios ECTI - Decreto 8240, de 21 de maio de 2014.', 415]
+        - ['Termo de Compromisso Cultural - TCC - Lei nº 13.018, de 22 de julho de 2014', 68]
+        - [Termo de Execução Cultural - Lei nº 14.903/2024 e no Decreto nº 11.453/2023, 40]
+        - [Lei Complementar nº 201/2023, 3]
+        - [SELEÇÃO, 1]
+      VL_GLOBAL_PROP:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 260208
+        min: '0.0'
+        max: '12800000000.0'
+        media: 1289431.0627
+        quartis: [230948.1007, 410653.8422, 906606.3723]
+      VL_REPASSE_PROP:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 145276
+        min: '0.0'
+        max: '10584000000.0'
+        media: 1229394.6769
+        quartis: [213384.3172, 395779.0478, 872399.5847]
+      VL_CONTRAPARTIDA_PROP:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 200795
+        min: '-78764.95'
+        max: '2560000000.0'
+        media: 60036.4205
+        quartis: [2002.6609, 6174.9311, 19045.4765]
+      CD_AGENCIA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5405}
+      CD_CONTA: {tipo: VARCHAR, nulos_pct: 76.91, distintos_aprox: 140024}
+  siconv_proposta_cancelada:
+    linhas: 45332
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_PROPOSTA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 43799}
+      UF_PROPONENTE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 28, pessoal: 'só contagens: valores seriam dado pessoal'}
+      MUNIC_PROPONENTE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5429, pessoal: 'só contagens: valores seriam dado pessoal'}
+      COD_MUNIC_IBGE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6835}
+      COD_ORGAO_SUP:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 33
+        min: '14000'
+        max: '84000'
+        top:
+        - ['51000', 6726]
+        - ['54000', 5951]
+        - ['22000', 5552]
+        - ['55000', 3470]
+        - ['56000', 3172]
+        - ['36000', 2983]
+        - ['53000', 2834]
+        - ['49000', 2807]
+        - ['42000', 2256]
+        - ['30000', 2043]
+      DESC_ORGAO_SUP:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 37
+        min: ADVOCACIA-GERAL DA UNIAO
+        max: SEC.ESPEC.DE AGRIC.FAMIL.E DO DESENV.AGRARIO
+        top:
+        - [MINISTERIO DO ESPORTE, 6726]
+        - [MINISTERIO DO TURISMO, 5951]
+        - [MINISTÉRIO DA AGRICULTURA E PECUÁRIA, 5552]
+        - ['MINISTÉRIO DO DESENVOLVIMENTO E ASSISTÊNCIA SOCIAL, FAMÍLIA E COMBATE FOME', 3470]
+        - [MINISTERIO DAS CIDADES, 3172]
+        - [MINISTERIO DA SAUDE, 2983]
+        - [MINISTÉRIO DA INTEGRAÇÃO E DO DESENVOLVIMENTO REGIONAL, 2834]
+        - [MINISTÉRIO DO DESENVOLVIMENTO AGRÁRIO E AGRICULTURA FAMILIAR, 2807]
+        - [MINISTERIO DA CULTURA, 2256]
+        - [MINISTERIO DA JUSTICA E SEGURANCA PUBLICA, 2043]
+      NATUREZA_JURIDICA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Administração Pública Estadual ou do Distrito Federal
+        max: Organização da Sociedade Civil
+        top:
+        - [Administração Pública Municipal, 32702]
+        - [Organização da Sociedade Civil, 9122]
+        - [Administração Pública Estadual ou do Distrito Federal, 3132]
+        - [Consórcio Público, 202]
+        - [Empresa pública/Sociedade de economia mista, 174]
+      NR_PROPOSTA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 45901}
+      DIA_PROP:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 34
+        min: '1'
+        max: '9'
+        top:
+        - ['30', 2352]
+        - ['29', 1974]
+        - ['15', 1885]
+        - ['28', 1810]
+        - ['27', 1746]
+        - ['26', 1597]
+        - ['14', 1584]
+        - ['22', 1554]
+        - ['12', 1547]
+        - ['10', 1534]
+      MES_PROP:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.8351
+        quartis: [4, 6, 10]
+        top:
+        - ['3', 5417]
+        - ['5', 5300]
+        - ['6', 4925]
+        - ['4', 4811]
+        - ['11', 4543]
+        - ['8', 3983]
+        - ['10', 3741]
+        - ['12', 3644]
+        - ['9', 3280]
+        - ['7', 3026]
+      ANO_PROP:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: '2008'
+        max: '2026'
+        media: 2013.9387
+        quartis: [2010, 2013, 2017]
+        top:
+        - ['2009', 8876]
+        - ['2010', 5778]
+        - ['2017', 4498]
+        - ['2013', 4157]
+        - ['2011', 3538]
+        - ['2008', 2360]
+        - ['2023', 2110]
+        - ['2012', 2054]
+        - ['2014', 1546]
+        - ['2018', 1433]
+      DIA_PROPOSTA: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4367, min: '2008-08-20', max: '2026-07-16'}
+      COD_ORGAO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 133, min: '14000', max: '84000'}
+      DESC_ORGAO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 140, min: ADVOCACIA-GERAL DA UNIAO, max: UNIVERSIDADE FEDERAL RURAL DO SEMI-ARIDO/RN}
+      MODALIDADE:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: CONTRATO DE REPASSE
+        max: TERMO DE PARCERIA
+        top:
+        - [CONVENIO, 23766]
+        - [CONTRATO DE REPASSE, 13729]
+        - [CONVENIO OU CONTRATO DE REPASSE, 3234]
+        - [TERMO DE FOMENTO, 3204]
+        - [TERMO DE COLABORACAO, 772]
+        - [TERMO DE PARCERIA, 361]
+        - [TERMO DE COMPROMISSO, 266]
+      IDENTIF_PROPONENTE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 9979, pessoal: 'só contagens: valores seriam dado pessoal'}
+      NM_PROPONENTE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 10231, pessoal: 'só contagens: valores seriam dado pessoal'}
+      CEP_PROPONENTE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 9021, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ENDERECO_PROPONENTE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 10814, pessoal: 'só contagens: valores seriam dado pessoal'}
+      BAIRRO_PROPONENTE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2651, pessoal: 'só contagens: valores seriam dado pessoal'}
+      NM_BANCO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5, pessoal: 'só contagens: valores seriam dado pessoal'}
+      SITUACAO_CONTA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: A Verificar
+        max: Regularizada
+        top:
+        - [Cadastrada, 45289]
+        - [A Verificar, 30]
+        - [Regularizada, 12]
+        - [Pendente de Regularização, 1]
+      SITUACAO_PROJETO_BASICO:
+        tipo: VARCHAR
+        nulos_pct: 5.72
+        distintos_aprox: 7
+        min: Aprovado
+        max: Rejeitado
+        top:
+        - [Não Cadastrado, 40710]
+        - [null, 2595]
+        - [Em Análise, 1874]
+        - [Em Elaboração, 130]
+        - [Aprovado, 9]
+        - [Em Complementação, 6]
+        - [Enviada para Análise, 5]
+        - [Rejeitado, 3]
+      SIT_PROPOSTA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: Proposta/Plano de Trabalho Cancelados
+        max: Proposta/Plano de Trabalho Cancelados
+        top:
+        - [Proposta/Plano de Trabalho Cancelados, 45332]
+      DIA_INIC_VIGENCIA_PROPOSTA: {tipo: DATE, nulos_pct: 0.28, distintos_aprox: 4870, min: '2001-01-01', max: '2027-06-01'}
+      DIA_FIM_VIGENCIA_PROPOSTA: {tipo: VARCHAR, nulos_pct: 0.29, distintos_aprox: 5099}
+      OBJETO_PROPOSTA: {tipo: VARCHAR, nulos_pct: 0.19, distintos_aprox: 40817}
+      ITEM_INVESTIMENTO:
+        tipo: VARCHAR
+        nulos_pct: 78.99
+        distintos_aprox: 6
+        min: Equipamentos
+        max: Obras e Serviços de Engenharia
+        top:
+        - [null, 35806]
+        - [Equipamentos, 2451]
+        - [Execução de Custeio, 2407]
+        - [Obras e Serviços de Engenharia, 2326]
+        - ['Equipamentos, Execução de Custeio', 1938]
+        - ['Equipamentos, Obras e Serviços de Engenharia', 232]
+        - ['Equipamentos, Execução de Custeio, Obras e Serviços de Engenharia', 96]
+        - ['Execução de Custeio, Obras e Serviços de Engenharia', 76]
+      ENVIADA_MANDATARIA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: NÃO
+        max: NÃO APLICÁVEL
+        top:
+        - [NÃO APLICÁVEL, 31603]
+        - [NÃO, 13729]
+      NOME_SUBTIPO_PROPOSTA: {tipo: VARCHAR, nulos_pct: 99.83, distintos_aprox: 3, pessoal: 'só contagens: valores seriam dado pessoal'}
+      DESCRICAO_SUBTIPO_PROPOSTA:
+        tipo: VARCHAR
+        nulos_pct: 99.83
+        distintos_aprox: 3
+        min: Convênios ECTI - Decreto 8240, de 21 de maio de 2014.
+        max: Termo de Execução Cultural - Lei nº 14.903/2024 e no Decreto nº 11.453/2023
+        top:
+        - [null, 45253]
+        - ['DECRETO Nº 11.855, DE 26 DE DEZEMBRO DE 2023. Dispõe sobre termos de compromisso relativos às transferências obrigatórias de recursos
+            da União para a execução de ações do Programa de Aceleração do Crescimento - Novo PAC.', 38]
+        - ['Convênios ECTI - Decreto 8240, de 21 de maio de 2014.', 31]
+        - [Termo de Execução Cultural - Lei nº 14.903/2024 e no Decreto nº 11.453/2023, 10]
+      VL_GLOBAL_PROP:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 16962
+        min: '0.0'
+        max: '1600000000000.0'
+        media: 57891904.9748
+        quartis: [156765.3439, 305028.9488, 661980.1365]
+      VL_REPASSE_PROP:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 12696
+        min: '0.0'
+        max: '1440000000000.0'
+        media: 51726219.5557
+        quartis: [150012.0518, 296837.9961, 625004.5458]
+      VL_CONTRAPARTIDA_PROP:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 9844
+        min: '0.0'
+        max: '160000000000.0'
+        media: 6165685.419
+        quartis: [2399.0818, 7776.2867, 23136.3]
+  siconv_proposta_formalizacao_pac:
+    linhas: 8887
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_PROPOSTA_SELECAO_PAC: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7477}
+      ID_PROPOSTA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7769}
+      NR_RESERVADO_PAC: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7856}
+  siconv_proposta_selecao_pac:
+    linhas: 90593
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_PROPOSTA_SELECAO_PAC: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 96576}
+      ID_PROGRAMA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 83, min: '51928', max: '56724'}
+      ID_PROPONENTE: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6321, pessoal: 'só contagens: valores seriam dado pessoal'}
+      NR_PROPOSTA_SELECAO_PAC: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 106885}
+      DATA_CADASTRO_PROPOSTA_SELECAO_PAC: {tipo: TIMESTAMP, nulos_pct: 1.69, distintos_aprox: 100498, min: '2023-10-09 09:52:27', max: '2026-07-14
+          14:46:55'}
+      DATA_ENVIO_PROPOSTA_SELECAO_PAC: {tipo: TIMESTAMP, nulos_pct: 5.09, distintos_aprox: 81291, min: '2023-10-09 11:09:41', max: '2026-07-09
+          09:57:50'}
+      OBJETO_PROPOSTA_SELECAO_PAC: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 75209}
+      SITUACAO_PROPOSTA_SELECAO_PAC:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: CADASTRADA
+        max: SELECIONADA_PARLAMENTAR
+        top:
+        - [HABILITADA, 27863]
+        - [SELECIONADA, 26090]
+        - [NAO_HABILITADA, 19379]
+        - [ENVIADA, 13039]
+        - [CADASTRADA, 3084]
+        - [EM_COMPLEMENTACAO, 455]
+        - [COMPLEMENTADA_ENVIADA, 271]
+        - [EM_ANALISE, 258]
+        - [HABILITADA_PARLAMENTAR, 63]
+        - [SELECIONADA_PARLAMENTAR, 49]
+      VALOR_TOTAL_PROPOSTA_SELECAO_PAC:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 8332
+        min: '0.0'
+        max: '80000000000.0'
+        media: 9813741.1378
+        quartis: [284645.4352, 1487815.9493, 3249768.8491]
+      JUSTIFICATIVA_PROPOSTA_SELECAO_PAC: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 54672}
+      TEM_ANEXO_PROPOSTA_SELECAO_PAC:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: NÃO
+        max: SIM
+        top:
+        - [SIM, 67193]
+        - [NÃO, 23400]
+  siconv_prorroga_oficio:
+    linhas: 155651
+    fonte_do_perfil: tabela inteira
+    colunas:
+      NR_CONVENIO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 89937}
+      NR_PRORROGA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3215}
+      DT_INICIO_PRORROGA: {tipo: DATE, nulos_pct: 0.27, distintos_aprox: 5883, min: '2008-10-30', max: '2028-12-29'}
+      DT_FIM_PRORROGA: {tipo: DATE, nulos_pct: 0, distintos_aprox: 6353, min: '2008-11-25', max: '2031-01-04'}
+      DIAS_PRORROGA:
+        tipo: INTEGER
+        nulos_pct: 0.27
+        distintos_aprox: 1152
+        min: '1'
+        max: '2419'
+        media: 217.5789
+        quartis: [98, 184, 325]
+      DT_ASSINATURA_PRORROGA: {tipo: VARCHAR, nulos_pct: 0.22, distintos_aprox: 5278}
+      SIT_PRORROGA:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: DISPONIBILIZADA
+        max: PUBLICADA
+        top:
+        - [PUBLICADA, 88501]
+        - [DISPONIBILIZADA, 67150]
+  siconv_resposta_selecao_pac:
+    linhas: 1887051
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_PERGUNTA_SELECAO_PAC: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2586}
+      ID_PROPOSTA_SELECAO_PAC: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 96576}
+      RESPOSTA_SELECAO_PAC: {tipo: VARCHAR, nulos_pct: 0.17, distintos_aprox: 268077}
+  siconv_resumo_fisico_financeiro:
+    linhas: 31594
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_PROPOSTA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 32326}
+      VALOR_TOTAL_RESUMO_FISICO_FINANCEIRO:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 33316
+        min: '10000.0'
+        max: '1554312218.85'
+        media: 2331873.4202
+        quartis: [371716.1246, 674324.1512, 1847935.8283]
+      VALOR_REALIZADO_RESUMO_FISICO_FINANCEIRO:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 25830
+        min: '0.0'
+        max: '196106885.34'
+        media: 726640.6213
+        quartis: [0, 297511.9424, 610295.634]
+      PERCENTUAL_EXECUCAO_RESUMO_FISICO_FINANCEIRO:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5015
+        min: '0.0'
+        max: '101.94'
+        media: 56.331
+        quartis: [0, 78.5852, 100]
+  siconv_solicitacao_ajuste_pt:
+    linhas: 178634
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_AJUSTE_PT: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 186546}
+      ID_PROPOSTA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 89398}
+      NR_AJUSTE_PT: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 187, min: 1/2010, max: 9/2025}
+      DATA_SOLICITACAO_AJUSTE_PT: {tipo: DATE, nulos_pct: 0, distintos_aprox: 4660, min: '2010-04-09', max: '2026-07-16'}
+      SITUACAO_SOLICITACAO_AJUSTE_PT:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: Ajustado (aguardando aprovação)
+        max: Parecer Emitido
+        top:
+        - [Ajustado e Aprovado, 151794]
+        - [Não Autorizado, 23953]
+        - [Em Análise (aguardando parecer), 1589]
+        - [Autorizado (aguardando execução do ajuste), 516]
+        - [Ajustado (aguardando aprovação), 321]
+        - [Parecer Emitido, 248]
+        - [Cadastrado, 213]
+  siconv_solicitacao_alteracao:
+    linhas: 390899
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_SOLICITACAO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 411552}
+      NR_CONVENIO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 134004}
+      NR_SOLICITACAO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1107}
+      SITUACAO_SOLICITACAO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: Aceita
+        max: Recusada
+        top:
+        - [Aceita, 300735]
+        - [Recusada, 63741]
+        - [Em Análise, 20154]
+        - [Cadastrada, 6269]
+      OBJETO_SOLICITACAO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 196484}
+      DATA_SOLICITACAO: {tipo: DATE, nulos_pct: 0, distintos_aprox: 5519, min: '2008-11-20', max: '2026-07-16'}
+  siconv_solicitacao_rendimento_aplicacao:
+    linhas: 18111
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_SOLICITACAO_REND_APLICACAO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 13518}
+      NR_CONVENIO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 12932}
+      NR_SOLICITACAO_REND_APLICACAO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 65, min: '1', max: '9'}
+      STATUS_SOLICITACAO_REND_APLICACAO:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: Aguardando Análise do Concedente
+        max: Recusada pelo Concedente
+        top:
+        - [PT Ajustado e Aprovado, 11401]
+        - [Recusada pelo Concedente, 3303]
+        - [Cancelado pelo Convenente, 1806]
+        - [Aguardando Análise do Concedente, 941]
+        - [Cadastrado, 259]
+        - [PT Reprovado e Cancelado, 241]
+        - [Em Análise pelo Concedente, 95]
+        - [Autorizada (Aguardando ajuste PT), 29]
+        - [Em Complementação pelo Convenente, 22]
+        - [PT Ajustado (aguardando aprovação do Concedente), 13]
+      DATA_SOLICITACAO_REND_APLICACAO: {tipo: DATE, nulos_pct: 0, distintos_aprox: 3361, min: '2012-11-04', max: '2026-07-16'}
+      VALOR_SOLICITACAO_REND_APLICACAO:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 12989
+        min: '0.0'
+        max: '49584844.63'
+        media: 149293.7602
+        quartis: [6183.638, 19097.2899, 67065.5398]
+      VALOR_APROVADO_SOLICITACAO_REND_APLICACAO:
+        tipo: DOUBLE
+        nulos_pct: 28.82
+        distintos_aprox: 10142
+        min: '0.01'
+        max: '49584844.63'
+        media: 159865.6995
+        quartis: [6797.5998, 21012.055, 73415.2563]
+  siconv_termo_aditivo:
+    linhas: 455215
+    fonte_do_perfil: tabela inteira
+    colunas:
+      NR_CONVENIO: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 123798}
+      ID_SOLICITACAO: {tipo: VARCHAR, nulos_pct: 42.8, distintos_aprox: 309321}
+      NUMERO_TA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1911, pessoal: 'só contagens: valores seriam dado pessoal'}
+      TIPO_TA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 137, min: A VERIFICAR, max: Supressão}
+      VL_GLOBAL_TA:
+        tipo: DOUBLE
+        nulos_pct: 74.66
+        distintos_aprox: 103245
+        min: '-120301439.76'
+        max: '208621001.26'
+        media: 198557.8795
+        quartis: [-4549.0874, 6389.0189, 51419.2606]
+      VL_REPASSE_TA:
+        tipo: DOUBLE
+        nulos_pct: 74.66
+        distintos_aprox: 12756
+        min: '-120000000.0'
+        max: '208621001.26'
+        media: 124545.6682
+        quartis: [0, 0, 0]
+      VL_CONTRAPARTIDA_TA:
+        tipo: DOUBLE
+        nulos_pct: 74.66
+        distintos_aprox: 107010
+        min: '-111991814.32'
+        max: '166157924.61'
+        media: 74013.2908
+        quartis: [-1979.3536, 4948.7351, 44073.1565]
+      DT_ASSINATURA_TA: {tipo: VARCHAR, nulos_pct: 0.05, distintos_aprox: 5934}
+      DT_INICIO_TA: {tipo: VARCHAR, nulos_pct: 33.69, distintos_aprox: 6832}
+      DT_FIM_TA: {tipo: VARCHAR, nulos_pct: 33.67, distintos_aprox: 7088}
+      JUSTIFICATIVA_TA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 346280}
+  siconv_vrpl_lotes_fornecedores_licitacao:
+    linhas: 105324
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_LICITACAO_VRPL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 93975}
+      ID_LOTE_LICITACAO_VRPL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 106393}
+      NUMERO_LOTE_LICITACAO_VRPL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 56, pessoal: 'só contagens: valores seriam dado pessoal'}
+      RAZAO_SOCIAL_FORNECEDOR_LICITACAO_VRPL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 14804, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      TIPO_IDENTIFICACAO_FORNECEDOR_LICITACAO_VRPL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      IDENTIFICACAO_FORNECEDOR_LICITACAO_VRPL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 12905, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+  siconv_vrpl_metas_submetas:
+    linhas: 161624
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_META_VRPL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 134236}
+      ID_SUBMETA_VRPL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 152229}
+      ID_PO_VRPL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 139356}
+      ID_PROPOSTA_VRPL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 107218}
+      NUMERO_META_VRPL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 71, pessoal: 'só contagens: valores seriam dado pessoal'}
+      DESCRICAO_META_VRPL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 25650}
+      NUMERO_LOTE_LICITACAO_VRPL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 66, pessoal: 'só contagens: valores seriam dado pessoal'}
+      NUMERO_SUBMETA_VRPL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 596, pessoal: 'só contagens: valores seriam dado pessoal'}
+      DESCRICAO_SUBMETA_VRPL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 41919}
+      SITUACAO_SUBMETA_VRPL:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: ACT
+        max: SCP
+        top:
+        - [SCP, 64392]
+        - [ACT, 47062]
+        - [ANL, 25020]
+        - [EPE, 17537]
+        - [REJ, 5606]
+        - [EAN, 1071]
+        - [COM, 936]
+      VALOR_TOTAL_LICITADO_VRPL:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 75462
+        min: '0.0'
+        max: '1099279953.35'
+        media: 1571465.6919
+        quartis: [93593.6392, 374993.5223, 1025178.3542]
+      DATA_PREVISAO_INICIO_OBRA_PO_VRPL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 126, min: '2018-08-01', max: '6202-06-01'}
+      DATABASE_PO_VRPL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 90, min: '0205-05-01', max: '2029-11-01'}
+      SIGLA_LOCALIDADE_PO_VRPL:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 18136]
+        - [MG, 16768]
+        - [RS, 12993]
+        - [BA, 10672]
+        - [PB, 10510]
+        - [PI, 8642]
+        - [PE, 8093]
+        - [MA, 8060]
+        - [PR, 6595]
+        - [RN, 5405]
+      ACOMPANHADO_POR_EVENTO_PO_VRPL:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['1', 99458]
+        - ['0', 62166]
+      QUANTIDADE_ITENS_META_VRPL:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 21396
+        min: '0.0'
+        max: '1072258610.73'
+        media: 341972.8179
+        quartis: [14.3386, 1331.278, 4700.3606]
+      DESCRICAO_SUBITEM_INVESTIMENTO_META_VRPL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 70, min: Acondicionamento, max: Veículos sobre
+          Trilhos}
+      UNIDADE_ITEM_INVESTIMENTO_META_VRPL:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '%CT'
+        max: UN
+        top:
+        - [M2, 114984]
+        - [UN, 35830]
+        - [M, 7292]
+        - [M3/S, 978]
+        - [Nº FAM, 817]
+        - [KM, 688]
+        - [M3, 632]
+        - ['%CT', 346]
+        - [T, 57]
+  siconv_vrpl_proposta_licitacao:
+    linhas: 41192
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ID_PROPOSTA: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 34651}
+      ID_PROPOSTA_VRPL: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 29153}
+      ID_LICITACAO_VRPL: {tipo: VARCHAR, nulos_pct: 8.39, distintos_aprox: 40173}
+      ULTIMA_VERSAO_PROPOSTA_VRPL:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: '0'
+        max: '9'
+        top:
+        - ['0', 14578]
+        - ['1', 8747]
+        - ['2', 6343]
+        - ['3', 4279]
+        - ['4', 2687]
+        - ['5', 1662]
+        - ['6', 993]
+        - ['7', 638]
+        - ['8', 437]
+        - ['9', 259]
+      SITUACAO_VRPL:
+        tipo: VARCHAR
+        nulos_pct: 8.39
+        distintos_aprox: 7
+        min: ACT
+        max: SCP
+        top:
+        - [ACT, 32944]
+        - [null, 3457]
+        - [EPE, 2610]
+        - [REJ, 1193]
+        - [EAN, 288]
+        - [SCP, 278]
+        - [ANL, 227]
+        - [COM, 195]
+      SITUACAO_PARECER_VRPL:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Inexistente
+        max: Viável
+        top:
+        - [Viável, 33848]
+        - [Inexistente, 7217]
+        - [Inviável, 127]
+      EMISSAO_PARECER_VRPL:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Não
+        max: Sim
+        top:
+        - [Sim, 33826]
+        - [Não, 7366]
+      DATA_EMISSAO_PARECER_VRPL: {tipo: TIMESTAMP, nulos_pct: 17.88, distintos_aprox: 28781, min: '2021-05-20 16:00:09.395017', max: '2026-07-16
+          17:32:22.792'}
+      DATA_ACEITE_LICITACAO_VRPL: {tipo: TIMESTAMP, nulos_pct: 18.75, distintos_aprox: 33995, min: '2021-05-20 16:07:52.938617', max: '2026-07-16
+          16:05:20.252683'}

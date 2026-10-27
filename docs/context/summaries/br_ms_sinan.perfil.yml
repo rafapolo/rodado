@@ -1,0 +1,3010 @@
+dataset: br_ms_sinan
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  microdados_dengue:
+    linhas: 34743268
+    fonte_do_perfil: tabela inteira da última partição (ano = 2026)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
+        top:
+        - ['2026', 5174]
+      tipo_notificacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2'
+        max: '2'
+        top:
+        - ['2', 5174]
+      id_agravo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: A90
+        max: A90
+        top:
+        - [A90, 5174]
+      data_notificacao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: '2026-01-04'
+        max: '2026-01-13'
+        top:
+        - ['2026-01-07', 1194]
+        - ['2026-01-08', 1194]
+        - ['2026-01-06', 1012]
+        - ['2026-01-09', 644]
+        - ['2026-01-05', 599]
+        - ['2026-01-10', 257]
+        - ['2026-01-04', 135]
+        - ['2026-01-12', 76]
+        - ['2026-01-11', 47]
+        - ['2026-01-13', 16]
+      semana_notificacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 2026-01
+        max: 2026-02
+        top:
+        - [2026-01, 5035]
+        - [2026-02, 139]
+      sigla_uf_notificacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 1677]
+        - [PR, 951]
+        - [MG, 462]
+        - [ES, 368]
+        - [SC, 331]
+        - [GO, 256]
+        - [RS, 168]
+        - [TO, 166]
+        - [MT, 107]
+        - [DF, 106]
+      id_regional_saude_notificacao: {tipo: VARCHAR, nulos_pct: 6.96, distintos_aprox: 225, min: '1331    ', max: '6255    '}
+      id_municipio_notificacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 765, min: '1100072', max: '5300108'}
+      id_estabelecimento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1751}
+      data_primeiros_sintomas:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '2026-01-04'
+        max: '2026-01-10'
+        top:
+        - ['2026-01-05', 1483]
+        - ['2026-01-04', 1375]
+        - ['2026-01-06', 998]
+        - ['2026-01-07', 718]
+        - ['2026-01-08', 379]
+        - ['2026-01-09', 165]
+        - ['2026-01-10', 56]
+      semana_sintomas:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: 2026-01
+        max: 2026-01
+        top:
+        - [2026-01, 5174]
+      pais_residencia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '1   '
+        max: '1   '
+        top:
+        - ['1   ', 5174]
+      sigla_uf_residencia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 1669]
+        - [PR, 947]
+        - [MG, 470]
+        - [ES, 365]
+        - [SC, 325]
+        - [GO, 263]
+        - [RS, 172]
+        - [TO, 164]
+        - [MT, 107]
+        - [DF, 100]
+      id_regional_saude_residencia: {tipo: VARCHAR, nulos_pct: 6.88, distintos_aprox: 228, min: '1331    ', max: '6255    '}
+      id_municipio_residencia: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 798, min: '1100072', max: '5300108'}
+      ano_nascimento_paciente: {tipo: BIGINT, nulos_pct: 0.02, distintos_aprox: 107, pessoal: 'só contagens: valores seriam dado pessoal'}
+      data_nascimento_paciente: {tipo: DATE, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      idade_paciente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 124, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sexo_paciente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3, pessoal: 'só contagens: valores seriam dado pessoal'}
+      raca_cor_paciente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5, pessoal: 'só contagens: valores seriam dado pessoal'}
+      escolaridade_paciente: {tipo: VARCHAR, nulos_pct: 18.07, distintos_aprox: 10, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ocupacao_paciente: {tipo: VARCHAR, nulos_pct: 70.14, distintos_aprox: 271, pessoal: 'só contagens: valores seriam dado pessoal'}
+      gestante_paciente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6, pessoal: 'só contagens: valores seriam dado pessoal'}
+      possui_doenca_autoimune:
+        tipo: VARCHAR
+        nulos_pct: 5.6
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 4847]
+        - [null, 290]
+        - ['1', 37]
+      possui_diabetes:
+        tipo: VARCHAR
+        nulos_pct: 5.6
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 4689]
+        - [null, 290]
+        - ['1', 195]
+      possui_doencas_hematologicas:
+        tipo: VARCHAR
+        nulos_pct: 5.6
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 4863]
+        - [null, 290]
+        - ['1', 21]
+      possui_hepatopatias:
+        tipo: VARCHAR
+        nulos_pct: 5.6
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 4866]
+        - [null, 290]
+        - ['1', 18]
+      possui_doenca_renal:
+        tipo: VARCHAR
+        nulos_pct: 5.6
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 4854]
+        - [null, 290]
+        - ['1', 30]
+      possui_hipertensao:
+        tipo: VARCHAR
+        nulos_pct: 5.6
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 4469]
+        - ['1', 415]
+        - [null, 290]
+      possui_doenca_acido_peptica:
+        tipo: VARCHAR
+        nulos_pct: 5.6
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 4860]
+        - [null, 290]
+        - ['1', 24]
+      paciente_vacinado: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      data_vacina:
+        tipo: DATE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      data_investigacao:
+        tipo: DATE
+        nulos_pct: 5.6
+        distintos_aprox: 11
+        min: '2025-12-09'
+        max: '2026-01-13'
+        top:
+        - ['2026-01-08', 1131]
+        - ['2026-01-07', 1115]
+        - ['2026-01-06', 956]
+        - ['2026-01-09', 641]
+        - ['2026-01-05', 554]
+        - [null, 290]
+        - ['2026-01-10', 241]
+        - ['2026-01-04', 127]
+        - ['2026-01-12', 70]
+        - ['2026-01-11', 40]
+      apresenta_febre:
+        tipo: VARCHAR
+        nulos_pct: 5.6
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 3941]
+        - ['2', 943]
+        - [null, 290]
+      data_febre:
+        tipo: DATE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      duracao_febre:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      apresenta_cefaleia:
+        tipo: VARCHAR
+        nulos_pct: 5.6
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 3762]
+        - ['2', 1122]
+        - [null, 290]
+      apresenta_exantema:
+        tipo: VARCHAR
+        nulos_pct: 5.6
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 4616]
+        - [null, 290]
+        - ['1', 268]
+      apresenta_dor_costas:
+        tipo: VARCHAR
+        nulos_pct: 5.6
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 3654]
+        - ['1', 1230]
+        - [null, 290]
+      apresenta_prostacao:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      apresenta_mialgia:
+        tipo: VARCHAR
+        nulos_pct: 5.6
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 3715]
+        - ['2', 1169]
+        - [null, 290]
+      apresenta_vomito:
+        tipo: VARCHAR
+        nulos_pct: 5.6
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 3459]
+        - ['1', 1425]
+        - [null, 290]
+      apresenta_nausea:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      apresenta_diarreia:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      apresenta_conjutivite:
+        tipo: VARCHAR
+        nulos_pct: 5.6
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 4749]
+        - [null, 290]
+        - ['1', 135]
+      apresenta_dor_retroorbital:
+        tipo: VARCHAR
+        nulos_pct: 5.6
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 3478]
+        - ['1', 1406]
+        - [null, 290]
+      apresenta_artralgia:
+        tipo: VARCHAR
+        nulos_pct: 5.6
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 4009]
+        - ['1', 875]
+        - [null, 290]
+      apresenta_artrite:
+        tipo: VARCHAR
+        nulos_pct: 5.6
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 4476]
+        - ['1', 408]
+        - [null, 290]
+      apresenta_leucopenia:
+        tipo: VARCHAR
+        nulos_pct: 5.6
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 4771]
+        - [null, 290]
+        - ['1', 113]
+      apresenta_epistaxe:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      apresenta_petequias:
+        tipo: VARCHAR
+        nulos_pct: 5.6
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 4701]
+        - [null, 290]
+        - ['1', 183]
+      apresenta_gengivorragia:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      apresenta_metrorragia:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      apresenta_hematuria:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      apresenta_sangramento:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      apresenta_complicacao:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      apresenta_ascite:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      apresenta_pleurite:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      apresenta_pericardite:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      apresenta_dor_abdominal:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      apresenta_hepatomegalia:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      apresenta_miocardite:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      apresenta_hipotensao:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      apresenta_choque:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      apresenta_insuficiencia_orgao:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      apresenta_sintoma_outro:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      apresenta_qual_sintoma:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      data_choque:
+        tipo: DATE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      prova_laco:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      internacao:
+        tipo: VARCHAR
+        nulos_pct: 46.02
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 2636]
+        - [null, 2381]
+        - ['1', 133]
+        - ['9', 24]
+      data_internacao:
+        tipo: DATE
+        nulos_pct: 97.72
+        distintos_aprox: 13
+        min: '2025-01-06'
+        max: '2026-01-12'
+        top:
+        - [null, 5056]
+        - ['2026-01-07', 27]
+        - ['2026-01-06', 25]
+        - ['2026-01-08', 22]
+        - ['2026-01-05', 17]
+        - ['2026-01-09', 6]
+        - ['2026-01-04', 5]
+        - ['2026-01-10', 4]
+        - ['2025-01-07', 3]
+        - ['2025-01-06', 2]
+      sigla_uf_internacao:
+        tipo: VARCHAR
+        nulos_pct: 97.66
+        distintos_aprox: 21
+        min: AC
+        max: TO
+        top:
+        - [null, 5053]
+        - [SP, 29]
+        - [ES, 15]
+        - [PR, 15]
+        - [GO, 10]
+        - [TO, 8]
+        - [DF, 7]
+        - [MT, 6]
+        - [MG, 5]
+        - [SC, 5]
+      id_municipio_internacao: {tipo: VARCHAR, nulos_pct: 97.7, distintos_aprox: 77, min: '1200203', max: '5300108'}
+      alarme_hipotensao:
+        tipo: VARCHAR
+        nulos_pct: 99.44
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 5145]
+        - ['2', 25]
+        - ['1', 4]
+      alarme_plaqueta:
+        tipo: VARCHAR
+        nulos_pct: 99.46
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 5146]
+        - ['2', 21]
+        - ['1', 7]
+      alarme_vomito:
+        tipo: VARCHAR
+        nulos_pct: 99.46
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 5146]
+        - ['2', 22]
+        - ['1', 6]
+      alarme_sangramento:
+        tipo: VARCHAR
+        nulos_pct: 99.46
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 5146]
+        - ['2', 21]
+        - ['1', 7]
+      alarme_hematocrito:
+        tipo: VARCHAR
+        nulos_pct: 99.46
+        distintos_aprox: 1
+        min: '2'
+        max: '2'
+        top:
+        - [null, 5146]
+        - ['2', 28]
+      alarme_dor_abdominal:
+        tipo: VARCHAR
+        nulos_pct: 99.46
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 5146]
+        - ['2', 15]
+        - ['1', 13]
+      alarme_letargia:
+        tipo: VARCHAR
+        nulos_pct: 99.46
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 5146]
+        - ['2', 27]
+        - ['1', 1]
+      alarme_hepatomegalia:
+        tipo: VARCHAR
+        nulos_pct: 99.46
+        distintos_aprox: 1
+        min: '2'
+        max: '2'
+        top:
+        - [null, 5146]
+        - ['2', 28]
+      alarme_liquidos:
+        tipo: VARCHAR
+        nulos_pct: 99.46
+        distintos_aprox: 1
+        min: '2'
+        max: '2'
+        top:
+        - [null, 5146]
+        - ['2', 28]
+      data_alarme:
+        tipo: DATE
+        nulos_pct: 99.48
+        distintos_aprox: 6
+        min: '2026-01-04'
+        max: '2026-01-12'
+        top:
+        - [null, 5147]
+        - ['2026-01-06', 6]
+        - ['2026-01-07', 6]
+        - ['2026-01-08', 6]
+        - ['2026-01-05', 4]
+        - ['2026-01-04', 3]
+        - ['2026-01-10', 1]
+        - ['2026-01-12', 1]
+      grave_pulso:
+        tipo: VARCHAR
+        nulos_pct: 99.94
+        distintos_aprox: 1
+        min: '2'
+        max: '2'
+        top:
+        - [null, 5171]
+        - ['2', 3]
+      grave_convulsao:
+        tipo: VARCHAR
+        nulos_pct: 99.94
+        distintos_aprox: 1
+        min: '2'
+        max: '2'
+        top:
+        - [null, 5171]
+        - ['2', 3]
+      grave_enchimento_capilar:
+        tipo: VARCHAR
+        nulos_pct: 99.94
+        distintos_aprox: 1
+        min: '2'
+        max: '2'
+        top:
+        - [null, 5171]
+        - ['2', 3]
+      grave_insuficiencia_respiratoria:
+        tipo: VARCHAR
+        nulos_pct: 99.94
+        distintos_aprox: 1
+        min: '2'
+        max: '2'
+        top:
+        - [null, 5171]
+        - ['2', 3]
+      grave_taquicardia:
+        tipo: VARCHAR
+        nulos_pct: 99.94
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 5171]
+        - ['2', 2]
+        - ['1', 1]
+      grave_extremidade_fria:
+        tipo: VARCHAR
+        nulos_pct: 99.94
+        distintos_aprox: 1
+        min: '2'
+        max: '2'
+        top:
+        - [null, 5171]
+        - ['2', 3]
+      grave_hipotensao:
+        tipo: VARCHAR
+        nulos_pct: 99.94
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 5171]
+        - ['2', 2]
+        - ['1', 1]
+      grave_hematemese:
+        tipo: VARCHAR
+        nulos_pct: 99.94
+        distintos_aprox: 1
+        min: '2'
+        max: '2'
+        top:
+        - [null, 5171]
+        - ['2', 3]
+      grave_melena:
+        tipo: VARCHAR
+        nulos_pct: 99.94
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 5171]
+        - ['2', 2]
+        - ['1', 1]
+      grave_metrorragia:
+        tipo: VARCHAR
+        nulos_pct: 99.94
+        distintos_aprox: 1
+        min: '2'
+        max: '2'
+        top:
+        - [null, 5171]
+        - ['2', 3]
+      grave_sangramento:
+        tipo: VARCHAR
+        nulos_pct: 99.94
+        distintos_aprox: 1
+        min: '2'
+        max: '2'
+        top:
+        - [null, 5171]
+        - ['2', 3]
+      grave_ast_alt:
+        tipo: VARCHAR
+        nulos_pct: 99.94
+        distintos_aprox: 1
+        min: '2'
+        max: '2'
+        top:
+        - [null, 5171]
+        - ['2', 3]
+      grave_miocardite:
+        tipo: VARCHAR
+        nulos_pct: 99.94
+        distintos_aprox: 1
+        min: '2'
+        max: '2'
+        top:
+        - [null, 5171]
+        - ['2', 3]
+      grave_consciencia:
+        tipo: VARCHAR
+        nulos_pct: 99.94
+        distintos_aprox: 1
+        min: '2'
+        max: '2'
+        top:
+        - [null, 5171]
+        - ['2', 3]
+      grave_orgaos:
+        tipo: VARCHAR
+        nulos_pct: 99.94
+        distintos_aprox: 1
+        min: '2'
+        max: '2'
+        top:
+        - [null, 5171]
+        - ['2', 3]
+      data_sinais_gravidade:
+        tipo: DATE
+        nulos_pct: 99.94
+        distintos_aprox: 3
+        min: '2026-01-04'
+        max: '2026-01-10'
+        top:
+        - [null, 5171]
+        - ['2026-01-04', 1]
+        - ['2026-01-09', 1]
+        - ['2026-01-10', 1]
+      data_hematocrito:
+        tipo: DATE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      hematocrito_maior:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      data_plaquetas:
+        tipo: DATE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      plaqueta_maior:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      data_hematocrito_2:
+        tipo: DATE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      hematocrito_menor:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      data_plaquetas_2:
+        tipo: DATE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      plaqueta_menor:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      data_sorologia1_chikungunya:
+        tipo: DATE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      data_resultado_sorologia1_chikungunya:
+        tipo: DATE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      resultado_sorologia1_chikungunya:
+        tipo: VARCHAR
+        nulos_pct: 99.81
+        distintos_aprox: 1
+        min: '4'
+        max: '4'
+        top:
+        - [null, 5164]
+        - ['4', 10]
+      sorologia1_igm:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      sorologia1_igg:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      sorologia1_tit1:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      data_sorologia2_chikungunya:
+        tipo: DATE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      data_resultado_sorologia2_chikungunya:
+        tipo: DATE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      resultado_sorologia2_chikungunya:
+        tipo: VARCHAR
+        nulos_pct: 99.81
+        distintos_aprox: 1
+        min: '4'
+        max: '4'
+        top:
+        - [null, 5164]
+        - ['4', 10]
+      sorologia2_igm:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      sorologia2_igg:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      sorologia2_tit1:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      data_prnt:
+        tipo: DATE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      resultado_prnt:
+        tipo: VARCHAR
+        nulos_pct: 99.81
+        distintos_aprox: 1
+        min: '4'
+        max: '4'
+        top:
+        - [null, 5164]
+        - ['4', 10]
+      data_ns1:
+        tipo: DATE
+        nulos_pct: 73.44
+        distintos_aprox: 11
+        min: '2025-12-09'
+        max: '2026-01-13'
+        top:
+        - [null, 3800]
+        - ['2026-01-08', 342]
+        - ['2026-01-07', 328]
+        - ['2026-01-06', 277]
+        - ['2026-01-05', 148]
+        - ['2026-01-09', 133]
+        - ['2026-01-10', 84]
+        - ['2026-01-04', 35]
+        - ['2026-01-12', 14]
+        - ['2026-01-11', 11]
+      resultado_ns1:
+        tipo: VARCHAR
+        nulos_pct: 61.36
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        top:
+        - [null, 3175]
+        - ['4', 957]
+        - ['2', 917]
+        - ['1', 115]
+        - ['3', 10]
+      data_viral:
+        tipo: DATE
+        nulos_pct: 99.73
+        distintos_aprox: 5
+        min: '2026-01-05'
+        max: '2026-01-09'
+        top:
+        - [null, 5160]
+        - ['2026-01-08', 4]
+        - ['2026-01-06', 3]
+        - ['2026-01-07', 3]
+        - ['2026-01-05', 2]
+        - ['2026-01-09', 2]
+      resultado_viral:
+        tipo: VARCHAR
+        nulos_pct: 71.82
+        distintos_aprox: 3
+        min: '1'
+        max: '4'
+        top:
+        - [null, 3716]
+        - ['4', 1456]
+        - ['1', 1]
+        - ['2', 1]
+      data_pcr:
+        tipo: DATE
+        nulos_pct: 94.74
+        distintos_aprox: 9
+        min: '2026-01-04'
+        max: '2026-01-12'
+        top:
+        - [null, 4902]
+        - ['2026-01-08', 82]
+        - ['2026-01-07', 56]
+        - ['2026-01-06', 41]
+        - ['2026-01-09', 40]
+        - ['2026-01-05', 19]
+        - ['2026-01-04', 12]
+        - ['2026-01-10', 11]
+        - ['2026-01-12', 8]
+        - ['2026-01-11', 3]
+      resultado_pcr:
+        tipo: VARCHAR
+        nulos_pct: 72.36
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        top:
+        - [null, 3744]
+        - ['4', 1387]
+        - ['3', 30]
+        - ['2', 10]
+        - ['1', 3]
+      amostra_pcr:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      amostra_outra:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      tecnica:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      resultado_amostra_outra:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      data_sorologia_dengue:
+        tipo: DATE
+        nulos_pct: 93.7
+        distintos_aprox: 9
+        min: '2026-01-04'
+        max: '2026-01-12'
+        top:
+        - [null, 4848]
+        - ['2026-01-08', 77]
+        - ['2026-01-07', 75]
+        - ['2026-01-06', 66]
+        - ['2026-01-09', 44]
+        - ['2026-01-05', 35]
+        - ['2026-01-04', 11]
+        - ['2026-01-10', 9]
+        - ['2026-01-12', 6]
+        - ['2026-01-11', 3]
+      resultado_sorologia_dengue:
+        tipo: VARCHAR
+        nulos_pct: 68.67
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        top:
+        - [null, 3553]
+        - ['4', 1377]
+        - ['2', 109]
+        - ['1', 106]
+        - ['3', 29]
+      sorotipo:
+        tipo: VARCHAR
+        nulos_pct: 99.92
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 5170]
+        - ['1', 3]
+        - ['2', 1]
+      histopatologia:
+        tipo: VARCHAR
+        nulos_pct: 79.51
+        distintos_aprox: 2
+        min: '2'
+        max: '4'
+        top:
+        - [null, 4114]
+        - ['4', 1055]
+        - ['2', 5]
+      imunohistoquimica:
+        tipo: VARCHAR
+        nulos_pct: 79.51
+        distintos_aprox: 3
+        min: '2'
+        max: '4'
+        top:
+        - [null, 4114]
+        - ['4', 1051]
+        - ['2', 6]
+        - ['3', 3]
+      manifestacao_hemorragica:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      classificacao_final:
+        tipo: VARCHAR
+        nulos_pct: 84.79
+        distintos_aprox: 3
+        min: '10'
+        max: '12'
+        top:
+        - [null, 4387]
+        - ['10', 758]
+        - ['11', 27]
+        - ['12', 2]
+      criterio_confirmacao:
+        tipo: VARCHAR
+        nulos_pct: 75.3
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - [null, 3896]
+        - ['3', 614]
+        - ['2', 458]
+        - ['1', 206]
+      caso_fhd:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      caso_autoctone:
+        tipo: VARCHAR
+        nulos_pct: 71.18
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - [null, 3683]
+        - ['1', 1331]
+        - ['3', 90]
+        - ['2', 70]
+      pais_infeccao:
+        tipo: VARCHAR
+        nulos_pct: 80.5
+        distintos_aprox: 1
+        min: '1   '
+        max: '1   '
+        top:
+        - [null, 4165]
+        - ['1   ', 1009]
+      sigla_uf_infeccao:
+        tipo: VARCHAR
+        nulos_pct: 80.5
+        distintos_aprox: 24
+        min: AC
+        max: TO
+        top:
+        - [null, 4165]
+        - [SP, 336]
+        - [MG, 158]
+        - [GO, 122]
+        - [PR, 119]
+        - [TO, 66]
+        - [MT, 38]
+        - [PB, 34]
+        - [MS, 28]
+        - [RS, 19]
+      id_municipio_infeccao: {tipo: VARCHAR, nulos_pct: 80.6, distintos_aprox: 235, min: '1100601', max: '5300108'}
+      doenca_trabalho:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 5174]
+      apresentacao_clinica:
+        tipo: VARCHAR
+        nulos_pct: 98.94
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 5119]
+        - ['1', 54]
+        - ['2', 1]
+      evolucao_caso:
+        tipo: VARCHAR
+        nulos_pct: 87.38
+        distintos_aprox: 4
+        min: '1'
+        max: '9'
+        top:
+        - [null, 4521]
+        - ['1', 569]
+        - ['9', 82]
+        - ['3', 1]
+        - ['4', 1]
+      data_obito:
+        tipo: DATE
+        nulos_pct: 99.96
+        distintos_aprox: 2
+        min: '2026-01-04'
+        max: '2026-01-09'
+        top:
+        - [null, 5172]
+        - ['2026-01-04', 1]
+        - ['2026-01-09', 1]
+      data_encerramento:
+        tipo: DATE
+        nulos_pct: 89.02
+        distintos_aprox: 7
+        min: '2026-01-05'
+        max: '2026-01-12'
+        top:
+        - [null, 4606]
+        - ['2026-01-08', 169]
+        - ['2026-01-09', 166]
+        - ['2026-01-07', 97]
+        - ['2026-01-10', 46]
+        - ['2026-01-06', 41]
+        - ['2026-01-05', 19]
+        - ['2026-01-11', 15]
+        - ['2026-01-12', 15]
+      tipo_sistema:
+        tipo: VARCHAR
+        nulos_pct: 7.73
+        distintos_aprox: 1
+        min: '2'
+        max: '2'
+        top:
+        - ['2', 4774]
+        - [null, 400]
+      data_digitacao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: '2026-01-04'
+        max: '2026-01-13'
+        top:
+        - ['2026-01-09', 1554]
+        - ['2026-01-08', 1476]
+        - ['2026-01-07', 910]
+        - ['2026-01-06', 482]
+        - ['2026-01-10', 295]
+        - ['2026-01-05', 210]
+        - ['2026-01-12', 119]
+        - ['2026-01-11', 93]
+        - ['2026-01-13', 21]
+        - ['2026-01-04', 14]
+  microdados_influenza_srag:
+    linhas: 3724213
+    fonte_do_perfil: tabela inteira da última partição (ano = 2022)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2022'
+        max: '2022'
+        media: 2022
+        quartis: [2022, 2022, 2022]
+        top:
+        - ['2022', 416945]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 119781]
+        - [MG, 52373]
+        - [PR, 40045]
+        - [RJ, 29003]
+        - [CE, 24587]
+        - [RS, 23173]
+        - [SC, 17533]
+        - [BA, 15935]
+        - [DF, 11399]
+        - [GO, 10955]
+      data_notificacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 230, min: '2022-01-02', max: '2022-08-21'}
+      id_municipio_notificacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2898}
+      id_municipio_6_notificacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2411}
+      sistema:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: sivep_gripe
+        max: sivep_gripe
+        top:
+        - [sivep_gripe, 416945]
+      id_estabelecimento_cnes: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4142}
+      semana_notificacao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 34
+        min: '1'
+        max: '34'
+        media: 13.9329
+        quartis: [5, 11, 23]
+        top:
+        - ['4', 33095]
+        - ['3', 31567]
+        - ['5', 27825]
+        - ['2', 23868]
+        - ['6', 22464]
+        - ['7', 17646]
+        - ['25', 14388]
+        - ['26', 14281]
+        - ['8', 13901]
+        - ['27', 13445]
+      data_primeiros_sintomas: {tipo: DATE, nulos_pct: 0, distintos_aprox: 230, min: '2022-01-02', max: '2022-08-21'}
+      semana_sintomas:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 34
+        min: '1'
+        max: '34'
+        media: 12.9422
+        quartis: [4, 10, 22]
+        top:
+        - ['3', 35885]
+        - ['2', 34157]
+        - ['4', 29451]
+        - ['1', 28090]
+        - ['5', 24307]
+        - ['6', 16952]
+        - ['25', 14274]
+        - ['26', 13672]
+        - ['24', 13182]
+        - ['7', 13151]
+      paciente_estrangeiro: {tipo: VARCHAR, nulos_pct: 9.38, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      pais_residencia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: ARGENTINA
+        max: VENEZUELA
+        top:
+        - [BRASIL, 416859]
+        - [PARAGUAI, 57]
+        - [BOLIVIA, 15]
+        - [ARGENTINA, 5]
+        - [URUGUAI, 3]
+        - [VENEZUELA, 2]
+        - [BOTSUANA, 1]
+        - [BRUNEI, 1]
+        - [ESPANHA, 1]
+        - [UCRANIA, 1]
+      sigla_uf_residencia:
+        tipo: VARCHAR
+        nulos_pct: 0.02
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 119267]
+        - [MG, 52550]
+        - [PR, 39960]
+        - [RJ, 29041]
+        - [CE, 24545]
+        - [RS, 23229]
+        - [SC, 17440]
+        - [BA, 15998]
+        - [GO, 12341]
+        - [PE, 10865]
+      id_municipio_residencia:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      id_municipio_6_residencia: {tipo: VARCHAR, nulos_pct: 0.02, distintos_aprox: 5702}
+      zona_residencia:
+        tipo: VARCHAR
+        nulos_pct: 10.64
+        distintos_aprox: 4
+        min: '1'
+        max: '9'
+        top:
+        - ['1', 339848]
+        - [null, 44379]
+        - ['2', 23547]
+        - ['9', 6278]
+        - ['3', 2893]
+      caso_natural_residencia:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      data_nascimento: {tipo: VARCHAR, nulos_pct: 0.04, distintos_aprox: 39467}
+      sexo:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      raca_cor:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '1'
+        max: '9'
+        top:
+        - ['1', 177393]
+        - ['4', 148779]
+        - ['9', 70907]
+        - ['2', 15110]
+        - ['3', 3609]
+        - ['5', 1147]
+      etnia:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      gestante:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '0'
+        max: '9'
+        top:
+        - ['6', 283736]
+        - ['5', 113934]
+        - ['9', 13852]
+        - ['3', 3410]
+        - ['2', 1035]
+        - ['1', 594]
+        - ['4', 271]
+        - ['0', 113]
+      puerpera:
+        tipo: VARCHAR
+        nulos_pct: 66.37
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 276726]
+        - ['2', 136108]
+        - ['9', 2222]
+        - ['1', 1889]
+      escolaridade:
+        tipo: VARCHAR
+        nulos_pct: 38.4
+        distintos_aprox: 6
+        min: '0'
+        max: '9'
+        top:
+        - [null, 160094]
+        - ['9', 114515]
+        - ['1', 36808]
+        - ['5', 33265]
+        - ['0', 22360]
+        - ['3', 21877]
+        - ['2', 18685]
+        - ['4', 9341]
+      ocupacao: {tipo: VARCHAR, nulos_pct: 98.6, distintos_aprox: 622, min: '10205', max: '992115'}
+      doenca_relacionada_trabalho:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      tabagista:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      sindrome_gripal:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      infeccao_hospitalar:
+        tipo: VARCHAR
+        nulos_pct: 14.79
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 321203]
+        - [null, 61650]
+        - ['9', 21505]
+        - ['1', 12587]
+      contato_aves_suinos:
+        tipo: VARCHAR
+        nulos_pct: 17.17
+        distintos_aprox: 4
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 287599]
+        - [null, 71604]
+        - ['9', 53968]
+        - ['1', 3390]
+        - ['3', 384]
+      contato_outro_animal:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 1
+        min: '2'
+        max: '2'
+        top:
+        - [null, 416944]
+        - ['2', 1]
+      apresenta_febre:
+        tipo: VARCHAR
+        nulos_pct: 20.49
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - ['1', 199520]
+        - ['2', 127329]
+        - [null, 85442]
+        - ['9', 4654]
+      apresenta_tosse:
+        tipo: VARCHAR
+        nulos_pct: 14.6
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - ['1', 277005]
+        - ['2', 75477]
+        - [null, 60874]
+        - ['9', 3589]
+      apresenta_calafrio:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      apresenta_dor_garganta:
+        tipo: VARCHAR
+        nulos_pct: 32.38
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 214854]
+        - [null, 134990]
+        - ['1', 58887]
+        - ['9', 8214]
+      apresenta_dispneia:
+        tipo: VARCHAR
+        nulos_pct: 18.29
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - ['1', 243835]
+        - ['2', 93106]
+        - [null, 76274]
+        - ['9', 3730]
+      apresenta_artralgia:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      apresenta_mialgia:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      apresenta_conjuntivite:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      apresenta_coriza:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      apresenta_desconforto_respiratorio:
+        tipo: VARCHAR
+        nulos_pct: 23.39
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - ['1', 200232]
+        - ['2', 114826]
+        - [null, 97506]
+        - ['9', 4381]
+      apresenta_saturacao_anormal:
+        tipo: VARCHAR
+        nulos_pct: 22.21
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - ['1', 213262]
+        - ['2', 106625]
+        - [null, 92589]
+        - ['9', 4469]
+      apresenta_diarreia:
+        tipo: VARCHAR
+        nulos_pct: 34.81
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 233912]
+        - [null, 145135]
+        - ['1', 31698]
+        - ['9', 6200]
+      apresenta_vomito:
+        tipo: VARCHAR
+        nulos_pct: 34.36
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 228743]
+        - [null, 143271]
+        - ['1', 38782]
+        - ['9', 6149]
+      apresenta_dor_abdominal:
+        tipo: VARCHAR
+        nulos_pct: 35.79
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 236135]
+        - [null, 149225]
+        - ['1', 23810]
+        - ['9', 7775]
+      apresenta_fadiga:
+        tipo: VARCHAR
+        nulos_pct: 33.23
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 198502]
+        - [null, 138557]
+        - ['1', 73060]
+        - ['9', 6826]
+      apresenta_perda_olfato:
+        tipo: VARCHAR
+        nulos_pct: 36.71
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 246281]
+        - [null, 153046]
+        - ['9', 10367]
+        - ['1', 7251]
+      apresenta_perda_paladar:
+        tipo: VARCHAR
+        nulos_pct: 36.78
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 245340]
+        - [null, 153347]
+        - ['9', 10703]
+        - ['1', 7555]
+      apresenta_outros_sintomas:
+        tipo: VARCHAR
+        nulos_pct: 33.63
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 151257]
+        - [null, 140200]
+        - ['1', 117925]
+        - ['9', 7563]
+      qual_outro_sintoma: {tipo: VARCHAR, nulos_pct: 72.2, distintos_aprox: 29726}
+      apresenta_fator_risco:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 232071]
+        - ['2', 184874]
+      possui_cardiopatia:
+        tipo: VARCHAR
+        nulos_pct: 56.69
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 236386]
+        - ['1', 106998]
+        - ['2', 72103]
+        - ['9', 1458]
+      possui_pneumopatia:
+        tipo: VARCHAR
+        nulos_pct: 64.71
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 269786]
+        - ['2', 121858]
+        - ['1', 22983]
+        - ['9', 2318]
+      possui_hemoglobinopatia:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      possui_doenca_metabolica:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      possui_sindrome_down:
+        tipo: VARCHAR
+        nulos_pct: 66.29
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 276408]
+        - ['2', 136512]
+        - ['9', 2099]
+        - ['1', 1926]
+      possui_hepatite:
+        tipo: VARCHAR
+        nulos_pct: 66.32
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 276525]
+        - ['2', 134455]
+        - ['1', 3550]
+        - ['9', 2415]
+      possui_doenca_neurologica:
+        tipo: VARCHAR
+        nulos_pct: 64.44
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 268670]
+        - ['2', 120932]
+        - ['1', 25128]
+        - ['9', 2215]
+      possui_imunodeficiencia:
+        tipo: VARCHAR
+        nulos_pct: 65.44
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 272839]
+        - ['2', 127434]
+        - ['1', 14254]
+        - ['9', 2418]
+      possui_doenca_renal:
+        tipo: VARCHAR
+        nulos_pct: 65.29
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 272226]
+        - ['2', 126483]
+        - ['1', 16026]
+        - ['9', 2210]
+      possui_obesidade:
+        tipo: VARCHAR
+        nulos_pct: 65.81
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 274391]
+        - ['2', 125321]
+        - ['1', 14266]
+        - ['9', 2967]
+      imc_obeso: {tipo: VARCHAR, nulos_pct: 99.57, distintos_aprox: 290, min: '0', max: '99,9'}
+      possui_hematologia:
+        tipo: VARCHAR
+        nulos_pct: 66.15
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 275811]
+        - ['2', 134707]
+        - ['1', 3970]
+        - ['9', 2457]
+      possui_asma:
+        tipo: VARCHAR
+        nulos_pct: 65.12
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 271522]
+        - ['2', 125924]
+        - ['1', 17324]
+        - ['9', 2175]
+      possui_diabetes:
+        tipo: VARCHAR
+        nulos_pct: 60.03
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 250312]
+        - ['2', 96582]
+        - ['1', 68325]
+        - ['9', 1726]
+      possui_outra_morbidade:
+        tipo: VARCHAR
+        nulos_pct: 57.97
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 241718]
+        - ['1', 106252]
+        - ['2', 67163]
+        - ['9', 1812]
+      qual_outra_morbidade: {tipo: VARCHAR, nulos_pct: 74.81, distintos_aprox: 26379}
+      vacina_gripe:
+        tipo: VARCHAR
+        nulos_pct: 40.68
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 169627]
+        - ['9', 124252]
+        - ['2', 87573]
+        - ['1', 35493]
+      data_ultima_dose: {tipo: DATE, nulos_pct: 96.65, distintos_aprox: 732, min: '2011-04-27', max: '2022-08-10'}
+      vacina_gripe_mae:
+        tipo: VARCHAR
+        nulos_pct: 97.32
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 405771]
+        - ['9', 6758]
+        - ['2', 3123]
+        - ['1', 1293]
+      data_vacina_mae: {tipo: DATE, nulos_pct: 99.9, distintos_aprox: 278, min: '2021-01-05', max: '2022-08-24'}
+      mae_amamenta:
+        tipo: VARCHAR
+        nulos_pct: 97.67
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 407223]
+        - ['9', 4130]
+        - ['1', 3671]
+        - ['2', 1921]
+      data_vacina_crianca_dose_unica: {tipo: DATE, nulos_pct: 99.98, distintos_aprox: 72, min: '2018-04-26', max: '2022-07-19'}
+      data_vacina_crianca_1dose: {tipo: DATE, nulos_pct: 99.98, distintos_aprox: 66, min: '2016-04-23', max: '2022-06-14'}
+      data_vacina_crianca_2dose: {tipo: DATE, nulos_pct: 99.98, distintos_aprox: 55, min: '2018-07-31', max: '2022-06-18'}
+      vacina_covid:
+        tipo: VARCHAR
+        nulos_pct: 0.1
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - ['1', 247972]
+        - ['2', 155808]
+        - ['9', 12759]
+        - [null, 406]
+      data_vacina_covid_dose1: {tipo: DATE, nulos_pct: 44.75, distintos_aprox: 819, min: '2020-01-23', max: '2202-02-16'}
+      data_vacina_covid_dose2: {tipo: DATE, nulos_pct: 48.51, distintos_aprox: 804, min: '1921-03-26', max: '2121-07-08'}
+      laboratorio_vacina_covid: {tipo: VARCHAR, nulos_pct: 44.73, distintos_aprox: 2240}
+      lote_dose1_vacina_covid: {tipo: VARCHAR, nulos_pct: 47.6, distintos_aprox: 3455}
+      lote_dose2_vacina_covid: {tipo: VARCHAR, nulos_pct: 51.1, distintos_aprox: 3284}
+      fonte_dados_vacina_covid:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 352773]
+        - ['1', 64172]
+      antiviral_gripe:
+        tipo: VARCHAR
+        nulos_pct: 20.35
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 267616]
+        - [null, 84842]
+        - ['9', 48455]
+        - ['1', 16032]
+      tipo_antiviral:
+        tipo: VARCHAR
+        nulos_pct: 96.63
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - [null, 402901]
+        - ['1', 12961]
+        - ['3', 967]
+        - ['2', 116]
+      outro_tipo_antiviral: {tipo: VARCHAR, nulos_pct: 99.83, distintos_aprox: 199, min: '28012022', max: zanamivir}
+      data_tratamento_antiviral: {tipo: DATE, nulos_pct: 96.94, distintos_aprox: 230, min: '2022-01-02', max: '2022-11-05'}
+      internacao:
+        tipo: VARCHAR
+        nulos_pct: 3.7
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - ['1', 391202]
+        - [null, 15422]
+        - ['2', 9624]
+        - ['9', 697]
+      data_internacao: {tipo: DATE, nulos_pct: 8.27, distintos_aprox: 515, min: '2011-07-09', max: '2202-06-26'}
+      sigla_uf_internacao:
+        tipo: VARCHAR
+        nulos_pct: 11.9
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 106315]
+        - [null, 49620]
+        - [MG, 47791]
+        - [PR, 38064]
+        - [RJ, 25215]
+        - [RS, 21319]
+        - [SC, 16250]
+        - [CE, 15990]
+        - [BA, 13254]
+        - [DF, 10255]
+      id_regional_saude_internacao: {tipo: VARCHAR, nulos_pct: 21.66, distintos_aprox: 361, min: '1331', max: '6256'}
+      id_municipio_internacao: {tipo: VARCHAR, nulos_pct: 12.13, distintos_aprox: 2562}
+      id_municipio_6_internacao: {tipo: VARCHAR, nulos_pct: 12.13, distintos_aprox: 2266}
+      internacao_uti:
+        tipo: VARCHAR
+        nulos_pct: 15.87
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 237935]
+        - ['1', 106763]
+        - [null, 66164]
+        - ['9', 6083]
+      data_entrada_uti: {tipo: DATE, nulos_pct: 75.41, distintos_aprox: 376, min: '2014-04-17', max: '2202-02-16'}
+      data_saida_uti: {tipo: DATE, nulos_pct: 87.14, distintos_aprox: 243, min: '2021-01-22', max: '2022-08-31'}
+      suporte_ventilatorio:
+        tipo: VARCHAR
+        nulos_pct: 16.79
+        distintos_aprox: 4
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 178779]
+        - ['3', 108409]
+        - [null, 69996]
+        - ['1', 47355]
+        - ['9', 12406]
+      resultado_raiox_torax:
+        tipo: VARCHAR
+        nulos_pct: 42.88
+        distintos_aprox: 6
+        min: '1'
+        max: '9'
+        top:
+        - [null, 178792]
+        - ['6', 98823]
+        - ['2', 47602]
+        - ['9', 34687]
+        - ['5', 23503]
+        - ['1', 18152]
+        - ['3', 9253]
+        - ['4', 6133]
+      outro_resultado_raiox:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 12
+        min: '0'
+        max: '40320222'
+        top:
+        - [null, 416927]
+        - ['0', 3]
+        - ['13012022', 2]
+        - ['29042022', 2]
+        - ['11022022', 1]
+        - ['12072022', 1]
+        - ['18072022', 1]
+        - ['2052022', 1]
+        - ['2058391', 1]
+        - ['23012022', 1]
+      data_raiox: {tipo: DATE, nulos_pct: 77.12, distintos_aprox: 320, min: '2022-01-02', max: '2222-07-18'}
+      resultado_tomografia:
+        tipo: VARCHAR
+        nulos_pct: 43.23
+        distintos_aprox: 6
+        min: '1'
+        max: '9'
+        top:
+        - [null, 180249]
+        - ['6', 125493]
+        - ['1', 42835]
+        - ['9', 25156]
+        - ['5', 17993]
+        - ['2', 12800]
+        - ['3', 10095]
+        - ['4', 2324]
+      outro_resultado_tomografia: {tipo: VARCHAR, nulos_pct: 96.47, distintos_aprox: 5688}
+      data_tomografia: {tipo: DATE, nulos_pct: 81.5, distintos_aprox: 421, min: '2000-01-13', max: '2222-01-30'}
+      coleta_amostra:
+        tipo: VARCHAR
+        nulos_pct: 5.53
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - ['1', 380557]
+        - [null, 23037]
+        - ['2', 10998]
+        - ['9', 2353]
+      data_coleta: {tipo: DATE, nulos_pct: 8.73, distintos_aprox: 266, min: '2022-01-02', max: '2202-05-13'}
+      tipo_amostra:
+        tipo: VARCHAR
+        nulos_pct: 10.05
+        distintos_aprox: 5
+        min: '1'
+        max: '9'
+        top:
+        - ['1', 345445]
+        - [null, 41909]
+        - ['4', 27588]
+        - ['2', 1374]
+        - ['9', 532]
+        - ['3', 57]
+        - ['5', 40]
+      outro_tipo_amostra: {tipo: VARCHAR, nulos_pct: 93.64, distintos_aprox: 746, min: (ANTIGENO), max: VARIOS TRATO RESPIRATORIO}
+      resultado_amostra:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      data_coleta_hemaglutinacao:
+        tipo: DATE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      resultado_hemaglutinacao:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      tipo_resultado_hemaglutinacao:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      hemaglutinacao_tipo_hemaglutinina:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      hemaglutinacao_tipo_neuraminidase:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      tipo_pcr:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      data_coleta_pcr:
+        tipo: DATE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      tipo_amostra_pcr:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      qual_outro_tipo_amostra_pcr:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      data_resultado_pcr: {tipo: VARCHAR, nulos_pct: 43.89, distintos_aprox: 222, min: '2020-05-26', max: '2022-08-20'}
+      resultado_pcr:
+        tipo: VARCHAR
+        nulos_pct: 10.64
+        distintos_aprox: 5
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 116943]
+        - ['1', 116507]
+        - ['5', 84402]
+        - ['4', 53050]
+        - [null, 44380]
+        - ['9', 1249]
+        - ['3', 414]
+      diagnostico_pcr:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      id_laboratorio_pcr:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      tipo_resultado_pcr:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      pcr_tipo_hemaglutinina:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      pcr_tipo_neuraminidase:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      pcr_positivo_influenza:
+        tipo: VARCHAR
+        nulos_pct: 80.78
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 336813]
+        - ['2', 66168]
+        - ['9', 7680]
+        - ['1', 6284]
+      tipo_influenza_pcr:
+        tipo: VARCHAR
+        nulos_pct: 98.5
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 410671]
+        - ['1', 6206]
+        - ['2', 68]
+      subtipo_influenza_a:
+        tipo: VARCHAR
+        nulos_pct: 98.51
+        distintos_aprox: 6
+        min: '1'
+        max: '6'
+        top:
+        - [null, 410739]
+        - ['2', 4344]
+        - ['3', 1429]
+        - ['4', 163]
+        - ['6', 144]
+        - ['1', 90]
+        - ['5', 36]
+      outro_subtitpo_influenza:
+        tipo: VARCHAR
+        nulos_pct: 99.98
+        distintos_aprox: 29
+        min: A
+        max: SEM IDENTIFICACAO
+        top:
+        - [null, 416841]
+        - [H3, 26]
+        - [INFLUENZA A SAZONAL/H3, 11]
+        - [INFLUENZA A SAZONAL / H3, 8]
+        - [INFLUENZA A SANONAL/ H3, 7]
+        - [INFLUENZA A SAZONAL H3, 6]
+        - [INFLUENZA H3, 4]
+        - [SAZONAL H3, 4]
+        - [A SAZONAL / H3, 3]
+        - [A SAZONAL/ H3, 3]
+      linhagem_influeza_b:
+        tipo: VARCHAR
+        nulos_pct: 99.99
+        distintos_aprox: 4
+        min: '1'
+        max: '5'
+        top:
+        - [null, 416916]
+        - ['3', 19]
+        - ['5', 8]
+        - ['1', 1]
+        - ['4', 1]
+      outra_linhagem_influenza_b:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 2
+        min: NAO ESPECIFICADO
+        max: NAO REALIZADO
+        top:
+        - [null, 416942]
+        - [NAO ESPECIFICADO, 2]
+        - [NAO REALIZADO, 1]
+      pcr_positivo_outro_virus:
+        tipo: VARCHAR
+        nulos_pct: 74.92
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 312362]
+        - ['1', 100152]
+        - ['2', 4293]
+        - ['9', 138]
+      pcr_sarscov2:
+        tipo: BIGINT
+        nulos_pct: 80.44
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        media: 1
+        quartis: [1, 1, 1]
+        top:
+        - [null, 335370]
+        - ['1', 81575]
+      pcr_virus_sincicial_respiratorio:
+        tipo: BIGINT
+        nulos_pct: 97.37
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        media: 1
+        quartis: [1, 1, 1]
+        top:
+        - [null, 405983]
+        - ['1', 10962]
+      pcr_parainfluenza_1:
+        tipo: VARCHAR
+        nulos_pct: 99.98
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        top:
+        - [null, 416874]
+        - ['1', 71]
+      pcr_parainfluenza_2:
+        tipo: VARCHAR
+        nulos_pct: 99.99
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        top:
+        - [null, 416883]
+        - ['1', 62]
+      pcr_parainfluenza_3:
+        tipo: VARCHAR
+        nulos_pct: 99.85
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        top:
+        - [null, 416319]
+        - ['1', 626]
+      pcr_parainfluenza_4:
+        tipo: VARCHAR
+        nulos_pct: 99.96
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        top:
+        - [null, 416770]
+        - ['1', 175]
+      pcr_adenovirus:
+        tipo: BIGINT
+        nulos_pct: 99.64
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        media: 1
+        quartis: [1, 1, 1]
+        top:
+        - [null, 415447]
+        - ['1', 1498]
+      pcr_metapneumovirus:
+        tipo: BIGINT
+        nulos_pct: 99.52
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        media: 1
+        quartis: [1, 1, 1]
+        top:
+        - [null, 414935]
+        - ['1', 2010]
+      pcr_bocavirus:
+        tipo: BIGINT
+        nulos_pct: 99.79
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        media: 1
+        quartis: [1, 1, 1]
+        top:
+        - [null, 416071]
+        - ['1', 874]
+      pcr_rinovirus:
+        tipo: BIGINT
+        nulos_pct: 98.88
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        media: 1
+        quartis: [1, 1, 1]
+        top:
+        - [null, 412292]
+        - ['1', 4653]
+      pcr_outro_virus:
+        tipo: VARCHAR
+        nulos_pct: 99.84
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        top:
+        - [null, 416269]
+        - ['1', 676]
+      qual_outro_virus: {tipo: VARCHAR, nulos_pct: 99.85, distintos_aprox: 84, min: AAAAAAA, max: VSR}
+      diagnostico_imunofluorescencia:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      resultado_imunofluorescencia:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      data_resultado_imunofluorescencia:
+        tipo: DATE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      id_laboratorio_imunofluorescencia:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      diagnostico_influenza_a:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      diagnostico_subtipo_influenza_a:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      diagnostico_influenza_b:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      diagnostico_virus_sincicial_respiratorio:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      diagnostico_parainfluenza_1:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      diagnostico_parainfluenza_2:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      diagnostico_parainfluenza_3:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      diagnostico_adenovirus:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      diagnostico_outro_virus:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      diagnostico_outra_metodologia:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      imunofluorescencia_positivo_influenza:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      tipo_influenza_imunofluorescencia:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      imunofluorescencia_positivo_outro_virus:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      imunofluorescencia_virus_sincicial_respiratorio:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      imunofluorescencia_parainfluenza_1:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      imunofluorescencia_parainfluenza_2:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      imunofluorescencia_parainfluenza_3:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      imunofluorescencia_adenovirus:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      imunofluorescencia_outro_virus:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      imunofluorescencia_qual_outro_virus:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      tipo_teste_antigenico:
+        tipo: VARCHAR
+        nulos_pct: 58.46
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 243735]
+        - ['2', 165429]
+        - ['1', 7781]
+      data_resultado_teste: {tipo: DATE, nulos_pct: 57.59, distintos_aprox: 270, min: '2020-06-29', max: '2022-08-21'}
+      resultado_teste_antigenico:
+        tipo: VARCHAR
+        nulos_pct: 10.16
+        distintos_aprox: 5
+        min: '1'
+        max: '9'
+        top:
+        - ['5', 139787]
+        - ['1', 97178]
+        - ['2', 75281]
+        - ['4', 60063]
+        - [null, 42347]
+        - ['9', 2218]
+        - ['3', 71]
+      teste_positivo_influenza:
+        tipo: VARCHAR
+        nulos_pct: 86.04
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 358731]
+        - ['2', 50190]
+        - ['9', 6084]
+        - ['1', 1940]
+      tipo_influenza_teste:
+        tipo: VARCHAR
+        nulos_pct: 99.54
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 415010]
+        - ['1', 1717]
+        - ['2', 218]
+      teste_positivo_outro_virus:
+        tipo: VARCHAR
+        nulos_pct: 81.56
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 340062]
+        - ['1', 74237]
+        - ['2', 2165]
+        - ['9', 481]
+      teste_sarscov2:
+        tipo: VARCHAR
+        nulos_pct: 82.77
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        top:
+        - [null, 345118]
+        - ['1', 71827]
+      teste_virus_sincicial_respiratorio:
+        tipo: BIGINT
+        nulos_pct: 99.49
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        media: 1
+        quartis: [1, 1, 1]
+        top:
+        - [null, 414827]
+        - ['1', 2118]
+      teste_parainfluenza_1:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        top:
+        - [null, 416927]
+        - ['1', 18]
+      teste_parainfluenza_2:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        top:
+        - [null, 416940]
+        - ['1', 5]
+      teste_parainfluenza_3:
+        tipo: VARCHAR
+        nulos_pct: 99.99
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        top:
+        - [null, 416909]
+        - ['1', 36]
+      teste_adenovirus:
+        tipo: BIGINT
+        nulos_pct: 99.99
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        media: 1
+        quartis: [1, 1, 1]
+        top:
+        - [null, 416893]
+        - ['1', 52]
+      teste_outro_virus:
+        tipo: BIGINT
+        nulos_pct: 99.91
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        media: 1
+        quartis: [1, 1, 1]
+        top:
+        - [null, 416576]
+        - ['1', 369]
+      teste_outro_virus_nome: {tipo: VARCHAR, nulos_pct: 99.92, distintos_aprox: 69, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_amostra_sorologica:
+        tipo: VARCHAR
+        nulos_pct: 96.15
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - [null, 400897]
+        - ['9', 7970]
+        - ['2', 4090]
+        - ['1', 3988]
+      qual_outra_amostra: {tipo: VARCHAR, nulos_pct: 99.01, distintos_aprox: 194, min: '2', max: WAB}
+      data_coleta_amostra: {tipo: DATE, nulos_pct: 97.41, distintos_aprox: 256, min: '2002-03-26', max: '2044-04-19'}
+      tipo_sorologia:
+        tipo: VARCHAR
+        nulos_pct: 97.91
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        top:
+        - [null, 408214]
+        - ['1', 6785]
+        - ['4', 1345]
+        - ['3', 348]
+        - ['2', 253]
+      qual_outra_sorologia: {tipo: VARCHAR, nulos_pct: 99.67, distintos_aprox: 127, min: ., max: TR-PCR}
+      data_resultado_sorologia: {tipo: DATE, nulos_pct: 97.98, distintos_aprox: 250, min: '2020-01-23', max: '2202-01-31'}
+      resultado_sorologia_igg:
+        tipo: VARCHAR
+        nulos_pct: 92.12
+        distintos_aprox: 5
+        min: '1'
+        max: '9'
+        top:
+        - [null, 384090]
+        - ['4', 26941]
+        - ['1', 2375]
+        - ['9', 1787]
+        - ['2', 1664]
+        - ['5', 64]
+        - ['3', 24]
+      resultado_sorologia_igm:
+        tipo: VARCHAR
+        nulos_pct: 92.12
+        distintos_aprox: 5
+        min: '1'
+        max: '9'
+        top:
+        - [null, 384088]
+        - ['4', 26258]
+        - ['1', 2493]
+        - ['2', 2241]
+        - ['9', 1773]
+        - ['5', 62]
+        - ['3', 30]
+      resultado_sorologia_iga:
+        tipo: VARCHAR
+        nulos_pct: 92.56
+        distintos_aprox: 5
+        min: '1'
+        max: '9'
+        top:
+        - [null, 385905]
+        - ['4', 27649]
+        - ['9', 1923]
+        - ['1', 678]
+        - ['2', 675]
+        - ['5', 76]
+        - ['3', 39]
+      historico_viagem:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '0'
+        max: '0'
+        top:
+        - ['0', 416945]
+      pais_viagem:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      local_viagem:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      data_viagem_paciente: {tipo: DATE, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      data_retorno_paciente: {tipo: DATE, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      status_monitoramento:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      classificacao_final:
+        tipo: VARCHAR
+        nulos_pct: 10.27
+        distintos_aprox: 5
+        min: '1'
+        max: '5'
+        top:
+        - ['5', 184781]
+        - ['4', 157988]
+        - [null, 42810]
+        - ['2', 20121]
+        - ['1', 8205]
+        - ['3', 3040]
+      outro_agente_etiologico: {tipo: VARCHAR, nulos_pct: 99.64, distintos_aprox: 428, min: A. BAUMANNII, max: VSR}
+      criterio_encerramento:
+        tipo: VARCHAR
+        nulos_pct: 13.03
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        top:
+        - ['1', 330355]
+        - [null, 54343]
+        - ['3', 20028]
+        - ['4', 6496]
+        - ['2', 5723]
+      evolucao_caso:
+        tipo: VARCHAR
+        nulos_pct: 17.7
+        distintos_aprox: 4
+        min: '1'
+        max: '9'
+        top:
+        - ['1', 253317]
+        - [null, 73788]
+        - ['2', 70022]
+        - ['9', 11297]
+        - ['3', 8521]
+      data_alta_obito: {tipo: DATE, nulos_pct: 24.31, distintos_aprox: 230, min: '2022-01-02', max: '2022-08-21'}
+      data_encerramento: {tipo: DATE, nulos_pct: 17.3, distintos_aprox: 230, min: '2022-01-02', max: '2022-08-21'}
+      data_digitacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 253, min: '2020-05-29', max: '2022-08-21'}
+      tipo_ficha:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      requisicao_sistema_gal:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]
+      controle_srag_sinan:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 416945]

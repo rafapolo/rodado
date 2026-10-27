@@ -1,0 +1,135 @@
+dataset: br_inpe_queimadas
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  microdados:
+    linhas: 23086637
+    fonte_do_perfil: amostra de 92.683% da última partição (ano = 2026). ~2.000.000 linhas
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
+        top:
+        - ['2026', 2012480]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: '1'
+        max: '10'
+        media: 7.6351
+        quartis: [7, 8, 9]
+        top:
+        - ['9', 734206]
+        - ['8', 610283]
+        - ['7', 143550]
+        - ['10', 136293]
+        - ['6', 122532]
+        - ['1', 81957]
+        - ['5', 74266]
+        - ['3', 40906]
+        - ['2', 38799]
+        - ['4', 29688]
+      data_hora: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 32391}
+      bioma:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: Amazônia
+        max: Pantanal
+        top:
+        - [Amazônia, 911610]
+        - [Cerrado, 849454]
+        - [Caatinga, 128363]
+        - [Mata Atlântica, 97396]
+        - [Pantanal, 20786]
+        - [Pampa, 4865]
+        - [null, 6]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [PA, 350366]
+        - [MT, 323324]
+        - [TO, 238525]
+        - [AM, 223555]
+        - [BA, 169432]
+        - [MA, 165004]
+        - [PI, 119594]
+        - [MG, 69946]
+        - [RR, 57792]
+        - [GO, 57600]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6505}
+      latitude:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1092827
+        min: '-33.71806'
+        max: '5.16503'
+        media: -9.3903
+        quartis: [-12.0977, -9.1095, -6.2141]
+      longitude:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1028436
+        min: '-73.66298'
+        max: '-34.80865'
+        media: -51.63
+        quartis: [-56.6281, -50.7342, -45.916]
+      satelite:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: AQUA_M-M
+        max: TERRA_M-T
+        top:
+        - [GOES-19, 508620]
+        - [NOAA-20, 450846]
+        - [NOAA-21, 431077]
+        - [NPP-375, 327204]
+        - [NPP-375D, 125698]
+        - [AQUA_M-T, 70359]
+        - [TERRA_M-M, 24313]
+        - [METOP-B, 22029]
+        - [METOP-C, 19541]
+        - [TERRA_M-T, 19451]
+      dias_sem_chuva:
+        tipo: DOUBLE
+        nulos_pct: 2.03
+        distintos_aprox: 160
+        min: '-999.0'
+        max: '120.0'
+        media: 7.4991
+        quartis: [3, 7.9998, 21.4305]
+      precipitacao:
+        tipo: DOUBLE
+        nulos_pct: 2.03
+        distintos_aprox: 3064
+        min: '0.0'
+        max: '163.47'
+        media: 0.4859
+        quartis: [0, 0, 0]
+      risco_fogo:
+        tipo: DOUBLE
+        nulos_pct: 2.03
+        distintos_aprox: 89
+        min: '-999.0'
+        max: '1.0'
+        media: -6.8458
+        quartis: [0.6348, 0.9825, 1]
+      potencia_radiativa_fogo:
+        tipo: DOUBLE
+        nulos_pct: 2.45
+        distintos_aprox: 9154
+        min: '0.0'
+        max: '4031.0'
+        media: 42.2003
+        quartis: [4.3998, 10.7446, 61.3093]

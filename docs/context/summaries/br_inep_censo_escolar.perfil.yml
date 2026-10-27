@@ -1,0 +1,4817 @@
+dataset: br_inep_censo_escolar
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  escola:
+    linhas: 4272656
+    fonte_do_perfil: tabela inteira da última partição (ano = 2025)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2025'
+        max: '2025'
+        media: 2025
+        quartis: [2025, 2025, 2025]
+        top:
+        - ['2025', 214192]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 33616]
+        - [MG, 24069]
+        - [BA, 19604]
+        - [MA, 13226]
+        - [RJ, 13035]
+        - [PA, 11817]
+        - [RS, 11046]
+        - [CE, 10122]
+        - [PR, 9975]
+        - [PE, 9957]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      id_escola: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 203019}
+      rede:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        top:
+        - ['3', 128145]
+        - ['4', 51758]
+        - ['2', 33561]
+        - ['1', 728]
+      tipo_categoria_escola_privada:
+        tipo: VARCHAR
+        nulos_pct: 80.18
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        top:
+        - [null, 171738]
+        - ['1', 31232]
+        - ['4', 8431]
+        - ['2', 2287]
+        - ['3', 504]
+      tipo_localizacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 144217]
+        - ['2', 69975]
+      tipo_localizacao_diferenciada:
+        tipo: VARCHAR
+        nulos_pct: 15.71
+        distintos_aprox: 5
+        min: '0'
+        max: '8'
+        top:
+        - ['0', 168068]
+        - [null, 33652]
+        - ['1', 4519]
+        - ['2', 3713]
+        - ['3', 2737]
+        - ['8', 1503]
+      tipo_situacao_funcionamento:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - ['1', 180540]
+        - ['2', 29780]
+        - ['3', 3872]
+      id_orgao_regional: {tipo: VARCHAR, nulos_pct: 2.14, distintos_aprox: 256, min: '00000', max: MI413}
+      data_ano_letivo_inicio:
+        tipo: DATE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      data_ano_letivo_termino:
+        tipo: DATE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      vinculo_secretaria_educacao:
+        tipo: BIGINT
+        nulos_pct: 35.53
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.9975
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 137747]
+        - [null, 76106]
+        - ['0', 339]
+      vinculo_seguranca_publica:
+        tipo: BIGINT
+        nulos_pct: 35.53
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0017
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 137845]
+        - [null, 76106]
+        - ['1', 241]
+      vinculo_secretaria_saude:
+        tipo: BIGINT
+        nulos_pct: 35.53
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0002
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 138064]
+        - [null, 76106]
+        - ['1', 22]
+      vinculo_outro_orgao:
+        tipo: BIGINT
+        nulos_pct: 35.53
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0024
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 137752]
+        - [null, 76106]
+        - ['1', 334]
+      poder_publico_parceria:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0584
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 169992]
+        - [null, 33652]
+        - ['1', 10548]
+      tipo_poder_publico_parceria:
+        tipo: VARCHAR
+        nulos_pct: 95.08
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - [null, 203644]
+        - ['1', 8346]
+        - ['2', 1190]
+        - ['3', 1012]
+      conveniada_poder_publico:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      tipo_convenio_poder_publico:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      forma_contratacao_termo_colaboracao:
+        tipo: BIGINT
+        nulos_pct: 95.08
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.6761
+        quartis: [0, 1, 1]
+        top:
+        - [null, 203644]
+        - ['1', 7132]
+        - ['0', 3416]
+      forma_contratacao_termo_fomento:
+        tipo: BIGINT
+        nulos_pct: 95.08
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0942
+        quartis: [0, 0, 0]
+        top:
+        - [null, 203644]
+        - ['0', 9554]
+        - ['1', 994]
+      forma_contratacao_acordo_cooperacao:
+        tipo: BIGINT
+        nulos_pct: 95.08
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0555
+        quartis: [0, 0, 0]
+        top:
+        - [null, 203644]
+        - ['0', 9963]
+        - ['1', 585]
+      forma_contratacao_prestacao_servico:
+        tipo: BIGINT
+        nulos_pct: 95.08
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.1477
+        quartis: [0, 0, 0]
+        top:
+        - [null, 203644]
+        - ['0', 8990]
+        - ['1', 1558]
+      forma_contratacao_cooperacao_tecnica_financeira:
+        tipo: BIGINT
+        nulos_pct: 95.08
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0609
+        quartis: [0, 0, 0]
+        top:
+        - [null, 203644]
+        - ['0', 9906]
+        - ['1', 642]
+      forma_contratacao_consorcio_publico:
+        tipo: BIGINT
+        nulos_pct: 95.08
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0363
+        quartis: [0, 0, 0]
+        top:
+        - [null, 203644]
+        - ['0', 10165]
+        - ['1', 383]
+      forma_contratacao_parceria_municipal_termo_colaboracao:
+        tipo: BIGINT
+        nulos_pct: 95.63
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.6785
+        quartis: [0, 1, 1]
+        top:
+        - [null, 204834]
+        - ['1', 6349]
+        - ['0', 3009]
+      forma_contratacao_parceria_municipal_termo_fomento:
+        tipo: BIGINT
+        nulos_pct: 95.63
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0959
+        quartis: [0, 0, 0]
+        top:
+        - [null, 204834]
+        - ['0', 8461]
+        - ['1', 897]
+      forma_contratacao_parceria_municipal_acordo_cooperacao:
+        tipo: BIGINT
+        nulos_pct: 95.63
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0343
+        quartis: [0, 0, 0]
+        top:
+        - [null, 204834]
+        - ['0', 9037]
+        - ['1', 321]
+      forma_contratacao_parceria_municipal_prestacao_servico:
+        tipo: BIGINT
+        nulos_pct: 95.63
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.1203
+        quartis: [0, 0, 0]
+        top:
+        - [null, 204834]
+        - ['0', 8232]
+        - ['1', 1126]
+      forma_contratacao_parceria_municipal_cooperacao_tecnica_financeira:
+        tipo: BIGINT
+        nulos_pct: 95.63
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0658
+        quartis: [0, 0, 0]
+        top:
+        - [null, 204834]
+        - ['0', 8742]
+        - ['1', 616]
+      forma_contratacao_parceria_municipal_consorcio_publico:
+        tipo: BIGINT
+        nulos_pct: 95.63
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.039
+        quartis: [0, 0, 0]
+        top:
+        - [null, 204834]
+        - ['0', 8993]
+        - ['1', 365]
+      forma_contratacao_parceria_estadual_termo_colaboracao:
+        tipo: BIGINT
+        nulos_pct: 98.97
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.5845
+        quartis: [0, 1, 1]
+        top:
+        - [null, 211990]
+        - ['1', 1287]
+        - ['0', 915]
+      forma_contratacao_parceria_estadual_termo_fomento:
+        tipo: BIGINT
+        nulos_pct: 98.97
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0699
+        quartis: [0, 0, 0]
+        top:
+        - [null, 211990]
+        - ['0', 2048]
+        - ['1', 154]
+      forma_contratacao_parceria_estadual_acordo_cooperacao:
+        tipo: BIGINT
+        nulos_pct: 98.97
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.1494
+        quartis: [0, 0, 0]
+        top:
+        - [null, 211990]
+        - ['0', 1873]
+        - ['1', 329]
+      forma_contratacao_parceria_estadual_prestacao_servico:
+        tipo: BIGINT
+        nulos_pct: 98.97
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.2003
+        quartis: [0, 0, 0]
+        top:
+        - [null, 211990]
+        - ['0', 1761]
+        - ['1', 441]
+      forma_contratacao_parceria_estadual_cooperacao_tecnica_financeira:
+        tipo: BIGINT
+        nulos_pct: 98.97
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0118
+        quartis: [0, 0, 0]
+        top:
+        - [null, 211990]
+        - ['0', 2176]
+        - ['1', 26]
+      forma_contratacao_parceria_estadual_consorcio_publico:
+        tipo: BIGINT
+        nulos_pct: 98.97
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0082
+        quartis: [0, 0, 0]
+        top:
+        - [null, 211990]
+        - ['0', 2184]
+        - ['1', 18]
+      tipo_atendimento_escolarizacao:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      tipo_atendimento_atividade_complementar:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      tipo_atendimento_aee:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      mantenedora_escola_privada_empresa:
+        tipo: BIGINT
+        nulos_pct: 80.18
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.6858
+        quartis: [0, 1, 1]
+        top:
+        - [null, 171738]
+        - ['1', 29113]
+        - ['0', 13341]
+      mantenedora_escola_privada_ong:
+        tipo: BIGINT
+        nulos_pct: 80.18
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0147
+        quartis: [0, 0, 0]
+        top:
+        - [null, 171738]
+        - ['0', 41830]
+        - ['1', 624]
+      mantenedora_escola_privada_oscip:
+        tipo: BIGINT
+        nulos_pct: 80.18
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.01
+        quartis: [0, 0, 0]
+        top:
+        - [null, 171738]
+        - ['0', 42028]
+        - ['1', 426]
+      mantenedora_escola_privada_ong_oscip:
+        tipo: BIGINT
+        nulos_pct: 80.18
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0236
+        quartis: [0, 0, 0]
+        top:
+        - [null, 171738]
+        - ['0', 41450]
+        - ['1', 1004]
+      mantenedora_escola_privada_sindicato:
+        tipo: BIGINT
+        nulos_pct: 80.18
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.026
+        quartis: [0, 0, 0]
+        top:
+        - [null, 171738]
+        - ['0', 41349]
+        - ['1', 1105]
+      mantenedora_escola_privada_sistema_s:
+        tipo: BIGINT
+        nulos_pct: 80.18
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0338
+        quartis: [0, 0, 0]
+        top:
+        - [null, 171738]
+        - ['0', 41017]
+        - ['1', 1437]
+      mantenedora_escola_privada_sem_fins:
+        tipo: BIGINT
+        nulos_pct: 80.18
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.2799
+        quartis: [0, 0, 1]
+        top:
+        - [null, 171738]
+        - ['0', 30570]
+        - ['1', 11884]
+      cnpj_escola_privada: {tipo: VARCHAR, nulos_pct: 80.18, distintos_aprox: 39810, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpj_mantenedora: {tipo: VARCHAR, nulos_pct: 80.18, distintos_aprox: 40341, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_regulamentacao:
+        tipo: VARCHAR
+        nulos_pct: 15.71
+        distintos_aprox: 3
+        min: '0'
+        max: '2'
+        top:
+        - ['1', 162966]
+        - [null, 33652]
+        - ['2', 13708]
+        - ['0', 3866]
+      tipo_responsavel_regulamentacao: {tipo: VARCHAR, nulos_pct: 17.52, distintos_aprox: 5, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_escola_sede: {tipo: VARCHAR, nulos_pct: 98.34, distintos_aprox: 1251}
+      id_ies_ofertante: {tipo: VARCHAR, nulos_pct: 99.82, distintos_aprox: 153, min: '1038', max: '953'}
+      local_funcionamento_predio_escolar:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.9834
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 177547]
+        - [null, 33652]
+        - ['0', 2993]
+      tipo_local_funcionamento_predio_escolar:
+        tipo: VARCHAR
+        nulos_pct: 17.11
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - ['1', 143751]
+        - [null, 36645]
+        - ['2', 22224]
+        - ['3', 11572]
+      local_funcionamento_sala_empresa:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      local_funcionamento_socioeducativo: {tipo: BIGINT, nulos_pct: 15.71, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      local_funcionamento_unidade_prisional:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0034
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 179926]
+        - [null, 33652]
+        - ['1', 614]
+      local_funcionamento_prisional_socio: {tipo: BIGINT, nulos_pct: 15.71, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      local_funcionamento_templo_igreja:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      local_funcionamento_casa_professor:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      local_funcionamento_galpao:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0121
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 178361]
+        - [null, 33652]
+        - ['1', 2179]
+      tipo_local_funcionamento_galpao:
+        tipo: VARCHAR
+        nulos_pct: 98.98
+        distintos_aprox: 4
+        min: '1'
+        max: '9'
+        top:
+        - [null, 212013]
+        - ['1', 1029]
+        - ['9', 921]
+        - ['3', 127]
+        - ['2', 102]
+      local_funcionamento_outra_escola:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0341
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 174392]
+        - [null, 33652]
+        - ['1', 6148]
+      local_funcionamento_outros:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0648
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 168832]
+        - [null, 33652]
+        - ['1', 11708]
+      predio_compartilhado:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0444
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 172515]
+        - [null, 33652]
+        - ['1', 8025]
+      agua_filtrada:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      agua_potavel:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.9657
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 174355]
+        - [null, 33652]
+        - ['0', 6185]
+      agua_rede_publica:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.7856
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 141839]
+        - ['0', 38701]
+        - [null, 33652]
+      agua_poco_artesiano:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.1689
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 150050]
+        - [null, 33652]
+        - ['1', 30490]
+      agua_cacimba:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.076
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 166825]
+        - [null, 33652]
+        - ['1', 13715]
+      agua_fonte_rio:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.036
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 174043]
+        - [null, 33652]
+        - ['1', 6497]
+      agua_inexistente:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0067
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 179333]
+        - [null, 33652]
+        - ['1', 1207]
+      energia_rede_publica:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.9687
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 174882]
+        - [null, 33652]
+        - ['0', 5658]
+      energia_gerador:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      energia_gerador_fossil:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0105
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 178637]
+        - [null, 33652]
+        - ['1', 1903]
+      energia_outros:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      energia_renovavel:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0469
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 172071]
+        - [null, 33652]
+        - ['1', 8469]
+      energia_inexistente:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.01
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 178739]
+        - [null, 33652]
+        - ['1', 1801]
+      esgoto_rede_publica:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.5836
+        quartis: [0, 1, 1]
+        top:
+        - ['1', 105366]
+        - ['0', 75174]
+        - [null, 33652]
+      esgoto_fossa:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.4175
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 105169]
+        - ['1', 75371]
+        - [null, 33652]
+      esgoto_fossa_septica:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.2381
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 137562]
+        - ['1', 42978]
+        - [null, 33652]
+      esgoto_fossa_comum:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.1794
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 148147]
+        - [null, 33652]
+        - ['1', 32393]
+      esgoto_inexistente:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0257
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 175904]
+        - [null, 33652]
+        - ['1', 4636]
+      lixo_servico_coleta:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.8483
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 153150]
+        - [null, 33652]
+        - ['0', 27390]
+      lixo_queima:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.1443
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 154493]
+        - [null, 33652]
+        - ['1', 26047]
+      lixo_enterrado:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0238
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 176245]
+        - [null, 33652]
+        - ['1', 4295]
+      lixo_destino_final_publico:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.027
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 175657]
+        - [null, 33652]
+        - ['1', 4883]
+      lixo_descarta_outra_area:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0364
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 173975]
+        - [null, 33652]
+        - ['1', 6565]
+      lixo_joga_outra_area:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      lixo_outros:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      lixo_reciclagem:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      tratamento_lixo_separacao:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 3
+        min: '0'
+        max: '9'
+        media: 0.3827
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 113452]
+        - ['1', 66837]
+        - [null, 33652]
+        - ['9', 251]
+      tratamento_lixo_reutilizacao:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 3
+        min: '0'
+        max: '9'
+        media: 0.0537
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 172850]
+        - [null, 33652]
+        - ['1', 7439]
+        - ['9', 251]
+      tratamento_lixo_reciclagem:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 3
+        min: '0'
+        max: '9'
+        media: 0.122
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 160529]
+        - [null, 33652]
+        - ['1', 19760]
+        - ['9', 251]
+      tratamento_lixo_inexistente:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 3
+        min: '0'
+        max: '9'
+        media: 0.5956
+        quartis: [0, 1, 1]
+        top:
+        - ['1', 105276]
+        - ['0', 75013]
+        - [null, 33652]
+        - ['9', 251]
+      almoxarifado:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.5475
+        quartis: [0, 1, 1]
+        top:
+        - ['1', 98843]
+        - ['0', 81697]
+        - [null, 33652]
+      area_verde:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.3551
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 116435]
+        - ['1', 64105]
+        - [null, 33652]
+      auditorio:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.1304
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 157004]
+        - [null, 33652]
+        - ['1', 23536]
+      banheiro_fora_predio:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      banheiro_dentro_predio:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      banheiro:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.9744
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 175923]
+        - [null, 33652]
+        - ['0', 4617]
+      banheiro_educacao_infantil:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.4247
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 103866]
+        - ['1', 76674]
+        - [null, 33652]
+      banheiro_pne:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.5705
+        quartis: [0, 1, 1]
+        top:
+        - ['1', 102991]
+        - ['0', 77549]
+        - [null, 33652]
+      banheiro_funcionarios:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.6729
+        quartis: [0, 1, 1]
+        top:
+        - ['1', 121480]
+        - ['0', 59060]
+        - [null, 33652]
+      banheiro_chuveiro:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.4575
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 97941]
+        - ['1', 82599]
+        - [null, 33652]
+      bercario:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      biblioteca:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.3685
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 114018]
+        - ['1', 66522]
+        - [null, 33652]
+      biblioteca_sala_leitura:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.5555
+        quartis: [0, 1, 1]
+        top:
+        - ['1', 100293]
+        - ['0', 80247]
+        - [null, 33652]
+      cozinha:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.9289
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 167707]
+        - [null, 33652]
+        - ['0', 12833]
+      despensa:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.7013
+        quartis: [0, 1, 1]
+        top:
+        - ['1', 126615]
+        - ['0', 53925]
+        - [null, 33652]
+      dormitorio_aluno:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0366
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 173929]
+        - [null, 33652]
+        - ['1', 6611]
+      dormitorio_professor:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0128
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 178229]
+        - [null, 33652]
+        - ['1', 2311]
+      laboratorio_ciencias:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.142
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 154903]
+        - [null, 33652]
+        - ['1', 25637]
+      laboratorio_informatica:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.2886
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 128438]
+        - ['1', 52102]
+        - [null, 33652]
+      laboratorio_educacao_profissional:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0222
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 176529]
+        - [null, 33652]
+        - ['1', 4011]
+      patio_coberto:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.6027
+        quartis: [0, 1, 1]
+        top:
+        - ['1', 108807]
+        - ['0', 71733]
+        - [null, 33652]
+      patio_descoberto:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.5124
+        quartis: [0, 1, 1]
+        top:
+        - ['1', 92505]
+        - ['0', 88035]
+        - [null, 33652]
+      parque_infantil:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.4062
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 107200]
+        - ['1', 73340]
+        - [null, 33652]
+      piscina:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0295
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 175215]
+        - [null, 33652]
+        - ['1', 5325]
+      quadra_esportes:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.4032
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 107740]
+        - ['1', 72800]
+        - [null, 33652]
+      quadra_esportes_coberta:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.3132
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 123998]
+        - ['1', 56542]
+        - [null, 33652]
+      quadra_esportes_descoberta:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.1433
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 154664]
+        - [null, 33652]
+        - ['1', 25876]
+      refeitorio:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.5717
+        quartis: [0, 1, 1]
+        top:
+        - ['1', 103219]
+        - ['0', 77321]
+        - [null, 33652]
+      sala_atelie_artes:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0587
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 169947]
+        - [null, 33652]
+        - ['1', 10593]
+      sala_musica_coral:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0281
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 175464]
+        - [null, 33652]
+        - ['1', 5076]
+      sala_estudio_danca:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0246
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 176096]
+        - [null, 33652]
+        - ['1', 4444]
+      sala_multiuso:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.1179
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 159262]
+        - [null, 33652]
+        - ['1', 21278]
+      sala_estudio_gravacao:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0055
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 179546]
+        - [null, 33652]
+        - ['1', 994]
+      sala_oficinas_educacao_profissional:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0129
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 178219]
+        - [null, 33652]
+        - ['1', 2321]
+      sala_diretoria:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.7541
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 136150]
+        - ['0', 44390]
+        - [null, 33652]
+      sala_leitura:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.3078
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 124973]
+        - ['1', 55567]
+        - [null, 33652]
+      sala_professor:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.6745
+        quartis: [0, 1, 1]
+        top:
+        - ['1', 121767]
+        - ['0', 58773]
+        - [null, 33652]
+      sala_repouso_aluno:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0723
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 167491]
+        - [null, 33652]
+        - ['1', 13049]
+      secretaria:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.7682
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 138685]
+        - ['0', 41855]
+        - [null, 33652]
+      sala_atendimento_especial:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.2995
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 126466]
+        - ['1', 54074]
+        - [null, 33652]
+      terreirao:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.1506
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 153352]
+        - [null, 33652]
+        - ['1', 27188]
+      viveiro:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0124
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 178307]
+        - [null, 33652]
+        - ['1', 2233]
+      dependencia_pne:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      lavanderia:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      dependencia_outras:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0108
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 178590]
+        - [null, 33652]
+        - ['1', 1950]
+      acessibilidade_corrimao:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.3874
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 110607]
+        - ['1', 69933]
+        - [null, 33652]
+      acessibilidade_elevador:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0572
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 170216]
+        - [null, 33652]
+        - ['1', 10324]
+      acessibilidade_pisos_tateis:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.1371
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 155779]
+        - [null, 33652]
+        - ['1', 24761]
+      acessibilidade_vao_livre:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.5038
+        quartis: [0, 1, 1]
+        top:
+        - ['1', 90955]
+        - ['0', 89585]
+        - [null, 33652]
+      acessibilidade_rampas:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.6197
+        quartis: [0, 1, 1]
+        top:
+        - ['1', 111887]
+        - ['0', 68653]
+        - [null, 33652]
+      acessibilidade_sinal_sonoro:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0465
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 172152]
+        - [null, 33652]
+        - ['1', 8388]
+      acessibilidade_sinal_tatil:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0631
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 169151]
+        - [null, 33652]
+        - ['1', 11389]
+      acessibilidade_sinal_visual:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.1196
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 158949]
+        - [null, 33652]
+        - ['1', 21591]
+      acessibilidade_inexistente:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.2149
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 141750]
+        - ['1', 38790]
+        - [null, 33652]
+      quantidade_sala_existente:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      quantidade_sala_utilizada:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 127
+        min: '1'
+        max: '945'
+        media: 9.122
+        quartis: [5, 8, 12]
+      quantidade_sala_utilizada_dentro:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 127
+        min: '0'
+        max: '193'
+        media: 8.5892
+        quartis: [4, 7, 11]
+      quantidade_sala_utilizada_fora:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 88
+        min: '0'
+        max: '926'
+        media: 0.5328
+        quartis: [0, 0, 0]
+      quantidade_sala_utilizada_climatizada:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 104
+        min: '0'
+        max: '193'
+        media: 4.3479
+        quartis: [0, 1, 7]
+      quantidade_sala_utilizada_acessivel:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 110
+        min: '0'
+        max: '355'
+        media: 3.2455
+        quartis: [0, 0, 5]
+      equipamento_parabolica:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0528
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 171000]
+        - [null, 33652]
+        - ['1', 9540]
+      quantidade_equipamento_parabolica:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      equipamento_computador:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.8476
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 153029]
+        - [null, 33652]
+        - ['0', 27511]
+      equipamento_copiadora:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.3317
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 120648]
+        - ['1', 59892]
+        - [null, 33652]
+      quantidade_equipamento_copiadora:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      equipamento_impressora:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.6327
+        quartis: [0, 1, 1]
+        top:
+        - ['1', 114232]
+        - ['0', 66308]
+        - [null, 33652]
+      quantidade_equipamento_impressora:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      equipamento_impressora_multifuncional:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.72
+        quartis: [0, 1, 1]
+        top:
+        - ['1', 129995]
+        - ['0', 50545]
+        - [null, 33652]
+      quantidade_equipamento_impressora_multifuncional:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      equipamento_scanner:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.2803
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 129938]
+        - ['1', 50602]
+        - [null, 33652]
+      equipamento_nenhum:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0659
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 168649]
+        - [null, 33652]
+        - ['1', 11891]
+      equipamento_dvd:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.3177
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 123177]
+        - ['1', 57363]
+        - [null, 33652]
+      quantidade_equipamento_dvd:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 45
+        min: '0'
+        max: '88888'
+        media: 37.0769
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 123177]
+        - ['1', 33885]
+        - [null, 33652]
+        - ['2', 12108]
+        - ['3', 4450]
+        - ['4', 2392]
+        - ['5', 1452]
+        - ['6', 877]
+        - ['8', 467]
+        - ['7', 414]
+      equipamento_som:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.7307
+        quartis: [0, 1, 1]
+        top:
+        - ['1', 131923]
+        - ['0', 48617]
+        - [null, 33652]
+      quantidade_equipamento_som:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 81
+        min: '0'
+        max: '88888'
+        media: 446.0673
+        quartis: [0, 1, 2]
+      equipamento_tv:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.7912
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 142841]
+        - ['0', 37699]
+        - [null, 33652]
+      quantidade_equipamento_tv:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 67
+        min: '0'
+        max: '88888'
+        media: 934.9585
+        quartis: [1, 2, 4]
+      equipamento_lousa_digital:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.1592
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 151790]
+        - [null, 33652]
+        - ['1', 28750]
+      quantidade_equipamento_lousa_digital:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 51
+        min: '0'
+        max: '88888'
+        media: 29.0282
+        quartis: [0, 0, 0]
+      equipamento_multimidia:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.6631
+        quartis: [0, 1, 1]
+        top:
+        - ['1', 119723]
+        - ['0', 60817]
+        - [null, 33652]
+      quantidade_equipamento_multimidia:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 90
+        min: '0'
+        max: '88888'
+        media: 539.1997
+        quartis: [0, 1, 2]
+      equipamento_videocassete:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      quantidade_equipamento_videocassete:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      equipamento_retroprojetor:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      quantidade_equipamento_retroprojetor:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      equipamento_fax: {tipo: BIGINT, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      quantidade_equipamento_fax: {tipo: BIGINT, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      equipamento_foto:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      quantidade_equipamento_foto:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      quantidade_computador_aluno:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      desktop_aluno:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.4893
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 92207]
+        - ['1', 88333]
+        - [null, 33652]
+      quantidade_desktop_aluno:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 352
+        min: '0'
+        max: '88888'
+        media: 152.3411
+        quartis: [0, 0, 5]
+      computador_portatil_aluno:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.4606
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 97392]
+        - ['1', 83148]
+        - [null, 33652]
+      quantidade_computador_portatil_aluno:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 806
+        min: '0'
+        max: '88888'
+        media: 109.4333
+        quartis: [0, 0, 3]
+      tablet_aluno:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.2427
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 136727]
+        - ['1', 43813]
+        - [null, 33652]
+      quantidade_tablet_aluno:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 748
+        min: '0'
+        max: '88888'
+        media: 60.834
+        quartis: [0, 0, 0]
+      quantidade_computador:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      quantidade_computador_administrativo:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      internet:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.9458
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 170762]
+        - [null, 33652]
+        - ['0', 9778]
+      internet_alunos:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.4325
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 102460]
+        - ['1', 78080]
+        - [null, 33652]
+      internet_administrativo:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.9209
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 166255]
+        - [null, 33652]
+        - ['0', 14285]
+      internet_aprendizagem:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.7342
+        quartis: [0, 1, 1]
+        top:
+        - ['1', 132553]
+        - ['0', 47987]
+        - [null, 33652]
+      internet_comunidade:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0744
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 167102]
+        - [null, 33652]
+        - ['1', 13438]
+      acesso_internet_computador:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 3
+        min: '0'
+        max: '9'
+        media: 0.4592
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 113894]
+        - ['1', 64614]
+        - [null, 33652]
+        - ['9', 2032]
+      acesso_internet_dispositivo_pessoal:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 3
+        min: '0'
+        max: '9'
+        media: 0.2854
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 145262]
+        - [null, 33652]
+        - ['1', 33246]
+        - ['9', 2032]
+      tipo_rede_local:
+        tipo: VARCHAR
+        nulos_pct: 15.71
+        distintos_aprox: 5
+        min: '0'
+        max: '9'
+        top:
+        - ['3', 82189]
+        - [null, 33652]
+        - ['2', 33328]
+        - ['1', 31337]
+        - ['0', 18184]
+        - ['9', 15502]
+      banda_larga:
+        tipo: BIGINT
+        nulos_pct: 20.28
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.8782
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 149966]
+        - [null, 43430]
+        - ['0', 20796]
+      quantidade_funcionario:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      profissional_administrativo:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      quantidade_profissional_administrativo:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 75
+        min: '0'
+        max: '88888'
+        media: 213.2738
+        quartis: [0, 1, 2]
+      profissional_servico_geral:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      quantidade_profissional_servico_geral:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 96
+        min: '0'
+        max: '88888'
+        media: 286.732
+        quartis: [1, 3, 6]
+      profissional_bibliotecario:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      quantidade_profissional_bibliotecario:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 24
+        min: '0'
+        max: '88888'
+        media: 73.7001
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 141182]
+        - [null, 33652]
+        - ['1', 24897]
+        - ['2', 9599]
+        - ['3', 3061]
+        - ['4', 922]
+        - ['5', 350]
+        - ['6', 188]
+        - ['88888', 149]
+        - ['7', 64]
+      profissional_saude:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      quantidade_profissional_saude:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 49
+        min: '0'
+        max: '88888'
+        media: 342.7869
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 172912]
+        - [null, 33652]
+        - ['1', 3753]
+        - ['2', 1246]
+        - ['88888', 696]
+        - ['3', 513]
+        - ['4', 299]
+        - ['5', 276]
+        - ['6', 173]
+        - ['10', 111]
+      profissional_coordenador:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      quantidade_profissional_coordenador:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 41
+        min: '0'
+        max: '88888'
+        media: 67.5566
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 124384]
+        - [null, 33652]
+        - ['1', 30750]
+        - ['2', 14176]
+        - ['3', 5010]
+        - ['4', 3047]
+        - ['5', 1198]
+        - ['6', 733]
+        - ['7', 338]
+        - ['8', 225]
+      profissional_fonaudiologo:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      quantidade_profissional_fonaudiologo:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 10
+        min: '0'
+        max: '88888'
+        media: 9.39
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 174816]
+        - [null, 33652]
+        - ['1', 5183]
+        - ['2', 407]
+        - ['3', 82]
+        - ['4', 24]
+        - ['88888', 19]
+        - ['5', 7]
+        - ['10', 1]
+        - ['6', 1]
+      profissional_nutricionista:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      quantidade_profissional_nutricionista:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 11
+        min: '0'
+        max: '88888'
+        media: 25.8608
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 137749]
+        - ['1', 39492]
+        - [null, 33652]
+        - ['2', 2637]
+        - ['3', 518]
+        - ['4', 82]
+        - ['88888', 52]
+        - ['5', 5]
+        - ['10', 3]
+        - ['12', 1]
+      profissional_psicologo:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      quantidade_profissional_psicologo:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 18
+        min: '0'
+        max: '88888'
+        media: 45.023
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 145412]
+        - [null, 33652]
+        - ['1', 31762]
+        - ['2', 2498]
+        - ['3', 527]
+        - ['4', 134]
+        - ['88888', 91]
+        - ['5', 50]
+        - ['6', 28]
+        - ['7', 16]
+      profissional_alimentacao:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      quantidade_profissional_alimentacao:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 38
+        min: '0'
+        max: '88888'
+        media: 61.5807
+        quartis: [0, 2, 3]
+        top:
+        - ['0', 49089]
+        - ['2', 39495]
+        - ['1', 34447]
+        - [null, 33652]
+        - ['3', 23232]
+        - ['4', 16788]
+        - ['5', 7146]
+        - ['6', 4872]
+        - ['7', 2023]
+        - ['8', 1402]
+      profissional_pedagogia:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      quantidade_profissional_pedagogia:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 73
+        min: '0'
+        max: '88888'
+        media: 601.8922
+        quartis: [0, 1, 2]
+      profissional_secretario:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      quantidade_profissional_secretario:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 22
+        min: '0'
+        max: '88888'
+        media: 12.9795
+        quartis: [0, 1, 1]
+        top:
+        - ['1', 102127]
+        - ['0', 70370]
+        - [null, 33652]
+        - ['2', 6259]
+        - ['3', 1176]
+        - ['4', 361]
+        - ['5', 102]
+        - ['6', 52]
+        - ['88888', 25]
+        - ['7', 19]
+      profissional_seguranca:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      quantidade_profissional_seguranca:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 39
+        min: '0'
+        max: '88888'
+        media: 312.1771
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 139852]
+        - [null, 33652]
+        - ['1', 14241]
+        - ['2', 13507]
+        - ['4', 5484]
+        - ['3', 4412]
+        - ['6', 743]
+        - ['88888', 633]
+        - ['5', 608]
+        - ['8', 481]
+      profissional_monitor:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      quantidade_profissional_monitor:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 60
+        min: '0'
+        max: '88888'
+        media: 580.8818
+        quartis: [0, 0, 0]
+      profissional_gestao:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      quantidade_profissional_gestao:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 27
+        min: '0'
+        max: '88888'
+        media: 23.9054
+        quartis: [0, 1, 1]
+        top:
+        - ['0', 83394]
+        - ['1', 67541]
+        - [null, 33652]
+        - ['2', 21493]
+        - ['3', 6145]
+        - ['4', 1361]
+        - ['5', 335]
+        - ['6', 93]
+        - ['88888', 47]
+        - ['7', 37]
+      profissional_assistente_social:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      quantidade_profissional_assistente_social:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 14
+        min: '0'
+        max: '88888'
+        media: 28.186
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 160796]
+        - [null, 33652]
+        - ['1', 17957]
+        - ['2', 1342]
+        - ['3', 248]
+        - ['4', 85]
+        - ['88888', 57]
+        - ['5', 25]
+        - ['6', 16]
+        - ['8', 6]
+      profissional_tradutor_libras:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      quantidade_profissional_tradutor_libras:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 17
+        min: '0'
+        max: '88888'
+        media: 18.7395
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 176389]
+        - [null, 33652]
+        - ['1', 3269]
+        - ['2', 567]
+        - ['3', 156]
+        - ['4', 66]
+        - ['88888', 38]
+        - ['5', 26]
+        - ['6', 15]
+        - ['7', 5]
+      alimentacao:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.8423
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 152063]
+        - [null, 33652]
+        - ['0', 28477]
+      organizacao_serie_ano:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      organizacao_semestre:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      organizacao_fundamental_ciclo:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      organizacao_grupo_nao_seriado:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      organizacao_modulo:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      organizacao_alternancia:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      material_pedagogico_multimidia:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.3791
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 112094]
+        - ['1', 68446]
+        - [null, 33652]
+      material_pedagogico_infantil:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.5497
+        quartis: [0, 1, 1]
+        top:
+        - ['1', 99248]
+        - ['0', 81292]
+        - [null, 33652]
+      material_pedagogico_cientifico:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.1926
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 145772]
+        - ['1', 34768]
+        - [null, 33652]
+      material_pedagogico_difusao:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.5578
+        quartis: [0, 1, 1]
+        top:
+        - ['1', 100709]
+        - ['0', 79831]
+        - [null, 33652]
+      material_pedagogico_musical:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.2651
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 132675]
+        - ['1', 47865]
+        - [null, 33652]
+      material_pedagogico_jogo:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.8239
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 148753]
+        - [null, 33652]
+        - ['0', 31787]
+      material_pedagogico_artistica:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.458
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 97853]
+        - ['1', 82687]
+        - [null, 33652]
+      material_pedagogico_profissional:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0608
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 169560]
+        - [null, 33652]
+        - ['1', 10980]
+      material_pedagogico_desportiva:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.6835
+        quartis: [0, 1, 1]
+        top:
+        - ['1', 123404]
+        - ['0', 57136]
+        - [null, 33652]
+      material_pedagogico_indigena:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0224
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 176487]
+        - [null, 33652]
+        - ['1', 4053]
+      material_pedagogico_etnico:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.2362
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 137896]
+        - ['1', 42644]
+        - [null, 33652]
+      material_pedagogico_campo:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0605
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 169624]
+        - [null, 33652]
+        - ['1', 10916]
+      material_pedagogico_surdo:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0326
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 174660]
+        - [null, 33652]
+        - ['1', 5880]
+      material_pedagogico_nenhum:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0732
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 167330]
+        - [null, 33652]
+        - ['1', 13210]
+      material_especifico_quilombola:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      material_especifico_indigena:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      material_especifico_nao_utiliza:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      educacao_indigena:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0206
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 176828]
+        - [null, 33652]
+        - ['1', 3712]
+      tipo_lingua_indigena:
+        tipo: VARCHAR
+        nulos_pct: 98.27
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - [null, 210480]
+        - ['3', 2698]
+        - ['2', 838]
+        - ['1', 176]
+      id_lingua_indigena_1: {tipo: VARCHAR, nulos_pct: 98.66, distintos_aprox: 171, min: '1', max: '999'}
+      id_lingua_indigena_2: {tipo: VARCHAR, nulos_pct: 99.83, distintos_aprox: 74, min: '100', max: '999'}
+      id_lingua_indigena_3:
+        tipo: VARCHAR
+        nulos_pct: 99.94
+        distintos_aprox: 23
+        min: '126'
+        max: '999'
+        top:
+        - [null, 214065]
+        - ['999', 53]
+        - ['270', 32]
+        - ['19', 6]
+        - ['179', 4]
+        - ['260', 4]
+        - ['32', 4]
+        - ['234', 3]
+        - ['280', 3]
+        - ['126', 2]
+      programa_brasil_alfabetizado:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      final_semana:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      exame_selecao:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 3
+        min: '0'
+        max: '9'
+        media: 0.0519
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 172757]
+        - [null, 33652]
+        - ['1', 7584]
+        - ['9', 199]
+      reserva_vaga_raca_cor:
+        tipo: BIGINT
+        nulos_pct: 96.46
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.1391
+        quartis: [0, 0, 0]
+        top:
+        - [null, 206608]
+        - ['0', 6529]
+        - ['1', 1055]
+      reserva_vaga_renda:
+        tipo: BIGINT
+        nulos_pct: 96.46
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.2533
+        quartis: [0, 0, 1]
+        top:
+        - [null, 206608]
+        - ['0', 5663]
+        - ['1', 1921]
+      reserva_vaga_publica:
+        tipo: BIGINT
+        nulos_pct: 96.46
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.1928
+        quartis: [0, 0, 0]
+        top:
+        - [null, 206608]
+        - ['0', 6122]
+        - ['1', 1462]
+      reserva_vaga_pcd:
+        tipo: BIGINT
+        nulos_pct: 96.46
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.2509
+        quartis: [0, 0, 1]
+        top:
+        - [null, 206608]
+        - ['0', 5681]
+        - ['1', 1903]
+      reserva_vaga_outros:
+        tipo: BIGINT
+        nulos_pct: 96.46
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.1572
+        quartis: [0, 0, 0]
+        top:
+        - [null, 206608]
+        - ['0', 6392]
+        - ['1', 1192]
+      reserva_vaga_nenhuma:
+        tipo: BIGINT
+        nulos_pct: 96.46
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.5469
+        quartis: [0, 1, 1]
+        top:
+        - [null, 206608]
+        - ['1', 4148]
+        - ['0', 3436]
+      redes_sociais:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 3
+        min: '0'
+        max: '9'
+        media: 0.7424
+        quartis: [0, 1, 1]
+        top:
+        - ['1', 114098]
+        - ['0', 64227]
+        - [null, 33652]
+        - ['9', 2215]
+      espaco_atividade_comunidade:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 3
+        min: '0'
+        max: '9'
+        media: 0.5435
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 92228]
+        - ['1', 87086]
+        - [null, 33652]
+        - ['9', 1226]
+      espaco_equipamento_alunos:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 3
+        min: '0'
+        max: '9'
+        media: 0.4995
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 100786]
+        - ['1', 78450]
+        - [null, 33652]
+        - ['9', 1304]
+      orgao_associacao_pais:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.039
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 173493]
+        - [null, 33652]
+        - ['1', 7047]
+      orgao_associacao_pais_mestres:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.2714
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 131544]
+        - ['1', 48996]
+        - [null, 33652]
+      orgao_conselho_escolar:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.6605
+        quartis: [0, 1, 1]
+        top:
+        - ['1', 119238]
+        - ['0', 61302]
+        - [null, 33652]
+      orgao_gremio_estudantil:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.1264
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 157712]
+        - [null, 33652]
+        - ['1', 22828]
+      orgao_outros:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0881
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 164635]
+        - [null, 33652]
+        - ['1', 15905]
+      orgao_nenhum:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.2434
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 136596]
+        - ['1', 43944]
+        - [null, 33652]
+      tipo_proposta_pedagogica:
+        tipo: VARCHAR
+        nulos_pct: 15.71
+        distintos_aprox: 4
+        min: '0'
+        max: '9'
+        top:
+        - ['1', 137694]
+        - ['0', 36663]
+        - [null, 33652]
+        - ['2', 5105]
+        - ['9', 1078]
+      tipo_aee:
+        tipo: VARCHAR
+        nulos_pct: 15.71
+        distintos_aprox: 3
+        min: '0'
+        max: '2'
+        top:
+        - ['0', 128027]
+        - ['1', 51581]
+        - [null, 33652]
+        - ['2', 932]
+      tipo_atividade_complementar:
+        tipo: VARCHAR
+        nulos_pct: 15.71
+        distintos_aprox: 3
+        min: '0'
+        max: '2'
+        top:
+        - ['0', 146653]
+        - [null, 33652]
+        - ['1', 33161]
+        - ['2', 726]
+      escolarizacao:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.9902
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 178766]
+        - [null, 33652]
+        - ['0', 1774]
+      mediacao_presencial:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.9972
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 180033]
+        - [null, 33652]
+        - ['0', 507]
+      mediacao_semipresencial:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0025
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 180092]
+        - [null, 33652]
+        - ['1', 448]
+      mediacao_ead:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.008
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 179091]
+        - [null, 33652]
+        - ['1', 1449]
+      regular:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.9619
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 173664]
+        - [null, 33652]
+        - ['0', 6876]
+      diurno:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      noturno:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      ead:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      educacao_basica:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      etapa_ensino_infantil:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      etapa_ensino_infantil_creche:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.4331
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 102354]
+        - ['1', 78186]
+        - [null, 33652]
+      etapa_ensino_infantil_pre_escola:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.5429
+        quartis: [0, 1, 1]
+        top:
+        - ['1', 98010]
+        - ['0', 82530]
+        - [null, 33652]
+      etapa_ensino_fundamental:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      etapa_ensino_fundamental_anos_iniciais:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.5521
+        quartis: [0, 1, 1]
+        top:
+        - ['1', 99682]
+        - ['0', 80858]
+        - [null, 33652]
+      etapa_ensino_fundamental_anos_finais:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.338
+        quartis: [0, 0, 1]
+        top:
+        - ['0', 119524]
+        - ['1', 61016]
+        - [null, 33652]
+      etapa_ensino_medio:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0022
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 180150]
+        - [null, 33652]
+        - ['1', 390]
+      etapa_ensino_profissional:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0938
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 162010]
+        - [null, 35417]
+        - ['1', 16765]
+      etapa_ensino_profissional_tecnica:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      etapa_ensino_eja:
+        tipo: BIGINT
+        nulos_pct: 15.71
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.1645
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 150844]
+        - [null, 33652]
+        - ['1', 29696]
+      etapa_ensino_eja_fundamental:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      etapa_ensino_eja_medio:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      etapa_ensino_especial:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      etapa_ensino_especial_comum:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      etapa_ensino_especial_exclusiva:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      etapa_ensino_creche_comum:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      etapa_ensino_pre_escola_comum:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      etapa_ensino_fundamental_anos_iniciais_comum:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      etapa_ensino_fundamental_anos_finais_comum:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      etapa_ensino_medio_comum:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      etapa_ensino_medio_integrado_comum:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      etapa_ensino_medio_normal_comum:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      etapa_ensino_profissional_comum:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      etapa_ensino_eja_fundamental_comum:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      etapa_ensino_eja_medio_comum:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      etapa_ensino_eja_profissional_comum:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      etapa_ensino_creche_especial_exclusiva:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      etapa_ensino_pre_escola_especial_exclusiva:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      etapa_ensino_fundamental_anos_iniciais_especial_exclusiva:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      etapa_ensino_fundamental_anos_finais_especial_exclusiva:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      etapa_ensino_medio_especial_exclusiva:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      etapa_ensino_medio_integrado_especial_exclusiva:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      etapa_ensino_medio_normal_especial_exclusiva:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      etapa_ensino_profissional_especial_exclusiva:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      etapa_ensino_eja_fundamental_especial_exclusiva:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      etapa_ensino_eja_medio_especial_exclusiva:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 214192]
+      quantidade_matricula_educacao_basica: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 2303, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      quantidade_matricula_infantil: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 763, pessoal: 'só contagens: valores seriam dado pessoal'}
+      quantidade_matricula_infantil_creche: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 479, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      quantidade_matricula_infantil_pre_escola: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 577, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      quantidade_matricula_fundamental: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 1811, pessoal: 'só contagens: valores seriam dado pessoal'}
+      quantidade_matricula_fundamental_anos_iniciais: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 1357, pessoal: 'só contagens: valores
+          seriam dado pessoal'}
+      quantidade_matricula_fundamental_1_ano: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 329, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      quantidade_matricula_fundamental_2_ano: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 295, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      quantidade_matricula_fundamental_3_ano: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 317, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      quantidade_matricula_fundamental_4_ano: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 351, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      quantidade_matricula_fundamental_5_ano: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 337, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      quantidade_matricula_fundamental_anos_finais: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 1265, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      quantidade_matricula_fundamental_6_ano: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 419, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      quantidade_matricula_fundamental_7_ano: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 385, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      quantidade_matricula_fundamental_8_ano: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 432, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      quantidade_matricula_fundamental_9_ano: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 383, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      quantidade_matricula_medio: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 1713, pessoal: 'só contagens: valores seriam dado pessoal'}
+      quantidade_matricula_medio_propedeutico: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 1390, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      quantidade_matricula_medio_propedeutico_1_ano: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 732, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      quantidade_matricula_medio_propedeutico_2_ano: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 619, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      quantidade_matricula_medio_propedeutico_3_ano: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 588, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      quantidade_matricula_medio_propedeutico_4_ano: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 27, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      quantidade_matricula_medio_propedeutico_nao_seriado: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 176, pessoal: 'só contagens: valores
+          seriam dado pessoal'}
+      quantidade_matricula_medio_tecnico: {tipo: BIGINT, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      quantidade_matricula_medio_tecnico_1_ano: {tipo: BIGINT, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      quantidade_matricula_medio_tecnico_2_ano: {tipo: BIGINT, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      quantidade_matricula_medio_tecnico_3_ano: {tipo: BIGINT, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      quantidade_matricula_medio_tecnico_4_ano: {tipo: BIGINT, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      quantidade_matricula_medio_tecnico_nao_seriado: {tipo: BIGINT, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      quantidade_matricula_medio_magisterio: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 180, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      quantidade_matricula_medio_magisterio_1_ano: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 108, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      quantidade_matricula_medio_magisterio_2_ano: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 82, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      quantidade_matricula_medio_magisterio_3_ano: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 83, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      quantidade_matricula_medio_magisterio_4_ano: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 45, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      quantidade_matricula_profissional: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 1331, pessoal: 'só contagens: valores seriam dado pessoal'}
+      quantidade_matricula_profissional_tecnica: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 1370, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      quantidade_matricula_profissional_tecnica_concomitante: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 571, pessoal: 'só contagens: valores
+          seriam dado pessoal'}
+      quantidade_matricula_profissional_tecnica_subsequente: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 792, pessoal: 'só contagens: valores
+          seriam dado pessoal'}
+      quantidade_matricula_profissional_fic_concomitante: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 286, pessoal: 'só contagens: valores
+          seriam dado pessoal'}
+      quantidade_matricula_eja: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 895, pessoal: 'só contagens: valores seriam dado pessoal'}
+      quantidade_matricula_eja_fundamental: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 745, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      quantidade_matricula_eja_fundamental_anos_iniciais: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 398, pessoal: 'só contagens: valores
+          seriam dado pessoal'}
+      quantidade_matricula_eja_fundamental_anos_finais: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 426, pessoal: 'só contagens: valores
+          seriam dado pessoal'}
+      quantidade_matricula_eja_fundamental_fic: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 197, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      quantidade_matricula_eja_medio: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 672, pessoal: 'só contagens: valores seriam dado pessoal'}
+      quantidade_matricula_eja_medio_nao_profissionalizante: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 652, pessoal: 'só contagens: valores
+          seriam dado pessoal'}
+      quantidade_matricula_eja_medio_fic: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 200, pessoal: 'só contagens: valores seriam dado pessoal'}
+      quantidade_matricula_eja_medio_tecnico: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 239, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      quantidade_matricula_especial: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 320, pessoal: 'só contagens: valores seriam dado pessoal'}
+      quantidade_matricula_especial_comum: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 227, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      quantidade_matricula_especial_exclusiva: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 282, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      quantidade_matricula_feminino: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 1357, pessoal: 'só contagens: valores seriam dado pessoal'}
+      quantidade_matricula_masculino: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 1590, pessoal: 'só contagens: valores seriam dado pessoal'}
+      quantidade_matricula_nao_declarada: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 1171, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      quantidade_matricula_branca: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 1385, pessoal: 'só contagens: valores seriam dado pessoal'}
+      quantidade_matricula_preta: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 488, pessoal: 'só contagens: valores seriam dado pessoal'}
+      quantidade_matricula_parda: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 1538, pessoal: 'só contagens: valores seriam dado pessoal'}
+      quantidade_matricula_amarela: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 104, pessoal: 'só contagens: valores seriam dado pessoal'}
+      quantidade_matricula_indigena: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 398, pessoal: 'só contagens: valores seriam dado pessoal'}
+      quantidade_matricula_idade_0_3: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 493, pessoal: 'só contagens: valores seriam dado pessoal'}
+      quantidade_matricula_idade_4_5: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 599, pessoal: 'só contagens: valores seriam dado pessoal'}
+      quantidade_matricula_idade_6_10: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 1249, pessoal: 'só contagens: valores seriam dado pessoal'}
+      quantidade_matricula_idade_11_14: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 1271, pessoal: 'só contagens: valores seriam dado pessoal'}
+      quantidade_matricula_idade_15_17: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 1453, pessoal: 'só contagens: valores seriam dado pessoal'}
+      quantidade_matricula_idade_18: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 1583, pessoal: 'só contagens: valores seriam dado pessoal'}
+      quantidade_matricula_diurno: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 2181, pessoal: 'só contagens: valores seriam dado pessoal'}
+      quantidade_matricula_noturno: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 900, pessoal: 'só contagens: valores seriam dado pessoal'}
+      quantidade_matricula_ead: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 712, pessoal: 'só contagens: valores seriam dado pessoal'}
+      quantidade_matricula_infantil_integral: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 444, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      quantidade_matricula_infantil_creche_integral: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 438, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      quantidade_matricula_infantil_pre_escola_integral: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 330, pessoal: 'só contagens: valores
+          seriam dado pessoal'}
+      quantidade_matricula_fundamental_integral: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 1025, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      quantidade_matricula_fundamental_anos_iniciais_integral: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 789, pessoal: 'só contagens:
+          valores seriam dado pessoal'}
+      quantidade_matricula_fundamental_anos_finais_integral: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 877, pessoal: 'só contagens: valores
+          seriam dado pessoal'}
+      quantidade_matricula_medio_integral: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 851, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      quantidade_matricula_zona_residencia_urbana: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 2490, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      quantidade_matricula_zona_residencia_rural: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 976, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      quantidade_matricula_zona_residencia_nao_aplicavel: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 43, pessoal: 'só contagens: valores
+          seriam dado pessoal'}
+      quantidade_matricula_utiliza_transporte_publico: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 1396, pessoal: 'só contagens: valores
+          seriam dado pessoal'}
+      quantidade_matricula_transporte_estadual: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 1155, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      quantidade_matricula_transporte_municipal: {tipo: BIGINT, nulos_pct: 16.54, distintos_aprox: 1175, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      quantidade_docente_educacao_basica:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 220
+        min: '0'
+        max: '337'
+        media: 16.7367
+        quartis: [6, 13, 23]
+      quantidade_docente_infantil:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 86
+        min: '0'
+        max: '135'
+        media: 4.1372
+        quartis: [0, 2, 6]
+      quantidade_docente_infantil_creche:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 74
+        min: '0'
+        max: '97'
+        media: 2.1986
+        quartis: [0, 0, 2]
+      quantidade_docente_infantil_pre_escola:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 47
+        min: '0'
+        max: '63'
+        media: 2.1658
+        quartis: [0, 1, 3]
+        top:
+        - ['0', 88691]
+        - [null, 35420]
+        - ['2', 21533]
+        - ['1', 19488]
+        - ['3', 10655]
+        - ['4', 9607]
+        - ['5', 6036]
+        - ['6', 5052]
+        - ['7', 3577]
+        - ['8', 3086]
+      quantidade_docente_fundamental:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 130
+        min: '0'
+        max: '190'
+        media: 9.6127
+        quartis: [0, 5, 16]
+      quantidade_docente_fundamental_anos_iniciais:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 87
+        min: '0'
+        max: '111'
+        media: 4.9608
+        quartis: [0, 0, 8]
+      quantidade_docente_fundamental_anos_finais:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 81
+        min: '0'
+        max: '136'
+        media: 5.1959
+        quartis: [0, 0, 9]
+      quantidade_docente_medio:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 151
+        min: '0'
+        max: '318'
+        media: 3.7518
+        quartis: [0, 0, 0]
+      quantidade_docente_profissional:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 175
+        min: '0'
+        max: '337'
+        media: 1.6549
+        quartis: [0, 0, 0]
+      quantidade_docente_profissional_tecnica:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 172
+        min: '0'
+        max: '337'
+        media: 1.1979
+        quartis: [0, 0, 0]
+      quantidade_docente_eja:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 84
+        min: '0'
+        max: '213'
+        media: 1.1938
+        quartis: [0, 0, 0]
+      quantidade_docente_eja_fundamental:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 74
+        min: '0'
+        max: '129'
+        media: 0.7306
+        quartis: [0, 0, 0]
+      quantidade_docente_eja_medio:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 65
+        min: '0'
+        max: '175'
+        media: 0.5642
+        quartis: [0, 0, 0]
+      quantidade_docente_especial:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 179
+        min: '0'
+        max: '281'
+        media: 12.2303
+        quartis: [2, 8, 18]
+      quantidade_docente_especial_comum:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 178
+        min: '0'
+        max: '281'
+        media: 12.0389
+        quartis: [2, 8, 18]
+      quantidade_docente_especial_exclusiva:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 64
+        min: '0'
+        max: '99'
+        media: 0.162
+        quartis: [0, 0, 0]
+      quantidade_turma_educacao_basica:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 181
+        min: '1'
+        max: '959'
+        media: 12.4962
+        quartis: [5, 10, 16]
+      quantidade_turma_infantil:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 53
+        min: '0'
+        max: '101'
+        media: 3.4367
+        quartis: [0, 2, 5]
+      quantidade_turma_infantil_integral:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 48
+        min: '0'
+        max: '101'
+        media: 1.2147
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 140066]
+        - [null, 35420]
+        - ['4', 5297]
+        - ['5', 4627]
+        - ['6', 4518]
+        - ['2', 4425]
+        - ['3', 4182]
+        - ['1', 3782]
+        - ['7', 2782]
+        - ['8', 2325]
+      quantidade_turma_infantil_creche:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 42
+        min: '0'
+        max: '101'
+        media: 1.7182
+        quartis: [0, 0, 2]
+        top:
+        - ['0', 111461]
+        - [null, 35420]
+        - ['1', 14120]
+        - ['2', 11804]
+        - ['4', 8610]
+        - ['3', 7765]
+        - ['5', 5097]
+        - ['6', 4993]
+        - ['7', 3270]
+        - ['8', 2794]
+      quantidade_turma_infantil_creche_integral:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 38
+        min: '0'
+        max: '101'
+        media: 0.9523
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 145274]
+        - [null, 35420]
+        - ['4', 5565]
+        - ['3', 4875]
+        - ['2', 4098]
+        - ['1', 3768]
+        - ['5', 3567]
+        - ['6', 3197]
+        - ['7', 2231]
+        - ['8', 1643]
+      quantidade_turma_infantil_pre_escola:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 39
+        min: '0'
+        max: '58'
+        media: 1.7186
+        quartis: [0, 1, 2]
+        top:
+        - ['0', 88691]
+        - [null, 35420]
+        - ['2', 27831]
+        - ['1', 22213]
+        - ['4', 13337]
+        - ['3', 7690]
+        - ['6', 4777]
+        - ['5', 3972]
+        - ['8', 2709]
+        - ['7', 1944]
+      quantidade_turma_infantil_pre_escola_integral:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 27
+        min: '0'
+        max: '30'
+        media: 0.2623
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 161034]
+        - [null, 35420]
+        - ['2', 6616]
+        - ['1', 4827]
+        - ['4', 2129]
+        - ['3', 2024]
+        - ['5', 751]
+        - ['6', 644]
+        - ['7', 242]
+        - ['8', 219]
+      quantidade_turma_fundamental:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 82
+        min: '0'
+        max: '120'
+        media: 6.5634
+        quartis: [0, 4, 10]
+      quantidade_turma_fundamental_integral:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 41
+        min: '0'
+        max: '50'
+        media: 0.7029
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 158597]
+        - [null, 35420]
+        - ['2', 2531]
+        - ['4', 2306]
+        - ['5', 2218]
+        - ['1', 2215]
+        - ['3', 1821]
+        - ['8', 1337]
+        - ['6', 1313]
+        - ['9', 1292]
+      quantidade_turma_fundamental_anos_iniciais:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 65
+        min: '0'
+        max: '70'
+        media: 3.8237
+        quartis: [0, 0, 5]
+      quantidade_turma_fundamental_anos_iniciais_integral:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 34
+        min: '0'
+        max: '34'
+        media: 0.3419
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 167314]
+        - [null, 35420]
+        - ['5', 2288]
+        - ['1', 2007]
+        - ['2', 1478]
+        - ['3', 1004]
+        - ['4', 828]
+        - ['6', 721]
+        - ['10', 688]
+        - ['8', 443]
+      quantidade_turma_fundamental_anos_finais:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 56
+        min: '0'
+        max: '69'
+        media: 2.7397
+        quartis: [0, 0, 4]
+      quantidade_turma_fundamental_anos_finais_integral:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 32
+        min: '0'
+        max: '36'
+        media: 0.361
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 166532]
+        - [null, 35420]
+        - ['4', 2345]
+        - ['2', 1875]
+        - ['1', 1842]
+        - ['3', 1000]
+        - ['8', 933]
+        - ['6', 729]
+        - ['5', 675]
+        - ['7', 537]
+      quantidade_turma_medio:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 91
+        min: '0'
+        max: '828'
+        media: 1.5579
+        quartis: [0, 0, 0]
+      quantidade_turma_medio_integral:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 43
+        min: '0'
+        max: '125'
+        media: 0.3237
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 169669]
+        - [null, 35420]
+        - ['3', 1556]
+        - ['6', 1010]
+        - ['4', 903]
+        - ['5', 821]
+        - ['2', 749]
+        - ['7', 590]
+        - ['9', 584]
+        - ['1', 546]
+      quantidade_turma_profissional:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 138
+        min: '0'
+        max: '959'
+        media: 0.7095
+        quartis: [0, 0, 0]
+      quantidade_turma_profissional_tecnica:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 124
+        min: '0'
+        max: '857'
+        media: 0.5474
+        quartis: [0, 0, 0]
+      quantidade_turma_eja:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 92
+        min: '0'
+        max: '318'
+        media: 0.6331
+        quartis: [0, 0, 0]
+      quantidade_turma_eja_fundamental:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 68
+        min: '0'
+        max: '182'
+        media: 0.4242
+        quartis: [0, 0, 0]
+      quantidade_turma_eja_medio:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 69
+        min: '0'
+        max: '203'
+        media: 0.1827
+        quartis: [0, 0, 0]
+      quantidade_turma_especial:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 92
+        min: '0'
+        max: '390'
+        media: 6.7151
+        quartis: [1, 4, 10]
+      quantidade_turma_especial_comum:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 92
+        min: '0'
+        max: '390'
+        media: 6.5815
+        quartis: [1, 4, 10]
+      quantidade_turma_especial_exclusiva:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 58
+        min: '0'
+        max: '75'
+        media: 0.1336
+        quartis: [0, 0, 0]
+      quantidade_turma_diurno:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 112
+        min: '0'
+        max: '959'
+        media: 11.5503
+        quartis: [5, 9, 16]
+      quantidade_turma_noturno:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 88
+        min: '0'
+        max: '162'
+        media: 0.8672
+        quartis: [0, 0, 0]
+      quantidade_turma_ead:
+        tipo: BIGINT
+        nulos_pct: 16.54
+        distintos_aprox: 62
+        min: '0'
+        max: '857'
+        media: 0.0788
+        quartis: [0, 0, 0]
+  turma:
+    linhas: 39096570
+    fonte_do_perfil: amostra de 77.068% da última partição (ano = 2024). ~2.000.000 linhas
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2024'
+        max: '2024'
+        media: 2024
+        quartis: [2024, 2024, 2024]
+        top:
+        - ['2024', 1984801]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 380929]
+        - [MG, 173392]
+        - [BA, 140977]
+        - [RJ, 131547]
+        - [RS, 119730]
+        - [PR, 116175]
+        - [SC, 94515]
+        - [PA, 92337]
+        - [CE, 88018]
+        - [MA, 81427]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      rede:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: estadual
+        max: privada
+        top:
+        - [municipal, 1093630]
+        - [estadual, 446779]
+        - [privada, 436513]
+        - [federal, 7879]
+      id_escola: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 165815}
+      id_turma: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1694259}
+      etapa_ensino:
+        tipo: VARCHAR
+        nulos_pct: 14.78
+        distintos_aprox: 40
+        min: '1'
+        max: '74'
+        top:
+        - [null, 293335]
+        - ['1', 237450]
+        - ['2', 220788]
+        - ['14', 120971]
+        - ['15', 104438]
+        - ['16', 103130]
+        - ['18', 101448]
+        - ['17', 98097]
+        - ['19', 89702]
+        - ['20', 79876]
+      tipo_turma:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1984801]
+      hora_inicial:
+        tipo: BIGINT
+        nulos_pct: 0.81
+        distintos_aprox: 23
+        min: '0'
+        max: '22'
+        media: 10.1022
+        quartis: [7, 8, 13]
+        top:
+        - ['7', 922670]
+        - ['13', 588938]
+        - ['8', 112189]
+        - ['12', 88747]
+        - ['18', 66377]
+        - ['19', 45446]
+        - ['14', 31101]
+        - ['15', 21333]
+        - ['9', 21316]
+        - ['6', 18337]
+      minuto_inicial:
+        tipo: BIGINT
+        nulos_pct: 0.81
+        distintos_aprox: 13
+        min: '0'
+        max: '55'
+        media: 11.6376
+        quartis: [0, 0, 30]
+        top:
+        - ['0', 1142048]
+        - ['30', 465272]
+        - ['15', 104967]
+        - ['10', 64378]
+        - ['20', 51776]
+        - ['45', 46316]
+        - ['40', 32467]
+        - ['50', 28908]
+        - [null, 16047]
+        - ['5', 10289]
+      dia_semana_domingo:
+        tipo: BIGINT
+        nulos_pct: 0.81
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0003
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 1968078]
+        - [null, 16047]
+        - ['1', 676]
+      dia_semana_segunda:
+        tipo: BIGINT
+        nulos_pct: 0.81
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.9275
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 1825991]
+        - ['0', 142763]
+        - [null, 16047]
+      dia_semana_terca:
+        tipo: BIGINT
+        nulos_pct: 0.81
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.9291
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 1829129]
+        - ['0', 139625]
+        - [null, 16047]
+      dia_semana_quarta:
+        tipo: BIGINT
+        nulos_pct: 0.81
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.9268
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 1824714]
+        - ['0', 144040]
+        - [null, 16047]
+      dia_semana_quinta:
+        tipo: BIGINT
+        nulos_pct: 0.81
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.925
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 1821070]
+        - ['0', 147684]
+        - [null, 16047]
+      dia_semana_sexta:
+        tipo: BIGINT
+        nulos_pct: 0.81
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.9014
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 1774647]
+        - ['0', 194107]
+        - [null, 16047]
+      dia_semana_sabado:
+        tipo: BIGINT
+        nulos_pct: 0.81
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0253
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 1918892]
+        - ['1', 49862]
+        - [null, 16047]
+      numero_dias_atividade: {tipo: BIGINT, nulos_pct: 0.81, distintos_aprox: 7, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numero_duracao_turma: {tipo: BIGINT, nulos_pct: 0.81, distintos_aprox: 202, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_atividade_1:
+        tipo: BIGINT
+        nulos_pct: 92.7
+        distintos_aprox: 113
+        min: '10103'
+        max: '41024'
+        media: 23366.7218
+        quartis: [15002, 22018, 31001]
+      tipo_atividade_2:
+        tipo: BIGINT
+        nulos_pct: 96.08
+        distintos_aprox: 117
+        min: '10103'
+        max: '41024'
+        media: 25691.377
+        quartis: [21001, 30670, 31016]
+      tipo_atividade_3:
+        tipo: BIGINT
+        nulos_pct: 97.3
+        distintos_aprox: 109
+        min: '10103'
+        max: '41024'
+        media: 24876.8048
+        quartis: [17004, 29817, 31001]
+      tipo_atividade_4:
+        tipo: BIGINT
+        nulos_pct: 97.87
+        distintos_aprox: 112
+        min: '10103'
+        max: '41024'
+        media: 23113.1312
+        quartis: [14202, 22022, 31016]
+      tipo_atividade_5:
+        tipo: BIGINT
+        nulos_pct: 98.5
+        distintos_aprox: 109
+        min: '10103'
+        max: '41024'
+        media: 23724.9377
+        quartis: [14202, 22032, 31016]
+      tipo_atividade_6:
+        tipo: BIGINT
+        nulos_pct: 99.17
+        distintos_aprox: 102
+        min: '10103'
+        max: '41024'
+        media: 25159.6323
+        quartis: [19101, 31016, 31016]
+      id_curso_educacao_profissional: {tipo: VARCHAR, nulos_pct: 96.75, distintos_aprox: 209, min: '1001', max: '9999'}
+      quantidade_matriculas: {tipo: BIGINT, nulos_pct: 0, distintos_aprox: 526, pessoal: 'só contagens: valores seriam dado pessoal'}
+      disciplina_lingua_portuguesa:
+        tipo: BIGINT
+        nulos_pct: 40.29
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.9776
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 1158592]
+        - [null, 799721]
+        - ['0', 26488]
+      disciplina_educacao_fisica:
+        tipo: BIGINT
+        nulos_pct: 40.29
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.9303
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 1102423]
+        - [null, 799721]
+        - ['0', 82657]
+      disciplina_artes:
+        tipo: BIGINT
+        nulos_pct: 40.29
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.9201
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 1090414]
+        - [null, 799721]
+        - ['0', 94666]
+      disciplina_lingua_ingles:
+        tipo: BIGINT
+        nulos_pct: 40.29
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.6403
+        quartis: [0, 1, 1]
+        top:
+        - [null, 799721]
+        - ['1', 758770]
+        - ['0', 426310]
+      disciplina_lingua_espanhol:
+        tipo: BIGINT
+        nulos_pct: 40.29
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0413
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 1136138]
+        - [null, 799721]
+        - ['1', 48942]
+      disciplina_lingua_frances:
+        tipo: BIGINT
+        nulos_pct: 40.29
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0017
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 1183080]
+        - [null, 799721]
+        - ['1', 2000]
+      disciplina_lingua_outra:
+        tipo: BIGINT
+        nulos_pct: 40.29
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0042
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 1180070]
+        - [null, 799721]
+        - ['1', 5010]
+      disciplina_libras:
+        tipo: BIGINT
+        nulos_pct: 40.29
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0056
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 1178461]
+        - [null, 799721]
+        - ['1', 6619]
+      disciplina_lingua_indigena:
+        tipo: BIGINT
+        nulos_pct: 40.29
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0096
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 1173677]
+        - [null, 799721]
+        - ['1', 11403]
+      disciplina_matematica:
+        tipo: BIGINT
+        nulos_pct: 40.29
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.9767
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 1157458]
+        - [null, 799721]
+        - ['0', 27622]
+      disciplina_ciencias:
+        tipo: BIGINT
+        nulos_pct: 50.99
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.9739
+        quartis: [1, 1, 1]
+        top:
+        - [null, 1012107]
+        - ['1', 947269]
+        - ['0', 25425]
+      disciplina_fisica:
+        tipo: BIGINT
+        nulos_pct: 68.22
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.3078
+        quartis: [0, 0, 1]
+        top:
+        - [null, 1354050]
+        - ['0', 436584]
+        - ['1', 194167]
+      disciplina_quimica:
+        tipo: BIGINT
+        nulos_pct: 68.22
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.3026
+        quartis: [0, 0, 1]
+        top:
+        - [null, 1354050]
+        - ['0', 439905]
+        - ['1', 190846]
+      disciplina_biologia:
+        tipo: BIGINT
+        nulos_pct: 68.22
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.3014
+        quartis: [0, 0, 1]
+        top:
+        - [null, 1354050]
+        - ['0', 440642]
+        - ['1', 190109]
+      disciplina_historia:
+        tipo: BIGINT
+        nulos_pct: 40.29
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.9531
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 1129460]
+        - [null, 799721]
+        - ['0', 55620]
+      disciplina_geografia:
+        tipo: BIGINT
+        nulos_pct: 40.29
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.9529
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 1129294]
+        - [null, 799721]
+        - ['0', 55786]
+      disciplina_sociologia: {tipo: BIGINT, nulos_pct: 68.22, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      disciplina_filosofia:
+        tipo: BIGINT
+        nulos_pct: 40.29
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.1667
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 987529]
+        - [null, 799721]
+        - ['1', 197551]
+      disciplina_estudos_sociais:
+        tipo: BIGINT
+        nulos_pct: 68.93
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0285
+        quartis: [0, 0, 0]
+        top:
+        - [null, 1368222]
+        - ['0', 599015]
+        - ['1', 17564]
+      disciplina_informatica_comp:
+        tipo: BIGINT
+        nulos_pct: 40.29
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0854
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 1083852]
+        - [null, 799721]
+        - ['1', 101228]
+      disciplina_ensino_religioso:
+        tipo: BIGINT
+        nulos_pct: 40.29
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.5013
+        quartis: [0, 0, 1]
+        top:
+        - [null, 799721]
+        - ['1', 594104]
+        - ['0', 590976]
+      disciplina_profissionalizante:
+        tipo: BIGINT
+        nulos_pct: 96.43
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.8333
+        quartis: [1, 1, 1]
+        top:
+        - [null, 1913958]
+        - ['1', 59031]
+        - ['0', 11812]
+      disciplina_pedagogicas:
+        tipo: BIGINT
+        nulos_pct: 99.93
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.8867
+        quartis: [1, 1, 1]
+        top:
+        - [null, 1983380]
+        - ['1', 1260]
+        - ['0', 161]
+      disciplina_outras:
+        tipo: BIGINT
+        nulos_pct: 40.29
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.3815
+        quartis: [0, 0, 1]
+        top:
+        - [null, 799721]
+        - ['0', 732967]
+        - ['1', 452113]
+      tipo_localizacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 1702692]
+        - ['2', 282109]
+      tipo_categoria_escola_privada:
+        tipo: VARCHAR
+        nulos_pct: 78.01
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        top:
+        - [null, 1548288]
+        - ['1', 327474]
+        - ['4', 90391]
+        - ['2', 12710]
+        - ['3', 5938]
+      conveniada_poder_publico:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1984801]
+      tipo_convenio_poder_publico:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1984801]
+      mantenedora_privada_emp:
+        tipo: BIGINT
+        nulos_pct: 78.01
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.6896
+        quartis: [0, 1, 1]
+        top:
+        - [null, 1548288]
+        - ['1', 301016]
+        - ['0', 135497]
+      mantenedora_privada_ong:
+        tipo: BIGINT
+        nulos_pct: 78.01
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0099
+        quartis: [0, 0, 0]
+        top:
+        - [null, 1548288]
+        - ['0', 432202]
+        - ['1', 4311]
+      mantenedora_privada_sind:
+        tipo: BIGINT
+        nulos_pct: 78.01
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0281
+        quartis: [0, 0, 0]
+        top:
+        - [null, 1548288]
+        - ['0', 424258]
+        - ['1', 12255]
+      mantenedora_privada_sist_s:
+        tipo: BIGINT
+        nulos_pct: 78.01
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.044
+        quartis: [0, 0, 0]
+        top:
+        - [null, 1548288]
+        - ['0', 417285]
+        - ['1', 19228]
+      mantenedora_privada_s_fins:
+        tipo: BIGINT
+        nulos_pct: 78.01
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.2721
+        quartis: [0, 0, 1]
+        top:
+        - [null, 1548288]
+        - ['0', 317753]
+        - ['1', 118760]
+      tipo_regulamentacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '0'
+        max: '2'
+        top:
+        - ['1', 1834510]
+        - ['2', 117648]
+        - ['0', 32643]
+      tipo_localizacao_diferenciada:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '0'
+        max: '8'
+        top:
+        - ['0', 1923487]
+        - ['1', 23292]
+        - ['2', 18215]
+        - ['3', 14624]
+        - ['8', 5183]
+      educacao_indigena:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1984801]
+      braille:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1984801]
+      recursos_baixa_visao:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1984801]
+      processos_mentais:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1984801]
+      orientacao_mobilidade:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1984801]
+      sinais:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1984801]
+      comunicacao_alt_aument:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1984801]
+      enriquecimento_curricular:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1984801]
+      soroban:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1984801]
+      informatica_acessivel:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1984801]
+      port_escrita:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1984801]
+      autonomia_escolar:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1984801]
+      disciplina_atendimento_especiais:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1984801]
+      disciplina_diver_socio_cultural: {tipo: BIGINT, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}

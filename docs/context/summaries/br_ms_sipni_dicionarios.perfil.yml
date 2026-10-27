@@ -1,0 +1,95 @@
+dataset: br_ms_sipni_dicionarios
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  cobertura_indicadores:
+    linhas: 26
+    fonte_do_perfil: tabela inteira
+    colunas:
+      imuno:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 24
+        min: '003'
+        max: '103'
+        top:
+        - ['003', 1]
+        - ['006', 1]
+        - [009, 1]
+        - ['012', 1]
+        - [018, 1]
+        - ['020', 1]
+        - ['021', 1]
+        - ['053', 1]
+        - ['061', 1]
+        - ['072', 1]
+      nome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 24, pessoal: 'só contagens: valores seriam dado pessoal'}
+  doses_tipo:
+    linhas: 12
+    fonte_do_perfil: tabela inteira
+    colunas:
+      code:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: '1'
+        max: '9'
+        top:
+        - ['1', 1]
+        - ['10', 1]
+        - ['11', 1]
+        - ['12', 1]
+        - ['2', 1]
+        - ['3', 1]
+        - ['4', 1]
+        - ['5', 1]
+        - ['6', 1]
+        - ['7', 1]
+      label:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: 1ª dose
+        max: Tratamento
+        top:
+        - [1ª dose, 1]
+        - [1º reforço, 1]
+        - [2ª dose, 1]
+        - [2º reforço, 1]
+        - [3ª dose, 1]
+        - [4ª dose, 1]
+        - [Dose, 1]
+        - [Dose Adicional, 1]
+        - [Dose Inicial, 1]
+        - [Dose única, 1]
+      source_codes:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: 01,32
+        max: '37'
+        top:
+        - ['01,32', 1]
+        - ['02,33', 1]
+        - ['03,34', 1]
+        - ['04,09', 1]
+        - ['05,5', 1]
+        - ['06', 1]
+        - ['07,35', 1]
+        - [08, 1]
+        - ['10', 1]
+        - [11-31, 1]
+  faixa_etaria:
+    linhas: 101
+    fonte_do_perfil: tabela inteira
+    colunas:
+      code: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 90, min: '00', max: '99'}
+      label: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 95, min: 1 a 11 anos, max: Sem discriminação de idade}
+      source_codes: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 81, min: --, max: W3}
+  vacinas:
+    linhas: 85
+    fonte_do_perfil: tabela inteira
+    colunas:
+      code: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 83, min: '01', max: '85'}
+      label: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 77, min: BCG (BCG), max: dTpa}
+      source_codes: {tipo: VARCHAR, nulos_pct: 1.18, distintos_aprox: 68, min: '01', max: '99'}

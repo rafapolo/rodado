@@ -1,0 +1,355 @@
+dataset: br_me_comex_stat
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  municipio_exportacao:
+    linhas: 22219221
+    fonte_do_perfil: tabela inteira da última partição (ano = 2026)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
+        top:
+        - ['2026', 280777]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        media: 2.0587
+        quartis: [1, 2, 3]
+        top:
+        - ['3', 105051]
+        - ['1', 88582]
+        - ['2', 87144]
+      id_sh4: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1328}
+      id_pais: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 209, min: '101', max: '99'}
+      sigla_pais_iso3: {tipo: VARCHAR, nulos_pct: 0.02, distintos_aprox: 249, min: ABW, max: ZWE}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 29
+        min: AC
+        max: TO
+        top:
+        - [SP, 114948]
+        - [RS, 31492]
+        - [SC, 27300]
+        - [PR, 25840]
+        - [RJ, 17765]
+        - [MG, 13853]
+        - [ES, 10079]
+        - [PA, 5108]
+        - [CE, 4859]
+        - [MA, 4689]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2471}
+      peso_liquido_kg:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 49874
+        min: '0'
+        max: '5156463789'
+        media: 685260.7711
+        quartis: [8, 93, 4435]
+      valor_fob_dolar:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 77392
+        min: '0'
+        max: '2426254209'
+        media: 295831.2779
+        quartis: [205, 2177, 30457]
+  municipio_importacao:
+    linhas: 34338353
+    fonte_do_perfil: tabela inteira da última partição (ano = 2026)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
+        top:
+        - ['2026', 442610]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        media: 2.0218
+        quartis: [1, 2, 3]
+        top:
+        - ['3', 156310]
+        - ['1', 146675]
+        - ['2', 139625]
+      id_sh4: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1281}
+      id_pais: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 194, min: '0', max: '997'}
+      sigla_pais_iso3: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 253, min: ABW, max: ZWE}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 29
+        min: AC
+        max: TO
+        top:
+        - [SP, 197561]
+        - [SC, 52256]
+        - [MG, 38774]
+        - [PR, 34499]
+        - [RJ, 30559]
+        - [RS, 25272]
+        - [ES, 9396]
+        - [BA, 7894]
+        - [PE, 7838]
+        - [AM, 7623]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2470}
+      peso_liquido_kg:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 48451
+        min: '0'
+        max: '367393305'
+        media: 97922.1859
+        quartis: [5, 94, 2573]
+      valor_fob_dolar:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 126891
+        min: '0'
+        max: '2425494891'
+        media: 153876.6133
+        quartis: [719, 5568, 38139]
+  ncm_exportacao:
+    linhas: 31292226
+    fonte_do_perfil: tabela inteira da última partição (ano = 2026)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
+        top:
+        - ['2026', 397281]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        media: 2.0604
+        quartis: [1, 2, 3]
+        top:
+        - ['3', 149539]
+        - ['1', 125563]
+        - ['2', 122179]
+      id_ncm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7473}
+      id_unidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: '10'
+        max: '22'
+        top:
+        - ['10', 274930]
+        - ['11', 98678]
+        - ['21', 5053]
+        - ['17', 4847]
+        - ['13', 4676]
+        - ['16', 4645]
+        - ['15', 3036]
+        - ['20', 849]
+        - ['12', 274]
+        - ['19', 259]
+      id_pais: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 209, min: '101', max: '99'}
+      sigla_pais_iso3: {tipo: VARCHAR, nulos_pct: 0.02, distintos_aprox: 249, min: ABW, max: ZWE}
+      sigla_uf_ncm:
+        tipo: VARCHAR
+        nulos_pct: 0.42
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 146803]
+        - [SC, 44009]
+        - [RS, 43973]
+        - [PR, 38933]
+        - [RJ, 31892]
+        - [MG, 19163]
+        - [ES, 15614]
+        - [PA, 7264]
+        - [CE, 7224]
+        - [MA, 7214]
+      id_via:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: '0'
+        max: '9'
+        top:
+        - ['1', 215176]
+        - ['4', 105579]
+        - ['7', 68577]
+        - ['15', 4909]
+        - ['0', 2700]
+        - ['12', 137]
+        - ['6', 110]
+        - ['9', 55]
+        - ['2', 27]
+        - ['3', 8]
+      id_urf: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 64, min: '1010252', max: '9999999'}
+      quantidade_estatistica:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 41164
+        min: '0'
+        max: '8220883000'
+        media: 314922.2426
+        quartis: [5, 31, 553]
+      peso_liquido_kg:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 51064
+        min: '0'
+        max: '8220883000'
+        media: 484305.727
+        quartis: [5, 38, 953]
+      valor_fob_dolar:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 80631
+        min: '0'
+        max: '1238646092'
+        media: 209077.7528
+        quartis: [87, 770, 12104]
+  ncm_importacao:
+    linhas: 45808209
+    fonte_do_perfil: tabela inteira da última partição (ano = 2026)
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
+        top:
+        - ['2026', 586731]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        media: 2.0198
+        quartis: [1, 2, 3]
+        top:
+        - ['3', 206795]
+        - ['1', 195156]
+        - ['2', 184780]
+      id_ncm: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7854}
+      id_unidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: '10'
+        max: '22'
+        top:
+        - ['10', 336205]
+        - ['11', 242694]
+        - ['13', 2887]
+        - ['15', 1869]
+        - ['17', 1533]
+        - ['16', 778]
+        - ['21', 448]
+        - ['19', 96]
+        - ['12', 87]
+        - ['20', 59]
+      id_pais: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 194, min: '0', max: '997'}
+      sigla_pais_iso3: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 253, min: ABW, max: ZWE}
+      sigla_uf_ncm:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 29
+        min: AC
+        max: TO
+        top:
+        - [SP, 199671]
+        - [SC, 79281]
+        - [MG, 56159]
+        - [PR, 48878]
+        - [RJ, 43997]
+        - [RS, 35404]
+        - [AM, 29426]
+        - [ES, 14852]
+        - [PE, 12165]
+        - [GO, 11494]
+      id_via:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '1'
+        max: '9'
+        top:
+        - ['1', 301308]
+        - ['4', 268566]
+        - ['7', 10886]
+        - ['10', 5685]
+        - ['9', 226]
+        - ['8', 31]
+        - ['5', 18]
+        - ['6', 7]
+        - ['11', 4]
+      id_urf: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 75, min: '1010200', max: '9999999'}
+      quantidade_estatistica:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 51636
+        min: '0.0'
+        max: '1327493575.0'
+        media: 121838.3834
+        quartis: [3.9327, 65.185, 1819.2077]
+      peso_liquido_kg:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 49183
+        min: '0.0'
+        max: '367393305.0'
+        media: 73869.1815
+        quartis: [3.5675, 59.778, 1259.3892]
+      valor_fob_dolar:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 128129
+        min: '0.0'
+        max: '2425494891.0'
+        media: 116079.3069
+        quartis: [512.142, 3681.155, 26614.4719]
+      valor_frete:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 32243
+        min: '0.0'
+        max: '14100000.0'
+        media: 4997.8131
+        quartis: [12.4296, 149.8314, 1099.0952]
+      valor_seguro:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5703
+        min: '0.0'
+        max: '3295622.0'
+        media: 123.4328
+        quartis: [0, 0.98, 10.9795]

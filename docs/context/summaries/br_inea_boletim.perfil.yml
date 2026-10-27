@@ -1,0 +1,128 @@
+dataset: br_inea_boletim
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  atos_pdf:
+    linhas: 7052
+    fonte_do_perfil: tabela inteira
+    colunas:
+      rowid:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1261
+        min: '1'
+        max: '1079'
+        media: 567.3885
+        quartis: [358, 475, 842]
+      boletim:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 244
+        min: '1'
+        max: '226'
+        media: 92.2873
+        quartis: [39, 91, 137]
+      processo: {tipo: VARCHAR, nulos_pct: 1.23, distintos_aprox: 6360}
+      validade: {tipo: VARCHAR, nulos_pct: 36.2, distintos_aprox: 1229}
+      texto_ato: {tipo: VARCHAR, nulos_pct: 0.26, distintos_aprox: 6842}
+      n_chars:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1342
+        min: '0'
+        max: '8000'
+        media: 620.6661
+        quartis: [364, 478, 621]
+  boletins:
+    linhas: 1081
+    fonte_do_perfil: tabela inteira
+    colunas:
+      boletim: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 228, min: '1', max: '99'}
+      ano_arquivo:
+        tipo: VARCHAR
+        nulos_pct: 0.19
+        distintos_aprox: 7
+        min: '2019'
+        max: '2026'
+        top:
+        - ['2022', 199]
+        - ['2021', 171]
+        - ['2023', 154]
+        - ['2020', 150]
+        - ['2019', 133]
+        - ['2024', 126]
+        - ['2025', 102]
+        - ['2026', 44]
+        - [null, 2]
+      data_boletim: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1045, min: '2019-01-28', max: '2026-08-26'}
+      n_processos:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 48
+        min: '0'
+        max: '116'
+        media: 6.6244
+        quartis: [1, 3, 7]
+        top:
+        - ['1', 346]
+        - ['2', 146]
+        - ['3', 103]
+        - ['4', 68]
+        - ['5', 54]
+        - ['6', 48]
+        - ['8', 34]
+        - ['7', 33]
+        - ['0', 26]
+        - ['10', 17]
+      n_empresas:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 50
+        min: '0'
+        max: '115'
+        media: 6.3617
+        quartis: [1, 3, 7]
+        top:
+        - ['1', 363]
+        - ['2', 146]
+        - ['3', 101]
+        - ['4', 73]
+        - ['5', 50]
+        - ['6', 46]
+        - ['8', 33]
+        - ['7', 29]
+        - ['0', 26]
+        - ['11', 19]
+      processos: {tipo: 'VARCHAR[]', nulos_pct: 0, distintos_aprox: 814, min: '[]', max: '[Sinaflor n° 23300093]'}
+      empresas: {tipo: 'VARCHAR[]', nulos_pct: 0, distintos_aprox: 1073}
+      tipos_documento: {tipo: 'VARCHAR[]', nulos_pct: 0, distintos_aprox: 406, pessoal: 'só contagens: valores seriam dado pessoal'}
+      pdf: {tipo: VARCHAR, nulos_pct: 0.19, distintos_aprox: 775, min: 'https://www.inea.rj.gov.br/wp-content/uploads/2019/01/2019_boletimdeserviço_16.pdf',
+        max: 'https://www.inea.rj.gov.br/wp-content/uploads/2026/08/Boletim-de-serviço-nº-155.pdf'}
+  empresas:
+    linhas: 6877
+    fonte_do_perfil: tabela inteira
+    colunas:
+      boletim: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 228, min: '1', max: '99'}
+      data_boletim: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1025, min: '2019-01-28', max: '2026-08-26'}
+      empresa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4258}
+      tipos_documento: {tipo: 'VARCHAR[]', nulos_pct: 0, distintos_aprox: 406, pessoal: 'só contagens: valores seriam dado pessoal'}
+      pdf: {tipo: VARCHAR, nulos_pct: 0.8, distintos_aprox: 770, min: 'https://www.inea.rj.gov.br/wp-content/uploads/2019/01/2019_boletimdeserviço_16.pdf',
+        max: 'https://www.inea.rj.gov.br/wp-content/uploads/2026/08/Boletim-de-serviço-nº-155.pdf'}
+  processos:
+    linhas: 7161
+    fonte_do_perfil: tabela inteira
+    colunas:
+      boletim: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 228, min: '1', max: '99'}
+      data_boletim: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1025, min: '2019-01-28', max: '2026-08-26'}
+      processo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6360}
+      pdf: {tipo: VARCHAR, nulos_pct: 0.77, distintos_aprox: 734, min: 'https://www.inea.rj.gov.br/wp-content/uploads/2019/01/2019_boletimdeserviço_16.pdf',
+        max: 'https://www.inea.rj.gov.br/wp-content/uploads/2026/08/Boletim-de-serviço-nº-155.pdf'}
+  tipos_documento:
+    linhas: 2572
+    fonte_do_perfil: tabela inteira
+    colunas:
+      boletim: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 228, min: '1', max: '99'}
+      data_boletim: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1045, min: '2019-01-28', max: '2026-08-26'}
+      tipo_documento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 61, pessoal: 'só contagens: valores seriam dado pessoal'}
+      pdf: {tipo: VARCHAR, nulos_pct: 0.16, distintos_aprox: 775, min: 'https://www.inea.rj.gov.br/wp-content/uploads/2019/01/2019_boletimdeserviço_16.pdf',
+        max: 'https://www.inea.rj.gov.br/wp-content/uploads/2026/08/Boletim-de-serviço-nº-155.pdf'}

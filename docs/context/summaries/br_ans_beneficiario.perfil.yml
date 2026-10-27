@@ -1,0 +1,159 @@
+dataset: br_ans_beneficiario
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  informacao_consolidada:
+    linhas: 2307338481
+    fonte_do_perfil: amostra de 1.32% da última partição (ano = 2025). ~2.000.000 linhas
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2025'
+        max: '2025'
+        media: 2025
+        quartis: [2025, 2025, 2025]
+        top:
+        - ['2025', 1962549]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: '1'
+        max: '10'
+        media: 5.5101
+        quartis: [3, 5, 8]
+        top:
+        - ['4', 250889]
+        - ['3', 209460]
+        - ['9', 206848]
+        - ['8', 201968]
+        - ['10', 192512]
+        - ['2', 190171]
+        - ['7', 186368]
+        - ['6', 184430]
+        - ['1', 177906]
+        - ['5', 161997]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 30
+        min: AC
+        max: XX
+        top:
+        - [SP, 585748]
+        - [MG, 248460]
+        - [RJ, 181850]
+        - [PR, 134379]
+        - [BA, 112765]
+        - [RS, 88064]
+        - [GO, 81633]
+        - [PE, 80234]
+        - [SC, 73966]
+        - [CE, 50201]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0.06, distintos_aprox: 6859}
+      codigo_operadora: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 987, min: '000477', max: '424463'}
+      razao_social: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 784, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpj: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1039, pessoal: 'só contagens: valores seriam dado pessoal'}
+      modalidade_operadora:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: Autogestao
+        max: Seguradora Especializada Em Saade
+        top:
+        - [Medicina De Grupo, 607577]
+        - [Cooperativa Madica, 580422]
+        - [Odontologia De Grupo, 341224]
+        - [Seguradora Especializada Em Saade, 238192]
+        - [Autogestao, 97878]
+        - [Cooperativa Odontolagica, 71445]
+        - [Filantropia, 25811]
+      sexo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: F
+        max: M
+        top:
+        - [F, 1009177]
+        - [M, 953372]
+      faixa_etaria:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 20
+        min: 1 a 4 anos
+        max: zero anos
+        top:
+        - [35 a 39 anos, 199216]
+        - [40 a 44 anos, 182820]
+        - [45 a 49 anos, 168716]
+        - [30 a 34 anos, 166822]
+        - [20 a 24 anos, 156136]
+        - [25 a 29 anos, 149100]
+        - [50 a 54 anos, 146331]
+        - [55 a 59 anos, 109178]
+        - [5 a 9 anos, 86629]
+        - [10 a 14 anos, 85770]
+      faixa_etaria_reajuste:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 12
+        min: 0 a 18 anos
+        max: informada incorr
+        top:
+        - [0 a 18 anos, 367616]
+        - [34 a 38 anos, 189841]
+        - [39 a 43 anos, 187069]
+        - [59 ou mais, 182901]
+        - [44 a 48 anos, 178463]
+        - [29 a 33 anos, 164034]
+        - [49 a 53 anos, 152025]
+        - [24 a 28 anos, 149800]
+        - [19 a 23 anos, 144960]
+        - [59 anos ou mais, 126216]
+      codigo_plano: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 24889}
+      tipo_vigencia_plano:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: A
+        max: P
+        top:
+        - [P, 1892676]
+        - [A, 69873]
+      contratacao_beneficiario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7, pessoal: 'só contagens: valores seriam dado pessoal'}
+      segmentacao_beneficiario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 14, pessoal: 'só contagens: valores seriam dado pessoal'}
+      abrangencia_beneficiario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cobertura_assistencia_beneficiario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_vinculo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: Dependente
+        max: Titular
+        top:
+        - [Titular, 1061766]
+        - [Dependente, 899894]
+        - [Na£o Identificado, 889]
+      quantidade_beneficiario_ativo: {tipo: BIGINT, nulos_pct: 0, distintos_aprox: 1433, pessoal: 'só contagens: valores seriam dado pessoal'}
+      quantidade_beneficiario_aderido: {tipo: BIGINT, nulos_pct: 0, distintos_aprox: 181, pessoal: 'só contagens: valores seriam dado pessoal'}
+      quantidade_beneficiario_cancelado: {tipo: BIGINT, nulos_pct: 0, distintos_aprox: 174, pessoal: 'só contagens: valores seriam dado pessoal'}
+      data_carga:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: '2025-02-28'
+        max: '2025-11-24'
+        top:
+        - ['2025-05-28', 250889]
+        - ['2025-05-05', 209460]
+        - ['2025-10-21', 206848]
+        - ['2025-10-02', 201968]
+        - ['2025-11-24', 192512]
+        - ['2025-04-02', 190171]
+        - ['2025-08-22', 186368]
+        - ['2025-07-31', 184430]
+        - ['2025-02-28', 177906]
+        - ['2025-07-02', 161997]

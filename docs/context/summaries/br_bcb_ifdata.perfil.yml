@@ -1,0 +1,462 @@
+dataset: br_bcb_ifdata
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  cadastro:
+    linhas: 512941
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano_mes:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 95
+        min: '200003'
+        max: '202606'
+        media: 201359.1387
+        quartis: [200707, 201406, 202010]
+      ano:
+        tipo: SMALLINT
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '2000'
+        max: '2026'
+        media: 2013.517
+        quartis: [2007, 2014, 2020]
+        top:
+        - ['2025', 23260]
+        - ['2024', 22673]
+        - ['2023', 22163]
+        - ['2022', 21486]
+        - ['2021', 21050]
+        - ['2020', 20689]
+        - ['2019', 20392]
+        - ['2014', 20368]
+        - ['2015', 20362]
+        - ['2016', 20324]
+      mes:
+        tipo: TINYINT
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '3'
+        max: '12'
+        media: 7.4421
+        quartis: [4, 6, 9]
+        top:
+        - ['6', 130975]
+        - ['3', 130622]
+        - ['12', 125856]
+        - ['9', 125488]
+      cod_inst: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5422}
+      nome_instituicao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 13242, pessoal: 'só contagens: valores seriam dado pessoal'}
+      data_inicio_atividade:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 858
+        min: '180001'
+        max: '202609'
+        media: 195889.7271
+        quartis: [196803, 198302, 199635]
+      tcb:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: B1
+        max: N4
+        top:
+        - [B3S, 237174]
+        - [N2, 133766]
+        - [N1, 62378]
+        - [B1, 42618]
+        - [B2, 20356]
+        - [N4, 8623]
+        - [B3C, 4911]
+        - [N3, 1574]
+        - [B4, 1478]
+        - [B3, 63]
+      td:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: C
+        max: I
+        top:
+        - [I, 498760]
+        - [C, 14181]
+      tc:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        media: 2.0431
+        quartis: [2, 2, 2]
+        top:
+        - ['2', 471972]
+        - ['3', 31547]
+        - ['1', 9422]
+      segmento_tb:
+        tipo: VARCHAR
+        nulos_pct: 6.78
+        distintos_aprox: 33
+        min: Administradora de Consórcio
+        max: Sociedade de Empréstimo entre Pessoas
+        top:
+        - [Cooperativa de Crédito, 242134]
+        - [Sociedade Distribuidora de TVM, 71332]
+        - [Sociedade Corretora de TVM, 44972]
+        - [null, 34788]
+        - [Banco Múltiplo, 27214]
+        - ['Sociedade de Crédito, Financiamento e Investimento', 19648]
+        - [Banco Comercial, 13094]
+        - [Sociedade de Arrendamento Mercantil, 11035]
+        - [Sociedade Corretora de Câmbio, 9650]
+        - [Sociedade de Crédito Imobiliário, 8603]
+      atividade: {tipo: VARCHAR, nulos_pct: 73.75, distintos_aprox: 62, min: Agencias de Fomento ou de Desenvolvimento, max: Veículos}
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 3.58
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 168928]
+        - [RJ, 73541]
+        - [MG, 63837]
+        - [RS, 38490]
+        - [PR, 28073]
+        - [SC, 18465]
+        - [null, 18388]
+        - [BA, 15136]
+        - [ES, 10423]
+        - [PE, 9373]
+      municipio: {tipo: VARCHAR, nulos_pct: 3.58, distintos_aprox: 1105}
+      sr:
+        tipo: VARCHAR
+        nulos_pct: 84.99
+        distintos_aprox: 5
+        min: S1
+        max: S5
+        top:
+        - [null, 435957]
+        - [S5, 37679]
+        - [S4, 27999]
+        - [S3, 6578]
+        - [S1, 3357]
+        - [S2, 1371]
+      cod_conglomerado_financeiro: {tipo: VARCHAR, nulos_pct: 91.59, distintos_aprox: 207, min: C0010021, max: C0086354}
+      cod_conglomerado_prudencial: {tipo: VARCHAR, nulos_pct: 87.84, distintos_aprox: 723, min: C0080037, max: C0088943}
+      cnpj_instituicao_lider: {tipo: VARCHAR, nulos_pct: 83.15, distintos_aprox: 972, pessoal: 'só contagens: valores seriam dado pessoal'}
+      situacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: A
+        max: LO
+        top:
+        - [I, 266952]
+        - [A, 229990]
+        - [LO, 7820]
+        - [F, 4683]
+        - [LE, 3496]
+  coluna:
+    linhas: 48482
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '2000'
+        max: '2025'
+        media: 2016.1402
+        quartis: [2012, 2017, 2022]
+        top:
+        - ['2023', 3285]
+        - ['2024', 3257]
+        - ['2022', 3089]
+        - ['2021', 3020]
+        - ['2020', 3002]
+        - ['2019', 2775]
+        - ['2018', 2647]
+        - ['2025', 2643]
+        - ['2017', 2568]
+        - ['2016', 2512]
+      id_coluna: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 930, min: '1', max: '98576'}
+      id_relatorio: {tipo: VARCHAR, nulos_pct: 25.83, distintos_aprox: 69, min: '1', max: '99'}
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '3'
+        max: '12'
+        media: 7.4376
+        quartis: [4, 6, 9]
+        top:
+        - ['9', 12296]
+        - ['6', 12293]
+        - ['3', 12283]
+        - ['12', 11610]
+      nome_coluna: {tipo: VARCHAR, nulos_pct: 0.69, distintos_aprox: 314, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_coluna_ingles: {tipo: VARCHAR, nulos_pct: 3, distintos_aprox: 367, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_grupo: {tipo: VARCHAR, nulos_pct: 49.08, distintos_aprox: 58, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_relatorio: {tipo: VARCHAR, nulos_pct: 25.83, distintos_aprox: 17, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ordem_coluna:
+        tipo: BIGINT
+        nulos_pct: 25.83
+        distintos_aprox: 30
+        min: '0'
+        max: '30'
+        media: 6.5378
+        quartis: [2, 4, 11]
+        top:
+        - [null, 12524]
+        - ['1', 4299]
+        - ['0', 4069]
+        - ['2', 3782]
+        - ['3', 3258]
+        - ['4', 3133]
+        - ['5', 2500]
+        - ['6', 1881]
+        - ['7', 1589]
+        - ['14', 1171]
+      tipo_consolidado:
+        tipo: VARCHAR
+        nulos_pct: 27.55
+        distintos_aprox: 6
+        min: '1004'
+        max: '1009'
+        top:
+        - ['1005', 18591]
+        - [null, 13356]
+        - ['1006', 8011]
+        - ['1004', 3781]
+        - ['1008', 2018]
+        - ['1009', 1845]
+        - ['1007', 880]
+  instituicao:
+    linhas: 440444
+    fonte_do_perfil: tabela inteira
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '2000'
+        max: '2025'
+        media: 2012.7192
+        quartis: [2006, 2013, 2019]
+        top:
+        - ['2014', 21513]
+        - ['2013', 20388]
+        - ['2015', 19704]
+        - ['2012', 19351]
+        - ['2016', 19028]
+        - ['2017', 18295]
+        - ['2018', 17732]
+        - ['2024', 17386]
+        - ['2023', 17368]
+        - ['2022', 17302]
+      data_alteracao_segmento:
+        tipo: DATE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 440444]
+      id_conglomerado_financeiro: {tipo: VARCHAR, nulos_pct: 89.75, distintos_aprox: 355, min: '00010045', max: '52560'}
+      id_conglomerado_prudencial: {tipo: VARCHAR, nulos_pct: 82.19, distintos_aprox: 1480}
+      id_instituicao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4515}
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0.01, distintos_aprox: 964, min: '1100015', max: '5300108'}
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '3'
+        max: '12'
+        media: 7.4454
+        quartis: [3, 6, 9]
+        top:
+        - ['3', 111593]
+        - ['6', 111387]
+        - ['9', 111124]
+        - ['12', 106340]
+      nome_instituicao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 9923, pessoal: 'só contagens: valores seriam dado pessoal'}
+      segmento:
+        tipo: VARCHAR
+        nulos_pct: 0.06
+        distintos_aprox: 35
+        min: '1'
+        max: '9'
+        top:
+        - ['9', 295730]
+        - ['8', 20445]
+        - ['16', 20317]
+        - ['15', 17331]
+        - ['21', 12556]
+        - ['199', 12137]
+        - ['14', 9338]
+        - ['197', 7930]
+        - ['196', 7268]
+        - ['10', 7206]
+      sr:
+        tipo: VARCHAR
+        nulos_pct: 96.29
+        distintos_aprox: 5
+        min: S1
+        max: S5
+        top:
+        - [null, 424096]
+        - [S5, 10017]
+        - [S4, 4844]
+        - [S3, 943]
+        - [S1, 331]
+        - [S2, 213]
+      tc:
+        tipo: VARCHAR
+        nulos_pct: 0.01
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - ['2', 401209]
+        - ['3', 30187]
+        - ['1', 9015]
+        - [null, 33]
+      tcb:
+        tipo: VARCHAR
+        nulos_pct: 0.01
+        distintos_aprox: 10
+        min: b1
+        max: z2
+        top:
+        - [b3S, 286264]
+        - [n2, 57487]
+        - [n1, 38758]
+        - [b1, 31748]
+        - [b2, 10534]
+        - [b3C, 9490]
+        - [n4, 5037]
+        - [b4, 1092]
+        - [null, 33]
+        - [z2, 1]
+      td:
+        tipo: VARCHAR
+        nulos_pct: 0.01
+        distintos_aprox: 2
+        min: C
+        max: I
+        top:
+        - [I, 418610]
+        - [C, 21784]
+        - [null, 50]
+      ti:
+        tipo: VARCHAR
+        nulos_pct: 0.06
+        distintos_aprox: 35
+        min: '1'
+        max: '9'
+        top:
+        - ['9', 295730]
+        - ['8', 20445]
+        - ['16', 20317]
+        - ['15', 17331]
+        - ['21', 12556]
+        - ['199', 12137]
+        - ['14', 9338]
+        - ['197', 7930]
+        - ['196', 7268]
+        - ['10', 7206]
+      tipo_consolidado:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '1004'
+        max: '1009'
+        top:
+        - ['1006', 187526]
+        - ['1005', 168578]
+        - ['1004', 53335]
+        - ['1008', 13225]
+        - ['1009', 12263]
+        - ['1007', 5517]
+  relatorio:
+    linhas: 54698889
+    fonte_do_perfil: tabela inteira da última partição (ano = 2026)
+    colunas:
+      ano_mes:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '202603'
+        max: '202606'
+        media: 202604.4976
+        quartis: [202603, 202605, 202606]
+        top:
+        - ['202603', 877022]
+        - ['202606', 874212]
+      ano:
+        tipo: SMALLINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
+        top:
+        - ['2026', 1751234]
+      mes:
+        tipo: TINYINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '3'
+        max: '6'
+        media: 4.4976
+        quartis: [3, 5, 6]
+        top:
+        - ['3', 877022]
+        - ['6', 874212]
+      tipo_instituicao:
+        tipo: TINYINT
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        media: 1.5646
+        quartis: [1, 1, 2]
+        top:
+        - ['1', 1103594]
+        - ['3', 341145]
+        - ['2', 306495]
+      cod_inst: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2521}
+      numero_relatorio: {tipo: TINYINT, nulos_pct: 0, distintos_aprox: 16, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_relatorio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 16, pessoal: 'só contagens: valores seriam dado pessoal'}
+      grupo:
+        tipo: VARCHAR
+        nulos_pct: 24.19
+        distintos_aprox: 45
+        min: Administração Pública, Defesa e Seguridade Social
+        max: Veículos
+        top:
+        - [null, 423662]
+        - [Outras Receitas / Despesas, 89690]
+        - [Captações - Depósitos, 62783]
+        - [Resultado de Intermediação Financeira - Resultado com Perda Esperada, 62783]
+        - [Captações - Outros Instrumentos de Dívida, 53814]
+        - [Resultado de Intermediação Financeira, 53814]
+        - [Operações de Crédito, 44845]
+        - [Outras Operações com Características de Concessão de Crédito, 44845]
+        - [Resultado de Intermediação Financeira - Despesas de Captações, 44845]
+        - [Resultado de Intermediação Financeira - Rendas de Operações de Crédito, 44845]
+      conta: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 465, min: '101484', max: '98576'}
+      nome_coluna: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 164, pessoal: 'só contagens: valores seriam dado pessoal'}
+      descricao_coluna: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 227, min: A Vencer Entre 1081 a 1800 Dias, max: a Vencer entre 1081 e 1800
+          Dias}
+      saldo:
+        tipo: DOUBLE
+        nulos_pct: 27.05
+        distintos_aprox: 291017
+        min: '-97104109341.21'
+        max: '3272146134300.87'
+        media: 1224853865.9454
+        quartis: [0, 0.0, 4718536.9103]

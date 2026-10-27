@@ -1,0 +1,83 @@
+dataset: world_ampas_oscar
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  winner_demographics:
+    linhas: 415
+    fonte_do_perfil: tabela inteira
+    colunas:
+      name: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 342, pessoal: 'só contagens: valores seriam dado pessoal'}
+      birth_year:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 106
+        min: '1868'
+        max: '1990'
+        media: 1928.8482
+        quartis: [1908, 1928, 1949]
+      birth_date: {tipo: DATE, nulos_pct: 0.24, distintos_aprox: 342, min: '1868-04-10', max: '1990-08-15'}
+      birthplace: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 235, min: 'Arlington, Va', max: 'York, North Yorkshire, England'}
+      race_ethnicity:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: Asian
+        max: White
+        top:
+        - [White, 386]
+        - [Black, 14]
+        - [Hispanic, 8]
+        - [Asian, 4]
+        - [Multiracial, 2]
+        - [Middle Eastern, 1]
+      religion:
+        tipo: VARCHAR
+        nulos_pct: 61.69
+        distintos_aprox: 22
+        min: Agnostic
+        max: Sufism
+        top:
+        - [null, 256]
+        - [Roman Catholic, 57]
+        - [Jewish, 45]
+        - [Atheist, 15]
+        - [Baptist, 5]
+        - [Protestant, 5]
+        - [Born-Again Christian, 4]
+        - [Buddhist, 4]
+        - [Christian Science, 3]
+        - [Deist, 3]
+      sexual_orientation:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Bisexual
+        max: Straight
+        top:
+        - [Straight, 373]
+        - [Bisexual, 20]
+        - [Na, 10]
+        - [Gay, 7]
+        - [Matter of Dispute, 3]
+        - [Lesbian, 2]
+      year_edition:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 97
+        min: '1927'
+        max: '2014'
+        media: 1972.8675
+        quartis: [1952, 1973, 1994]
+      category:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: Best Actor
+        max: Best Supporting Actress
+        top:
+        - [Best Actress, 87]
+        - [Best Actor, 86]
+        - [Best Director, 86]
+        - [Best Supporting Actor, 78]
+        - [Best Supporting Actress, 78]
+      movie: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 409, min: 12 Years a Slave, max: the V.I.P.s}

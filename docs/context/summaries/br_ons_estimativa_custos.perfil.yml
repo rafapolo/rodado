@@ -1,0 +1,554 @@
+dataset: br_ons_estimativa_custos
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  balanco_energia_subsistemas:
+    linhas: 1058421
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data: {tipo: DATE, nulos_pct: 0, distintos_aprox: 7972, min: '2000-01-01', max: '2024-02-29'}
+      hora:
+        tipo: TIME WITH TIME ZONE
+        nulos_pct: 0
+        distintos_aprox: 24
+        min: 00:00:00+00
+        max: 23:00:00+00
+        top:
+        - ['01:00:00+00', 44104]
+        - ['02:00:00+00', 44104]
+        - ['03:00:00+00', 44104]
+        - ['04:00:00+00', 44104]
+        - ['05:00:00+00', 44104]
+        - ['06:00:00+00', 44104]
+        - ['07:00:00+00', 44104]
+        - ['08:00:00+00', 44104]
+        - ['09:00:00+00', 44104]
+        - ['10:00:00+00', 44104]
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '2000'
+        max: '2024'
+        media: 2011.5794
+        quartis: [2006, 2012, 2018]
+        top:
+        - ['2020', 43920]
+        - ['2000', 43915]
+        - ['2004', 43915]
+        - ['2008', 43915]
+        - ['2012', 43915]
+        - ['2019', 43800]
+        - ['2021', 43800]
+        - ['2022', 43800]
+        - ['2017', 43799]
+        - ['2018', 43799]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.4872
+        quartis: [3, 6, 10]
+        top:
+        - ['1', 93000]
+        - ['3', 89280]
+        - ['5', 89280]
+        - ['7', 89280]
+        - ['8', 89280]
+        - ['10', 89221]
+        - ['12', 88920]
+        - ['6', 86400]
+        - ['9', 86400]
+        - ['11', 86384]
+      id_subsistema:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: N
+        max: SIN
+        top:
+        - [NE, 211738]
+        - [S, 211738]
+        - [SE, 211738]
+        - [SIN, 211733]
+        - [N, 211474]
+      subsistema:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: NORDESTE
+        max: SUL
+        top:
+        - [NORDESTE, 211738]
+        - [SUDESTE/CENTRO-OESTE, 211738]
+        - [SUL, 211738]
+        - [SISTEMA INTERLIGADO NACIONAL, 211733]
+        - [NORTE, 211474]
+      geracao_hidraulica_verificada:
+        tipo: DOUBLE
+        nulos_pct: 0.03
+        distintos_aprox: 984795
+        min: '0.0'
+        max: '8787571000000.0'
+        media: 1786118258969.151
+        quartis: [410022146605.8251, 848463379214.664, 3107089860871.4956]
+      geracao_termica_verificada:
+        tipo: DOUBLE
+        nulos_pct: 0.03
+        distintos_aprox: 648151
+        min: '-494000000.0'
+        max: '2275110200000.0'
+        media: 311312640827.9927
+        quartis: [66462438055.9904, 179678231984.1807, 407868047524.8595]
+      geracao_eolica_verificada:
+        tipo: DOUBLE
+        nulos_pct: 5.19
+        distintos_aprox: 444245
+        min: '-19000000.0'
+        max: '2704998000000.0'
+        media: 104860555427.2041
+        quartis: [0, 780235771.3218, 37707878912.6126]
+      geracao_fotovoltaica_verificada:
+        tipo: DOUBLE
+        nulos_pct: 12.85
+        distintos_aprox: 121917
+        min: '0.0'
+        max: '2722257000000.0'
+        media: 18656088054.9965
+        quartis: [0, 0, 0]
+      carga_verificada:
+        tipo: DOUBLE
+        nulos_pct: 0.11
+        distintos_aprox: 1058319
+        min: '0.0'
+        max: '10702336000000.0'
+        media: 2214768550631.278
+        quartis: [636040396139.0021, 1081466929564.2502, 3669860211946.3154]
+      intercambio_verificado:
+        tipo: DOUBLE
+        nulos_pct: 0.11
+        distintos_aprox: 1008804
+        min: '-1486003800000.0'
+        max: '1414650800000.0'
+        media: 269286811.5311
+        quartis: [-126514457623.799, -3946419.1378, 109610489179.906]
+  balanco_energia_subsistemas_dessem:
+    linhas: 38208
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data: {tipo: DATE, nulos_pct: 0, distintos_aprox: 198, min: '2023-08-15', max: '2024-03-03'}
+      hora:
+        tipo: TIME WITH TIME ZONE
+        nulos_pct: 0
+        distintos_aprox: 39
+        min: 00:00:00+00
+        max: 23:30:00+00
+        top:
+        - ['00:00:00+00', 796]
+        - ['00:30:00+00', 796]
+        - ['01:00:00+00', 796]
+        - ['01:30:00+00', 796]
+        - ['02:00:00+00', 796]
+        - ['02:30:00+00', 796]
+        - ['03:00:00+00', 796]
+        - ['03:30:00+00', 796]
+        - ['04:00:00+00', 796]
+        - ['04:30:00+00', 796]
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '2023'
+        max: '2024'
+        media: 2023.3065
+        quartis: [2023, 2023, 2024]
+        top:
+        - ['2023', 26496]
+        - ['2024', 11712]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '1'
+        max: '12'
+        media: 7.5477
+        quartis: [2, 9, 11]
+        top:
+        - ['1', 5952]
+        - ['12', 5952]
+        - ['10', 5760]
+        - ['11', 5760]
+        - ['9', 5760]
+        - ['2', 5184]
+        - ['8', 3264]
+        - ['3', 576]
+      id_subsistema:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: N
+        max: SE
+        top:
+        - [N, 9552]
+        - [NE, 9552]
+        - [S, 9552]
+        - [SE, 9552]
+      subsistema:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: NORDESTE
+        max: SUL
+        top:
+        - [NORDESTE, 9552]
+        - [NORTE, 9552]
+        - [SUDESTE, 9552]
+        - [SUL, 9552]
+      valor_demanda:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 40800
+        min: '618248000000.0'
+        max: '6263827000000.0'
+        media: 1989702138583.5427
+        quartis: [873096853870.4066, 1338040611765.848, 2709605982063.039]
+      usina_hidraulica_verificada:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 33248
+        min: '116200000000.0'
+        max: '5138820000000.0'
+        media: 1372156661484.5059
+        quartis: [345228116759.8017, 766667421427.6465, 1954554599529.1829]
+      geracao_pequena_usina_hidraulica_verificada:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2366
+        min: '4300.0'
+        max: '272200.0'
+        media: 77643.4652
+        quartis: [8057.5518, 46312.9416, 143625.8277]
+      geracao_usina_termica_verificada:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2608
+        min: '0.0'
+        max: '719430000000.0'
+        media: 104630506726.34
+        quartis: [27522197270.4718, 90186161714.1693, 122466315878.3388]
+      geracao_pequena_usina_termica_verificada:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 3849
+        min: '1800.0'
+        max: '368290.0'
+        media: 78493.7183
+        quartis: [20409.1674, 25530.7109, 59635.4405]
+      geracao_eolica_verificada:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 15833
+        min: '0.0'
+        max: '1842660.0'
+        media: 273548.4425
+        quartis: [1692.7665, 37027.4365, 193453.1344]
+      geracao_fotovoltaica_verificada:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 14838
+        min: '0.0'
+        max: '1349510.0'
+        media: 186994.213
+        quartis: [0, 9669.9776, 273929.1071]
+  custo_marginal_operacao_semanal:
+    linhas: 4004
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1057, min: '2005-01-07', max: '2024-03-08'}
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: '2005'
+        max: '2024'
+        media: 2014.1049
+        quartis: [2009, 2014, 2019]
+        top:
+        - ['2010', 212]
+        - ['2016', 212]
+        - ['2021', 212]
+        - ['2005', 208]
+        - ['2006', 208]
+        - ['2007', 208]
+        - ['2008', 208]
+        - ['2009', 208]
+        - ['2011', 208]
+        - ['2012', 208]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.4825
+        quartis: [3, 7, 9]
+        top:
+        - ['1', 348]
+        - ['3', 344]
+        - ['12', 340]
+        - ['7', 340]
+        - ['10', 332]
+        - ['5', 332]
+        - ['8', 332]
+        - ['9', 332]
+        - ['4', 328]
+        - ['6', 328]
+      id_subsistema:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: N
+        max: SE
+        top:
+        - [N, 1001]
+        - [NE, 1001]
+        - [S, 1001]
+        - [SE, 1001]
+      subsistema:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: NORDESTE
+        max: SUL
+        top:
+        - [NORDESTE, 1001]
+        - [NORTE, 1001]
+        - [SUDESTE, 1001]
+        - [SUL, 1001]
+      custo_marginal_operacao_semanal:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1568
+        min: '0.0'
+        max: '304445000000.0'
+        media: 19240889360.6394
+        quartis: [2023547246.8233, 9564583584.4156, 22327651453.7129]
+      custo_marginal_operacao_semanal_carga_leve:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1554
+        min: '0.0'
+        max: '299574000000.0'
+        media: 18548085164.8352
+        quartis: [1643157575.7576, 9146803957.529, 21496954603.5806]
+      custo_marginal_operacao_semanal_carga_media:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1302
+        min: '0.0'
+        max: '306918000000.0'
+        media: 19649258741.2587
+        quartis: [2181632989.6907, 9801601446.5169, 22816958333.3333]
+      custo_marginal_operacao_semanal_carga_pesada:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1557
+        min: '0.0'
+        max: '309173000000.0'
+        media: 19821562937.0629
+        quartis: [2267508545.0264, 9952148931.001, 23062820830.7973]
+  custo_marginal_operacao_semi_horario:
+    linhas: 285888
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1654, min: '2020-01-01', max: '2024-03-03'}
+      hora:
+        tipo: TIME WITH TIME ZONE
+        nulos_pct: 0
+        distintos_aprox: 39
+        min: 00:00:00+00
+        max: 23:30:00+00
+        top:
+        - ['00:00:00+00', 5956]
+        - ['00:30:00+00', 5956]
+        - ['01:00:00+00', 5956]
+        - ['01:30:00+00', 5956]
+        - ['02:00:00+00', 5956]
+        - ['02:30:00+00', 5956]
+        - ['03:00:00+00', 5956]
+        - ['03:30:00+00', 5956]
+        - ['04:00:00+00', 5956]
+        - ['04:30:00+00', 5956]
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '2020'
+        max: '2024'
+        media: 2021.5836
+        quartis: [2021, 2022, 2023]
+        top:
+        - ['2020', 70080]
+        - ['2021', 69696]
+        - ['2023', 67392]
+        - ['2022', 67008]
+        - ['2024', 11712]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.3398
+        quartis: [3, 6, 9]
+        top:
+        - ['1', 27456]
+        - ['2', 26112]
+        - ['3', 24000]
+        - ['7', 23808]
+        - ['5', 23616]
+        - ['10', 23424]
+        - ['8', 23424]
+        - ['4', 23040]
+        - ['6', 23040]
+        - ['9', 23040]
+      id_subsistema:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: N
+        max: SE
+        top:
+        - [N, 71472]
+        - [NE, 71472]
+        - [S, 71472]
+        - [SE, 71472]
+      subsistema:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: NORDESTE
+        max: SUL
+        top:
+        - [NORDESTE, 71472]
+        - [NORTE, 71472]
+        - [SUDESTE, 71472]
+        - [SUL, 71472]
+      custo_marginal_operacao:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 49196
+        min: '-618000000.0'
+        max: '5472962000000.0'
+        media: 16853116703.0445
+        quartis: [0, 4546416581.0944, 15853002491.3628]
+  custo_variavel_unitario_usinas_termicas:
+    linhas: 21351
+    fonte_do_perfil: tabela inteira
+    colunas:
+      data_inicio: {tipo: DATE, nulos_pct: 0, distintos_aprox: 212, min: '2019-12-28', max: '2024-03-02'}
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '2019'
+        max: '2024'
+        media: 2021.5571
+        quartis: [2021, 2022, 2023]
+        top:
+        - ['2021', 5282]
+        - ['2020', 5177]
+        - ['2022', 5129]
+        - ['2023', 4812]
+        - ['2024', 844]
+        - ['2019', 107]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.1461
+        quartis: [3, 6, 9]
+        top:
+        - ['1', 2211]
+        - ['2', 2101]
+        - ['7', 1946]
+        - ['10', 1922]
+        - ['4', 1822]
+        - ['5', 1807]
+        - ['9', 1722]
+        - ['3', 1720]
+        - ['8', 1717]
+        - ['11', 1622]
+      data_fim: {tipo: DATE, nulos_pct: 0, distintos_aprox: 222, min: '2020-01-03', max: '2024-03-08'}
+      ano_pmo:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '2019'
+        max: '2024'
+        media: 2021.5571
+        quartis: [2021, 2022, 2023]
+        top:
+        - ['2021', 5282]
+        - ['2020', 5177]
+        - ['2022', 5129]
+        - ['2023', 4812]
+        - ['2024', 844]
+        - ['2019', 107]
+      mes_pmo:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: '1'
+        max: '12'
+        media: 6.1461
+        quartis: [3, 6, 9]
+        top:
+        - ['1', 2211]
+        - ['2', 2101]
+        - ['7', 1946]
+        - ['10', 1922]
+        - ['4', 1822]
+        - ['5', 1807]
+        - ['9', 1722]
+        - ['3', 1720]
+        - ['8', 1717]
+        - ['11', 1622]
+      numero_revisao: {tipo: BIGINT, nulos_pct: 0, distintos_aprox: 5, pessoal: 'só contagens: valores seriam dado pessoal'}
+      semana_operativa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 260, min: PMO Abril 2020, max: PMO Setembro 2023 - Revisão 4}
+      id_modelo_usina: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 159, min: '1', max: '98'}
+      id_subsistema:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: N
+        max: SE
+        top:
+        - [SE, 7583]
+        - [NE, 7466]
+        - [N, 3695]
+        - [S, 2607]
+      subsistema:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: NORDESTE
+        max: SUL
+        top:
+        - [SUDESTE, 7583]
+        - [NORDESTE, 7466]
+        - [NORTE, 3695]
+        - [SUL, 2607]
+      usina: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 145, min: ALTOS, max: XAVANTES}
+      custo_variavel_unitario:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 2653
+        min: '0.0'
+        max: '5298.37'
+        media: 605.6302
+        quartis: [141.037, 369.7379, 947.2894]

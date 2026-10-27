@@ -1,0 +1,159 @@
+dataset: br_mjsp_sinesp
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  ocorrencias:
+    linhas: 823
+    fonte_do_perfil: tabela inteira
+    colunas:
+      cód_ibge:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: '1200013'
+        max: '1200807'
+        media: 1200357.5273
+        quartis: [1200203, 1200350, 1200446]
+        top:
+        - ['1200401', 60]
+        - ['1200203', 51]
+        - ['1200609', 51]
+        - ['1200302', 47]
+        - ['1200500', 47]
+        - ['1200450', 42]
+        - ['1200807', 39]
+        - ['1200385', 38]
+        - ['1200104', 37]
+        - ['1200336', 37]
+      município:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 21
+        min: Acrelândia
+        max: Xapuri
+        top:
+        - [Rio Branco, 60]
+        - [Cruzeiro Do Sul, 51]
+        - [Tarauacá, 51]
+        - [Feijó, 47]
+        - [Sena Madureira, 47]
+        - [Senador Guiomard, 42]
+        - [Porto Acre, 39]
+        - [Plácido De Castro, 38]
+        - [Brasiléia, 37]
+        - [Mâncio Lima, 37]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: AC
+        max: AC
+        top:
+        - [AC, 823]
+      regiao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: NORTE
+        max: NORTE
+        top:
+        - [NORTE, 823]
+      mes/ano: {tipo: TIMESTAMP_NS, nulos_pct: 0, distintos_aprox: 64, min: '2018-01-01 00:00:00', max: '2022-12-01 00:00:00'}
+      vítimas:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 26
+        min: '0'
+        max: '37'
+        media: 1.5966
+        quartis: [0, 1, 1]
+        top:
+        - ['0', 402]
+        - ['1', 239]
+        - ['2', 74]
+        - ['3', 37]
+        - ['4', 9]
+        - ['13', 8]
+        - ['11', 7]
+        - ['5', 6]
+        - ['7', 6]
+        - ['10', 5]
+  ocorrencias_uf:
+    linhas: 23020
+    fonte_do_perfil: tabela inteira
+    colunas:
+      uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 25
+        min: Acre
+        max: Tocantins
+        top:
+        - [Amazonas, 864]
+        - [Bahia, 864]
+        - [Ceará, 864]
+        - [Distrito Federal, 864]
+        - [Espírito Santo, 864]
+        - [Mato Grosso, 864]
+        - [Minas Gerais, 864]
+        - [Pará, 864]
+        - [Piauí, 864]
+        - [Rio Grande do Sul, 864]
+      tipo_crime:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: Estupro
+        max: Tentativa de homicídio
+        top:
+        - [Homicídio doloso, 2591]
+        - [Furto de veículo, 2590]
+        - [Roubo de veículo, 2590]
+        - [Estupro, 2588]
+        - [Tentativa de homicídio, 2587]
+        - [Roubo seguido de morte (latrocínio), 2571]
+        - [Lesão corporal seguida de morte, 2535]
+        - [Roubo a instituição financeira, 2501]
+        - [Roubo de carga, 2467]
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '2015'
+        max: '2022'
+        media: 2018.4854
+        quartis: [2016, 2018, 2020]
+        top:
+        - ['2018', 2910]
+        - ['2021', 2904]
+        - ['2017', 2893]
+        - ['2019', 2893]
+        - ['2016', 2884]
+        - ['2020', 2880]
+        - ['2015', 2879]
+        - ['2022', 2777]
+      mes:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 13
+        min: abril
+        max: setembro
+        top:
+        - [fevereiro, 1930]
+        - [março, 1926]
+        - [janeiro, 1922]
+        - [abril, 1921]
+        - [dezembro, 1918]
+        - [maio, 1918]
+        - [setembro, 1918]
+        - [agosto, 1916]
+        - [novembro, 1915]
+        - [outubro, 1914]
+      ocorrencias:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1984
+        min: '0'
+        max: '10518'
+        media: 204.6478
+        quartis: [3, 34, 169]

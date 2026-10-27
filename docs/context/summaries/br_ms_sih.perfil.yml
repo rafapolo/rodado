@@ -1,0 +1,894 @@
+dataset: br_ms_sih
+gerado_em: '2026-10-27'
+gerado_por: scripts/gera_perfil.py — não edite à mão
+tabelas:
+  aihs_reduzidas:
+    linhas: 200147614
+    fonte_do_perfil: amostra de 30.299% da última partição (ano = 2025). ~2.000.000 linhas
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2025'
+        max: '2025'
+        media: 2025
+        quartis: [2025, 2025, 2025]
+        top:
+        - ['2025', 2019328]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '1'
+        max: '6'
+        media: 3.5636
+        quartis: [2, 4, 5]
+        top:
+        - ['4', 361611]
+        - ['5', 351561]
+        - ['3', 338748]
+        - ['6', 338599]
+        - ['2', 315253]
+        - ['1', 313556]
+      sigla_uf:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2019328]
+      id_aih: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2239569}
+      tipo_aih:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '5'
+        top:
+        - ['1', 2002514]
+        - ['5', 16814]
+      motivo_autorizacao_aih:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: '0'
+        max: '9'
+        top:
+        - ['0', 1849542]
+        - ['7', 88033]
+        - ['14', 61846]
+        - ['10', 5323]
+        - ['134', 4947]
+        - ['8', 4283]
+        - ['15', 2198]
+        - ['11', 1039]
+        - ['9', 1021]
+        - ['135', 610]
+      sequencial_aih: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 124205}
+      especialidade_leito:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 14
+        min: '1'
+        max: '9'
+        top:
+        - ['1', 753937]
+        - ['3', 719274]
+        - ['2', 275228]
+        - ['7', 188147]
+        - ['9', 32969]
+        - ['5', 29018]
+        - ['4', 10714]
+        - ['87', 4705]
+        - ['8', 1715]
+        - ['12', 1331]
+      motivo_saida:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 31
+        min: '11'
+        max: '67'
+        top:
+        - ['12', 1183402]
+        - ['61', 207267]
+        - ['15', 167418]
+        - ['31', 89830]
+        - ['41', 85856]
+        - ['11', 65604]
+        - ['26', 33775]
+        - ['27', 31546]
+        - ['21', 28289]
+        - ['51', 23899]
+      tipo_uti:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 15
+        min: '0'
+        max: '99'
+        top:
+        - ['0', 1827237]
+        - ['75', 130466]
+        - ['76', 19888]
+        - ['81', 15525]
+        - ['78', 11429]
+        - ['85', 4574]
+        - ['79', 3524]
+        - ['82', 2845]
+        - ['1', 1246]
+        - ['86', 680]
+      tipo_uci:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '0'
+        max: '2'
+        top:
+        - ['0', 2003237]
+        - ['1', 13421]
+        - ['2', 2670]
+      carater_internacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '1'
+        max: '6'
+        top:
+        - ['2', 1452622]
+        - ['1', 554374]
+        - ['6', 6854]
+        - ['5', 5462]
+        - ['4', 9]
+        - ['3', 7]
+      data_internacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1151, min: '2008-01-01', max: '2025-06-30'}
+      data_saida: {tipo: DATE, nulos_pct: 0, distintos_aprox: 394, min: '2024-08-01', max: '2025-06-30'}
+      id_municipio_estabelecimento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1610}
+      id_estabelecimento_cnes: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1592}
+      natureza_juridica_estabelecimento:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: '1015'
+        max: '3999'
+        top:
+        - ['3999', 713412]
+        - ['1023', 483741]
+        - ['1244', 252785]
+        - ['3069', 165604]
+        - ['1031', 106212]
+        - ['2011', 62102]
+        - ['2062', 42774]
+        - ['1147', 33215]
+        - ['1112', 28239]
+        - ['1120', 22392]
+      natureza_juridica_estabelecimento_ate_2012:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '00'
+        max: '00'
+        top:
+        - ['00', 2019328]
+      cnpj_estabelecimento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1316, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_gestao_estabelecimento:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 1055611]
+        - ['2', 963717]
+      id_municipio_gestor: {tipo: VARCHAR, nulos_pct: 47.72, distintos_aprox: 1141, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_gestor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf_gestor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1195, pessoal: 'só contagens: valores seriam dado pessoal'}
+      data_autorizacao_gestor: {tipo: DATE, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpj_mantenedora: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 575, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_municipio_paciente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5078, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cep_paciente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 366278, pessoal: 'só contagens: valores seriam dado pessoal'}
+      data_nascimento_paciente: {tipo: DATE, nulos_pct: 0, distintos_aprox: 35003, pessoal: 'só contagens: valores seriam dado pessoal'}
+      idade_paciente: {tipo: BIGINT, nulos_pct: 0, distintos_aprox: 98, pessoal: 'só contagens: valores seriam dado pessoal'}
+      unidade_medida_idade_paciente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sexo_paciente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      raca_cor_paciente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6, pessoal: 'só contagens: valores seriam dado pessoal'}
+      etnia_paciente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 208, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigo_nacionalidade_paciente: {tipo: BIGINT, nulos_pct: 0, distintos_aprox: 179, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cbo_2002_paciente: {tipo: VARCHAR, nulos_pct: 99.97, distintos_aprox: 12, pessoal: 'só contagens: valores seriam dado pessoal'}
+      indicador_paciente_homonimo: {tipo: BIGINT, nulos_pct: 0, distintos_aprox: 3, pessoal: 'só contagens: valores seriam dado pessoal'}
+      grau_instrucao_paciente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5, pessoal: 'só contagens: valores seriam dado pessoal'}
+      quantidade_filhos_paciente: {tipo: BIGINT, nulos_pct: 0, distintos_aprox: 37, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_acidente_trabalho:
+        tipo: VARCHAR
+        nulos_pct: 99.97
+        distintos_aprox: 11
+        min: '331'
+        max: '851'
+        top:
+        - [null, 2018728]
+        - ['851', 581]
+        - ['602', 6]
+        - ['522', 3]
+        - ['452', 2]
+        - ['502', 2]
+        - ['702', 2]
+        - ['331', 1]
+        - ['504', 1]
+        - ['513', 1]
+      tipo_vinculo_previdencia:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '0'
+        max: '6'
+        top:
+        - ['0', 2018728]
+        - ['1', 581]
+        - ['5', 12]
+        - ['6', 4]
+        - ['3', 2]
+        - ['4', 1]
+      id_gestante_pre_natal: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 43612}
+      indicador_gestante_risco:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.9963
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 2011821]
+        - ['0', 7507]
+      tipo_contraceptivo_principal: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 14, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_contraceptivo_secundario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 14, pessoal: 'só contagens: valores seriam dado pessoal'}
+      sequencial_longa_permanencia:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 13
+        min: '001'
+        max: 068
+        top:
+        - [null, 2019311]
+        - ['036', 2]
+        - ['037', 2]
+        - ['001', 1]
+        - ['002', 1]
+        - ['007', 1]
+        - [009, 1]
+        - ['010', 1]
+        - ['011', 1]
+        - ['026', 1]
+      procedimento_solicitado: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1290}
+      procedimento_realizado: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1290}
+      indicador_infeccao_hospitalar:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2019328]
+      complexidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '2'
+        max: '3'
+        top:
+        - ['2', 1836367]
+        - ['3', 182961]
+      indicador_exame_vdrl:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['0', 1854742]
+        - ['1', 164586]
+      tipo_financiamento:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '04'
+        max: '06'
+        top:
+        - ['06', 1895845]
+        - ['04', 123483]
+      subtipo_financiamento:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '      '
+        max: 040084
+        top:
+        - ['      ', 1895845]
+        - [040080, 91692]
+        - ['040032', 13540]
+        - [040082, 6288]
+        - ['040024', 5501]
+        - ['040076', 4660]
+        - [040049, 589]
+        - ['040071', 518]
+        - [040028, 260]
+        - ['040067', 188]
+      regra_contratual:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 10
+        min: '0000'
+        max: '7113'
+        top:
+        - ['0000', 1531934]
+        - ['7102', 386200]
+        - ['7109', 50700]
+        - ['7110', 15041]
+        - ['7106', 12211]
+        - ['7104', 10216]
+        - ['7113', 8796]
+        - ['7112', 3164]
+        - ['7105', 1066]
+      cid_notificacao_categoria:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 2
+        min: O11
+        max: O13
+        top:
+        - [null, 2019278]
+        - [O13, 46]
+        - [O11, 4]
+      cid_notificacao_subcategoria:
+        tipo: VARCHAR
+        nulos_pct: 97.48
+        distintos_aprox: 25
+        min: O100
+        max: Z302
+        top:
+        - [null, 1968454]
+        - [Z302, 50503]
+        - [O149, 146]
+        - [O243, 63]
+        - [O244, 48]
+        - [O100, 42]
+        - [O140, 14]
+        - [O992, 10]
+        - [O150, 8]
+        - [O368, 8]
+      cid_causa_categoria:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2019328]
+      cid_causa_subcategoria:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2019328]
+      cid_principal_categoria: {tipo: VARCHAR, nulos_pct: 88.4, distintos_aprox: 1383}
+      cid_principal_subcategoria: {tipo: VARCHAR, nulos_pct: 11.6, distintos_aprox: 7394}
+      cid_secundario_categoria:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2019328]
+      cid_secundario_subcategoria:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2019328]
+      cid_diagnostico_secundario_1_categoria: {tipo: VARCHAR, nulos_pct: 96.21, distintos_aprox: 1063}
+      cid_diagnostico_secundario_1_subcategoria: {tipo: VARCHAR, nulos_pct: 80.87, distintos_aprox: 7661}
+      cid_diagnostico_secundario_2_categoria: {tipo: VARCHAR, nulos_pct: 99.07, distintos_aprox: 666, min: A09, max: Z98}
+      cid_diagnostico_secundario_2_subcategoria: {tipo: VARCHAR, nulos_pct: 97.46, distintos_aprox: 3771}
+      cid_diagnostico_secundario_3_categoria: {tipo: VARCHAR, nulos_pct: 99.6, distintos_aprox: 411, min: A09, max: Z98}
+      cid_diagnostico_secundario_3_subcategoria: {tipo: VARCHAR, nulos_pct: 98.81, distintos_aprox: 2833}
+      cid_diagnostico_secundario_4_categoria: {tipo: VARCHAR, nulos_pct: 99.84, distintos_aprox: 303, min: A09, max: Z99}
+      cid_diagnostico_secundario_4_subcategoria: {tipo: VARCHAR, nulos_pct: 99.44, distintos_aprox: 1670}
+      cid_diagnostico_secundario_5_categoria: {tipo: VARCHAR, nulos_pct: 99.94, distintos_aprox: 241, min: A05, max: Z95}
+      cid_diagnostico_secundario_5_subcategoria: {tipo: VARCHAR, nulos_pct: 99.73, distintos_aprox: 1030}
+      cid_diagnostico_secundario_6_categoria: {tipo: VARCHAR, nulos_pct: 99.98, distintos_aprox: 117, min: A09, max: Z54}
+      cid_diagnostico_secundario_6_subcategoria: {tipo: VARCHAR, nulos_pct: 99.87, distintos_aprox: 808, min: A020, max: Z992}
+      cid_diagnostico_secundario_7_categoria: {tipo: VARCHAR, nulos_pct: 99.99, distintos_aprox: 80, min: A09, max: Z54}
+      cid_diagnostico_secundario_7_subcategoria: {tipo: VARCHAR, nulos_pct: 99.93, distintos_aprox: 402, min: A410, max: Z992}
+      cid_diagnostico_secundario_8_categoria:
+        tipo: VARCHAR
+        nulos_pct: 99.99
+        distintos_aprox: 36
+        min: A09
+        max: Z39
+        top:
+        - [null, 2019219]
+        - [L89, 16]
+        - [I10, 7]
+        - [R11, 7]
+        - [A91, 6]
+        - [A49, 5]
+        - [D62, 4]
+        - [R05, 4]
+        - [R91, 4]
+        - [A09, 3]
+      cid_diagnostico_secundario_8_subcategoria: {tipo: VARCHAR, nulos_pct: 99.97, distintos_aprox: 230, min: A410, max: Z992}
+      cid_diagnostico_secundario_9_categoria:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2019328]
+      cid_diagnostico_secundario_9_subcategoria:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2019328]
+      tipo_diagnostico_secundario_1:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '0'
+        max: '2'
+        media: 0.2975
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 1556498]
+        - ['1', 324946]
+        - ['2', 137884]
+      tipo_diagnostico_secundario_2:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '0'
+        max: '2'
+        media: 0.0388
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 1949219]
+        - ['1', 61933]
+        - ['2', 8176]
+      tipo_diagnostico_secundario_3:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '0'
+        max: '2'
+        media: 0.0176
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 1987178]
+        - ['1', 28707]
+        - ['2', 3443]
+      tipo_diagnostico_secundario_4:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '0'
+        max: '2'
+        media: 0.0081
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 2004755]
+        - ['1', 12770]
+        - ['2', 1803]
+      tipo_diagnostico_secundario_5:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '0'
+        max: '2'
+        media: 0.0037
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 2012719]
+        - ['1', 5660]
+        - ['2', 949]
+      tipo_diagnostico_secundario_6:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '0'
+        max: '2'
+        media: 0.0018
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 2016173]
+        - ['1', 2647]
+        - ['2', 508]
+      tipo_diagnostico_secundario_7:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '0'
+        max: '2'
+        media: 0.001
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 2017613]
+        - ['1', 1442]
+        - ['2', 273]
+      tipo_diagnostico_secundario_8:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '0'
+        max: '2'
+        media: 0.0004
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 2018557]
+        - ['1', 664]
+        - ['2', 107]
+      tipo_diagnostico_secundario_9:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '0'
+        max: '2'
+        media: 0.0002
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 2018995]
+        - ['1', 278]
+        - ['2', 55]
+      cid_morte_categoria:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2019328]
+      cid_morte_subcategoria:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2019328]
+      indicador_obito:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0456
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 1927258]
+        - ['1', 92070]
+      remessa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3031}
+      justificativa_auditor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 671, min: '                                                  ', max: "\x87\
+          L                                                "}
+      justificativa_estabelecimento: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 485, min: '                                                  ',
+        max: 'sem cartao sus                                    '}
+      quantidade_dias_uti_mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 125
+        min: '0'
+        max: '207'
+        media: 0.638
+        quartis: [0, 0, 0]
+      quantidade_dias_unidade_intermediaria:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 80
+        min: '0'
+        max: '121'
+        media: 0.0609
+        quartis: [0, 0, 0]
+      quantidade_dias_acompanhate:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 145
+        min: '0'
+        max: '250'
+        media: 2.1575
+        quartis: [0, 0, 2]
+      quantidade_dias:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 192
+        min: '0'
+        max: '359'
+        media: 4.5169
+        quartis: [1, 2, 5]
+      quantidade_dias_permanencia:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 210
+        min: '0'
+        max: '358'
+        media: 5.0269
+        quartis: [1, 2, 6]
+      valor_complemento_federal_servicos_hospitalares: {tipo: DOUBLE, nulos_pct: 0, distintos_aprox: 3266, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      valor_complemento_federal_servicos_profissionais: {tipo: DOUBLE, nulos_pct: 0, distintos_aprox: 3395, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      valor_complemento_gestor_servicos_hospitalares: {tipo: DOUBLE, nulos_pct: 0, distintos_aprox: 348, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      valor_complemento_gestor_servicos_profissionais: {tipo: DOUBLE, nulos_pct: 0, distintos_aprox: 222, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      valor_uci:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 537
+        min: '0.0'
+        max: '32670.0'
+        media: 11.5873
+        quartis: [0, 0, 0]
+      valor_serivico_hospitalar:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 342679
+        min: '0.0'
+        max: '219243.16'
+        media: 1359.823
+        quartis: [272.7997, 485.1342, 938.8229]
+      valor_servico_profissional:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 99122
+        min: '0.0'
+        max: '55922.71'
+        media: 342.8329
+        quartis: [56.3532, 138.6115, 294.6957]
+      valor_uti:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 797
+        min: '0.0'
+        max: '144100.0'
+        media: 424.3384
+        quartis: [0, 0, 0]
+      valor_dolar:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 166416
+        min: '0.0'
+        max: '46790.74'
+        media: 311.8575
+        quartis: [65.0583, 119.5375, 219.2179]
+      valor_aih:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 421806
+        min: '0.0'
+        max: '262028.17'
+        media: 1765.1469
+        quartis: [368.392, 678.8604, 1239.2039]
+      razao_social_estabelecimento: {tipo: VARCHAR, nulos_pct: 14.62, distintos_aprox: 1212, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nome_fantasia_estabelecimento: {tipo: VARCHAR, nulos_pct: 30.33, distintos_aprox: 1103, pessoal: 'só contagens: valores seriam dado pessoal'}
+      razao_social_mantenedora: {tipo: VARCHAR, nulos_pct: 33.94, distintos_aprox: 898, pessoal: 'só contagens: valores seriam dado pessoal'}
+      origem_nome_estabelecimento: {tipo: VARCHAR, nulos_pct: 14.62, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+  servicos_profissionais:
+    linhas: 2419206382
+    fonte_do_perfil: amostra de 1.767% da última partição (ano = 2025). ~2.000.000 linhas
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2025'
+        max: '2025'
+        media: 2025
+        quartis: [2025, 2025, 2025]
+        top:
+        - ['2025', 2014778]
+      mes:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '1'
+        max: '7'
+        media: 4.0612
+        quartis: [2, 4, 6]
+        top:
+        - ['4', 337222]
+        - ['7', 305034]
+        - ['3', 297701]
+        - ['5', 280180]
+        - ['2', 278528]
+        - ['6', 266240]
+        - ['1', 249873]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 27
+        min: AC
+        max: TO
+        top:
+        - [SP, 521562]
+        - [MG, 200704]
+        - [RJ, 194560]
+        - [PR, 131072]
+        - [RS, 112640]
+        - [BA, 94208]
+        - [SC, 94208]
+        - [CE, 91921]
+        - [MA, 77277]
+        - [PE, 67585]
+      ano_internacao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2025'
+        max: '2025'
+        media: 2025
+        quartis: [2025, 2025, 2025]
+        top:
+        - ['2025', 2014778]
+      mes_internacao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '1'
+        max: '7'
+        media: 4.0612
+        quartis: [2, 4, 6]
+        top:
+        - ['4', 337222]
+        - ['7', 305034]
+        - ['3', 297701]
+        - ['5', 280180]
+        - ['2', 278528]
+        - ['6', 266240]
+        - ['1', 249873]
+      data_entrada_internacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 933, min: '2008-01-01', max: '2025-07-31'}
+      data_saida_iternacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 380, min: '2024-08-01', max: '2025-07-31'}
+      id_municipio_estabelecimento_aih: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2926}
+      id_municipio_paciente: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5028, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_gestor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1355, pessoal: 'só contagens: valores seriam dado pessoal'}
+      id_estabelecimento_cnes: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2913}
+      id_aih: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 825077}
+      id_procedimento_principal: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1512}
+      tipo_servico: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 118, min: '000000', max: '169002'}
+      id_prestador_servico: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3918}
+      id_procedimento_secundario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2289}
+      cbo_2002_profissional: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 104, min: '000000', max: '322405'}
+      quantidade_procedimentos:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 265
+        min: '0'
+        max: '936'
+        media: 2.4331
+        quartis: [1, 1, 2]
+      id_cid_principal: {tipo: VARCHAR, nulos_pct: 88.78, distintos_aprox: 969, min: A02, max: Z98}
+      id_cid_principal_subcategoria: {tipo: VARCHAR, nulos_pct: 11.22, distintos_aprox: 5440}
+      id_cid_secundario:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2014778]
+      id_cid_secundario_subcategoria:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2014778]
+      complexidade_ato_profissional:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '02'
+        max: '03'
+        top:
+        - ['02', 1791450]
+        - ['03', 223328]
+      quantidade_atos_profissionais:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 265
+        min: '0'
+        max: '936'
+        media: 2.6815
+        quartis: [1, 1, 2]
+      quantidade_pontos:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 256
+        min: '0'
+        max: '10080'
+        media: 27.8643
+        quartis: [0, 0, 0]
+      nota_fiscal: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 13602}
+      valor_ato_profissional:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 33898
+        min: '0.0'
+        max: '110981.8'
+        media: 126.0391
+        quartis: [0, 1.8055, 60.1491]
+      indicador_uf_hospital:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0149
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 1984703]
+        - ['1', 30075]
+      indicador_uf_paciente: {tipo: BIGINT, nulos_pct: 0, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
+      indicador_id_aih:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0759
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 1861761]
+        - ['1', 153017]
+      tipo_financiamento_ato_profissional:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '01'
+        max: '07'
+        top:
+        - ['06', 1838695]
+        - ['04', 139923]
+        - ['01', 34453]
+        - ['07', 1685]
+        - ['05', 22]
+      tipo_subtipo_financiamento_ato_profissional:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 20
+        min: '      '
+        max: 040084
+        top:
+        - ['      ', 1874538]
+        - [040080, 80633]
+        - [040082, 19551]
+        - ['040032', 17568]
+        - ['040076', 9782]
+        - ['040024', 5629]
+        - [040049, 3276]
+        - [040079, 2039]
+        - [040084, 612]
+        - ['040071', 428]
+      tipo_documento_pf: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 77470, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_documento_pj: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6262, pessoal: 'só contagens: valores seriam dado pessoal'}
+      tipo_valor:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '1'
+        max: '6'
+        top:
+        - ['1', 1558191]
+        - ['2', 434395]
+        - ['4', 13542]
+        - ['3', 8095]
+        - ['5', 290]
+        - ['6', 265]
+      sequencia: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 105008}
+      nome_remessa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3334, pessoal: 'só contagens: valores seriam dado pessoal'}
