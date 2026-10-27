@@ -5,7 +5,18 @@ tabelas:
   ata_registro_preco:
     grao: "não lida: tabela sem view no banco (Catalog Error: Table with name ata_registro_preco does not exist)"
   contratacao:
-    grao: "não lida: tabela sem view no banco (Catalog Error: Table with name contratacao does not exist)"
+    grao: "uma contratação (compra) publicada no PNCP em ago-out/2021, quase toda dispensa de licitação"
+    chave: "numeroControlePNCP (3.171 linhas = 3.171 distintos). Colunas em camelCase, precisam de aspas duplas."
+    tempo: {natureza: serie_de_periodos, coluna: dataPublicacaoPncp, cobertura: "2021-08-10–2021-10-29 (anoCompra = 2021 em todas; dataAtualizacao vai até 2026-09-15)"}
+    territorio: {nivel: municipio, colunas: {unidadeOrgao: "STRUCT com ufSigla, municipioNome, nomeUnidade etc. (acesse unidadeOrgao.ufSigla)", orgaoEntidade: "STRUCT com cnpj, esferaId, poderId, razaoSocial do órgão"}}
+    medidas:
+      - {coluna: valorTotalEstimado, o_que: "valor estimado da contratação", unidade: "R$", soma: sim}
+      - {coluna: valorTotalHomologado, o_que: "valor homologado (nulo em 42% das linhas)", unidade: "R$", soma: sim}
+    filtros_tipicos: ["modalidadeId = 8 (Dispensa, 3.170 de 3.171; BIGINT, não texto)", "situacaoCompraId = 1 (3.169 de 3.171; significado de 2 não documentado)"]
+    use_para: "amostra pequena de dispensas de 2021 do PNCP com órgão e valor."
+    nao_use_para: "análise de compras públicas em geral: cobre só 3 meses de 2021 e quase só dispensas (use br_mgi_compras_publicas.contratacao)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "3.171 linhas; numeroControlePNCP único; modalidadeId 8 em 3.170 linhas — medido 2026-10-27"
   instrumento_cobranca:
     grao: "não lida: tabela sem view no banco (Catalog Error: Table with name instrumento_cobranca does not exist)"
   dicionario:
