@@ -88,6 +88,19 @@ tabelas:
     - nao_use_para
     verificado: 414.735 linhas = 414.735 distintas; 413.387 alunos distintos — medido 2026-10-27
   student_achievement:
-    grao: 'não lida: duckdb saiu com 255 sem mensagem (memória?)'
+    grao: "um aluno avaliado no PIRLS 2021 (leitura, 4º ano), com respostas aos itens, pesos amostrais e cinco valores plausíveis de proficiência"
+    chave: "version, scope, pirls_type, country_id, school_id, class_id, student_id (413.387 linhas = 413.387 distintos); (country_id, student_id) com pirls_type também é única"
+    tempo: {natureza: serie_de_periodos, coluna: student_wave_indicator, cobertura: "PIRLS 2021 (version = '6'): '1' = Spring 2021, '2' = Fall 2021, '3' = Spring 2022 (dicionário)"}
+    territorio: {nivel: outro, colunas: {country_id: "código numérico do país ou entidade (75 distintos; ex. '784', '710', '7842')", country_iso3_code: "apesar do nome contém código numérico ISO (784, 710, 398), nulo em 19% das linhas (entidades subnacionais como '7842')", school_id: "escola", class_id: "turma"}}
+    medidas:
+      - {expressao: "asrrea01..asrrea05", o_que: "valores plausíveis de proficiência geral em leitura (média 499,8, mín. 5, máx. 868,7)", unidade: "pontos da escala PIRLS", soma: nao}
+      - {expressao: "asrlit01..05, asrinf01..05", o_que: "valores plausíveis das subescalas de leitura literária e informativa (sufixos 01 a 05); outros grupos asriie, asrrsi, asribm não documentados aqui", unidade: "pontos", soma: nao}
+      - {coluna: total_student_weight, o_que: "peso amostral final do aluno (média 69,3, máx. 7.424)", unidade: "peso", soma: sim}
+      - {coluna: house_weight, o_que: "peso 'house' (média 1,0)", unidade: "peso", soma: nao}
+    filtros_tipicos: ["pirls_type = 'Normal' (367.575 linhas) ou 'Bridge' (45.812): significado de Bridge não documentado, não misture sem decidir", "sex_student = '1' (Girl) ou '2' (Boy), VARCHAR", "grade_id = '4' (275.005 linhas), '5' ou '6'", "reliability_coding_status = true marca 243.691 linhas (significado não documentado)"]
+    use_para: "estimar proficiência em leitura por país com os pesos total_student_weight e os cinco valores plausíveis (média de cada asrrea0N, depois média dos cinco)."
+    nao_use_para: "média simples sem pesos; usar só asrrea01 como nota individual; as 864 colunas de itens (rp*, re*, e*) são respostas brutas, não resultados."
+    rascunho: [use_para, nao_use_para, medidas]
+    verificado: "413.387 linhas, 864 colunas; chave de 7 colunas única; version = '6' e scope = '1' em todas — medido 2026-10-27"
   within_country_scoring_reliability:
     grao: 'não lida: IO Error: Cannot open file ... Too many open files'

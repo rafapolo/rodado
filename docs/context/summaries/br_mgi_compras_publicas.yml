@@ -3,15 +3,73 @@
 dataset: br_mgi_compras_publicas
 tabelas:
   ata_registro_preco:
-    grao: "não lida: tabela sem view no banco (Catalog Error: Table with name ata_registro_preco does not exist)"
+    grao: "uma ata de registro de preços (cabeçalho) do PNCP/Compras.gov.br, com órgão gerenciador, compra de origem, vigência e valor total"
+    chave: "nenhuma confirmada: em 371.229 linhas com dados, numero_controle_pncp_ata tem 368.652 distintos (cerca de 2,6 mil repetem) e (numero_ata_registro_preco, codigo_unidade_gerenciadora, numero_controle_pncp_compra) tem 371.175. Use numero_controle_pncp_ata com cuidado."
+    tempo: {natureza: serie_de_periodos, coluna: "data_assinatura, ano_compra", cobertura: "ano_compra 2023–2026 (arquivos por ano 2023–2026)"}
+    territorio: {nivel: outro, colunas: {codigo_unidade_gerenciadora: "unidade que gerencia a ata", codigo_orgao: "órgão (sem UF/município nesta tabela)"}}
+    medidas:
+      - {coluna: valor_total, o_que: "valor total da ata (VARCHAR: use TRY_CAST AS DOUBLE)", unidade: "R$", soma: sim}
+      - {coluna: quantidade_itens, o_que: "itens da ata", unidade: "itens", soma: sim}
+    filtros_tipicos: ["ata_excluido = 'False' (texto; 40 linhas são 'True')", "status_ata = 'Ata de Registro de Preços' (367.872 na amostra); 'Cancelada' 3.343", "codigo_modalidade_compra = '05' (368.435 na amostra do perfil; significado não documentado)", "numero_ata_registro_preco IS NOT NULL: o arquivo de 2023 (31.495 linhas, 7,8% da tabela) está malformado e vem tudo nulo, com o conteúdo numa coluna única de nome gigante"]
+    use_para: "atas de registro de preços vigentes por órgão, modalidade e período."
+    nao_use_para: "preço por item (use ata_registro_preco_item); contar atas de 2023 (arquivo defeituoso)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "402.724 linhas, 371.229 com dados (31.495 do arquivo 2023.parquet malformado, sem colunas separadas); datas e valores são VARCHAR em parte — medido 2026-10-27"
   ata_registro_preco_item:
-    grao: "não lida: tabela sem view no banco (Catalog Error: Table with name ata_registro_preco_item does not exist)"
+    grao: "um item de uma ata de registro de preços × fornecedor vencedor (uma linha por cod_arp_item)"
+    chave: "cod_arp_item (2.327.820 linhas = 2.327.820 distintos)"
+    tempo: {natureza: serie_de_periodos, coluna: "data_assinatura, ano_compra", cobertura: "ano_compra 2023–2026"}
+    territorio: {nivel: outro, colunas: {codigo_unidade_gerenciadora: "unidade gerenciadora da ata"}}
+    medidas:
+      - {coluna: valor_total, o_que: "valor total do item homologado (VARCHAR: TRY_CAST)", unidade: "R$", soma: sim}
+      - {coluna: valor_unitario, o_que: "preço unitário registrado (VARCHAR)", unidade: "R$ por unidade", soma: nao}
+      - {coluna: quantidade_homologada_item, o_que: "quantidade homologada", unidade: "unidades do item", soma: sim}
+    filtros_tipicos: ["item_excluido = 'False' (texto; 27.585 são 'True' na amostra)", "tipo_item = 'Material' ou 'Serviço'", "aceita_adesao = 'True' para atas que aceitam carona"]
+    use_para: "preços registrados por item (codigo_item, descricao_item) e fornecedor em atas."
+    nao_use_para: "dados de pessoas: ni_fornecedor é documento do fornecedor; nem comparar valor_unitario entre unidades de medida diferentes."
+    rascunho: [use_para, nao_use_para, filtros_tipicos]
+    verificado: "2.327.820 linhas; cod_arp_item único (2.327.820 distintos); (numero_controle_pncp_ata, numero_item, ni_fornecedor) tem só 2.202.791 distintos — medido 2026-10-27"
   contratacao:
-    grao: "não lida: tabela sem view no banco (Catalog Error: Table with name contratacao does not exist)"
+    grao: "uma contratação (compra) publicada no PNCP pelos órgãos federais, com modalidade, valores estimado e homologado e órgão"
+    chave: "cod_compra e numero_controle_pncp (763.371 linhas com dados = 763.371 distintos); id_compra tem 761.097 (não use). Todas têm ind_atual = 'True'."
+    tempo: {natureza: serie_mensal, coluna: data_publicacao_pncp, cobertura: "2021-08 a 2026-09 (um arquivo por mês); ano_compra_pncp 2023–2026 no top do perfil"}
+    territorio: {nivel: municipio, colunas: {unidade_orgao_uf_sigla: "UF da unidade", unidade_orgao_municipio_nome: "município da unidade", unidade_orgao_codigo_ibge: "código IBGE do município", codigo_orgao: "órgão"}}
+    medidas:
+      - {coluna: valor_total_estimado, o_que: "valor estimado da compra (VARCHAR: TRY_CAST AS DOUBLE)", unidade: "R$", soma: sim}
+      - {coluna: valor_total_homologado, o_que: "valor homologado (nulo quando não há resultado)", unidade: "R$", soma: sim}
+    filtros_tipicos: ["cod_compra IS NOT NULL: cerca de 24% das linhas (arquivos mensais malformados) vêm sem colunas separadas", "contratacao_excluida = 'False' (2.514 são 'True')", "situacao_compra_id_pncp = '1' (a maioria; significado de '2','3','4' não documentado)", "srp = 'True' para sistema de registro de preços (108.812 na amostra)"]
+    use_para: "contagem e valor de compras federais por modalidade, órgão e mês."
+    nao_use_para: "preço por item (use contratacao_item); somar sem tirar linhas malformadas e excluídas."
+    rascunho: [use_para, nao_use_para, filtros_tipicos]
+    verificado: "1.001.583 linhas, 763.371 com cod_compra preenchido, todas únicas; o arquivo 2025_02 (e outros de 15-out) tem o cabeçalho colado numa coluna só — medido 2026-10-27"
   contratacao_item:
-    grao: "não lida: tabela sem view no banco (Catalog Error: Table with name contratacao_item does not exist)"
+    grao: "um item de uma contratação do PNCP, com o resultado (fornecedor, valor homologado) junto; um item com vários resultados aparece em mais de uma linha"
+    chave: "nenhuma: no arquivo 2026_01, 164.181 linhas com dados e 160.836 srk_pncp_item_compra distintos; com cod_resultado_item, 163.788. Alguns arquivos mensais estão malformados e a view os une por nome de coluna (142 colunas), então várias vêm nulas."
+    tempo: {natureza: serie_mensal, coluna: data_inclusao_pncp, cobertura: "2021-08 a 2026-09 (um arquivo por mês; datas em VARCHAR)"}
+    territorio: {nivel: outro, colunas: {orgao_entidade_cnpj: "órgão contratante (CNPJ de órgão público)", unidade_orgao_codigo_unidade: "unidade compradora"}}
+    medidas:
+      - {coluna: valor_total, o_que: "valor total estimado do item (VARCHAR: TRY_CAST)", unidade: "R$", soma: sim}
+      - {coluna: valor_total_resultado, o_que: "valor homologado do resultado", unidade: "R$", soma: sim}
+      - {coluna: quantidade, o_que: "quantidade", unidade: "conforme unidade_medida", soma: nao}
+    filtros_tipicos: ["situacao_compra_item = '2' (Homologado, 115.359 de 167.216 em 2026_01); '1' Em andamento, '5' Fracassado, '3' Anulado/Revogado/Cancelado", "material_ou_servico = 'M' ou 'S'", "cod_compra IS NOT NULL para descartar linhas malformadas"]
+    use_para: "itens e preços de compras federais por catálogo (cod_item_catalogo) e fornecedor."
+    nao_use_para: "somar valor_total sem separar item de resultado (a linha pode repetir o item); tabela de 9,5 mi linhas, filtre por mês de arquivo ou data."
+    rascunho: [use_para, nao_use_para, filtros_tipicos]
+    verificado: "9.521.510 linhas; chave medida só no arquivo 2026_01 (167.216 linhas, 164.181 com cod_compra): não única — medido 2026-10-27"
   contratacao_item_resultado:
-    grao: "não lida: tabela sem view no banco (Catalog Error: Table with name contratacao_item_resultado does not exist)"
+    grao: "o resultado de um item de contratação: um fornecedor vencedor por item (valores homologados)"
+    chave: "srk_item_resultado (arquivo 2025_12: 161.018 linhas = 161.018 distintos; cod_resultado_item também). Medido em um arquivo mensal, não na tabela inteira."
+    tempo: {natureza: serie_mensal, coluna: data_resultado_pncp, cobertura: "2021-08 a 2026-09 (um arquivo por mês)"}
+    territorio: {nivel: uf, colunas: {unidade_orgao_uf_sigla: "UF da unidade compradora", unidade_orgao_codigo_unidade: "unidade compradora"}}
+    medidas:
+      - {coluna: valor_total_homologado, o_que: "valor homologado do item para o fornecedor (VARCHAR: TRY_CAST)", unidade: "R$", soma: sim}
+      - {coluna: valor_unitario_homologado, o_que: "preço unitário homologado", unidade: "R$ por unidade", soma: nao}
+      - {coluna: quantidade_homologada, o_que: "quantidade homologada", unidade: "unidades do item", soma: sim}
+    filtros_tipicos: ["situacao_compra_item_resultado_id = '1' (Informado: 158.257 de 161.018 em 2025_12); '2' Cancelado; '4' Informado remanescente"]
+    use_para: "quem ganhou cada item de compra e por quanto (ligue a contratacao_item por id_compra_item)."
+    nao_use_para: "dados de pessoas: ni_fornecedor e nome do fornecedor podem ser pessoa física; somar sem excluir resultados cancelados."
+    rascunho: [use_para, nao_use_para]
+    verificado: "6.565.099 linhas; 2025_12: 161.018 linhas, srk_item_resultado único — medido 2026-10-27"
   catalogo_material:
     ultima_data: "2026-10-04"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um item do catálogo de materiais (CATMAT) na extração de 2026-10-04"

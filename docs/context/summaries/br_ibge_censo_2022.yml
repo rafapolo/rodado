@@ -555,7 +555,22 @@ tabelas:
     - nao_use_para
     verificado: 2.495.360 linhas, todas distintas; soma populacao = 203.080.756 (o total oficial); Homens 98.532.431, Mulheres 104.548.325 — medido 2026-10-27
   setor_censitario:
-    grao: 'não lida: duckdb saiu com 255 sem mensagem (memória?)'
+    grao: "um setor censitário do Censo 2022, com geometria, contagens básicas e 1.411 variáveis v00001–v01411"
+    chave: "id_setor_censitario (468.099 linhas = 468.099 distintos)"
+    tempo: {natureza: sem_tempo, coluna: "", cobertura: "Censo Demográfico 2022 (retrato único)"}
+    territorio: {nivel: outro, colunas: {id_setor_censitario: "código do setor (menor unidade; para município use id_municipio)", id_municipio: "código IBGE de 7 dígitos (5.571 distintos)", id_uf: "código da UF (texto, 11 a 53)", geometria: "polígono do setor (sem nulos)"}}
+    medidas:
+      - {coluna: pessoas, o_que: "população residente do setor; soma nacional 203.080.756", unidade: "pessoas", soma: sim}
+      - {coluna: domicilios, o_que: "total de domicílios; soma nacional 90.704.582", unidade: "domicílios", soma: sim}
+      - {coluna: domicilios_particulares_ocupados, o_que: "domicílios particulares ocupados (DPPO + DPIO); soma nacional 72.522.372", unidade: "domicílios", soma: sim}
+      - {coluna: area, o_que: "área do setor", unidade: "km² (não conferida)", soma: sim}
+      - {coluna: media_moradores_domicilios, o_que: "média de moradores por domicílio particular ocupado", unidade: "pessoas/domicílio", soma: nao}
+      - {coluna: "v00001 a v01411", o_que: "variáveis do Censo (significado em setor_censitario_dicionario_variaveis.descricao): v00001–v00089 domicílio parte 1, v00090–v00495 parte 2, v00496–v00643 parte 3, v00644–v01005 alfabetização, v01006–v01041 demografia, v01042–v01223 parentesco, v01224–v01316 óbitos, v01317–v01411 cor ou raça", unidade: "contagens (BIGINT)", soma: sim}
+    filtros_tipicos: ["id_municipio = '<código de 7 dígitos>' (texto)", "consulte setor_censitario_dicionario_variaveis (tabela='setor_censitario', coluna='v00001') antes de usar uma vNNNNN; nulos nas v são dado suprimido ou não aplicável (4% a 42% por coluna)"]
+    use_para: "população e características por setor, bairro ou município (agregue por id_municipio) com mapa."
+    nao_use_para: "somar média_moradores ou porcentagens; ler geometria sem necessidade (coluna pesada); somar vNNNNN sem conferir a descrição."
+    rascunho: [use_para, nao_use_para, area]
+    verificado: "468.099 linhas, id_setor_censitario único; 5.571 municípios; geometria sem nulos; dicionário com 1.537 variáveis — medido 2026-10-27"
   setor_censitario_dicionario_variaveis:
     grao: uma variável vNNNNN de uma tabela setor_censitario_*
     chave: '(tabela, coluna): 1.537 linhas = 1.537 distintas'
