@@ -3,6 +3,7 @@
 dataset: br_pncp
 tabelas:
   contratos:
+    ultima_data: "2026-10-23"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um contrato/empenho/ata registrado no PNCP por um órgão (número de controle PNCP), com linhas inteiras duplicadas na carga"
     chave: "nenhuma: 5.229.507 linhas, 4.252.624 linhas distintas (cópias exatas da linha inteira) e 4.249.999 numeroControlePNCP distintos; 979.437 números aparecem em mais de uma linha. Deduplique com SELECT DISTINCT * ou QUALIFY row_number() OVER (PARTITION BY numeroControlePNCP ORDER BY dataAtualizacao DESC) = 1"
     tempo: {natureza: serie_diaria, coluna: dataAssinatura, cobertura: "2021-04-04–2027-08-03 no perfil (há datas futuras/absurdas; dataVigenciaFim chega a 9999-12-31)"}

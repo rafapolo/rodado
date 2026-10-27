@@ -3,6 +3,7 @@
 dataset: br_cvm_oferta_publica_distribuicao
 tabelas:
   dia:
+    ultima_data: "2025-01-24"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma oferta pública de distribuição dispensada de registro (rito ICVM 476) encerrada, de uma série/classe de um ativo emitido por um emissor, com ofertante e líder"
     chave: "nenhuma exata: não há identificador (numero_processo e numero_registro_oferta são 100% nulos); a linha inteira repete em 95 casos (27.486 linhas, 27.391 distintas) e (cnpj_emissor, tipo_ativo, emissao, serie, data_inicio_oferta, data_encerramento_oferta, valor_total, quantidade_total) tem 27.276 distintos"
     tempo: {natureza: serie_diaria, coluna: data_encerramento_oferta, cobertura: "2012-06-21–2025-01-24 (data_inicio_oferta 2008-06-17–2022-12-30; data_comunicado 2015-12-02–2025-01-24)"}

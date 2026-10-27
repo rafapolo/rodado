@@ -3,6 +3,7 @@
 dataset: br_ons_estimativa_custos
 tabelas:
   balanco_energia_subsistemas:
+    ultima_data: "2024-02-29"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um subsistema (ou o SIN) × hora"
     chave: "(data, hora, id_subsistema)"
     tempo: {natureza: serie_diaria, coluna: data, cobertura: "2000-01-01–2024-02-29 (hora 0–23)"}
@@ -18,6 +19,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "1.058.421 linhas = 1.058.421 distintas na chave; 2023, SIN: 8.688 horas; carga média /1e8: SIN 73.702, SE 41.877, S 12.571, NE 12.114, N 7.141 — medido 2026-10-27"
   balanco_energia_subsistemas_dessem:
+    ultima_data: "2024-03-03"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um subsistema × meia hora"
     chave: "(data, hora, id_subsistema)"
     tempo: {natureza: serie_diaria, coluna: data, cobertura: "2023-08-15–2024-03-03 (meia hora)"}
@@ -34,6 +36,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "38.208 linhas = 38.208 distintas na chave; eólica NE média 992.136 e valor_demanda NE /1e8 = 13.137 — medido 2026-10-27"
   custo_marginal_operacao_semanal:
+    ultima_data: "2024-03-08"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um subsistema × semana operativa (data = sexta-feira de referência)"
     chave: "(data, id_subsistema)"
     tempo: {natureza: serie_de_periodos, coluna: data, cobertura: "2005-01-07–2024-03-08"}
@@ -47,6 +50,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "4.004 linhas = 4.004 distintas em (data, id_subsistema); média anual SE (bruta): 2014 8,29e10, 2021 5,30e10, 2023 0 — medido 2026-10-27"
   custo_marginal_operacao_semi_horario:
+    ultima_data: "2024-03-03"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um subsistema × meia hora"
     chave: "(data, hora, id_subsistema)"
     tempo: {natureza: serie_diaria, coluna: data, cobertura: "2020-01-01–2024-03-03"}
@@ -60,6 +64,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "285.888 linhas = 285.888 distintas na chave; média SE 2023 bruta 6,60e8 — medido 2026-10-27"
   custo_variavel_unitario_usinas_termicas:
+    ultima_data: "2024-03-02"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma usina térmica × semana operativa do PMO"
     chave: "(data_inicio, data_fim, id_modelo_usina, usina); também (semana_operativa, id_modelo_usina) é única"
     tempo: {natureza: serie_de_periodos, coluna: data_inicio, cobertura: "2019-12-28–2024-03-08 (data_fim até 2024-03-08)"}

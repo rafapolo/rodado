@@ -19,6 +19,7 @@ tabelas:
     rascunho: [chave, use_para]
     verificado: "partição ano = 2022, mes = 6, sigla_uf = 'AC': 72.348 linhas, 22 municípios, 5 instrumentos; ano 2008–2025 em 18 partições anuais; tipos DOUBLE em valores — medido 2026-10-27"
   psicossocial:
+    ultima_data: "2025-07"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um registro de atendimento psicossocial (RAAS psicossocial) por paciente-procedimento num mês de processamento; 138 milhões de linhas"
     chave: "nenhuma: sem identificador. Em ano = 2025, mes = 1 há 1.189.057 linhas e só 703.300 combinações de estabelecimento × procedimento × município × nascimento × sexo × início"
     tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2012–2025 (2025 até mes = 7); 2020 só tem o mes = 10 (873.113 linhas) e 2012 só 9.234 linhas"}

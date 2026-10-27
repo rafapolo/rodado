@@ -3,6 +3,7 @@
 dataset: br_prf_acidentes
 tabelas:
   ocorrencia:
+    ultima_data: "2026-08-31"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um acidente em rodovia federal registrado pela PRF"
     chave: "(ano, id_ocorrencia), com 35 repetições entre 2007 e 2026 (2.243.625 linhas, 2.243.590 distintas); id_ocorrencia sozinho NÃO é único (só 1.753.307 distintos: o código se repete entre anos, em 490.283 casos)"
     tempo: {natureza: serie_diaria, coluna: data, cobertura: "2007-01-01–2026-08-31"}
@@ -23,6 +24,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "2023: 67.766 linhas, sum(quantidade_mortos) = 5.627, quantidade_feridos = leves + graves = 78.463, quantidade_pessoas 177.215; chave (ano, id_ocorrencia) 2.243.590 de 2.243.625 — medido 2026-10-27"
   pessoa:
+    ultima_data: "2026-08-31"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma pessoa envolvida em um acidente, no veículo em que estava"
     chave: "(ano, id_ocorrencia, id_veiculo, id_pessoa), com 91 repetições (5.156.169 linhas, 5.156.078 distintas); em 2023 é única (183.361). id_pessoa sozinho não é único (4.249.630 distintos em 5,16 milhões de linhas)"
     tempo: {natureza: serie_diaria, coluna: data, cobertura: "2007-01-01–2026-08-31"}
@@ -41,6 +43,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "2023: 183.361 linhas = 183.361 distintas na chave; sum(indicador_morto) = 5.627 (igual a sum(quantidade_mortos) de ocorrencia); 166.934 id_pessoa distintos — medido 2026-10-27"
   pessoa_causa_tipo:
+    ultima_data: "2026-08-31"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma pessoa em um acidente × causa do acidente × tipo (ordem) do acidente: a mesma pessoa aparece várias vezes"
     chave: "(id_ocorrencia, id_pessoa, id_veiculo, causa_acidente, ordem_tipo_acidente), única em 2023 (571.052 linhas); (…, tipo_acidente) no lugar da ordem repete (552.310 distintas)"
     tempo: {natureza: serie_diaria, coluna: data, cobertura: "2007-01-01–2026-08-31 (cobertura da tabela inteira conferida só em 2023)"}

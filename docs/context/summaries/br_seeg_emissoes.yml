@@ -3,6 +3,7 @@
 dataset: br_seeg_emissoes
 tabelas:
   municipio:
+    ultima_data: "2024"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma emissão ou remoção estimada de um município × ano × bioma × gás × tipo × recorte × setor × atividade econômica × categoria × subcategoria × produto × detalhamento"
     chave: "ano, id_municipio, bioma, gas, tipo, recorte, setor, atividade_economica, categoria, subcategoria, produto, detalhamento (conferido em ano = 2024: 3.013.390 linhas = 3.013.390 distintos)"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "1970–2024"}
@@ -20,6 +21,7 @@ tabelas:
     rascunho: [nao_use_para]
     verificado: "165.736.450 linhas, 55 anos de 3.013.390 linhas cada (1970–2024); chave conferida em ano = 2024; gas só tem '1' e '2'; municipio gas '2' ar5 em 2022 setor '1' tipo '2' = 617.357.045 t, igual a uf gas '14' (GWP-AR5) = 617,4 Mt — medido 2026-10-27"
   uf:
+    ultima_data: "2024"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma emissão ou remoção estimada de uma UF × ano × bioma × gás × tipo × recorte × setor × atividade econômica × categoria × subcategoria × produto × detalhamento"
     chave: "ano, sigla_uf, bioma, gas, tipo, recorte, setor, atividade_economica, categoria, subcategoria, produto, detalhamento (conferido em ano = 2024: 326.001 linhas = 326.001 distintos)"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "1970–2024"}

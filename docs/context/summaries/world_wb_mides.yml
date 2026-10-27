@@ -6,6 +6,7 @@ tabelas:
     grao: "uma linha por (id_tabela, nome_coluna, chave) com o texto do código (valor)"
     use_para: "traduzir códigos de licitacao, licitacao_participante e empenho; não distingue UF, então um código pode valer diferente entre estados (não conferido)"
   orgao_unidade_gestora:
+    ultima_data: "2022"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um órgão/unidade gestora de um município ou estado (cadastro), sem controle de ano"
     chave: "nenhuma: (sigla_uf, id_municipio, orgao, id_unidade_gestora) tem 291.769 distintos em 341.573 linhas"
     tempo: {natureza: sem_tempo, coluna: ano, cobertura: "ano 2002–2022 mas 83,4% nulo"}
@@ -16,6 +17,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "341.573 linhas; chave candidata 291.769 distintos — medido 2026-10-27"
   licitacao:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um processo licitatório ou dispensa/inexigibilidade, em um município de MG, PR, RS, CE, PE ou PB"
     chave: "nenhuma garantida: id_licitacao_bd tem 2.839.279 distintos em 2.842.166 linhas (2.887 repetidas); (id_licitacao_bd, id_municipio, sigla_uf) 2.839.405; sem linhas inteiras duplicadas"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2009–2026 (CE 2009–2021, PR 2013–2021, RS 2016–2021, PE 2012–2021, PB 2014–2021, MG 2014–2026)"}
@@ -33,6 +35,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, vigência dos códigos entre UFs]
     verificado: "2.842.166 linhas; 2.839.279 id_licitacao_bd distintos; UFs MG 1.062.241, PR 735.632, RS 417.348, CE 273.719, PE 220.025, PB 133.201; 0 linhas duplicadas — medido 2026-10-27"
   licitacao_item:
+    ultima_data: "2021"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um item (ou lote) de uma licitação ou dispensa"
     chave: "nenhuma: no arquivo 000000000150 (MG 2019) id_item_bd tem 226.378 distintos em 226.560 linhas; não medido na tabela inteira (50,3M linhas)"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2009–2021 (amostra 0,3% só MG, PR, CE, RS)"}
@@ -47,6 +50,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "50.287.199 linhas; arquivo MG 2019 226.560 linhas, 226.378 id_item_bd; valor_total = quantidade × valor_unitario em 100% das linhas com valor — medido 2026-10-27"
   licitacao_participante:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um participante (CNPJ/CPF) de uma licitação ou dispensa"
     chave: "nenhuma: (id_licitacao_bd, documento) tem 5.719.688 distintos em 5.782.572 linhas"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2009–2026 (CE 2009–2021, PE 2012, PR 2013, PB 2014, MG 2014–2026, RS 2016)"}
@@ -62,6 +66,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "5.782.572 linhas; (id_licitacao_bd,documento) 5.719.688 distintos; vencedor×habilitado medido por combinação — medido 2026-10-27"
   relacionamentos:
+    ultima_data: "2021"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um par empenho × licitação (ligação entre despesa e processo licitatório), só PR"
     chave: "nenhuma: (id_empenho, id_licitacao, id_municipio) tem 13.782.967 distintos em 20.592.522 linhas; sem linhas inteiras duplicadas"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2013–2021"}
@@ -72,6 +77,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "20.592.522 linhas, só PR; 13.782.967 triplas distintas; 0 linhas inteiras repetidas — medido 2026-10-27"
   empenho:
+    ultima_data: "2024-01-10"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um empenho (reserva de despesa) ou movimento do empenho (reforço/anulação) de um município ou estado"
     chave: "nenhuma: em 3 arquivos (SP 2015, PB 2011, MG 2014) id_empenho_bd tem 587.812 distintos em 590.680 linhas (PB 2011: 138.635 em 139.292, pares com anulação diferentes); não medido na tabela inteira (303M linhas)"
     tempo: {natureza: serie_diaria, coluna: data, cobertura: "ano 1989–2024 (estatística dos arquivos); UFs na amostra 0,3%: SP, RS, MG, PR, PB, RJ, PE, SC, CE, DF"}
@@ -88,6 +94,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "303.323.046 linhas; ano 1989–2024; 3 arquivos 590.680 linhas, 587.812 id_empenho_bd — medido 2026-10-27"
   liquidacao:
+    ultima_data: "2023-08-31"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma liquidação (reconhecimento da despesa) de um município ou estado"
     chave: "nenhuma garantida: no arquivo PR 2013 id_liquidacao_bd tem 146.200 distintos em 146.200 linhas; não medido na tabela inteira (357M linhas)"
     tempo: {natureza: serie_diaria, coluna: data, cobertura: "ano 1992–2024; amostra: SP, RS, MG, PR, PB, PE, CE, RJ, SC, DF"}
@@ -100,6 +107,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "357.301.758 linhas; arquivo PR 2013 146.200 linhas, 146.200 id_liquidacao_bd — medido 2026-10-27"
   pagamento:
+    ultima_data: "2023-09-22"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um pagamento a um credor, de um município ou estado"
     chave: "nenhuma garantida: no arquivo PR 2019 id_pagamento_bd tem 239.008 distintos em 239.008 linhas; não medido na tabela inteira (393M linhas)"
     tempo: {natureza: serie_diaria, coluna: data, cobertura: "ano 1994–2024; amostra: RS, SP, MG, PR, PB, PE, RJ, CE, SC, DF"}

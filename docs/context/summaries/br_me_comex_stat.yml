@@ -3,6 +3,7 @@
 dataset: br_me_comex_stat
 tabelas:
   municipio_exportacao:
+    ultima_data: "2026-03"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "exportação de um produto SH4 para um país, no mês, atribuída a um município (e sua UF) do exportador"
     chave: "ano, mes, id_sh4, id_pais, sigla_uf, id_municipio (única; medido na partição ano = 2026, 280.777 linhas)"
     tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "1997–2026 (2026 só jan–mar)"}
@@ -18,6 +19,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, "município = domicílio fiscal do exportador, não onde o produto foi produzido"]
     verificado: "22.219.221 linhas na tabela; 2026: 280.777 linhas = 280.777 chaves distintas; soma de valor_fob_dolar em 2025 = US$ 381,385 bi, igual à de ncm_exportacao — medido 2026-10-27"
   municipio_importacao:
+    ultima_data: "2026-03"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "importação de um produto SH4 de um país, no mês, atribuída a um município (e sua UF) do importador"
     chave: "ano, mes, id_sh4, id_pais, sigla_uf, id_municipio (única; medido na partição ano = 2026, 442.610 linhas)"
     tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "1997–2026 (2026 só jan–mar)"}
@@ -31,6 +33,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, "município = domicílio do importador"]
     verificado: "34.338.353 linhas; 2026: 442.610 = 442.610 chaves distintas; soma de valor_fob_dolar em 2025 = US$ 304,233 bi, igual à de ncm_importacao — medido 2026-10-27"
   ncm_exportacao:
+    ultima_data: "2026-03"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "exportação de uma NCM (8 dígitos) para um país, no mês, por UF, via de transporte e unidade de despacho (URF)"
     chave: "ano, mes, id_ncm, id_unidade, id_pais, sigla_uf_ncm, id_via, id_urf (única; medido na partição ano = 2026, 397.281 linhas)"
     tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "1997–2026 (2026 só jan–mar)"}
@@ -48,6 +51,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, "sigla_uf_ncm = UF de produção"]
     verificado: "31.292.226 linhas; 2026: 397.281 = 397.281 chaves; 2025: soma de valor_fob_dolar = US$ 381,385 bi (mesma da municipio_exportacao); em 2026 com id_unidade = '10', quantidade_estatistica difere de peso_liquido_kg em 5.050 de 274.930 linhas — medido 2026-10-27"
   ncm_importacao:
+    ultima_data: "2026-03"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "importação de uma NCM (8 dígitos) de um país, no mês, por UF de destino, via de transporte e URF"
     chave: "ano, mes, id_ncm, id_unidade, id_pais, sigla_uf_ncm, id_via, id_urf (única; medido na partição ano = 2026, 586.731 linhas)"
     tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "1997–2026 (2026 só jan–mar)"}

@@ -3,6 +3,7 @@
 dataset: br_ibge_populacao
 tabelas:
   brasil:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um ano (população total do Brasil)"
     chave: "ano (35 linhas = 35 anos distintos, medido)"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "1991–2025"}
@@ -15,6 +16,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "35 linhas, 35 anos distintos; populacao 2025 = 213.421.037, igual à soma de uf e de municipio em 2025 — medido 2026-10-27"
   uf:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma UF × ano (população estimada)"
     chave: "nenhuma que seja limpa: (ano, sigla_uf) é única (946 linhas = 946 pares), mas em 2025 há uma linha com sigla_uf NULL (populacao 5.877) que não é UF"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "1991–2025"}
@@ -27,6 +29,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "946 linhas, 946 pares (ano, sigla_uf) distintos; 2025 tem 28 linhas, 27 siglas distintas e 1 NULL com 5.877; soma 2025 = 213.421.037 incluindo a linha NULL; 2024 tem 27 linhas = 212.583.750 — medido 2026-10-27"
   municipio:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um município × ano (população estimada)"
     chave: "(ano, id_municipio) — 191.099 linhas, 191.099 pares distintos; em 2025 uma linha tem id_municipio e sigla_uf NULL"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "1991–2025"}

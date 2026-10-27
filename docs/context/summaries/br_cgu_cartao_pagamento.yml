@@ -6,6 +6,7 @@ tabelas:
     grao: "um significado de código de transação (transacao) do cartão, por tabela do dataset"
     use_para: "traduzir o texto de transacao (ex.: 'SAQUE CASH/ATM BB' = saque em terminal do Banco do Brasil)"
   microdados_governo_federal:
+    ultima_data: "2026-01-29"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma transação no cartão de pagamento do governo federal (CPGF), num extrato mensal"
     chave: "nenhuma: 1.801.842 linhas contra 1.546.528 linhas distintas (255.314 cópias exatas, que podem ser compras idênticas legítimas)"
     tempo: {natureza: serie_mensal, coluna: "ano_extrato, mes_extrato (data_transacao é nula em 19,23%)", cobertura: "2013–2026 (data_transacao 2012-10-28–2026-01-29)"}

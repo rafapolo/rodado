@@ -3,6 +3,7 @@
 dataset: br_mp_pep
 tabelas:
   cargos_funcoes:
+    ultima_data: "2025-05"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma célula agregada do Painel Estatístico de Pessoal: mês × órgão × função/nível × UF × sexo × raça/cor × faixa etária × escolaridade, com a quantidade de cargos comissionados e funções ocupados (não é pessoa nem CPF; ver gotcha nao_e_pessoa_exposta)"
     chave: "ano, mes, funcao, natureza_juridica, orgao_superior, escolaridade_servidor, orgao, regiao, sexo, nivel_funcao, subnivel_funcao, sigla_uf, faixa_etaria, raca_cor (1799733 linhas = 1799733 distintos)"
     tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "1999-12–2025-05: só dezembro de 1999 a 2017; 12 meses de 2018 a 2023; 2024 com 11 meses (sem dezembro); 2025 só meses 1 a 5"}

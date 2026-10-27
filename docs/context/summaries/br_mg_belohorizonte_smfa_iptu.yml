@@ -3,6 +3,7 @@
 dataset: br_mg_belohorizonte_smfa_iptu
 tabelas:
   iptu:
+    ultima_data: "2024-05"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma unidade cadastral (imóvel/economia, por indice_cadastral) de Belo Horizonte × mês de retrato"
     chave: "ano, mes, indice_cadastral: única nos meses medidos (ex.: 2024-04, 875.845 linhas = 875.845 distintos), exceto 2024-03, em que cada linha vem duplicada (1.749.672 linhas, 874.836 distintas)"
     tempo: {natureza: soma_de_retratos, coluna: "ano + mes", cobertura: "2022 (7 meses), 2023 (12), 2024 (meses 1–5)"}

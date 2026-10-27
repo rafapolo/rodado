@@ -3,6 +3,7 @@
 dataset: br_transferegov_siconv
 tabelas:
   siconv_proposta:
+    ultima_data: "2026-07-16"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma proposta/plano de trabalho cadastrada no SICONV/Plataforma +Brasil (inclui as que nunca viraram convênio)
     chave: ID_PROPOSTA (1.153.701 linhas = 1.153.701 distintos. medido)
     tempo:
@@ -39,6 +40,7 @@ tabelas:
     - nao_use_para
     verificado: 1.153.701 linhas. 1.153.701 distintos de ID_PROPOSTA; VL_GLOBAL_PROP = VL_REPASSE_PROP + VL_CONTRAPARTIDA_PROP em 1.153.700 linhas; 285.743 têm convênio (join por ID_PROPOSTA) — medido 2026-10-27
   siconv_proposta_cancelada:
+    ultima_data: "2026-07-16"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma proposta cancelada, com as mesmas colunas de siconv_proposta (mesmo grão de siconv_proposta)
     chave: ID_PROPOSTA (45.332 linhas = 45.332 distintos. medido)
     tempo:
@@ -65,6 +67,7 @@ tabelas:
     - nao_use_para
     verificado: 45.332 linhas. 45.332 distintos de ID_PROPOSTA — medido 2026-10-27
   siconv_convenio:
+    ultima_data: "2026-07-17"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um convênio / contrato de repasse / termo (instrumento) com número NR_CONVENIO, já com situação e valores
     chave: NR_CONVENIO (285.743 linhas = 285.743 distintos. medido); ID_PROPOSTA também é único (285.743) e liga à proposta
     tempo:
@@ -109,6 +112,7 @@ tabelas:
     - nao_use_para
     verificado: '285.743 linhas. 285.743 distintos de NR_CONVENIO; INSTRUMENTO_ATIVO: SIM 113.020, NÃO 172.723; SIT_CONVENIO NULL em 18.047 — medido 2026-10-27'
   siconv_desembolso:
+    ultima_data: "2026-07-16"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um desembolso (ordem bancária) de recursos da União a um convênio
     chave: ID_DESEMBOLSO (378.212 linhas = 378.212 distintos. medido)
     tempo:
@@ -134,6 +138,7 @@ tabelas:
     - nao_use_para
     verificado: '378.212 linhas. 378.212 distintos de ID_DESEMBOLSO; ANO_DESEMBOLSO=2025: 24.570 linhas, R$ 18.381.182.387,46 — medido 2026-10-27'
   siconv_empenho:
+    ultima_data: "2026-07-16"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um empenho (nota de empenho, incluindo anulações e reforços) de um convênio
     chave: ID_EMPENHO + NR_CONVENIO (434.899 linhas = 434.899 distintos, medido); ID_EMPENHO sozinho repete (335.655 distintos) e NR_CONVENIO + NR_EMPENHO também (431.913)
     tempo:
@@ -178,6 +183,7 @@ tabelas:
     - nao_use_para
     verificado: 382.787 linhas, 382.768 distintos de (ID_DESEMBOLSO, ID_EMPENHO), 378.237 de ID_DESEMBOLSO — medido 2026-10-27
   siconv_pagamento:
+    ultima_data: "2026-07-16"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um pagamento do convenente a um fornecedor/favorecido (movimento financeiro)
     chave: NR_MOV_FIN (7.359.136 linhas = 7.359.136 distintos. medido)
     tempo:
@@ -220,6 +226,7 @@ tabelas:
     - nao_use_para
     verificado: 3.051.514 linhas; 3.018.020 distintos de (NR_MOV_FIN, IDENTIF_FAVORECIDO_OBTV_CONV, VL_PAGO_OBTV_CONV); todas ligam a siconv_pagamento — medido 2026-10-27
   siconv_pagamento_tributo:
+    ultima_data: "2026-07-31"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um pagamento de tributo feito pelo convenente (agrupado por convênio e data)
     chave: nenhuma única simples; (NR_CONVENIO, DATA_TRIBUTO, VL_PAG_TRIBUTOS) é único (450.477 = 450.477, medido)
     tempo:
@@ -239,6 +246,7 @@ tabelas:
     - nao_use_para
     verificado: 450.477 linhas. 450.477 distintos de (NR_CONVENIO. DATA_TRIBUTO. VL_PAG_TRIBUTOS) — medido 2026-10-27
   siconv_ingresso_contrapartida:
+    ultima_data: "2026-07-16"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um ingresso de contrapartida do convenente na conta do convênio
     chave: '(NR_CONVENIO, DT_INGRESSO_CONTRAPARTIDA, VL_INGRESSO_CONTRAPARTIDA): 343.600 linhas = 343.600 distintos, medido'
     tempo:
@@ -258,6 +266,7 @@ tabelas:
     - nao_use_para
     verificado: 343.600 linhas. 343.600 distintos de as três colunas juntas — medido 2026-10-27
   siconv_desbloqueio_cr:
+    ultima_data: "2026-07-16"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um desbloqueio de recursos da conta do contrato de repasse (OB, ingresso de contrapartida ou rendimento)
     chave: 'nenhuma: 520.479 linhas, 520.474 distintos de (NR_CONVENIO, NR_OB, DATA_CADASTRO, TIPO_RECURSO_DESBLOQUEIO, VL_TOTAL_DESBLOQUEIO, VL_DESBLOQUEADO, VL_BLOQUEADO)'
     tempo:
@@ -308,6 +317,7 @@ tabelas:
     - nao_use_para
     verificado: 2.732.825 linhas. 2.732.825 distintos de (ID_PROPOSTA. NR_PARCELA. TIPO_RESP) — medido 2026-10-27
   siconv_historico_situacao:
+    ultima_data: "2026-07-16"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma mudança de situação de uma proposta/convênio (evento de histórico)
     chave: 'nenhuma: 8.957.864 linhas, 8.919.014 distintos de (ID_PROPOSTA, DIA_HISTORICO_SIT, COD_HISTORICO_SIT)'
     tempo:
@@ -324,6 +334,7 @@ tabelas:
     - nao_use_para
     verificado: 8.957.864 linhas; 8.919.014 distintos de (ID_PROPOSTA, DIA_HISTORICO_SIT, COD_HISTORICO_SIT) — medido 2026-10-27
   siconv_prorroga_oficio:
+    ultima_data: "2026-10-27"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma prorrogação de ofício de vigência de um convênio
     chave: 'nenhuma: não medido; NR_CONVENIO repete (155.651 linhas, ~89.937 distintos no perfil)'
     tempo:
@@ -346,6 +357,7 @@ tabelas:
     - nao_use_para
     verificado: 155.651 linhas (perfil); chave não medida — medido 2026-10-27
   siconv_termo_aditivo:
+    ultima_data: "2026-07-16"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um termo aditivo a um convênio
     chave: 'nenhuma: 455.215 linhas, 455.179 distintos de (NR_CONVENIO, NUMERO_TA)'
     tempo:
@@ -369,6 +381,7 @@ tabelas:
     - nao_use_para
     verificado: 455.215 linhas, 455.179 distintos de (NR_CONVENIO, NUMERO_TA), 256.969 de ID_SOLICITACAO — medido 2026-10-27
   siconv_solicitacao_alteracao:
+    ultima_data: "2026-07-16"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma solicitação de alteração do convênio feita pelo convenente
     chave: ID_SOLICITACAO (390.899 linhas = 390.899 distintos. medido)
     tempo:
@@ -385,6 +398,7 @@ tabelas:
     - nao_use_para
     verificado: 390.899 linhas. 390.899 distintos de ID_SOLICITACAO — medido 2026-10-27
   siconv_solicitacao_ajuste_pt:
+    ultima_data: "2026-07-16"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma solicitação de ajuste do plano de trabalho
     chave: ID_AJUSTE_PT (178.634 linhas = 178.634 distintos. medido)
     tempo:
@@ -401,6 +415,7 @@ tabelas:
     - nao_use_para
     verificado: 178.634 linhas. 178.634 distintos de ID_AJUSTE_PT — medido 2026-10-27
   siconv_solicitacao_rendimento_aplicacao:
+    ultima_data: "2026-07-16"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma solicitação de uso de rendimentos de aplicação financeira
     chave: ID_SOLICITACAO_REND_APLICACAO (18.111 linhas = 18.111 distintos. medido)
     tempo:
@@ -532,6 +547,7 @@ tabelas:
     - nao_use_para
     verificado: 297.828 linhas, 297.651 distintos da chave de 4 colunas; ID_PROPOSTA NULL em 38,34% — medido 2026-10-27
   siconv_licitacao:
+    ultima_data: "2026-07-16"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um processo de compra/licitação de um convênio
     chave: ID_LICITACAO (952.712 linhas = 952.712 distintos. medido)
     tempo:
@@ -554,6 +570,7 @@ tabelas:
     - nao_use_para
     verificado: 952.712 linhas. 952.712 distintos de ID_LICITACAO — medido 2026-10-27
   siconv_contrato:
+    ultima_data: "2026-10-27"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um contrato de fornecimento ligado a uma licitação
     chave: ID_CONTRATO não é único (726.602 linhas, 724.981 distintos); (ID_CONTRATO, ID_LICITACAO, NR_CONTRATO, ID_FORNECEDOR_CONTRATO, VALOR_GLOBAL_CONTRATO) = 726.602 distintos, medido
     tempo:
@@ -575,6 +592,7 @@ tabelas:
     - nao_use_para
     verificado: 726.602 linhas; ID_CONTRATO 724.981 distintos; (ID_CONTRATO, ID_LICITACAO, ID_FORNECEDOR) 726.462 — medido 2026-10-27
   siconv_contrato_cipi:
+    ultima_data: "2026-07-15"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um contrato de obra do sistema de investimentos (CIPI/Obrasgov) ligado a um projeto de investimento
     chave: 'nenhuma: 33.083 linhas, 24.598 distintos de ID_CONTRATO; 25.860 distintos de (ID_CONTRATO, ID_PROJETO_INVESTIMENTO, ID_FORNECEDOR_CONTRATO, NR_LICITACAO, VALOR_GLOBAL_CONTRATO, COD_ORGAO)'
     tempo:
@@ -617,6 +635,7 @@ tabelas:
     - nao_use_para
     verificado: 3.053.227 linhas, 3.052.130 distintos de (ID_LICITACAO, ID_ITEM_LICITACAO) — medido 2026-10-27
   siconv_dl:
+    ultima_data: "2026-10-19"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um documento de liquidação (nota fiscal, folha, diária...) que justifica um pagamento
     chave: ID_DL (7.487.823 linhas = 7.487.823 distintos. medido)
     tempo:
@@ -686,6 +705,7 @@ tabelas:
     - nao_use_para
     verificado: 4.855.746 linhas. 4.855.746 distintos de ID_ITEM_PAD — medido 2026-10-27
   siconv_meta_crono_fisico:
+    ultima_data: "2026-10-27"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma meta do cronograma físico de uma proposta
     chave: ID_META (1.554.236 linhas = 1.554.236 distintos. medido)
     tempo:
@@ -716,6 +736,7 @@ tabelas:
     - nao_use_para
     verificado: 1.554.236 linhas. 1.554.236 distintos de ID_META — medido 2026-10-27
   siconv_etapa_crono_fisico:
+    ultima_data: "2026-10-27"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma etapa de uma meta do cronograma físico
     chave: ID_ETAPA (3.272.439 linhas = 3.272.439 distintos. medido)
     tempo:
@@ -764,6 +785,7 @@ tabelas:
     - nao_use_para
     verificado: 31.594 linhas. 31.594 distintos de ID_PROPOSTA — medido 2026-10-27
   siconv_acomp_obras_contratos_medicoes:
+    ultima_data: "2026-07-16"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma medição de um contrato no acompanhamento de obra (medição pode ser NULL: contrato sem medição)'
     chave: 'nenhuma: 27.713 linhas, 27.685 distintos de (ID_PROPOSTA, ID_CONTRATO_MEDICAO, ID_MEDICAO)'
     tempo:
@@ -830,6 +852,7 @@ tabelas:
     - nao_use_para
     verificado: 40.493 linhas. 40.493 distintos de id_projeto_investimento — medido 2026-10-27
   siconv_empenho_cipi:
+    ultima_data: "2026-07-16"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um empenho de projeto de investimento (CIPI)
     chave: (UG_EMITENTE. NR_EMPENHO) (48.091 linhas = 48.091 distintos. medido)
     tempo:
@@ -849,6 +872,7 @@ tabelas:
     - nao_use_para
     verificado: 48.091 linhas. 48.091 distintos de (UG_EMITENTE. NR_EMPENHO) — medido 2026-10-27
   siconv_execucao_fisica_cipi:
+    ultima_data: "2026-07-16"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um registro de situação/execução física de uma obra (CIPI) numa data
     chave: 'nenhuma: 23.626 linhas, 23.118 distintos de (id_projeto_investimento, data_situacao, id_situacao)'
     tempo:
@@ -870,6 +894,7 @@ tabelas:
     - nao_use_para
     verificado: 23.626 linhas, 23.118 distintos de (id_projeto_investimento, data_situacao, id_situacao) — medido 2026-10-27
   siconv_projeto_basico_acffo:
+    ultima_data: "2026-07-16"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um projeto básico (ACFFO) de uma proposta
     chave: ID_ACFFO (63.644 linhas = 63.644 distintos. medido)
     tempo:
@@ -887,6 +912,7 @@ tabelas:
     - nao_use_para
     verificado: 63.644 linhas. 63.644 distintos de ID_ACFFO — medido 2026-10-27
   siconv_projeto_basico_lae:
+    ultima_data: "2026-07-16"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um laudo de análise de engenharia (LAE) de um projeto básico
     chave: 'nenhuma: 219.059 linhas, 218.234 distintos de ID_QCI_ACFFO'
     tempo:
@@ -937,6 +963,7 @@ tabelas:
     - nao_use_para
     verificado: 101.260 linhas. 101.260 distintos de ID_PROPOSTA_ACFFO; ID_PROPOSTA 101.232 — medido 2026-10-27
   siconv_projeto_basico_submetas:
+    ultima_data: "2026-10-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma submeta de um projeto básico, com valores e local da obra
     chave: ID_SUBMETA_PROJETO_BASICO (417.785 linhas = 417.785 distintos. medido)
     tempo:
@@ -969,6 +996,7 @@ tabelas:
     - nao_use_para
     verificado: 417.785 linhas. 417.785 distintos de ID_SUBMETA_PROJETO_BASICO — medido 2026-10-27
   siconv_historico_projeto_basico:
+    ultima_data: "2026-07-16"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um evento do histórico de análise do projeto básico de uma proposta
     chave: 'nenhuma: 1.061.746 linhas, 993.491 distintos de (ID_PROPOSTA, DATA_HIST_PB_TR, VERSAO_DOC_PB_TR, EVENTO_HIST_PB_TR, SITUACAO_HIST_PB_TR)'
     tempo:
@@ -983,6 +1011,7 @@ tabelas:
     - nao_use_para
     verificado: 1.061.746 linhas, 993.491 distintos da chave de 5 colunas — medido 2026-10-27
   siconv_vrpl_proposta_licitacao:
+    ultima_data: "2026-07-16"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma versão de proposta de verificação de resultado de processo licitatório (VRPL) × licitação
     chave: 'nenhuma: 41.192 linhas, 41.191 distintos de (ID_PROPOSTA_VRPL, ID_LICITACAO_VRPL), 36.529 de ID_PROPOSTA_VRPL'
     tempo:
@@ -1000,6 +1029,7 @@ tabelas:
     - nao_use_para
     verificado: 41.192 linhas, 41.191 distintos de (ID_PROPOSTA_VRPL, ID_LICITACAO_VRPL) — medido 2026-10-27
   siconv_vrpl_metas_submetas:
+    ultima_data: "2026-10-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma submeta de VRPL com meta, local e valor licitado
     chave: ID_SUBMETA_VRPL (161.624 linhas = 161.624 distintos. medido); ID_PO_VRPL também único
     tempo:
@@ -1038,6 +1068,7 @@ tabelas:
     - nao_use_para
     verificado: 105.324 linhas. 105.324 distintos de a chave de 3 colunas — medido 2026-10-27
   siconv_inst_cont_contratos_lotes_empresas:
+    ultima_data: "2026-07-13"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma empresa executora de um lote de um instrumento contratual
     chave: (ID_CONTRATO_INSTRUMENTO_CONTRATUAL. ID_LOTE_INSTRUMENTO_CONTRATUAL) (36.613 linhas = 36.613 distintos. medido)
     tempo:
@@ -1054,6 +1085,7 @@ tabelas:
     - nao_use_para
     verificado: 36.613 linhas. 36.613 distintos de (contrato. lote) — medido 2026-10-27
   siconv_inst_cont_metas_submetas_po:
+    ultima_data: "2026-09-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma submeta/PO de um instrumento contratual com valor licitado
     chave: ID_SUBMETA_INSTRUMENTO_CONTRATUAL (45.729 linhas = 45.729 distintos. medido)
     tempo:
@@ -1078,6 +1110,7 @@ tabelas:
     - nao_use_para
     verificado: 45.729 linhas. 45.729 distintos de ID_SUBMETA_INSTRUMENTO_CONTRATUAL — medido 2026-10-27
   siconv_inst_cont_proposta_aio:
+    ultima_data: "2026-07-15"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma autorização de início de obra (AIO) de uma proposta de instrumento contratual
     chave: (ID_PROPOSTA_INSTRUMENTO_CONTRATUAL. ID_AIO_INSTRUMENTO_CONTRATUAL) (31.739 linhas = 31.739 distintos. medido)
     tempo:
@@ -1118,6 +1151,7 @@ tabelas:
     - nao_use_para
     verificado: 1.153.701 linhas. 1.153.701 distintos de ID_PROPOSTA — medido 2026-10-27
   siconv_prop_inst_indicadores_estados:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma proposta de proponente estadual com os indicadores de execução do convênio (valores, datas e prestação de contas)
     chave: ID_PROPOSTA (12.349 linhas = 12.349 distintos. medido)
     tempo:
@@ -1151,6 +1185,7 @@ tabelas:
     - nao_use_para
     verificado: 12.349 linhas. 12.349 distintos de ID_PROPOSTA — medido 2026-10-27
   siconv_prop_inst_indicadores_municipios:
+    ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma proposta de proponente municipal com os indicadores de execução do convênio (valores, datas e prestação de contas)
     chave: ID_PROPOSTA (236.467 linhas = 236.467 distintos. medido)
     tempo:
@@ -1188,6 +1223,7 @@ tabelas:
     - nao_use_para
     verificado: 236.467 linhas. 236.467 distintos de ID_PROPOSTA — medido 2026-10-27
   siconv_proposta_selecao_pac:
+    ultima_data: "2026-07-14"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma proposta de seleção do Novo PAC enviada a um programa
     chave: ID_PROPOSTA_SELECAO_PAC (90.593 linhas = 90.593 distintos. medido)
     tempo:
@@ -1245,6 +1281,7 @@ tabelas:
     - nao_use_para
     verificado: 1.887.051 linhas. 1.887.051 distintos de (pergunta. proposta) — medido 2026-10-27
   app_parceriasgov_necessidades:
+    ultima_data: "2026-07-06"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma necessidade cadastrada no app Parcerias.gov por um usuário/município
     chave: 'nenhuma: 4.196 linhas, 4.033 distintos de id_necessidade e de (id_necessidade, data_criacao, nome_municipio, tipo): 163 linhas repetidas'
     tempo:
@@ -1267,6 +1304,7 @@ tabelas:
     - nao_use_para
     verificado: 4.196 linhas, 4.033 distintos de id_necessidade — medido 2026-10-27
   app_parceriasgov_necessidades_aprovadas:
+    ultima_data: "2026-07-12"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma avaliação (like/dislike) de uma necessidade
     chave: '(id_necessidade, dt_avaliacao): 3.624 linhas = 3.624 distintos, medido; id_necessidade sozinho 2.081 distintos'
     tempo:

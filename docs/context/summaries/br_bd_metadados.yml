@@ -3,6 +3,7 @@
 dataset: br_bd_metadados
 tabelas:
   bigquery_tables:
+    ultima_data: "2026-06-15"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma tabela ou view do catálogo BigQuery da Base dos Dados (dataset_id × table_id), com contagem de linhas e tamanho"
     chave: "dataset_id, table_id (1.908 linhas = 1.908 distintos, medido)"
     tempo: {natureza: retrato_atual, coluna: last_modified_date, cobertura: "2020-10-21–2026-06-15 (criação até última modificação)"}
@@ -16,6 +17,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "1.908 linhas, 1.908 distintos de (dataset_id, table_id); type table 1.654 / view 254 — medido 2026-10-27"
   external_links:
+    ultima_data: "2023-03-14"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um link externo de dados (fonte de terceiros) cadastrado no catálogo CKAN da Base dos Dados"
     chave: "id (1.262 linhas = 1.262 distintos, medido)"
     tempo: {natureza: sem_tempo, coluna: date_created, cobertura: "2019-09-17–2023-03-14 (data de cadastro, texto)"}
@@ -26,6 +28,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "1.262 linhas, 1.262 distintos de id — medido 2026-10-27"
   information_requests:
+    ultima_data: "2023-02-08"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um pedido de informação (LAI) cadastrado no catálogo da Base dos Dados"
     chave: "id (389 linhas = 389 distintos, medido)"
     tempo: {natureza: sem_tempo, coluna: date_created, cobertura: "2020-10-13–2023-02-08 (data de cadastro, texto)"}
@@ -36,6 +39,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, filtros_tipicos]
     verificado: "389 linhas, 389 distintos de id — medido 2026-10-27"
   organizations:
+    ultima_data: "2023-03-06"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma organização (fonte/produtora de dados) do catálogo da Base dos Dados"
     chave: "id (554 linhas = 554 distintos; name também 554 distintos, medido)"
     tempo: {natureza: sem_tempo, coluna: date_created, cobertura: "2019-09-14–2023-03-06 (texto)"}
@@ -47,6 +51,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "554 linhas, 554 distintos de id e de name — medido 2026-10-27"
   prefect_flow_runs:
+    ultima_data: "2026-04-02"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma execução (flow run) de pipeline Prefect da Base dos Dados"
     chave: "id (117.130 linhas = 117.130 distintos, medido)"
     tempo: {natureza: serie_diaria, coluna: start_time, cobertura: "2024-02-05–2026-04-02"}
@@ -57,6 +62,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "117.130 linhas, 117.130 distintos de id; sem linhas duplicadas inteiras — medido 2026-10-27"
   resources:
+    ultima_data: "2023-03-14"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um recurso (tabela, link externo ou pedido) ligado a um dataset do catálogo CKAN"
     chave: "id (1.666 linhas = 1.666 distintos, medido)"
     tempo: {natureza: sem_tempo, coluna: date_created, cobertura: "2019-09-17–2023-03-14 (texto)"}
@@ -67,6 +73,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "1.666 linhas, 1.666 distintos de id — medido 2026-10-27"
   tables:
+    ultima_data: "2023-03-28"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma tabela publicada (bdm_table) no catálogo CKAN da Base dos Dados, com cobertura e frequência declaradas"
     chave: "id (470 linhas = 470 distintos; (dataset_id, name) também 470, medido)"
     tempo: {natureza: sem_tempo, coluna: date_created, cobertura: "2020-10-13–2023-03-28 (texto)"}

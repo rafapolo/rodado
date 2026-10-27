@@ -3,6 +3,7 @@
 dataset: br_ok_queridodiario_texto
 tabelas:
   diarios:
+    ultima_data: "2026-10-06"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma edição de diário oficial de um município numa data, com o texto integral (mesmo grão de br_ok_queridodiario.diarios)"
     chave: "(territory_id, date, url) — 320.422 linhas = 320.422 distintos; url sozinha repete (296.928 distintas)"
     tempo: {natureza: serie_diaria, coluna: date, cobertura: "2023-07-10–2026-10-06"}

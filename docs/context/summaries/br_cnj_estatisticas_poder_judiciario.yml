@@ -3,6 +3,7 @@
 dataset: br_cnj_estatisticas_poder_judiciario
 tabelas:
   recursos_financeiros:
+    ultima_data: "2021"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um tribunal × ano (Justiça em Números do CNJ), com despesas, orçamento, pessoal e receitas"
     chave: "(ano, sigla_tribunal) — 1.189 linhas = 1.189 distintos; id_tribunal NÃO serve: (ano, id_tribunal) tem só 1.130 distintos (id repetido entre tribunais)"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2009–2021 (61 tribunais em 2009 e 2010, 97 de 2011 a 2021)"}

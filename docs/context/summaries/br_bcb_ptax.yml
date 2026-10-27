@@ -3,6 +3,7 @@
 dataset: br_bcb_ptax
 tabelas:
   cotacao_dolar_dia:
+    ultima_data: "2026-10-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma cotação diária do dólar (compra e venda, em reais)"
     chave: "data (10.477 linhas = 10.477 distintos)"
     tempo: {natureza: serie_diaria, coluna: data, cobertura: "1984-12-03–2026-10-09"}
@@ -16,6 +17,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "10.477 linhas, data única; 6.0628/6.0634 em 2024-12-02 igual ao USD Fechamento de cotacao_moeda_dia — medido 2026-10-27"
   cotacao_moeda_dia:
+    ultima_data: "2026-10-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma cotação de uma moeda num boletim do dia (abertura, intermediários, fechamento)"
     chave: "nenhuma: (moeda, data, tipo_boletim) dá 325.842 distintos em 794.613 linhas (vários Intermediário por dia); com data_hora_cotacao ainda faltam 1.788 linhas (792.825 distintos)"
     tempo: {natureza: serie_diaria, coluna: data, cobertura: "1984-11-29–2026-10-09"}

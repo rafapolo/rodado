@@ -286,6 +286,7 @@ tabelas:
     verificado: '111.102.875 linhas; medido só em sigla_uf = ''AC'': 410.524 linhas, 373.843 id_endereco distintos; tipo_especie no AC: ''1'' 318.942, ''6'' 40.745, ''3'' 31.744, ''7'' 11.464, ''8'' 4.600,
       ''4'' 1.881, ''2'' 379, ''5'' 769; tipo_edificacao_domicilio ''101'' 287.195, nulo 91.203 — medido 2026-10-27'
   caracteristica_domicilio_grupo_idade_raca_destino_lixo:
+    ultima_data: "2022"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um município × tipo_destino_lixo × faixa etária × cor/raça (pessoas em domicílios com a característica)
     chave: '(id_municipio. tipo_destino_lixo. grupo_idade. cor_raca): 4.093.950 linhas = 4.093.950 distintas'
     tempo: *id001
@@ -307,6 +308,7 @@ tabelas:
     - nao_use_para
     verificado: 4.093.950 linhas. todas distintas por (id_municipio. tipo_destino_lixo. grupo_idade. cor_raca); só ano 2022; soma populacao = 385.755.363 — medido 2026-10-27
   caracteristica_domicilio_grupo_idade_raca_esgotamento_sanitario:
+    ultima_data: "2022"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um município × tipo_esgotamento_sanitario × faixa etária × cor/raça (pessoas em domicílios com a característica)
     chave: '(id_municipio. tipo_esgotamento_sanitario. grupo_idade. cor_raca): 5.263.650 linhas = 5.263.650 distintas'
     tempo: *id001
@@ -328,6 +330,7 @@ tabelas:
     - nao_use_para
     verificado: 5.263.650 linhas. todas distintas por (id_municipio. tipo_esgotamento_sanitario. grupo_idade. cor_raca); só ano 2022 — medido 2026-10-27
   caracteristica_domicilio_grupo_idade_raca_ligacao_abastecimento_agua:
+    ultima_data: "2022"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um município × tipo_ligacao_rede_geral × faixa etária × cor/raça (pessoas em domicílios com a característica)
     chave: '(id_municipio. tipo_ligacao_rede_geral. grupo_idade. cor_raca): 9.942.450 linhas = 9.942.450 distintas'
     tempo: *id001
@@ -348,6 +351,7 @@ tabelas:
     - nao_use_para
     verificado: 9.942.450 linhas. todas distintas por (id_municipio. tipo_ligacao_rede_geral. grupo_idade. cor_raca); só ano 2022 — medido 2026-10-27
   caracteristica_domicilio_grupo_idade_raca_tipo_domicilio:
+    ultima_data: "2022"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um município × tipo_domicilio × faixa etária × cor/raça (pessoas em domicílios com a característica)
     chave: '(id_municipio. tipo_domicilio. grupo_idade. cor_raca): 3.509.100 linhas = 3.509.100 distintas'
     tempo: *id001
@@ -425,6 +429,7 @@ tabelas:
     - nao_use_para
     verificado: 33.272 linhas, 33.272 setores distintos, 12.348 favelas (gotcha favela_e_por_setor); (setor, favela) também único — medido 2026-10-27
   indice_envelhecimento_raca:
+    ultima_data: "2022"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um município × cor/raça × ano
     chave: '(ano, id_municipio, cor_raca): 55.700 linhas = 55.700 distintas'
     tempo:
@@ -485,6 +490,7 @@ tabelas:
     verificado: 5.570 linhas, 5.570 distintos; soma populacao = 202.083.020 (menor que o total oficial 203.080.756; usa populacao_idade_sexo para o total exato); soma domicilios = 72.456.368 (= particulares
       permanentes ocupados) — medido 2026-10-27
   populacao_grupo_idade_sexo_raca:
+    ultima_data: "2022"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um município × ano × faixa etária × sexo × cor/raça
     chave: '(ano, id_municipio, grupo_idade, sexo, cor_raca): 2.339.400 linhas = 2.339.400 distintas'
     tempo:

@@ -3,6 +3,7 @@
 dataset: br_bndes_operacoes_contratadas
 tabelas:
   operacoes_administracao_publica:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma operação de crédito do BNDES contratada por ente público (município, estado ou União); sem id de operação"
     chave: "nenhuma: sem coluna de id; 4.749 linhas, 47 repetidas por inteiro (DISTINCT * dá 4.702)"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "1994–2026 (ano da contratação; data_nivel_atual = data do último nível, 1994-07-01–2026-08-28)"}
@@ -17,6 +18,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "4.749 linhas; 47 duplicadas inteiras; 17,58% sem id_municipio — medido 2026-10-27"
   operacoes_exportacao_bens:
+    ultima_data: "2026-08-31"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um desembolso/registro de financiamento à exportação de bens (BNDES Exim pós-embarque) por exportador e operação"
     chave: "nenhuma: id_operacao tem 1.929 distintos em 2.363 linhas; 24 linhas repetidas por inteiro (2.339 distintas)"
     tempo: {natureza: serie_anual, coluna: data_contratacao, cobertura: "2002-01-04–2026-08-31 (ano: 2002–2026)"}
@@ -27,6 +29,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "2.363 linhas; 1.929 id_operacao distintos; 2.339 linhas distintas — medido 2026-10-27"
   operacoes_exportacao_servicos:
+    ultima_data: "2015-04-28"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um registro de financiamento à exportação de serviços (obras no exterior) por operação"
     chave: "nenhuma: id_operacao tem 146 distintos em 652 linhas (várias linhas por operação, mesma operação com várias parcelas); sem linhas duplicadas inteiras"
     tempo: {natureza: serie_anual, coluna: data_contratacao, cobertura: "1998-07-24–2015-04-28 (ano 1998–2015)"}
@@ -42,6 +45,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, medidas]
     verificado: "652 linhas; 146 id_operacao distintos; 652 linhas distintas — medido 2026-10-27"
   operacoes_indiretas_automaticas:
+    ultima_data: "2026-08-31"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma operação indireta automática (via agente financeiro credenciado) contratada, por cliente; sem id de operação"
     chave: "nenhuma: sem id; na partição ano = 2026, 64.244 linhas e 58.338 distintas (5.906 repetidas por inteiro)"
     tempo: {natureza: serie_anual, coluna: data_contratacao, cobertura: "2002–2026 (ano); 2026 vai de 2026-01-02 a 2026-08-31"}
@@ -58,6 +62,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "2.392.704 linhas na tabela; ano = 2026: 64.244 linhas, 58.338 distintas, anos 2002–2026 (25 distintos) — medido 2026-10-27"
   operacoes_nao_automaticas:
+    ultima_data: "2026-08-31"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma linha de operação não automática (analisada caso a caso) contratada; um id_contrato tem várias linhas"
     chave: "nenhuma: id_contrato tem 8.409 distintos em 23.896 linhas, e 4.050 contratos têm valor_operacao diferente entre linhas, então a linha é uma operação dentro do contrato; 395 linhas repetidas por inteiro (23.501 distintas)"
     tempo: {natureza: serie_anual, coluna: data_contratacao, cobertura: "2002-01-02–2026-08-31 (ano = ano de data_contratacao, 0 divergências)"}
@@ -74,6 +79,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "23.896 linhas; 8.409 id_contrato; 4.196 contratos com mais de uma linha (19.683 linhas); soma valor_operacao 1.236,7 bi, 395 duplicadas inteiras — medido 2026-10-27"
   operacoes_pre_embarque:
+    ultima_data: "2026-08-31"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma operação de financiamento pré-embarque (BNDES Exim) contratada por cliente; sem id de operação"
     chave: "nenhuma: sem id; 7.664 linhas, 7.614 distintas (50 repetidas por inteiro)"
     tempo: {natureza: serie_anual, coluna: data_contratacao, cobertura: "2002-01-08–2026-08-31 (ano 2002–2026)"}

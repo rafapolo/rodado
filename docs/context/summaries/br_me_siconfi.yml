@@ -3,6 +3,7 @@
 dataset: br_me_siconfi
 tabelas:
   brasil_despesas_funcao:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta de despesa por função/subfunção da União (portaria '9.272' = subfunção) × estágio × ano
     chave: 'nenhuma por pouco: (ano, estagio, portaria, conta) dá 10.360 distintos em 10.361 linhas (uma linha duplicada: 2013, ''Despesas Empenhadas'', portaria ''15.451'', ''Infra-Estrutura Urbana'',
       R$ 2.544.716.025,27 nas duas)'
@@ -32,6 +33,7 @@ tabelas:
     verificado: '10.361 linhas, 10.360 chaves distintas; 2025: estágios ''Despesas Empenhadas'', ''Despesas Liquidadas'', ''Despesas Pagas'' com o total 3.00.000 = R$ 5.346,9 / 5.123,1 / 5.024,1 bi — medido
       2026-10-27'
   brasil_despesas_orcamentarias:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta de despesa por natureza econômica (categoria, grupo, modalidade) da União × estágio × ano
     chave: ano, estagio, portaria, conta (única nas 8.872 linhas)
     tempo:
@@ -54,6 +56,7 @@ tabelas:
     - nao_use_para
     verificado: 8.872 linhas = 8.872 chaves; id_conta_bd NULL 5.665 e '' 2.625 — medido 2026-10-27
   brasil_execucao_restos_pagar:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta de despesa (natureza econômica) da União × estágio de restos a pagar × ano
     chave: ano, estagio, portaria, conta (única nas 11.338 linhas)
     tempo:
@@ -77,6 +80,7 @@ tabelas:
     - nao_use_para
     verificado: 11.338 linhas = 11.338 chaves; estagio_bd NULL 6.978 e '' 4.360 (100%) — medido 2026-10-27
   brasil_execucao_restos_pagar_funcao:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma função/subfunção da União × estágio de restos a pagar × ano
     chave: ano, estagio, portaria, conta (única nas 15.151 linhas)
     tempo:
@@ -100,6 +104,7 @@ tabelas:
     - nao_use_para
     verificado: 15.151 linhas = 15.151 chaves — medido 2026-10-27
   brasil_receitas_orcamentarias:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta de receita (hierarquia do ementário) da União × estágio × ano
     chave: ano, estagio, portaria, conta (única nas 7.301 linhas)
     tempo:
@@ -124,6 +129,7 @@ tabelas:
     - nao_use_para
     verificado: 7.301 linhas = 7.301 chaves — medido 2026-10-27
   brasil_variacoes_patrimoniais:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta de variação patrimonial (aumentativa/diminutiva) da União × ano
     chave: ano, portaria, conta (única nas 6.323 linhas)
     tempo:
@@ -149,6 +155,7 @@ tabelas:
     - significado dos prefixos 3 e 4 da portaria
     verificado: 6.323 linhas = 6.323 chaves — medido 2026-10-27
   municipio_balanco_patrimonial:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta do balanço patrimonial (ativo, passivo, atos potenciais) de um município × ano
     chave: 'nenhuma: em 2025, (id_municipio, portaria, conta, conta_bd) dá 983.422 distintos em 1.004.322 linhas (20.900 repetidas); não há coluna de estágio nem de quadro para separá-las'
     tempo:
@@ -178,6 +185,7 @@ tabelas:
     - filtros_tipicos
     verificado: '17.888.122 linhas; 2025: 1.004.322 linhas, 983.422 chaves distintas sobre (id_municipio,portaria,conta,conta_bd) — medido 2026-10-27'
   municipio_despesas_funcao:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta de despesa por função (3.NN.000) ou subfunção (3.NN.SSS) de um município × estágio × ano
     chave: 'ano, id_municipio, estagio, portaria, conta (única; medido em ano = 2025, 1.096.272 linhas). Antes de 2013 estagio vem NULL (8.690.188 linhas): a chave não foi medida nos outros anos'
     tempo:
@@ -206,6 +214,7 @@ tabelas:
     verificado: '22.098.549 linhas; 2025: 1.096.272 linhas = chaves, 5.446 municípios com ''Despesas Pagas''; estágios em 2025: Empenhadas 272.218, Liquidadas 271.530, Pagas 271.038, RP Processados 152.444,
       RP Não Processados 129.042; pagas 2023 total R$ 1.054,97 bi — medido 2026-10-27'
   municipio_despesas_orcamentarias:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta de despesa por natureza econômica (categoria, grupo, modalidade, elemento) de um município × estágio × ano
     chave: ano, id_municipio, estagio, portaria, conta (única; medido em ano = 2025, 954.706 linhas)
     tempo:
@@ -232,6 +241,7 @@ tabelas:
     - nao_use_para
     verificado: '27.829.868 linhas; 2025: 954.706 linhas = chaves; SP capital 2025 Pagas: total ''2.0.0.00.00.00'' R$ 116,80 bi, correntes R$ 104,93 bi — medido 2026-10-27'
   municipio_execucao_restos_pagar:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta de despesa (natureza econômica) de um município × estágio de restos a pagar × ano
     chave: ano, id_municipio, estagio, portaria, conta (única; medido em ano = 2025, 616.990 linhas)
     tempo:
@@ -259,6 +269,7 @@ tabelas:
     - nao_use_para
     verificado: '6.407.632 linhas; 2025: 616.990 = chaves, 6.402 municípios — medido 2026-10-27'
   municipio_execucao_restos_pagar_funcao:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma função/subfunção de um município × estágio de restos a pagar × ano
     chave: ano, id_municipio, estagio, portaria, conta (única; medido em ano = 2025, 819.679 linhas)
     tempo:
@@ -284,6 +295,7 @@ tabelas:
     - nao_use_para
     verificado: '8.491.614 linhas; 2025: 819.679 = chaves — medido 2026-10-27'
   municipio_receitas_orcamentarias:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta de receita (ementário) de um município × estágio × ano
     chave: ano, id_municipio, estagio, portaria, conta (única; medido em ano = 2025, 705.979 linhas)
     tempo:
@@ -312,6 +324,7 @@ tabelas:
     - nao_use_para
     verificado: '19.977.711 linhas; 2025: 705.979 = chaves; SP 2025 nível 1.0.0.0.0.00.00.00: brutas R$ 116,19 bi, FUNDEB R$ 3,09 bi, outras deduções R$ 0,77 bi — medido 2026-10-27'
   municipio_variacoes_patrimoniais:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta de variação patrimonial (aumentativa ou diminutiva) de um município × ano
     chave: ano, id_municipio, portaria, conta (única; medido em ano = 2025, 770.851 linhas)
     tempo:
@@ -338,6 +351,7 @@ tabelas:
     - VPA = prefixo 4, VPD = prefixo 3
     verificado: '8.507.365 linhas; 2025: 770.851 = chaves; SP 2025: VPD (3.0.0.0.0.00.00) R$ 244,67 bi, VPA (4.0.0.0.0.00.00) R$ 222,94 bi — medido 2026-10-27'
   uf_despesas_funcao:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'mesmo grão de brasil_despesas_funcao, por UF (inclui DF): conta por função/subfunção × estágio × UF × ano'
     chave: 'nenhuma por pouco: (ano, sigla_uf, estagio, portaria, conta) dá 190.329 distintos em 190.352 linhas (23 repetidas)'
     tempo:
@@ -359,6 +373,7 @@ tabelas:
     - nao_use_para
     verificado: 190.352 linhas, 190.329 chaves — medido 2026-10-27
   uf_despesas_orcamentarias:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'mesmo grão de brasil_despesas_orcamentarias, por UF: conta de natureza econômica × estágio × UF × ano'
     chave: ano, sigla_uf, estagio, portaria, conta (única nas 145.234 linhas)
     tempo:
@@ -380,6 +395,7 @@ tabelas:
     - nao_use_para
     verificado: 145.234 linhas = chaves — medido 2026-10-27
   uf_execucao_restos_pagar:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'mesmo grão de brasil_execucao_restos_pagar, por UF: restos a pagar por natureza × estágio × UF × ano'
     chave: ano, sigla_uf, estagio, portaria, conta (única nas 137.107 linhas)
     tempo:
@@ -404,6 +420,7 @@ tabelas:
     - nao_use_para
     verificado: 137.107 linhas = chaves — medido 2026-10-27
   uf_execucao_restos_pagar_funcao:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'mesmo grão de brasil_execucao_restos_pagar_funcao, por UF: restos a pagar por função × estágio × UF × ano'
     chave: ano, sigla_uf, estagio, portaria, conta (única nas 203.283 linhas)
     tempo:
@@ -428,6 +445,7 @@ tabelas:
     - nao_use_para
     verificado: 203.283 linhas = chaves — medido 2026-10-27
   uf_receitas_orcamentarias:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'mesmo grão de brasil_receitas_orcamentarias, por UF: conta de receita × estágio × UF × ano; tem id_uf (código IBGE, 10% nulo)'
     chave: 'nenhuma: (ano, sigla_uf, estagio, portaria, conta) dá 79.627 distintos em 88.149 linhas (8.522 repetidas; ex.: 2022, DF, ''Receitas Brutas Realizadas'', portaria ''1.1.1.2.52.0.0'', 3 linhas
       com o mesmo valor R$ 270.675.132,46)'
@@ -456,6 +474,7 @@ tabelas:
     - por que as linhas se repetem
     verificado: 88.149 linhas, 79.627 chaves distintas — medido 2026-10-27
   uf_variacoes_patrimoniais:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'mesmo grão de brasil_variacoes_patrimoniais, por UF: conta de variação patrimonial × UF × ano'
     chave: ano, sigla_uf, portaria, conta (única nas 92.702 linhas)
     tempo:

@@ -3,6 +3,7 @@
 dataset: br_sedec_desastres
 tabelas:
   reconhecimentos_vigentes:
+    ultima_data: "2026-10-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um reconhecimento federal (município × tipo de desastre COBRADE × data de ocorrência × vigência × situação) vigente, repetido em cada data de extração em que apareceu"
     chave: "data_extracao, id_municipio, id_cobrade, data_ocorrencia, data_vigencia, situacao (20.380 linhas = 20.380 distintos). Sem data_extracao só há 1.795 combinações distintas: cada reconhecimento aparece em várias extrações"
     tempo: {natureza: soma_de_retratos, coluna: data_extracao, cobertura: "2026-08-06–2026-10-09"}

@@ -3,6 +3,7 @@
 dataset: br_sfb_sicar
 tabelas:
   area_imovel:
+    ultima_data: "2025-10-15"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um imóvel rural cadastrado no CAR em uma foto mensal (data_extracao), com polígono e área"
     chave: "id_imovel, data_extracao (no AC: 561.730 linhas, 561.730 distintos); nacionalmente a foto 2025-10-15 repete 9.243 ids (ver gotcha id_imovel_repete_na_foto)"
     tempo: {natureza: soma_de_retratos, coluna: data_extracao, cobertura: "2024-10-04–2025-10-15 (10 fotos mensais, 79,3 milhões de linhas)"}
@@ -20,6 +21,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, significado de tipo e status, "soma de modulos_fiscais"]
     verificado: "AC: 561.730 linhas = 561.730 distintos de (id_imovel,data_extracao); AC foto 2025-10-15: 58.394 linhas = 58.394 ids; 9 fotos nas amostras; demais números nos gotchas — medido 2026-10-27"
   app:
+    ultima_data: "2026-08-04"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma feição de área de preservação permanente (APP) de um imóvel, por tipo"
     chave: "nenhuma: no AC, 151.812 linhas para 17.032 imóveis e 78.435 pares (id_imovel, tipo)"
     tempo: {natureza: retrato_atual, coluna: data_extracao, cobertura: "2026-06-02–2026-08-04 (data por UF, juntas formam uma foto; 28,1 milhões de linhas)"}
@@ -35,6 +37,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "AC: 151.812 linhas, 17.032 imóveis, 78.435 pares imóvel×tipo — medido 2026-10-27"
   area_consolidada:
+    ultima_data: "2026-08-04"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma feição de área rural consolidada (uso antes de 22/07/2008) de um imóvel"
     chave: "nenhuma: no AC, 55.419 linhas para 55.225 imóveis"
     tempo: {natureza: retrato_atual, coluna: data_extracao, cobertura: "2026-06-02–2026-08-04 (por UF; 6,9 milhões de linhas)"}
@@ -47,6 +50,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, "definição da data de corte 2008 (conhecimento geral, não medido)"]
     verificado: "AC: 55.419 linhas, 55.225 imóveis distintos — medido 2026-10-27"
   area_pousio:
+    ultima_data: "2026-08-04"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma feição de área de pousio de um imóvel"
     chave: "nenhuma: 212.315 linhas, 207.242 imóveis; mesmo (id_imovel, geometria) tem 212.198 distintos"
     tempo: {natureza: retrato_atual, coluna: data_extracao, cobertura: "2026-06-02–2026-08-04"}
@@ -59,6 +63,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "212.315 linhas, 207.242 imóveis, 212.198 distintos de (id_imovel,geometria) — medido 2026-10-27"
   hidrografia:
+    ultima_data: "2026-08-04"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma feição de hidrografia (rio, lago, reservatório) dentro de um imóvel, por tipo"
     chave: "nenhuma: no AC, 27.910 linhas, 16.439 imóveis, 18.839 pares (id_imovel, tipo)"
     tempo: {natureza: retrato_atual, coluna: data_extracao, cobertura: "2026-06-02–2026-08-04 (por UF; 4,4 milhões de linhas)"}
@@ -69,6 +74,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "AC: 27.910 linhas, 16.439 imóveis, 18.839 pares imóvel×tipo; perfil não lista coluna area — medido 2026-10-27"
   reserva_legal:
+    ultima_data: "2026-08-04"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma feição de reserva legal de um imóvel, por tipo"
     chave: "nenhuma: no AC, 36.007 linhas, 35.846 imóveis, 35.891 pares (id_imovel, tipo)"
     tempo: {natureza: retrato_atual, coluna: data_extracao, cobertura: "2026-06-02–2026-08-04 (por UF; 6,4 milhões de linhas)"}
@@ -81,6 +87,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, "leitura de ARL_PROPOSTA como não validada"]
     verificado: "AC: 36.007 linhas, 35.846 imóveis, 35.891 pares imóvel×tipo — medido 2026-10-27"
   servidao_administrativa:
+    ultima_data: "2026-08-04"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma feição de servidão administrativa (infraestrutura, utilidade pública, reservatório de energia) de um imóvel"
     chave: "nenhuma: no AC, 4.624 linhas, 2.290 imóveis, 4.608 pares (id_imovel, tipo)"
     tempo: {natureza: retrato_atual, coluna: data_extracao, cobertura: "2026-06-02–2026-08-04 (por UF; 2,2 milhões de linhas)"}
@@ -93,6 +100,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, "que o TOTAL agrega os demais"]
     verificado: "AC: 4.624 linhas, 2.290 imóveis, 4.608 pares imóvel×tipo — medido 2026-10-27"
   uso_restrito:
+    ultima_data: "2026-08-04"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma feição de área de uso restrito (declividade 25–45° ou pantaneira) de um imóvel"
     chave: "nenhuma: 179.748 linhas, 129.522 imóveis; (id_imovel, tipo, geometria) tem 175.655 distintos"
     tempo: {natureza: retrato_atual, coluna: data_extracao, cobertura: "2026-06-02–2026-08-04"}
@@ -105,6 +113,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "179.748 linhas, 129.522 imóveis, 175.655 distintos de (id_imovel,tipo,geometria) — medido 2026-10-27"
   vegetacao_nativa:
+    ultima_data: "2026-08-04"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma feição de vegetação nativa remanescente de um imóvel"
     chave: "nenhuma: no AC, 42.946 linhas para 42.818 imóveis"
     tempo: {natureza: retrato_atual, coluna: data_extracao, cobertura: "2026-06-02–2026-08-04 (por UF; 5,2 milhões de linhas)"}

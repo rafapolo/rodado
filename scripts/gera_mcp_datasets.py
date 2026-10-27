@@ -11,7 +11,9 @@ Lê `_rodado_metadata/catalog.parquet` (descrição, contagens, fonte) e
 `pages/atlas/schema_graph.json` (tema de cada dataset), então roda depois de
 `build_metadata_catalog.py` e `gera_schema_graph.py`. Só o trecho entre os
 marcadores `<!-- datasets:inicio -->` e `<!-- datasets:fim -->` é gerado; o
-resto da página é escrito à mão. Na página em inglês os rótulos e os temas saem em
+resto da página é escrito à mão.
+Cada linha mostra "dados até" e, se o dataset tem cartões, o controle que os carrega de
+`pages/assets/summaries/<dataset>.json` (ver `gera_summaries_web.py`; `assets/summaries.js` desenha). Na página em inglês os rótulos e os temas saem em
 inglês; a descrição de cada dataset fica como está no catálogo, em português.
 """
 import html
@@ -20,6 +22,8 @@ import re
 import sys
 from collections import Counter, defaultdict
 from pathlib import Path
+
+from gera_summaries_web import carregar as carrega_cartoes, formata_data
 
 RAIZ = Path(__file__).resolve().parent.parent
 CATALOGO = RAIZ / "_rodado_metadata" / "catalog.parquet"
@@ -35,16 +39,19 @@ IDIOMAS = {
            "desc": "Os {n} datasets que <code>list_datasets()</code> devolve, agrupados por tema: {bd} espelhados do "
                    "Base dos Dados e {pr} coletados direto na fonte. O nome abre o dataset no "
                    "<a href=\"/atlas/\">atlas</a>, com as tabelas e as chaves que o ligam aos outros. "
-                   "A busca no topo da página filtra esta lista também.",
-           "vazio": "Nenhum dataset com esse termo."},
+                   "A busca no topo da página filtra esta lista também. Ao abrir as tabelas de um dataset, cada uma "
+                   "mostra seu cartão: grão, chave, período, medidas e para que serve.",
+           "vazio": "Nenhum dataset com esse termo.",
+           "ate": "dados até"},
     "en": {"pagina": RAIZ / "pages" / "mcp-en.html", "sep": ",", "dec": ".", "sufixos": ("bn", "M", "k"),
            "tabela": ("table", "tables"), "linhas": "rows", "titulo": "All datasets",
            "desc": "The {n} datasets returned by <code>list_datasets()</code>, grouped by theme: {bd} mirrored from "
                    "Base dos Dados and {pr} collected straight from the source. The name opens the dataset in the "
                    "<a href=\"/atlas/\">atlas</a>, with its tables and the keys that link it to the others. "
                    "The search box at the top of the page filters this list too. "
-                   "Descriptions are in Portuguese, as in the catalog.",
-           "vazio": "No dataset matches that term."},
+                   "Descriptions and table cards are in Portuguese, as in the catalog.",
+           "vazio": "No dataset matches that term.",
+           "ate": "data through"},
 }
 
 
@@ -59,20 +66,25 @@ def compacto(n, L):
     return str(n)
 
 
-def bloco(ds, por_tema, rotulo, L):
+def bloco(ds, por_tema, rotulo, L, cartoes, idioma):
     grupos = []
     for tema in [t for t in rotulo if t in por_tema]:   # ordem do atlas, "outros" por último
         itens = []
         for nome, d in sorted(por_tema[tema]):
             fonte = d["fontes"].most_common(1)[0][0]
-            busca = html.escape(f"{nome} {d['desc']} {fonte} {rotulo[tema]}".lower(), quote=True)
+            c = cartoes.get(nome)
+            ate = formata_data(c["d"], idioma) if c and c["d"] else ""
+            busca = html.escape(f"{nome} {d['desc']} {fonte} {rotulo[tema]} {ate}".lower(), quote=True)
             tab = f"{milhar(d['tabelas'], L['sep'])} {L['tabela'][d['tabelas'] != 1]}"
+            ate_html = f' · {L["ate"]} <time>{ate}</time>' if ate else ""
+            abrir = (f'<details class="sc-ds" data-ds="{nome}"><summary>{len(c["t"])} '
+                     f'{L["tabela"][len(c["t"]) != 1]}</summary><div class="sc-body"></div></details>') if c else ""
             itens.append(
                 f'            <li class="ds-row" data-search="{busca}">'
                 f'<a class="ds-name" href="/atlas/?db={nome}">{nome}</a>'
                 f'<span class="ds-desc">{html.escape(d["desc"])}</span>'
-                f'<span class="ds-meta">{tab} · {compacto(d["linhas"], L)} {L["linhas"]}'
-                f' · {html.escape(fonte)}</span></li>')
+                f'<span class="ds-meta">{"" if c else tab + " · "}{compacto(d["linhas"], L)} {L["linhas"]}'
+                f' · {html.escape(fonte)}{ate_html}</span>{abrir}</li>')
         n_tab = sum(d["tabelas"] for _, d in por_tema[tema])
         grupos.append(
             f'        <details class="ds-group">\n'
@@ -112,13 +124,14 @@ def main():
         d["linhas"] += r["rows"] or 0
         d["fontes"][r["source_name"] or ""] += 1
 
+    cartoes = carrega_cartoes()
     por_tema = defaultdict(list)
     for nome, d in ds.items():
         por_tema[tema_de.get(nome, "outros")].append((nome, d))
 
     for idioma, L in IDIOMAS.items():
         rotulo = grafo["domains"] if idioma == "pt" else {t: TEMAS_EN.get(t, r) for t, r in grafo["domains"].items()}
-        novo, n_grupos = bloco(ds, por_tema, rotulo, L)
+        novo, n_grupos = bloco(ds, por_tema, rotulo, L, cartoes, idioma)
         pagina = L["pagina"].read_text()
         if INICIO not in pagina or FIM not in pagina:
             sys.exit(f"marcadores {INICIO} / {FIM} ausentes em {L['pagina']}")

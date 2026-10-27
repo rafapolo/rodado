@@ -3,6 +3,7 @@
 dataset: br_cgu_licitacao_contrato
 tabelas:
   licitacao:
+    ultima_data: "2023"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma licitação (ou dispensa/inexigibilidade) de uma unidade gestora, no estado em que foi publicado o resultado"
     chave: "nenhuma: 1.715.344 linhas (todas distintas) para 99.361 id_licitacao e 1.354.764 pares (id_licitacao, id_unidade_gestora); id_licitacao se repete entre unidades gestoras"
     tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2013–2023; ano e mes saem de data_resultado_compra (coincidem em 100% das linhas)"}
@@ -15,6 +16,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "1.715.344 linhas, 99.361 id_licitacao, 1.354.764 pares com UG, linhas todas distintas; soma por ano em R$ bi: 2013 43,7; 2015 225,0; 2020 2.488,9; 2021 1.259,2; 2023 53,3; 3 linhas > R$ 100 bi — medido 2026-10-27"
   licitacao_item:
+    ultima_data: "2023"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um item de uma licitação, com o vencedor, a quantidade e o valor"
     chave: "nenhuma: em ano = 2023, 712.789 linhas para 710.214 trincas (id_licitacao, id_unidade_gestora, id_item)"
     tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2013–2023 (2023 vai até o mês 10)"}
@@ -28,6 +30,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "14.145.107 linhas; 2023: 712.789 linhas, 710.214 trincas distintas; linhas por ano de 2.058.293 (2013) a 712.789 (2023) — medido 2026-10-27"
   licitacao_participante:
+    ultima_data: "2023"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um participante (CPF/CNPJ) de um item de uma licitação, com indicador de vencedor"
     chave: "nenhuma: em ano = 2023 e mes = 10, 301.213 linhas para 300.181 quádruplas (id_licitacao, id_unidade_gestora, id_item_compra, cpf_cnpj_participante)"
     tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2013–2023 (2023 vai até o mês 10)"}
@@ -40,6 +43,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "74.372.781 linhas, 2013–2023 (9,6 milhões em 2013 a 3,5 milhões em 2023); 2023-10: 301.213 linhas, 300.181 quádruplas distintas, 81.402 vencedores — medido 2026-10-27"
   licitacao_empenho:
+    ultima_data: "2023"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um empenho ligado a uma licitação (nota de empenho emitida)"
     chave: "id_empenho quase único: 7.430.965 linhas para 7.429.201 id_empenho distintos"
     tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2013–2023; 97% das linhas até 2020 (2021: 10.902, 2022: 1.478, 2023: 1.688); data_emissao de 2014-01-01 a 2024-07-29"}
@@ -52,6 +56,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "7.430.965 linhas, 7.429.201 id_empenho distintos, soma R$ 332,0 bi; linhas por ano 1.081.859 (2013) a 1.688 (2023); em ano = 2023 as 1.688 trincas (id_empenho, id_licitacao, id_unidade_gestora) são distintas — medido 2026-10-27"
   contrato_compra:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um contrato de compra do governo federal, no registro publicado no DOU em ano/mes"
     chave: "nenhuma: 498.207 linhas (497.719 distintas) para 57.890 id_contrato; (id_contrato, id_unidade_gestora) dá 488.526 pares"
     tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2013–2026; ano e mes = ano e mês de data_publicacao_dou (100% das linhas)"}
@@ -65,6 +70,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "498.207 linhas, 497.719 distintas, 57.890 id_contrato, 488.526 pares com UG; soma de valor_final por ano em R$ bi: 2017 135,2; 2021 51.385,5; 2024 115,5 — medido 2026-10-27"
   contrato_item:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um item de um contrato de compra (descrição, quantidade e valor)"
     chave: "nenhuma: 1.620.478 linhas para 1.499.829 combinações (id_contrato, id_ug, id_item, ano, mes), 1.581.949 linhas distintas"
     tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2013–2026"}
@@ -78,6 +84,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "1.620.478 linhas, 1.258.754 id_item distintos, 1.581.949 linhas distintas — medido 2026-10-27"
   contrato_termo_aditivo:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um termo aditivo de um contrato (alteração de prazo ou valor), com o objeto"
     chave: "nenhuma: 424.383 linhas para 419.141 trincas (id_contrato, id_ug, id_termo_aditivo); id_termo_aditivo sozinho tem só 11.145 valores distintos (não identifica)"
     tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2013–2026; data_publicacao_dou de 2003 a 9999-12-31 (valor sentinela)"}
@@ -88,6 +95,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "424.383 linhas, 422.682 distintas, 419.141 trincas distintas, 11.145 id_termo_aditivo distintos — medido 2026-10-27"
   contrato_apostilamento:
+    ultima_data: "2018-07-31"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um apostilamento (reajuste ou ajuste administrativo) de um contrato"
     chave: "nenhuma: 9.714 linhas para 9.708 trincas (id_contrato, id_unidade_gestora, id_apostilamento); id_apostilamento sozinho tem 1.150 valores"
     tempo: {natureza: serie_de_periodos, coluna: data_apostilamento, cobertura: "2006-12-26–2018-07-31 (ano 2013–2018)"}

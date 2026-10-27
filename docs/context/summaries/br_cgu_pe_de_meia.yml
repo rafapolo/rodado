@@ -3,6 +3,7 @@
 dataset: br_cgu_pe_de_meia
 tabelas:
   pagamento:
+    ultima_data: "2026-06"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma parcela do Pé-de-Meia (matrícula, frequência, conclusão ou Enem) paga a um beneficiário numa folha mensal; estornos aparecem como valor negativo"
     chave: "nenhuma: em mes_folha = 202603, 4.355.234 linhas para 931.930 combinações (beneficiario, incentivo, período) porque 3.420.328 linhas apontam para um único beneficiario_id placeholder (ver surpresa em medidas)"
     tempo: {natureza: serie_mensal, coluna: mes_folha, cobertura: "202403–202606 (inteiro AAAAMM; 26 meses, faltam 202407 e 202601); data_do_pagamento de 2024-03-26 a 2026-07-06"}
@@ -36,6 +37,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "8.545.194 linhas = 8.545.194 responsavel_id distintos — medido 2026-10-27"
   pe_de_meia:
+    ultima_data: "2026-06"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma parcela paga (view: pagamento JOIN beneficiario JOIN responsavel, com NIS, CPF e nome de ambos)"
     chave: "mesma de pagamento: nenhuma"
     tempo: {natureza: serie_mensal, coluna: mes_folha, cobertura: "202403–202606"}

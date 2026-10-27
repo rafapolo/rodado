@@ -3,6 +3,7 @@
 dataset: br_ibge_ipca
 tabelas:
   mes_brasil:
+    ultima_data: "2026-02"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um mês do IPCA nacional (índice geral do Brasil)
     chave: ano, mes
     tempo:
@@ -50,6 +51,7 @@ tabelas:
     - nao_use_para
     verificado: 555 linhas = 555 pares (ano, mes) distintos — medido 2026-10-27
   mes_categoria_brasil:
+    ultima_data: "2026-02"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um mês × Brasil × uma categoria da cesta do IPCA (grupo, subgrupo, item ou subitem, todos os níveis na
       mesma tabela)
     chave: ano, mes, id_categoria, categoria (id_categoria nulo só na linha Índice geral)
@@ -91,6 +93,7 @@ tabelas:
       categoria) dá só 32634 distintos. 457 categorias por mês em 2024-12 (9 grupos, 19 subgrupos, 51 itens, 377
       subitens, 1 geral) — medido 2026-10-27
   mes_categoria_municipio:
+    ultima_data: "2026-02"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um mês × município × uma categoria da cesta do IPCA (grupo, subgrupo, item ou subitem, todos os níveis
       na mesma tabela)
     chave: ano, mes, id_municipio, id_categoria, categoria
@@ -138,6 +141,7 @@ tabelas:
       5208707 (GO), 2111300 (MA), 5002704, 2701506, 2401305 (MS), 2800308 (SE), todos com 33818 linhas — medido
       2026-10-27'
   mes_categoria_rm:
+    ultima_data: "2026-02"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um mês × região metropolitana × uma categoria da cesta do IPCA (grupo, subgrupo, item ou subitem, todos
       os níveis na mesma tabela)
     chave: ano, mes, regiao_metropolitana, id_categoria, categoria

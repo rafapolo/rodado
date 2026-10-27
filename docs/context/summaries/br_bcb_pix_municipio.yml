@@ -3,6 +3,7 @@
 dataset: br_bcb_pix_municipio
 tabelas:
   transacoes:
+    ultima_data: "2026-10"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um município × mês, com valor e quantidade de Pix por perfil (pagador/recebedor, PF/PJ)"
     chave: "AnoMes, Municipio_Ibge (401.019 linhas = 401.019 distintos); 1 linha por mês tem Municipio_Ibge nulo ('N/D', 'NAO INFORMADO')"
     tempo: {natureza: serie_mensal, coluna: "AnoMes (inteiro AAAAMM)", cobertura: "202011–202610 (72 meses)"}

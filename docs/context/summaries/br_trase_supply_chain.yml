@@ -3,6 +3,7 @@
 dataset: br_trase_supply_chain
 tabelas:
   beef:
+    ultima_data: "2017"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um fluxo de carne bovina exportada: ano × município de produção × polo logístico × exportadora × importadora × país do primeiro destino × tipo de produto"
     chave: "(year, state_production, municipality_name_production, municipality_id_production, municipality_name_logistics_hub, municipality_id_logistics_hub, exporter_name, exporter_group, importer_name, importer_group, country_first_import_name, product_description, biome)"
     tempo: {natureza: serie_anual, coluna: year, cobertura: "2015–2017"}
@@ -21,6 +22,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, unidade de cattle_deforestation_exposure e co2_emissions_deforestation_5]
     verificado: "1497805 linhas, 1497805 distintos da chave de 13 colunas; 2017: beef_equivalent_tonnes = 2.126.244 t e fob_usd = US$ 5,93 bi (o gotcha cita 1,90 Mt em equivalente de carcaça — valor diferente do somado aqui; conferir antes de citar) — medido 2026-10-27; fob_usd e beef_equivalent_tonnes são DOUBLE no banco apesar do gotcha numeros_em_texto"
   soy_beans:
+    ultima_data: "2020"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um fluxo de soja: ano × município de produção × polo logístico × porto de exportação × exportadora × importadora × país do primeiro destino × bioma"
     chave: "nenhuma: a combinação (year, state_production, municipality_name_production, municipality_id_production, municipality_id_logistics_hub, export_port, exporter_name, exporter_group, importer_name, importer_group, country_first_import_name, biome) tem 311401 distintos em 311434 linhas (33 repetidas)"
     tempo: {natureza: serie_anual, coluna: year, cobertura: "2004–2020"}
@@ -42,6 +44,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, unidades de land_use, soy_deforestation_exposure e soy_risk, significado de 'NONE' x 'None']
     verificado: "311434 linhas, 311401 distintos da chave candidata de 12 colunas; 2020: soy_total_export = 121.797.712 t, fob_usd = US$ 33,95 bi (bate com o gotcha 121,8 Mt), DOMESTIC CONSUMPTION 785 linhas e 23,87 Mt; soy_total_export e fob_usd são DOUBLE no banco (o gotcha numeros_em_texto vale para soy_deforestation_exposure) — medido 2026-10-27"
   beef_slaughterhouses:
+    ultima_data: "2017-12-05"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um frigorífico/matadouro de bovinos localizado (slaugtherhouse_id) com empresa, endereço, inspeção e ponto"
     chave: "slaugtherhouse_id"
     tempo: {natureza: sem_tempo, coluna: date_sif_registered, cobertura: "1911-11-11–2017-12-05 (data de registro no SIF; 95,87% nulos)"}
@@ -55,6 +58,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, significado de inspection_level e tac]
     verificado: "7671 linhas, 7671 distintos de slaugtherhouse_id (4423 distintos de geom_id: vários frigoríficos no mesmo ponto) — medido 2026-10-27"
   soy_beans_crushing_facilities:
+    ultima_data: "2016"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma unidade de esmagamento de soja × ano (crushing_facility_Id × year) com capacidade"
     chave: "nenhuma: (year, crushing_facility_Id) tem 964 distintos em 973 linhas (9 repetidas); (year, geom_id, company) é único nas 973"
     tempo: {natureza: serie_anual, coluna: year, cobertura: "2005–2016"}
@@ -68,6 +72,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, unidade de capacity]
     verificado: "973 linhas, 964 distintos de (year, crushing_facility_Id), 973 distintos de (year, geom_id, company) — medido 2026-10-27"
   soy_beans_refining_facilities:
+    ultima_data: "2016"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma refinaria de óleo de soja × ano (ponto × empresa × year)"
     chave: "nenhuma: (year, geom_id, company) tem 503 distintos em 504 linhas (1 repetida)"
     tempo: {natureza: serie_anual, coluna: year, cobertura: "2005–2016"}
@@ -77,6 +82,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "504 linhas, 503 distintos de (year, geom_id, company); capacity 100% nula — medido 2026-10-27"
   soy_beans_storage_facilities:
+    ultima_data: "2017-02-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um armazém de grãos (silo) confirmado, com empresa, capacidade e ponto"
     chave: "cartodb_id (3228 distintos em 3228 linhas; também únicos geom_id + company + cnpj_cpf)"
     tempo: {natureza: sem_tempo, coluna: date, cobertura: "1949-07-14–2017-02-09 (data de referência do armazém; 26,27% nulos)"}
@@ -90,6 +96,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, unidade de capacity]
     verificado: "3228 linhas, 3228 distintos de cartodb_id, 2787 de geom_id — medido 2026-10-27"
   soy_beans_storage_facilities_original:
+    ultima_data: "2017-02-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "mesmo grão de soy_beans_storage_facilities, na versão original (mesmas colunas; diferem os quartis de capacity e a contagem de cnpj_cpf distintos, 3485 contra 3724)"
     chave: "cartodb_id (3228 distintos em 3228 linhas)"
     use_para: "conferir a versão original; prefira soy_beans_storage_facilities"

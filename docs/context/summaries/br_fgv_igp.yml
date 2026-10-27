@@ -3,6 +3,7 @@
 dataset: br_fgv_igp
 tabelas:
   igp_10_mes:
+    ultima_data: "2023-07"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um mês do IGP-10
     chave: 'ano + mes: count(*) = count(DISTINCT (ano, mes)) = 359'
     tempo:
@@ -35,6 +36,7 @@ tabelas:
     nao_use_para: somar variações percentuais; buscar 2022 nas tabelas anuais (param em 2021).
     verificado: 359 linhas, 359 pares (ano, mes) distintos; ano 1993–2023, mes 1–12 (certa) — medido 2026-10-27
   igp_di_ano:
+    ultima_data: "2021"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um ano civil do IGP-DI
     chave: 'ano: count(*) = count(DISTINCT ano) = 78'
     tempo:
@@ -99,6 +101,7 @@ tabelas:
     nao_use_para: somar variações percentuais; buscar 2022 nas tabelas anuais (param em 2021).
     verificado: 954 linhas, 954 pares (ano, mes) distintos; ano de 1 a 12, mes de 1944 a 2023 — medido 2026-10-27
   igp_m_ano:
+    ultima_data: "2021"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um ano civil do IGP-M
     chave: 'ano: count(*) = count(DISTINCT ano) = 33'
     tempo:
@@ -171,6 +174,7 @@ tabelas:
     nao_use_para: somar variações percentuais; buscar 2022 nas tabelas anuais (param em 2021).
     verificado: 407 linhas, 407 pares (ano, mes) distintos; ano de 1 a 12, mes de 1989 a 2023 — medido 2026-10-27
   igp_og_ano:
+    ultima_data: "2021"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um ano civil do IGP-OG
     chave: 'ano: count(*) = count(DISTINCT ano) = 53'
     tempo:

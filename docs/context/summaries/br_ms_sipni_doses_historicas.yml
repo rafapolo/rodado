@@ -3,6 +3,7 @@
 dataset: br_ms_sipni_doses_historicas
 tabelas:
   doses_agregadas:
+    ultima_data: "2019"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "doses de uma vacina aplicadas, por município × faixa etária × imunobiológico × tipo de dose × ano (mês quando existe)"
     chave: "nenhuma confirmada: nas 3 milhões de primeiras linhas (anos iniciais), ANO+MUNIC+FX_ETARIA+IMUNO+DOSE+ANOMES+MES não repete (16.015 de 16.015 para UF='AC'); não medido na tabela inteira"
     tempo: {natureza: serie_anual, coluna: ANO, cobertura: "1994–2019; MES/ANOMES nulos em 9,6% das linhas (anos sem mês)"}

@@ -3,6 +3,7 @@
 dataset: br_anatel_banda_larga_fixa
 tabelas:
   densidade_brasil:
+    ultima_data: "2025-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um mês (Brasil)"
     chave: "ano, mes"
     tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2007-03–2025-09 (193 meses; meses nem todos presentes antes de 2011)"}
@@ -14,6 +15,7 @@ tabelas:
     rascunho: [unidade, use_para, nao_use_para]
     verificado: "193 linhas = 193 (ano, mes) distintos — medido 2026-10-27"
   densidade_uf:
+    ultima_data: "2025-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma UF × mês"
     chave: "ano, mes, sigla_uf"
     tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2007–2025"}
@@ -25,6 +27,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "5.211 linhas = 5.211 (ano, mes, sigla_uf) distintos — medido 2026-10-27"
   densidade_municipio:
+    ultima_data: "2025-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um município × mês"
     chave: "ano, mes, id_municipio"
     tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2007-03–2025-09 (193 meses distintos; há anos só com trimestres)"}
@@ -37,6 +40,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "1.072.350 linhas = 1.072.350 (ano, mes, id_municipio) distintos — medido 2026-10-27"
   microdados:
+    ultima_data: "2026-02"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um conjunto de acessos de banda larga fixa por município × mês × empresa × tecnologia × velocidade × produto"
     chave: "nenhuma: em ano = 2026, mes = 1 há 698.274 linhas para 237.684 combinações de (município, cnpj, tecnologia, transmissão, velocidade, produto)"
     tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "última partição medida: 2026-01–2026-02 (histórico anterior em outras partições)"}

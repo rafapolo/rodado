@@ -3,6 +3,7 @@
 dataset: br_bndes_desembolsos
 tabelas:
   mensal:
+    ultima_data: "2026-03"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "desembolsos do BNDES agregados num mês × UF × município × produto × instrumento × porte × setor (uma combinação de categorias)"
     chave: "ano, mes, sigla_uf, id_municipio, forma_apoio, produto, instrumento_financeiro, indicador_inovacao, porte_empresa, subsetor_cnae_agrupado, subsetor_bndes (3.762.192 linhas = 3.762.192 distintos, medido; é chave de dimensões, a linha é um agregado)"
     tempo: {natureza: serie_mensal, coluna: "ano, mes (BIGINT)", cobertura: "1995–2026; 2026 só tem meses 1–3"}

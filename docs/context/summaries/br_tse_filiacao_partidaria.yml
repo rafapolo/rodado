@@ -3,6 +3,7 @@
 dataset: br_tse_filiacao_partidaria
 tabelas:
   microdados:
+    ultima_data: "2026-08-04"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma filiação (registro_filiacao) de um eleitor a um partido, com situação e datas, no cadastro do TSE (extração mais recente em 2026-08-04)"
     chave: "registro_filiacao (também únicos titulo_eleitor + sigla_partido + data_filiacao)"
     tempo: {natureza: retrato_atual, coluna: data_extracao, cobertura: "2024-10-21–2026-08-04 (data_extracao); data_filiacao 1980-01-01–2026-08-03"}
@@ -19,6 +20,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "17534818 linhas, 17534818 distintos de registro_filiacao e de (titulo_eleitor, sigla_partido, data_filiacao); 16602928 titulos distintos entre os Regular (16717635 filiações), ou seja, ~114 mil eleitores com mais de uma filiação regular; Regular com data_desfiliacao preenchida: 720199 (data_desfiliacao não é sinônimo de situação não-Regular, medir as duas); Regular sem data_desfiliacao: 15997436 — medido 2026-10-27"
   microdados_antigos:
+    ultima_data: "2023-10-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma filiação de um eleitor a um partido no cadastro antigo do TSE (data_filiacao até 2023-10-01, data_processamento até 2021), com situação, motivo e datas"
     chave: "nenhuma: titulo_eleitoral + sigla_partido + data_filiacao repete (211815 distintos em 211863 linhas na amostra de 1%, 48 repetidas); sem coluna de registro"
     tempo: {natureza: retrato_atual, coluna: data_filiacao, cobertura: "1980-01-01–2023-10-01"}

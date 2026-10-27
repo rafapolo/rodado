@@ -3,6 +3,7 @@
 dataset: br_anatel_telefonia_movel
 tabelas:
   densidade_brasil:
+    ultima_data: "2026-08"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um mês (Brasil)"
     chave: "ano, mes"
     tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2005-02–2026-08"}
@@ -15,6 +16,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "259 linhas = 259 (ano, mes) distintos; 39 com densidade nula — medido 2026-10-27"
   densidade_uf:
+    ultima_data: "2026-08"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma UF × mês"
     chave: "ano, mes, uf"
     tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2005–2026"}
@@ -27,6 +29,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "6.028 linhas = 6.028 (ano, mes, uf) distintos (88 uf nulas) — medido 2026-10-27"
   densidade_municipio:
+    ultima_data: "2026-08"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um município × mês"
     chave: "ano, mes, id_municipio"
     tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2019-01–2026-08"}
@@ -39,6 +42,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "295.210 linhas = 295.210 (ano, mes, id_municipio) distintos — medido 2026-10-27"
   microdados:
+    ultima_data: "2026-08"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um conjunto de acessos móveis por município × mês × empresa × DDD × modalidade × tecnologia × pessoa × produto"
     chave: "nenhuma: em 2026-08 há 2.461.018 linhas para 2.243.904 combinações de (empresa, cnpj, município, ddd, ddd_chip, modalidade, tecnologia, sinal, pessoa, produto)"
     tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2019-01–2026-08"}
@@ -51,6 +55,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "2026-08: 2.461.018 linhas, 115.082 com acessos nulo, soma 280.471.197 (VOZ 445.809; DADOS 3.118.788; PONTO_DE_SERVICO 23.454.358; VOZ+DADOS 217.356.784; M2M 36.095.458) — medido 2026-10-27"
   modalidade:
+    ultima_data: "2018-12"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma empresa × UF × DDD × modalidade × mês (série antiga)"
     chave: "ano, mes, empresa, cnpj, sigla_uf, ddd, modalidade"
     tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2005-02–2018-12"}
@@ -63,6 +68,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, regiao_pgo]
     verificado: "96.813 linhas = 96.813 chaves distintas; soma de acessos em 2018-12 = 229.201.614, igual à de tecnologia — medido 2026-10-27"
   tecnologia:
+    ultima_data: "2018-12"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma empresa × UF × DDD × tecnologia × mês (série antiga)"
     chave: "nenhuma: 175.055 linhas, 174.006 combinações de (ano, mes, empresa, cnpj, sigla_uf, ddd, tecnologia); 1.049 repetidas"
     tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2005–2018"}

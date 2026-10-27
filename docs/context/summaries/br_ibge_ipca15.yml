@@ -3,6 +3,7 @@
 dataset: br_ibge_ipca15
 tabelas:
   mes_brasil:
+    ultima_data: "2026-03"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um mês do IPCA-15 (prévia do IPCA) nacional (índice geral do Brasil)
     chave: ano, mes
     tempo:
@@ -50,6 +51,7 @@ tabelas:
     - nao_use_para
     verificado: 311 linhas = 311 pares (ano, mes) distintos — medido 2026-10-27
   mes_categoria_brasil:
+    ultima_data: "2026-03"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um mês × Brasil × uma categoria da cesta do IPCA-15 (grupo, subgrupo, item ou subitem, todos os níveis
       na mesma tabela)
     chave: ano, mes, id_categoria, categoria (id_categoria nulo só na linha Índice geral)
@@ -90,6 +92,7 @@ tabelas:
     verificado: 33078 linhas = 33078 distintos da chave; em 2024-12 níveis 1/2/4/7 = 9/19/51/367 categorias, cada
       nível soma peso 100, 1 geral; sem nulos em peso_mensal no Brasil — medido 2026-10-27
   mes_categoria_municipio:
+    ultima_data: "2026-03"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um mês × município × uma categoria da cesta do IPCA-15 (grupo, subgrupo, item ou subitem, todos os níveis
       na mesma tabela)
     chave: ano, mes, id_municipio, id_categoria, categoria
@@ -133,6 +136,7 @@ tabelas:
     - nao_use_para
     verificado: 66156 linhas = 66156 distintos da chave; 33078 linhas por município — medido 2026-10-27
   mes_categoria_rm:
+    ultima_data: "2026-03"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um mês × região metropolitana × uma categoria da cesta do IPCA-15 (grupo, subgrupo, item ou subitem, todos
       os níveis na mesma tabela)
     chave: ano, mes, regiao_metropolitana, id_categoria, categoria

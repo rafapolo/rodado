@@ -3,6 +3,7 @@
 dataset: br_senatran_estatisticas
 tabelas:
   uf_tipo:
+    ultima_data: "2026-07"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um mês × UF × tipo de veículo (estoque da frota registrada no mês)"
     chave: "ano, mes, sigla_uf, tipo_veiculo (159.327 linhas = 159.327 distintos)"
     tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2003-01–2026-07 (2004 sem jan/fev; 2026 só até o mês 7)"}

@@ -18,6 +18,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "10.375 linhas, 1 id_tabela, 2 UFs (ES, MG); colunas por UF contadas — medido 2026-10-27"
   despesa:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um lançamento de despesa por estado: em ES e MG, um evento (tipo_documento NE empenho, NL liquidação, OB ordem bancária) com o valor no campo correspondente; em CE, PB e SC, uma linha por empenho; em PE, uma linha por empenho × elemento/item, muitas sem data nem mês; RS quase uma linha por empenho"
     chave: "nenhuma: não é única e varia por UF. Em 2026, id_empenho_bd tem 1.793.707 distintos em 4.862.768 linhas (ES 16.393 empenhos em 963.759 linhas; MG 567.662 em 2.562.213; PE 63.488 em 190.415; CE, PB e SC têm 1 linha por empenho, RS 676.382 em 676.599)"
     tempo: {natureza: serie_mensal, coluna: ano, cobertura: "2002–2026 (MG 2002, CE 2006, PE 2008, ES 2009, SC 2011, RS 2012, PB 2015)"}
@@ -32,6 +33,7 @@ tabelas:
     rascunho: [nao_use_para]
     verificado: "125.379.049 linhas no total e 4.862.768 em ano = 2026; id_empenho_bd distintos por UF em 2026 e o formato de linha de ES e PE inspecionados — medido 2026-10-27. Gotchas: pe_2009_quatrilhoes, mes_nulo_e_mes_0_13."
   despesa_anual:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um ano × órgão × unidade gestora × fonte × natureza da despesa × credor, do estado de SP"
     chave: "nenhuma confirmada: (ano, orgao, id_unidade_gestora, fonte_recurso, natureza_despesa, documento_credor) deixou 4.817.713 linhas em 4.816.242 combinações com nome_credor incluído; ~1.471 linhas repetem"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2010–2026"}
@@ -47,6 +49,7 @@ tabelas:
     rascunho: [nao_use_para]
     verificado: "4.817.713 linhas; só SP; ano 2010–2026; soma por ano 2022–2026 medida; tipo_documento_credor contado — medido 2026-10-27"
   despesa_dotacao:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um retrato de fim de ano (acumulado do exercício) por unidade gestora × unidade orçamentária × programa × ação × elemento × subelemento × fonte × gestão, do estado do RJ"
     chave: "nenhuma confirmada: a combinação (ano, mes, id_unidade_gestora, unidade_orcamentaria, programa, acao, elemento_despesa, subelemento_despesa, fonte_recurso, gestao, funcao, subfuncao) deu 176.470 distintos em 176.525 linhas; 55 linhas repetem"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2016–2025; cada ano tem um só mes (12), exceto 2025 com mes = 7"}
@@ -62,6 +65,7 @@ tabelas:
     rascunho: [use_para]
     verificado: "176.525 linhas; só RJ; mes = 12 em 2016–2024 e 7 em 2025; sums de 2023–2025 medidas — medido 2026-10-27"
   despesa_mensal:
+    ultima_data: "2026-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um mês × dotação orçamentária (unidade, ação, elemento, fonte, destinação, região) do estado da BA"
     chave: "nenhuma confirmada: (ano, mes, dotacao_orcamentaria, id_unidade_gestora, destinacao_recurso, regiao, unidade_orcamentaria) deu 2.131.360 distintos em 2.226.760 linhas; ~95.400 linhas repetem"
     tempo: {natureza: serie_mensal, coluna: ano e mes, cobertura: "2013–2026"}
@@ -77,6 +81,7 @@ tabelas:
     rascunho: [medidas, filtros_tipicos]
     verificado: "2.226.760 linhas; só BA; 2013–2026; soma mensal de 2025 medida (jan R$ 5,3 bi, dez R$ 9,9 bi empenhado) — medido 2026-10-27"
   empenho_credor:
+    ultima_data: "2026-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um empenho da BA com seu credor, instrumento orçamentário e datas de pedido e autorização"
     chave: "nenhuma: (numero_empenho, instrumento_orcamentario, id_credor, ano, mes) deu 1.094.722 distintos em 1.098.982 linhas; ~4.260 linhas repetem; numero_empenho tem 1.068.801 distintos"
     tempo: {natureza: serie_mensal, coluna: ano e mes, cobertura: "2019–2026"}
@@ -87,6 +92,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "1.098.982 linhas; só BA; 2019–2026; tipo_empenho contado — medido 2026-10-27"
   contrato:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um contrato celebrado pelo estado (ES, MG, RO, RS, SC), com objeto, contratado, vigência e valores"
     chave: "id_contrato_bd (281.244 linhas = 281.244 distintos)"
     tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "1990–2028 (ano nulo em 0,03%; datas de vigência de 1753 a 3031 com erros de digitação)"}
@@ -100,6 +106,7 @@ tabelas:
     rascunho: [filtros_tipicos]
     verificado: "281.244 linhas, 281.244 distintos de id_contrato_bd; 5 UFs; outliers e situacao contados — medido 2026-10-27"
   contrato_fiscal:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um fiscal ou gestor de contrato de MG"
     chave: "id_fiscal_bd (94.030 linhas = 94.030 distintos)"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2022–2026"}
@@ -110,6 +117,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "94.030 linhas, 94.030 distintos de id_fiscal_bd; só MG — medido 2026-10-27"
   contrato_item:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um item de contrato de MG"
     chave: "id_item_bd (84.145 linhas = 84.145 distintos)"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2022–2026"}
@@ -124,6 +132,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "84.145 linhas, 84.145 distintos de id_item_bd; só MG — medido 2026-10-27"
   fornecedor_sancionado:
+    ultima_data: "2026-09-12"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma sanção administrativa a fornecedor em MG"
     chave: "id_sancao_bd (2.141 linhas = 2.141 distintos)"
     tempo: {natureza: serie_de_periodos, coluna: data_publicacao, cobertura: "ano 2003–2026 (data_publicacao chega a 2049, erro)"}
@@ -136,6 +145,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "2.141 linhas, 2.141 distintos de id_sancao_bd; origem e tipo_penalidade contados — medido 2026-10-27"
   licitacao:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma licitação ou compra (inclui dispensas e registros de preço) de BA, ES ou MG"
     chave: "id_licitacao_bd (601.346 linhas = 601.346 distintos)"
     tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2004–2026 (BA 2004–2026, ES 2009–2026, MG 2009–2024)"}
@@ -149,6 +159,7 @@ tabelas:
     rascunho: [nao_use_para]
     verificado: "601.346 linhas, 601.346 distintos de id_licitacao_bd; UFs e situacao medidas — medido 2026-10-27. Gotcha: licitacao_valor_referencia_absurdo."
   licitacao_item:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um item (ou lote) de uma licitação"
     chave: "id_item_bd (3.491.376 linhas = 3.491.376 distintos)"
     tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2004–2026"}
@@ -163,6 +174,7 @@ tabelas:
     rascunho: [territorio, filtros_tipicos]
     verificado: "3.491.376 linhas, 3.491.376 distintos de id_item_bd e de (id_item_bd, sigla_uf); ano 2004–2026 — medido 2026-10-27"
   licitacao_participante:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um participante (empresa) por item de licitação, com cotação e resultado"
     chave: "nenhuma: (id_item_bd, documento, sigla_uf) deu 2.484.264 distintos em 2.491.729 linhas; ~7.465 linhas repetem"
     tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2004–2026"}
@@ -176,6 +188,7 @@ tabelas:
     rascunho: [nao_use_para]
     verificado: "2.491.729 linhas; vencedor x situacao contados; chave testada — medido 2026-10-27"
   liquidacao:
+    ultima_data: "2026-09-21"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma liquidação de despesa (documento NL) de CE, PB ou SC"
     chave: "id_liquidacao_bd (único dentro de ano = 2026: CE 103.750, PB 267.618, SC 684.182 linhas = distintos)"
     tempo: {natureza: serie_diaria, coluna: data, cobertura: "2011–2026 (CE e PB 2015, SC 2011)"}
@@ -188,6 +201,7 @@ tabelas:
     rascunho: [nao_use_para]
     verificado: "17.063.392 linhas no total; chave única em 2026 por UF; ano 2011–2026 — medido 2026-10-27"
   pagamento:
+    ultima_data: "2026-09-14"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um pagamento ou ordem bancária (ou retenção, estorno) de CE, PB, PE ou SC"
     chave: "id_pagamento_bd (único dentro de ano = 2026: CE 179.086, PB 94.544, PE 583.927, SC 837.605 linhas = distintos)"
     tempo: {natureza: serie_diaria, coluna: data, cobertura: "2008–2026 (PE 2008, SC 2011, CE 2012, PB 2024)"}
@@ -200,6 +214,7 @@ tabelas:
     rascunho: [filtros_tipicos]
     verificado: "32.322.114 linhas no total; chave única em 2026 por UF; situacao por UF contada em 2026 — medido 2026-10-27"
   nota_fiscal:
+    ultima_data: "2026-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma nota fiscal recebida por um órgão de MG, com emissor, natureza e situação"
     chave: "id_nota_fiscal_bd (1.352.605 linhas = 1.352.605 distintos)"
     tempo: {natureza: serie_mensal, coluna: ano e mes, cobertura: "2022–2026"}
@@ -212,6 +227,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "1.352.605 linhas, 1.352.605 distintos de id_nota_fiscal_bd; situacao contada — medido 2026-10-27"
   nota_fiscal_item:
+    ultima_data: "2026-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um item de nota fiscal de MG"
     chave: "id_item_bd (1.983.725 linhas = 1.983.725 distintos)"
     tempo: {natureza: serie_mensal, coluna: ano e mes, cobertura: "2022–2026"}
@@ -225,6 +241,7 @@ tabelas:
     rascunho: [use_para]
     verificado: "1.983.725 linhas, 1.983.725 distintos de id_item_bd; outliers contados — medido 2026-10-27"
   plano_contratacao_item:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um item de um plano de contratação de MG, em uma versão (inicial ou revisão)"
     chave: "id_plano_item_bd (1.623.629 linhas = 1.623.629 distintos)"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2023–2026"}

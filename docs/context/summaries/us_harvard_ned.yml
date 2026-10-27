@@ -3,6 +3,7 @@
 dataset: us_harvard_ned
 tabelas:
   parliamentary_elections:
+    ultima_data: "2023"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma eleição parlamentar (câmara baixa/única) de um país numa data, no formato largo: os partidos vêm em colunas numeradas party_1..party_74, seats_1..seats_74 e seat_share_1..seat_share_74"
     chave: "(country_id, year, month, date) (4900 linhas = 4900 distintos; (country_id, year, date) também); (country_id, year) NÃO é único (4817 distintos), há países com mais de uma eleição no mesmo ano"
     tempo: {natureza: serie_de_periodos, coluna: year, cobertura: "1789–2023 (date de 1789-06-01 a 2023-12-20, nula em 6,18%; month nulo em 96,65%)"}
@@ -23,6 +24,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, "significado de source (siglas das fontes não documentadas)"]
     verificado: "4900 linhas = 4900 (country_id, year, month, date); 4817 (country_id, year); 211 country_id; linha inteira distinta 4900; type uma só categoria; BRA conferido para 2014 e 2022 — medido 2026-10-27"
   presidential_elections:
+    ultima_data: "2023"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma eleição presidencial de um país numa data, no formato largo: candidatos em colunas numeradas candidate_1..candidate_39 com party_N, votes1_N, votes2_N, vote_share1_N, vote_share2_N, e_votes_N, e_vote_share_N"
     chave: "(country_id, year, month, date) (1409 linhas = 1409 distintos); (country_id, year) NÃO é único (1395 distintos)"
     tempo: {natureza: serie_de_periodos, coluna: year, cobertura: "1789–2023 (date de 1789-01-10 a 2023-12-20, nula em 3,34%)"}

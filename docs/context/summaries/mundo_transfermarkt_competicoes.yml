@@ -3,6 +3,7 @@
 dataset: mundo_transfermarkt_competicoes
 tabelas:
   brasileirao_serie_a:
+    ultima_data: "2024-10-27"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma partida do Campeonato Brasileiro Série A (mandante × visitante), com estatísticas dos dois lados em colunas _mandante/_visitante"
     chave: "(ano_campeonato, rodada, time_mandante, time_visitante) (8456 linhas = 8456 distintos); (ano_campeonato, time_mandante, time_visitante) repete em 2 casos (8454)"
     tempo: {natureza: serie_de_periodos, coluna: data, cobertura: "2003-03-29–2024-10-27 (ano_campeonato 2003–2024)"}
@@ -23,6 +24,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, "moeda de valor_equipe_titular", "significado de publico = 0"]
     verificado: "8456 linhas = 8456 (ano_campeonato, rodada, mandante, visitante); jogos por ano: 456, 456, 418, 380 (2006–2023), 286 (2024); valor_equipe_titular desde 2007; chutes_mandante de 2018 a 2024 — medido 2026-10-27"
   copa_brasil:
+    ultima_data: "2024-08-29"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma partida da Copa do Brasil (mandante × visitante), com estatísticas dos dois lados em colunas _mandante/_visitante"
     chave: "(data, time_mandante, time_visitante) (598 linhas = 598 distintos)"
     tempo: {natureza: serie_de_periodos, coluna: data, cobertura: "2020-02-05–2024-08-29 (ano_campeonato 2020–2024)"}

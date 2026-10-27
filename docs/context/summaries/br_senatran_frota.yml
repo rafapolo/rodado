@@ -3,6 +3,7 @@
 dataset: br_senatran_frota
 tabelas:
   municipio_tipo:
+    ultima_data: "2026-08"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um mês × município × tipo de veículo (estoque da frota registrada no mês), incluindo uma linha tipo_veiculo = 'total' por município × mês"
     chave: "ano, mes, id_municipio (ou municipio+sigla_uf quando id_municipio é nulo), tipo_veiculo — conferido em ano = 2026 (980.672 linhas = 980.672 distintos); id_municipio é nulo em 176 linhas de 2026"
     tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2013-01–2026-08 (12 meses por ano até 2025; 8 em 2026)"}

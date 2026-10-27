@@ -3,6 +3,7 @@
 dataset: br_rf_cafir
 tabelas:
   imoveis_rurais:
+    ultima_data: "2025-09-02"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um imóvel rural cadastrado no CAFIR × uma data de referência (cada data é o cadastro inteiro)"
     chave: "(data_referencia, id_imovel_incra): medido em data_referencia = 2025-09-02, 10.157.996 linhas e 10.157.996 distintos de id_imovel_incra (que guarda o código NIRF/CIB de 8 dígitos, nomes trocados — ver gotcha id_imovel_nomes_trocados). Nas outras datas, não medido"
     tempo: {natureza: soma_de_retratos, coluna: data_referencia, cobertura: "2023-04-05–2025-09-02 (18 datas; 10 a 9,7 milhões de imóveis cada, exceto 2025-02-18 com só 39.666 linhas, retrato parcial)"}

@@ -3,6 +3,7 @@
 dataset: br_ms_sisvan
 tabelas:
   microdados:
+    ultima_data: "2023-12-31"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um acompanhamento nutricional (medida de peso/altura) de um indivíduo em uma data"
     chave: "acompanhamento (hash) — único em ano = 2023, mes = 1 (1.947.310 linhas = 1.947.310 distintos); id_individuo repete (vários acompanhamentos por pessoa)"
     tempo: {natureza: serie_mensal, coluna: "ano, mes (data_acompanhamento é a data exata)", cobertura: "2008–2023"}

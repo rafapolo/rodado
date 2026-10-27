@@ -3,6 +3,7 @@
 dataset: br_mobilidados_indicadores
 tabelas:
   comprometimento_renda_tarifa_transp_publico:
+    ultima_data: "2017"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um município (capital) × ano, com a tarifa e o comprometimento do salário mínimo
     chave: ano, id_municipio (351 linhas = 351 distintos)
     tempo:
@@ -37,6 +38,7 @@ tabelas:
     - unidade de tarifas
     verificado: 351 linhas, 351 distintos (ano, id_municipio) — medido 2026-10-27
   divisao_modal:
+    ultima_data: "2018"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma UF × ano × modo de transporte, com a divisão modal; só 52 das 320 linhas têm valor
     chave: ano, sigla_uf, coluna (320 linhas = 320 distintos)
     tempo:
@@ -63,6 +65,7 @@ tabelas:
     - escala de divisao_modal
     verificado: 320 linhas, 320 distintos (ano, sigla_uf, coluna); 52 com divisao_modal não nulo, 13 por modo — medido 2026-10-27
   emissao_co2_material_particulado:
+    ultima_data: "2018"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um município (capital) × ano, com emissões de CO2 e de material particulado
     chave: ano, id_municipio (324 linhas = 324 distintos)
     tempo:
@@ -93,6 +96,7 @@ tabelas:
     - unidades
     verificado: 324 linhas, 324 distintos (ano, id_municipio) — medido 2026-10-27
   proporcao_domicilios_infra_urbana:
+    ultima_data: "2010"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um município × 2010, com a proporção de domicílios com calçadas e rampas
     chave: id_municipio (217 linhas = 217 distintos; ano é sempre 2010)
     tempo:
@@ -123,6 +127,7 @@ tabelas:
     - fonte Censo 2010
     verificado: 217 linhas, 217 distintos de id_municipio — medido 2026-10-27
   proporcao_mortes_negras_acidente_transporte:
+    ultima_data: "2019"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um município × ano × tipo de usuário (indicador), com a proporção de mortes de pessoas negras em acidentes de transporte; linhas com id_municipio = ' ' parecem ser agregados da UF
     chave: 'ano, id_municipio, indicador, só nas linhas com id_municipio de 7 dígitos (665160 linhas = 665160 distintos). As 3240 linhas com id_municipio = '' '' repetem (665280 distintos em 668400): nenhuma
       chave nelas'
@@ -152,6 +157,7 @@ tabelas:
     verificado: 668400 linhas; 665160 com id_municipio de 7 dígitos, todas distintas em (ano, id_municipio, indicador); 5543 municípios por ano em indicador Total; 3240 linhas com id_municipio = ' ' — medido
       2026-10-27
   proporcao_pessoas_prox_infra_cicloviaria:
+    ultima_data: "2021"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um município (capital) × ano × recorte de renda/gênero/raça (indicador), com a proporção de pessoas próximas à infraestrutura cicloviária (PNB)
     chave: ano, id_municipio, indicador (378 linhas = 378 distintos)
     tempo:
@@ -180,6 +186,7 @@ tabelas:
     - significado das faixas
     verificado: 378 linhas, 378 distintos (ano, id_municipio, indicador); 7 indicadores × 54 linhas; id_municipio com 6 dígitos em todas as 378 — medido 2026-10-27
   proporcao_pessoas_proximas_pnt:
+    ultima_data: "2019"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um município (capital) × ano × recorte de renda/gênero/raça (indicador), com a proporção de pessoas próximas a transporte de média e alta capacidade (PNT)
     chave: ano, id_municipio, indicador (630 linhas = 630 distintos)
     tempo:
@@ -205,6 +212,7 @@ tabelas:
     - nao_use_para
     verificado: 630 linhas, 630 distintos (ano, id_municipio, indicador); 7 indicadores × 90 linhas — medido 2026-10-27
   taxa_motorizacao:
+    ultima_data: "2018"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um município (capital) × ano, com a taxa de motorização
     chave: ano, id_municipio (486 linhas = 486 distintos)
     tempo:
@@ -231,6 +239,7 @@ tabelas:
     - unidade
     verificado: 486 linhas, 486 distintos (ano, id_municipio) — medido 2026-10-27
   tempo_deslocamento_casa_trabalho:
+    ultima_data: "2010"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um município × 2010, com tempo médio de deslocamento casa-trabalho e proporção com mais de 1 hora
     chave: id_municipio (229 linhas = 229 distintos; ano é sempre 2010)
     tempo:
@@ -261,6 +270,7 @@ tabelas:
     - fonte Censo 2010
     verificado: 229 linhas, 229 distintos de id_municipio — medido 2026-10-27
   transporte_media_alta_capacidade:
+    ultima_data: "2019"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um município (capital) × indicador de transporte de média e alta capacidade (TMA) em 2019
     chave: id_municipio, indicador (27 linhas = 27 distintos)
     tempo:

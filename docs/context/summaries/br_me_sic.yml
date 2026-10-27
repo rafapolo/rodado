@@ -3,6 +3,7 @@
 dataset: br_me_sic
 tabelas:
   transferencia:
+    ultima_data: "2024-06"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "o custo de transferências de uma unidade organizacional (ministério > órgão > unidade) num mês, por esfera orçamentária, natureza jurídica e resultado primário"
     chave: "ano, mes, id_unidade_organizacional_nivel_1, id_unidade_organizacional_nivel_2, id_unidade_organizacional_nivel_3, id_esfera_orcamentaria, id_natureza_juridica, id_resultado_primario (única nas 29.354 linhas)"
     tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2015-01–2024-06 (2024 só meses 1–6)"}

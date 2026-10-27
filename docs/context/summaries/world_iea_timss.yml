@@ -3,6 +3,7 @@
 dataset: world_iea_timss
 tabelas:
   student_achievement_grade_4:
+    ultima_data: "2023"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um aluno do 4º ano (grade_id 4, ou 5 em alguns países) que fez o TIMSS 2023, com notas, pesos amostrais e réplicas jackknife"
     chave: "(country_id, school_id, class_id, student_id) (395961 linhas = 395961 distintos); student_id sozinho NÃO é único (93352 distintos)"
     tempo: {natureza: sem_tempo, coluna: year, cobertura: "2023 em todas as linhas"}
@@ -21,6 +22,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, "prefixos asm/ass", "sentido dos pesos houwgt e senwgt"]
     verificado: "395961 linhas = 395961 (country_id, school_id, class_id, student_id); 93352 student_id distintos; Brasil 22130; média Brasil asmmat01 simples 376,8 e ponderada 400,5 — medido 2026-10-27"
   student_achievement_grade_8:
+    ultima_data: "2023"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um aluno do 8º ano (grade_id 8, ou 9) que fez o TIMSS 2023, com notas, pesos e réplicas jackknife"
     chave: "(country_id, school_id, class_id, student_id) (323920 linhas = 323920 distintos); student_id sozinho NÃO é único (104508 distintos)"
     tempo: {natureza: sem_tempo, coluna: year, cobertura: "2023 em todas as linhas"}
@@ -39,6 +41,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, "prefixos bsm/bss"]
     verificado: "323920 linhas = 323920 (country_id, school_id, class_id, student_id); 104508 student_id distintos; Brasil 22770; country_m49 nulo = 26658 alunos nas entidades 7841, 7842, 7843 (top) — medido 2026-10-27"
   student_context_grade_4:
+    ultima_data: "2023"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um aluno do 4º ano, com as respostas ao questionário do aluno (colunas asbg*) e sexo/idade"
     chave: "(country_id, school_id, class_id, student_id) (395961 linhas = 395961 distintos); mesmo conjunto de alunos de student_achievement_grade_4"
     tempo: {natureza: sem_tempo, coluna: year, cobertura: "2023"}
@@ -49,6 +52,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "395961 linhas = 395961 chaves — medido 2026-10-27"
   student_context_grade_8:
+    ultima_data: "2023"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um aluno do 8º ano, com as respostas ao questionário do aluno (colunas bsbg*) e sexo/idade"
     chave: "(country_id, school_id, class_id, student_id) (323920 linhas = 323920 distintos)"
     tempo: {natureza: sem_tempo, coluna: year, cobertura: "2023"}
@@ -59,6 +63,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "323920 linhas = 323920 chaves — medido 2026-10-27"
   home_context_grade_4:
+    ultima_data: "2023"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um aluno do 4º ano, com as respostas do questionário dos responsáveis (colunas asbh*)"
     chave: "(country_id, school_id, class_id, student_id) (395961 linhas = 395961 distintos)"
     tempo: {natureza: sem_tempo, coluna: year, cobertura: "2023"}
@@ -69,6 +74,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, "significado do nulo = não respondeu"]
     verificado: "395961 linhas = 395961 chaves; asbh01a nulo em 29,5% — medido 2026-10-27"
   school_context_grade_4:
+    ultima_data: "2023"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma escola de 4º ano, com as respostas do diretor (colunas acbg*)"
     chave: "(country_id, school_id) (12955 linhas = 12955 distintos); school_id sozinho se repete entre países"
     tempo: {natureza: sem_tempo, coluna: year, cobertura: "2023"}
@@ -79,6 +85,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "12955 linhas = 12955 (country_id, school_id) — medido 2026-10-27"
   school_context_grade_8:
+    ultima_data: "2023"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma escola de 8º ano, com as respostas do diretor (colunas bcbg*)"
     chave: "(country_id, school_id) (9406 linhas = 9406 distintos)"
     tempo: {natureza: sem_tempo, coluna: year, cobertura: "2023"}
@@ -89,6 +96,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "9406 linhas = 9406 (country_id, school_id) — medido 2026-10-27"
   teacher_context_grade_4:
+    ultima_data: "2023"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um vínculo professor × turma do 4º ano (tealin_id), com as respostas do questionário do professor (atbg*)"
     chave: "(country_id, school_id, tealin_id) (27100 linhas = 27100 distintos); teacher_id sozinho se repete (um professor tem várias turmas/vínculos)"
     tempo: {natureza: sem_tempo, coluna: year, cobertura: "2023"}
@@ -99,6 +107,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, "como tealin_id liga à turma (não medi a junção)"]
     verificado: "27100 linhas = 27100 (country_id, school_id, tealin_id); subject_id e course conferidos no dictionary — medido 2026-10-27"
   teacher_mathematics_grade_8:
+    ultima_data: "2023"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um vínculo professor de matemática × turma do 8º ano (tealin_id), com as respostas do questionário (colunas btbg* e de matemática)"
     chave: "(country_id, school_id, tealin_id) (15094 linhas = 15094 distintos); (country_id, school_id, teach_id, tealin_id) também único"
     tempo: {natureza: sem_tempo, coluna: year, cobertura: "2023 (year aqui é VARCHAR, nas outras tabelas é BIGINT)"}
@@ -109,6 +118,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "15094 linhas = 15094 (country_id, school_id, tealin_id) — medido 2026-10-27"
   teacher_science_grade_8:
+    ultima_data: "2023"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "mesmo grão de teacher_mathematics_grade_8, para professores de ciências do 8º ano: um vínculo professor × turma (tealin_id)"
     chave: "(country_id, school_id, tealin_id) (24889 linhas = 24889 distintos)"
     tempo: {natureza: sem_tempo, coluna: year, cobertura: "2023 (year em VARCHAR)"}

@@ -3,6 +3,7 @@
 dataset: br_mdr_snis
 tabelas:
   municipio_agua_esgoto:
+    ultima_data: "2022"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um município × ano, indicadores de água e esgoto do SNIS agregados"
     chave: "(ano, id_municipio)"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "1995–2022"}
@@ -22,6 +23,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, "unidade dos volumes"]
     verificado: "119.256 linhas = 119.256 distintos de (ano, id_municipio); 2022: 5.425 linhas, populacao_atendida_agua soma 170.966.418, populacao_atentida_esgoto 112.795.436, volume_agua_produzido 15.819.193; indice_atendimento_total_agua 0–100, mediana 76,5; 2010: 4.950 linhas — medido 2026-10-27."
   prestador_agua_esgoto:
+    ultima_data: "2022"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um prestador de serviço × município × ano"
     chave: "(ano, id_municipio, id_prestador)"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "1995–2022"}

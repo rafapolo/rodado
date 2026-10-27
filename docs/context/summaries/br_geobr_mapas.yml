@@ -86,6 +86,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "5570 linhas, 5570 distintos de id_municipio — medido 2026-10-27"
   bioma:
+    ultima_data: "2019"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um polígono de bioma × ano da malha (2004 e 2019)"
     chave: "(ano, id_bioma)"
     tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2004–2019"}
@@ -140,6 +141,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "642 linhas, 642 distintos de (id_concentracao_urbana,id_municipio) — medido 2026-10-27"
   regiao_metropolitana_2017:
+    ultima_data: "2016-12-27"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um município × região metropolitana (recorte de 2017)"
     chave: "(nome_regiao_metropolitana, id_municipio) — 1385 = 1385 distintos"
     tempo: {natureza: sem_tempo}
@@ -159,6 +161,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "438 linhas, 438 distintos — medido 2026-10-27"
   sede_municipal:
+    ultima_data: "2010"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "a sede (ponto) de um município × ano de censo"
     chave: "nenhuma: 29844 linhas, 29836 distintos de (ano,id_municipio); 8 pares repetem (ex.: 1991, 2933604)"
     tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "1872–2010"}
@@ -225,6 +228,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "615 linhas, 615 distintos de id_terra_indigena; sigla_uf com 44 valores distintos pois combina estados — medido 2026-10-27"
   unidade_conservacao:
+    ultima_data: "2020-01-13"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma unidade de conservação"
     chave: "id_unidade_conservacao (1934 = 1934 distintos; id_geografico e id_cnuc também)"
     tempo: {natureza: sem_tempo}
@@ -244,6 +248,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "222936 linhas, 222936 distintos de id_escola; geometria sem nulos (alguns GEOMETRYCOLLECTION EMPTY vistos no perfil) — medido 2026-10-27"
   estabelecimentos_saude:
+    ultima_data: "2015"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um estabelecimento de saúde (CNES, ponto) em 2015"
     chave: "id_cnes (360177 = 360177 distintos)"
     tempo: {natureza: retrato_atual, coluna: ano, cobertura: "2015–2015"}

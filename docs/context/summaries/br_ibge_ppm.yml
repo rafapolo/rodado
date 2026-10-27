@@ -3,6 +3,7 @@
 dataset: br_ibge_ppm
 tabelas:
   efetivo_rebanhos:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um município × ano × tipo de rebanho (cabeças em 31/12)"
     chave: "ano, id_municipio, tipo_rebanho"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "1974–2025"}
@@ -17,6 +18,7 @@ tabelas:
     rascunho: [unidade, "contido-em entre galináceos/suínos", use_para, nao_use_para]
     verificado: "1.974.149 linhas = 1.974.149 distintos de (ano, id_municipio, tipo_rebanho); 10 tipo_rebanho distintos — medido 2026-10-27"
   producao_aquicultura:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um município × ano × produto da aquicultura"
     chave: "ano, id_municipio, produto"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2013–2025"}
@@ -31,6 +33,7 @@ tabelas:
     rascunho: [unidades de quantidade e valor, use_para, nao_use_para]
     verificado: "117.294 linhas = 117.294 distintos de (ano, id_municipio, produto); 27 produtos — medido 2026-10-27"
   producao_origem_animal:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um município × ano × produto de origem animal"
     chave: "ano, id_municipio, produto"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "1974–2025"}
@@ -46,6 +49,7 @@ tabelas:
     rascunho: [unidade de valor, use_para, nao_use_para]
     verificado: "763.045 linhas = 763.045 distintos de (ano, id_municipio, produto); unidade por produto conferida (uma unidade por produto) — medido 2026-10-27"
   producao_pecuaria:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um município × ano (colunas de vacas ordenhadas e ovinos tosquiados)"
     chave: "ano, id_municipio"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "1974–2025"}

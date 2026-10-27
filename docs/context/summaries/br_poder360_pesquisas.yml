@@ -3,6 +3,7 @@
 dataset: br_poder360_pesquisas
 tabelas:
   microdados:
+    ultima_data: "2023-11-21"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um candidato (ou opção) × um cenário × uma pesquisa eleitoral: o percentual que ele tem naquele cenário"
     chave: "(id_pesquisa, id_cenario, id_candidato_poder360): 162.075 linhas, 161.647 distintos, 428 linhas repetidas. id_cenario sozinho não identifica a pesquisa mas cada cenário pertence a uma só pesquisa (0 cenários em mais de uma)"
     tempo: {natureza: serie_de_periodos, coluna: data, cobertura: "2000-01-01–2023-11-21 (data da pesquisa); ano vai de 2000 a 2026 e é o ano da eleição em disputa, não o da data"}

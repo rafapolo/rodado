@@ -3,6 +3,7 @@
 dataset: br_bcb_desenrola
 tabelas:
   dados:
+    ultima_data: "2026-08"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um mês × tipo de Desenrola × UF × conglomerado financeiro"
     chave: "DATA_BASE, TIPO_DESENROLA, UNIDADE_FEDERACAO, COD_CONGLOMERADO_FINANCEIRO (13.638 linhas = 13.638 distintos)"
     tempo: {natureza: serie_mensal, coluna: "DATA_BASE (inteiro AAAAMM)", cobertura: "202309–202608"}

@@ -3,6 +3,7 @@
 dataset: br_ons_avaliacao_operacao
 tabelas:
   geracao_usina:
+    ultima_data: "2024-02-29"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma usina (ou conjunto/modalidade de operação) × hora"
     chave: "(data, hora, usina, id_empreendimento_aneel, tipo_modalidade_operacao, tipo_combustivel). (data, hora, usina) sozinha NÃO é única: 479.016 linhas contra 476.136 combinações em jun/2023"
     tempo: {natureza: serie_diaria, coluna: data, cobertura: "2000-01-01–2024-02-29 (hora 0–23)"}
@@ -17,6 +18,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "71.091.267 linhas; jun/2023: 479.016 linhas, 479.016 distintas na chave de 6 colunas; 2023 em TWh (geracao/1e8/1e6): hidro 437,2, térmica 58,6, nuclear 14,3, eólica 94,6, fotovoltaica 42,2 — medido 2026-10-27"
   geracao_termica_motivo_despacho:
+    ultima_data: "2024-02-29"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma usina térmica × hora × patamar (tipo_patamar)"
     chave: "(data, hora, id_usina_planejamento, tipo_patamar)"
     tempo: {natureza: serie_diaria, coluna: data, cobertura: "2013-01-01–2024-02-29"}
@@ -32,6 +34,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, unidade]
     verificado: "10.428.670 linhas; jan/2024: 69.768 linhas = 69.768 distintas na chave de 4 colunas e na (data, hora, usina) — medido 2026-10-27"
   restricao_operacao_usinas_eolicas:
+    ultima_data: "2024-03-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma usina/conjunto eólico × meia hora"
     chave: "nenhuma: jan/2024 tem 225.447 linhas e 224.448 combinações (data, hora, id_ons, usina, id_empreendimento_aneel); 999 linhas repetem"
     tempo: {natureza: serie_diaria, coluna: data, cobertura: "2021-10-01–2024-03-01 (48 meias horas por dia)"}
@@ -49,6 +52,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, unidade]
     verificado: "6.336.959 linhas; jan/2024: 225.447 linhas, 224.448 distintas — medido 2026-10-27"
   energia_armazenada_reservatorio:
+    ultima_data: "2024-03-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um reservatório × dia"
     chave: "(data, reservatorio)"
     tempo: {natureza: serie_diaria, coluna: data, cobertura: "2000-01-01–2024-03-01"}
@@ -63,6 +67,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, medidas]
     verificado: "633.293 linhas = 633.293 distintas em (data, reservatorio) — medido 2026-10-27"
   energia_natural_afluente:
+    ultima_data: "2024-03-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um reservatório/usina × dia"
     chave: "(data, reservatorio)"
     tempo: {natureza: serie_diaria, coluna: data, cobertura: "2000-01-01–2024-03-01"}
@@ -78,6 +83,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, medidas]
     verificado: "1.315.067 linhas = 1.315.067 distintas em (data, reservatorio) — medido 2026-10-27"
   reservatorio:
+    ultima_data: "2023-04-28"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um reservatório/usina (cadastro estático, sem série)"
     chave: "(reservatorio, usina) (159 de 159 distintas); id_reservatorio_planejamento NÃO é único (12 valores repetidos)"
     tempo: {natureza: sem_tempo, coluna: data, cobertura: "1924-03-01–2023-04-28 (data de entrada em operação, não de medição)"}

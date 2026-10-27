@@ -3,6 +3,7 @@
 dataset: br_tcu_inidoneos
 tabelas:
   empresas:
+    ultima_data: "2026-08-25"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma empresa/pessoa declarada inidônea (licitar com a União) × processo do TCU"
     chave: "CPF_CNPJ + PROCESSO (127 linhas = 127 distintos, medido)"
     tempo: {natureza: retrato_atual, coluna: "DATA ACORDAO", cobertura: "2011-02-16–2026-07-29 (acórdão); a sanção vale até DATA FINAL, 2026-10-19–2031-08-08"}
@@ -13,6 +14,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "127 linhas, 127 distintos de (CPF_CNPJ, PROCESSO); 122 com DATA FINAL >= 2026-10-27; datas já DATE (gotcha datas_texto_ddmmaaaa) — medido 2026-10-27"
   inabilitados_funcao_publica:
+    ultima_data: "2026-09-29"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma pessoa inabilitada para cargo em comissão/função de confiança × processo do TCU"
     chave: "CPF + PROCESSO (782 linhas = 782 distintos, medido)"
     tempo: {natureza: retrato_atual, coluna: "DATA ACORDAO", cobertura: "2008-11-26–2026-08-26 (acórdão); DATA FINAL 2026-10-10–2034-09-15"}
@@ -23,6 +25,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "782 linhas, 782 distintos de (CPF, PROCESSO); 772 com DATA FINAL >= 2026-10-27 — medido 2026-10-27"
   resp_contas_julgadas_irreg_implicacao_eleitoral:
+    ultima_data: "2026-10-02"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um responsável com contas julgadas irregulares (para fins da Lei da Ficha Limpa) × processo"
     chave: "CPF + PROCESSO (9.201 linhas = 9.201 distintos, medido)"
     tempo: {natureza: retrato_atual, coluna: "DATA TRANSITO JULGADO", cobertura: "2018-10-04–2026-10-02; DATA FINAL 2026-10-04–2034-10-02 (fim da inelegibilidade)"}

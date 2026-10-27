@@ -3,6 +3,7 @@
 dataset: br_inep_censo_educacao_superior
 tabelas:
   curso:
+    ultima_data: "2024"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um curso de uma IES × município de oferta (polo, no EAD) × tipo de dimensão × ano"
     chave: "ano, id_curso, id_ies, id_municipio, tipo_dimensao"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2009–2024"}
@@ -24,6 +25,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "2024: 720.349 linhas = 720.349 distintos da chave; sem tipo_dimensao são 719.897 distintos de (id_curso, id_ies, id_municipio); soma 2024: vagas 23.665.419, matrículas 10.227.266, ingressantes 5.010.613, concluintes 1.333.988; por dimensão: matrículas 5.037.875 (1) + 5.186.852 (2) + 0 (3) + 2.539 (4), vagas 5.075.146 (1), 6.925 (2), 18.583.348 (3) — medido 2026-10-27"
   ies:
+    ultima_data: "2024"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma instituição de ensino superior × ano (cadastro com docentes, técnicos e biblioteca)"
     chave: "ano, id_ies"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2009–2024"}

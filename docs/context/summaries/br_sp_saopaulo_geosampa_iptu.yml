@@ -3,6 +3,7 @@
 dataset: br_sp_saopaulo_geosampa_iptu
 tabelas:
   iptu:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um imóvel (contribuinte do IPTU, sub-unidade de condomínio incluída) da cidade de São Paulo × ano do cadastro"
     chave: "ano, numero_contribuinte (na partição 2025: 3.806.436 linhas, 3.806.436 distintos); numero_contribuinte+numero_condominio também 3.806.436"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "1995–2025"}

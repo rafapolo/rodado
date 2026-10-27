@@ -3,6 +3,7 @@
 dataset: br_senado_dadosabertos
 tabelas:
   comissoes:
+    ultima_data: "2026-09-25"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um colegiado do Senado/Congresso (comissão, CPI, frente, conselho, grupo parlamentar)"
     chave: "Codigo (216 linhas = 216 distintos; Sigla não é única: 215)"
     tempo: {natureza: retrato_atual, coluna: DataInicio, cobertura: "1900-01-01–2026-09-25 (9 linhas com DataInicio antes de 1950, 1900-01-01 é provavelmente placeholder)"}
@@ -13,6 +14,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "216 linhas, Codigo único — medido 2026-10-27"
   materias:
+    ultima_data: "2026-10-06"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma matéria legislativa (projeto, requerimento, PEC, MPV etc.) do Senado/CN"
     chave: "id (162.921 linhas = 162.921 distintos; codigoMateria também é único)"
     tempo: {natureza: serie_de_periodos, coluna: dataApresentacao, cobertura: "1946-09-23–2026-10-06"}
@@ -36,6 +38,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "81 linhas, chave única; CodigoParlamentar = id_senador do dataset administrativos (valores 1173, 825 presentes nos dois) — medido 2026-10-27"
   votacoes:
+    ultima_data: "2026-09-03"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma votação nominal ou simbólica em sessão do plenário do Senado sobre uma matéria"
     chave: "codigoSessaoVotacao (3.619 linhas = 3.619 distintos)"
     tempo: {natureza: serie_de_periodos, coluna: dataSessao, cobertura: "1991-03-06–2026-09-03"}

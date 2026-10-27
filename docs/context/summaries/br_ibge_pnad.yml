@@ -3,6 +3,7 @@
 dataset: br_ibge_pnad
 tabelas:
   microdados_compatibilizados_domicilio:
+    ultima_data: "2015"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um domicílio × ano da PNAD compatibilizada (amostra)"
     chave: "(ano, id_domicilio) — 1.877.416 linhas = 1.877.416 distintos (medido)"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "1997–2015 (sem 2000 e 2010: a PNAD não foi a campo)"}
@@ -17,6 +18,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, "moeda da renda"]
     verificado: "1.877.416 linhas, 1.877.416 pares (ano, id_domicilio); anos 1997–2015 sem 2000 e 2010; soma de peso_amostral em todos os anos = 933.043.272 — medido 2026-10-27"
   microdados_compatibilizados_pessoa:
+    ultima_data: "2015"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma pessoa × ano da PNAD compatibilizada (amostra)"
     chave: "(ano, id_domicilio, numero_familia, ordem) — em 2015, 356.904 linhas = 356.904 distintos; (id_domicilio, ordem) já basta (medido só em 2015)"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "1992–2015 (sem 1994, 2000 e 2010)"}

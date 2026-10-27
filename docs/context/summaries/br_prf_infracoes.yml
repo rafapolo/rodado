@@ -3,6 +3,7 @@
 dataset: br_prf_infracoes
 tabelas:
   infracoes:
+    ultima_data: "2021-12-31"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma infração autuada pela PRF em rodovia federal (um auto), com data, local (BR/km/município), tipo da infração e dados do veículo"
     chave: "numero_auto (só preenchido de 2019 em diante): medido no ano 2021, 5.241.299 linhas e 5.241.298 numero_auto distintos (1 repetida), 0 nulos; (numero_auto, codigo_infracao) dá o mesmo 5.241.298. Antes de 2019 não há chave (numero_auto nulo)"
     tempo: {natureza: serie_diaria, coluna: data, cobertura: "2007–2021 (coluna ano, partição); linhas por ano de 1,86 milhão (2007) a 7,36 milhões (2018); 2021: 5.241.299"}

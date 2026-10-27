@@ -3,6 +3,7 @@
 dataset: br_mj_sisdepen
 tabelas:
   cobertura:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma UF × semestre de coleta (ano, semestre), com quantas unidades prisionais eram esperadas, quantas reportaram e as taxas de preenchimento dos campos"
     chave: "ano, semestre, sigla_uf (513 linhas = 513 distintos)"
     tempo: {natureza: serie_de_periodos, coluna: "ano, semestre", cobertura: "2016 (só semestre 2) – 2025 (semestre 2)"}
@@ -18,6 +19,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "513 linhas, 513 distintos (ano, semestre, sigla_uf); soma de populacao_total em 2025/2 = 960976 — medido 2026-10-27"
   uf_semestre:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma UF × semestre, com população prisional (total, por sexo, provisória), capacidade e taxa de ocupação"
     chave: "ano, semestre, sigla_uf (513 linhas = 513 distintos)"
     tempo: {natureza: serie_de_periodos, coluna: "ano, semestre", cobertura: "2016 (semestre 2) – 2025 (semestre 2)"}
@@ -34,6 +36,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "513 linhas, 513 distintos; sum(populacao_total) 2025/2 = 960976, igual a sum(quantidade) de populacao_prisional no mesmo semestre — medido 2026-10-27"
   populacao_prisional:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma unidade prisional × semestre × situação processual × regime × esfera da justiça × sexo"
     chave: "ano, semestre, id_unidade, situacao_processual, regime, esfera_justica, sexo (1037700 linhas = 1037700 distintos; regime nulo conta como valor)"
     tempo: {natureza: serie_de_periodos, coluna: "ano, semestre", cobertura: "2016 (semestre 2) – 2025 (semestre 2)"}
@@ -47,6 +50,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, quantidade_rdd]
     verificado: "1037700 linhas, 1037700 distintos; 2025/2: sentenciado 715318, provisorio 243857, medida_seguranca 1801, total 960976 — medido 2026-10-27"
   populacao_caracteristica:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma unidade prisional × semestre × característica (faixa_etaria, raca_cor, escolaridade, estado_civil) × categoria × sexo"
     chave: "ano, semestre, id_unidade, caracteristica, categoria, sexo (1790112 linhas = 1790112 distintos)"
     tempo: {natureza: serie_de_periodos, coluna: "ano, semestre", cobertura: "2016 (semestre 2) – 2025 (semestre 2)"}
@@ -59,6 +63,7 @@ tabelas:
     rascunho: [use_para, condicao_registro]
     verificado: "1790112 linhas, 1790112 distintos; 2025/2 soma por característica: raca_cor 924519, estado_civil 869505, faixa_etaria 936981, escolaridade 921454 — medido 2026-10-27"
   unidade_prisional:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma unidade prisional × semestre × tipo de regime, com a capacidade do regime e o cadastro da unidade (âmbito, gestão, tipo de recolhimento)"
     chave: "ano, semestre, id_unidade, tipo_regime (201775 linhas = 201775 distintos; são 28825 pares ano-semestre-unidade × 7 regimes)"
     tempo: {natureza: serie_de_periodos, coluna: "ano, semestre", cobertura: "2016 (semestre 2) – 2025 (semestre 2)"}
@@ -71,6 +76,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "201775 linhas = 201775 distintos (ano, semestre, id_unidade, tipo_regime); 28825 distintos (ano, semestre, id_unidade); capacidade_total 2025/2 por regime: fechado 269525, provisorio 135987, semiaberto 93623, outro 175746 — medido 2026-10-27"
   unidade_crosswalk:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma unidade prisional × semestre, com o pareamento do nome original com o id_unidade estável entre ciclos"
     chave: "ano, semestre, id_unidade (28825 linhas = 28825 distintos)"
     tempo: {natureza: serie_de_periodos, coluna: "ano, semestre", cobertura: "2016 (semestre 2) – 2025 (semestre 2)"}

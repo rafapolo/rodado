@@ -3,6 +3,7 @@
 dataset: br_ms_atencao_basica
 tabelas:
   municipio:
+    ultima_data: "2020-12"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um município × mês (retrato mensal da cobertura de atenção básica e das equipes)"
     chave: "id_municipio, ano, mes (901.944 linhas = 901.944 combinações distintas)"
     tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2007-07–2020-12 (2007 só tem jul–dez; de 2008 em diante 12 meses)"}

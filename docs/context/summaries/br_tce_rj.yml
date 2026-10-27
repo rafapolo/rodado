@@ -3,6 +3,7 @@
 dataset: br_tce_rj
 tabelas:
   contratos_estado:
+    ultima_data: "2026-10-05"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma contratação do Governo do Estado do RJ (contrato, com empenho/liquidação/pagamento acumulados)"
     chave: "Contratacao (39.210 linhas, 39.210 distintos); Processo repete (29.984 distintos)"
     tempo: {natureza: serie_de_periodos, coluna: DataContratacao, cobertura: "2023-01-02–2026-10-05"}
@@ -20,6 +21,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "39.210 linhas, 39.210 distintos de Contratacao; 'Ativo' 21.825 dos quais 17.492 com ValorTotalEmpenhado nulo — medido 2026-10-27"
   contratos_municipio:
+    ultima_data: "2026-10-17"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um contrato de município do RJ (88 entes), por unidade gestora, contratado e data"
     chave: "nenhuma: 137.157 linhas; (Ente, UnidadeGestora, NumeroContrato, AnoContrato) tem 108.228 distintos, e com CNPJ/CPF e data de assinatura 135.883"
     tempo: {natureza: serie_de_periodos, coluna: DataAssinaturaContrato, cobertura: "2020-01-01–2026-12-29 (AnoContrato 2020–2026)"}
@@ -37,6 +39,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "137.157 linhas; 108.228 distintos de (Ente, UnidadeGestora, NumeroContrato, AnoContrato); 9 negativos e 27 acima de 1e9 em ValorContrato — medido 2026-10-27"
   convenios_estado:
+    ultima_data: "2026-10-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um convênio do Estado do RJ (acordo com unidade gestora, mês e ano)"
     chave: "nenhuma: 2.917 linhas; (UnidadeGestora, NumeroConvenio, AnoConvenio) tem 2.899 distintos"
     tempo: {natureza: serie_de_periodos, coluna: DataAssinatura, cobertura: "2019-01-07–2026-10-01 (AnoConvenio 2019–2026)"}
@@ -67,6 +70,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, "RCL e DespesasPessoal como acumulado em 12 meses"]
     verificado: "2.616 linhas, 2.616 distintos da chave; PercentualRCL > 100 em 7 linhas — medido 2026-10-27"
   licitacoes:
+    ultima_data: "2026-09-28"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma licitação de município do RJ (ente × unidade × processo licitatório)"
     chave: "Ente, Unidade, ProcessoLicitatorio (42.724 linhas, 42.724 distintos)"
     tempo: {natureza: serie_de_periodos, coluna: DataPublicacaoEdital, cobertura: "2002-12-01–2026-09-28 (Ano 2020–2026)"}
@@ -83,6 +87,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "42.724 linhas, 42.724 distintos da chave de 3 colunas — medido 2026-10-27"
   penalidades_ressarcimento_estado:
+    ultima_data: "2026-09-21"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma condenação (multa ou ressarcimento) do TCE-RJ a um órgão ou responsável estadual"
     chave: "Condenacao (1.059 linhas, 1.059 distintos); Processo + Condenacao também 1.059"
     tempo: {natureza: serie_de_periodos, coluna: DataSessao, cobertura: "2021-01-25–2026-09-21 (AnoCondenacao 2022–2026)"}

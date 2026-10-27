@@ -3,6 +3,7 @@
 dataset: global_icij_offshoreleaks
 tabelas:
   entities:
+    ultima_data: "1998-04-03"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma empresa offshore (entidade) dos vazamentos do ICIJ"
     chave: "node_id (814344 linhas = 814344 distintos)"
     tempo: {natureza: retrato_atual, coluna: incorporation_date, cobertura: "datas em texto, formatos mistos (ex. '02-JAN-1998', 'Sep 25, 2012') e vazias em 25874 linhas"}
@@ -56,6 +57,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "2989 linhas = 2989 node_id — medido 2026-10-27"
   relationships:
+    ultima_data: "2026-09-02"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma aresta do grafo: um vínculo entre dois nós (node_id_start → node_id_end) de um tipo (rel_type)"
     chave: "nenhuma: 8177 linhas são cópias exatas (3339267 linhas, 3331090 distintas na linha inteira); DISTINCT resolve"
     tempo: {natureza: sem_tempo, coluna: "start_date/end_date (texto, formatos mistos, quase sempre vazias)", cobertura: "não medida"}

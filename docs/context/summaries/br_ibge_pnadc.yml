@@ -3,6 +3,7 @@
 dataset: br_ibge_pnadc
 tabelas:
   ano_brasil_grupo_idade:
+    ultima_data: "2019"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "população do Brasil × ano × grupo de idade × sexo"
     chave: "(ano, grupo_idade, sexo): 408 linhas = 408 distintos"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2012–2019"}
@@ -15,6 +16,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "408 linhas, chave confirmada — medido 2026-10-27"
   ano_brasil_raca_cor:
+    ultima_data: "2019"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "população do Brasil × ano × raça/cor × sexo"
     chave: "(ano, raca_cor, sexo): 96 linhas = 96 distintos"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2012–2019"}
@@ -27,6 +29,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "96 linhas, chave confirmada — medido 2026-10-27"
   ano_municipio_grupo_idade:
+    ultima_data: "2019"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "população de uma capital × ano × grupo de idade × sexo"
     chave: "(ano, id_municipio, grupo_idade, sexo): 11016 linhas = 11016 distintos"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2012–2019"}
@@ -39,6 +42,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "11016 linhas, chave confirmada — medido 2026-10-27"
   ano_municipio_raca_cor:
+    ultima_data: "2019"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "população de uma capital × ano × raça/cor × sexo"
     chave: "(ano, id_municipio, raca_cor, sexo): 2592 linhas = 2592 distintos"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2012–2019"}
@@ -51,6 +55,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "2592 linhas, chave confirmada — medido 2026-10-27"
   ano_regiao_grupo_idade:
+    ultima_data: "2019"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "população de uma grande região × ano × grupo de idade × sexo"
     chave: "(ano, id_regiao, grupo_idade, sexo): 2040 linhas = 2040 distintos"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2012–2019"}
@@ -63,6 +68,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "2040 linhas, chave confirmada — medido 2026-10-27"
   ano_regiao_raca_cor:
+    ultima_data: "2019"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "população de uma grande região × ano × raça/cor × sexo"
     chave: "(ano, id_regiao, raca_cor, sexo): 480 linhas = 480 distintos"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2012–2019"}
@@ -75,6 +81,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "480 linhas, chave confirmada — medido 2026-10-27"
   ano_regiao_metropolitana_grupo_idade:
+    ultima_data: "2019"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "população de uma região metropolitana × ano × grupo de idade × sexo"
     chave: "(ano, id_regiao_metropolitana, grupo_idade, sexo): 8160 linhas = 8160 distintos"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2012–2019"}
@@ -87,6 +94,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "8160 linhas, chave confirmada — medido 2026-10-27"
   ano_regiao_metropolitana_raca_cor:
+    ultima_data: "2019"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "população de uma região metropolitana × ano × raça/cor × sexo"
     chave: "(ano, id_regiao_metropolitana, raca_cor, sexo): 1920 linhas = 1920 distintos"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2012–2019"}
@@ -99,6 +107,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "1920 linhas, chave confirmada — medido 2026-10-27"
   ano_uf_grupo_idade:
+    ultima_data: "2019"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "população de uma UF × ano × grupo de idade × sexo"
     chave: "(ano, id_uf, grupo_idade, sexo): 11016 linhas = 11016 distintos"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2012–2019"}
@@ -111,6 +120,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "11016 linhas, chave confirmada — medido 2026-10-27"
   ano_uf_raca_cor:
+    ultima_data: "2019"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "população de uma UF × ano × raça/cor × sexo"
     chave: "(ano, id_uf, raca_cor, sexo): 2592 linhas = 2592 distintos"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2012–2019"}
@@ -137,6 +147,7 @@ tabelas:
     rascunho: [nao_use_para]
     verificado: "2025: T1 472.367, T2 475.590, T3 490.488 linhas; chave confirmada em 2025; VD4002 em 2025-T3 medido — medido 2026-10-27"
   educacao:
+    ultima_data: "2024"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma pessoa × ano (visita de educação, sempre 2º trimestre)"
     chave: "(ano, id_pessoa): 1.662.054 linhas = 1.662.054 distintos"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2016–2024 (trimestre = 2)"}
@@ -149,6 +160,7 @@ tabelas:
     rascunho: [use_para, medidas]
     verificado: "1.662.054 linhas, chave confirmada, 279 colunas — medido 2026-10-27"
   rendimentos_outras_fontes:
+    ultima_data: "2022"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma pessoa × trimestre com a visita de rendimentos de outras fontes (BPC, bolsa família, aposentadoria etc.)"
     chave: "(ano, trimestre, id_domicilio, id_pessoa): 1.429.834 = 1.429.834"
     tempo: {natureza: serie_de_periodos, coluna: "ano, trimestre", cobertura: "2012–2022"}

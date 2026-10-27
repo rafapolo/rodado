@@ -3,6 +3,7 @@
 dataset: br_anp_precos_combustiveis
 tabelas:
   microdados:
+    ultima_data: "2026-08-21"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um preço de venda coletado num posto (cnpj_revenda) × produto × data de coleta"
     chave: "nenhuma confirmada: em ano = 2026, (cnpj_revenda, produto, data_coleta) dá 610.449 combinações em 610.456 linhas (7 repetem)"
     tempo: {natureza: serie_diaria, coluna: data_coleta, cobertura: "ano 2004–2026; em ano = 2026, 2026-01-01–2026-08-21"}

@@ -3,6 +3,7 @@
 dataset: br_mte_listasuja
 tabelas:
   empregadores:
+    ultima_data: "2026-10-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um empregador × estabelecimento fiscalizado da Lista Suja (Cadastro de Empregadores) na última coleta"
     chave: "id (1..508, só sequência da coleta, não estável entre coletas); chave natural (cpf_cnpj, estabelecimento, ano_acao_fiscal) NÃO é única: 506 distintos em 508 linhas (2 pares repetidos) e 498 cpf_cnpj distintos"
     tempo: {natureza: retrato_atual, coluna: data_coleta, cobertura: "2026-10-09 (única coleta); ano_acao_fiscal 2020–2026; data_inclusao 2025-04-09–2026-10-06"}
@@ -24,6 +25,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "508 linhas = 508 id distintos; 506 distintos de (cpf_cnpj,estabelecimento,ano_acao_fiscal); 498 cpf_cnpj distintos; soma de trabalhadores_envolvidos 3.989; coleta única 2026-10-09 — medido 2026-10-27"
   empregadores_historico:
+    ultima_data: "2026-10-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma linha de empregadores por coleta: soma dos retratos coletados (hoje dois), o mesmo empregador aparece uma vez por coleta"
     chave: "(data_coleta, id) — 1.086 linhas = 1.086 distintos; chave natural (data_coleta, cpf_cnpj, estabelecimento, ano_acao_fiscal) tem 1.083 distintos (3 repetem)"
     tempo: {natureza: soma_de_retratos, coluna: data_coleta, cobertura: "2026-09-25 (578 linhas) e 2026-10-09 (508 linhas)"}
@@ -42,6 +44,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "1.086 linhas; 578 em 2026-09-25 e 508 em 2026-10-09; (data_coleta,id) único; 647 cpf_cnpj distintos — medido 2026-10-27"
   empregadores_municipio:
+    ultima_data: "2026-10-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um caso distinto (cpf_cnpj × estabelecimento × ano_acao_fiscal) com o município inferido do texto do estabelecimento"
     chave: "(cpf_cnpj, estabelecimento, ano_acao_fiscal) — 660 linhas = 660 distintos"
     tempo: {natureza: soma_de_retratos, coluna: data_coleta, cobertura: "2026-09-25 e 2026-10-09 (cada caso aparece uma vez, com a coleta em que foi visto)"}

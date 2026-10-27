@@ -3,6 +3,7 @@
 dataset: br_cgu_servidores_executivo_federal
 tabelas:
   cadastro_servidores:
+    ultima_data: "2025-07"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um vínculo (cargo ou função) de um servidor ativo do Executivo federal num mês de referência; um servidor pode ter mais de uma linha no mesmo mês"
     chave: "nenhuma: em 2025-07, 767.185 linhas, 626.757 id_servidor distintos e só 732.687 linhas distintas inteiras (34 mil linhas idênticas)"
     tempo: {natureza: soma_de_retratos, coluna: "ano, mes", cobertura: "2013–2025 (2025 até o mês 7)"}
@@ -17,6 +18,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "2025-07: 767.185 linhas, 626.757 id_servidor, 732.687 linhas distintas; linhas por ano 6,06 mi (2025) a 14,2 mi (2016) — medido 2026-10-27. Ver gotcha ordenada_pela_chave"
   cadastro_aposentados:
+    ultima_data: "2025-07"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um aposentado (vínculo de aposentadoria) do Executivo federal num mês de referência"
     chave: "nenhuma: em 2025-07, 417.877 linhas, 409.113 id_servidor e 417.435 linhas distintas inteiras"
     tempo: {natureza: soma_de_retratos, coluna: "ano, mes", cobertura: "2013–2025 (mínimo medido só em cadastro_servidores; ano=2025 vai até o mês 7)"}
@@ -30,6 +32,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, "cobertura de anos"]
     verificado: "2025-07: 417.877 linhas, 409.113 id_servidor, 417.435 linhas distintas — medido 2026-10-27"
   cadastro_pensionistas:
+    ultima_data: "2025-07"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um pensionista (benefício de pensão civil ou militar) num mês de referência, com os dados do instituidor da pensão"
     chave: "nenhuma: em 2025-07, 278.361 linhas, 272.707 id_servidor e 278.354 linhas distintas inteiras"
     tempo: {natureza: soma_de_retratos, coluna: "ano, mes", cobertura: "até 2025-07"}
@@ -43,6 +46,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "2025-07: 278.361 linhas, 272.707 id_servidor, 278.354 linhas distintas — medido 2026-10-27"
   cadastro_reserva_reforma_militares:
+    ultima_data: "2025-07"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um militar da reserva ou reformado num mês de referência"
     chave: "id_servidor dentro de (ano, mes) — em 2025-07, 171.100 linhas = 171.100 id_servidor distintos"
     tempo: {natureza: soma_de_retratos, coluna: "ano, mes", cobertura: "até 2025-07"}
@@ -55,6 +59,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, "ids de org_lotacao"]
     verificado: "2025-07: 171.100 linhas, 171.100 id_servidor distintos — medido 2026-10-27"
   remuneracao:
+    ultima_data: "2025-07"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "a remuneração de um servidor, aposentado, pensionista ou militar num mês de referência (uma linha por id_servidor × origem)"
     chave: "(ano, mes, id_servidor, origem) — em 2025-07, 511.207 linhas = 511.207 distintos (511.159 id_servidor)"
     tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2013–2025 (2025 até o mês 7)"}
@@ -77,6 +82,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, "significado das colunas de dedução e abate_teto"]
     verificado: "2025-07: 511.207 linhas, 511.207 distintos (id_servidor, origem), soma remuneracao_bruta_brl Servidores SIAPE R$ 6,83 bi — medido 2026-10-27"
   observacoes:
+    ultima_data: "2025-07"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma observação textual sobre a remuneração de um servidor num mês de referência"
     chave: "nenhuma: em 2025-07, 10.085 linhas, 9.978 id_servidor e 10.085 linhas distintas"
     tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "até 2025-07"}
@@ -89,6 +95,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "2025-07: 10.085 linhas, 9.978 id_servidor — medido 2026-10-27"
   afastamentos:
+    ultima_data: "2025-07-31"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um período de afastamento de um servidor, recortado em um mês de referência"
     chave: "nenhuma: 7.670.749 linhas, 7.470.311 linhas distintas inteiras, 420.176 id_servidor"
     tempo: {natureza: serie_de_periodos, coluna: "ano, mes (e data_inicio/data_final do período)", cobertura: "2015–2025"}

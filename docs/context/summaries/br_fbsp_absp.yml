@@ -3,6 +3,7 @@
 dataset: br_fbsp_absp
 tabelas:
   uf:
+    ultima_data: "2021"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um estado × ano (27 UFs × 2007–2021)"
     chave: "(ano, sigla_uf)"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2007–2021"}
@@ -20,6 +21,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "405 linhas = 405 distintos de (ano,sigla_uf), 27 UFs por ano; nulos: quantidade_feminicidio 4,44%, roubo_carga 14,07%, roubo_instituicao_financeira 13,09% — medido 2026-10-27"
   municipio:
+    ultima_data: "2021"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um município (as 27 capitais) × ano (2016–2021)"
     chave: "(ano, id_municipio)"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2016–2021"}
@@ -35,6 +37,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "162 linhas = 162 distintos de (ano,id_municipio); 27 municípios, 6 anos — medido 2026-10-27"
   violencia_escola:
+    ultima_data: "2021"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um estado × tema × item de resposta (pesquisa 2021, formato longo)"
     chave: "(uf, tema, item)"
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "2021–2021"}

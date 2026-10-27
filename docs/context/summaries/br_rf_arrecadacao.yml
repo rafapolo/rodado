@@ -3,6 +3,7 @@
 dataset: br_rf_arrecadacao
 tabelas:
   uf:
+    ultima_data: "2024-05"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um mês × uma UF: arrecadação federal por tributo, em colunas largas"
     chave: "(ano, mes, sigla_uf): 7.911 linhas e 7.911 distintos; 27 UFs"
     tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2000-01–2024-05"}
@@ -17,6 +18,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "7.911 linhas; 7.911 distintos de (ano, mes, sigla_uf); irpf 2023 soma R$ 58,6 bi — medido 2026-10-27"
   cnae:
+    ultima_data: "2024-08"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um mês × uma seção CNAE (A–U, mais as siglas IN, NI e PF): arrecadação por tributo"
     chave: "(ano, mes, secao_sigla): 2.496 linhas e 2.496 distintos; 24 seções × 104 meses"
     tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2016-01–2024-08"}
@@ -29,6 +31,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, secao_sigla]
     verificado: "2.496 linhas; 2.496 distintos da chave; 24 seções — medido 2026-10-27"
   natureza_juridica:
+    ultima_data: "2024-08"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um mês × uma natureza jurídica (código de 4 dígitos): arrecadação por tributo"
     chave: "(ano, mes, natureza_juridica_codigo): 8.221 linhas e 8.221 distintos; 89 códigos"
     tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2016-01–2024-08"}
@@ -41,6 +44,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, filtros_tipicos]
     verificado: "8.221 linhas; 8.221 distintos da chave; 89 códigos — medido 2026-10-27"
   itr:
+    ultima_data: "2024-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um mês × um município: ITR arrecadado"
     chave: "(ano, mes, id_municipio): 516.429 linhas e 516.429 distintos; 5.570 municípios por mês"
     tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2017-01–2024-09 (nem todo mês existe: 2017–2021 têm 8 meses por ano, 2024 tem 9)"}
@@ -53,6 +57,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "516.429 linhas; 516.429 distintos da chave; soma valor_arrecadado 15.232.747.127; 2024: 5.570 municípios nos meses 1 a 9 — medido 2026-10-27"
   ir_ipi:
+    ultima_data: "2024-08"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um mês × um tributo (IR ou IPI) × um decêndio: arrecadação bruta, ajustes e líquida"
     chave: "(ano, mes, tributo, decendio): 408 linhas e 408 distintos"
     tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2019-01–2024-08 (decêndio é o terço do mês)"}

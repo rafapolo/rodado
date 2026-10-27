@@ -3,6 +3,7 @@
 dataset: br_ibge_estadic
 tabelas:
   comunicacao_informatica:
+    ultima_data: "2019"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma UF × ano de pesquisa: respostas do questionário de comunicação e informática do estado (uma coluna
       por pergunta)'
     chave: ano, sigla_uf
@@ -27,6 +28,7 @@ tabelas:
     - nao_use_para
     verificado: 54 linhas = 54 distintos de (ano, sigla_uf); 27 UFs em 2014 e 27 em 2019; 175 colunas — medido 2026-10-27
   educacao:
+    ultima_data: "2018"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma UF × ano de pesquisa: respostas do questionário de educação do estado'
     chave: ano, sigla_uf
     tempo:
@@ -50,6 +52,7 @@ tabelas:
     - significado de 8888
     verificado: 54 linhas = 54 distintos de (ano, sigla_uf); 27 por ano; 223 colunas — medido 2026-10-27
   governanca:
+    ultima_data: "2019"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma UF em 2019: respostas do questionário de governança do estado (transparência, controle interno)'
     chave: ano, sigla_uf
     tempo:
@@ -70,6 +73,7 @@ tabelas:
     - nao_use_para
     verificado: 27 linhas = 27 distintos de (ano, sigla_uf); só ano 2019; 168 colunas — medido 2026-10-27
   politica_mulher:
+    ultima_data: "2018"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma UF em 2018: respostas do questionário de política para mulheres do estado'
     chave: ano, sigla_uf
     tempo:
@@ -90,6 +94,7 @@ tabelas:
     - nao_use_para
     verificado: 27 linhas = 27 distintos de (ano, sigla_uf); só ano 2018; 132 colunas — medido 2026-10-27
   recursos_humanos:
+    ultima_data: "2020"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma UF × ano: pessoal ocupado na administração estadual direta e indireta, por vínculo e escolaridade
       (colunas largas)'
     chave: ano, sigla_uf
@@ -128,6 +133,7 @@ tabelas:
       unidade: pessoas
       soma: nao
   indicadores_perfil_gestor:
+    ultima_data: "2021"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'um gestor estadual de uma política setorial (tema) numa UF e ano: perfil (sexo, idade, cor/raça, escolaridade)
       do titular do órgão'
     chave: ano, tema, sigla_uf
@@ -152,6 +158,7 @@ tabelas:
     verificado: 405 linhas = 405 distintos de (ano, tema, sigla_uf) = 15 pares (ano, tema) × 27 UFs; 10 colunas
       — medido 2026-10-27
   indicadores_quantidade_vinculo:
+    ultima_data: "2021"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'uma UF × ano × tipo de administração × tipo de vínculo × escolaridade: quantidade de pessoal'
     chave: ano, sigla_uf, tipo_administracao, tipo_vinculo, escolaridade
     tempo:

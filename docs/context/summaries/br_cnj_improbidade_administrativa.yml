@@ -3,6 +3,7 @@
 dataset: br_cnj_improbidade_administrativa
 tabelas:
   condenacao:
+    ultima_data: "2024-02-15"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma condenação por improbidade administrativa (condenado × processo), do Cadastro Nacional de Condenações do CNJ"
     chave: "id_condenacao — quase única: 53.342 linhas para 53.335 distintos (7 repetidas); id_pessoa/id_processo repetem (41.558 pessoas e 37.065 processos distintos)"
     tempo: {natureza: serie_de_periodos, coluna: data_propositura, cobertura: "1992-01-01–2024-02-15 (data_cadastro 2008–2024-02-26; data_pena 1993–2024)"}

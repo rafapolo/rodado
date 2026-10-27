@@ -13,6 +13,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "1.567 linhas, 1.567 id_senador distintos — medido 2026-10-27"
   senador_mandato:
+    ultima_data: "2023-02-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um mandato de um senador (titular ou suplente), com as duas legislaturas que ele cobre"
     chave: "nenhuma: id_mandato é nulo em 686 de 1.778 linhas (participacao nula nelas); (id_senador, data_inicio_legislatura_1, participacao, sigla_uf) tem 1.777 distintos, 1 linha repete"
     tempo: {natureza: serie_de_periodos, coluna: data_inicio_legislatura_1, cobertura: "1906-05-03–2023-02-01"}
@@ -22,6 +23,7 @@ tabelas:
     rascunho: [use_para]
     verificado: "1.778 linhas; 416 id_mandato distintos — medido 2026-10-27"
   senador_filiacao:
+    ultima_data: "2026-09-25"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma filiação partidária de um senador"
     chave: "nenhuma: não há id; (id_senador, id_partido, data_filiacao, data_desfiliacao, sigla_partido) tem 2.261 distintos = linhas, mas data_filiacao é nula em 43,56% das linhas"
     tempo: {natureza: serie_de_periodos, coluna: data_filiacao, cobertura: "1980-09-24–2026-09-25"}
@@ -31,6 +33,7 @@ tabelas:
     rascunho: [use_para]
     verificado: "2.261 linhas; combinação de 5 colunas com 2.261 distintos — medido 2026-10-27"
   partido:
+    ultima_data: "2025-11-04"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um partido (inclusive extintos)"
     chave: "id_partido (108 linhas = 108 distintos; sigla tem só 86 distintas, então não é única)"
     tempo: {natureza: serie_de_periodos, coluna: data_criacao, cobertura: "1900-01-01–2025-11-04"}
@@ -40,6 +43,7 @@ tabelas:
     rascunho: [use_para]
     verificado: "108 linhas, 108 id_partido, 86 siglas — medido 2026-10-27"
   bloco:
+    ultima_data: "2025-02-18"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um bloco parlamentar"
     chave: "id_bloco (6 linhas = 6 distintos)"
     tempo: {natureza: serie_de_periodos, coluna: data_criacao, cobertura: "2023-02-01–2025-02-18"}
@@ -56,6 +60,7 @@ tabelas:
     rascunho: [use_para]
     verificado: "11 linhas — medido 2026-10-27"
   comissao:
+    ultima_data: "2026-08-25"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um colegiado (comissão, grupo, frente, conselho etc., do Senado e do Congresso)"
     chave: "id_comissao (221 linhas = 221 distintos)"
     tempo: {natureza: serie_de_periodos, coluna: data_inicio, cobertura: "1900-01-01–2026-08-25"}
@@ -65,6 +70,7 @@ tabelas:
     rascunho: [use_para]
     verificado: "221 linhas, 221 id_comissao distintos — medido 2026-10-27"
   senador_comissao:
+    ultima_data: "2026-09-15"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "a participação de um senador em um colegiado num período"
     chave: "(id_senador, id_comissao, data_inicio, participacao) (21.812 linhas = 21.812 distintos)"
     tempo: {natureza: serie_de_periodos, coluna: data_inicio, cobertura: "1995-03-14–2026-09-15"}
@@ -74,6 +80,7 @@ tabelas:
     rascunho: [use_para]
     verificado: "21.812 linhas, chave de 4 colunas com 21.812 distintos — medido 2026-10-27"
   senador_cargo:
+    ultima_data: "2026-09-02"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um cargo (presidente, relator etc.) de um senador num colegiado num período"
     chave: "(id_senador, id_comissao, id_cargo, data_inicio) (2.461 linhas = 2.461 distintos)"
     tempo: {natureza: serie_de_periodos, coluna: data_inicio, cobertura: "1995-03-21–2026-09-02"}
@@ -82,6 +89,7 @@ tabelas:
     rascunho: [use_para]
     verificado: "2.461 linhas; chave de 4 colunas com 2.461 distintos; data_fim nula em 34,82% — medido 2026-10-27"
   lideranca:
+    ultima_data: "2026-09-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma designação de liderança ou vice-liderança (Senado, Câmara ou Congresso)"
     chave: "id_lideranca (306 linhas = 306 distintos)"
     tempo: {natureza: retrato_atual, coluna: data_designacao, cobertura: "2023-01-06–2026-09-01"}
@@ -92,6 +100,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "306 linhas, 306 id_lideranca distintos — medido 2026-10-27"
   processo:
+    ultima_data: "2026-04-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um processo legislativo (matéria: projeto, requerimento, mensagem etc.)"
     chave: "id_processo (160.524 linhas = 160.524 distintos; codigo_materia também é único)"
     tempo: {natureza: serie_anual, coluna: data_apresentacao, cobertura: "1946-09-23–2026-04-01"}
@@ -102,6 +111,7 @@ tabelas:
     rascunho: [use_para]
     verificado: "160.524 linhas, 160.524 id_processo e codigo_materia distintos — medido 2026-10-27"
   relatoria:
+    ultima_data: "2026-08-31"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma designação de relator para uma matéria num colegiado"
     chave: "id_relatoria (3.593 linhas = 3.593 distintos)"
     tempo: {natureza: serie_anual, coluna: data_designacao, cobertura: "2021-10-13–2026-08-31"}
@@ -111,6 +121,7 @@ tabelas:
     rascunho: [use_para]
     verificado: "3.593 linhas, id_relatoria 3.593 distintos; data_destituicao 100% nula — medido 2026-10-27"
   discurso:
+    ultima_data: "2026-03-18"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um pronunciamento em plenário"
     chave: "id_pronunciamento (99.987 linhas = 99.987 distintos)"
     tempo: {natureza: serie_diaria, coluna: data_sessao, cobertura: "1997-02-26–2026-03-18"}
@@ -120,6 +131,7 @@ tabelas:
     rascunho: [use_para]
     verificado: "99.987 linhas, 99.987 id_pronunciamento distintos — medido 2026-10-27"
   votacao:
+    ultima_data: "2026-02-25"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma votação nominal ou simbólica no Senado, com o placar agregado"
     chave: "id_votacao (3.593 linhas = 3.593 distintos)"
     tempo: {natureza: serie_diaria, coluna: data_sessao, cobertura: "1991-03-05–2026-02-25"}
@@ -134,6 +146,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "3.593 linhas, 3.593 id_votacao distintos; voto_sim = contagem de 'Sim' em 3.577 de 3.577 votações com detalhe — medido 2026-10-27"
   votacao_parlamentar:
+    ultima_data: "2026-02-25"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "o voto de um senador numa votação"
     chave: "(id_votacao, id_senador) (284.400 linhas = 284.400 distintos)"
     tempo: {natureza: serie_diaria, coluna: data_sessao, cobertura: "1991-03-05–2026-02-25"}
@@ -147,6 +160,7 @@ tabelas:
     rascunho: [use_para]
     verificado: "284.400 linhas, chave 284.400 distintos; 22 valores de voto; 'Votou' em votação secreta em 97.951 de 98.177 — medido 2026-10-27"
   votacao_orientacao_bancada:
+    ultima_data: "2026-08-12"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "a orientação de uma bancada (partido, bloco ou Governo) numa votação"
     chave: "(id_votacao_sve, bancada) (6.753 linhas = 6.753 distintos)"
     tempo: {natureza: serie_diaria, coluna: data_votacao, cobertura: "2018-10-16–2026-08-12"}
@@ -156,6 +170,7 @@ tabelas:
     rascunho: [use_para]
     verificado: "6.753 linhas, chave 6.753 distintos — medido 2026-10-27"
   votacao_comissao:
+    ultima_data: "2026-02-25"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma votação ocorrida numa reunião de comissão do Senado"
     chave: "id_votacao (1.645 linhas = 1.645 distintos)"
     tempo: {natureza: serie_diaria, coluna: data_reuniao, cobertura: "2013-04-10–2026-02-25"}
@@ -165,6 +180,7 @@ tabelas:
     rascunho: [use_para]
     verificado: "1.645 linhas, 1.645 id_votacao distintos — medido 2026-10-27"
   votacao_comissao_parlamentar:
+    ultima_data: "2026-02-25"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "o voto de um senador numa votação de comissão"
     chave: "(id_votacao, id_senador) (21.296 linhas = 21.296 distintos)"
     tempo: {natureza: serie_diaria, coluna: data_reuniao, cobertura: "2013-04-10–2026-02-25"}

@@ -3,6 +3,7 @@
 dataset: br_anp_combustiveis
 tabelas:
   precos:
+    ultima_data: "2026-10-02"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um preço de revenda coletado num posto (cnpj) × produto × data de coleta"
     chave: "nenhuma confirmada: (cnpj, produto, data_coleta) tem 2.205.239 combinações em 2.205.259 linhas (20 repetem)"
     tempo: {natureza: serie_diaria, coluna: data_coleta, cobertura: "2024-03-11–2026-10-02"}
