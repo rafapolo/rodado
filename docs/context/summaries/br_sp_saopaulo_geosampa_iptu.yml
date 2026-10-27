@@ -1,0 +1,23 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_sp_saopaulo_geosampa_iptu
+tabelas:
+  iptu:
+    grao: "um imóvel (contribuinte do IPTU, sub-unidade de condomínio incluída) da cidade de São Paulo × ano do cadastro"
+    chave: "ano, numero_contribuinte (na partição 2025: 3.806.436 linhas, 3.806.436 distintos); numero_contribuinte+numero_condominio também 3.806.436"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "1995–2025"}
+    territorio: {nivel: ponto, colunas: {bairro: "texto livre", logradouro: "texto livre", cep: "CEP do imóvel", numero_imovel: "número do imóvel na rua"}}
+    medidas:
+      - {coluna: area_terreno, o_que: "área do terreno do lote, repetida em cada unidade de um condomínio", unidade: "m²", soma: nao}
+      - {coluna: area_construida, o_que: "área construída da unidade", unidade: "m²", soma: sim}
+      - {coluna: valor_terreno, o_que: "valor do m² de terreno (planta genérica), não o valor total", unidade: "R$/m²", soma: nao}
+      - {coluna: valor_construcao, o_que: "valor do m² de construção, não o valor total", unidade: "R$/m²", soma: nao}
+    filtros_tipicos:
+      - "ano = 2025 (a tabela tem 93,4 milhões de linhas; sempre filtre o ano)"
+      - "finalidade_imovel = 'Terreno' (sem construção); nele ano_construcao_corrigida = 0 e area_construida = 0 (2.048 de 2.048 na amostra de 1% de 2025)"
+      - "finalidade_imovel = 'Apartamento Em Condomínio' (861.935 na amostra do perfil de 2025) ou 'Residência'; rótulos por extenso com capitalização como no banco"
+      - "tipo_construcao, ex.: 'Residencial Vertical - Padrão C'"
+    use_para: "estatísticas do estoque imobiliário paulistano por finalidade, tipo de construção, bairro e ano"
+    nao_use_para: "somar valor_terreno/valor_construcao como se fossem valor total do imóvel (são R$/m²), ou idade média sem excluir ano_construcao_corrigida = 0; nome do proprietário não existe"
+    rascunho: [unidade de valor_terreno e valor_construcao (deduzida de min 83 e máx 34.383, não confirmada), use_para, nao_use_para]
+    verificado: "93.430.758 linhas no total; 2025: 3.806.436 linhas = 3.806.436 distintos de numero_contribuinte (e do par com numero_condominio); amostra 1% de 2025: Terreno = ano_construcao_corrigida 0 = area_construida 0 = 2.048; ano de 1995 a 2025 — medido 2026-10-27"

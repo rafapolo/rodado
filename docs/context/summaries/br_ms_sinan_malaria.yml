@@ -1,0 +1,20 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ms_sinan_malaria
+tabelas:
+  microdados_malaria:
+    grao: "uma notificação individual de malária fora da Amazônia Legal (ficha SINAN), sem identificador do caso"
+    chave: "nenhuma: sem identificador; 71.159 linhas, 70.617 distintas (542 repetidas)"
+    tempo: {natureza: serie_diaria, coluna: "DT_NOTIFIC (ano em NU_ANO e ano_sinan, iguais em todas as linhas)", cobertura: "2004–2026 (2026 até 2026-06-10)"}
+    territorio: {nivel: municipio, colunas: {ID_MUNICIP: "município de notificação, 6 dígitos", ID_MN_RESI: "município de residência", SG_UF: "UF de residência (sigla ou código; 58 valores distintos, formato misto)", SG_UF_NOT: "UF da notificação (45 valores distintos, formato misto)"}}
+    medidas:
+      - {expressao: "count(*)", o_que: "notificações; casos = CLASSI_FIN = '1'", unidade: "notificações", soma: sim}
+    filtros_tipicos:
+      - "duas versões de ficha: 2004–2006 (12.026 linhas) tem TP_NOT, ID_AGRAVO, CLASSI_FIN e EVOLUCAO nulos e usa ID_DG_NOT / ID_EV_NOT; 2007–2026 (59.133 linhas) usa CLASSI_FIN"
+      - "CLASSI_FIN = '1' confirmado, '2' descartado (37.389 nas linhas novas; a maioria é descartada), '8' sem documento; vazio em 9.789"
+      - "RESULT: '1' negativo (46.910), '4' = V (14.040), '2' = F (4.759)"
+      - "TPAUTOCTO = '1' sim, '2' não, '3' indeterminado"
+    use_para: "casos de malária fora da Amazônia Legal por município, classificação e espécie (RESULT)."
+    nao_use_para: "contar casos sem CLASSI_FIN = '1'; unir os dois layouts sem tratar ID_DG_NOT para 2004–2006."
+    rascunho: [use_para, nao_use_para]
+    verificado: "71.159 linhas; 70.617 distintas; layout antigo (TP_NOT nulo) = 12.026 linhas de 2004–2006, novo = 59.133 de 2007–2026; CLASSI_FIN '2' = 37.389 no novo — medido 2026-10-27"

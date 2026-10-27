@@ -1,0 +1,17 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_mma_sinpatinhas
+tabelas:
+  microdados:
+    grao: "um animal (cão ou gato) cadastrado no SinPatinhas"
+    chave: "id_animal (930442 linhas = 930442 distintos)"
+    tempo: {natureza: serie_diaria, coluna: data_cadastro, cobertura: "2025-04-15–2025-12-02"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "município de cadastro, código IBGE de 7 dígitos como texto (0,19% nulos)"}}
+    medidas:
+      - {coluna: idade, o_que: "idade do animal no cadastro (anos, 0 a 35)", unidade: "anos", soma: nao}
+      - {coluna: "count(*)", o_que: "animais cadastrados", unidade: "animais", soma: sim}
+    filtros_tipicos: ["especie IN ('Cão','Gato') com acento", "sexo IN ('Fêmea','Macho')", "cor_pelagem tem 13 valores, por exemplo 'Bicolor','Preto','Caramelo' (a coluna tem categoria 'Outros')"]
+    use_para: "contar animais cadastrados por município, espécie, sexo, idade, pelagem e dia de cadastro"
+    nao_use_para: "estimar a população total de pets (é só o cadastro voluntário, a partir de abril de 2025); sem tutor, raça ou porte"
+    rascunho: [use_para, nao_use_para]
+    verificado: "930442 linhas, 930442 distintos de id_animal; especie: Cão 588522, Gato 341920 — medido 2026-10-27"

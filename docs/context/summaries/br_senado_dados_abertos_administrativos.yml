@@ -1,0 +1,770 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_senado_dados_abertos_administrativos
+tabelas:
+  ata_acionamento:
+    grao: um acionamento de uma ata de registro de preços
+    chave: id_acionamento (2.886 linhas = 2.886 distintos)
+    tempo:
+      natureza: retrato_atual
+      coluna: data_extracao
+      cobertura: retrato único extraído em 2026-09-09 (data_extracao)
+    territorio: &id001
+      nivel: nenhum
+      colunas: {}
+    use_para: acionamentos de atas de registro de preços, ligáveis a contratacao (tipo_contratacao = 'atas_registro_preco')
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 2.886 linhas, id_acionamento único; 536 id_contratacao distintos (sem coluna tipo_contratacao; presumivelmente atas) — medido 2026-10-27
+  contratacao:
+    grao: uma contratação do Senado (contrato, nota de empenho ou ata de registro de preços)
+    chave: tipo_contratacao + id_contratacao (12.863 linhas = 12.863 distintos); id_contratacao sozinho NÃO é único (9.142 distintos)
+    tempo:
+      natureza: retrato_atual
+      coluna: data_assinatura
+      cobertura: '1997–2026-09-08 (retrato de 2026-09-09; há datas inválidas: anos 21, 208, 210; 79 nulas)'
+    territorio: *id001
+    filtros_tipicos:
+    - tipo_contratacao = 'contratos' (8.219), 'notas_empenho' (3.969) ou 'atas_registro_preco' (675)
+    - 'status só existe para contratos: ''ENCERRADO'' (5.724), ''VIGENTE'' (2.486), ''EM_RENOVACAO'' (9); nulo (4.644) para empenhos e atas — filtre tipo_contratacao=''contratos'' antes de status'
+    - indicador_mao_de_obra = 'sim' (274) / 'nao' (12.589), minúsculo sem acento
+    - 'sigla_sub_especie: ''NE'' 3.973, ''CT'' 3.352, ''RP'' 1.880, ''AC'' 1.620'
+    use_para: listar contratos e empenhos do Senado por empresa (cpf_cnpj_empresa, nome_empresa), objeto, modalidade e vigência
+    nao_use_para: 'achar valor contratado (não há coluna de valor aqui: use contratacao_item, contratacao_pagamento ou contrato_aditivo)'
+    rascunho:
+    - use_para
+    - nao_use_para
+    - significado de data_publicacao 9999-09-09 (sentinela)
+    verificado: '12.863 linhas, chave composta única; id_contratacao só é único dentro de tipo_contratacao (12.863 linhas, 9.142 id_contratacao distintos): junte com (tipo_contratacao, id_contratacao) —
+      medido 2026-10-27'
+  contratacao_documento_fiscal:
+    grao: um documento fiscal (nota) de um contrato
+    chave: id_contratacao + id_documento_fiscal (14.428 = 14.428 distintos); id_documento_fiscal sozinho repete (13.960)
+    tempo:
+      natureza: retrato_atual
+      coluna: data_extracao
+      cobertura: retrato único extraído em 2026-09-09 (data_extracao)
+    territorio: *id001
+    filtros_tipicos:
+    - tipo_contratacao tem valor único 'contratos'
+    use_para: datas de emissão e vencimento das notas fiscais por contrato
+    nao_use_para: valores (a tabela não tem valor)
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 14.428 linhas, chave composta única; data_emissao tem datas inválidas (min 0200-02-04) e 7,7% nulas — medido 2026-10-27
+  contratacao_garantia:
+    grao: uma garantia contratual (caução, fiança, seguro) de um contrato
+    chave: id_garantia (2.466 linhas = 2.466 distintos)
+    tempo:
+      natureza: retrato_atual
+      coluna: data_extracao
+      cobertura: retrato único extraído em 2026-09-09 (data_extracao)
+    territorio: *id001
+    medidas:
+    - coluna: valor
+      o_que: valor da garantia
+      unidade: R$
+      soma: sim
+    filtros_tipicos:
+    - tipo = 'Seguro garantia' (1.543), 'Depósito em caução' (514), 'Fiança bancária' (357), 'Retenção em pagamentos' (51), 'Títulos da dívida pública'
+    use_para: garantias prestadas por contrato (tipo, valor, vencimento)
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 2.466 linhas, id_garantia único; valor 0 a 5.000.000 — medido 2026-10-27
+  contratacao_item:
+    grao: um item de uma contratação
+    chave: tipo_contratacao + id_contratacao + id_item (61.155 = 61.155 distintos); id_item sozinho repete (51.304 distintos)
+    tempo:
+      natureza: retrato_atual
+      coluna: data_extracao
+      cobertura: retrato único extraído em 2026-09-09 (data_extracao)
+    territorio: *id001
+    medidas:
+    - coluna: quantidade
+      o_que: quantidade do item (unidade varia por item, sem coluna de unidade)
+      unidade: não documentada
+      soma: nao entre itens de unidades diferentes
+    filtros_tipicos:
+    - tipo_contratacao = 'notas_empenho' (31.802), 'contratos' (22.108), 'atas_registro_preco' (7.245)
+    use_para: o que foi contratado (descricao, numero_item, quantidade)
+    nao_use_para: valor financeiro (não há preço nem valor aqui)
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 61.155 linhas, chave composta única — medido 2026-10-27
+  contratacao_orgao_gestor:
+    grao: um órgão gestor (ou comissão) responsável por uma contratação
+    chave: tipo_contratacao + id_contratacao + sigla_orgao_gestor + tipo_gestao (7.334 = 7.334 distintos); sem tipo_gestao repete (7.248)
+    tempo:
+      natureza: retrato_atual
+      coluna: data_extracao
+      cobertura: retrato único extraído em 2026-09-09 (data_extracao)
+    territorio: *id001
+    filtros_tipicos:
+    - tipo_gestao = 'Órgão Gestor' (6.168), 'Órgão Gestor Substituto' (679), 'Comissão' (487)
+    use_para: quem gere cada contrato, ata ou empenho
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 7.334 linhas, chave composta única — medido 2026-10-27
+  contratacao_pagamento:
+    grao: um pagamento (nota cobrada) de um contrato
+    chave: id_pagamento (10.236 linhas = 10.236 distintos; com id_contratacao também)
+    tempo:
+      natureza: retrato_atual
+      coluna: data_extracao
+      cobertura: retrato único extraído em 2026-09-09 (data_extracao)
+    territorio: *id001
+    medidas:
+    - coluna: valor_cobrado
+      o_que: valor cobrado pelo fornecedor
+      unidade: R$
+      soma: sim
+    - coluna: multa
+      o_que: multa aplicada
+      unidade: R$
+      soma: sim
+    - coluna: glosa
+      o_que: valor glosado (descontado)
+      unidade: R$
+      soma: sim
+    filtros_tipicos:
+    - tipo_contratacao tem valor único 'contratos'
+    use_para: pagamentos de contratos com multa e glosa
+    nao_use_para: data do pagamento (a tabela não tem data); valor líquido pago exige conferir se valor_cobrado já desconta glosa (não medido)
+    rascunho:
+    - use_para
+    - nao_use_para
+    - relação valor_cobrado x glosa
+    verificado: 10.236 linhas, id_pagamento único; valor_cobrado de 0 a 67.937.896,67 (11 linhas com 0) — medido 2026-10-27
+  contratacao_pagamento_empenho:
+    grao: um empenho vinculado a um pagamento de contrato
+    chave: id_pagamento + id_empenho (12.685 = 12.685 distintos)
+    tempo:
+      natureza: retrato_atual
+      coluna: data_extracao
+      cobertura: retrato único extraído em 2026-09-09 (data_extracao)
+    territorio: *id001
+    medidas:
+    - coluna: valor_empenhado
+      o_que: valor empenhado
+      unidade: R$
+      soma: sim
+    - coluna: valor_liquidado
+      o_que: valor liquidado
+      unidade: R$
+      soma: sim
+    - coluna: saldo
+      o_que: saldo do empenho (0 em 12.627 linhas)
+      unidade: R$
+      soma: sim
+    filtros_tipicos:
+    - 'natureza_despesa: ''SERVICOS DE TECNOLOGIA DA INFORMACAO E COMUNICACAO - PJ'', ''OUTROS SERVICOS DE TERCEIROS - PESSOA JURIDICA'' (6.188) etc., maiúsculo sem acento'
+    use_para: empenhos por pagamento e natureza da despesa
+    nao_use_para: somar valor_empenhado ao lado de contratacao_pagamento.valor_cobrado (um pagamento pode ter vários empenhos)
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 12.685 linhas, chave composta única; valor_empenhado = valor_liquidado em 12.627 linhas — medido 2026-10-27
+  contrato_aditivo:
+    grao: um aditivo de contrato
+    chave: id_contratacao + id_aditivo (7.450 = 7.450 distintos); id_aditivo sozinho repete (4.918)
+    tempo:
+      natureza: retrato_atual
+      coluna: data_extracao
+      cobertura: retrato único extraído em 2026-09-09 (data_extracao)
+    territorio: *id001
+    medidas:
+    - coluna: valor
+      o_que: 'valor do aditivo (pode ser negativo: supressão)'
+      unidade: R$
+      soma: 'sim, com cuidado: 38,6% nulos'
+    use_para: aditivos (acréscimos e supressões) de contratos
+    nao_use_para: valor total do contrato (não há valor original aqui)
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 7.450 linhas, chave composta única; valor de -14.993.937,93 a 189.069.188; data_assinatura com anos inválidos (0207, 2027) — medido 2026-10-27
+  despesa_ceaps:
+    grao: uma despesa reembolsada pela CEAPS (cota para o exercício da atividade parlamentar) a um senador
+    chave: id_despesa (37.461 linhas = 37.461 distintos)
+    tempo:
+      natureza: serie_mensal
+      coluna: ano, mes
+      cobertura: 2025-01–2026-09 (2026-08 parcial com 756 linhas; 2026-09 só 39 linhas)
+    territorio:
+      nivel: nenhum
+      colunas:
+        id_senador: junta com senador.id_senador (todas as 37.461 linhas casam)
+    medidas:
+    - coluna: valor_reembolsado
+      o_que: valor reembolsado ao senador pela despesa (71 linhas negativas = estornos; nenhuma igual a 0)
+      unidade: R$
+      soma: sim
+    filtros_tipicos:
+    - 'ano/mes definem o período; NÃO use a coluna data: 421 linhas têm year(data) ≠ ano e 142 estão fora de 2025–2026 (datas de 0202 a 2026-12-29)'
+    - tipo_despesa é o texto longo, ex. 'Locomoção, hospedagem, alimentação, combustíveis e lubrificantes' (16.972; R$ 14,5 mi), 'Divulgação da atividade parlamentar' (2.961; R$ 10,7 mi), 'Serviços de Segurança
+      Privada' (11); 120 nulos
+    - 'tipo_documento: ''Nota Fiscal Eletrônica'' (19.499), ''Fatura'' (7.837), ''Cupom Fiscal'' (3.135), ''Recibo'' (2.698), ''Passagem / Bilhete / Código Localizador'' (1.990), ''Boleto'', ''Nota Fiscal'''
+    use_para: gasto da CEAPS por senador, fornecedor, tipo de despesa e mês
+    nao_use_para: série anterior a 2025 (não há) ou total anual de 2026 (ano incompleto)
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: '37.461 linhas, id_despesa único; soma por ano: 2025 e 2026 conforme meses acima (ex. 2025-12: 1.810 linhas, R$ 3.318.301) — medido 2026-10-27'
+  diretor_coordenador:
+    grao: um setor do Senado com seu diretor/coordenador titular (e substituto, quando há)
+    chave: 'nenhuma: sigla_setor repete (234 linhas, 200 distintos); 34 linhas repetidas'
+    tempo:
+      natureza: retrato_atual
+      coluna: data_extracao
+      cobertura: retrato único extraído em 2026-09-09 (data_extracao)
+    territorio: *id001
+    filtros_tipicos:
+    - 'referencia_chefia: ''FC-3'' (128), ''SN01'' (48), ''FC-4'' (32)'
+    use_para: quem chefia cada setor e quem o substitui
+    nao_use_para: histórico de chefias (só retrato atual)
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 234 linhas; substituto preenchido em 8,6% — medido 2026-10-27
+  empresa:
+    grao: uma empresa fornecedora cadastrada
+    chave: id_empresa (2.923 linhas = 2.923 distintos)
+    tempo:
+      natureza: retrato_atual
+      coluna: data_extracao
+      cobertura: retrato único extraído em 2026-09-09 (data_extracao)
+    territorio: *id001
+    use_para: cadastro cpf_cnpj + nome de fornecedores (cpf_cnpj nulo em 0,44%)
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 2.923 linhas, id_empresa único — medido 2026-10-27
+  estagiario:
+    grao: um estagiário do Senado (retrato atual)
+    chave: nome + curso + sigla_orgao (462 = 462 distintos; sem id próprio)
+    tempo:
+      natureza: retrato_atual
+      coluna: data_extracao
+      cobertura: retrato único extraído em 2026-09-09 (data_extracao)
+    territorio: *id001
+    use_para: estagiários por curso e órgão
+    nao_use_para: identificar pessoas de forma única (sem id)
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 462 linhas — medido 2026-10-27
+  licitacao:
+    grao: uma licitação do Senado
+    chave: id_licitacao (2.753 linhas = 2.753 distintos)
+    tempo:
+      natureza: retrato_atual
+      coluna: data_abertura
+      cobertura: 2006-01-19–2026-09-22
+    territorio: *id001
+    filtros_tipicos:
+    - modalidade = 'Pregão' (2.652), 'Tomada de Preços' (26), 'Credenciamento' (21), 'Convite' (18), 'Leilão' (18)
+    - situacao = 'HOMOLOGADA' (999), 'EM ANDAMENTO' (48), 'SUSPENSA' (27), 'ANULADA' (25); nulo em 58,7% das linhas
+    - indicador_registro_preco = 'sim' (190) / 'nao' (2.563)
+    use_para: licitações por modalidade, situação e objeto
+    nao_use_para: valores ou vencedor (não há)
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 2.753 linhas, id_licitacao único — medido 2026-10-27
+  licitacao_detalhamento:
+    grao: um documento de detalhamento (ata, esclarecimento, comunicado) de uma licitação
+    chave: id_detalhamento (7.524 linhas = 7.524 distintos)
+    tempo:
+      natureza: retrato_atual
+      coluna: data_criacao
+      cobertura: 1965-09-25 (provável erro)–2026-09-08
+    territorio: *id001
+    filtros_tipicos:
+    - tipo = 'Comunicado' (5.769), 'Ata' (1.093), 'Esclarecimento' (662)
+    use_para: textos e links de comunicados e atas de licitação
+    nao_use_para: análise quantitativa
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 7.524 linhas, chave única — medido 2026-10-27
+  menor_aprendiz:
+    grao: um menor aprendiz ativo
+    chave: 'nenhuma: cpf repete (80 linhas, 78 distintos)'
+    tempo:
+      natureza: retrato_atual
+      coluna: data_extracao
+      cobertura: retrato único extraído em 2026-09-09 (data_extracao)
+    territorio: *id001
+    filtros_tipicos:
+    - situacao tem valor único 'Ativo'
+    use_para: 'aprendizes por órgão de lotação (fornecedor único: Inspetoria São João Bosco/CESAM)'
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 80 linhas — medido 2026-10-27
+  pensionista:
+    grao: um pensionista de servidor ou parlamentar
+    chave: id_pensionista (2.065 linhas = 2.065 distintos)
+    tempo:
+      natureza: retrato_atual
+      coluna: data_extracao
+      cobertura: retrato único extraído em 2026-09-09 (data_extracao)
+    territorio: *id001
+    filtros_tipicos:
+    - vinculo = 'EFETIVO' (1.988), 'PARLAMENTAR' (72), 'COMISSIONADO' (5)
+    - 'codigo_categoria: ''AL'' 850, ''TL'' 825, ''IPC/PSSC'' 322, ''CL'' 51'
+    use_para: perfil das pensões (vínculo do instituidor, categoria, cargo, início)
+    nao_use_para: valor da pensão (não há valor)
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 2.065 linhas, id_pensionista único; ano_exercicio 1919–2024 — medido 2026-10-27
+  previsao_aposentadoria:
+    grao: um cargo × categoria × ano/mês em que servidores ativos completam direito à aposentadoria
+    chave: cargo + categoria + ano_direito + mes_direito (1.853 = 1.853 distintos)
+    tempo:
+      natureza: serie_mensal
+      coluna: ano_direito, mes_direito
+      cobertura: 2007–2066 (projeção)
+    territorio: *id001
+    medidas:
+    - coluna: quantidade
+      o_que: servidores que adquirem o direito naquele mês/cargo (1 a 11)
+      unidade: servidores
+      soma: sim
+    use_para: projeção de aposentadorias por cargo e ano
+    nao_use_para: aposentadorias já ocorridas (use servidor_aposentado)
+    rascunho:
+    - use_para
+    - nao_use_para
+    - unidade de quantidade
+    verificado: 1.853 linhas, chave composta única — medido 2026-10-27
+  quadro_pessoal:
+    grao: um quantitativo do quadro de pessoal (cargo efetivo, função comissionada, senador...), em colunas esparsas dependendo do quadro
+    chave: 'nenhuma: não testada; tabela heterogênea (195 linhas, colunas quantidade_* nulas conforme o quadro)'
+    tempo:
+      natureza: retrato_atual
+      coluna: periodo
+      cobertura: ATUAL (140 linhas) na data de extração e ANTERIOR (55) no período anterior publicado
+    territorio: *id001
+    filtros_tipicos:
+    - quadro = 'cargo_efetivo' (86), 'pessoal' (52), 'cargo_funcao' (20), 'funcao_comissionada' (14), 'senador' (13), 'servidor_estavel'
+    - periodo = 'ATUAL' / 'ANTERIOR' (dicionario)
+    use_para: tamanho e vagas do quadro (quantidade_cargos, quantidade_ocupados, quantidade_vagos, quantidade_total...) por quadro
+    nao_use_para: somar quantidade_* entre quadros diferentes ou entre ATUAL e ANTERIOR; linhas subtotal e total misturadas
+    rascunho:
+    - chave
+    - use_para
+    - nao_use_para
+    verificado: 195 linhas — medido 2026-10-27
+  senador:
+    grao: um senador (atual, ex-senador ou suplente) já cadastrado no Senado
+    chave: id_senador (681 linhas = 681 distintos)
+    tempo:
+      natureza: retrato_atual
+      coluna: nenhuma
+      cobertura: inclui ex-senadores; mandato/UF/partido só preenchidos para quem está em exercício
+    territorio:
+      nivel: uf
+      colunas:
+        sigla_uf: UF; nula para quem não está em exercício
+    filtros_tipicos:
+    - 'indicador_em_exercicio = ''sim'' (81: 71 Titular, 9 ''1º Suplente'', 1 ''2º Suplente'') / ''nao'' (600; sigla_uf, partido e mandato nulos)'
+    - sexo = 'Masculino' (581) / 'Feminino' (100), contando todos os cadastrados
+    use_para: cadastro de senadores; é a dimensão de despesa_ceaps via id_senador
+    nao_use_para: partido ou UF de ex-senadores (nulos)
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 681 linhas, id_senador único — medido 2026-10-27
+  senador_aposentado_pensionista:
+    grao: um benefício de ex-senador (aposentadoria) ou pensionista de senador
+    chave: 'nenhuma: nome + tipo + data_inicio repete (188 linhas, 130 distintos)'
+    tempo:
+      natureza: retrato_atual
+      coluna: data_extracao
+      cobertura: retrato único extraído em 2026-09-09 (data_extracao)
+    territorio: *id001
+    medidas:
+    - coluna: valor_remuneracao
+      o_que: valor do benefício
+      unidade: R$
+      soma: 'sim, com cuidado: nulo em 68,6%'
+    filtros_tipicos:
+    - tipo_beneficio = 'aposentadoria' (117) / 'pensao' (71), minúsculo sem acento
+    - 'regime = ''ipc'' (108), ''geral'' (59), ''pssc'' (21): IPC = Instituto de Previdência dos Congressistas, PSSC = Plano de Seguridade Social dos Congressistas'
+    use_para: benefícios de ex-senadores por regime
+    nao_use_para: valor total (a maioria sem valor)
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 188 linhas — medido 2026-10-27
+  senador_auxilio_moradia:
+    grao: um senador com auxílio-moradia / imóvel funcional
+    chave: id_senador (85 linhas = 85 distintos; 1,2% nulo)
+    tempo:
+      natureza: retrato_atual
+      coluna: data_extracao
+      cobertura: retrato único extraído em 2026-09-09 (data_extracao)
+    territorio: *id001
+    filtros_tipicos:
+    - indicador_auxilio_moradia = 'nao' em todas as 85 linhas
+    - indicador_imovel_funcional = 'sim' (64) / 'nao' (21)
+    use_para: quem usa imóvel funcional
+    nao_use_para: valor do auxílio
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 85 linhas — medido 2026-10-27
+  senador_escritorio_apoio:
+    grao: um escritório de apoio de um senador
+    chave: 'nenhuma: id_senador repete (82 linhas, 76 distintos; um senador pode ter vários)'
+    tempo:
+      natureza: retrato_atual
+      coluna: data_extracao
+      cobertura: retrato único extraído em 2026-09-09 (data_extracao)
+    territorio: *id001
+    use_para: endereços de escritórios de apoio
+    nao_use_para: contagem de senadores com escritório sem distinct
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 82 linhas; sigla_setor 100% nula — medido 2026-10-27
+  senador_gabinete:
+    grao: o gabinete de um senador
+    chave: id_senador (81 linhas = 81 distintos)
+    tempo:
+      natureza: retrato_atual
+      coluna: data_extracao
+      cobertura: retrato único extraído em 2026-09-09 (data_extracao)
+    territorio: *id001
+    use_para: endereço, telefone e chefe de gabinete
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 81 linhas — medido 2026-10-27
+  servidor:
+    grao: um servidor/parlamentar com vínculo atual ou passado
+    chave: id_servidor (22.958 linhas = 22.958 distintos)
+    tempo:
+      natureza: retrato_atual
+      coluna: data_extracao
+      cobertura: retrato único extraído em 2026-09-09 (data_extracao)
+    territorio: *id001
+    filtros_tipicos:
+    - situacao = 'DESLIGADO' (12.285), 'ATIVO' (6.747), 'APOSENTADO' (3.926), maiúsculo
+    - vinculo = 'COMISSIONADO' (14.643), 'EFETIVO' (7.778), 'PARLAMENTAR' (431), 'REQUISITADO' (104)
+    use_para: cadastro geral de servidores (todas as situações) com cargo, lotação e ano de admissão
+    nao_use_para: contar servidores ativos hoje sem filtrar situacao (servidor_ativo tem 6.663 linhas, servidor 6.747 com situacao='ATIVO')
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 22.958 linhas, id_servidor único; ano_admissao 1942–2026 — medido 2026-10-27
+  servidor_aposentado:
+    grao: um servidor aposentado
+    chave: matricula (3.627 linhas = 3.627 distintos)
+    tempo:
+      natureza: retrato_atual
+      coluna: data_extracao
+      cobertura: retrato único extraído em 2026-09-09 (data_extracao)
+    territorio: *id001
+    filtros_tipicos:
+    - tipo_quadro = 'efetivo' (3.609) / 'comissionado' (18)
+    - 'tipo_aposentadoria: ''VOLUNTARIA'' (2.433) e ''VOLUNTÁRIA'' (994) são o mesmo tipo com grafia diferente; ''INVALIDEZ'' 172, ''COMPULSÓRIA'' 26'
+    use_para: aposentados por cargo, tipo e data de aposentadoria
+    nao_use_para: contar por tipo_aposentadoria sem unir as duas grafias de voluntária
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 3.627 linhas — medido 2026-10-27
+  servidor_ativo:
+    grao: um servidor ativo (retrato atual, sem id)
+    chave: 'nenhuma: nome repete (6.663 linhas, 6.661 distintos) e não há matrícula'
+    tempo:
+      natureza: retrato_atual
+      coluna: data_extracao
+      cobertura: retrato único extraído em 2026-09-09 (data_extracao)
+    territorio: *id001
+    filtros_tipicos:
+    - tipo_vinculo = 'COMISSIONADO' (4.243), 'EFETIVO' (2.365), 'REQUISITADO' (55)
+    - afastamento nulo (86,7%) = sem afastamento; senão 'SERVIDOR EM FÉRIAS' (715)
+    use_para: lotação, jornada e afastamentos dos ativos hoje
+    nao_use_para: juntar com servidor por nome (sem id)
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 6.663 linhas — medido 2026-10-27
+  servidor_cedido:
+    grao: um servidor cedido de/para o Senado
+    chave: matricula (247 linhas = 247 distintos)
+    tempo:
+      natureza: retrato_atual
+      coluna: data_extracao
+      cobertura: retrato único extraído em 2026-09-09 (data_extracao)
+    territorio: *id001
+    filtros_tipicos:
+    - tipo_cessao = 'cedido para o senado' (178), 'cedido da infraero' (53), 'cedido pelo senado' (16), minúsculo
+    use_para: cessões por órgão de origem/destino
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 247 linhas — medido 2026-10-27
+  servidor_exonerado:
+    grao: uma exoneração de servidor
+    chave: 'nenhuma por matrícula: matricula repete (4.767 linhas, 4.375 distintos); matricula + data_vacancia + data_exercicio é única (4.767)'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: data_vacancia
+      cobertura: 2022-01-01–2026-09-08
+    territorio: *id001
+    filtros_tipicos:
+    - forma_vacancia = 'EXONERAÇÃO' (4.317) / 'EXONERAÇÃO A PEDIDO' (450)
+    use_para: exonerações por período (data_vacancia)
+    nao_use_para: contar pessoas sem distinct matricula
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 4.767 linhas — medido 2026-10-27
+  servidor_hora_extra:
+    grao: o total de horas extras pagas a um servidor em um mês de pagamento
+    chave: id_hora_extra + ano + mes + mes_ano_prestacao (12.139 = 12.139 distintos); id_hora_extra (1.763 distintos) é o servidor, repete entre meses
+    tempo:
+      natureza: serie_mensal
+      coluna: ano, mes
+      cobertura: 2025-01–2026-08 (ano/mes = mês de pagamento; mes_ano_pagamento bate com ano/mes em 100% das linhas; mes_ano_prestacao é VARCHAR MM/AAAA de 01/2019 a 12/2025)
+    territorio: *id001
+    medidas:
+    - coluna: valor_total
+      o_que: valor pago de horas extras (aceita valores negativos = acertos)
+      unidade: R$
+      soma: sim
+    use_para: gasto com horas extras por mês de pagamento, nome e mês de prestação
+    nao_use_para: somar junto com servidor_remuneracao.horas_extras (mesmo conceito, outra tabela)
+    rascunho:
+    - use_para
+    - nao_use_para
+    - id_hora_extra = servidor
+    verificado: 12.139 linhas; 2025-07 R$ 4,38 mi (985 linhas), 2025-12 R$ 1,55 mi (1.316) — medido 2026-10-27
+  servidor_hora_extra_dia:
+    grao: um dia de hora extra trabalhada por servidor
+    chave: 'nenhuma: id_hora_extra+data+mes_ano_prestacao+setor_prestacao+quantidade_horas repete em 102 de 131.151 linhas'
+    tempo:
+      natureza: serie_diaria
+      coluna: data
+      cobertura: '2019-01-01–2026-07-26 (ano/mes = mês de pagamento, não da data: só 16 linhas têm year/month(data) = ano/mes)'
+    territorio:
+      nivel: nenhum
+      colunas:
+        setor_prestacao: setor onde as horas foram prestadas
+    medidas:
+    - coluna: quantidade_horas
+      o_que: horas no dia (fração decimal, 0,0167 = 1 min)
+      unidade: horas
+      soma: sim
+    use_para: horas extras por dia e setor de prestação
+    nao_use_para: filtrar ano/mes esperando o dia trabalhado (use data)
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 131.151 linhas; 10.636 (id_hora_extra, ano, mes) distintos — medido 2026-10-27
+  servidor_remuneracao:
+    grao: a folha de pagamento de um servidor em um mês, por tipo de folha
+    chave: id_remuneracao + ano + mes + tipo_folha (253.849 = 253.849 distintos); id_remuneracao sozinho repete (11.999 distintos)
+    tempo:
+      natureza: serie_mensal
+      coluna: ano, mes
+      cobertura: 2025-01–2026-08
+    territorio: *id001
+    medidas:
+    - coluna: remuneracao_liquida
+      o_que: líquido do mês
+      unidade: R$
+      soma: sim
+    - coluna: remuneracao_basica
+      o_que: vencimento básico
+      unidade: R$
+      soma: sim
+    - coluna: horas_extras
+      o_que: horas extras na folha
+      unidade: R$
+      soma: sim
+    filtros_tipicos:
+    - tipo_folha = 'Normal' (203.549 linhas; ~10 mil por mês) ou 'Suplementar' (50.300); a folha Suplementar tem ~5 mil linhas em jan/2025 e jan/2026 e quase todos os servidores (~10 mil) em jun/2025, dez/2025
+      e jun/2026, ~400-900 nos demais meses; significado não documentado
+    - 'descontos (faltas, previdencia, imposto_renda) podem estar com sinal positivo ou negativo e as colunas só fecham com remuneracao_liquida em 39% das linhas (jan/2026 Normal: 4.066 de 10.425 somando
+      todas com sinal): use remuneracao_liquida direta'
+    use_para: 'folha por servidor/mês: líquido, básico e verbas por rubrica'
+    nao_use_para: reconstruir o líquido somando as colunas; comparar Normal com Suplementar sem separar
+    rascunho:
+    - use_para
+    - nao_use_para
+    - tipo_folha
+    - sinais
+    verificado: 253.849 linhas; só 34.727 das linhas casam com servidor.id_servidor por id_remuneracao; não use como chave de junção sem checar — medido 2026-10-27
+  suprido_ato_concessao:
+    grao: um ato de concessão de suprimento de fundos (adiantamento) a um suprido
+    chave: codigo_ato_concessao (340 linhas = 340 distintos)
+    tempo:
+      natureza: serie_de_periodos
+      coluna: data
+      cobertura: 2025-01-01–2026-07-30
+    territorio: &id002
+      nivel: nenhum
+      colunas: {}
+    medidas:
+    - coluna: valor_total_empenhos
+      o_que: 'valor empenhado do suprimento (2025: R$ 4.932.517; 2026: R$ 3.463.747)'
+      unidade: R$
+      soma: sim
+    - coluna: valor_total_transacoes
+      o_que: 'valor efetivamente gasto/comprovado (2025: R$ 2.433.129; 2026: R$ 2.173.865)'
+      unidade: R$
+      soma: sim
+    filtros_tipicos:
+    - indicador_regime_especial = 'sim' (233) / 'nao' (107)
+    - valor_total_movimentacoes é 0 em todas as 340 linhas; prazo_aplicacao e prazo_comprovacao 100% nulos
+    use_para: suprimentos de fundos concedidos por órgão e suprido
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 340 linhas (198 em 2025, 142 em 2026), 68 supridos — medido 2026-10-27
+  suprido_empenho:
+    grao: um empenho de um suprimento de fundos, por rubrica
+    chave: codigo_ato_concessao + numero (689 = 689 distintos)
+    tempo:
+      natureza: serie_de_periodos
+      coluna: data
+      cobertura: 2025-01-06–2026-08-04
+    territorio: *id002
+    medidas:
+    - coluna: valor_concedido
+      o_que: valor concedido
+      unidade: R$
+      soma: sim
+    - coluna: valor_executado
+      o_que: valor executado
+      unidade: R$
+      soma: sim
+    filtros_tipicos:
+    - rubrica = '339030' (261, material de consumo), '339039' (218), '339033' (156), '339040' (30), '449052' (24, equipamento); texto da rubrica em descricao
+    use_para: suprimentos por rubrica de despesa
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 689 linhas, 286 atos distintos — medido 2026-10-27
+  suprido_movimentacao:
+    grao: um comprovante (nota fiscal ou recibo) de gasto de suprimento no regime antigo
+    chave: 'nenhuma confirmada: id_movimentacao repete (3.227 linhas, 2.698 distintos)'
+    tempo:
+      natureza: serie_anual
+      coluna: ano, data
+      cobertura: 2013–2019 (série encerrada; as tabelas suprido_transacao* cobrem 2025–2026)
+    territorio: *id002
+    medidas:
+    - coluna: valor
+      o_que: valor do comprovante
+      unidade: R$
+      soma: sim
+    filtros_tipicos:
+    - tipo = 'Nota fiscal' (3.204) / 'Recibo' (23)
+    - tipo_inscricao = 'Pessoa física' (1.629) / 'Pessoa jurídica' (1.598)
+    use_para: gastos históricos de suprimento por fornecedor, 2013–2019
+    nao_use_para: 2025–2026 (use suprido_transacao)
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: '3.227 linhas; por ano: 2013 87, 2014 190, 2015 402, 2016 445, 2017 637, 2018 833, 2019 633 — medido 2026-10-27'
+  suprido_movimentacao_subtipo:
+    grao: a classificação (subtipo de despesa) de uma movimentação do regime antigo
+    chave: 'nenhuma: id_movimentacao + id_subtipo repete (4.679 linhas, 3.534 distintos)'
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2013–2019
+    territorio: *id002
+    medidas:
+    - coluna: valor
+      o_que: valor da parcela por subtipo
+      unidade: R$
+      soma: sim, mas verifique duplicidade com suprido_movimentacao.valor
+    use_para: gasto histórico por tipo/subtipo de despesa
+    nao_use_para: somar junto com suprido_movimentacao (mesmo gasto, outra granularidade)
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 4.679 linhas, rubrica 80 distintas — medido 2026-10-27
+  suprido_transacao:
+    grao: uma transação (nota fiscal ou recibo) de gasto de um suprimento
+    chave: id_transacao (2.689 linhas = 2.689 distintos)
+    tempo:
+      natureza: serie_de_periodos
+      coluna: data
+      cobertura: 2025-01-07–2026-08-23
+    territorio: *id002
+    medidas:
+    - coluna: valor
+      o_que: valor da transação
+      unidade: R$
+      soma: sim
+    filtros_tipicos:
+    - tipo = 'NOTA_FISCAL' (2.295) / 'RECIBO' (394), maiúsculo com underscore (≠ suprido_movimentacao)
+    - tipo_inscricao tem valor único 'Pessoa jurídica'
+    use_para: gastos de suprimentos por fornecedor
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 2.689 linhas, 303 atos distintos; inscricao tem o valor placeholder 00000000000000 — medido 2026-10-27
+  suprido_transacao_objeto:
+    grao: um item/objeto comprado numa transação de suprimento
+    chave: id_objeto (3.039 linhas = 3.039 distintos)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2025–2026
+    territorio: *id002
+    medidas:
+    - coluna: valor_total
+      o_que: valor do item (quantidade × valor_unitario)
+      unidade: R$
+      soma: sim
+    - coluna: quantidade
+      o_que: quantidade comprada (unidade varia)
+      unidade: não documentada
+      soma: nao
+    filtros_tipicos:
+    - 'tipo_despesa: ''Material de Consumo'' (2.119), ''Passagens e Despesas com Locomoção'' (604)'
+    use_para: o que foi comprado por suprimento, por tipo/subtipo de despesa
+    nao_use_para: somar com suprido_transacao.valor (mesmo gasto)
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 3.039 linhas, id_objeto único — medido 2026-10-27
+  terceirizado:
+    grao: um trabalhador terceirizado ativo alocado em um item de contrato
+    chave: 'nenhuma: cpf + id_item_contrato repete (3.178 linhas, 3.156 distintos); cpf sozinho 2.762'
+    tempo:
+      natureza: retrato_atual
+      coluna: data_extracao
+      cobertura: retrato único extraído em 2026-09-09 (data_extracao)
+    territorio: *id001
+    filtros_tipicos:
+    - situacao tem valor único 'Ativo'
+    - id_contrato 7900 (412 linhas), 8328 (323)
+    use_para: mão de obra terceirizada por empresa, contrato e lotação
+    nao_use_para: contar pessoas sem distinct cpf
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 3.178 linhas; 28 empresas, 42 contratos — medido 2026-10-27
+  dicionario:
+    grao: 'dicionário de códigos: um valor (chave) de uma coluna de uma tabela do dataset'
+    chave: id_tabela + nome_coluna + chave (205 = 205 distintos)
+    use_para: significado dos códigos (indicador_*, regime, quadro, periodo, rubrica...) das tabelas do dataset
+    verificado: 205 linhas — medido 2026-10-27
+    rascunho:
+    - use_para

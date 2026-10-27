@@ -1,0 +1,65 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_siop_orcamento
+tabelas:
+  dados:
+    grao: "uma ação orçamentária (cadastro de ações do PLOA 2025: esfera × UO × programa × ação)"
+    chave: "Esfera, UO, Função, Subfunção, Programa, Ação (5.610 linhas, 5.610 distintos; Esfera+UO+Programa+Ação já basta)"
+    tempo: {natureza: sem_tempo, coluna: "Exercício", cobertura: "2025–2025"}
+    territorio: {nivel: brasil}
+    medidas:
+      - {coluna: "Custo OFSS/OI", o_que: "custo total de projetos (só Tipo = Projeto tem valor; 91,66% nulos)", unidade: "R$", soma: sim}
+      - {coluna: "Custo Demais Fontes", o_que: "custo de projeto em outras fontes (92,8% nulos)", unidade: "R$", soma: sim}
+      - {coluna: "Total Físico", o_que: "meta física do projeto, em unidade que varia com Unidade de Medida", unidade: "varia", soma: nao}
+    filtros_tipicos:
+      - "Esfera = 10 (Orçamento Fiscal, 4.454), 20 (Seguridade Social, 916) ou 30 (Investimento das estatais, 240): número, não texto, nesta tabela"
+      - "Tipo = 'Atividade' (3.262), 'Operações Especiais' (1.728), 'Projeto' (490) ou 'Reserva de Contingência' (130)"
+      - "Origem = 'PLOA' (5.542), 'Emenda' (57) ou 'Crédito Adicional' (11)"
+    use_para: "cadastro descritivo das ações do orçamento federal (título, produto, beneficiário, base legal)"
+    nao_use_para: "valor dotado, empenhado ou pago: não há coluna de dotação aqui; Custo OFSS/OI só existe para projetos"
+    rascunho: [use_para, nao_use_para, "unidade e soma de Total Físico"]
+    verificado: "5.610 linhas, 5.610 distintos da chave; Esfera 10→4.454, 20→916, 30→240; Custo OFSS/OI nulo em 91,66% — medido 2026-10-27"
+  localizadores:
+    grao: "um localizador (recorte geográfico) de uma ação orçamentária em 2025, com custo e metas de projeto; Origem separa PLOA, Emenda e créditos"
+    chave: "Esfera, UO, Função, Subfunção, Programa, Ação, Localizador, Origem (8.054 linhas, 8.054 distintos; sem Origem também 8.054)"
+    tempo: {natureza: sem_tempo, coluna: "Exercício", cobertura: "2025–2025"}
+    territorio: {nivel: uf, colunas: {"Região": "região por extenso ('Nacional', 'Região Nordeste', ...)", UF: "estado por extenso, vazio em 2.824 linhas", "Município": "município por extenso, texto livre"}}
+    medidas:
+      - {coluna: "Valor da Repercussão Financeira sobre o Custeio da União", o_que: "repercussão no custeio (89,5% nulos)", unidade: "R$", soma: sim}
+      - {coluna: "Custo OFSS/OI", o_que: "custo de projeto (92,6% nulos); repete o da ação", unidade: "R$", soma: nao}
+    filtros_tipicos:
+      - "Origem = 'PLOA' (6.043), 'Emenda' (1.961), 'Crédito Extraordinário' (47) ou 'Crédito Especial' (3)"
+      - "Esfera = 10, 20 ou 30 (número)"
+      - "UF = '' (vazio) quando o localizador é Nacional ou de região: 2.824 linhas"
+    use_para: "ver onde (região, UF, município) uma ação ou emenda está localizada no orçamento 2025"
+    nao_use_para: "somar custo por UF (Custo OFSS/OI repete o valor da ação em cada localizador); sem valor de dotação"
+    rascunho: [use_para, nao_use_para, "que Custo OFSS/OI repete o da ação"]
+    verificado: "8.054 linhas, 8.054 distintos da chave; nomes de colunas e textos vêm com mojibake ('FunÃ§Ã£o', 'RegiÃ£o', 'Origem' = 'CrÃ©dito ExtraordinÃ¡rio'): use esses nomes literais — medido 2026-10-27"
+  planos_orcamentarios:
+    grao: "um plano orçamentário (subdivisão da ação) em 2025: esfera × UO × programa × ação × plano"
+    chave: "Esfera, UO, Função, Subfunção, Programa, Ação, Plano Orçamentário (13.490 linhas, 13.490 distintos; sem Função e Subfunção também 13.490)"
+    tempo: {natureza: sem_tempo, coluna: "Exercício", cobertura: "2025–2025"}
+    territorio: {nivel: brasil}
+    filtros_tipicos:
+      - "Esfera = 10 (11.604), 20 (1.646) ou 30 (240): número"
+      - "Novo = 'Sim' (1.406) ou 'Não' (12.084): em texto com mojibake ('NÃ£o')"
+    use_para: "cadastro descritivo dos planos orçamentários de cada ação (título, caracterização, produto intermediário)"
+    nao_use_para: "qualquer valor: a tabela não tem coluna numérica"
+    rascunho: [use_para, nao_use_para]
+    verificado: "13.490 linhas, 13.490 distintos da chave; colunas e textos com mojibake como em localizadores — medido 2026-10-27"
+  alteracoes_orcamentarias:
+    grao: "uma linha de alteração orçamentária (crédito, portaria, MP) de 2026: documento × classificação orçamentária, com acréscimo e redução"
+    chave: "numero_documento mais esfera, unidade, funcao, subfuncao, programa, acao, localizador, plano_orcamentario, categoria_economica, grupo_despesa, modalidade, fonte, idoc, iduso, resultado_primario, tipo_credito (10.093 linhas, 10.093 distintos)"
+    tempo: {natureza: serie_de_periodos, coluna: data_publicacao_instrumento_legal, cobertura: "2026 (coluna ano, nome gravado 'ï»¿ano')"}
+    territorio: {nivel: brasil}
+    medidas:
+      - {coluna: val_acrescimo, o_que: "valor acrescido à dotação", unidade: "R$ (texto com vírgula decimal, ex. '30000000,00')", soma: sim}
+      - {coluna: val_reducao, o_que: "valor reduzido da dotação", unidade: "R$ (texto com vírgula decimal)", soma: sim}
+    filtros_tipicos:
+      - "classificacao_alteracao: o texto vem com mojibake ('CrÃ©dito Suplementar' 7.264, 'Outras AlteraÃ§Ãµes OrÃ§amentÃ¡rias' 2.731, 'CrÃ©dito ExtraordinÃ¡rio' 81, 'Reabertura de CrÃ©dito' 17)"
+      - "tipo_credito = 'A - Inicial (LOA)' (9.991), 'G - Extraordinário' (101), 'C - Especial' (1): o valor inclui o código e o rótulo"
+      - "esfera = '10 - Orçamento Fiscal' (8.121) ou '20 - Orçamento da Seguridade Social' (1.972): texto com código, não número"
+    use_para: "o que foi suplementado, remanejado ou aberto como crédito extraordinário em 2026, por órgão, função e fonte"
+    nao_use_para: "somar val_acrescimo sem converter (é texto) nem tratar 'Outras Alterações' como gasto novo: acréscimo e redução quase se anulam"
+    rascunho: [use_para, nao_use_para]
+    verificado: "10.093 linhas, 10.093 distintos da chave; datas dd-mm-aaaa em texto; soma em R$ bi após converter: Crédito Suplementar +112,2 / -59,9; Crédito Extraordinário +100,2 / 0; Outras Alterações +1.281,8 / -1.281,8; Reabertura +0,13 / -0,001 — medido 2026-10-27"

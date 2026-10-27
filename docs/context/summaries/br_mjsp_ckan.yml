@@ -1,0 +1,28 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_mjsp_ckan
+tabelas:
+  infopen:
+    grao: "um estabelecimento prisional respondente do formulário Infopen legado (colunas largas com nomes por extenso, ex.: '4.1 População prisional | Total')"
+    chave: "nenhuma conferida: 1.514 linhas, 1.013 códigos IBGE distintos; período de referência não está nas colunas lidas"
+    tempo: {natureza: sem_tempo, coluna: "nenhuma", cobertura: "não documentada"}
+    territorio: {nivel: municipio, colunas: {UF: "sigla", "Código IBGE": "município (BIGINT)", "Município": "nome (tipo BLOB)"}}
+    medidas:
+      - {coluna: "4.1 População prisional | Total", o_que: "população prisional do estabelecimento", unidade: "pessoas", soma: sim}
+    filtros_tipicos: ["\"Situação de Preenchimento\" = 'Validado' (todas as 1.514 linhas)", "\"Âmbito\" = 'Estadual' (1.509) ou 'Federal' (5)"]
+    use_para: "população e perfil por estabelecimento do censo penitenciário legado"
+    nao_use_para: "série temporal: sem coluna de período; para semestres use br_mjsp_sisdepen"
+    rascunho: [chave, tempo, use_para, nao_use_para]
+    verificado: "1.514 linhas, 1.013 Código IBGE distintos, 27 UFs, tudo Validado — medido 2026-10-27; colunas com acento exigem aspas duplas"
+  procon:
+    grao: "uma reclamação (atendimento) do Sindec/Procon"
+    chave: "nenhuma: sem identificador; (DataAbertura, NumeroCNPJ, CodigoProblema, CEPConsumidor, DataArquivamento) dá 13.779 distintos em 13.803 linhas"
+    tempo: {natureza: serie_de_periodos, coluna: DataAbertura, cobertura: "2010-01-19–2024-12-05 (AnoCalendario = '2024' em todas, DataArquivamento só em 2024)"}
+    territorio: {nivel: uf, colunas: {UF: "7 UFs apenas", Regiao: "região"}}
+    medidas:
+      - {expressao: "count(*)", o_que: "reclamações", unidade: "reclamações", soma: sim}
+    filtros_tipicos: ["Atendida = 'S' ou 'N' (N = 9.026, S = 4.777; significado não documentado, provavelmente atendida/não)", "SexoConsumidor IN ('F','M','N')"]
+    use_para: "reclamações arquivadas em 2024 por assunto, empresa (CNPJ) e perfil do consumidor"
+    nao_use_para: "panorama nacional ou série: só 7 UFs e arquivamentos de 2024"
+    rascunho: [chave, medidas, use_para, nao_use_para]
+    verificado: "13.803 linhas, 7 UFs, AnoCalendario único 2024 — 13.803 linhas; Atendida N 9.026, S 4.777 — medido 2026-10-27"

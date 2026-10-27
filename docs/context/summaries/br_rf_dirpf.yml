@@ -1,0 +1,29 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_rf_dirpf
+tabelas:
+  fundos_habilitados:
+    grao: "um fundo (FDCA, da criança e do adolescente, ou FDI, do idoso) habilitado a receber doação de IRPF na declaração de 2025, com a conta bancária"
+    chave: "cnpj_fundo: 6.471 linhas e 6.471 distintos. 'numero' NÃO é chave (4.286 distintos: a numeração recomeça em cada anexo, (numero, anexo) dá 4.287)"
+    tempo: {natureza: sem_tempo, coluna: ano_dirpf, cobertura: "2025–2025 (ano_dirpf, único valor)"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos (fundos estaduais E/N usam o código da UF seguido de zeros, por dedução; 5.875 distintos)", uf: "UF", nome_municipio: "nome em maiúsculas sem acento"}}
+    filtros_tipicos:
+      - "anexo = 'FDCA' (4.286 fundos) ou 'FDI' (2.185)"
+      - "tipo_fundo = 'M' (6.419 fundos municipais), 'E' (50, estaduais por dedução) ou 'N' (2); significado das letras não documentado"
+      - "codigo_banco = '001' (Banco do Brasil, 5.094; texto de 3 dígitos), '104' (798), '041' (440); 'nan' aparece como texto"
+    use_para: "Lista de fundos municipais da criança/idoso aptos a receber doação do IRPF, com banco e conta"
+    nao_use_para: "Valores doados ou repassados (não há medida; use repasses, que é texto sujo)"
+    rascunho: [use_para, nao_use_para, tipo_fundo]
+    verificado: "6.471 linhas; 6.471 cnpj_fundo distintos; 4.286 FDCA e 2.185 FDI — medido 2026-10-27"
+  repasses:
+    grao: "uma linha de uma planilha de repasse (FDCA ou FDI) publicada pela Receita; cada arquivo de origem tem layout próprio, então a mesma coluna tem sentido diferente por arquivo"
+    chave: "nenhuma: staging de 23 arquivos com colunas heterogêneas (todas texto), 28.885 linhas incluindo linhas de cabeçalho/TOTAL (17 com 'TOTAL' em Nº ou UF)"
+    tempo: {natureza: serie_de_periodos, coluna: ano_pagina, cobertura: "2022–2023 (ano da página da Receita onde o arquivo foi publicado; DIRPF/Ano, Ano e Doações são texto por arquivo)"}
+    territorio: {nivel: municipio, colunas: {IBGE: "código IBGE (texto, preenchido em só 20% das linhas)", UF: "UF (inclui o texto 'TOTAL')", "Município/Estado": "nome, nulo em 25%"}}
+    medidas:
+      - {coluna: "Valor, Valores, Valor Doado, Doação, Doações", o_que: "valores monetários em texto (ex. ' R$ 1.000,00 ', '-', ' 7.693 ') que variam por arquivo", unidade: "R$ em texto pt-BR", soma: "nao sem limpar texto e separar por arquivo; linhas TOTAL e subtotais duplicariam"}
+    filtros_tipicos: ["fundo = 'fdca' (20.486 linhas) ou 'fdi' (8.399), minúsculas", "arquivo = '<nome do arquivo>' (23 valores) para ler um layout só; ano_pagina = 2022 (20.052) ou 2023 (8.833)"]
+    use_para: "Consulta manual a uma planilha de repasse específica, filtrando por arquivo"
+    nao_use_para: "Somar valores ou empilhar arquivos diferentes: colunas misturadas, texto e linhas TOTAL"
+    rascunho: [use_para, nao_use_para, medidas]
+    verificado: "28.885 linhas; 23 arquivos; 17 linhas TOTAL — medido 2026-10-27"

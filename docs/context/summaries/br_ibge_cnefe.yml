@@ -20,9 +20,9 @@ tabelas:
       - {expressao: "count(*)", o_que: "número de endereços (cada linha é um endereço; domicílios e estabelecimentos misturados, separar por COD_ESPECIE)", unidade: "endereços", soma: sim}
     filtros_tipicos:
       - "COD_UF = '53' (texto, não inteiro) para particionar: tabela com 111 mi de linhas, sempre filtre UF ou município"
-      - "COD_ESPECIE = '1' para o tipo mais comum (~81% da amostra; no DF 1.172.001 de 1.318.887); '6' é o segundo (~10%); significado dos códigos 1 a 8 não documentado no banco (não há dicionário nem column_codes)"
+      - "COD_ESPECIE (documentação do CNEFE 2022, IBGE): '1' domicílio particular, '2' domicílio coletivo, '3' estabelecimento agropecuário, '4' de ensino, '5' de saúde, '6' de outras finalidades, '7' edificação em construção, '8' estabelecimento religioso. Para contar domicílios: COD_ESPECIE = '1' (no DF, 1.172.001 de 1.318.887)"
       - "NV_GEO_COORD = '1' para a melhor qualidade de coordenada (~93% da amostra; códigos '1' a '6'); significado não documentado no banco"
     use_para: "contar e localizar endereços por município, setor ou ponto (adensamento, cobertura de endereços, distância a pontos)."
     nao_use_para: "contar domicílios ou população sem filtrar COD_ESPECIE; chavear só por COD_UNICO_ENDERECO; colunas pessoais (CEP, número, logradouro) não são para listar."
-    rascunho: [use_para, nao_use_para, significado de COD_ESPECIE e NV_GEO_COORD, tempo]
+    rascunho: [use_para, nao_use_para, significado de NV_GEO_COORD, rótulos de COD_ESPECIE (da documentação do IBGE, coerentes com as contagens do DF, não com dicionário no banco), tempo]
     verificado: "UF 53: 1.318.887 linhas, 1.307.955 COD_UNICO_ENDERECO distintos, 1.318.887 pares (COD_UNICO_ENDERECO, COD_ESPECIE) distintos, 1 município, 0 COD_SETOR nulo, COD_ESPECIE 1..8 (1.172.001 / 688 / 4.515 / 2.175 / 2.279 / 100.889 / 30.911 / 5.429); linhas totais 111.102.875 (perfil) — medido 2026-10-27"

@@ -1,0 +1,70 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: global_icij_offshoreleaks
+tabelas:
+  entities:
+    grao: "uma empresa offshore (entidade) dos vazamentos do ICIJ"
+    chave: "node_id (814344 linhas = 814344 distintos)"
+    tempo: {natureza: retrato_atual, coluna: incorporation_date, cobertura: "datas em texto, formatos mistos (ex. '02-JAN-1998', 'Sep 25, 2012') e vazias em 25874 linhas"}
+    territorio: {nivel: outro, colunas: {jurisdiction: "código da jurisdição de constituição", country_codes: "ISO-3 ligados à empresa, vários separados por ';', vazio em 309353 linhas", countries: "nomes dos países"}}
+    filtros_tipicos:
+      - "sourceID = 'Panama Papers' (213634), 'Bahamas Leaks' (175888), 'Offshore Leaks' (105516) e registros do 'Paradise Papers - <país> corporate registry' / 'Pandora Papers - <provedor>': uma linha por vazamento/fonte"
+      - "Brasil: country_codes LIKE '%BRA%' (1532 linhas)"
+      - "status = 'Active' (116022), 'Defaulted' (100090), 'Dissolved' (24082), 'Dead' (23095); vazio '' em 456308 linhas (ausência é string vazia, não NULL)"
+    use_para: "localizar empresas offshore por jurisdição, país ligado, fonte e situação; ponto de partida para seguir relationships até donos e intermediários"
+    nao_use_para: "dizer quem é o dono: os nomes das pessoas estão em officers e o vínculo em relationships"
+    rascunho: [use_para, nao_use_para]
+    verificado: "814344 linhas = 814344 node_id; 1532 com BRA em country_codes — medido 2026-10-27"
+  officers:
+    grao: "uma pessoa ou empresa que figura como beneficiário/diretor/acionista (officer) nos vazamentos"
+    chave: "node_id (771315 linhas = 771315 distintos)"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: outro, colunas: {country_codes: "ISO-3, vários separados por ';'", countries: "nomes dos países"}}
+    filtros_tipicos: ["sourceID: Panama Papers (238402 no top de amostra), Paradise Papers - *, Offshore Leaks, Pandora Papers - *", "note vazio '' na grande maioria das linhas"]
+    use_para: "achar um officer pelo país ou fonte e seguir relationships (rel_type = 'officer_of') até a empresa"
+    nao_use_para: "supor que o mesmo ser humano é uma linha só: o mesmo nome aparece em vários node_id (sem deduplicação)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "771315 linhas = 771315 node_id — medido 2026-10-27"
+  intermediaries:
+    grao: "um intermediário (escritório de advocacia, banco, agente) que criou ou administrou empresas offshore"
+    chave: "node_id (26768 linhas = 26768 distintos)"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: outro, colunas: {country_codes: "ISO-3", countries: "nomes dos países"}}
+    filtros_tipicos: ["status = 'ACTIVE' (7062 no top de amostra), 'SUSPENDED' (4756), 'UNRECOVERABLE ACCOUNTS' (382), 'INACTIVE' (270), 'PROSPECT' (90); '' em cerca da metade"]
+    use_para: "identificar intermediários por país e fonte; liga às empresas por relationships (rel_type = 'intermediary_of')"
+    nao_use_para: "volume de negócios do intermediário: não há medida"
+    rascunho: [use_para, nao_use_para]
+    verificado: "26768 linhas = 26768 node_id — medido 2026-10-27"
+  addresses:
+    grao: "um endereço registrado nos vazamentos"
+    chave: "node_id (402246 linhas = 402246 distintos)"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: outro, colunas: {country_codes: "ISO-3", countries: "nomes dos países", address: "endereço em texto livre"}}
+    filtros_tipicos: ["sourceID = 'Paradise Papers - Malta corporate registry', 'Panama Papers', 'Offshore Leaks'... (22 fontes)"]
+    use_para: "achar entidades que dividem endereço (relationships com rel_type = 'registered_address')"
+    nao_use_para: "geolocalização: não tem coordenadas"
+    rascunho: [use_para, nao_use_para]
+    verificado: "402246 linhas = 402246 node_id — medido 2026-10-27"
+  other:
+    grao: "um nó de tipo 'outro' (fundações, trusts e entidades sem enquadramento) dos vazamentos Pandora e Paradise"
+    chave: "node_id (2989 linhas = 2989 distintos)"
+    tempo: {natureza: sem_tempo}
+    territorio: {nivel: outro, colunas: {jurisdiction: "AW (Aruba, 888), VGB (62), BLZ, KNA, PAN; '' em 2031 linhas", country_codes: "ISO-3"}}
+    filtros_tipicos: ["type = 'LIMITED LIABILITY COMPANY' (881) ou '' (2101)"]
+    use_para: "completar a rede quando um relationships aponta para um node_id que não está em entities/officers"
+    nao_use_para: "análise geral: são 2989 linhas só"
+    rascunho: [use_para, nao_use_para]
+    verificado: "2989 linhas = 2989 node_id — medido 2026-10-27"
+  relationships:
+    grao: "uma aresta do grafo: um vínculo entre dois nós (node_id_start → node_id_end) de um tipo (rel_type)"
+    chave: "nenhuma: 8177 linhas são cópias exatas (3339267 linhas, 3331090 distintas na linha inteira); DISTINCT resolve"
+    tempo: {natureza: sem_tempo, coluna: "start_date/end_date (texto, formatos mistos, quase sempre vazias)", cobertura: "não medida"}
+    territorio: {nivel: nenhum, colunas: {}}
+    filtros_tipicos:
+      - "rel_type = 'officer_of' (1720357), 'registered_address' (832721), 'intermediary_of' (598546), 'same_name_as' (104170), 'similar' (46761), 'same_company_as' (15523), 'connected_to' (12145), 'same_as' (4272), 'same_id_as' (3120), 'underlying' (1308)"
+      - "ligação dono–empresa: rel_type = 'officer_of' com node_id_start em officers e node_id_end em entities (a direção é start = officer, end = entidade; não conferida em todos os casos)"
+      - "status = '' na maioria; 'Resigned' e 'Appointed' só em parte; ausência é string vazia"
+    use_para: "percorrer o grafo: de officers a entities (officer_of), de entities a intermediaries (intermediary_of) e a addresses (registered_address)"
+    nao_use_para: "contar vínculos com count(*) sem DISTINCT, nem tratar same_name_as/similar como identidade confirmada"
+    rascunho: [use_para, nao_use_para, "direção officer_of"]
+    verificado: "3339267 linhas; 3331090 distintas na linha inteira; 14 valores de rel_type — medido 2026-10-27"

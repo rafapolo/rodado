@@ -1,0 +1,41 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_mps_beneficios
+tabelas:
+  beneficio_concedido_municipio_mes:
+    grao: "um município × mês × espécie de benefício × categoria × clientela × sexo × faixa etária, com os benefícios CONCEDIDOS (fluxo de novas concessões) no mês"
+    chave: "ano, mes, sigla_uf, id_municipio, especie_beneficio, categoria_beneficio, clientela, sexo, faixa_etaria (conferida só na partição ano = 2026: 1586393 linhas = 1586393 distintos; a tabela inteira tem 26321475 linhas)"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2012–2026-08 (2012 a 2025 com 12 meses; 2026 com meses 1 a 8)"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos (0,2% nulos)", sigla_uf: "UF (0,2% nulos)"}}
+    medidas:
+      - {coluna: quantidade, o_que: "benefícios concedidos no mês", unidade: "benefícios", soma: sim}
+      - {coluna: valor_total, o_que: "valor mensal inicial somado dos benefícios concedidos", unidade: "R$", soma: sim}
+      - {coluna: valor_total_salarios_minimos, o_que: "o mesmo valor em salários mínimos", unidade: "salários mínimos", soma: sim}
+    filtros_tipicos: ["ano = 2026 (ou outro ano) em toda consulta: a tabela tem 26 milhões de linhas", "categoria_beneficio IN ('auxilio_incapacidade_temporaria','bpc_loas','salario_maternidade','pensao_morte','aposentadoria_idade','aposentadoria_invalidez','auxilio_acidente','aposentadoria_tempo_contribuicao','aposentadoria_especial','auxilio_reclusao',...) (16 categorias)", "especie_beneficio = '31' (é a espécie mais frequente em 2026; confira o nome em dicionario_especie) — o código é texto de 2 dígitos sem zero à esquerda (ex.: '31', '80', '87')", "clientela IN ('urbana','rural'); sexo IN ('feminino','masculino')", "faixa_etaria é texto: 'até 15 anos', '16 a 19 anos', ..., '60 a 64 anos'... use IN com literais exatos"]
+    use_para: "contar e somar o valor das concessões de benefícios do INSS por município, espécie, sexo, idade e mês"
+    nao_use_para: "estoque de benefícios ativos (use beneficio_mantido_municipio_mes); somar quantidade de vários meses como se fosse um estoque"
+    rascunho: [use_para, nao_use_para]
+    verificado: "partição ano = 2026: 1586393 linhas = 1586393 distintos da chave; meses 1 a 8, quantidade por mês de 463824 (jan) a 848995 (ago), valor_total ago = R$ 1672772337,11; 9 linhas com valor_total_salarios_minimos = 0 — medido 2026-10-27"
+  beneficio_mantido_municipio_mes:
+    grao: "um município × mês × espécie de benefício × categoria × clientela × sexo × faixa etária, com os benefícios MANTIDOS (estoque em pagamento) no mês"
+    chave: "ano, mes, sigla_uf, id_municipio, especie_beneficio, especie_beneficio_rotulo, categoria_beneficio, clientela, sexo, faixa_etaria (conferida só na partição ano = 2026: 1111605 linhas = 1111605 distintos; a tabela inteira tem 54741513 linhas)"
+    tempo: {natureza: soma_de_retratos, coluna: "ano, mes", cobertura: "2021–2026; só alguns meses por ano: por ano, 2021 tem 6 meses (7 a 12), 2022 tem 12, 2023 tem 11 (sem o 9), 2024 tem 8 (1, 2, 3, 5, 9, 10, 11, 12), 2025 tem 10 (1, 3, 4, 5, 6, 7, 8, 10, 11, 12), 2026 só o mês 1"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos (0,06% nulos)", sigla_uf: "UF"}}
+    medidas:
+      - {coluna: quantidade, o_que: "benefícios em manutenção naquele mês (estoque)", unidade: "benefícios", soma: sim}
+      - {coluna: valor_total, o_que: "valor mensal somado dos benefícios mantidos", unidade: "R$", soma: sim}
+    filtros_tipicos: ["ano = 2026 (ou outro) em toda consulta (54 milhões de linhas)", "fixe UM mês: o estoque de cada mês repete os mesmos benefícios; somar meses multiplica", "especie_beneficio é NULL em 45% das linhas (503577 em 2026-01) e o rótulo é truncado em 20 caracteres: filtre pelo especie_beneficio_rotulo truncado, ver gotcha rotulo_truncado", "categoria_beneficio IN ('pensao_morte','aposentadoria_invalidez','bpc_loas','auxilio_acidente','auxilio_incapacidade_temporaria','aposentadoria_tempo_contribuicao','aposentadoria_idade','aposentadoria_especial','renda_mensal_vitalicia','salario_maternidade',...)", "sexo e clientela têm nulos (0,16% e 0,09%)"]
+    use_para: "contar beneficiários ativos do INSS e o valor pago por município, categoria, sexo e faixa etária num mês"
+    nao_use_para: "fluxo de novas concessões; série mensal contínua (faltam meses); somar meses"
+    rascunho: [use_para, nao_use_para]
+    verificado: "partição ano = 2026: 1111605 linhas = 1111605 distintos da chave, só mes = 1, sum(quantidade) 40746961; especie_beneficio não nulo em 608028 linhas e 51 rótulos distintos; categorias no topo: pensao_morte, aposentadoria_invalidez, bpc_loas. Soma de quantidade em 2026-01 por categoria: aposentadoria_idade 13740291, pensao_morte 8611121, aposentadoria_tempo_contribuicao 6623494, bpc_loas 6416346 — medido 2026-10-27"
+  dicionario_especie:
+    grao: "uma espécie de benefício (código especie_beneficio) com nome, categoria e natureza"
+    chave: "especie_beneficio (67 linhas = 67 distintos)"
+    tempo: {natureza: sem_tempo, coluna: nenhuma, cobertura: sem período}
+    territorio: {nivel: nenhum, colunas: {}}
+    filtros_tipicos: ["natureza_beneficio IN ('previdenciaria','indenizatoria','acidentaria','assistencial')"]
+    use_para: "traduzir o código especie_beneficio em nome, categoria e natureza"
+    nao_use_para: "tem poucas linhas, não use para contagens de benefícios"
+    rascunho: [use_para, nao_use_para]
+    verificado: "67 linhas, 67 distintos de especie_beneficio — medido 2026-10-27"

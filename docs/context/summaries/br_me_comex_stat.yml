@@ -1,0 +1,70 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_me_comex_stat
+tabelas:
+  municipio_exportacao:
+    grao: "exportação de um produto SH4 para um país, no mês, atribuída a um município (e sua UF) do exportador"
+    chave: "ano, mes, id_sh4, id_pais, sigla_uf, id_municipio (única; medido na partição ano = 2026, 280.777 linhas)"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "1997–2026 (2026 só jan–mar)"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "município IBGE de 7 dígitos (NULL nas linhas com sigla_uf = 'EX', exterior: 33 linhas em 2025, US$ 6,6 mi)", sigla_uf: "UF do município", id_pais: "código de país do Comex Stat (NÃO é ISO; 249 = Estados Unidos, 105 = Brasil); decodifique em dicionario ou use sigla_pais_iso3"}}
+    medidas:
+      - {coluna: valor_fob_dolar, o_que: "valor FOB exportado", unidade: "US$", soma: sim}
+      - {coluna: peso_liquido_kg, o_que: "peso líquido", unidade: "kg", soma: sim}
+    filtros_tipicos:
+      - "ano = <ano> (e mes): a tabela é particionada por ano; 2026 está incompleto (meses 1–3)"
+      - "id_sh4 é texto de 4 dígitos com zero à esquerda (ex.: '0101')"
+    use_para: "exportação por município, por produto SH4 (agregado) e por país de destino"
+    nao_use_para: "detalhe de NCM de 8 dígitos, unidade estatística ou via de transporte (isso é ncm_exportacao)"
+    rascunho: [use_para, nao_use_para, "município = domicílio fiscal do exportador, não onde o produto foi produzido"]
+    verificado: "22.219.221 linhas na tabela; 2026: 280.777 linhas = 280.777 chaves distintas; soma de valor_fob_dolar em 2025 = US$ 381,385 bi, igual à de ncm_exportacao — medido 2026-10-27"
+  municipio_importacao:
+    grao: "importação de um produto SH4 de um país, no mês, atribuída a um município (e sua UF) do importador"
+    chave: "ano, mes, id_sh4, id_pais, sigla_uf, id_municipio (única; medido na partição ano = 2026, 442.610 linhas)"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "1997–2026 (2026 só jan–mar)"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "município IBGE de 7 dígitos", sigla_uf: "UF do município", id_pais: "código de país do Comex Stat (não ISO)"}}
+    medidas:
+      - {coluna: valor_fob_dolar, o_que: "valor FOB importado", unidade: "US$", soma: sim}
+      - {coluna: peso_liquido_kg, o_que: "peso líquido", unidade: "kg", soma: sim}
+    filtros_tipicos: ["ano = <ano> (e mes); 2026 só meses 1–3"]
+    use_para: "importação por município, por produto SH4 e país de origem"
+    nao_use_para: "frete/seguro, NCM de 8 dígitos ou via de transporte (isso é ncm_importacao)"
+    rascunho: [use_para, nao_use_para, "município = domicílio do importador"]
+    verificado: "34.338.353 linhas; 2026: 442.610 = 442.610 chaves distintas; soma de valor_fob_dolar em 2025 = US$ 304,233 bi, igual à de ncm_importacao — medido 2026-10-27"
+  ncm_exportacao:
+    grao: "exportação de uma NCM (8 dígitos) para um país, no mês, por UF, via de transporte e unidade de despacho (URF)"
+    chave: "ano, mes, id_ncm, id_unidade, id_pais, sigla_uf_ncm, id_via, id_urf (única; medido na partição ano = 2026, 397.281 linhas)"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "1997–2026 (2026 só jan–mar)"}
+    territorio: {nivel: uf, colunas: {sigla_uf_ncm: "UF de produção da mercadoria; NULL em 7.385 linhas de 2025 (US$ 35,2 bi) e 1.686 de 2026 (US$ 6,9 bi)", id_pais: "código de país do Comex Stat (não ISO)"}}
+    medidas:
+      - {coluna: valor_fob_dolar, o_que: "valor FOB exportado", unidade: "US$", soma: sim}
+      - {coluna: peso_liquido_kg, o_que: "peso líquido", unidade: "kg", soma: sim}
+      - {coluna: quantidade_estatistica, o_que: "quantidade na unidade estatística da NCM (id_unidade)", unidade: "varia com id_unidade ('10' = quilograma líquido, '11' = número, '21' = tonelada...; ver column_codes)", soma: nao}
+    filtros_tipicos:
+      - "ano = <ano>; id_ncm é texto de 8 dígitos ('01012100')"
+      - "id_via = '1' marítima, '4' aérea, '7' rodoviária, '0' via não declarada (dicionario; 2.700 linhas e US$ 111 mi em 2026 com '0')"
+      - "só some quantidade_estatistica com id_unidade fixo; para agregar entre NCMs use peso_liquido_kg"
+    use_para: "exportação por NCM, UF de origem, via de transporte e unidade de despacho"
+    nao_use_para: "total por UF de origem sem tratar sigla_uf_ncm NULL (perde ~9% do valor em 2025); município (não há)"
+    rascunho: [use_para, nao_use_para, "sigla_uf_ncm = UF de produção"]
+    verificado: "31.292.226 linhas; 2026: 397.281 = 397.281 chaves; 2025: soma de valor_fob_dolar = US$ 381,385 bi (mesma da municipio_exportacao); em 2026 com id_unidade = '10', quantidade_estatistica difere de peso_liquido_kg em 5.050 de 274.930 linhas — medido 2026-10-27"
+  ncm_importacao:
+    grao: "importação de uma NCM (8 dígitos) de um país, no mês, por UF de destino, via de transporte e URF"
+    chave: "ano, mes, id_ncm, id_unidade, id_pais, sigla_uf_ncm, id_via, id_urf (única; medido na partição ano = 2026, 586.731 linhas)"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "1997–2026 (2026 só jan–mar)"}
+    territorio: {nivel: uf, colunas: {sigla_uf_ncm: "UF da importação (destino); sem NULL em 2026", id_pais: "código de país do Comex Stat (não ISO)"}}
+    medidas:
+      - {coluna: valor_fob_dolar, o_que: "valor FOB importado", unidade: "US$", soma: sim}
+      - {coluna: peso_liquido_kg, o_que: "peso líquido", unidade: "kg", soma: sim}
+      - {coluna: valor_frete, o_que: "frete da importação", unidade: "US$ (rascunho)", soma: sim}
+      - {coluna: valor_seguro, o_que: "seguro da importação", unidade: "US$ (rascunho)", soma: sim}
+      - {coluna: quantidade_estatistica, o_que: "quantidade na unidade estatística da NCM (id_unidade)", unidade: "varia com id_unidade", soma: nao}
+    filtros_tipicos:
+      - "ano = <ano>; id_ncm texto de 8 dígitos"
+      - "id_via = '1' marítima, '4' aérea (os dois maiores em 2026), '0' não aparece em 2026"
+    use_para: "importação por NCM, UF, via de transporte, com frete e seguro"
+    nao_use_para: "município do importador (use municipio_importacao); somar quantidade_estatistica entre unidades"
+    rascunho: [use_para, nao_use_para, "unidade de valor_frete e valor_seguro", "sigla_uf_ncm = UF de destino"]
+    verificado: "45.808.209 linhas; 2026: 586.731 = 586.731 chaves; 2025: soma de valor_fob_dolar = US$ 304,233 bi (mesma da municipio_importacao) — medido 2026-10-27"
+  dicionario:
+    grao: "uma linha por (id_tabela, nome_coluna, chave): significado de id_pais (1.123 linhas), id_via (34) e id_urf (552), repetido por tabela do dataset"
+    use_para: "decodificar id_pais (código Comex, não ISO), id_via e id_urf; id_unidade está em column_codes, não aqui"

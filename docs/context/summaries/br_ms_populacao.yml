@@ -1,0 +1,19 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ms_populacao
+tabelas:
+  municipio:
+    grao: "um município × ano × sexo × faixa etária quinquenal"
+    chave: "ano, id_municipio, sexo, grupo_idade (confirmada)"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2000–2025"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos"}}
+    medidas:
+      - {coluna: populacao, o_que: "habitantes estimados do município naquele sexo e faixa etária", unidade: "pessoas", soma: sim}
+    filtros_tipicos:
+      - "sexo = 'feminino' ou 'masculino' (minúsculas, só esses dois valores)"
+      - "grupo_idade = '0-4 anos', '5-9 anos', '10-14 anos'… (formato 'N-M anos'; o último é '80-mais'; difere do censo 2022, '0 a 4 anos')"
+      - "ano = 2025 para a população mais recente; sempre filtrar ano, senão soma 26 anos"
+    use_para: "denominador de taxas por município, sexo e faixa etária (população por ano)."
+    nao_use_para: "população por raça, escolaridade ou área rural/urbana; não tem esses recortes."
+    rascunho: [use_para, nao_use_para]
+    verificado: "4.919.222 linhas = 4.919.222 distintos da chave; 5.571 municípios, 2 sexos, 15 faixas; soma de populacao em 2025 = 213.421.037 — medido 2026-10-27"

@@ -1,0 +1,20 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_rodado_indicadores_municipais
+tabelas:
+  municipio:
+    grao: "um valor de um indicador do painel municipal × município × ano (× mês, quando mensal) (× dimensão, quando há recorte), em formato longo"
+    chave: "nenhuma única: 12.382.056 linhas e 12.291.123 distintos de (id_municipio, indicador, ano, mes, dimensao) (90.933 linhas repetem). Repetem sobretudo inse.niveis_pct.nivel e inse.niveis_pct.pct (44.552 linhas em grupos repetidos cada), biomas.pct_area, violencia_sinan.por_ciclo_vida.n, bndes.nao_automaticas.* — nesses a dimensao é nula mas há mais de um valor; use GROUP BY ou escolha o indicador"
+    tempo: {natureza: serie_anual, coluna: "ano, mes", cobertura: "1900–2026 (ano 1900 em 14 linhas, valor sentinela; o grosso vai de 1985 a 2026); mes é nulo em ~35% das linhas (indicador anual) e vai de 1 a 9 nas mensais de 2026"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos (6.859 distintos, inclui municípios extintos/auxiliares)", sigla_uf: "UF", nome: "nome do município"}}
+    medidas:
+      - {coluna: valor, o_que: "valor numérico do indicador; o que ele mede e a unidade dependem de indicador (987 indicadores em 19 seções) e de dimensao", unidade: "varia por indicador (R$, contagem, %, hectares...)", soma: "só dentro de um mesmo indicador (e dimensao); nunca entre indicadores nem seções; 588.059 linhas têm valor nulo (o texto carrega a informação em 328.708 linhas)"}
+    filtros_tipicos:
+      - "indicador = 'populacao_serie.populacao' (um valor por município × ano, ex. Nova Friburgo 2025 = 203.417) — o literal é o nome com pontos, não o nome da coluna"
+      - "indicador = 'pix.serie.pago' (valor mensal em R$ por município; ano e mes preenchidos, dimensao nula)"
+      - "secao IN ('saude','educacao','economia','meio_ambiente','beneficios','infraestrutura','seguranca','transparencia','demografia','agropecuaria','politica','empresas','trabalho','social','municipio','vizinhanca','comercio_exterior','geografia', ...) — 19 seções; a maior é saude (157 indicadores)"
+      - "dimensao é texto 'chave=valor' (ex. 'tipo=utilitario', 'atividade=...'), nula em 59% das linhas; filtre por LIKE 'chave=%' ou igualdade ao literal"
+    use_para: "Buscar um indicador pontual de um município (população, Pix, saúde, benefícios) no formato do painel municipal"
+    nao_use_para: "Somar indicadores diferentes ou séries com dimensao sem filtrar; tratar a chave como única"
+    rascunho: [use_para, nao_use_para, filtros_tipicos]
+    verificado: "12.382.056 linhas; 12.291.123 distintos da chave candidata; 987 indicadores, 19 seções, ano 1900–2026; Nova Friburgo (3303401) populacao_serie.populacao 2022 = 189.939 e 2025 = 203.417 — medido 2026-10-27"

@@ -1,0 +1,61 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_rf_cno
+tabelas:
+  microdados:
+    grao: "uma obra (CNO) × uma extração (data_extracao): o cadastro da obra com responsável e endereço; cada extração traz o cadastro inteiro"
+    chave: "(data_extracao, id_cno): medido em data_extracao = 2025-07-28, 3.006.410 linhas e 3.006.410 id_cno distintos (também 3.006.410 em (id_cno, id_responsavel)). 191 extrações de 2024-08-05 a 2025-07-28"
+    tempo: {natureza: soma_de_retratos, coluna: data_extracao, cobertura: "2024-08-05–2025-07-28 (191 extrações); data_registro de 2018-11-19 a 2025-07-26"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos da obra", sigla_uf: "UF da obra", cep: "CEP", bairro: "texto livre"}}
+    medidas:
+      - {coluna: area, o_que: "área da obra, na unidade de unidade_medida (m2 em 1.884.227 linhas da amostra; também km, m3, kva, kw, Outra)", unidade: "depende de unidade_medida", soma: "nao sem filtrar unidade_medida = 'm2'; tem valores absurdos (máx 2,6e11)"}
+    filtros_tipicos:
+      - "data_extracao = DATE '2025-07-28' (a mais recente; sempre fixe uma extração, senão cada obra é contada até 191 vezes)"
+      - "situacao = '2' (Ativa), '15' (Encerrada), '14' (Paralisada), '3' (Suspensa), '1' (Nula) — texto, do dicionário; Encerrada é a maioria (1.955.926 de 3.006.410 em 2025-07-28), então 'obras existentes' ≠ 'obras ativas'"
+      - "qualificacao_responsavel: '70' proprietário do imóvel, '57' dono da obra, '53' pessoa jurídica construtora, '64' incorporador, '109' consórcio, '110' construção em nome coletivo, '111' sociedade líder de consórcio (dicionário)"
+      - "id_responsavel <> 'nan' para só CNPJ/CPF reais (pessoa física vem como o texto 'nan', ver gotcha id_responsavel_nan)"
+      - "unidade_medida = 'm2' antes de somar area"
+    use_para: "Cadastro de obras de construção civil por município, situação e responsável (CNPJ)"
+    nao_use_para: "Contar obras sem fixar data_extracao; evolução temporal por empilhamento de extrações (use a diferença entre duas extrações)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "534.056.673 linhas; 191 extrações; extração 2025-07-28: 3.006.410 linhas = 3.006.410 id_cno distintos; situação 15: 1.955.926, 2: 937.079, 14: 55.951, 1: 49.149, 3: 8.305 — medido 2026-10-27. Gotchas: snapshot_por_extracao, id_responsavel_nan"
+  cnaes:
+    grao: "uma obra (CNO) × uma atividade CNAE (subclasse) × uma extração"
+    chave: "(data_extracao, id_cno, cnae_2_subclasse): em 2025-07-28, 3.268.007 linhas e 3.268.007 distintos de (id_cno, cnae_2_subclasse), sobre 3.006.410 obras"
+    tempo: {natureza: soma_de_retratos, coluna: data_extracao, cobertura: "2024-08-05–2025-07-28 (191 extrações)"}
+    territorio: {nivel: nenhum, colunas: {}}
+    filtros_tipicos: ["data_extracao = DATE '2025-07-28'; cnae_2_subclasse = '4120400' (texto de 7 dígitos; construção de edifícios, por dedução do código CNAE; 966.390 na amostra) ou '4399103' (673.485)"]
+    use_para: "Atividade CNAE declarada por obra, para juntar com microdados por id_cno"
+    nao_use_para: "Contar obras (uma obra tem várias linhas: 3.268.007 linhas para 3.006.410 obras)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "579.063.627 linhas; extração 2025-07-28: 3.268.007 linhas, 3.268.007 distintos, 3.006.410 id_cno — medido 2026-10-27"
+  areas:
+    grao: "uma área de uma obra (CNO) × uma extração: principal ou complementar, com categoria, destinação, tipo de obra e metragem"
+    chave: "nenhuma: em 2025-07-28, 3.803.144 linhas e 3.790.390 combinações distintas de (id_cno, categoria, destinacao, tipo_obra, tipo_area, tipo_area_complementar, metragem); 2.844.766 obras; há linhas totalmente repetidas (uma obra pode ter duas áreas iguais)"
+    tempo: {natureza: soma_de_retratos, coluna: data_extracao, cobertura: "2024-08-05–2025-07-28 (191 extrações)"}
+    territorio: {nivel: nenhum, colunas: {}}
+    medidas:
+      - {coluna: metragem, o_que: "área construída da linha em m2 (unidade não documentada na tabela; tem valores absurdos, máx 7,2e9)", unidade: "m2 (suposto)", soma: "só dentro de uma extração e com tipo_area definido (Principal + Complementar são partes de áreas diferentes); outliers distorcem"}
+    filtros_tipicos:
+      - "data_extracao = DATE '2025-07-28'"
+      - "tipo_area = 'Principal' (1.841.071 na amostra) ou 'Complementar' (124.390); em tipo_area_complementar o valor 'nan' (texto) marca as áreas principais (1.841.071)"
+      - "categoria = 'Obra Nova' / 'Existente' / 'Acréscimo' / 'Demolição' / 'Reforma'; destinacao = 'Residencial unifamiliar' etc."
+    use_para: "Metragem construída por obra, categoria e destinação"
+    nao_use_para: "Contar obras (várias linhas por obra); somar entre extrações"
+    rascunho: [use_para, nao_use_para, metragem]
+    verificado: "679.080.010 linhas; extração 2025-07-28: 3.803.144 linhas, 3.790.390 combinações distintas, 2.844.766 id_cno — medido 2026-10-27"
+  vinculos:
+    grao: "um vínculo de um responsável (id_responsavel) com uma obra (CNO) × uma extração, com data de início e fim"
+    chave: "nenhuma única: em 2025-07-28, 359.388 linhas e 349.761 distintos de (id_cno, id_responsavel, data_inicio), sobre 345.033 obras (9.627 linhas repetem)"
+    tempo: {natureza: soma_de_retratos, coluna: data_extracao, cobertura: "2024-08-05–2026-09-12 (312 extrações; vai além de microdados, que termina em 2025-07-28); data_fim é nula em 99,4% (vínculo em aberto)"}
+    territorio: {nivel: nenhum, colunas: {}}
+    filtros_tipicos:
+      - "data_extracao = DATE '2026-09-12' (a mais recente: 431.211 linhas, 414.447 obras); em 2025-07-28 são 359.388"
+      - "qualificacao_contribuinte = '53' (pessoa jurídica construtora; 393.451 na extração 2026-09-12), '110', '64', '109', '111', '57', '70' (dicionário); nulo em 16,7% do perfil"
+    use_para: "Quem está vinculado a cada obra (construtora, consórcio) para juntar com microdados por id_cno"
+    nao_use_para: "Contar obras sem fixar a extração; supor que vinculos e microdados têm as mesmas datas de extração"
+    rascunho: [use_para, nao_use_para]
+    verificado: "129.951.372 linhas; 312 extrações; 2025-07-28: 359.388 linhas, 349.761 distintos da chave candidata; 2026-09-12: 431.211 linhas — medido 2026-10-27"
+  dicionario:
+    grao: "um código de coluna (id_tabela × nome_coluna × chave) com seu significado"
+    use_para: "Traduzir situacao e qualificacao_responsavel/qualificacao_contribuinte de microdados e vinculos"

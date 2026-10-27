@@ -1,0 +1,98 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_tce_rj
+tabelas:
+  contratos_estado:
+    grao: "uma contratação do Governo do Estado do RJ (contrato, com empenho/liquidação/pagamento acumulados)"
+    chave: "Contratacao (39.210 linhas, 39.210 distintos); Processo repete (29.984 distintos)"
+    tempo: {natureza: serie_de_periodos, coluna: DataContratacao, cobertura: "2023-01-02–2026-10-05"}
+    territorio: {nivel: uf, colunas: {Unidade: "unidade gestora do Estado"}}
+    medidas:
+      - {coluna: ValorTotalContrato, o_que: "valor do contrato", unidade: "R$", soma: sim}
+      - {coluna: ValorTotalEmpenhado, o_que: "empenhado até agora (74,8% nulos)", unidade: "R$", soma: sim}
+      - {coluna: ValorTotalLiquidado, o_que: "liquidado (89,7% nulos)", unidade: "R$", soma: sim}
+      - {coluna: ValorTotalPago, o_que: "pago (90,4% nulos)", unidade: "R$", soma: sim}
+    filtros_tipicos:
+      - "StatusContratacao = 'Ativo' (21.825) ou 'Em Aberto' (15.521); outros: 'Encerrado' 587, 'Cancelado' 519, 'Aguard. Liberação' 377, 'Em Aprovação' 174, 'Aguardando publ. PNCP' 154, 'Em Alteração' 45, 'Em Edição' 8"
+      - "AnoProcesso = 2023..2026 (número)"
+    use_para: "contratos do Estado do RJ por unidade, fornecedor e valor"
+    nao_use_para: "somar ValorTotalEmpenhado como execução completa: 17.492 dos 21.825 contratos 'Ativo' têm empenho nulo"
+    rascunho: [use_para, nao_use_para]
+    verificado: "39.210 linhas, 39.210 distintos de Contratacao; 'Ativo' 21.825 dos quais 17.492 com ValorTotalEmpenhado nulo — medido 2026-10-27"
+  contratos_municipio:
+    grao: "um contrato de município do RJ (88 entes), por unidade gestora, contratado e data"
+    chave: "nenhuma: 137.157 linhas; (Ente, UnidadeGestora, NumeroContrato, AnoContrato) tem 108.228 distintos, e com CNPJ/CPF e data de assinatura 135.883"
+    tempo: {natureza: serie_de_periodos, coluna: DataAssinaturaContrato, cobertura: "2020-01-01–2026-12-29 (AnoContrato 2020–2026)"}
+    territorio: {nivel: municipio, colunas: {Ente: "município ou ente, em maiúsculas sem acento", UnidadeGestora: "código da unidade, texto"}}
+    medidas:
+      - {coluna: ValorContrato, o_que: "valor do contrato", unidade: "R$", soma: sim}
+      - {coluna: ValorEmpenhado, o_que: "empenhado (21,5% nulos)", unidade: "R$", soma: sim}
+      - {coluna: ValorPago, o_que: "pago (21,5% nulos)", unidade: "R$", soma: sim}
+    filtros_tipicos:
+      - "ValorContrato < 1e9 antes de somar: 27 linhas acima de 1 bi e 9 negativas (ver gotcha valor_contrato_digitado_errado)"
+      - "UtilizaLei14133 = 'Sim' (43.282) ou 'Não' (93.875)"
+      - "Modalidade = 'PREGÃO ELETRÔNICO' (34.121), 'PREGÃO PRESENCIAL' (28.086); 46% nulo"
+    use_para: "contratos municipais do RJ por ente, modalidade e fornecedor"
+    nao_use_para: "somar ValorContrato sem cortar outliers, ou contar contratos com count(*) (a linha repete o contrato)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "137.157 linhas; 108.228 distintos de (Ente, UnidadeGestora, NumeroContrato, AnoContrato); 9 negativos e 27 acima de 1e9 em ValorContrato — medido 2026-10-27"
+  convenios_estado:
+    grao: "um convênio do Estado do RJ (acordo com unidade gestora, mês e ano)"
+    chave: "nenhuma: 2.917 linhas; (UnidadeGestora, NumeroConvenio, AnoConvenio) tem 2.899 distintos"
+    tempo: {natureza: serie_de_periodos, coluna: DataAssinatura, cobertura: "2019-01-07–2026-10-01 (AnoConvenio 2019–2026)"}
+    territorio: {nivel: uf, colunas: {SiglaUnidadeGestora: "sigla da unidade estadual (FETJ, MPE, DETRAN...)"}}
+    medidas:
+      - {coluna: Valor, o_que: "valor do convênio", unidade: "R$", soma: sim}
+      - {coluna: ValorAditivos, o_que: "valor dos aditivos (89% nulos)", unidade: "R$", soma: sim}
+    filtros_tipicos: ["ComvenioAditivo = 'Convenio' (todas as 2.917 linhas; o nome da coluna tem erro de grafia)"]
+    use_para: "convênios do Estado do RJ por unidade e valor"
+    nao_use_para: "convênios municipais: só estaduais; o FETJ (Tribunal de Justiça) responde por 1.132 das linhas"
+    rascunho: [use_para, nao_use_para]
+    verificado: "2.917 linhas, 2.899 distintos da chave candidata; FETJ 1.132 — medido 2026-10-27"
+  gastos_com_pessoal:
+    grao: "um município × poder (Executivo ou Legislativo) × exercício × período (quadrimestre ou semestre) do relatório de gestão fiscal"
+    chave: "Exercicio, Ente, Referencia, Poder (2.616 linhas, 2.616 distintos)"
+    tempo: {natureza: serie_de_periodos, coluna: Exercicio, cobertura: "2021–2025"}
+    territorio: {nivel: municipio, colunas: {Ente: "município, maiúsculas sem acento"}}
+    medidas:
+      - {coluna: RCL, o_que: "receita corrente líquida do período", unidade: "R$", soma: nao}
+      - {coluna: DespesasPessoal, o_que: "despesa com pessoal do período", unidade: "R$", soma: nao}
+      - {coluna: PercentualRCL, o_que: "DespesasPessoal sobre RCL", unidade: "%", soma: nao}
+    filtros_tipicos:
+      - "Referencia = '3º Quadrimestre' (841 linhas) para o fechamento do ano; municípios semestrais aparecem como '1º Semestre' (110) ou '2º Semestre' (66)"
+      - "Poder = 'Executivo' (1.311) ou 'Legislativo' (1.305)"
+      - "PercentualRCL <= 100: 7 linhas de 2021 têm percentual absurdo (até 51.708%, RCL gravada em escala errada, ex. BARRA DO PIRAI)"
+    use_para: "acompanhar o limite da Lei de Responsabilidade Fiscal de gasto com pessoal por município"
+    nao_use_para: "somar RCL ou despesas entre períodos (são acumulados de 12 meses, não fluxos disjuntos; deduzido)"
+    rascunho: [use_para, nao_use_para, "RCL e DespesasPessoal como acumulado em 12 meses"]
+    verificado: "2.616 linhas, 2.616 distintos da chave; PercentualRCL > 100 em 7 linhas — medido 2026-10-27"
+  licitacoes:
+    grao: "uma licitação de município do RJ (ente × unidade × processo licitatório)"
+    chave: "Ente, Unidade, ProcessoLicitatorio (42.724 linhas, 42.724 distintos)"
+    tempo: {natureza: serie_de_periodos, coluna: DataPublicacaoEdital, cobertura: "2002-12-01–2026-09-28 (Ano 2020–2026)"}
+    territorio: {nivel: municipio, colunas: {Ente: "município", Unidade: "unidade gestora, texto"}}
+    medidas:
+      - {coluna: ValorEstimado, o_que: "valor estimado da licitação", unidade: "R$", soma: sim}
+    filtros_tipicos:
+      - "Modalidade = 'PREGÃO ELETRÔNICO' (20.354), 'PREGÃO PRESENCIAL' (14.283), 'TOMADA DE PREÇOS' (2.452), 'CONVITE' (2.179)"
+      - "Tipo = 'MENOR PREÇO P/ITEM' (26.530) ou 'MENOR PREÇO GLOBAL' (11.861)"
+      - "OrcamentoSigiloso = 'SIM' (1.337), 'NÃO' (41.387); ValorEstimado pode ser 0"
+      - "DataHomologacao é texto e tem datas sem sentido (min 2000-03-24, max 9202-08-26): não use sem limpar"
+    use_para: "licitações municipais do RJ por modalidade e valor estimado"
+    nao_use_para: "valor contratado: só há estimativa; Parecer é 100% nulo"
+    rascunho: [use_para, nao_use_para]
+    verificado: "42.724 linhas, 42.724 distintos da chave de 3 colunas — medido 2026-10-27"
+  penalidades_ressarcimento_estado:
+    grao: "uma condenação (multa ou ressarcimento) do TCE-RJ a um órgão ou responsável estadual"
+    chave: "Condenacao (1.059 linhas, 1.059 distintos); Processo + Condenacao também 1.059"
+    tempo: {natureza: serie_de_periodos, coluna: DataSessao, cobertura: "2021-01-25–2026-09-21 (AnoCondenacao 2022–2026)"}
+    territorio: {nivel: uf, colunas: {NomeOrgao: "órgão estadual"}}
+    medidas:
+      - {coluna: ValorPenalidade, o_que: "valor da multa ou ressarcimento", unidade: "R$", soma: sim}
+    filtros_tipicos:
+      - "GrupoNatureza = 'TOMADA DE CONTAS' (453) ou 'RELATÓRIO DE AUDITORIA GOVERNAMENTAL' (322); 17 valores no total"
+      - "TipoEnte = 'ESTADUAL' (todas as 1.059 linhas)"
+    use_para: "multas e débitos imputados pelo TCE-RJ a entes estaduais, por ano e natureza"
+    nao_use_para: "condenações de municípios: a tabela é só estadual; não distingue multa de ressarcimento"
+    rascunho: [use_para, nao_use_para, "que não distingue multa de ressarcimento"]
+    verificado: "1.059 linhas, 1.059 distintos de Condenacao — medido 2026-10-27"

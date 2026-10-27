@@ -1,0 +1,19 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: politicos
+tabelas:
+  contato:
+    grao: "um parlamentar (deputado federal ou senador) por casa legislativa, com o cadastro de contato mais recente"
+    chave: "(casa, id) (7664 linhas = 7664 distintos); id sozinho NÃO é único: 17 ids se repetem entre câmara e senado (7647 distintos)"
+    tempo: {natureza: retrato_atual, coluna: data_status, cobertura: "2003-02-25–2026-09-30 (data da última situação; nula em 72,98% das linhas); id_legislatura de 1 a 57"}
+    territorio: {nivel: uf, colunas: {uf: "UF pela qual atua (nula em 0,46%)", uf_nascimento: "UF de nascimento", municipio_nascimento: "município de nascimento, texto"}}
+    filtros_tipicos:
+      - "casa = 'camara' (7583) ou 'senado' (81): o senado só tem os 81 em exercício"
+      - "em exercício: em_exercicio = true (607 linhas: 526 da câmara e 81 do senado); situacao = 'Exercício' coincide com isso; para a câmara situacao e em_exercicio são NULL em 2813 linhas, e false em 4244"
+      - "sexo tem códigos diferentes por casa: câmara 'M' (7236) / 'F' (347); senado 'Masculino' (66) / 'Feminino' (15)"
+      - "situacao: 'Vacância' (2719), 'Fim de Mandato' (986), 'Exercício' (607), 'Suplência' (324), 'Afastado' (189), 'Licença' (22), 'Convocado' (4)"
+      - "condicao_eleitoral: 'Titular' (5383), 'Suplente' (1238), 'Efetivado' (209), 'Não Eleito' (6), 'Eleito' (2); nula em 826"
+    use_para: "cadastro de parlamentares: partido, UF, condição, escolaridade e canais de contato"
+    nao_use_para: "histórico de mandatos ou de troca de partido: há uma linha por parlamentar e casa, não por mandato; partido é nulo em 30,6%"
+    rascunho: [use_para, nao_use_para, "situacao = 'Exercício' coincide com em_exercicio (visto na contagem por casa, não por linha)"]
+    verificado: "7664 linhas = 7664 (casa, id); 7647 id distintos; camara 7583, senado 81 — medido 2026-10-27"

@@ -1,0 +1,137 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_inep_saeb
+tabelas:
+  aluno_ef_2ano:
+    grao: "um aluno do 2º ano do EF × disciplina (LP ou MT) numa edição do Saeb"
+    chave: "(ano, id_aluno, disciplina): 305.422 linhas = 305.422 distintos"
+    tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2019–2023 (2019, 2021, 2023)"}
+    territorio: {nivel: municipio, colunas: {sigla_uf: "UF", id_municipio: "município (7 dígitos IBGE)", id_escola: "escola", id_turma: "turma"}}
+    medidas:
+      - {coluna: proficiencia_saeb, o_que: "proficiência do aluno na escala Saeb (nula se não fez a prova)", unidade: "pontos", soma: nao}
+      - {coluna: peso_aluno, o_que: "peso amostral do aluno; médias exigem média ponderada", unidade: "peso", soma: nao}
+    filtros_tipicos: ["disciplina IN ('LP','MT')", "presenca = 1 (BIGINT) para quem fez a prova; proficiencia nula em 75.594 de 305.422 linhas"]
+    use_para: "proficiência de alfabetização no 2º ano por escola, município e UF"
+    nao_use_para: "comparar com 5º/9º ano em escala: a escala do 2º ano é outra"
+    rascunho: [use_para, nao_use_para]
+    verificado: "305.422 linhas, chave confirmada, proficiencia nula 75.594 — medido 2026-10-27"
+  aluno_ef_5ano:
+    grao: "um aluno do 5º ano do EF × disciplina numa edição do Saeb (microdado, 47 milhões de linhas)"
+    chave: "(id_aluno, disciplina) dentro de ano = 2023: 4.884.286 linhas = 4.884.286 distintos"
+    tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "1995–2023 (bienal; 15 edições)"}
+    territorio: {nivel: municipio, colunas: {sigla_uf: "UF", id_municipio: "município", id_escola: "escola", rede: "código cujo significado muda por ano: ver dicionario com cobertura_temporal (em 2023: 0 privada, 1 pública)"}}
+    medidas:
+      - {coluna: proficiencia_saeb, o_que: "proficiência na escala Saeb; nula em 704.306 de 4.884.286 linhas em 2023", unidade: "pontos", soma: nao}
+      - {coluna: peso_aluno, o_que: "peso amostral para agregar", unidade: "peso", soma: nao}
+    filtros_tipicos: ["ano = 2023 (sempre uma partição)", "disciplina IN ('LP','MT'); anos antigos têm também 'C' (Ciências) no dicionário"]
+    use_para: "proficiência do 5º ano por escola ou município, com peso_aluno"
+    nao_use_para: "série histórica sem checar rede/localizacao: os códigos mudam por ano"
+    rascunho: [use_para, nao_use_para]
+    verificado: "ano = 2023: 4.884.286 linhas, chave confirmada; demais anos não medidos — medido 2026-10-27"
+  aluno_ef_9ano:
+    grao: "um aluno do 9º ano do EF × disciplina numa edição do Saeb (microdado, 54 milhões de linhas)"
+    chave: "(id_aluno, disciplina) dentro de ano = 2023: 5.005.814 linhas = 5.005.814 distintos"
+    tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "1995–2023 (15 edições)"}
+    territorio: {nivel: municipio, colunas: {sigla_uf: "UF", id_municipio: "município", id_escola: "escola", rede: "em 2023: 0 privada, 1 pública (dicionario)"}}
+    medidas:
+      - {coluna: proficiencia_saeb, o_que: "proficiência na escala Saeb; nula em 830.006 de 5.005.814 linhas em 2023", unidade: "pontos", soma: nao}
+      - {coluna: peso_aluno, o_que: "peso amostral; a média ponderada de MT 2023 é 258,0 (gotcha agregado_para_em_2021); sem peso a média de MT com presenca = 1 é 251,4", unidade: "peso", soma: nao}
+    filtros_tipicos: ["ano = 2023", "disciplina = 'MT' (ou 'LP')", "presenca = 1 para quem fez a prova"]
+    use_para: "proficiência do 9º ano em 2023, que as tabelas agregadas não têm (gotcha agregado_para_em_2021)"
+    nao_use_para: "média simples entre alunos: use peso_aluno"
+    rascunho: [use_para, nao_use_para]
+    verificado: "ano = 2023: 5.005.814 linhas, chave confirmada; MT presenca = 1: 2.093.283 linhas, média simples 251,4 — medido 2026-10-27"
+  aluno_em_34ano:
+    grao: "um aluno do 3º/4º ano do Ensino Médio × disciplina no Saeb 2023"
+    chave: "(id_aluno, disciplina) em ano = 2023: 2.873.104 linhas = 2.873.104 distintos"
+    tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2023–2023"}
+    territorio: {nivel: municipio, colunas: {sigla_uf: "UF", id_municipio: "município", id_escola: "escola", escola_publica: "0/1"}}
+    medidas:
+      - {coluna: proficiencia_saeb, o_que: "proficiência (nula em 9.298 linhas)", unidade: "pontos", soma: nao}
+      - {coluna: peso_aluno, o_que: "peso amostral", unidade: "peso", soma: nao}
+    filtros_tipicos: ["serie IN ('12','13')", "disciplina IN ('LP','MT')", "escola_publica = '1' para rede pública"]
+    use_para: "proficiência e perfil socioeconômico (INSE, questionário) do ensino médio em 2023"
+    nao_use_para: "série histórica: só uma edição"
+    rascunho: [use_para, nao_use_para]
+    verificado: "2.873.104 linhas, chave confirmada, 1 ano — medido 2026-10-27"
+  proficiencia:
+    grao: "um aluno × disciplina × série numa edição, microdado empilhado de várias edições (94 milhões de linhas)"
+    chave: "(id_aluno, disciplina, serie) dentro de ano = 2021: 14.039.962 linhas = 14.039.962 distintos"
+    tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "1995–2021 (14 edições; sem 2023)"}
+    territorio: {nivel: municipio, colunas: {sigla_uf: "UF", id_municipio: "município", id_escola: "escola", rede: "0 privada, 1 pública em 2021"}}
+    medidas:
+      - {coluna: proficiencia_saeb, o_que: "proficiência na escala Saeb, nula em 3.453.149 de 14.039.962 linhas em 2021", unidade: "pontos", soma: nao}
+      - {coluna: peso_aluno, o_que: "peso amostral", unidade: "peso", soma: nao}
+    filtros_tipicos: ["ano = 2021 (sempre uma partição)", "disciplina IN ('LP','MT')"]
+    use_para: "série longa de proficiência por aluno até 2021"
+    nao_use_para: "2023 (use aluno_ef_5ano, aluno_ef_9ano, aluno_em_34ano)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "ano = 2021: 14.039.962 linhas, chave confirmada; outros anos não medidos — medido 2026-10-27"
+  brasil:
+    grao: "uma média e distribuição por nível de proficiência × ano × rede × localização × disciplina × série, nacional"
+    chave: "(ano, rede, localizacao, disciplina, serie): 856 = 856"
+    tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "1995–2023"}
+    territorio: {nivel: brasil, colunas: {}}
+    medidas:
+      - {coluna: media, o_que: "proficiência média", unidade: "pontos", soma: nao}
+      - {coluna: "nivel_0..nivel_10", o_que: "percentual de alunos em cada nível de proficiência", unidade: "%", soma: nao}
+    filtros_tipicos: ["rede = 'total - federal, estadual, municipal e privada' para o total geral (valor literal do perfil)", "localizacao = 'total'"]
+    use_para: "evolução nacional do Saeb"
+    nao_use_para: "somar redes: 'total - ...' já agrega as demais"
+    rascunho: [use_para, nao_use_para]
+    verificado: "856 linhas, chave confirmada — medido 2026-10-27"
+  uf:
+    grao: "uma UF × ano × rede × localização × disciplina × série (média e níveis)"
+    chave: "(ano, rede, localizacao, sigla_uf, disciplina, serie): 20.122 = 20.122"
+    tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "1995–2023"}
+    territorio: {nivel: uf, colunas: {sigla_uf: "UF"}}
+    medidas:
+      - {coluna: media, o_que: "proficiência média", unidade: "pontos", soma: nao}
+      - {coluna: "nivel_0..nivel_10", o_que: "percentual de alunos por nível", unidade: "%", soma: nao}
+    filtros_tipicos: ["rede = 'total - federal, estadual, municipal e privada'", "localizacao = 'total'"]
+    use_para: "ranking e evolução por UF"
+    nao_use_para: "somar médias entre redes ou séries"
+    rascunho: [use_para, nao_use_para]
+    verificado: "20.122 linhas, chave confirmada — medido 2026-10-27"
+  municipio:
+    grao: "um município × ano × rede × localização × disciplina × série (média e níveis)"
+    chave: "(ano, rede, localizacao, id_municipio, disciplina, serie): 1.994.588 = 1.994.588"
+    tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2011–2023"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "IBGE 7 dígitos", sigla_uf: "UF"}}
+    medidas:
+      - {coluna: media, o_que: "proficiência média (nula em 3,3%)", unidade: "pontos", soma: nao}
+      - {coluna: "nivel_0..nivel_10", o_que: "percentual por nível", unidade: "%", soma: nao}
+    filtros_tipicos: ["rede = 'total - federal, estadual, municipal e privada'", "localizacao = 'total'", "serie = 5 ou 9 (BIGINT)"]
+    use_para: "proficiência média por município"
+    nao_use_para: "2023 do 9º ano sem checar cobertura; o gotcha agregado_para_em_2021 vale para brasil"
+    rascunho: [use_para, nao_use_para]
+    verificado: "1.994.588 linhas, chave confirmada, anos 2011–2023 — medido 2026-10-27"
+  brasil_taxa_alfabetizacao:
+    grao: "uma taxa de alfabetização nacional × rede × localização × área (capital/interior/total), 2021"
+    chave: "(rede, localizacao, area): 63 = 63"
+    tempo: {natureza: retrato_atual, coluna: ano, cobertura: "2021–2021"}
+    territorio: {nivel: brasil, colunas: {area: "capital, interior ou total"}}
+    medidas:
+      - {coluna: taxa_alfabetizacao, o_que: "taxa de alfabetização", unidade: "%", soma: nao}
+    filtros_tipicos: ["rede = 'total - federal, estadual, municipal e privada'", "localizacao = 'total' e area = 'total'"]
+    use_para: "taxa de alfabetização nacional em 2021"
+    nao_use_para: "série temporal: um ano só"
+    rascunho: [use_para, nao_use_para]
+    verificado: "63 linhas, chave confirmada — medido 2026-10-27"
+  uf_taxa_alfabetizacao:
+    grao: "uma taxa de alfabetização por UF × rede × localização × área, 2021"
+    chave: "(sigla_uf, rede, localizacao, area): 1.516 = 1.516"
+    tempo: {natureza: retrato_atual, coluna: ano, cobertura: "2021–2021"}
+    territorio: {nivel: uf, colunas: {sigla_uf: "UF"}}
+    medidas:
+      - {coluna: taxa_alfabetizacao, o_que: "taxa de alfabetização", unidade: "%", soma: nao}
+    filtros_tipicos: ["rede = 'total - federal, estadual, municipal e privada'", "localizacao = 'total' e area = 'total'"]
+    use_para: "alfabetização por UF em 2021"
+    nao_use_para: "série temporal"
+    rascunho: [use_para, nao_use_para]
+    verificado: "1.516 linhas, chave confirmada — medido 2026-10-27"
+  dicionario:
+    grao: "um código (id_tabela × nome_coluna × chave × cobertura_temporal) com o significado em valor; o código muda de sentido entre anos"
+    chave: "(id_tabela, nome_coluna, chave, cobertura_temporal): 6.560 = 6.560"
+    use_para: "traduzir rede, localizacao, area, disciplina etc. por ano de cobertura"
+    verificado: "6.560 linhas, chave confirmada — medido 2026-10-27"

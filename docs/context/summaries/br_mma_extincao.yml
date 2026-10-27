@@ -1,0 +1,28 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_mma_extincao
+tabelas:
+  fauna_ameacada:
+    grao: "uma espécie ou subespécie de fauna na lista oficial de ameaçadas (MMA)"
+    chave: "especie_ou_subespecie (1258 linhas = 1258 distintos)"
+    tempo: {natureza: sem_tempo, coluna: lista_2014, cobertura: "lista_2014 é flag 0/1: 1 = já constava na lista de 2014 (1038), 0 = entrou depois (220)"}
+    territorio: {nivel: nenhum, colunas: {}}
+    medidas:
+      - {coluna: "count(*)", o_que: "número de espécies ameaçadas", unidade: "espécies", soma: sim}
+    filtros_tipicos: ["categoria IN ('CR','EN','VU') para as três categorias de ameaça; 'CR (PEX)' = criticamente em perigo, possivelmente extinta (36); 'EX' (6), 'RE' (3), 'EW' (1) são extintas/regionalmente extintas/extintas na natureza, então não são 'ameaçadas'", "grupo IN ('peixes','invertebrados_terrestres','aves','mamiferos','invertebrados_aquaticos','repteis','anfibios')"]
+    use_para: "contar espécies de fauna por categoria de ameaça, grupo taxonômico, família ou ordem"
+    nao_use_para: "análise geográfica ou temporal (não há UF, bioma nem data)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "1258 linhas, 1258 distintos de especie_ou_subespecie; categoria: VU 465, EN 425, CR 322, CR (PEX) 36, EX 6, RE 3, EW 1; lista_2014 = 1 em 1038 — medido 2026-10-27"
+  flora_ameacada:
+    grao: "uma espécie, subespécie ou variedade de flora na lista oficial de ameaçadas (MMA), mas cada registro aparece DUPLICADO"
+    chave: "nenhuma: toda linha aparece duas vezes (6418 linhas, 3209 combinações distintas de nome × categoria; 3207 nomes aparecem 2 vezes e 1 nome, 'Hippeastrum', 4 vezes por ter duas categorias)"
+    tempo: {natureza: sem_tempo, coluna: lista_2014, cobertura: "lista_2014 é flag 0/1: 1 = já constava na lista de 2014"}
+    territorio: {nivel: nenhum, colunas: {}}
+    medidas:
+      - {coluna: "count(DISTINCT especie_ou_subespecie_variedade, categoria)", o_que: "número de táxons ameaçados (conte distintos, nunca count(*))", unidade: "táxons", soma: nao}
+    filtros_tipicos: ["categoria IN ('CR','EN','VU'); 'CR (PEX)' (3 táxons distintos) é possivelmente extinta", "familia tem variação de caixa ('meliaceae'): use lower() ao agrupar"]
+    use_para: "contar táxons de flora ameaçados por categoria ou família, sempre sobre linhas distintas"
+    nao_use_para: "count(*): dobra tudo (6418 em vez de 3209); sem UF, bioma ou data"
+    rascunho: [use_para, nao_use_para]
+    verificado: "6418 linhas; 3208 nomes distintos; 3209 pares (nome, categoria) distintos; 3210 distintos incluindo familia/lista_2014; táxons distintos por categoria: EN 1844, CR 681, VU 681, CR (PEX) 3 — medido 2026-10-27"

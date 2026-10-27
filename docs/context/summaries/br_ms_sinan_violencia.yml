@@ -1,0 +1,21 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ms_sinan_violencia
+tabelas:
+  microdados_violencia:
+    grao: "uma notificação individual de violência interpessoal ou autoprovocada (ficha SINAN, agravo Y09), sem identificador do caso"
+    chave: "nenhuma: sem identificador; 4.939.266 linhas, 4.938.006 distintas (1.260 repetidas)"
+    tempo: {natureza: serie_diaria, coluna: "ano_sinan (use este, NU_ANO está vazio em 2020: 326.563 vazios); DT_NOTIFIC é a data", cobertura: "2009–2025 (2022 magro: 159.576, gotcha ano_2022_magro)"}
+    territorio: {nivel: municipio, colunas: {ID_MUNICIP: "município de notificação, 6 dígitos", ID_MN_RESI: "município de residência, 6 dígitos", ID_MN_OCOR: "município de ocorrência", SG_UF_NOT: "UF da notificação, código numérico IBGE em texto ('35' = SP)", SG_UF: "UF de residência"}}
+    medidas:
+      - {expressao: "count(*)", o_que: "notificações de violência", unidade: "notificações", soma: sim}
+    filtros_tipicos:
+      - "ano_sinan = <ano> (número); nunca NU_ANO (gotcha nu_ano_vazio_2020)"
+      - "CS_SEXO = 'F' (maioria), 'M', 'I' (letras); AUTOR_SEXO é número (1 masculino, 2 feminino, 3 ambos, 9 ignorado; 4 e 5 não documentados)"
+      - "VIOL_FISIC = '1' sim, '2' não (também VIOL_PSICO, VIOL_SEXU, VIOL_NEGLI…); contar sim com = '1', nunca somar a coluna"
+      - "LOCAL_OCOR IN ('01','1') residência (há '1' sem zero), '06' via pública; VIOL_MOTIV IN ('04','4'), ('07','7')"
+      - "CLASSI_FIN e EVOLUCAO vêm vazios em quase tudo em 2023 (587.916 de 588.388 vazios em CLASSI_FIN); não use para filtrar caso confirmado"
+    use_para: "perfil da vítima, tipo de violência, agressor e local por município e ano."
+    nao_use_para: "série anual sem ressalva para 2022; classificação final de caso (CLASSI_FIN quase vazio); contar vítimas únicas (não há identificador)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "4.939.266 linhas; 4.938.006 distintas (hash da linha); ano_sinan 2009–2025: 2025 = 688.329, 2024 = 616.548, 2023 = 588.388, 2022 = 159.576; NU_ANO vazio em 326.563 — medido 2026-10-27"

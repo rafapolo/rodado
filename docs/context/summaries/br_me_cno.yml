@@ -1,0 +1,32 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_me_cno
+tabelas:
+  microdados_cnae:
+    grao: "um CNAE 2.0 de uma obra (CNO): uma obra pode ter várias linhas, uma por CNAE"
+    chave: "id_cno, cnae_2 (única nas 911.426 linhas; id_cno sozinho repete: 848.256 obras distintas)"
+    tempo: {natureza: sem_tempo, coluna: data_registro, cobertura: "2018-11-19–2021-05-11 (data em que o CNAE foi registrado; é texto VARCHAR 'AAAA-MM-DD')"}
+    territorio: {nivel: nenhum, colunas: {}}
+    filtros_tipicos:
+      - "cnae_2 = '4120400' (construção de edifícios; 467.630 linhas, o mais frequente) — texto de 7 dígitos, sem pontuação"
+      - "só 15 CNAEs distintos, todos da divisão 41–43 (construção): a tabela não serve para outros setores"
+    use_para: "saber que atividade de construção cada obra CNO declarou e contar obras por CNAE"
+    nao_use_para: "localizar a obra no território (não há município/UF) nem somar valores (não há medida)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "911.426 linhas; count(DISTINCT (id_cno,cnae_2)) = 911.426; 848.256 id_cno distintos; contagem de cnae_2 = '4120400' do perfil (tabela inteira) — medido 2026-10-27"
+  microdados_vinculo:
+    grao: "um registro de vínculo entre uma obra (id_cno) e o responsável por ela (ni_responsavel), com data de início/fim do vínculo"
+    chave: "nenhuma: id_cno repete (2.121 obras com mais de uma linha) e (id_cno, ni_responsavel, qualificacao_responsavel, data_inicio, data_fim, data_registro) dá 105.843 distintas em 109.449 linhas (3.606 linhas repetidas por completo)"
+    tempo: {natureza: sem_tempo, coluna: data_inicio, cobertura: "data_inicio 1960-01-01–2021-05-11; data_registro 2018-11-19–2021-05-11; data_fim 1993-05-01–2023-07-09 (99,75% nula = vínculo ainda aberto)"}
+    territorio: {nivel: nenhum, colunas: {}}
+    filtros_tipicos:
+      - "qualificacao_responsavel = '53' (Pessoa Jurídica Construtora; 101.436 linhas). Códigos do dicionario: 53 PJ construtora, 110 construção em nome coletivo, 109 consórcio, 111 sociedade líder de consórcio. O dicionario chama a coluna de qualificacao_contribuinte para esta tabela, mas no banco ela se chama qualificacao_responsavel"
+      - "data_fim IS NULL para vínculo sem término registrado"
+      - "ni_responsavel é nulo em 22,7% das linhas; identificador do responsável (CNPJ/CPF, 13–14 dígitos nos extremos do perfil), tratar como dado pessoal"
+    use_para: "ligar obras CNO aos seus responsáveis (construtora, consórcio) e dimensionar vínculos por qualificação"
+    nao_use_para: "contar obras ou responsáveis com count(*): há repetição de id_cno e linhas idênticas; use count(DISTINCT id_cno)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "109.449 linhas; 104.405 id_cno distintos, todos presentes em microdados_cnae; 105.706 pares (id_cno, ni_responsavel) distintos; 105.843 linhas distintas sobre 6 colunas — medido 2026-10-27"
+  dicionario:
+    grao: "uma linha por (id_tabela, nome_coluna, chave): significado dos códigos de situacao_obra e qualificacao_* (19 linhas)"
+    use_para: "decodificar qualificacao_responsavel (53, 57, 64, 70, 109, 110, 111...) e situacao_obra; os id_tabela citados ('microdados', 'microdados_vinculo') não são todos tabelas do banco"

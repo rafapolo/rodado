@@ -1,0 +1,21 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_sfb_cnfp
+tabelas:
+  florestas_publicas:
+    grao: "uma feição (polígono) do Cadastro Nacional de Florestas Públicas"
+    chave: "nome, categoria, geometria (12.874 linhas, 12.874 distintos); nome sozinho repete (10.908 distintos) e é dado pessoal/texto livre"
+    tempo: {natureza: retrato_atual, coluna: nenhuma, cobertura: "CNFP 2025 (ver gotchas)"}
+    territorio: {nivel: municipio, colunas: {uf: "sigla da UF", municipio: "nome do município, maiúsculas", geocodigo: "código IBGE do município (texto)", bioma: "bioma por extenso, ex. 'AMAZÔNIA'"}}
+    medidas:
+      - {coluna: area_ha, o_que: "área da feição", unidade: "ha", soma: nao}
+      - {coluna: area_calc_ha, o_que: "área recalculada da feição", unidade: "ha", soma: nao}
+    filtros_tipicos:
+      - "tipo = 'TIPO B' (1.742 feições) é a floresta pública não destinada (protecao = 'SEM DESTINACAO'); 'TIPO A' (11.132) é a destinada"
+      - "protecao = 'USO SUSTENTAVEL' (9.662), 'PROTECAO INTEGRAL' (1.302), 'USO MILITAR' (128), 'OUTROS USOS' (40)"
+      - "governo = 'FEDERAL' (10.560), 'ESTADUAL' (1.498), 'MUNICIPAL' (816)"
+      - "sobreposic = 'SIM' (1.284 feições) marca sobreposição com outra categoria; categoria composta tipo 'TI / PARNA' conta a mesma terra em duas"
+    use_para: "área e localização de florestas públicas por tipo, categoria, UF e bioma; base para cruzar com o CAR"
+    nao_use_para: "somar area_ha por categoria simples (sobreposição, ver gotcha categorias_sobrepostas) nem somar a interseção com o CAR sem limitar a 1 por feição"
+    rascunho: [use_para, nao_use_para, "soma: nao de area_ha (a soma total 322,4 Mha existe mas inclui sobreposição)"]
+    verificado: "12.874 linhas, 12.874 distintos de (nome,categoria,geometria); soma de area_ha 322,4 Mha e de area_calc_ha 326,4 Mha — medido 2026-10-27"

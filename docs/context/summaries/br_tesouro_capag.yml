@@ -1,0 +1,32 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_tesouro_capag
+tabelas:
+  estados:
+    grao: "um estado × edição do arquivo CAPAG (uma por ano-base, mais 'Capag Estados 2024 - Revisão'); a edição 2019 vem com 29 linhas totalmente nulas"
+    chave: "UF + arquivo_origem nas 218 linhas com UF preenchida (218 distintos, medido); as 29 linhas com UF nula (todas do arquivo 'CAPAG Estados 2019') não têm chave"
+    tempo: {natureza: serie_anual, coluna: arquivo_origem, cobertura: "Capag Estados 2018–Capag Estados 2025 (texto; o ano está no nome do arquivo, 2024 aparece duas vezes: original e Revisão)"}
+    territorio: {nivel: uf, colunas: {UF: "sigla da UF (nula nas 29 linhas vazias de 2019)"}}
+    medidas:
+      - {coluna: "Indicador 1", o_que: "indicador 1 da CAPAG (endividamento, significado exato não documentado), texto", unidade: "razão; formato misto por edição: '147,35%' (vírgula e %) em umas, '1,936864879' (fração com vírgula, edição 2020) em outras", soma: nao}
+      - {coluna: "Indicador 2", o_que: "indicador 2 da CAPAG (poupança corrente, significado exato não documentado)", unidade: "idem Indicador 1", soma: nao}
+      - {coluna: "Indicador 3", o_que: "indicador 3 da CAPAG (liquidez, significado exato não documentado)", unidade: "idem Indicador 1; pode ser 'n.d'", soma: nao}
+    filtros_tipicos: ["\"Classificação da CAPAG\" IN ('A+','A','B+','B','C','D') para ter nota; valores literais no perfil: A+, A, B+, B, C, D, 'Suspensa', 'n.d', '' e NULL", "arquivo_origem = 'Capag Estados 2025' para a edição mais recente (texto exato do banco; 2018, 2022 e 2024 usam 'Capag' minúsculo, 2019/2020/2021/2023 usam 'CAPAG')"]
+    use_para: "ver a nota CAPAG de cada estado ao longo das edições."
+    nao_use_para: "somar ou fazer média dos indicadores sem converter o texto; comparar edições sem tratar o formato misto."
+    rascunho: [medidas (significado dos indicadores), use_para, nao_use_para]
+    verificado: "247 linhas, 218 com UF e 218 distintos de (UF, arquivo_origem), 29 vazias, 9 arquivos; em 'Indicador 1': 183 linhas com '%' e 210 com vírgula, nenhuma numérica pura (a edição 2020 vem como fração com vírgula, ex.: '1,936864879' para SP, as demais como '147,35%') — medido 2026-10-27"
+  municipios:
+    grao: "um município na CAPAG ano-base 2025 (arquivo 'Capag Municípios 2026 - 01/09/2026')"
+    chave: "coluna UF (que traz o código IBGE de 7 dígitos, ver gotcha colunas_deslocadas): 5.568 linhas = 5.568 distintos, medido"
+    tempo: {natureza: retrato_atual, coluna: "Origem da Nota Final", cobertura: "'CAPAG Ano Base 2025' (único valor, 5.568 linhas)"}
+    territorio: {nivel: municipio, colunas: {UF: "na verdade o código IBGE do município (gotcha colunas_deslocadas)", CAPAG: "na verdade o nome do município (gotcha colunas_deslocadas)"}}
+    medidas:
+      - {coluna: "Indicador 1", o_que: "endividamento, texto com fração decimal (ex.: 0.0443)", unidade: "razão; 49 valores não numéricos ('#N/A', 'n.d.')", soma: nao}
+      - {coluna: "Indicador 2", o_que: "indicador 2 da CAPAG (significado exato não documentado)", unidade: "razão", soma: nao}
+      - {coluna: "Indicador 3", o_que: "indicador 3 da CAPAG (significado exato não documentado)", unidade: "razão", soma: nao}
+    filtros_tipicos: ["\"Nota 1\" / \"Nota 2\" / \"Nota 3\" IN ('A','B','C'): descartam 'n.d.' e '#N/A' (Nota 1: A 5266, B 184, C 69, n.d. 48, #N/A 1 na amostra do perfil)", "ICF IN ('Aicf','Bicf','Cicf','Dicf','Eicf'): é o ranking da informação contábil, não a nota CAPAG; a nota final não está na tabela (gotcha colunas_deslocadas)"]
+    use_para: "ver as três notas parciais (endividamento, poupança, liquidez) e a qualidade da informação contábil por município em 2025."
+    nao_use_para: "obter a classificação final CAPAG A/B/C/D (não está no banco, gotcha colunas_deslocadas) nem série histórica."
+    rascunho: [medidas (significado), use_para, nao_use_para]
+    verificado: "5.568 linhas, 5.568 distintos de UF (código IBGE), 49 Indicador 1 não numéricos, 0 com '%' ou ',' — medido 2026-10-27"

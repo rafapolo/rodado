@@ -1,0 +1,55 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_senado_dadosabertos
+tabelas:
+  comissoes:
+    grao: "um colegiado do Senado/Congresso (comissão, CPI, frente, conselho, grupo parlamentar)"
+    chave: "Codigo (216 linhas = 216 distintos; Sigla não é única: 215)"
+    tempo: {natureza: retrato_atual, coluna: DataInicio, cobertura: "1900-01-01–2026-09-25 (9 linhas com DataInicio antes de 1950, 1900-01-01 é provavelmente placeholder)"}
+    territorio: {nivel: nenhum, colunas: {SiglaCasa: "CN = Congresso Nacional (138), SF = Senado (78)"}}
+    filtros_tipicos: ["SiglaCasa = 'SF' para só do Senado", "Publica = 'S' (206) ou 'N' (10); significado não documentado além de S/N"]
+    use_para: "lista de colegiados e seus tipos (SiglaTipoColegiado: GPAR, FPAR, CONS, MPV, PERMANENTE...)"
+    nao_use_para: "composição de comissões ou presença (não há membros aqui)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "216 linhas, Codigo único — medido 2026-10-27"
+  materias:
+    grao: "uma matéria legislativa (projeto, requerimento, PEC, MPV etc.) do Senado/CN"
+    chave: "id (162.921 linhas = 162.921 distintos; codigoMateria também é único)"
+    tempo: {natureza: serie_de_periodos, coluna: dataApresentacao, cobertura: "1946-09-23–2026-10-06"}
+    territorio: {nivel: nenhum, colunas: {}}
+    filtros_tipicos:
+      - "tramitando = 'Sim' (10.779 linhas) ou 'Não' (152.142); acentuado e capitalizado assim no banco, não é booleano"
+      - "casaIdentificadora = 'SF' (142.942) ou 'CN' (19.979)"
+      - "dataSituacaoAtual é VARCHAR (não DATE) e tem datas inválidas (min 0195-06-18, max 2502-04-16): não filtre por data nela"
+    use_para: "contar/listar matérias por tipo (tipoDocumento, identificacao), autoria, situação e ano de apresentação"
+    nao_use_para: "resultado de votação (use votacoes) ou tramitação detalhada (não há histórico de tramitação)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "162.921 linhas, id e codigoMateria únicos; identificacao repete (162.255 distintos) — medido 2026-10-27"
+  senadores:
+    grao: "um senador em exercício (legislatura atual)"
+    chave: "CodigoParlamentar (81 linhas = 81 distintos)"
+    tempo: {natureza: retrato_atual, coluna: nenhuma, cobertura: "legislatura atual (extração de 2026-09)"}
+    territorio: {nivel: uf, colunas: {UfParlamentar: "UF que o senador representa (3 por UF)"}}
+    filtros_tipicos: ["SiglaPartidoParlamentar (ex. 'PL' 15, 'PSD' 14)", "MembroMesa = 'Sim' (11) / 'Não' (70); MembroLideranca = 'Sim' (32) / 'Não' (49)"]
+    use_para: "cadastro atual: partido, UF, sexo, e-mail dos 81 senadores"
+    nao_use_para: "histórico de senadores (para ex-senadores e suplentes use br_senado_dados_abertos_administrativos.senador, 681 linhas)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "81 linhas, chave única; CodigoParlamentar = id_senador do dataset administrativos (valores 1173, 825 presentes nos dois) — medido 2026-10-27"
+  votacoes:
+    grao: "uma votação nominal ou simbólica em sessão do plenário do Senado sobre uma matéria"
+    chave: "codigoSessaoVotacao (3.619 linhas = 3.619 distintos)"
+    tempo: {natureza: serie_de_periodos, coluna: dataSessao, cobertura: "1991-03-06–2026-09-03"}
+    territorio: {nivel: nenhum, colunas: {}}
+    medidas:
+      - {coluna: totalVotosSim, o_que: "votos Sim", unidade: "votos", soma: "nao (nulo em 1.780 linhas; use a lista votos)"}
+      - {coluna: totalVotosNao, o_que: "votos Não", unidade: "votos", soma: "nao"}
+      - {coluna: totalVotosAbstencao, o_que: "abstenções", unidade: "votos", soma: "nao"}
+    filtros_tipicos:
+      - "resultadoVotacao = 'A' (aprovada, 3.119) ou 'R' (rejeitada, 389); nulo em 108; 'E' e 'P' raros (2 e 1), significado não documentado"
+      - "votacaoSecreta = 'S' (1.846) ou 'N' (1.773)"
+      - "siglaTipoSessao = 'DOR' (2.856) etc.; sigla = matéria ('MSF' 1.543, 'PEC' 620)"
+      - "ano NÃO é o ano da sessão em 1.107 das 3.619 linhas (ano = year(dataApresentacao) em 3.332); use year(dataSessao)"
+    use_para: "resultado e placar de votações do plenário por matéria; votos por senador via a lista aninhada votos (unnest)"
+    nao_use_para: "somar totalVotos* (nulo quando a votação é nominal com lista; 1.765 das 1.780 nulas têm votos) ou contar votos individuais sem unnest(votos)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "3.619 linhas, codigoSessaoVotacao único; votos é STRUCT[] com 287.187 elementos no total (16 linhas com lista vazia); siglaVotoParlamentar tem 20 valores, ex.: 'Votou' 99.293, 'Sim' 84.595, 'P-NRV' 44.893, 'Não' 22.238, 'AP' 15.669 (nem todo código é Sim/Não: significado não documentado); só totais ou só lista: totalVotosSim não nulo e lista não vazia em 1.838 linhas — medido 2026-10-27"

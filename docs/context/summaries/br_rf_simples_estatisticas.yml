@@ -1,0 +1,32 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_rf_simples_estatisticas
+tabelas:
+  optantes_municipio:
+    grao: "um regime (simples ou SIMEI, em três medidas) × um município × um fim de mês: quantas empresas são optantes"
+    chave: "(regime, data, id_municipio): 4.254.282 linhas e 4.254.282 distintos. posicao_consolidada tem dois valores (2026-10-24: 4.187.442 linhas; 2026-10-10: 66.840 linhas, só dados de 2018) sem sobreposição de chave, então não duplica"
+    tempo: {natureza: serie_mensal, coluna: data, cobertura: "2007-07-31–2026-09-30 (simples desde 2007-07; as três séries simei desde 2009-07)"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos (6.859 distintos)", id_municipio_rf: "código do município na Receita (4 dígitos, TOM), não é IBGE", sigla_uf: "UF"}}
+    medidas:
+      - {coluna: optantes, o_que: "estoque de empresas optantes no fim do mês (não é fluxo)", unidade: "empresas", soma: "sim entre municípios de uma mesma (regime, data); nao entre datas (é estoque) nem entre regimes: simei_total = simei_portal + simei_inicio_exercicio (em 2026-09-30: 17.625.094 = 17.145.992 + 479.102), então somar os três SIMEI conta duas vezes"}
+    filtros_tipicos:
+      - "regime = 'simples' (26.013.724 optantes no Brasil em 2026-09-30) ou 'simei_total' (17.625.094); os valores literais: simples, simei_total, simei_portal, simei_inicio_exercicio"
+      - "data = DATE '2026-09-30' (fim de mês; fixe uma data para o estoque atual)"
+    use_para: "Empresas optantes do Simples/SIMEI por município e mês"
+    nao_use_para: "Entradas e saídas no mês (use eventos_mes); somar meses ou os três regimes SIMEI"
+    rascunho: [use_para, nao_use_para]
+    verificado: "4.254.282 linhas; 4.254.282 distintos da chave; 2026-09-30: simples 26.013.724, simei_total 17.625.094 optantes — medido 2026-10-27"
+  eventos_mes:
+    grao: "um mês × um código de evento (ingresso, exclusão, desenquadramento) × um ente (quem originou): número de eventos"
+    chave: "(ano, mes, codigo_evento, ente): 32.878 linhas e 32.878 distintos. Duas posicao_consolidada (2026-10-25: 31.191 linhas; 2026-10-14: 1.687 linhas, só 2018) sem sobreposição"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2007-08–2026-09"}
+    territorio: {nivel: brasil, colunas: {}}
+    medidas:
+      - {coluna: total, o_que: "número de eventos do código no mês, pelo ente", unidade: "eventos (empresas)", soma: "sim entre meses e códigos, mas NUNCA entre entes: ente = 'total' é a soma de contribuintes + estados + municipios + receita_federal (738 de 738 pares mês×evento de 2023 conferem), então some só uma delas (ente = 'total')"}
+    filtros_tipicos:
+      - "ente = 'total' (12.410 linhas; os outros: receita_federal 6.694, municipios 5.632, estados 5.271, contribuintes 2.871)"
+      - "codigo_evento = 'I301' (Ingresso no Simples Nacional por opção - Portal do Empreendedor; 3.335.504 em 2023) ou 'E390' (Exclusão de Ofício - Pessoa Jurídica Baixada; 2.301.277 em 2023); códigos de ingresso começam com I e de exclusão com E; descricao_evento acompanha"
+    use_para: "Fluxo mensal de entradas e saídas do Simples/SIMEI por tipo de evento"
+    nao_use_para: "Estoque de optantes (use optantes_municipio); recorte por território (só nacional); somar entes"
+    rascunho: [use_para, nao_use_para, filtros_tipicos]
+    verificado: "32.878 linhas; 32.878 distintos da chave; 2023: I301 total 3.335.504, E390 total 2.301.277 — medido 2026-10-27"

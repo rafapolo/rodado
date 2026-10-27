@@ -1,0 +1,175 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_cvm_fundos
+tabelas:
+  balancete:
+    grao: 'não lida: Catalog Error: Table with name balancete does not exist!'
+  cadastro_historico_admin:
+    grao: 'não lida: Catalog Error: Table with name cadastro_historico_admin does not exist!'
+  cadastro_historico_auditor:
+    grao: 'não lida: Catalog Error: Table with name cadastro_historico_auditor does not exist!'
+  cadastro_historico_classe:
+    grao: 'não lida: Catalog Error: Table with name cadastro_historico_classe does not exist!'
+  cadastro_historico_condom:
+    grao: 'não lida: Catalog Error: Table with name cadastro_historico_condom does not exist!'
+  cadastro_historico_controlador:
+    grao: 'não lida: Catalog Error: Table with name cadastro_historico_controlador does not exist!'
+  cadastro_historico_custodiante:
+    grao: 'não lida: Catalog Error: Table with name cadastro_historico_custodiante does not exist!'
+  cadastro_historico_denom_comerc:
+    grao: 'não lida: Catalog Error: Table with name cadastro_historico_denom_comerc does not exist!'
+  cadastro_historico_denom_social:
+    grao: 'não lida: Catalog Error: Table with name cadastro_historico_denom_social does not exist!'
+  cadastro_historico_diretor_resp:
+    grao: 'não lida: Catalog Error: Table with name cadastro_historico_diretor_resp does not exist!'
+  cadastro_historico_exclusivo:
+    grao: 'não lida: Catalog Error: Table with name cadastro_historico_exclusivo does not exist!'
+  cadastro_historico_exerc_social:
+    grao: 'não lida: Catalog Error: Table with name cadastro_historico_exerc_social does not exist!'
+  cadastro_historico_fic:
+    grao: 'não lida: Catalog Error: Table with name cadastro_historico_fic does not exist!'
+  cadastro_historico_gestor:
+    grao: 'não lida: Catalog Error: Table with name cadastro_historico_gestor does not exist!'
+  cadastro_historico_publico_alvo:
+    grao: 'não lida: Catalog Error: Table with name cadastro_historico_publico_alvo does not exist!'
+  cadastro_historico_rentab:
+    grao: 'não lida: Catalog Error: Table with name cadastro_historico_rentab does not exist!'
+  cadastro_historico_sit:
+    grao: 'não lida: Catalog Error: Table with name cadastro_historico_sit does not exist!'
+  cadastro_historico_taxa_adm:
+    grao: 'não lida: Catalog Error: Table with name cadastro_historico_taxa_adm does not exist!'
+  cadastro_historico_taxa_perfm:
+    grao: 'não lida: Catalog Error: Table with name cadastro_historico_taxa_perfm does not exist!'
+  cadastro_historico_trib_lprazo:
+    grao: 'não lida: Catalog Error: Table with name cadastro_historico_trib_lprazo does not exist!'
+  carteira_blc_1:
+    grao: 'não lida: Catalog Error: Table with name carteira_blc_1 does not exist!'
+  carteira_blc_2:
+    grao: 'não lida: Catalog Error: Table with name carteira_blc_2 does not exist!'
+  carteira_blc_3:
+    grao: 'não lida: Catalog Error: Table with name carteira_blc_3 does not exist!'
+  carteira_blc_4:
+    grao: 'não lida: Catalog Error: Table with name carteira_blc_4 does not exist!'
+  carteira_blc_5:
+    grao: 'não lida: Catalog Error: Table with name carteira_blc_5 does not exist!'
+  carteira_blc_6:
+    grao: 'não lida: Catalog Error: Table with name carteira_blc_6 does not exist!'
+  carteira_blc_7:
+    grao: 'não lida: Catalog Error: Table with name carteira_blc_7 does not exist!'
+  carteira_blc_8:
+    grao: 'não lida: Catalog Error: Table with name carteira_blc_8 does not exist!'
+  carteira_confid:
+    grao: 'não lida: Catalog Error: Table with name carteira_confid does not exist!'
+  carteira_fie:
+    grao: 'não lida: Catalog Error: Table with name carteira_fie does not exist!'
+  carteira_fie_confid:
+    grao: 'não lida: Catalog Error: Table with name carteira_fie_confid does not exist!'
+  carteira_pl:
+    grao: 'não lida: Catalog Error: Table with name carteira_pl does not exist!'
+  extrato:
+    grao: 'não lida: Catalog Error: Table with name extrato does not exist!'
+  fundos:
+    grao: um registro do cadastro ANTIGO de fundos de investimento (anterior à RCVM 175) — um fundo pode aparecer em mais de uma linha
+    chave: 'nenhuma: CNPJ_FUNDO repete (46.806 linhas, 41.103 CNPJ distintos; 5.244 CNPJs em mais de uma linha); nenhuma linha é duplicata exata'
+    tempo:
+      natureza: retrato_atual
+      coluna: DT_REG / DT_INI_SIT
+      cobertura: DT_REG 1957-01-18–2024-09-24; DT_CANCEL até 2026-09-30
+    territorio:
+      nivel: nenhum
+      colunas:
+        CNPJ_FUNDO: CNPJ do fundo (dado pessoal, só contagem)
+        CD_CVM: código CVM do fundo
+    medidas:
+    - coluna: VL_PATRIM_LIQ
+      o_que: patrimônio líquido na data DT_PATRIM_LIQ (18% nulo)
+      unidade: R$
+      soma: 'nao: é saldo de um dia, e a linha pode repetir o fundo'
+    - coluna: TAXA_ADM
+      o_que: taxa de administração (68% nulo)
+      unidade: percentual a.a. segundo a fonte; valor máximo 450000 sugere unidades mistas
+      soma: nao
+    filtros_tipicos:
+    - 'SIT = ''EM FUNCIONAMENTO NORMAL'' (22 linhas; 46.579 são ''CANCELADA''): o cadastro vivo está em registro_fundo / registro_classe (gotcha fundos_e_cadastro_antigo)'
+    - 'CONDOM, FUNDO_COTAS e outras flags: '''' (vazio) é frequente, não ''N'' — significado de '''' não documentado'
+    use_para: histórico/atributos de fundos até 2024 (classe, gestor, administrador, taxas) e fundos já cancelados.
+    nao_use_para: 'contar fundos ativos hoje: use registro_fundo (conte CNPJ_Fundo distinto).'
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.unidade
+    verificado: 46.806 linhas; 41.103 CNPJ_FUNDO distintos; 34.201 CD_CVM distintos; sem linhas totalmente duplicadas; SIT normal = 22 (gotcha) — medido 2026-10-27
+  informe_diario:
+    grao: 'não lida: Catalog Error: Table with name informe_diario does not exist!'
+  perfil_mensal:
+    grao: 'não lida: Catalog Error: Table with name perfil_mensal does not exist!'
+  registro_classe:
+    grao: uma classe de cotas de fundo no cadastro vigente (RCVM 175)
+    chave: 'nenhuma: ID_Registro_Classe repete em 4 casos (36.807 linhas, 36.803 IDs distintos; 1 linha exatamente duplicada)'
+    tempo:
+      natureza: retrato_atual
+      coluna: Data_Registro / Data_Inicio_Situacao
+      cobertura: Data_Registro 2023-04-06–2026-10-06
+    territorio:
+      nivel: nenhum
+      colunas:
+        ID_Registro_Fundo: liga ao fundo em registro_fundo
+        CNPJ_Classe: CNPJ da classe (dado pessoal, só contagem)
+    medidas:
+    - coluna: Patrimonio_Liquido
+      o_que: patrimônio líquido da classe em Data_Patrimonio_Liquido (7,7% nulo)
+      unidade: R$
+      soma: 'nao: saldo; evite somar com registro_fundo ou subclasses'
+    filtros_tipicos:
+    - Situacao = 'Em Funcionamento Normal' (33.779 linhas, 33.771 CNPJ_Classe distintos)
+    - 'Tipo_Classe: ''Classes de Cotas de Fundos FIF'' (26.722), ''... FIDC'' (5.374), etc.'
+    use_para: classes em funcionamento por tipo, classificação ANBIMA, público-alvo e patrimônio.
+    nao_use_para: histórico de situação (só há o estado atual) ou contagem de fundos (a unidade é a classe).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 36.807 linhas; 36.803 ID_Registro_Classe distintos; 36.806 linhas distintas; Em Funcionamento Normal 33.779 linhas / 33.771 CNPJ_Classe — medido 2026-10-27
+  registro_fundo:
+    grao: um registro de fundo no cadastro vigente (RCVM 175); alguns fundos vêm em mais de uma linha
+    chave: 'nenhuma: ID_Registro_Fundo repete (90.502 linhas, 89.364 IDs distintos; 90.485 linhas distintas no total, 1.042 IDs com conteúdo diferente)'
+    tempo:
+      natureza: retrato_atual
+      coluna: Data_Registro / Data_Inicio_Situacao
+      cobertura: Data_Registro 1957-01-18–2026-10-06
+    territorio:
+      nivel: nenhum
+      colunas:
+        CNPJ_Fundo: CNPJ do fundo (dado pessoal, só contagem)
+        ID_Registro_Fundo: id do registro CVM
+    medidas:
+    - coluna: Patrimonio_Liquido
+      o_que: patrimônio líquido na Data_Patrimonio_Liquido (24% nulo); vem como TEXTO (VARCHAR), faça CAST
+      unidade: R$
+      soma: 'nao: saldo, e há linhas repetidas'
+    filtros_tipicos:
+    - 'Situacao = ''Em Funcionamento Normal'' (34.454 linhas, 33.768 CNPJ_Fundo distintos): conte CNPJ_Fundo DISTINCT (gotcha registro_fundo_repetido)'
+    - Tipo_Fundo = 'FI' é o mais comum (62.401 linhas); 'FIF', 'FIDC', 'FIP', 'FII' etc.
+    use_para: contar fundos por situação, tipo, gestor e administrador no cadastro vigente.
+    nao_use_para: somar linhas como se cada uma fosse um fundo; usar Patrimonio_Liquido sem CAST.
+    rascunho:
+    - medidas.o_que
+    verificado: 90.502 linhas; 89.364 ID_Registro_Fundo distintos; Em Funcionamento Normal 34.454 linhas / 33.768 CNPJ distintos — medido 2026-10-27
+  registro_subclasse:
+    grao: uma subclasse de cotas de uma classe de fundo
+    chave: 'ID_Subclasse: count(*) = count(DISTINCT ID_Subclasse) = 10.293'
+    tempo:
+      natureza: retrato_atual
+      coluna: Data_Inicio_Situacao
+      cobertura: Data_Inicio_Situacao 2019-10-17–2026-10-06
+    territorio:
+      nivel: nenhum
+      colunas:
+        ID_Registro_Classe: liga à classe em registro_classe (todas as 10.293 casam)
+    filtros_tipicos:
+    - Situacao = 'Em Funcionamento Normal' (6.148 no top do perfil; 'Fase Pré-Operacional' 3.740)
+    use_para: subclasses por situação, público-alvo e forma de condomínio.
+    nao_use_para: patrimônio ou rentabilidade (a tabela não tem).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 10.293 linhas, 10.293 ID_Subclasse distintos, 3.896 classes distintas; 10.293 casam com registro_classe — medido 2026-10-27

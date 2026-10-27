@@ -1,0 +1,84 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_mj_sisdepen
+tabelas:
+  cobertura:
+    grao: "uma UF × semestre de coleta (ano, semestre), com quantas unidades prisionais eram esperadas, quantas reportaram e as taxas de preenchimento dos campos"
+    chave: "ano, semestre, sigla_uf (513 linhas = 513 distintos)"
+    tempo: {natureza: serie_de_periodos, coluna: "ano, semestre", cobertura: "2016 (só semestre 2) – 2025 (semestre 2)"}
+    territorio: {nivel: uf, colunas: {sigla_uf: "UF (27)"}}
+    medidas:
+      - {coluna: unidades_esperadas, o_que: "unidades prisionais esperadas na UF no semestre", unidade: "unidades", soma: sim}
+      - {coluna: unidades_reportando, o_que: "unidades que reportaram", unidade: "unidades", soma: sim}
+      - {coluna: populacao_total, o_que: "população prisional total da UF no semestre (igual à de uf_semestre)", unidade: "pessoas (retrato do semestre)", soma: sim}
+      - {coluna: "taxa_presenca, taxa_faixa_etaria_completa, taxa_raca_cor_completa, taxa_escolaridade_completa (e _parcial/_ausente)", o_que: "proporção de preenchimento dos campos, entre 0 e 1", unidade: "razão 0–1", soma: nao}
+    filtros_tipicos: ["ano = 2025 AND semestre = 2 para o retrato mais recente", "ciclo é um número sequencial do semestre (1 = 2016/2; um ciclo por (ano, semestre)), não filtre por ele em vez de ano/semestre"]
+    use_para: "avaliar a qualidade e a completude da coleta antes de comparar UFs ou semestres"
+    nao_use_para: "contar presos por característica ou por situação processual (isso está em populacao_prisional e populacao_caracteristica)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "513 linhas, 513 distintos (ano, semestre, sigla_uf); soma de populacao_total em 2025/2 = 960976 — medido 2026-10-27"
+  uf_semestre:
+    grao: "uma UF × semestre, com população prisional (total, por sexo, provisória), capacidade e taxa de ocupação"
+    chave: "ano, semestre, sigla_uf (513 linhas = 513 distintos)"
+    tempo: {natureza: serie_de_periodos, coluna: "ano, semestre", cobertura: "2016 (semestre 2) – 2025 (semestre 2)"}
+    territorio: {nivel: uf, colunas: {sigla_uf: "UF"}}
+    medidas:
+      - {coluna: populacao_total, o_que: "pessoas presas na UF no semestre", unidade: "pessoas (retrato do semestre)", soma: sim}
+      - {coluna: "populacao_masculina, populacao_feminina, populacao_provisoria", o_que: "população por sexo e a parcela provisória", unidade: "pessoas (retrato)", soma: sim}
+      - {coluna: capacidade_total, o_que: "vagas existentes", unidade: "vagas", soma: sim}
+      - {coluna: vagas_desativadas, o_que: "vagas desativadas (5% nulos)", unidade: "vagas", soma: sim}
+      - {coluna: taxa_ocupacao, o_que: "população / capacidade (mediana ~1,44)", unidade: "razão (1,0 = lotação plena)", soma: nao}
+    filtros_tipicos: ["ano = 2025 AND semestre = 2 (retrato mais recente); nunca some semestres de uma série, pois cada semestre é um retrato do estoque"]
+    use_para: "série de população prisional e superlotação por UF"
+    nao_use_para: "somar semestres para obter fluxo; detalhar por unidade ou regime"
+    rascunho: [use_para, nao_use_para]
+    verificado: "513 linhas, 513 distintos; sum(populacao_total) 2025/2 = 960976, igual a sum(quantidade) de populacao_prisional no mesmo semestre — medido 2026-10-27"
+  populacao_prisional:
+    grao: "uma unidade prisional × semestre × situação processual × regime × esfera da justiça × sexo"
+    chave: "ano, semestre, id_unidade, situacao_processual, regime, esfera_justica, sexo (1037700 linhas = 1037700 distintos; regime nulo conta como valor)"
+    tempo: {natureza: serie_de_periodos, coluna: "ano, semestre", cobertura: "2016 (semestre 2) – 2025 (semestre 2)"}
+    territorio: {nivel: municipio, colunas: {sigla_uf: "UF", id_municipio: "município da unidade (0,19% nulos)", id_unidade: "unidade prisional, código de 5 dígitos como texto (ex.: '00001'); o código pode não ser estável entre ciclos, ver unidade_crosswalk"}}
+    medidas:
+      - {coluna: quantidade, o_que: "pessoas presas na combinação (49% nulos; nulo ≠ 0)", unidade: "pessoas (retrato do semestre)", soma: sim}
+      - {coluna: quantidade_rdd, o_que: "quantidade no Regime Disciplinar Diferenciado (40% nulos); significado exato não documentado", unidade: "pessoas", soma: nao}
+    filtros_tipicos: ["ano = 2025 AND semestre = 2 (um retrato; não some semestres)", "situacao_processual IN ('sentenciado','provisorio','medida_seguranca'); regime só existe para sentenciado e medida_seguranca (provisorio tem regime nulo)", "esfera_justica IN ('estadual','federal','outros')", "sexo IN ('masculino','feminino')"]
+    use_para: "população prisional por unidade, município, regime e situação processual"
+    nao_use_para: "somar com quantidade_rdd, nem com populacao_caracteristica (outro recorte, soma diferente)"
+    rascunho: [use_para, nao_use_para, quantidade_rdd]
+    verificado: "1037700 linhas, 1037700 distintos; 2025/2: sentenciado 715318, provisorio 243857, medida_seguranca 1801, total 960976 — medido 2026-10-27"
+  populacao_caracteristica:
+    grao: "uma unidade prisional × semestre × característica (faixa_etaria, raca_cor, escolaridade, estado_civil) × categoria × sexo"
+    chave: "ano, semestre, id_unidade, caracteristica, categoria, sexo (1790112 linhas = 1790112 distintos)"
+    tempo: {natureza: serie_de_periodos, coluna: "ano, semestre", cobertura: "2016 (semestre 2) – 2025 (semestre 2)"}
+    territorio: {nivel: municipio, colunas: {sigla_uf: "UF", id_municipio: "município da unidade (0,19% nulos)", id_unidade: "unidade prisional (texto de 5 dígitos)"}}
+    medidas:
+      - {coluna: quantidade, o_que: "presos na categoria (40% nulos)", unidade: "pessoas (retrato do semestre)", soma: sim}
+    filtros_tipicos: ["caracteristica = 'raca_cor' (ou 'faixa_etaria', 'escolaridade', 'estado_civil'): SEMPRE filtre uma, senão a soma conta o mesmo preso quatro vezes", "ano = 2025 AND semestre = 2", "condicao_registro IN ('todas','parte','nao'): significado não documentado; somar os três valores dá o total por característica"]
+    use_para: "perfil (idade, raça/cor, escolaridade, estado civil) da população prisional por sexo, unidade ou UF"
+    nao_use_para: "total geral de presos: a soma de uma característica em 2025/2 fica entre 869505 e 936981, abaixo dos 960976 de populacao_prisional (categoria 'Não informado' incluída)"
+    rascunho: [use_para, condicao_registro]
+    verificado: "1790112 linhas, 1790112 distintos; 2025/2 soma por característica: raca_cor 924519, estado_civil 869505, faixa_etaria 936981, escolaridade 921454 — medido 2026-10-27"
+  unidade_prisional:
+    grao: "uma unidade prisional × semestre × tipo de regime, com a capacidade do regime e o cadastro da unidade (âmbito, gestão, tipo de recolhimento)"
+    chave: "ano, semestre, id_unidade, tipo_regime (201775 linhas = 201775 distintos; são 28825 pares ano-semestre-unidade × 7 regimes)"
+    tempo: {natureza: serie_de_periodos, coluna: "ano, semestre", cobertura: "2016 (semestre 2) – 2025 (semestre 2)"}
+    territorio: {nivel: municipio, colunas: {sigla_uf: "UF", id_municipio: "município (0,19% nulos)", id_unidade: "unidade prisional (texto de 5 dígitos)"}}
+    medidas:
+      - {coluna: "capacidade_total, capacidade_masculina, capacidade_feminina", o_que: "vagas por regime; nulo em ~43% (a unidade não tem o regime)", unidade: "vagas", soma: sim}
+    filtros_tipicos: ["ano = 2025 AND semestre = 2", "tipo_regime IN ('aberto','fechado','semiaberto','provisorio','medida_seguranca_internacao','rdd','outro'): cada unidade aparece nos 7 regimes, filtre ou agrupe para não multiplicar atributos do cadastro por 7", "ambito IN ('Estadual','Federal'); gestao IN ('Pública','Organizações sem fins lucrativos','Co-gestão','Parceria Público-Privada')"]
+    use_para: "cadastro e capacidade das unidades prisionais por regime"
+    nao_use_para: "contar unidades com count(*) (cada unidade tem 7 linhas por semestre; use count(DISTINCT id_unidade))"
+    rascunho: [use_para, nao_use_para]
+    verificado: "201775 linhas = 201775 distintos (ano, semestre, id_unidade, tipo_regime); 28825 distintos (ano, semestre, id_unidade); capacidade_total 2025/2 por regime: fechado 269525, provisorio 135987, semiaberto 93623, outro 175746 — medido 2026-10-27"
+  unidade_crosswalk:
+    grao: "uma unidade prisional × semestre, com o pareamento do nome original com o id_unidade estável entre ciclos"
+    chave: "ano, semestre, id_unidade (28825 linhas = 28825 distintos)"
+    tempo: {natureza: serie_de_periodos, coluna: "ano, semestre", cobertura: "2016 (semestre 2) – 2025 (semestre 2)"}
+    territorio: {nivel: municipio, colunas: {sigla_uf: "UF", id_municipio: "município (0,19% nulos)", id_unidade: "unidade"}}
+    medidas:
+      - {coluna: "score_pareamento, score_rival", o_que: "similaridade do pareamento e do melhor concorrente (8,6% nulos), entre 0 e 1", unidade: "score 0–1", soma: nao}
+    filtros_tipicos: ["pareamento_ambiguo = 'sim' (184 linhas) para auditar pareamentos duvidosos; 'nao' (28641)", "metodo_pareamento IN ('consecutivo','inicio_trajetoria','lacuna')"]
+    use_para: "auditar como as unidades foram ligadas entre semestres"
+    nao_use_para: "análises de população (não há contagens aqui)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "28825 linhas, 28825 distintos (ano, semestre, id_unidade) — medido 2026-10-27"

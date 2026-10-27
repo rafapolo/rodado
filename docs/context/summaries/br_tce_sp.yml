@@ -1,0 +1,12 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_tce_sp
+tabelas:
+  municipios:
+    grao: "um município paulista fiscalizado pelo TCE-SP (slug e nome por extenso); tabela de referência"
+    chave: "municipio (644 linhas, 644 distintos)"
+    territorio: {nivel: municipio, colunas: {municipio: "slug minúsculo sem acento, ex. 'aguas-da-prata'", municipio_extenso: "nome por extenso com acento, ex. 'Águas da Prata'"}}
+    use_para: "traduzir o slug do TCE-SP para o nome do município (não traz código IBGE)"
+    nao_use_para: "análise de despesa, contrato ou qualquer medida: não há número na tabela"
+    rascunho: [use_para, nao_use_para]
+    verificado: "644 linhas, 644 distintos de municipio — medido 2026-10-27"

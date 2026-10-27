@@ -1,0 +1,21 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ms_imunizacoes
+tabelas:
+  municipio:
+    grao: "um município × ano (doses aplicadas e cobertura vacinal por imunobiológico)"
+    chave: "id_municipio, ano (149.124 linhas = 149.124 combinações distintas)"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "1994–2021"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos", sigla_uf: "UF"}}
+    medidas:
+      - {coluna: "doses_<vacina> (ex.: doses_bcg, doses_poliomielite, doses_triplice_viral_d1, doses_penta)", o_que: "doses aplicadas no município no ano", unidade: "doses", soma: sim}
+      - {coluna: doses_total, o_que: "doses aplicadas de todas as vacinas no ano (sem nulos, mín 2)", unidade: "doses", soma: sim}
+      - {coluna: "cobertura_<vacina> (ex.: cobertura_bcg, cobertura_penta)", o_que: "doses ÷ população-alvo; pode passar de 100 (máx 94.450 em cobertura_ignorado, 13.050 em cobertura_bcg)", unidade: "%", soma: nao}
+      - {coluna: cobertura_total, o_que: "cobertura agregada de todas as vacinas", unidade: "%", soma: nao}
+    filtros_tipicos:
+      - "ano = 2021 para o último ano (5.570 municípios); ano >= 2017 para ter cobertura_hepatite_a e cobertura_poliomielite_4anos"
+      - "coluna da vacina IS NOT NULL: cada vacina só tem valor nos anos em que entrou no calendário (cobertura_penta 2012+, cobertura_dtp 1994–2016, cobertura_tetravalente 2002–2016, cobertura_hepatite_a 2014+, cobertura_poliomielite_4anos 2017+); NULL = vacina não existia/não registrada, não zero"
+    use_para: "doses aplicadas (somáveis) e cobertura vacinal por município e ano, para a série 1994–2021."
+    nao_use_para: "média ou soma de cobertura_* entre municípios (recalcule doses ÷ população-alvo); vacinação por pessoa, mês ou estabelecimento."
+    rascunho: [use_para, nao_use_para, definição da população-alvo de cada cobertura]
+    verificado: "149.124 linhas, 149.124 distintos de (id_municipio, ano); cobertura_total nula em 23 linhas; 5.570 municípios em 2017–2021; nulos por ano de cobertura_penta/dtp/tetravalente/hepatite_a/poliomielite_4anos conferidos acima; sum(doses_total) 2019 = 44.888.238 e 2021 = 32.788.446 — medido 2026-10-27"

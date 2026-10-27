@@ -1,0 +1,24 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_mec_sisu
+tabelas:
+  microdados:
+    grao: "uma opção de curso de um candidato numa etapa (chamada regular ou lista de espera) de uma edição semestral do SISU, na modalidade de concorrência em que foi classificado"
+    chave: "nenhuma chave curta: (semestre, etapa, cpf, opcao, id_curso, modalidade_concorrencia) repete 1.839 de 3.540.744 linhas em 2022; só com 11 colunas (semestre, etapa, cpf, opcao, id_ies, id_campus, id_curso, turno, modalidade_concorrencia, classificacao, nota_candidato) fica única"
+    tempo: {natureza: serie_de_periodos, coluna: "ano, semestre", cobertura: "2017–2022, semestres 1 e 2 (2022: 2.681.732 linhas no 1º e 859.012 no 2º)"}
+    territorio: {nivel: municipio, colunas: {id_municipio_campus: "município IBGE do campus do curso", sigla_uf_campus: "UF do campus", sigla_uf_ies: "UF da IES", id_municipio_candidato: "município do candidato (0,13% nulo)", sigla_uf_candidato: "UF do candidato"}}
+    medidas:
+      - {coluna: nota_candidato, o_que: "nota final ponderada do candidato na opção", unidade: "pontos (72–972,48 na amostra de 2022)", soma: nao}
+      - {coluna: nota_corte, o_que: "nota de corte do curso/modalidade", unidade: "pontos", soma: nao}
+      - {coluna: quantidade_vagas_concorrencia, o_que: "vagas do curso na modalidade; vem repetida em cada candidato dessa modalidade", unidade: "vagas", soma: nao}
+      - {coluna: classificacao, o_que: "posição do candidato na modalidade", unidade: "posição", soma: nao}
+    filtros_tipicos:
+      - "ano = <ano> AND semestre = '1' (texto): tabela grande, filtre a partição"
+      - "status_matricula = 'Efetivada' para matriculados (208.732 linhas em 2022)"
+      - "status_aprovado = true NÃO significa selecionado: em 2022 é true em todas as linhas de 'Não convocado' (502.309), 'Não compareceu', 'Efetivada', 'Documentação rejeitada', 'Cancelada' e em toda a Lista de Espera (649.058), e em 146.605 das 2.587.003 'Pendente'; 619.427 true no perfil"
+      - "etapa = 'Chamada Regular' ou 'Lista de Espera' (texto literal): o mesmo candidato aparece nas duas"
+      - "tipo_cota tem espaços à direita ('PPI ', 'D   '): use trim(tipo_cota); NULL na ampla concorrência (56%)"
+    use_para: "inscrições, notas e matrículas efetivadas do SISU por curso, IES, município do campus e modalidade de cota"
+    nao_use_para: "contar candidatos ou vagas com count(*)/sum de vagas (um candidato tem várias linhas: 2022 tem 642.286 cpf distintos em 3.540.744 linhas), ou usar inscricao_enem (mascarada, 18.116 distintos)"
+    rascunho: [use_para, nao_use_para, "nota_candidato/nota_corte/classificacao soma:nao", "significado de status_aprovado = true"]
+    verificado: "34.700.256 linhas; ano = 2022: 3.540.744 linhas, 642.286 cpf distintos, 920.841 pares cpf×semestre, 6.184 pares (id_ies,id_curso) = 6.184 id_curso; 243.979 pares cpf×semestre têm mais de uma linha status_aprovado = true; contagens de status_matricula em 2022 acima — medido 2026-10-27"

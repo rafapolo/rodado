@@ -1,0 +1,45 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_seeg_emissoes
+tabelas:
+  municipio:
+    grao: "uma emissão ou remoção estimada de um município × ano × bioma × gás × tipo × recorte × setor × atividade econômica × categoria × subcategoria × produto × detalhamento"
+    chave: "ano, id_municipio, bioma, gas, tipo, recorte, setor, atividade_economica, categoria, subcategoria, produto, detalhamento (conferido em ano = 2024: 3.013.390 linhas = 3.013.390 distintos)"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "1970–2024"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos (6.859 distintos)", sigla_uf: "sigla da UF", bioma: "código do bioma (1 Amazônia, 2 Caatinga, 3 Cerrado, 4 Mata Atlântica, 5 NA, 6 Pampa, 7 Pantanal, pelo dicionario)"}}
+    medidas:
+      - {coluna: emissao_ar5, o_que: "emissão (positiva) ou remoção (negativa) em CO2 equivalente, convertida pelos potenciais do AR5 do IPCC; é a coluna que bate com o SEEG publicado quando gas = '2'", unidade: "t CO2e", soma: sim}
+      - {coluna: emissao_ar6, o_que: "mesma estimativa pelos potenciais do AR6 (alternativas: emissao_ar2, emissao_ar4; ar4 tem 2,83% nulos na amostra de 2024)", unidade: "t CO2e", soma: sim}
+    filtros_tipicos:
+      - "gas = '2' (no dicionario: 'CO2e (t) GWP') e gas = '1' ('CO2e (t) GTP') repetem o mesmo inventário em duas métricas: somar os dois dobra o total. Medido 2022, setor '1', tipo '2': gas '2' emissao_ar5 = 617,4 Mt; gas '1' = 227,0 Mt"
+      - "tipo = '2' (dicionario: 'Emissão'); '4' e '5' são remoções (valores negativos); '3' é 'Emissão NCI' e '1' 'Bunker'; se NCI/bunker entram no total não está documentado — ver gotcha gas_e_dicionario"
+      - "setor = '1' (Agropecuária), '2' Energia, '3' Mudança de Uso da Terra e Floresta, '4' Processos Industriais, '5' Resíduos (do dicionario)"
+      - "ano = 2024 (tabela de 165,7 milhões de linhas: sempre filtre ano)"
+    use_para: "emissões e remoções de gases de efeito estufa por município, setor e categoria, séries de 1970 a 2024"
+    nao_use_para: "somar gas '1' com gas '2', ou somar sem filtrar tipo (misturar emissão, remoção e NCI); códigos de categoria, produto e detalhamento só se leem pelo dicionario"
+    rascunho: [nao_use_para]
+    verificado: "165.736.450 linhas, 55 anos de 3.013.390 linhas cada (1970–2024); chave conferida em ano = 2024; gas só tem '1' e '2'; municipio gas '2' ar5 em 2022 setor '1' tipo '2' = 617.357.045 t, igual a uf gas '14' (GWP-AR5) = 617,4 Mt — medido 2026-10-27"
+  uf:
+    grao: "uma emissão ou remoção estimada de uma UF × ano × bioma × gás × tipo × recorte × setor × atividade econômica × categoria × subcategoria × produto × detalhamento"
+    chave: "ano, sigla_uf, bioma, gas, tipo, recorte, setor, atividade_economica, categoria, subcategoria, produto, detalhamento (conferido em ano = 2024: 326.001 linhas = 326.001 distintos)"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "1970–2024"}
+    territorio: {nivel: uf, colunas: {sigla_uf: "sigla da UF (28 distintos no perfil de 2024)", bioma: "código do bioma, como em municipio"}}
+    medidas:
+      - {coluna: emissao, o_que: "emissão (positiva) ou remoção (negativa); a unidade e o potencial dependem de gas: gases individuais em t do gás (ex. '6' CO2, '4' CH4, '25' N2O) e CO2e em t por GTP/GWP e versão do AR (gas '8'–'15')", unidade: "t (do gás indicado em gas)", soma: sim}
+    filtros_tipicos:
+      - "gas = '14' (dicionario: 'CO2e (t) GWP-AR5') equivale a municipio gas '2' + emissao_ar5; '15' é GWP-AR6, '12' GWP-AR2, '13' GWP-AR4; '8' a '11' são GTP. Somar gases diferentes (CO2 + CH4 + CO2e) mistura unidades"
+      - "gas = '7' ('CO2e (t) GTP AR4', 735 linhas por ano) e '9' ('CO2e (t) GTP-AR4') têm rótulos quase iguais no dicionario; não medi a diferença"
+      - "tipo = '2' (Emissão), '4' (Remoção), '3' (Emissão NCI), '5' (Remoção NCI), '1' (Bunker), pelo dicionario"
+      - "ano = 2024 (17,9 milhões de linhas)"
+    use_para: "emissões e remoções por UF com a lista completa de gases (CO2, CH4, N2O, HFCs...) e as várias métricas de CO2e"
+    nao_use_para: "somar linhas sem fixar uma única gas; para município use a tabela municipio"
+    rascunho: [nao_use_para]
+    verificado: "17.930.055 linhas, 1970–2024; chave conferida em ano = 2024; 20 valores de gas em 2024 (1 a 27 no total da tabela); uf gas '14' setor '1' tipo '2' em 2022 = 617,4 Mt, gas '15' = 606,4 Mt (municipio ar6 = 606,36 Mt) — medido 2026-10-27"
+  dicionario:
+    grao: "uma entrada do dicionário: o significado de um código (chave) de uma coluna de municipio ou uf"
+    chave: "tabela, coluna, chave (não medida)"
+    tempo: {natureza: sem_tempo, coluna: cobertura_temporal}
+    territorio: {nivel: nenhum, colunas: {}}
+    use_para: "traduzir os códigos de bioma, gas, tipo, recorte, setor, atividade_economica, categoria, subcategoria, produto e detalhamento (1.645 linhas); filtre por tabela porque municipio e uf têm numerações diferentes para gas"
+    rascunho: [chave]
+    verificado: "1.645 linhas; colunas (tabela, coluna, chave, cobertura_temporal, valor) — medido 2026-10-27"

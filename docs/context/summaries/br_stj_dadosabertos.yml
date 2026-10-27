@@ -1,0 +1,19 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_stj_dadosabertos
+tabelas:
+  documentos:
+    grao: "um documento (decisão monocrática ou acórdão) publicado pelo STJ; a tabela repete alguns documentos"
+    chave: "nenhuma: 3.604.791 linhas para 3.540.898 SeqDocumento distintos (ver gotcha linhas_duplicadas); em 2025, 716.241 linhas para 705.111 SeqDocumento"
+    tempo: {natureza: serie_diaria, coluna: dataPublicacao, cobertura: "2021-01-11–2026-10-06"}
+    territorio: {nivel: nenhum}
+    medidas:
+      - {expressao: "count(DISTINCT SeqDocumento)", o_que: "número de documentos publicados", unidade: "documento", soma: nao}
+    filtros_tipicos:
+      - "year(dataPublicacao) = <ano> para recortar (a coluna é DATE)"
+      - "tipoDocumento: em 2025 aparecem 'ACÓRDÃO' (201.577 linhas) e 'DECISÃO' (514.664); há 4 valores no total, os outros dois não foram listados"
+      - "teor = 'Negando' (a maior parte), 'Não Conhecendo', 'Concedendo', 'Outros': resultado grosseiro do documento; NM_MINISTRO em maiúsculas"
+    use_para: "contar documentos do STJ por ministro, ano, tipo e teor, sempre com count(DISTINCT SeqDocumento)"
+    nao_use_para: "contar com count(*) (superconta) ou ler o conteúdo/ementa do documento (a tabela só traz metadados e assuntos)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "linhas e SeqDocumento distintos: total 3.604.791 × 3.540.898 (gotcha, 2026-10-20); 2025 716.241 × 705.111 — medido 2026-10-27; tipoDocumento 2025 medido, os 4 valores totais não"

@@ -1,0 +1,32 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: world_oecd_pisa
+tabelas:
+  student:
+    grao: "um estudante de 15 anos que fez o PISA × ciclo (ano)"
+    chave: "(year, student_id): 2.500.803 linhas = 2.500.803 distintos (também (year, country_id_iso_3, student_id)). student_id sozinho NÃO é chave: só 1.161.254 distintos, o código se repete entre anos e países"
+    tempo: {natureza: serie_de_periodos, coluna: year, cobertura: "2015, 2018, 2022, 2025 (4 ciclos; sem 2000–2012)"}
+    territorio: {nivel: outro, colunas: {country_id_iso_3: "país/economia (ISO alfa-3), 323 (ano, país) no total", country_id_m49: "código M49 do país", school_id: "escola, só única dentro do país/ano (não medido)", oecd: "0/1/2, significado não documentado (1 = país da OCDE é o que os valores sugerem: 37 países com 1 em 2022)"}}
+    medidas:
+      - {coluna: "plausible_value_1_mathematics … plausible_value_10_mathematics", o_que: "10 valores plausíveis de proficiência em matemática; BRA 2022 ponderado = 377,8", unidade: "pontos da escala PISA", soma: nao}
+      - {coluna: "plausible_value_1_reading … _10_reading", o_que: "idem, leitura", unidade: "pontos PISA", soma: nao}
+      - {coluna: "plausible_value_1_science … _10_science", o_que: "idem, ciências", unidade: "pontos PISA", soma: nao}
+      - {coluna: "plausible_value_*_environmental_science, plausible_value_*_ldw", o_que: "só no ciclo 2025: 721.036 estudantes preenchidos, 0 em 2015/2018/2022", unidade: "pontos PISA", soma: nao}
+      - {coluna: final_student_weight, o_que: "peso amostral do estudante; soma por ano ≈ 25,9 mi (2015), 28,7 mi (2018), 28,3 mi (2022), 32,8 mi (2025)", unidade: "estudantes representados", soma: sim}
+      - {coluna: "student_weight_1 … student_weight_80", o_que: "pesos replicados para erro-padrão (BRR)", unidade: "peso", soma: nao}
+      - {coluna: index_economic_social_cultural_status, o_que: "índice socioeconômico (ESCS), -8,2 a 7,1", unidade: "índice padronizado", soma: nao}
+    filtros_tipicos:
+      - "year = 2022 (613.744 linhas, 80 países); 2025 tem 755.721 e 90 países; 2018 612.004; 2015 519.334"
+      - "country_id_iso_3 = 'BRA' (valor literal ISO alfa-3)"
+      - "assessment_type = '08MS' é o ciclo 2022 ('06MS' = 2015, '07MS' = 2018, '25MS' = 2025)"
+      - "gender = '1' ou '2' (945.964 / 943.514; 116.300 nulos): significado do código não documentado"
+      - "grade_repetition = '1' (230.653) / '0' (1.656.630): provável 1 = repetiu, não documentado"
+    use_para: "média de proficiência por país, ano, sexo ou nível socioeconômico, sempre com final_student_weight"
+    nao_use_para: "média simples sem peso (BRA/mundo muda: 2018 simples 461,2 × ponderada 430,6) e comparar colunas de questionário entre ciclos sem checar o nulo (muitas só existem em um ciclo)"
+    observacoes:
+      - "média correta: sum(final_student_weight * plausible_value_k_mathematics) / sum(final_student_weight) para cada k, e tirar a média dos 10 resultados; usar só plausible_value_1 dá uma estimativa aproximada"
+      - "colunas 100% nulas: highest_parent_years_schooling, learning_time_*, number_educational_change, ict_home, ict_school, date_database_creation"
+      - "dezenas de colunas wle_*, option_*, de questionário, só existem em um subconjunto de países/ciclos (nulos de 70% a 97%)"
+      - "year_birth tem valores 2552/2553 (calendário tailandês); month_birth 70% nulo"
+    rascunho: [use_para, nao_use_para, significado de oecd, gender e grade_repetition]
+    verificado: "2.500.803 linhas; (year,student_id) 2.500.803 distintos; student_id 1.161.254 distintos; peso por ano e médias ponderadas de matemática (PV1) 453,1 / 430,6 / 424,2 / 416,2 (2015/2018/2022/2025); BRA 2022 = 377,8, JPN 536,3, FIN 484,2 — medido 2026-10-27"

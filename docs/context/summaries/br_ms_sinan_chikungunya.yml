@@ -1,0 +1,19 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ms_sinan_chikungunya
+tabelas:
+  microdados_chikungunya:
+    grao: "uma notificação individual de chikungunya (ficha SINAN), sem identificador do caso"
+    chave: "nenhuma: sem identificador; 2.507.780 linhas, 2.505.024 linhas distintas (2.756 repetidas)"
+    tempo: {natureza: serie_diaria, coluna: "DT_NOTIFIC (ano em NU_ANO, texto; ano_sinan, número; divergem em 4.353 linhas, quase sempre por 1 ano)", cobertura: "2014–2026"}
+    territorio: {nivel: municipio, colunas: {ID_MN_RESI: "residência (código IBGE; a coluna traz lixo binário em algumas linhas)", ID_MUNICIP: "município de notificação, 6 dígitos", SG_UF: "UF de residência, código numérico IBGE em texto ('31')", SG_UF_NOT: "UF da notificação, código numérico"}}
+    medidas:
+      - {expressao: "count(*)", o_que: "notificações; casos prováveis = CLASSI_FIN <> '5'", unidade: "notificações", soma: sim}
+    filtros_tipicos:
+      - "ano_sinan = <ano> (número, sem lixo; NU_ANO é texto)"
+      - "CLASSI_FIN = '13' chikungunya (232.047 em 2024), '5' descartado (162.176 em 2024; segundo o dicionario da dengue), vazio (31.991); '1', '2' e '8' aparecem e o significado não está documentado"
+      - "CS_SEXO = 'F','M','I'; EVOLUCAO = '1' cura (códigos como na dengue), '9' ignorado"
+    use_para: "casos de chikungunya por município e ano."
+    nao_use_para: "contar casos sem filtrar descartados; colunas de texto livre ou binário corrompido."
+    rascunho: [use_para, nao_use_para, filtros_tipicos]
+    verificado: "2.507.780 linhas; 2.505.024 distintas (hash da linha); ano_sinan 2014–2026; ano_sinan = 2024: CLASSI_FIN 13 = 232.047, 5 = 162.176, vazio 31.991 — medido 2026-10-27"

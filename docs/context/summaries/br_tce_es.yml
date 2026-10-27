@@ -1,0 +1,71 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_tce_es
+tabelas:
+  aquisicoes_mensais:
+    grao: "um arquivo mensal de aquisições publicado pelo TCE-ES (ano × mês, com link para o PDF)"
+    chave: "Chave (133 linhas, 133 distintos); (Ano, Mes) também 133"
+    tempo: {natureza: serie_mensal, coluna: "Ano + MesValor", cobertura: "2016–2026"}
+    territorio: {nivel: nenhum}
+    filtros_tipicos: ["Ano = '2023' (texto); MesValor = '02' (texto com zero à esquerda; 'Mes' é o nome por extenso, ex. 'Abril')"]
+    use_para: "achar o PDF mensal de aquisições do TCE-ES"
+    nao_use_para: "análise de valores: não há coluna numérica (ArquivoODS é 100% nulo)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "133 linhas, 133 distintos de Chave e de (Ano,Mes) — medido 2026-10-27"
+  julgamento_contas:
+    grao: "um voto de vereador no julgamento das contas de um município (município × exercício × parecer prévio × vereador)"
+    chave: "nenhuma: 11.691 linhas; (NumeroParecerPrevio, AnoParecerPrevio, nome, NomeVereador, Ano) tem 10.562 distintos e com Responsavel 11.285; NomeVereador é nulo em 2,6%"
+    tempo: {natureza: serie_anual, coluna: Ano, cobertura: "2009–2024 (Ano é o exercício das contas, texto; AnoParecerPrevio vai a 2026)"}
+    territorio: {nivel: municipio, colunas: {nome: "nome do município, por extenso"}}
+    medidas:
+      - {coluna: QuantidadeAprovacao, o_que: "votos pela aprovação no total da sessão, repetido em cada linha de vereador", unidade: "votos", soma: nao}
+    filtros_tipicos:
+      - "\"Resultado parecer previo\" = 'Aprovação com ressalva' (5.147), 'Aprovação' (4.682), 'Rejeição' (1.578), 'Extinção sem resolução de mérito' (68); nulo em 216; o nome da coluna tem espaços"
+      - "\"Resultado julgamento câmara\" = 'Aprovação' (10.559), 'Rejeição' (970) ou '-' (162, sem julgamento)"
+      - "\"Registro de presença\" = 'Sim' (10.836), 'Não' (551) ou '-' (304)"
+    use_para: "resultado do julgamento das contas municipais pelas Câmaras e quem votou"
+    nao_use_para: "contar contas ou municípios com count(*): há uma linha por vereador; use count(DISTINCT (nome, Ano, NumeroParecerPrevio, AnoParecerPrevio)). Os totais Quantidade* repetem em cada vereador, não os some"
+    rascunho: [use_para, nao_use_para, "que Quantidade* é total da sessão repetido (visto nas 3 primeiras linhas)"]
+    verificado: "11.691 linhas; (parecer, ano, nome) = 1.206 distintos (aprox. contas); chaves candidatas medidas acima — medido 2026-10-27"
+  lista_responsaveis:
+    grao: "um responsável com contas irregulares ou sanção (inabilitado, inidôneo) em uma deliberação do TCE-ES"
+    chave: "nenhuma: 734 linhas; (NumeroDocumentoResponsavel, NumeroProcesso, AnoProcesso, NumeroDeliberacao, AnoDeliberacao) tem 729 distintos (5 repetem)"
+    tempo: {natureza: serie_de_periodos, coluna: DataTransito, cobertura: "2018-10-11–2026-09-04 (DataTermino 2026-10-11 a 2034-09-04)"}
+    territorio: {nivel: outro, colunas: {Jurisdicionado: "órgão ou prefeitura onde se deu a irregularidade"}}
+    filtros_tipicos:
+      - "categoria = 'contas_irregulares' (727 de 734); os outros são 'responsaveis_inabilitados' (4), 'proibidos_contratar' (2), 'empresas_inidoneas' (1)"
+      - "TipoDeliberacao = 'Acórdão' (639) ou 'Parecer Prévio' (94)"
+      - "DataTermino > current_date para quem ainda está na lista"
+    use_para: "listar quem teve contas julgadas irregulares no ES e até quando consta na lista"
+    nao_use_para: "valor de débito ou multa: a tabela não tem valor; nome e documento são dado pessoal"
+    rascunho: [use_para, nao_use_para, "leitura de DataTermino como fim da vigência na lista"]
+    verificado: "734 linhas, 729 distintos da chave candidata, 549 documentos distintos — medido 2026-10-27"
+  obras_publicas:
+    grao: "uma obra pública contratada (contrato) fiscalizada pelo TCE-ES"
+    chave: "_id (250 linhas, 250 distintos); Contrato tem 240 distintos"
+    tempo: {natureza: serie_de_periodos, coluna: DataAssinaturaContrato, cobertura: "2007-02-06–2023-12-11"}
+    territorio: {nivel: municipio, colunas: {Municipio: "município da obra, nulo em 23,2%", Esfera: "nome do município do ente (e não 'estadual/municipal'), nulo em 20%", UnidadeGestora: "órgão contratante"}}
+    medidas:
+      - {coluna: ValorInicial, o_que: "valor inicial do contrato", unidade: "R$", soma: sim}
+      - {coluna: ValorDecrescido, o_que: "supressões contratuais", unidade: "R$", soma: sim}
+    filtros_tipicos:
+      - "Situacao = 'Situação não definida' (187), 'Não iniciada' (62) ou 'Concluída e recebida definitivamente' (1)"
+      - "ModalidadeLicitacao = 'Tomada de Preço' (92), 'Concorrência Pública' (50), 'Convite' (39), 'Pregão' (38)"
+      - "FormaExecucao = 'Indireta' (247) ou 'Direta' (3)"
+    use_para: "ver contratos de obras públicas do ES por modalidade, tipo de obra e valor inicial"
+    nao_use_para: "acompanhar execução: ValorMedido, ValorAcrescido e DiasAtrasada são quase todos 0 e DataInicioObra é 100% nulo"
+    rascunho: [use_para, nao_use_para]
+    verificado: "250 linhas, 250 distintos de _id e 240 de Contrato; Situacao e modalidades do perfil — medido 2026-10-27"
+  resultados_fiscalizacoes:
+    grao: "um município × ano de fiscalização, com índices do Executivo e do Legislativo"
+    chave: "NomeEsferaAdministrativa, Ano (156 linhas, 156 distintos)"
+    tempo: {natureza: serie_de_periodos, coluna: Ano, cobertura: "2015, 2020 (só esses dois anos, 78 linhas cada)"}
+    territorio: {nivel: municipio, colunas: {NomeEsferaAdministrativa: "nome do município"}}
+    medidas:
+      - {coluna: ValorExecutivo, o_que: "resultado do índice do Executivo, de 0 a 84 no perfil (significado não documentado)", unidade: "pontos (não documentado)", soma: nao}
+      - {coluna: ValorLegislativo, o_que: "resultado do índice do Legislativo, de 0 a 81 (significado não documentado)", unidade: "pontos (não documentado)", soma: nao}
+    filtros_tipicos: ["Ano = '2015' ou '2020' (texto)"]
+    use_para: "comparar a nota de fiscalização de um município entre 2015 e 2020"
+    nao_use_para: "interpretar a escala sem consultar a fonte do TCE-ES: o significado dos índices não está documentado"
+    rascunho: [use_para, nao_use_para, "natureza dos valores como índice"]
+    verificado: "156 linhas, 156 distintos de (NomeEsferaAdministrativa, Ano) — medido 2026-10-27"

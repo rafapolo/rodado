@@ -1,0 +1,93 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ons_avaliacao_operacao
+tabelas:
+  geracao_usina:
+    grao: "uma usina (ou conjunto/modalidade de operação) × hora"
+    chave: "(data, hora, usina, id_empreendimento_aneel, tipo_modalidade_operacao, tipo_combustivel). (data, hora, usina) sozinha NÃO é única: 479.016 linhas contra 476.136 combinações em jun/2023"
+    tempo: {natureza: serie_diaria, coluna: data, cobertura: "2000-01-01–2024-02-29 (hora 0–23)"}
+    territorio: {nivel: uf, colunas: {sigla_uf: "UF da usina", id_subsistema: "N, NE, S, SE", subsistema: "inclui PARAGUAI além dos 4 subsistemas (Itaipu)", id_empreendimento_aneel: "código ANEEL; pode ser vazio"}}
+    medidas:
+      - {coluna: geracao, o_que: "geração verificada na hora", unidade: "MWmed × 10^8 (divida por 1e8; ver gotcha geracao_vezes_1e8)", soma: sim}
+    filtros_tipicos:
+      - "tipo_usina IN ('HIDROELETRICA','TERMICA','EOLIELETRICA','FOTOVOLTAICA','NUCLEAR') (valores literais maiúsculos sem acento)"
+      - "ano = <ano> (tabela de 71 milhões de linhas; sempre filtre partição)"
+    use_para: "geração horária por usina, fonte e UF; total por fonte no ano (soma de geracao/1e8 dá MWh)"
+    nao_use_para: "somar sem dividir por 1e8; contar usinas por (data, hora, usina) como chave"
+    rascunho: [use_para, nao_use_para]
+    verificado: "71.091.267 linhas; jun/2023: 479.016 linhas, 479.016 distintas na chave de 6 colunas; 2023 em TWh (geracao/1e8/1e6): hidro 437,2, térmica 58,6, nuclear 14,3, eólica 94,6, fotovoltaica 42,2 — medido 2026-10-27"
+  geracao_termica_motivo_despacho:
+    grao: "uma usina térmica × hora × patamar (tipo_patamar)"
+    chave: "(data, hora, id_usina_planejamento, tipo_patamar)"
+    tempo: {natureza: serie_diaria, coluna: data, cobertura: "2013-01-01–2024-02-29"}
+    territorio: {nivel: regiao, colunas: {id_subsistema: "N, NE, S, SE", subsistema: "nome do subsistema", id_usina_planejamento: "código de planejamento da usina", usina: "nome"}}
+    medidas:
+      - {coluna: "geracao_verificada", o_que: "geração térmica verificada", unidade: "mesma escala ×10^8 das demais gerações da tabela (máx 2,5e11 ≈ 2.471 MW após /1e8); escala não documentada na tabela, conferida só por ordem de grandeza", soma: sim}
+      - {coluna: "geracao_programada_total e colunas geracao_programada_* / *_verificada por motivo (inflexibilidade, ordem de mérito, exportação, unit commitment, constrained off)", o_que: "geração dividida por motivo de despacho; razao_eletrica não tem valores (min/max nulos no perfil)", unidade: "mesma escala", soma: sim}
+    filtros_tipicos:
+      - "tipo_patamar IN ('LEVE','MEDIA','PESADA') (valores literais do perfil)"
+      - "ano = 2024 (um ano só no perfil; tabela de 10 milhões de linhas)"
+    use_para: "por que cada térmica gerou: inflexibilidade, mérito, exportação, unit commitment"
+    nao_use_para: "série longa de geração térmica total (use geracao_usina); atendimento_satisfatorio é 100% nulo"
+    rascunho: [use_para, nao_use_para, unidade]
+    verificado: "10.428.670 linhas; jan/2024: 69.768 linhas = 69.768 distintas na chave de 4 colunas e na (data, hora, usina) — medido 2026-10-27"
+  restricao_operacao_usinas_eolicas:
+    grao: "uma usina/conjunto eólico × meia hora"
+    chave: "nenhuma: jan/2024 tem 225.447 linhas e 224.448 combinações (data, hora, id_ons, usina, id_empreendimento_aneel); 999 linhas repetem"
+    tempo: {natureza: serie_diaria, coluna: data, cobertura: "2021-10-01–2024-03-01 (48 meias horas por dia)"}
+    territorio: {nivel: uf, colunas: {sigla_uf: "UF (RN, BA, CE, PI, RS, PE, PB, SC, MA)", id_ons: "código ONS do conjunto", usina: "nome", id_empreendimento_aneel: "pode ser vazio"}}
+    medidas:
+      - {coluna: geracao, o_que: "geração verificada", unidade: "MW médios, valores já em escala de MW (máx 675); não está ×1e8, diferente de geracao_usina", soma: sim}
+      - {coluna: geracao_limitada, o_que: "geração limitada por restrição (95% nulo)", unidade: "MW", soma: sim}
+      - {coluna: disponibilidade, o_que: "geração disponível", unidade: "MW", soma: sim}
+      - {coluna: geracao_referencia, o_que: "geração de referência", unidade: "MW", soma: sim}
+    filtros_tipicos:
+      - "tipo_razao_restricao IN ('ENE','CNF','REL') (vazio quando não há restrição; em jan/2024: ENE 6.699, CNF 604, REL 67, vazio 218.077); significado dos códigos não documentado"
+      - "tipo_origem_restricao IN ('SIS','LOC') (mesmo padrão; significado não documentado)"
+    use_para: "cortes (curtailment) de eólicas: disponibilidade menos geração"
+    nao_use_para: "total de geração eólica (use geracao_usina); somar sem tratar as 999 linhas repetidas por mês"
+    rascunho: [use_para, nao_use_para, unidade]
+    verificado: "6.336.959 linhas; jan/2024: 225.447 linhas, 224.448 distintas — medido 2026-10-27"
+  energia_armazenada_reservatorio:
+    grao: "um reservatório × dia"
+    chave: "(data, reservatorio)"
+    tempo: {natureza: serie_diaria, coluna: data, cobertura: "2000-01-01–2024-03-01"}
+    territorio: {nivel: regiao, colunas: {id_subsistema: "N, NE, S, SE", subsistema: "nome", id_subsistema_jusante: "subsistema a jusante; 'nan' como texto quando não há", bacia: "bacia hidrográfica", reservatorio: "nome (71 distintos)"}}
+    medidas:
+      - {coluna: energia_armazenada_total, o_que: "energia armazenada do reservatório", unidade: "não documentada (máx 35.853)", soma: nao}
+      - {coluna: proporcao_energia_armazenada, o_que: "armazenada sobre máxima, em %", unidade: "% (pode passar de 100 e ser negativa, 10% nulo)", soma: nao}
+    filtros_tipicos:
+      - "tipo_reservatorio IN ('Reservatorio com Usina','Reservatorio sem usina') (literais com essa grafia)"
+    use_para: "evolução diária do armazenamento por reservatório, subsistema ou bacia"
+    nao_use_para: "somar energia_armazenada_total de linhas de reservatórios em cascata sem checar contribuição (existem colunas proporcao_contribuicao_*)"
+    rascunho: [use_para, nao_use_para, medidas]
+    verificado: "633.293 linhas = 633.293 distintas em (data, reservatorio) — medido 2026-10-27"
+  energia_natural_afluente:
+    grao: "um reservatório/usina × dia"
+    chave: "(data, reservatorio)"
+    tempo: {natureza: serie_diaria, coluna: data, cobertura: "2000-01-01–2024-03-01"}
+    territorio: {nivel: regiao, colunas: {id_subsistema: "N, NE, S, SE", bacia: "bacia", reservatorio: "nome (148 distintos)"}}
+    medidas:
+      - {coluna: energia_natural_afluente_bruta, o_que: "energia natural afluente bruta", unidade: "não documentada (máx 34.858)", soma: nao}
+      - {coluna: energia_natural_afluente_armazenavel, o_que: "parcela armazenável (pode ser negativa)", unidade: "não documentada", soma: nao}
+      - {coluna: proporcao_energia_natural_afluente_bruta, o_que: "proporção sobre a média de longo termo, em %", unidade: "%", soma: nao}
+    filtros_tipicos:
+      - "tipo_reservatorio IN ('Fio dagua','Reservatorio com Usina')"
+    use_para: "afluência diária por usina, bacia ou subsistema"
+    nao_use_para: "afluência de longo termo como medida ampla (25% nulo)"
+    rascunho: [use_para, nao_use_para, medidas]
+    verificado: "1.315.067 linhas = 1.315.067 distintas em (data, reservatorio) — medido 2026-10-27"
+  reservatorio:
+    grao: "um reservatório/usina (cadastro estático, sem série)"
+    chave: "(reservatorio, usina) (159 de 159 distintas); id_reservatorio_planejamento NÃO é único (12 valores repetidos)"
+    tempo: {natureza: sem_tempo, coluna: data, cobertura: "1924-03-01–2023-04-28 (data de entrada em operação, não de medição)"}
+    territorio: {nivel: ponto, colunas: {latitude: "graus", longitude: "graus", id_subsistema: "N, NE, S, SE", bacia: "bacia", rio: "rio"}}
+    medidas:
+      - {coluna: volume_maximo, o_que: "volume máximo", unidade: "hm³ (rascunho: unidade não documentada)", soma: nao}
+      - {coluna: volume_util, o_que: "volume útil", unidade: "hm³ (rascunho)", soma: nao}
+    filtros_tipicos:
+      - "tipo_reservatorio IN ('FIO DAGUA','RESERVATORIO COM USINA','RESERVATORIO COM USINA DE BOMBEAMENTO') (maiúsculas, diferente das demais tabelas)"
+    use_para: "cadastro de reservatórios: cotas, volumes, rio, bacia, coordenadas"
+    nao_use_para: "série temporal; junção com as demais por nome sem conferir (grafias diferem)"
+    rascunho: [use_para, nao_use_para, medidas]
+    verificado: "159 linhas; 155 id_empreendimento_aneel distintos — medido 2026-10-27"

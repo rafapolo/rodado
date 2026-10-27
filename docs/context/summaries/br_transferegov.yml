@@ -1,0 +1,46 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_transferegov
+tabelas:
+  planos_acao:
+    grao: "um plano de ação de transferência fundo a fundo/especial (TransfereGov) de um ente recebedor, ligado a um programa"
+    chave: "id_plano_acao (25.969 linhas = 25.969 distintos, medido; codigo_plano_acao também é único)"
+    tempo: {natureza: retrato_atual, coluna: data_inicio_vigencia_plano_acao, cobertura: "texto aaaa-mm-dd; contém anos impossíveis (0023, 0200, 1202, 2252): digitação na origem, filtre com cuidado"}
+    territorio: {nivel: municipio, colunas: {codigo_ibge_municipio_ente_recebedor_plano_acao: "IBGE do município do ente recebedor", uf_ente_recebedor_plano_acao: "UF do recebedor", id_ente_recebedor_plano_acao: "id do ente recebedor"}}
+    medidas:
+      - {coluna: valor_total_plano_acao, o_que: "valor total do plano (repasse + contrapartidas + rendimentos)", unidade: "R$", soma: sim}
+      - {coluna: valor_total_repasse_plano_acao, o_que: "repasse = emenda + específico + voluntário (bate em 25.969 de 25.969 linhas)", unidade: "R$", soma: sim}
+      - {coluna: "valor_repasse_emenda_plano_acao / valor_repasse_especifico_plano_acao / valor_repasse_voluntario_plano_acao", o_que: "componentes do repasse por origem", unidade: "R$", soma: sim}
+      - {coluna: "valor_recursos_proprios_plano_acao / valor_outros_plano_acao / valor_rendimentos_aplicacao_plano_acao", o_que: "demais fontes do plano", unidade: "R$", soma: sim}
+      - {coluna: "valor_total_investimento_plano_acao + valor_total_custeio_plano_acao", o_que: "total por natureza de despesa; só bate com valor_total em 24.162 de 25.969 linhas", unidade: "R$", soma: sim}
+      - {coluna: valor_saldo_disponivel_plano_acao, o_que: "saldo disponível do plano", unidade: "R$", soma: nao}
+    filtros_tipicos: ["situacao_plano_acao = 'AUTORIZADO' para planos aprovados (22.809 linhas, R$ 33,35 bi de valor_total; as demais situações incluem EM_ELABORACAO 2.110 e REJEITADO 369, que não são repasse efetivo)", "valor_total_plano_acao não deve ser somado com ENVIADO_ANALISE/REJEITADO se a pergunta é de dinheiro aprovado"]
+    use_para: "somar planos de ação autorizados por município/UF do recebedor, por órgão repassador (sigla_orgao_repassador_plano_acao: MinC 23.645, MCID 904, SPPE 584) ou por programa."
+    nao_use_para: "execução financeira (pagamentos): isso está em transferencias (empenhos) só para um recorte de 2020; id_ente_repassador_* e *_ente_repassador_* estão 100% nulos."
+    rascunho: [use_para, nao_use_para]
+    verificado: "25.969 linhas, 25.969 distintos de id_plano_acao e de codigo_plano_acao; valor_total = repasse+próprios+outros+rendimentos em 25.849; repasse = emenda+específico+voluntário em 25.969; AUTORIZADO 22.809; todo id_programa existe em programas — medido 2026-10-27"
+  programas:
+    grao: "um programa de transferência fundo a fundo × ação orçamentária (um programa com várias ações aparece em mais de uma linha)"
+    chave: "nenhuma: 129 linhas para 125 id_programa; id 65, 106 e 132 se repetem com ações orçamentárias diferentes ou iguais (106 e 132 têm linhas idênticas nos campos conferidos); (id_programa, codigo_descricao_orcamentaria_programa) dá 126 distintos"
+    tempo: {natureza: serie_anual, coluna: ano_programa, cobertura: "2019–2026"}
+    territorio: {nivel: brasil, colunas: {id_fundo_programa: "fundo repassador (todos em Brasília, DF)"}}
+    medidas:
+      - {coluna: valor_global_programa, o_que: "valor global do programa, repetido nas linhas do mesmo programa", unidade: "R$", soma: nao}
+      - {coluna: valor_acao_orcamentaria_programa, o_que: "valor da ação orçamentária da linha", unidade: "R$", soma: sim}
+    filtros_tipicos: ["situacao_programa = 'DISPONIBILIZADO' (118 linhas; a outra é 'NAO_DISPONIBILIZADO', 11)", "modalidade_programa = 'FUNDO_A_FUNDO' é o único valor (129 linhas)"]
+    use_para: "ligar id_programa de planos_acao ao nome, órgão superior e ação orçamentária do programa."
+    nao_use_para: "somar valor_global_programa sem deduplicar por id_programa (conta 2 a 3 vezes os programas repetidos)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "129 linhas, 125 distintos de id_programa, 125 de codigo_programa, 126 de (id_programa, codigo_descricao_orcamentaria_programa) — medido 2026-10-27"
+  transferencias:
+    grao: "um empenho de transferência (SIAFI estadual, gestão 00001) ligado a um plano de ação"
+    chave: "id_empenho (4.248 linhas = 4.248 distintos, medido); numero_empenho sozinho não é único (56 combinações com UG e gestão)"
+    tempo: {natureza: serie_de_periodos, coluna: data_emissao_empenho, cobertura: "2019-12-24–2021-01-08; 4.246 das 4.248 linhas são ano_empenho 2020 emitidas em 2021-01-08"}
+    territorio: {nivel: outro, colunas: {cnpj_favorecido_empenho: "favorecido do empenho (não há município)", id_plano_acao: "liga ao plano e, por ele, ao município recebedor"}}
+    medidas:
+      - {coluna: valor_empenho, o_que: "valor empenhado", unidade: "R$", soma: sim}
+    filtros_tipicos: ["tipo_empenho = 1 ('Empenho Ordinário') nas 4.246 linhas de 2020; tipo 3 ('Estimado') são 2 linhas de 2019", "situacao_empenho = 6 ('Registrado no SIAFI') em todas as linhas"]
+    use_para: "empenhos de auxílio emergencial estadual de 2020 por plano de ação e favorecido."
+    nao_use_para: "retrato nacional de repasses: a tabela cobre quase só um lote de 2021-01-08 com esfera 'Estadual'; para repasses use planos_acao."
+    rascunho: [use_para, nao_use_para]
+    verificado: "4.248 linhas, 4.248 distintos de id_empenho e de (id_empenho, id_plano_acao); ano_empenho 2020 em 4.246 — medido 2026-10-27"

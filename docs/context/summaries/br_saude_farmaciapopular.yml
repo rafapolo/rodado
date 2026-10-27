@@ -1,0 +1,19 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_saude_farmaciapopular
+tabelas:
+  estabelecimentos:
+    grao: "um estabelecimento (farmácia) credenciado ao Farmácia Popular, no retrato mais recente do cadastro CNES"
+    chave: "codigo_cnes (32.592 linhas = 32.592 distintos; codigo_estabelecimento_saude também é único)"
+    tempo: {natureza: retrato_atual, coluna: data_atualizacao, cobertura: "2025-09-03–2026-10-07"}
+    territorio: {nivel: municipio, colunas: {codigo_municipio: "código IBGE de 6 dígitos (sem dígito verificador; 4.047 distintos), não os 7 dígitos de id_municipio", codigo_uf: "código IBGE da UF (27 distintos)", latitude_estabelecimento_decimo_grau: "latitude em graus decimais (1,28% nulos)", longitude_estabelecimento_decimo_grau: "longitude em graus decimais (1,29% nulos)"}}
+    medidas:
+      - {expressao: "count(*)", o_que: "número de estabelecimentos", unidade: "estabelecimentos", soma: sim}
+    filtros_tipicos:
+      - "codigo_motivo_desabilitacao_estabelecimento IS NULL (30.667 linhas) = sem motivo de desabilitação registrado; IS NOT NULL são 1.925, com códigos '10', '08', '04'... (significado não documentado). Se isso equivale a 'ativo' não foi medido"
+      - "descricao_esfera_administrativa = 'MUNICIPAL' (32.075), 'ESTADUAL' (508), 'DUPLA' (9); tipo_gestao = 'M', 'E', 'D' nas mesmas contagens"
+      - "estabelecimento_faz_atendimento_ambulatorial_sus = 'SIM' (2.442) ou 'NAO' (30.150)"
+    use_para: "contar e mapear farmácias credenciadas por município/UF e ver natureza jurídica, turno de atendimento e coordenadas"
+    nao_use_para: "série histórica de credenciamentos nem volume de dispensação ou valor (não há medida de venda)"
+    rascunho: [use_para, nao_use_para, filtros_tipicos]
+    verificado: "32.592 linhas; codigo_cnes 32.592 distintos; codigo_estabelecimento_saude 32.592 distintos; codigo_tipo_unidade = '43' em todas; natureza_organizacao_entidade, descricao_nivel_hierarquia, codigo_natureza_organizacao_unidade e codigo_nivel_hierarquia_unidade são 100% nulas; codigo_municipio com 6 dígitos em 32.592 linhas — medido 2026-10-27"

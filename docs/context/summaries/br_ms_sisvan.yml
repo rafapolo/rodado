@@ -1,0 +1,35 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ms_sisvan
+tabelas:
+  microdados:
+    grao: "um acompanhamento nutricional (medida de peso/altura) de um indivíduo em uma data"
+    chave: "acompanhamento (hash) — único em ano = 2023, mes = 1 (1.947.310 linhas = 1.947.310 distintos); id_individuo repete (vários acompanhamentos por pessoa)"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes (data_acompanhamento é a data exata)", cobertura: "2008–2023"}
+    territorio:
+      nivel: municipio
+      colunas:
+        id_municipio: "município (IBGE, 7 dígitos) do acompanhamento"
+        sigla_uf: "UF"
+        cnes: "estabelecimento de saúde (CNES, 7 dígitos), nulo em 0,5%"
+    medidas:
+      - {expressao: "count(*)", o_que: "acompanhamentos (não pessoas)", unidade: "acompanhamentos", soma: sim}
+      - {expressao: "count(DISTINCT id_individuo)", o_que: "pessoas acompanhadas", unidade: "pessoas", soma: nao}
+      - {coluna: peso, o_que: "peso", unidade: "kg (máx 999.9 = valor sentinela/erro)", soma: nao}
+      - {coluna: altura, o_que: "altura", unidade: "cm (média 146 em 2023; máx 999.9)", soma: nao}
+      - {coluna: imc, o_que: "índice de massa corporal", unidade: "kg/m²", soma: nao}
+    filtros_tipicos:
+      - "ano = 2023 (50.544.072 linhas) — tabela de 406 milhões, filtre sempre a partição ano"
+      - "fase_vida = '7' adulto, '8' idoso, '6' adolescente, '1' menor de 6 meses, '2' 6 meses a 2 anos, '3' 2 a 5 anos, '4' 5 a 7 anos, '5' 7 a 10 anos (dicionário)"
+      - "estado_nutricional_adulto = 'Sobrepeso' | 'Adequado ou eutrófico' | 'Obesidade Grau I' | 'Obesidade Grau II' | 'Obesidade Grau III' | 'Baixo peso' (texto, e nulo quando a pessoa não é adulta: 53,7% nulo)"
+      - "estado_nutricional_idoso = 'Baixo peso' | 'Adequado ou eutrófico' | 'Sobrepeso'; estado_nutricional_gestantes = 'Baixo peso' | 'Adequado ou eutrófico' | 'Sobrepeso' | 'Obesidade' (98,6% nulo)"
+      - "raca_cor = '1' branca, '2' preta, '3' amarela, '4' parda, '5' indígena, '99' sem informação, 'X' inválido (dicionário)"
+      - "sistema_origem = '4' e-SUS AB, '2' Auxílio Brasil, '1' SISVAN web (dicionário)"
+      - "sexo = 'F' | 'M'"
+    use_para: "estado nutricional da população atendida na atenção básica por município, fase da vida e mês"
+    nao_use_para: "prevalência populacional (só quem foi atendido) ou contar pessoas somando linhas"
+    rascunho: [use_para, nao_use_para]
+    verificado: "406.253.792 linhas; ano=2023: 50.544.072; ano=2023,mes=1: 1.947.310 linhas = 1.947.310 acompanhamentos distintos = 1.947.310 de (acompanhamento,id_individuo,data_acompanhamento); anos 2008–2023 (16) — medido 2026-10-27"
+  dicionario:
+    grao: "um valor de código por coluna (id_tabela, nome_coluna, chave, cobertura_temporal, valor)"
+    use_para: "traduzir códigos de microdados (fase_vida, raca_cor, escolaridade, sistema_origem) em rótulos"

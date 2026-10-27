@@ -1,0 +1,17 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: global_ofac_sanctions
+tabelas:
+  sanctions:
+    grao: "uma entrada da lista SDN do OFAC (Tesouro dos EUA): uma pessoa, entidade, embarcação ou aeronave sancionada"
+    chave: "ent_num (19416 linhas = 19416 distintos, medido na tabela inteira)"
+    tempo: {natureza: retrato_atual, coluna: "nenhuma", cobertura: "sem data na tabela; retrato da lista na carga"}
+    territorio: {nivel: nenhum, colunas: {vess_flag: "bandeira da embarcação, só para sdn_type = 'vessel'"}}
+    filtros_tipicos:
+      - "sdn_type = 'individual' (7497), 'vessel' (1559) ou 'aircraft' (342); entidades/empresas vêm como sdn_type = '-0- ' (com espaço no fim, 10018 linhas): o '-0- ' é o marcador de vazio do OFAC, não um tipo explícito"
+      - "ausência de valor em qualquer coluna é a string '-0- ' (com espaço), nunca NULL: ex. tonnage = '-0- ' em 19358 linhas"
+      - "program = 'RUSSIA-EO14024' (5664), 'SDGT' (2185), 'SDNTK' (1332); program pode juntar vários programas no mesmo texto (ex.: 'NPWMD] [IFSR'), então use LIKE '%SDGT%' para pegar todos"
+    use_para: "checar se um nome, embarcação ou aeronave consta na lista SDN e por qual programa de sanção"
+    nao_use_para: "somar ou contar pessoas sem cuidado: não há data de listagem, e as colunas de embarcação (tonnage, grt) são texto com vírgula"
+    rascunho: [use_para, nao_use_para, "'-0- ' como entidade (inferido por exclusão dos outros três tipos)"]
+    verificado: "19416 linhas, 19416 ent_num distintos; sdn_type: individual 7497, vessel 1559, aircraft 342, '-0- ' 10018; 1522 embarcações com vess_flag preenchido — medido 2026-10-27"

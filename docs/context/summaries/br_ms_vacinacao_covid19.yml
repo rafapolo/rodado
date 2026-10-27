@@ -1,0 +1,23 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ms_vacinacao_covid19
+tabelas:
+  microdados_estabelecimento:
+    grao: "um estabelecimento de saúde (id_estabelecimento) × variante de nome_fantasia/razao_social: o mesmo estabelecimento aparece em muitas linhas repetidas"
+    chave: "nenhuma: 805.803 linhas, 31.328 id_estabelecimento distintos e só 31.448 combinações distintas das 5 colunas — a tabela é cheia de linhas idênticas; use SELECT DISTINCT"
+    tempo: {natureza: sem_tempo, coluna: "nenhuma", cobertura: "sem coluna de data"}
+    territorio:
+      nivel: municipio
+      colunas:
+        id_municipio: "município do estabelecimento (IBGE, 7 dígitos)"
+        sigla_uf: "UF"
+    filtros_tipicos:
+      - "sigla_uf = 'SP' (397.894 linhas do perfil; contagens de linha inflacionadas pela duplicação)"
+      - "conte estabelecimentos com count(DISTINCT id_estabelecimento), nunca count(*)"
+    use_para: "diretório de postos/estabelecimentos de vacinação por município (densidade de postos), via DISTINCT id_estabelecimento"
+    nao_use_para: "doses, vacinas ou cobertura vacinal: dose e paciente não estão no espelho (ver gotcha sem_dose_nem_paciente)"
+    rascunho: [use_para, nao_use_para]
+    verificado: "805.803 linhas; 31.328 id_estabelecimento distintos; 31.448 combinações distintas de (id_estabelecimento,id_municipio,nome_fantasia,razao_social,sigla_uf) — o perfil aproximava 28.687 — medido 2026-10-27"
+  dicionario:
+    grao: "um valor de código por coluna (id_tabela, nome_coluna, chave, cobertura_temporal, valor) das tabelas microdados_paciente e microdados_vacinacao, que NÃO existem no banco"
+    use_para: "só documentação: as tabelas que ele descreve não foram trazidas (gotcha sem_dose_nem_paciente)"

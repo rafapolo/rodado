@@ -1,0 +1,18 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: global_opensanctions
+tabelas:
+  entities:
+    grao: "uma entidade consolidada do OpenSanctions (pessoa, empresa, embarcação, etc.), já deduplicada entre as listas de origem"
+    chave: "id (1233804 linhas = 1233804 distintos, medido na tabela inteira)"
+    tempo: {natureza: retrato_atual, coluna: last_change, cobertura: "2022-01-01–2026-10-09 (first_seen até 2026-10-09; last_seen 2026-04-30–2026-10-09)"}
+    territorio: {nivel: outro, colunas: {countries: "códigos de país ISO minúsculos (us, br, fr, ru, es); vários separados por ';' (28294 linhas), vazio em parte das linhas", addresses: "texto livre"}}
+    filtros_tipicos:
+      - "schema = 'Person' (1024199), 'Company' (97287), 'LegalEntity' (58995), 'Security' (20514), 'CryptoWallet' (13738), 'Organization' (9617), 'Vessel' (9052), 'Airplane' (342)"
+      - "countries = 'br' (132469 linhas, 122579 Person) para o Brasil; para multi-país use countries LIKE '%br%'"
+      - "sanctions <> '' (312601 linhas) para quem tem sanção registrada; o resto é majoritariamente PEP ou lista de procurados, não sancionado. Ausência é string vazia '', não NULL"
+      - "dataset é uma lista de fontes separadas por ';' (ex. 'Brazil Politically Exposed Persons;PEP position annotations by OpenSanctions'): filtre com LIKE '%<fonte>%'"
+    use_para: "triagem de nomes contra sanções, PEPs e listas de procurados do mundo todo, com a fonte em dataset"
+    nao_use_para: "contar sancionados: Person inclui mais de um milhão de PEPs e procurados; só sanctions <> '' ou program_ids <> '' (167000) indica sanção/programa"
+    rascunho: [use_para, nao_use_para]
+    verificado: "1233804 linhas = 1233804 id distintos; sanctions <> '' 312601; program_ids <> '' 167000; birth_date vazio em 702663 — medido 2026-10-27"

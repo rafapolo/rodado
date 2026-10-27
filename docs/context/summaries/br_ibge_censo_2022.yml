@@ -1,0 +1,859 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ibge_censo_2022
+tabelas:
+  agregados_bairro:
+    grao: 'não lida: IO Error: Cannot open file "/home/polo/rodado/br_ibge_censo_2022/agregados_bairro/000000000000.parquet": Too m'
+  agregados_bairro_entorno_domicilios:
+    grao: um bairro × variáveis v05xxx do entorno dos domicílios (Pesquisa Urbanística do Entorno, só favelas e comunidades urbanas)
+    chave: 'nenhuma só com id_bairro: 17.576 linhas, 17.575 id_bairro distintos (gotcha bairro_repetido: a chave é id_bairro + id_subdistrito, não medida aqui)'
+    tempo: &id001
+      natureza: retrato_atual
+      coluna: (sem coluna; Censo 2022)
+      cobertura: '2022'
+    territorio:
+      nivel: outro
+      colunas:
+        id_bairro: bairro oficial IBGE
+        id_municipio: município
+    medidas:
+    - coluna: v05xxx
+      o_que: contagens do entorno; cada coluna é uma categoria, algumas são subtotais da anterior
+      unidade: domicílios, faces ou moradores
+      soma: 'nao: categorias sobrepostas, escolha uma coluna'
+    use_para: contagens do entorno (domicílios) por bairro; significado de cada vNNNNN em agregados_dicionario_variaveis (tabelas = 'entorno_domicilios').
+    nao_use_para: total de população do bairro (não é cobertura completa; veja agregados_dicionario_variaveis).
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.unidade
+    - chave
+    verificado: 17576 linhas, 17575 (id_bairro, id_subdistrito) distintos; id_bairro repete uma vez (3205200069, gotcha bairro_repetido) — medido 2026-10-27
+  agregados_bairro_entorno_faces:
+    grao: um bairro × variáveis do entorno das faces de quadra
+    chave: mesmo grão de agregados_bairro_entorno_domicilios
+    tempo: *id001
+    territorio:
+      nivel: outro
+      colunas:
+        id_bairro: bairro IBGE
+    use_para: 'contagens de faces de quadra por bairro (dicionário: tabelas = ''entorno_faces'').'
+    nao_use_para: população do bairro.
+    rascunho:
+    - chave
+    - use_para
+    - nao_use_para
+    verificado: 17.008 linhas (não medi a chave; mesma estrutura de colunas) — medido 2026-10-27
+  agregados_bairro_entorno_moradores:
+    grao: um bairro × variáveis do entorno dos moradores
+    chave: mesmo grão de agregados_bairro_entorno_domicilios
+    tempo: *id001
+    territorio:
+      nivel: outro
+      colunas:
+        id_bairro: bairro IBGE
+    use_para: 'contagens de moradores no entorno por bairro (dicionário: ''entorno_moradores'').'
+    nao_use_para: população total do bairro.
+    rascunho:
+    - chave
+    - use_para
+    - nao_use_para
+    verificado: 17.576 linhas (chave não medida) — medido 2026-10-27
+  agregados_dicionario_variaveis:
+    grao: uma variável vNNNNN de uma família de tabelas de agregados
+    chave: '(tabelas, coluna): 3.505 linhas = 3.505 distintas'
+    tempo: &id003
+      natureza: sem_tempo
+    territorio:
+      nivel: nenhum
+      colunas: {}
+    use_para: 'dicionário: significado de cada v* dos agregados_* (use descricao e tema).'
+    nao_use_para: dados do Censo (só metadado).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 3.505 linhas, 3.505 pares (tabelas, coluna) distintos; tabelas ∈ agregados (3.400), entorno_domicilios, entorno_faces, entorno_moradores (35 cada) — medido 2026-10-27
+  agregados_distrito:
+    grao: 'não lida: IO Error: Cannot open file "/home/polo/rodado/br_ibge_censo_2022/agregados_distrito/000000000000.parquet": Too'
+  agregados_distrito_entorno_domicilios:
+    grao: um distrito × variáveis v05xxx do entorno dos domicílios (Pesquisa Urbanística do Entorno, só favelas e comunidades urbanas)
+    chave: 'id_distrito: 10698 linhas, 10698 distintos'
+    tempo: *id001
+    territorio:
+      nivel: outro
+      colunas:
+        id_distrito: distrito IBGE
+    medidas:
+    - coluna: v05xxx
+      o_que: contagens do entorno; cada coluna é uma categoria, algumas são subtotais da anterior
+      unidade: domicílios, faces ou moradores
+      soma: 'nao: categorias sobrepostas, escolha uma coluna'
+    use_para: contagens do entorno (domicílios) por distrito; significado de cada vNNNNN em agregados_dicionario_variaveis (tabelas = 'entorno_domicilios').
+    nao_use_para: total de população do distrito (não é cobertura completa; veja agregados_dicionario_variaveis).
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.unidade
+    verificado: 10698 linhas, 10698 id_distrito distintos — medido 2026-10-27
+  agregados_distrito_entorno_faces:
+    grao: um distrito × variáveis v05xxx do entorno dos faces (Pesquisa Urbanística do Entorno, só favelas e comunidades urbanas)
+    chave: 'id_distrito: 9876 linhas, 9876 distintos'
+    tempo: *id001
+    territorio:
+      nivel: outro
+      colunas:
+        id_distrito: distrito IBGE
+    medidas:
+    - coluna: v05xxx
+      o_que: contagens do entorno; cada coluna é uma categoria, algumas são subtotais da anterior
+      unidade: domicílios, faces ou moradores
+      soma: 'nao: categorias sobrepostas, escolha uma coluna'
+    use_para: contagens do entorno (faces) por distrito; significado de cada vNNNNN em agregados_dicionario_variaveis (tabelas = 'entorno_faces').
+    nao_use_para: total de população do distrito (não é cobertura completa; veja agregados_dicionario_variaveis).
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.unidade
+    verificado: 9876 linhas, 9876 id_distrito distintos — medido 2026-10-27
+  agregados_distrito_entorno_moradores:
+    grao: um distrito × variáveis do entorno dos moradores
+    chave: mesmo grão de agregados_distrito_entorno_domicilios
+    tempo: *id001
+    territorio:
+      nivel: outro
+      colunas:
+        id_distrito: distrito IBGE
+    use_para: moradores no entorno por distrito.
+    nao_use_para: população total do distrito.
+    rascunho:
+    - chave
+    - use_para
+    - nao_use_para
+    verificado: 10.698 linhas (chave não medida) — medido 2026-10-27
+  agregados_municipio:
+    grao: 'não lida: IO Error: Cannot open file "/home/polo/rodado/br_ibge_censo_2022/agregados_municipio/000000000000.parquet": To'
+  agregados_municipio_entorno_domicilios:
+    grao: um município × variáveis v05xxx do entorno dos domicílios (Pesquisa Urbanística do Entorno, só favelas e comunidades urbanas)
+    chave: 'id_municipio: 5570 linhas, 5570 distintos'
+    tempo: *id001
+    territorio: &id002
+      nivel: municipio
+      colunas:
+        id_municipio: código IBGE de 7 dígitos (texto)
+    medidas:
+    - coluna: v05xxx
+      o_que: contagens do entorno; cada coluna é uma categoria, algumas são subtotais da anterior
+      unidade: domicílios, faces ou moradores
+      soma: 'nao: categorias sobrepostas, escolha uma coluna'
+    use_para: contagens do entorno (domicílios) por município; significado de cada vNNNNN em agregados_dicionario_variaveis (tabelas = 'entorno_domicilios').
+    nao_use_para: total de população do município (não é cobertura completa; veja agregados_dicionario_variaveis).
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.unidade
+    verificado: 5570 linhas, 5570 id_municipio distintos — medido 2026-10-27
+  agregados_municipio_entorno_faces:
+    grao: um município × variáveis v05xxx do entorno dos faces (Pesquisa Urbanística do Entorno, só favelas e comunidades urbanas)
+    chave: 'id_municipio: 5570 linhas, 5570 distintos'
+    tempo: *id001
+    territorio: *id002
+    medidas:
+    - coluna: v05xxx
+      o_que: contagens do entorno; cada coluna é uma categoria, algumas são subtotais da anterior
+      unidade: domicílios, faces ou moradores
+      soma: 'nao: categorias sobrepostas, escolha uma coluna'
+    use_para: contagens do entorno (faces) por município; significado de cada vNNNNN em agregados_dicionario_variaveis (tabelas = 'entorno_faces').
+    nao_use_para: total de população do município (não é cobertura completa; veja agregados_dicionario_variaveis).
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.unidade
+    verificado: 5570 linhas, 5570 id_municipio distintos — medido 2026-10-27
+  agregados_municipio_entorno_moradores:
+    grao: um município × variáveis v05xxx do entorno dos moradores (Pesquisa Urbanística do Entorno, só favelas e comunidades urbanas)
+    chave: 'id_municipio: 5570 linhas, 5570 distintos'
+    tempo: *id001
+    territorio: *id002
+    medidas:
+    - coluna: v05xxx
+      o_que: contagens do entorno; cada coluna é uma categoria, algumas são subtotais da anterior
+      unidade: domicílios, faces ou moradores
+      soma: 'nao: categorias sobrepostas, escolha uma coluna'
+    use_para: contagens do entorno (moradores) por município; significado de cada vNNNNN em agregados_dicionario_variaveis (tabelas = 'entorno_moradores').
+    nao_use_para: total de população do município (não é cobertura completa; veja agregados_dicionario_variaveis).
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.unidade
+    verificado: 5570 linhas, 5570 id_municipio distintos — medido 2026-10-27
+  agregados_subdistrito:
+    grao: 'não lida: IO Error: Cannot open file "/home/polo/rodado/br_ibge_censo_2022/agregados_subdistrito/000000000000.parquet": '
+  agregados_subdistrito_entorno_domicilios:
+    grao: um subdistrito × variáveis v05xxx do entorno dos domicílios (Pesquisa Urbanística do Entorno, só favelas e comunidades urbanas)
+    chave: 'id_subdistrito: 643 linhas, 643 distintos'
+    tempo: *id001
+    territorio:
+      nivel: outro
+      colunas:
+        id_subdistrito: subdistrito IBGE
+    medidas:
+    - coluna: v05xxx
+      o_que: contagens do entorno; cada coluna é uma categoria, algumas são subtotais da anterior
+      unidade: domicílios, faces ou moradores
+      soma: 'nao: categorias sobrepostas, escolha uma coluna'
+    use_para: contagens do entorno (domicílios) por subdistrito; significado de cada vNNNNN em agregados_dicionario_variaveis (tabelas = 'entorno_domicilios').
+    nao_use_para: total de população do subdistrito (não é cobertura completa; veja agregados_dicionario_variaveis).
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.unidade
+    verificado: 643 linhas, 643 id_subdistrito distintos — medido 2026-10-27
+  agregados_subdistrito_entorno_faces:
+    grao: um subdistrito × variáveis do entorno das faces
+    chave: mesmo grão de agregados_subdistrito_entorno_domicilios
+    tempo: *id001
+    territorio:
+      nivel: outro
+      colunas:
+        id_subdistrito: subdistrito IBGE
+    use_para: faces por subdistrito.
+    nao_use_para: população.
+    rascunho:
+    - chave
+    - use_para
+    - nao_use_para
+    verificado: 623 linhas (chave não medida) — medido 2026-10-27
+  agregados_subdistrito_entorno_moradores:
+    grao: um subdistrito × variáveis do entorno dos moradores
+    chave: mesmo grão de agregados_subdistrito_entorno_domicilios
+    tempo: *id001
+    territorio:
+      nivel: outro
+      colunas:
+        id_subdistrito: subdistrito IBGE
+    use_para: moradores no entorno por subdistrito.
+    nao_use_para: população total.
+    rascunho:
+    - chave
+    - use_para
+    - nao_use_para
+    verificado: 643 linhas (chave não medida) — medido 2026-10-27
+  alfabetizacao_grupo_idade_sexo_raca:
+    grao: um município × cor/raça × sexo × faixa etária (15+) × alfabetizada/não
+    chave: '(id_municipio, cor_raca, sexo, grupo_idade, alfabetizacao): 779.800 linhas = 779.800 distintas'
+    tempo: *id001
+    territorio: *id002
+    medidas:
+    - coluna: populacao
+      o_que: pessoas
+      unidade: pessoas
+      soma: sim
+    filtros_tipicos:
+    - alfabetizacao = 'Alfabetizadas' / 'Não alfabetizadas'
+    - sexo = 'Homens' / 'Mulheres'
+    - 'grupo_idade: ''15 a 19 anos'' ... ''65 anos ou mais'' (7 faixas)'
+    - NULL em populacao é sigilo (células pequenas), não zero (gotcha sigilo_e_null)
+    use_para: alfabetização de pessoas de 15 anos ou mais por município, sexo, raça e faixa.
+    nao_use_para: população total (só 15+; soma menor que o total do município por sigilo).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: '779.800 linhas, todas distintas; soma populacao: Alfabetizadas 151.538.765 + Não alfabetizadas 11.403.249 = 162.942.014; populacao nula em 32% (sigilo) — medido 2026-10-27'
+  cadastro_enderecos:
+    grao: um endereço (CNEFE) do Censo 2022, com coordenada
+    chave: 'nenhuma: id_endereco repete (no AC: 410.524 linhas, 373.843 id_endereco distintos)'
+    tempo: *id001
+    territorio:
+      nivel: ponto
+      colunas:
+        ponto: geometria do endereço
+        id_setor_censitario: setor censitário
+        id_municipio: município
+    medidas:
+    - coluna: count(*)
+      o_que: endereços
+      unidade: endereços
+      soma: 'sim: respeitando que a linha pode repetir id_endereco'
+    filtros_tipicos:
+    - 'tipo_especie e demais tipo_*: códigos ''1''..''8'' como texto; significado não documentado (column_codes não traz)'
+    - particionar por sigla_uf em toda consulta (111 mi linhas)
+    use_para: contar endereços por UF/município/setor e localizar pontos (coluna ponto).
+    nao_use_para: 'contar domicílios: tipo_especie mistura domicílios, estabelecimentos e outros (use domicilio_recenseado ou municipio). Não liste logradouros, CEPs ou números.'
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.o_que
+    verificado: '111.102.875 linhas; medido só em sigla_uf = ''AC'': 410.524 linhas, 373.843 id_endereco distintos; tipo_especie no AC: ''1'' 318.942, ''6'' 40.745, ''3'' 31.744, ''7'' 11.464, ''8'' 4.600,
+      ''4'' 1.881, ''2'' 379, ''5'' 769; tipo_edificacao_domicilio ''101'' 287.195, nulo 91.203 — medido 2026-10-27'
+  caracteristica_domicilio_grupo_idade_raca_destino_lixo:
+    grao: um município × tipo_destino_lixo × faixa etária × cor/raça (pessoas em domicílios com a característica)
+    chave: '(id_municipio. tipo_destino_lixo. grupo_idade. cor_raca): 4.093.950 linhas = 4.093.950 distintas'
+    tempo: *id001
+    territorio: *id002
+    medidas:
+    - coluna: populacao
+      o_que: pessoas
+      unidade: pessoas
+      soma: sim, dentro de um único nível de tipo_destino_lixo
+    filtros_tipicos:
+    - 'tipo_destino_lixo: valores literais por extenso: Coletado, Coletado no domicílio por serviço de limpeza, Depositado em caçamba de serviço de limpeza, Queimado na propriedade, Enterrado na propriedade,
+      Jogado em terreno baldio..., Outro destino'
+    - NULL em populacao é sigilo (células pequenas), não zero (gotcha sigilo_e_null)
+    - ano = 2022
+    use_para: população por tipo_destino_lixo, idade e raça por município.
+    nao_use_para: somar todos os rótulos de tipo_destino_lixo (há categorias agregadas ao lado das desagregadas, soma dupla; 385,8 mi > população); NULL é sigilo.
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 4.093.950 linhas. todas distintas por (id_municipio. tipo_destino_lixo. grupo_idade. cor_raca); só ano 2022; soma populacao = 385.755.363 — medido 2026-10-27
+  caracteristica_domicilio_grupo_idade_raca_esgotamento_sanitario:
+    grao: um município × tipo_esgotamento_sanitario × faixa etária × cor/raça (pessoas em domicílios com a característica)
+    chave: '(id_municipio. tipo_esgotamento_sanitario. grupo_idade. cor_raca): 5.263.650 linhas = 5.263.650 distintas'
+    tempo: *id001
+    territorio: *id002
+    medidas:
+    - coluna: populacao
+      o_que: pessoas
+      unidade: pessoas
+      soma: sim, dentro de um único nível de tipo_esgotamento_sanitario
+    filtros_tipicos:
+    - 'tipo_esgotamento_sanitario: valores literais por extenso: ''Rede geral ou pluvial'', ''Rede geral, rede pluvial ou fossa ligada à rede'' (agregada), ''Fossa séptica ou fossa filtro ligada à rede'',
+      ... 9 rótulos'
+    - NULL em populacao é sigilo (células pequenas), não zero (gotcha sigilo_e_null)
+    - ano = 2022
+    use_para: população por tipo_esgotamento_sanitario, idade e raça por município.
+    nao_use_para: somar todos os rótulos de tipo_esgotamento_sanitario (há categorias agregadas ao lado das desagregadas, soma dupla; 385,8 mi > população); NULL é sigilo.
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 5.263.650 linhas. todas distintas por (id_municipio. tipo_esgotamento_sanitario. grupo_idade. cor_raca); só ano 2022 — medido 2026-10-27
+  caracteristica_domicilio_grupo_idade_raca_ligacao_abastecimento_agua:
+    grao: um município × tipo_ligacao_rede_geral × faixa etária × cor/raça (pessoas em domicílios com a característica)
+    chave: '(id_municipio. tipo_ligacao_rede_geral. grupo_idade. cor_raca): 9.942.450 linhas = 9.942.450 distintas'
+    tempo: *id001
+    territorio: *id002
+    medidas:
+    - coluna: populacao
+      o_que: pessoas
+      unidade: pessoas
+      soma: sim, dentro de um único nível de tipo_ligacao_rede_geral
+    filtros_tipicos:
+    - 'tipo_ligacao_rede_geral: valores literais por extenso: 17 rótulos por extenso'
+    - NULL em populacao é sigilo (células pequenas), não zero (gotcha sigilo_e_null)
+    - ano = 2022
+    use_para: população por tipo_ligacao_rede_geral, idade e raça por município.
+    nao_use_para: somar todos os rótulos de tipo_ligacao_rede_geral (há categorias agregadas ao lado das desagregadas, soma dupla; 385,8 mi > população); NULL é sigilo.
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 9.942.450 linhas. todas distintas por (id_municipio. tipo_ligacao_rede_geral. grupo_idade. cor_raca); só ano 2022 — medido 2026-10-27
+  caracteristica_domicilio_grupo_idade_raca_tipo_domicilio:
+    grao: um município × tipo_domicilio × faixa etária × cor/raça (pessoas em domicílios com a característica)
+    chave: '(id_municipio. tipo_domicilio. grupo_idade. cor_raca): 3.509.100 linhas = 3.509.100 distintas'
+    tempo: *id001
+    territorio: *id002
+    medidas:
+    - coluna: populacao
+      o_que: pessoas
+      unidade: pessoas
+      soma: sim, dentro de um único nível de tipo_domicilio
+    filtros_tipicos:
+    - 'tipo_domicilio: valores literais por extenso: Casa, Apartamento, Casa de vila ou em condomínio, Habitação em casa de cômodos ou cortiço, Estrutura residencial permanente degradada ou inacabada, Habitação
+      indígena sem paredes ou maloca'
+    - NULL em populacao é sigilo (células pequenas), não zero (gotcha sigilo_e_null)
+    - ano = 2022
+    use_para: população por tipo_domicilio, idade e raça por município.
+    nao_use_para: 'somar sem sigilo: a soma (202.075.856) fica abaixo do total do Censo (203.080.756) por causa do NULL.'
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 3.509.100 linhas. todas distintas por (id_municipio. tipo_domicilio. grupo_idade. cor_raca); só ano 2022; soma populacao = 202.075.856 — medido 2026-10-27
+  domicilio_recenseado:
+    grao: um município × espécie de domicílio recenseado
+    chave: '(id_municipio, especie): 66.840 linhas = 66.840 distintas'
+    tempo: *id001
+    territorio: *id002
+    medidas:
+    - coluna: domicilios
+      o_que: domicílios
+      unidade: domicílios
+      soma: sim, dentro de um único nível da hierarquia
+    filtros_tipicos:
+    - especie = 'Particular permanente ocupado' (72.456.368 no Brasil)
+    use_para: domicílios por espécie e município.
+    nao_use_para: 'somar todas as espécies: há níveis aninhados (Particular ⊃ Particular permanente ⊃ ocupado ⊃ com/sem entrevista).'
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: '66.840 linhas, todas distintas; totais nacionais: Particular 90.600.065; Particular permanente 90.534.061; ocupado 72.456.368; não ocupado 18.077.693; coletivo 104.517 — medido 2026-10-27'
+  favela_entorno_cobertura:
+    grao: uma favela ou comunidade urbana (cobertura do entorno)
+    chave: 'id_favela: 12.348 linhas = 12.348 distintos'
+    tempo: *id001
+    territorio:
+      nivel: municipio
+      colunas:
+        id_municipio: município
+    medidas:
+    - coluna: moradores_dppo
+      o_que: moradores em domicílios particulares permanentes ocupados
+      unidade: pessoas
+      soma: sim
+    - coluna: cobertura_percentual
+      o_que: moradores com entorno / moradores
+      unidade: percentual
+      soma: nao
+    use_para: cobertura percentual do entorno por favela.
+    nao_use_para: população da favela (some setor_censitario pelos setores de favela_setor, gotcha favela_e_por_setor).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 12.348 linhas, 12.348 id_favela distintos — medido 2026-10-27
+  favela_setor:
+    grao: um setor censitário pertencente a uma favela ou comunidade urbana
+    chave: 'id_setor_censitario: 33.272 linhas = 33.272 distintos'
+    tempo: *id001
+    territorio:
+      nivel: municipio
+      colunas:
+        id_municipio: município
+        id_setor_censitario: setor
+    use_para: ligar setor a favela e agregar setor_censitario por favela.
+    nao_use_para: população da favela diretamente.
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 33.272 linhas, 33.272 setores distintos, 12.348 favelas (gotcha favela_e_por_setor); (setor, favela) também único — medido 2026-10-27
+  indice_envelhecimento_raca:
+    grao: um município × cor/raça × ano
+    chave: '(ano, id_municipio, cor_raca): 55.700 linhas = 55.700 distintas'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: ano
+      cobertura: 2010 e 2022
+    territorio: *id002
+    medidas:
+    - coluna: indice_envelhecimento
+      o_que: idosos por 100 jovens (definição do IBGE, não conferida)
+      unidade: razão
+      soma: nao
+    - coluna: idade_mediana
+      o_que: idade mediana
+      unidade: anos
+      soma: nao
+    filtros_tipicos:
+    - ano = 2022 ou 2010
+    use_para: comparar envelhecimento e idade mediana 2010 × 2022 por raça.
+    nao_use_para: somar índices ou medianas (são razões).
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.o_que
+    verificado: 55.700 linhas, todas distintas; 27.850 em 2010 e 27.850 em 2022; indice_envelhecimento nulo em 3.657 (2010) e 5.294 (2022) — medido 2026-10-27
+  municipio:
+    grao: um município com indicadores resumidos do Censo 2022
+    chave: 'id_municipio: 5.570 linhas = 5.570 distintos'
+    tempo: *id001
+    territorio: *id002
+    medidas:
+    - coluna: populacao
+      o_que: população residente (soma 202.083.020)
+      unidade: pessoas
+      soma: sim (mas veja o total)
+    - coluna: domicilios
+      o_que: domicílios particulares permanentes ocupados
+      unidade: domicílios
+      soma: sim
+    - coluna: area
+      o_que: área
+      unidade: unidade não documentada (km² provável)
+      soma: sim
+    - coluna: taxa_alfabetizacao
+      o_que: taxa de alfabetização
+      unidade: proporção 0–1
+      soma: nao
+    - coluna: indice_envelhecimento
+      o_que: índice de envelhecimento
+      unidade: razão
+      soma: nao
+    use_para: população, domicílios, área, alfabetização, idade mediana e indígenas/quilombolas por município.
+    nao_use_para: total nacional exato de população (diferença de ~1 milhão).
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.unidade
+    verificado: 5.570 linhas, 5.570 distintos; soma populacao = 202.083.020 (menor que o total oficial 203.080.756; usa populacao_idade_sexo para o total exato); soma domicilios = 72.456.368 (= particulares
+      permanentes ocupados) — medido 2026-10-27
+  populacao_grupo_idade_sexo_raca:
+    grao: um município × ano × faixa etária × sexo × cor/raça
+    chave: '(ano, id_municipio, grupo_idade, sexo, cor_raca): 2.339.400 linhas = 2.339.400 distintas'
+    tempo:
+      natureza: serie_de_periodos
+      coluna: ano
+      cobertura: 2010 e 2022
+    territorio: *id002
+    medidas:
+    - coluna: populacao
+      o_que: pessoas
+      unidade: pessoas
+      soma: sim, dentro de um ano
+    filtros_tipicos:
+    - ano = 2022 (sempre filtre)
+    - 'grupo_idade em texto: ordene por CAST(split_part(grupo_idade,'' '',1) AS INT)'
+    - NULL em populacao é sigilo (células pequenas), não zero (gotcha sigilo_e_null)
+    use_para: pirâmide etária por raça e município, 2010 × 2022.
+    nao_use_para: 'somar sem filtrar ano (a soma de ambos é 393.818.828: dobra a população).'
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 2.339.400 linhas; ano 2010 e 2022 (1.169.700 cada); soma populacao 2022 = 203.069.637; 2010 = 190.749.191; 701.701 NULL (sigilo) — medido 2026-10-27
+  populacao_grupo_idade_uf:
+    grao: uma UF × faixa etária (faixas sobrepostas)
+    chave: '(sigla_uf, grupo_idade): 378 linhas = 378 distintas'
+    tempo: *id001
+    territorio:
+      nivel: uf
+      colunas:
+        sigla_uf: UF
+    medidas:
+    - coluna: populacao
+      o_que: pessoas (7% nulo)
+      unidade: pessoas
+      soma: sim, dentro de um recorte de faixas que não se sobreponham
+    filtros_tipicos:
+    - 'grupo_idade literais: ''0 a 4 anos'',''5 a 9 anos'',''10 a 14 anos'',''15 a 17 anos'',''18 e 19 anos'',''15 a 19 anos'',''20 a 24 anos'',''25 a 29 anos'',''30 a 39 anos'',''40 a 49 anos'',''50 a
+      59 anos'',''60 a 69 anos'',''70 anos ou mais'',''Idade ignorada'''
+    use_para: população por UF e faixas especiais (15 a 17, 18 e 19, 60 a 69).
+    nao_use_para: 'somar todas as faixas: ''15 a 19 anos'' convive com ''15 a 17'' e ''18 e 19''; nem há linha Total.'
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 378 linhas (27 UF × 14 faixas); não há faixa 'Total' — medido 2026-10-27
+  populacao_idade_sexo:
+    grao: um município × forma de declaração da idade × sexo × idade simples
+    chave: '(id_municipio, forma_declaracao_idade, sexo, idade): 2.495.360 linhas = 2.495.360 distintas'
+    tempo: *id001
+    territorio: *id002
+    medidas:
+    - coluna: populacao
+      o_que: pessoas
+      unidade: pessoas
+      soma: sim
+    filtros_tipicos:
+    - sexo = 'Homens' / 'Mulheres'
+    - forma_declaracao_idade = 'Data de nascimento' / 'Idade presumida'
+    use_para: total nacional exato e população por idade simples e sexo por município.
+    nao_use_para: aproximar por faixas (use grupo_idade) sem ordenar numericamente; idade é texto (use idade_anos).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 2.495.360 linhas, todas distintas; soma populacao = 203.080.756 (o total oficial); Homens 98.532.431, Mulheres 104.548.325 — medido 2026-10-27
+  setor_censitario:
+    grao: 'não lida: duckdb saiu com 255 sem mensagem (memória?)'
+  setor_censitario_dicionario_variaveis:
+    grao: uma variável vNNNNN de uma tabela setor_censitario_*
+    chave: '(tabela, coluna): 1.537 linhas = 1.537 distintas'
+    tempo: *id003
+    territorio:
+      nivel: nenhum
+      colunas: {}
+    use_para: dicionário das colunas v* das tabelas por setor.
+    nao_use_para: dados do Censo (só metadado).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 1.537 linhas, 1.537 pares (tabela, coluna) distintos — medido 2026-10-27
+  setor_censitario_domicilios_indigenas:
+    grao: um setor censitário × variáveis de domicílios com moradores indígenas (v01500 em diante)
+    chave: 'id_setor_censitario: 458.772 linhas = 458.772 distintos'
+    tempo: *id001
+    territorio:
+      nivel: outro
+      colunas:
+        id_setor_censitario: setor censitário (unidade menor do Censo)
+        id_municipio: município
+    medidas:
+    - coluna: vNNNNN
+      o_que: contagens
+      unidade: conforme dicionário
+      soma: sim para contagens, nao para médias/variâncias
+    use_para: variáveis de domicílios com moradores indígenas (v01500 em diante) por setor censitário (descrição de cada vNNNNN em setor_censitario_dicionario_variaveis).
+    nao_use_para: 'total de município por soma de setores: NULL (sigilo) faz a soma ficar abaixo do total (gotcha sigilo_e_null).'
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.unidade
+    verificado: 458.772 linhas, 458.772 id_setor_censitario distintos — medido 2026-10-27
+  setor_censitario_domicilios_quilombolas:
+    grao: um setor censitário × variáveis de domicílios com moradores quilombolas
+    chave: 'id_setor_censitario: 458.772 linhas = 458.772 distintos'
+    tempo: *id001
+    territorio:
+      nivel: outro
+      colunas:
+        id_setor_censitario: setor censitário (unidade menor do Censo)
+        id_municipio: município
+    medidas:
+    - coluna: vNNNNN
+      o_que: contagens
+      unidade: conforme dicionário
+      soma: sim para contagens, nao para médias/variâncias
+    use_para: variáveis de domicílios com moradores quilombolas por setor censitário (descrição de cada vNNNNN em setor_censitario_dicionario_variaveis).
+    nao_use_para: 'total de município por soma de setores: NULL (sigilo) faz a soma ficar abaixo do total (gotcha sigilo_e_null).'
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.unidade
+    verificado: 458.772 linhas, 458.772 id_setor_censitario distintos — medido 2026-10-27
+  setor_censitario_entorno_domicilios:
+    grao: um setor censitário × entorno dos domicílios (só setores escolhidos para a pesquisa do entorno)
+    chave: 'id_setor_censitario: 340.965 linhas = 340.965 distintos'
+    tempo: *id001
+    territorio:
+      nivel: outro
+      colunas:
+        id_setor_censitario: setor censitário (unidade menor do Censo)
+        id_municipio: município
+    medidas:
+    - coluna: vNNNNN
+      o_que: contagens
+      unidade: conforme dicionário
+      soma: sim para contagens, nao para médias/variâncias
+    use_para: entorno dos domicílios (só setores escolhidos para a pesquisa do entorno) por setor censitário (descrição de cada vNNNNN em setor_censitario_dicionario_variaveis).
+    nao_use_para: 'total de município por soma de setores: NULL (sigilo) faz a soma ficar abaixo do total (gotcha sigilo_e_null).'
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.unidade
+    verificado: 340.965 linhas, 340.965 id_setor_censitario distintos — medido 2026-10-27
+  setor_censitario_entorno_faces:
+    grao: um setor censitário × entorno das faces de quadra
+    chave: 'id_setor_censitario: 344.841 linhas = 344.841 distintos'
+    tempo: *id001
+    territorio:
+      nivel: outro
+      colunas:
+        id_setor_censitario: setor censitário (unidade menor do Censo)
+        id_municipio: município
+    medidas:
+    - coluna: vNNNNN
+      o_que: contagens
+      unidade: conforme dicionário
+      soma: sim para contagens, nao para médias/variâncias
+    use_para: entorno das faces de quadra por setor censitário (descrição de cada vNNNNN em setor_censitario_dicionario_variaveis).
+    nao_use_para: 'total de município por soma de setores: NULL (sigilo) faz a soma ficar abaixo do total (gotcha sigilo_e_null).'
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.unidade
+    verificado: 344.841 linhas, 344.841 id_setor_censitario distintos — medido 2026-10-27
+  setor_censitario_entorno_moradores:
+    grao: 'um setor censitário × entorno: moradores'
+    chave: 'id_setor_censitario: 340.965 linhas = 340.965 distintos'
+    tempo: *id001
+    territorio:
+      nivel: outro
+      colunas:
+        id_setor_censitario: setor censitário (unidade menor do Censo)
+        id_municipio: município
+    medidas:
+    - coluna: vNNNNN
+      o_que: contagens
+      unidade: conforme dicionário
+      soma: sim para contagens, nao para médias/variâncias
+    use_para: 'entorno: moradores por setor censitário (descrição de cada vNNNNN em setor_censitario_dicionario_variaveis).'
+    nao_use_para: 'total de município por soma de setores: NULL (sigilo) faz a soma ficar abaixo do total (gotcha sigilo_e_null).'
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.unidade
+    verificado: 340.965 linhas, 340.965 id_setor_censitario distintos — medido 2026-10-27
+  setor_censitario_pessoas_indigenas:
+    grao: um setor censitário × variáveis de pessoas indígenas (v01690 = 'Pessoa indígena')
+    chave: 'id_setor_censitario: 458.772 linhas = 458.772 distintos'
+    tempo: *id001
+    territorio:
+      nivel: outro
+      colunas:
+        id_setor_censitario: setor censitário (unidade menor do Censo)
+        id_municipio: município
+    medidas:
+    - coluna: vNNNNN
+      o_que: contagens
+      unidade: conforme dicionário
+      soma: sim para contagens, nao para médias/variâncias
+    use_para: variáveis de pessoas indígenas (v01690 = 'Pessoa indígena') por setor censitário (descrição de cada vNNNNN em setor_censitario_dicionario_variaveis).
+    nao_use_para: 'total de município por soma de setores: NULL (sigilo) faz a soma ficar abaixo do total (gotcha sigilo_e_null).'
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.unidade
+    verificado: 458.772 linhas, 458.772 id_setor_censitario distintos — medido 2026-10-27
+  setor_censitario_pessoas_quilombolas:
+    grao: um setor censitário × variáveis de pessoas quilombolas (v03196 = 'Pessoa quilombola')
+    chave: 'id_setor_censitario: 458.772 linhas = 458.772 distintos'
+    tempo: *id001
+    territorio:
+      nivel: outro
+      colunas:
+        id_setor_censitario: setor censitário (unidade menor do Censo)
+        id_municipio: município
+    medidas:
+    - coluna: vNNNNN
+      o_que: contagens
+      unidade: conforme dicionário
+      soma: sim para contagens, nao para médias/variâncias
+    use_para: variáveis de pessoas quilombolas (v03196 = 'Pessoa quilombola') por setor censitário (descrição de cada vNNNNN em setor_censitario_dicionario_variaveis).
+    nao_use_para: 'total de município por soma de setores: NULL (sigilo) faz a soma ficar abaixo do total (gotcha sigilo_e_null).'
+    rascunho:
+    - use_para
+    - nao_use_para
+    - medidas.unidade
+    verificado: 458.772 linhas, 458.772 id_setor_censitario distintos — medido 2026-10-27
+  setor_censitario_registro_nascimento:
+    grao: um setor censitário × registro de nascimento (pessoas até 5 anos)
+    chave: 'id_setor_censitario: 450.391 linhas = 450.391 distintos'
+    tempo: *id001
+    territorio:
+      nivel: outro
+      colunas:
+        id_setor_censitario: setor
+        sigla_uf: UF
+    medidas:
+    - coluna: pessoas_ate_5_anos
+      o_que: pessoas até 5 anos (3% nulo)
+      unidade: pessoas
+      soma: sim
+    - coluna: registro_cartorio
+      o_que: com registro em cartório (3% nulo)
+      unidade: pessoas
+      soma: sim
+    - coluna: sem_registro
+      o_que: sem registro (10% nulo)
+      unidade: pessoas
+      soma: sim
+    use_para: registro civil de crianças por setor.
+    nao_use_para: somar cruzado com outras tabelas sem checar NULL (sigilo).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 450.391 linhas, 450.391 distintos (menos que os 458.772 setores) — medido 2026-10-27
+  setor_censitario_renda_responsavel:
+    grao: um setor censitário × rendimento das pessoas responsáveis pelo domicílio
+    chave: 'id_setor_censitario: 458.772 linhas = 458.772 distintos'
+    tempo: *id001
+    territorio:
+      nivel: outro
+      colunas:
+        id_setor_censitario: setor
+    medidas:
+    - coluna: v06001
+      o_que: pessoas responsáveis em domicílios particulares permanentes ocupados
+      unidade: pessoas
+      soma: sim
+    - coluna: v06002
+      o_que: moradores em domicílios particulares permanentes ocupados
+      unidade: pessoas
+      soma: sim
+    - coluna: v06004
+      o_que: rendimento nominal médio mensal das pessoas responsáveis com rendimento
+      unidade: R$
+      soma: nao
+    - coluna: v06006
+      o_que: rendimento nominal mediano mensal
+      unidade: R$
+      soma: nao
+    - coluna: v06003, v06005
+      o_que: variâncias
+      unidade: —
+      soma: nao
+    use_para: renda média/mediana da pessoa responsável por setor.
+    nao_use_para: somar v06004/v06006 (são médias/medianas) ou v06003/v06005 (variâncias).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 458.772 linhas, 458.772 distintos; colunas v06001..v06006 — medido 2026-10-27
+  sidra_recortes:
+    grao: 'uma célula do SIDRA: tabela × localidade (Brasil ou UF) × variável × até 6 cruzamentos'
+    chave: 'nenhuma garantida: medido só na tabela 9608 (3.696 linhas = 3.696 combinações distintas de todas as colunas de cruzamento); a tabela inteira não foi conferida'
+    tempo: *id001
+    territorio:
+      nivel: uf
+      colunas:
+        id_localidade: 1 = Brasil; UF por código IBGE
+        localidade: nome
+    medidas:
+    - coluna: valor
+      o_que: valor da célula; NULL com simbolo preenchido é sigilo ou inexistente
+      unidade: depende de unidade (Pessoas, Percentual, Domicílios, Anos, Óbitos)
+      soma: sim apenas para unidade de contagem e com todas as classificações fixadas
+    filtros_tipicos:
+    - id_tabela = <n> sempre
+    - categoria_N = 'Total' nas classificações não usadas
+    - unidade = 'Pessoas' para contagens
+    use_para: tabelas pré-agregadas do Censo (Brasil e UF), p.ex. 9608 Total×Total = 1.694.836 indígenas (gotcha sidra_formato_longo).
+    nao_use_para: somar sem filtrar id_tabela e fixar categoria_N = 'Total' nas classificações não usadas.
+    rascunho:
+    - chave
+    - use_para
+    - nao_use_para
+    verificado: '27.358.290 linhas; tabela 9608: 3.696 linhas, todas distintas — medido 2026-10-27'
+  sidra_recortes_tabelas:
+    grao: uma tabela do SIDRA do Censo (índice)
+    chave: 'id_tabela: 314 linhas = 314 distintos'
+    tempo: *id003
+    territorio:
+      nivel: nenhum
+      colunas: {}
+    use_para: dizer o que cada id_tabela mede e se está em sidra_recortes.
+    nao_use_para: dados (só metadado).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 314 linhas; 245 com no_espelho = true — medido 2026-10-27
+  terra_indigena:
+    grao: uma terra indígena
+    chave: 'id_terra_indigena: 602 linhas = 602 distintos'
+    tempo: *id001
+    territorio:
+      nivel: outro
+      colunas:
+        id_terra_indigena: terra indígena
+    medidas:
+    - coluna: populacao
+      o_que: população residente
+      unidade: pessoas (5% nulo)
+      soma: sim
+    - coluna: populacao_indigena
+      o_que: população indígena (9% nulo)
+      unidade: pessoas
+      soma: sim
+    use_para: população e domicílios por terra indígena.
+    nao_use_para: somar com municipio.populacao_indigena (recortes diferentes).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 602 linhas, 602 distintos — medido 2026-10-27
+  territorio_quilombola:
+    grao: um território quilombola
+    chave: 'id_territorio_quilombola: 492 linhas = 492 distintos'
+    tempo: *id001
+    territorio:
+      nivel: outro
+      colunas:
+        id_territorio_quilombola: território
+    medidas:
+    - coluna: populacao
+      o_que: população residente
+      unidade: pessoas
+      soma: sim
+    - coluna: populacao_quilombola
+      o_que: população quilombola (5% nulo)
+      unidade: pessoas
+      soma: sim
+    use_para: população por território quilombola.
+    nao_use_para: somar domicilios sem CAST (VARCHAR).
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 492 linhas, 492 distintos; domicilios é texto (VARCHAR) — medido 2026-10-27

@@ -1,0 +1,26 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ms_atencao_basica
+tabelas:
+  municipio:
+    grao: "um município × mês (retrato mensal da cobertura de atenção básica e das equipes)"
+    chave: "id_municipio, ano, mes (901.944 linhas = 901.944 combinações distintas)"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2007-07–2020-12 (2007 só tem jul–dez; de 2008 em diante 12 meses)"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos", id_municipio_6: "código IBGE de 6 dígitos (sem dígito verificador)", sigla_uf: "UF"}}
+    medidas:
+      - {coluna: populacao, o_que: "população do município no mês (base de denominador da cobertura)", unidade: "pessoas", soma: nao}
+      - {coluna: populacao_coberta_total_atencao_basica, o_que: "população coberta pela atenção básica (ESF + equivalentes)", unidade: "pessoas", soma: nao}
+      - {coluna: populacao_coberta_estrategia_saude_familia, o_que: "população coberta só pela Estratégia Saúde da Família", unidade: "pessoas", soma: nao}
+      - {coluna: proporcao_cobertura_total_atencao_basica, o_que: "cobertura total de atenção básica, limitada a 100", unidade: "%", soma: nao}
+      - {coluna: proporcao_cobertura_estrategia_saude_familia, o_que: "cobertura só da ESF, limitada a 100", unidade: "%", soma: nao}
+      - {coluna: quantidade_equipes_saude_familia, o_que: "equipes de Saúde da Família", unidade: "equipes", soma: nao}
+      - {coluna: quantidade_equipes_atencao_basica_total, o_que: "total de equipes de atenção básica (inclui equivalentes e parametrizadas)", unidade: "equipes", soma: nao}
+      - {coluna: "quantidade_equipes_atencao_basica_equivalente, quantidade_equipes_atencao_basica_parametrizada", o_que: "equipes equivalentes e parametrizadas (maioria zero)", unidade: "equipes", soma: nao}
+      - {coluna: "carga_horaria_medica_atencao_basica_tradicional, carga_horaria_enfermagem_atencao_basica_tradicional", o_que: "carga horária da atenção básica tradicional; unidade não documentada (valores fracionários, média ~2)", unidade: "não documentada", soma: nao}
+    filtros_tipicos:
+      - "ano = 2020 AND mes = 12 para o retrato mais recente (5.570 municípios)"
+      - "mes = 12 (ou um mês fixo) ao somar entre municípios: toda medida é retrato do mês, somar os 12 meses de um ano multiplica por ~12"
+    use_para: "cobertura de atenção básica e de Saúde da Família e número de equipes por município, em série mensal de 2007 a 2020."
+    nao_use_para: "dados posteriores a 2020-12 ou recortes por equipe/estabelecimento (use br_ms_cnes.equipe); não some meses de um ano."
+    rascunho: [use_para, nao_use_para, unidade da carga_horaria, significado exato de equivalente e parametrizada]
+    verificado: "901.944 linhas, 901.944 distintos de (id_municipio, ano, mes); 5.570 municípios em todos os 12 meses de 2020, 5.564 em jul–dez de 2007; sum(populacao_coberta_total)/sum(populacao) em 2020-12 = 76,1% — medido 2026-10-27"

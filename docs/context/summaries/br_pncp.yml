@@ -1,0 +1,23 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_pncp
+tabelas:
+  contratos:
+    grao: "um contrato/empenho/ata registrado no PNCP por um órgão (número de controle PNCP), com linhas inteiras duplicadas na carga"
+    chave: "nenhuma: 5.229.507 linhas, 4.252.624 linhas distintas (cópias exatas da linha inteira) e 4.249.999 numeroControlePNCP distintos; 979.437 números aparecem em mais de uma linha. Deduplique com SELECT DISTINCT * ou QUALIFY row_number() OVER (PARTITION BY numeroControlePNCP ORDER BY dataAtualizacao DESC) = 1"
+    tempo: {natureza: serie_diaria, coluna: dataAssinatura, cobertura: "2021-04-04–2027-08-03 no perfil (há datas futuras/absurdas; dataVigenciaFim chega a 9999-12-31)"}
+    territorio: {nivel: municipio, colunas: {unidadeOrgao.codigoIbge: "código IBGE do município da unidade compradora (STRUCT unidadeOrgao)", unidadeOrgao.ufSigla: "UF da unidade compradora", orgaoEntidade.esferaId: "esfera do órgão: M 3.666.588, E 773.896, F 673.158, N 111.133, D 4.732 (significado das letras não documentado; M/E/F=municipal/estadual/federal por dedução)"}}
+    medidas:
+      - {coluna: valorGlobal, o_que: "valor global do contrato incluindo aditivos", unidade: "R$", soma: "sim, depois de deduplicar; tem outliers absurdos (máx 3,9 trilhões; 99 linhas > R$ 10 bi) que distorcem somas, e a soma de 2025 cai de R$ 15.590 bi para R$ 14.234 bi só pela deduplicação"}
+      - {coluna: valorInicial, o_que: "valor inicial do contrato", unidade: "R$", soma: "sim, mesma ressalva (igual a valorGlobal em 5.075.909 linhas; maior em 83.605 e menor em 69.993)"}
+      - {coluna: valorParcela, o_que: "valor da parcela", unidade: "R$", soma: "nao: parcela, não o total do contrato"}
+      - {coluna: valorAcumulado, o_que: "valor acumulado (nulo em 41%)", unidade: "R$", soma: "nao"}
+    filtros_tipicos:
+      - "year(dataAssinatura) = 2025, nunca anoContrato (72 valores fora de 2000–2030, ver gotcha ano_contrato_corrompido)"
+      - "tipoPessoa = 'PJ' (fornecedor pessoa jurídica; também 'PF' e 'PE' estrangeiro)"
+      - "tipoContrato.nome = 'Contrato (termo inicial)' (755.211 na amostra) para excluir 'Empenho' (758.431) e 'Outros'; categoriaProcesso.nome = 'Compras'/'Serviços'/'Obras'; tipoContrato e categoriaProcesso são STRUCT(id, nome) — acesse com .nome ou .id"
+      - "receita = false para despesa (true = contrato que gera receita ao órgão, 21.813 na amostra)"
+    use_para: "Contratos públicos por fornecedor (niFornecedor), órgão ou município comprador"
+    nao_use_para: "Somar valorGlobal sem deduplicar e sem tratar outliers; usar anoContrato como ano"
+    rascunho: [use_para, nao_use_para, esferaId]
+    verificado: "5.229.507 linhas; 4.252.624 distintas; 4.249.999 numeroControlePNCP distintos; 99 linhas com valorGlobal > 1e10; contratos por year(dataAssinatura): 2024 735.478, 2025 2.292.977, 2026 1.871.803 — medido 2026-10-27. Gotcha: ano_contrato_corrompido"

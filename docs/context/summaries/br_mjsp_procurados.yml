@@ -1,0 +1,14 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_mjsp_procurados
+tabelas:
+  procurados:
+    grao: "uma pessoa na lista de procurados do Projeto Captura (MJSP), com UF de origem textual, data de inclusão e links da ficha"
+    chave: "nome (188 linhas = 188 distintos; url_detalhe também é único)"
+    tempo: {natureza: retrato_atual, coluna: data_inclusao, cobertura: "2025-04-22–2026-06-03"}
+    territorio: {nivel: uf, colunas: {estado: "UF em texto livre (MAIÚSCULAS, sem padronização: aparecem 'GROSSO', 'SERGIPE.png', 'MARANHÃO.png' e 5 nulos), nome_estado: 'dado pessoal, só contagens'"}}
+    filtros_tipicos: ["estado é sujo (extraído de nome de arquivo): agrupe com upper() e remova '.png' antes de contar por UF; 5 linhas têm estado nulo"]
+    use_para: "contar quantos procurados entraram na lista por data de inclusão e, de forma aproximada, por UF"
+    nao_use_para: "estatística de criminalidade ou análise por UF sem limpar a coluna estado; não há crime nem município na tabela"
+    rascunho: [use_para, nao_use_para]
+    verificado: "188 linhas, 188 distintos de nome, 188 de url_detalhe, 188 de (nome, estado); estado nulo em 5 — medido 2026-10-27"

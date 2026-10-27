@@ -1,0 +1,289 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_mobilidados_indicadores
+tabelas:
+  comprometimento_renda_tarifa_transp_publico:
+    grao: um município (capital) × ano, com a tarifa e o comprometimento do salário mínimo
+    chave: ano, id_municipio (351 linhas = 351 distintos)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2005–2017
+    territorio:
+      nivel: municipio
+      colunas:
+        id_municipio: código IBGE de 7 dígitos (29 municípios, capitais)
+        sigla_uf: UF
+    medidas:
+    - coluna: tarifas
+      o_que: tarifa do transporte público (R$ 1,15 a 4,05)
+      unidade: R$ (significado exato não documentado)
+      soma: nao
+    - coluna: comprometimento_salario_minimo
+      o_que: proporção do salário mínimo comprometida com a tarifa (0,13 a 0,33)
+      unidade: razão 0–1
+      soma: nao
+    - coluna: comprometimento_renda_domesticas_negras
+      o_que: idem para trabalhadoras domésticas negras (23% nulos)
+      unidade: razão 0–1
+      soma: nao
+    filtros_tipicos:
+    - ano = 2017 para o último ano
+    use_para: comparar o peso da tarifa na renda entre capitais ao longo dos anos
+    nao_use_para: somar ou comparar com municípios fora das 29 capitais cobertas
+    rascunho:
+    - use_para
+    - nao_use_para
+    - unidade de tarifas
+    verificado: 351 linhas, 351 distintos (ano, id_municipio) — medido 2026-10-27
+  divisao_modal:
+    grao: uma UF × ano × modo de transporte, com a divisão modal; só 52 das 320 linhas têm valor
+    chave: ano, sigla_uf, coluna (320 linhas = 320 distintos)
+    tempo:
+      natureza: serie_de_periodos
+      coluna: ano
+      cobertura: 1996–2018, apenas 8 anos com valor (1997, 2002, 2003, 2007, 2009, 2012, 2017, 2018)
+    territorio:
+      nivel: uf
+      colunas:
+        sigla_uf: 'UF (9 UFs: BA, CE, DF, MG, PE, PR, RJ, SP e mais uma sem valor)'
+    medidas:
+    - coluna: divisao_modal
+      o_que: 'participação do modo no total de viagens (84% nulos); escala suspeita: máximo 0,0049 para "a pé", valor que não parece fração de 100%'
+      unidade: não documentada
+      soma: nao
+    filtros_tipicos:
+    - coluna IN ('Percentual de viagens a pé','Percentual de viagens em bicicleta','Percentual de viagens em transporte coletivo','Percentual de viagens em transporte individual motorizado')
+    - divisao_modal IS NOT NULL (só 13 linhas não nulas por modo)
+    use_para: ver quais UFs e anos têm medição de divisão modal
+    nao_use_para: comparar níveis entre modos sem antes validar a escala dos valores (máximos 0,0049) com a fonte
+    rascunho:
+    - use_para
+    - nao_use_para
+    - escala de divisao_modal
+    verificado: 320 linhas, 320 distintos (ano, sigla_uf, coluna); 52 com divisao_modal não nulo, 13 por modo — medido 2026-10-27
+  emissao_co2_material_particulado:
+    grao: um município (capital) × ano, com emissões de CO2 e de material particulado
+    chave: ano, id_municipio (324 linhas = 324 distintos)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2007–2018
+    territorio:
+      nivel: municipio
+      colunas:
+        id_municipio: código IBGE de 7 dígitos (27 capitais)
+        sigla_uf: UF
+    medidas:
+    - coluna: emissao_co2
+      o_que: emissão de CO2 (392 a 2152); unidade não documentada
+      unidade: não documentada
+      soma: sim
+    - coluna: emissao_mp
+      o_que: emissão de material particulado (33 a 564); unidade não documentada
+      unidade: não documentada
+      soma: sim
+    filtros_tipicos:
+    - ano = 2018 para o último ano
+    use_para: série de emissões do transporte por capital
+    nao_use_para: comparar com outras fontes sem conferir a unidade
+    rascunho:
+    - use_para
+    - nao_use_para
+    - unidades
+    verificado: 324 linhas, 324 distintos (ano, id_municipio) — medido 2026-10-27
+  proporcao_domicilios_infra_urbana:
+    grao: um município × 2010, com a proporção de domicílios com calçadas e rampas
+    chave: id_municipio (217 linhas = 217 distintos; ano é sempre 2010)
+    tempo:
+      natureza: retrato_atual
+      coluna: ano
+      cobertura: 2010–2010
+    territorio:
+      nivel: municipio
+      colunas:
+        id_municipio: código IBGE de 7 dígitos
+        sigla_uf: UF
+    medidas:
+    - coluna: prop_calcadas
+      o_que: proporção de domicílios com calçada, 1,28 a 100
+      unidade: percentual 0–100
+      soma: nao
+    - coluna: prop_rampas
+      o_que: proporção de domicílios com rampa, 0 a 34 (0,5% nulos)
+      unidade: percentual 0–100
+      soma: nao
+    filtros_tipicos:
+    - ano = 2010 (único)
+    use_para: comparar infraestrutura de calçadas e rampas entre os 217 municípios cobertos (Censo 2010)
+    nao_use_para: série temporal (um só ano)
+    rascunho:
+    - use_para
+    - nao_use_para
+    - fonte Censo 2010
+    verificado: 217 linhas, 217 distintos de id_municipio — medido 2026-10-27
+  proporcao_mortes_negras_acidente_transporte:
+    grao: um município × ano × tipo de usuário (indicador), com a proporção de mortes de pessoas negras em acidentes de transporte; linhas com id_municipio = ' ' parecem ser agregados da UF
+    chave: 'ano, id_municipio, indicador, só nas linhas com id_municipio de 7 dígitos (665160 linhas = 665160 distintos). As 3240 linhas com id_municipio = '' '' repetem (665280 distintos em 668400): nenhuma
+      chave nelas'
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2000–2019
+    territorio:
+      nivel: municipio
+      colunas:
+        id_municipio: código IBGE de 7 dígitos; ' ' (espaço) em 3240 linhas = 27 UFs × 20 anos × 6 indicadores, aparentemente o total da UF (não confirmado)
+        sigla_uf: UF
+    medidas:
+    - coluna: prop_mortes_negras_acidente_transporte
+      o_que: proporção de mortes de negros entre as mortes do tipo de usuário, 0 a 100
+      unidade: percentual 0–100
+      soma: nao
+    filtros_tipicos:
+    - 'indicador IN (''Total'',''Pedestres'',''Ciclistas'',''Motociclistas'',''Ocupantes de automóvel'',''Outros''): ''Total'' é a soma dos tipos, não some os seis'
+    - length(id_municipio) = 7 para ficar só com municípios (exclui as linhas ' ')
+    use_para: proporção de mortes de negros no trânsito por município, ano e tipo de usuário
+    nao_use_para: somar ou fazer média simples entre municípios (é razão); contar mortes (não há contagem absoluta)
+    rascunho:
+    - use_para
+    - nao_use_para
+    - significado das linhas com id_municipio vazio
+    verificado: 668400 linhas; 665160 com id_municipio de 7 dígitos, todas distintas em (ano, id_municipio, indicador); 5543 municípios por ano em indicador Total; 3240 linhas com id_municipio = ' ' — medido
+      2026-10-27
+  proporcao_pessoas_prox_infra_cicloviaria:
+    grao: um município (capital) × ano × recorte de renda/gênero/raça (indicador), com a proporção de pessoas próximas à infraestrutura cicloviária (PNB)
+    chave: ano, id_municipio, indicador (378 linhas = 378 distintos)
+    tempo:
+      natureza: serie_de_periodos
+      coluna: ano
+      cobertura: 2019–2021 (2 anos)
+    territorio:
+      nivel: municipio
+      colunas:
+        id_municipio: código IBGE de 6 dígitos (sem dígito verificador), diferente das outras tabelas
+        sigla_uf: UF
+    medidas:
+    - coluna: prop_pessoas_proximas_ciclovias
+      o_que: proporção de pessoas próximas à ciclovia, 0 a 67
+      unidade: percentual 0–100
+      soma: nao
+    filtros_tipicos:
+    - 'indicador IN (''PNB Geral'',''PNB 0 1/2'',''PNB 1/2 1'',''PNB 1 3'',''PNB 3 mais'',''PNB Mulheres negras'',''PNB Mulheres menos 1 salário mínimo''): faixas em salários mínimos per capita (interpretação
+      não documentada)'
+    - 'id_municipio tem 6 dígitos: para cruzar com tabelas de 7 dígitos, junte por substr(id_municipio_7,1,6)'
+    use_para: comparar acesso à ciclovia por faixa de renda e grupo entre capitais
+    nao_use_para: cruzar direto com id_municipio de 7 dígitos; somar indicadores
+    rascunho:
+    - use_para
+    - nao_use_para
+    - significado das faixas
+    verificado: 378 linhas, 378 distintos (ano, id_municipio, indicador); 7 indicadores × 54 linhas; id_municipio com 6 dígitos em todas as 378 — medido 2026-10-27
+  proporcao_pessoas_proximas_pnt:
+    grao: um município (capital) × ano × recorte de renda/gênero/raça (indicador), com a proporção de pessoas próximas a transporte de média e alta capacidade (PNT)
+    chave: ano, id_municipio, indicador (630 linhas = 630 distintos)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2010–2019
+    territorio:
+      nivel: municipio
+      colunas:
+        id_municipio: código IBGE (9 municípios)
+        sigla_uf: UF
+    medidas:
+    - coluna: prop_pessoas_proximas_pnt
+      o_que: proporção de pessoas próximas, 0 a 54
+      unidade: percentual 0–100
+      soma: nao
+    filtros_tipicos:
+    - indicador IN ('PNT Geral','PNT 0 1/2','PNT 1/2 1','PNT 1 3','PNT 3 mais','PNT Mulheres negras','PNT Mulheres responsáveis por domicílio menos 2 salários mínimos')
+    use_para: comparar acesso a transporte de alta capacidade por grupo de renda e raça nas 9 capitais
+    nao_use_para: somar indicadores; cobertura é só 9 municípios
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 630 linhas, 630 distintos (ano, id_municipio, indicador); 7 indicadores × 90 linhas — medido 2026-10-27
+  taxa_motorizacao:
+    grao: um município (capital) × ano, com a taxa de motorização
+    chave: ano, id_municipio (486 linhas = 486 distintos)
+    tempo:
+      natureza: serie_anual
+      coluna: ano
+      cobertura: 2001–2018
+    territorio:
+      nivel: municipio
+      colunas:
+        id_municipio: código IBGE de 7 dígitos (27 capitais)
+        sigla_uf: UF
+    medidas:
+    - coluna: taxa_motorizacao
+      o_que: veículos por 1000 habitantes (92 a 797); unidade inferida, não documentada
+      unidade: veículos / 1000 hab. (inferido)
+      soma: nao
+    filtros_tipicos:
+    - ano = 2018 para o último ano
+    use_para: série de motorização por capital
+    nao_use_para: somar entre capitais (é razão)
+    rascunho:
+    - use_para
+    - nao_use_para
+    - unidade
+    verificado: 486 linhas, 486 distintos (ano, id_municipio) — medido 2026-10-27
+  tempo_deslocamento_casa_trabalho:
+    grao: um município × 2010, com tempo médio de deslocamento casa-trabalho e proporção com mais de 1 hora
+    chave: id_municipio (229 linhas = 229 distintos; ano é sempre 2010)
+    tempo:
+      natureza: retrato_atual
+      coluna: ano
+      cobertura: 2010–2010
+    territorio:
+      nivel: municipio
+      colunas:
+        id_municipio: código IBGE de 7 dígitos
+        sigla_uf: UF
+    medidas:
+    - coluna: tempo_medio_deslocamento
+      o_que: tempo médio de deslocamento (16 a 67), BIGINT
+      unidade: minutos
+      soma: nao
+    - coluna: prop_deslocamento_acima_1_hora
+      o_que: proporção com deslocamento acima de 1 hora, 2 a 54
+      unidade: percentual 0–100
+      soma: nao
+    filtros_tipicos:
+    - ano = 2010 (único)
+    use_para: comparar o tempo de deslocamento entre os 229 municípios (Censo 2010)
+    nao_use_para: série temporal (um só ano); somar
+    rascunho:
+    - use_para
+    - nao_use_para
+    - fonte Censo 2010
+    verificado: 229 linhas, 229 distintos de id_municipio — medido 2026-10-27
+  transporte_media_alta_capacidade:
+    grao: um município (capital) × indicador de transporte de média e alta capacidade (TMA) em 2019
+    chave: id_municipio, indicador (27 linhas = 27 distintos)
+    tempo:
+      natureza: retrato_atual
+      coluna: ano
+      cobertura: 2019–2019
+    territorio:
+      nivel: municipio
+      colunas:
+        id_municipio: código IBGE (9 municípios)
+        sigla_uf: UF
+    medidas:
+    - coluna: prop_tma
+      o_que: 'valor do indicador: mistura contagens de estações (19 a 233) e percentuais (0,24 a 0,65 como fração, 1 em outra linha), a depender de indicador'
+      unidade: depende do indicador
+      soma: nao
+    filtros_tipicos:
+    - indicador = 'Estações de TMA em operação na capital' (contagem)
+    - indicador = 'Estações de TMA na área de cobertura da infraestrutura cicloviária' (contagem)
+    - indicador LIKE 'Percentual%' (fração, escala 0–1 nos valores medidos)
+    use_para: consultar as estações de TMA e a sua integração com ciclovias nas 9 capitais
+    nao_use_para: agrupar ou somar prop_tma entre indicadores diferentes (mistura contagem e percentual)
+    rascunho:
+    - use_para
+    - nao_use_para
+    verificado: 27 linhas, 27 distintos (id_municipio, indicador); 4 indicadores (9, 1, 9 e 8 linhas) — medido 2026-10-27

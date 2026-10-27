@@ -1,0 +1,72 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ms_sim
+tabelas:
+  microdados:
+    grao: "uma declaração de óbito (DO) do SIM"
+    chave: "(sigla_uf, sequencial_obito) — confirmada em ano = 2024: 1.532.015 linhas = 1.532.015 distintos; sequencial_obito sozinho também deu 1.532.015 distintos nesse ano"
+    tempo: {natureza: serie_diaria, coluna: "data_obito (ano = ano do óbito; data_cadastro e data_recebimento são datas do sistema)", cobertura: "1996–2026 (2026 só até 2026-05-31)"}
+    territorio: {nivel: municipio, colunas: {id_municipio_residencia: "residência do falecido, IBGE 7 dígitos (0,1% nulo)", id_municipio_ocorrencia: "onde morreu, 7 dígitos", sigla_uf: "UF do registro", id_municipio_naturalidade: "naturalidade"}}
+    medidas:
+      - {expressao: "count(*)", o_que: "óbitos", unidade: "óbitos", soma: sim}
+      - {coluna: idade, o_que: "idade em anos completos (DOUBLE; nula em 0,26%)", unidade: "anos", soma: nao}
+    filtros_tipicos:
+      - "ano = <ano> sempre (36 milhões de linhas)"
+      - "substr(causa_basica,1,3) BETWEEN 'X60' AND 'X84' para suicídio; causa_basica é CID-10 de 4 caracteres sem ponto (gotcha causa_vs_circunstancia)"
+      - "tipo_obito = 'nao-fetal' (único valor visto em 2024 e 2026)"
+      - "sexo = 'masculino' ou 'feminino' (minúsculas); raca_cor = 'branca','parda','preta','amarela','indigena' (minúsculas, sem acento; gotcha codigos_como_float cobre o resto)"
+      - "local_ocorrencia = 'hospital','domicilio','via publica','outro estabelecimento de saude','outros','aldeia indigena'"
+    use_para: "causas de morte, perfil do falecido e mortalidade por ocorrência/residência, município por município e dia a dia."
+    nao_use_para: "taxas sem denominador (junte com br_ms_populacao.municipio, ano de mesma referência) ou causa de morte por circunstancia_obito."
+    rascunho: [use_para, nao_use_para]
+    verificado: "ano = 2024: 1.532.015 linhas; 1.532.015 distintos de (sigla_uf, sequencial_obito); todas com data_obito entre 2024-01-01 e 2024-12-31; tipo_obito só 'nao-fetal' — medido 2026-10-27"
+  municipio:
+    grao: "um município × ano com o total de óbitos"
+    chave: "nenhuma: 132.868 linhas, 132.853 distintos de (ano, id_municipio); 15 repetem"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "1996–2019 (para aqui; as outras tabelas agregadas vão até 2026)"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "IBGE 7 dígitos", sigla_uf: "UF"}}
+    medidas:
+      - {coluna: numero_obitos, o_que: "óbitos do município no ano", unidade: "óbitos", soma: sim}
+    use_para: "total anual de óbitos por município até 2019."
+    nao_use_para: "anos depois de 2019 (a tabela acaba); causa, idade, sexo ou raça."
+    rascunho: [use_para, nao_use_para]
+    verificado: "132.868 linhas; 132.853 distintos de (ano, id_municipio); soma de numero_obitos em 2019 = 1.347.263; ano 1996–2019 — medido 2026-10-27"
+  municipio_causa:
+    grao: "um município × ano × causa básica (CID-10 de 4 caracteres)"
+    chave: "nenhuma: ano = 2024: 495.722 linhas, 495.265 distintos de (id_municipio, causa_basica); 830 linhas com id_municipio nulo"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "1996–2026"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "IBGE 7 dígitos (algumas linhas nulas)", sigla_uf: "UF"}}
+    medidas:
+      - {coluna: numero_obitos, o_que: "óbitos naquela causa e município", unidade: "óbitos", soma: sim}
+    filtros_tipicos: ["ano = <ano> (11 milhões de linhas); causa_basica como 'X60'… (sem ponto; 4 caracteres, ex.: 'A020')"]
+    use_para: "óbitos por causa básica e município, mais rápido que microdados."
+    nao_use_para: "cortes por idade, sexo ou raça: use as tabelas mais abertas."
+    rascunho: [use_para, nao_use_para]
+    verificado: "ano = 2024: soma de numero_obitos 1.532.015 (igual à contagem de microdados); 495.722 linhas — medido 2026-10-27"
+  municipio_causa_idade:
+    grao: "um município × ano × causa básica × idade em anos"
+    chave: "nenhuma: ano = 2024: 1.178.176 linhas, 1.177.774 distintos de (id_municipio, causa_basica, idade)"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "1996–2026"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "IBGE 7 dígitos", sigla_uf: "UF"}}
+    medidas:
+      - {coluna: numero_obitos, o_que: "óbitos", unidade: "óbitos", soma: sim}
+    filtros_tipicos: ["ano = <ano> (27 milhões de linhas); idade BIGINT em anos (nula em 0,26%)"]
+    use_para: "óbitos por causa e idade em município."
+    nao_use_para: "sexo/raça (use municipio_causa_idade_sexo_raca)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "ano = 2024: soma 1.532.015; 1.178.176 linhas — medido 2026-10-27"
+  municipio_causa_idade_sexo_raca:
+    grao: "um município × ano × causa básica × idade × sexo × raça/cor"
+    chave: "nenhuma: ano = 2024: 1.340.506 linhas, 1.340.225 distintos de (id_municipio, causa_basica, idade, sexo, raca_cor)"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "1996–2026"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "IBGE 7 dígitos", sigla_uf: "UF"}}
+    medidas:
+      - {coluna: numero_obitos, o_que: "óbitos", unidade: "óbitos", soma: sim}
+    filtros_tipicos: ["ano = <ano> (31 milhões de linhas)", "sexo = 'masculino'/'feminino'; raca_cor = 'branca','parda','preta','amarela','indigena' (minúsculas; nulo em 1,3%)"]
+    use_para: "óbitos por causa, idade, sexo e raça em município."
+    nao_use_para: "detalhes da DO (local, escolaridade, data): use microdados."
+    rascunho: [use_para, nao_use_para]
+    verificado: "ano = 2024: soma 1.532.015; 1.340.506 linhas — medido 2026-10-27"
+  dicionario:
+    grao: "uma linha por código (nome_coluna, chave, valor) das colunas do SIM"
+    use_para: "traduzir códigos das tabelas do SIM."

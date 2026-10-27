@@ -1,0 +1,58 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_tce_pi
+tabelas:
+  despesas_total:
+    grao: "o total de despesa do Estado do Piauí em um exercício"
+    chave: "exercicio (17 linhas, 17 distintos)"
+    tempo: {natureza: serie_anual, coluna: exercicio, cobertura: "2010–2026 (2026 em andamento)"}
+    territorio: {nivel: uf, colunas: {}}
+    medidas:
+      - {coluna: empenhada, o_que: "despesa empenhada do ano", unidade: "R$", soma: sim}
+      - {coluna: liquidada, o_que: "despesa liquidada", unidade: "R$", soma: sim}
+      - {coluna: paga, o_que: "despesa paga", unidade: "R$", soma: sim}
+    filtros_tipicos: ["exercicio = 2025 (último ano fechado: empenhada 21,6 bi, paga 21,0 bi); 2026 é parcial (empenhada 16,8 bi)"]
+    use_para: "série anual de despesa total do Estado do PI"
+    nao_use_para: "despesa por município ou órgão: só há o total estadual"
+    rascunho: [use_para, nao_use_para, "que o total é só do Estado, não dos municípios"]
+    verificado: "17 linhas, 17 exercícios distintos; 2025 e 2026 lidos — medido 2026-10-27"
+  receitas_total:
+    grao: "o total de receita do Estado do Piauí em um exercício"
+    chave: "exercicio (17 linhas, 17 distintos)"
+    tempo: {natureza: serie_anual, coluna: exercicio, cobertura: "2010–2026 (2026 em andamento)"}
+    territorio: {nivel: uf, colunas: {}}
+    medidas:
+      - {coluna: prevista, o_que: "receita prevista", unidade: "R$", soma: sim}
+      - {coluna: arrecadada, o_que: "receita arrecadada", unidade: "R$", soma: sim}
+    filtros_tipicos: ["exercicio = 2025 (arrecadada 22,7 bi, prevista 24,4 bi); 2026 parcial"]
+    use_para: "série anual de receita total do Estado do PI"
+    nao_use_para: "receita por tributo ou município"
+    rascunho: [use_para, nao_use_para]
+    verificado: "17 linhas, 17 exercícios distintos — medido 2026-10-27"
+  licitacoes_estado:
+    grao: "uma data com licitações previstas do Estado (valor previsto somado do dia)"
+    chave: "link (17 linhas, 17 distintos; link é a data em aaaammdd, ex. '20261007')"
+    tempo: {natureza: serie_diaria, coluna: data, cobertura: "2026-10-07–2026-11-24"}
+    territorio: {nivel: uf, colunas: {}}
+    medidas:
+      - {coluna: previsto, o_que: "valor previsto das licitações do dia", unidade: "R$", soma: sim}
+    use_para: "ver a agenda de licitações do Estado nas próximas semanas"
+    nao_use_para: "histórico de licitações: é um retrato da agenda futura, só 17 dias"
+    rascunho: [use_para, nao_use_para, "leitura de previsto como soma do dia"]
+    verificado: "17 linhas, 17 distintos de link e de data — medido 2026-10-27"
+  orgaos:
+    grao: "um órgão (unidade gestora) do Estado do Piauí, tabela de referência"
+    chave: "id (130 linhas, 130 distintos); id = '00000' é 'TODOS', uma linha de filtro, não órgão"
+    territorio: {nivel: nenhum}
+    use_para: "traduzir o id do órgão para nome e sigla"
+    nao_use_para: "contar órgãos sem excluir a linha 'TODOS'"
+    rascunho: [use_para]
+    verificado: "130 linhas, 130 distintos de id — medido 2026-10-27"
+  prefeituras:
+    grao: "uma prefeitura do Piauí, tabela de referência com código IBGE e links"
+    chave: "id (224 linhas, 224 distintos; codIBGE também 224)"
+    territorio: {nivel: municipio, colunas: {codIBGE: "código IBGE de 7 dígitos, texto", nome: "nome da prefeitura"}}
+    use_para: "ligar o id do TCE-PI ao código IBGE e ao site da prefeitura ou câmara"
+    nao_use_para: "qualquer medida: não há números"
+    rascunho: [use_para, nao_use_para]
+    verificado: "224 linhas, 224 distintos de id e de codIBGE — medido 2026-10-27"

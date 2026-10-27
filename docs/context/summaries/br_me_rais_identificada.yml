@@ -1,0 +1,20 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_me_rais_identificada
+tabelas:
+  estabelecimentos:
+    grao: "um estabelecimento (CNPJ de 14 dígitos) × ano da RAIS, com os vínculos ativos declarados; o mesmo CNPJ pode aparecer em mais de uma linha no ano"
+    chave: "nenhuma: em 2021 há 3.157.096 linhas para 2.778.942 cnpj_completo distintos (123.395 CNPJs com mais de uma linha, cada uma com quantidade_vinculos_ativos diferente) e 147.945 linhas ficam idênticas mesmo em 10 colunas; o que separa as linhas repetidas não foi apurado"
+    tempo: {natureza: serie_anual, coluna: ano, cobertura: "2010–2021"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "município IBGE de 7 dígitos do estabelecimento", sigla_uf: "UF do estabelecimento"}}
+    medidas:
+      - {coluna: quantidade_vinculos_ativos, o_que: "vínculos de emprego ativos do estabelecimento na RAIS do ano", unidade: "vínculos", soma: sim}
+      - {coluna: capital_social, o_que: "capital social da empresa (Receita Federal), repetido em todos os estabelecimentos do mesmo cnpj_basico", unidade: "R$", soma: nao}
+    filtros_tipicos:
+      - "ano = <ano>: tabela grande, filtre sempre a partição"
+      - "situacao_cadastral_codigo = '2' (Ativa; 2.877.954 linhas em 2021) é a situação ATUAL do CNPJ na Receita (data_situacao_cadastral chega a 2025), não a de 2021; é outro 'ativo' que quantidade_vinculos_ativos (os estabelecimentos baixados ainda somam 1,24 mi de vínculos em 2021)"
+      - "porte: '1' micro, '3' pequeno, '5' demais (column_codes); situacao: '1' nula, '2' ativa, '3' suspensa, '4' inapta, '8' baixada"
+    use_para: "emprego formal por estabelecimento identificado (CNPJ, razão social, CNAE, município) no ano"
+    nao_use_para: "contar estabelecimentos com count(*) (use count(DISTINCT cnpj_completo)) ou saber a situação do CNPJ no ano da RAIS"
+    rascunho: [use_para, nao_use_para, "capital_social soma:nao", "o motivo das linhas repetidas por CNPJ"]
+    verificado: "36.161.488 linhas na tabela; ano = 2021: 3.157.096 linhas, 2.778.942 cnpj_completo distintos, 6 com cnpj_completo NULL; soma de quantidade_vinculos_ativos = 47,50 mi; contagem por situacao_cadastral_codigo em 2021: '2' 2.877.954, '8' 209.134, '4' 61.303, '3' 8.655, '1' 44, NULL 6 — medido 2026-10-27"

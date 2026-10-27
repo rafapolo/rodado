@@ -1,0 +1,25 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ok_queridodiario_texto
+tabelas:
+  diarios:
+    grao: "uma edição de diário oficial de um município numa data, com o texto integral (mesmo grão de br_ok_queridodiario.diarios)"
+    chave: "(territory_id, date, url) — 320.422 linhas = 320.422 distintos; url sozinha repete (296.928 distintas)"
+    tempo: {natureza: serie_diaria, coluna: date, cobertura: "2023-07-10–2026-10-06"}
+    territorio:
+      nivel: municipio
+      colunas:
+        territory_id: "código IBGE do município, BIGINT aqui (VARCHAR em br_ok_queridodiario)"
+        territory_name: "nome do município"
+        state_code: "UF"
+    medidas:
+      - {coluna: texto_bytes, o_que: "tamanho do texto da edição", unidade: "bytes (média 61.099; soma 19,58 GB; máx 53,6 MB)", soma: nao}
+      - {expressao: "count(*)", o_que: "edições com texto", unidade: "edições", soma: sim}
+    filtros_tipicos:
+      - "texto_bytes > 0 — 28 linhas têm texto vazio; length(texto) < 100 em 1.054 linhas"
+      - "texto LIKE 'não autorizado%' — 1 linha com texto 'não autorizado - no path'"
+      - "busca por palavra: texto ILIKE '%termo%' — varredura de 19,6 GB; filtre antes por date ou state_code"
+    use_para: "buscar termos no texto dos diários oficiais municipais (licitações, decretos, nomeações)"
+    nao_use_para: "concluir ausência de menção fora dos 524 municípios cobertos, ou carregar a coluna texto inteira sem filtro"
+    rascunho: [use_para, nao_use_para]
+    verificado: "320.422 linhas = 320.422 distintos (territory_id,date,url); 524 territory_id distintos; 28 com texto_bytes=0; 1 'não autorizado'; 2 linhas a menos que br_ok_queridodiario.diarios (320.424) — medido 2026-10-27"

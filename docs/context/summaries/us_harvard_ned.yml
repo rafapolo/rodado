@@ -1,0 +1,44 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: us_harvard_ned
+tabelas:
+  parliamentary_elections:
+    grao: "uma eleição parlamentar (câmara baixa/única) de um país numa data, no formato largo: os partidos vêm em colunas numeradas party_1..party_74, seats_1..seats_74 e seat_share_1..seat_share_74"
+    chave: "(country_id, year, month, date) (4900 linhas = 4900 distintos; (country_id, year, date) também); (country_id, year) NÃO é único (4817 distintos), há países com mais de uma eleição no mesmo ano"
+    tempo: {natureza: serie_de_periodos, coluna: year, cobertura: "1789–2023 (date de 1789-06-01 a 2023-12-20, nula em 6,18%; month nulo em 96,65%)"}
+    territorio: {nivel: outro, colunas: {country_id: "código de país de 3 letras do NED (BRA, USA, POR, BEL...), 211 distintos; algumas siglas são de países históricos extintos"}}
+    medidas:
+      - {coluna: total_seats, o_que: "total de cadeiras da casa na eleição", unidade: "cadeiras", soma: nao}
+      - {coluna: "seats_N", o_que: "cadeiras do N-ésimo partido, em ordem de tamanho (N = 1 é o maior, até 74)", unidade: "cadeiras", soma: sim}
+      - {coluna: "seat_share_N", o_que: "percentual das cadeiras do N-ésimo partido", unidade: "%", soma: nao}
+    filtros_tipicos:
+      - "type = 'Parliamentary' em todas as 4900 linhas (o filtro não separa nada)"
+      - "country_id = 'BRA' para o Brasil (ex. 2022: total_seats = 513, party_1 = 'Liberal Party (PL)', seats_1 = 99, seat_share_1 = 19.3)"
+      - "party_N pode ser uma coligação, não um partido: na eleição de 2014 do Brasil party_1 é uma coligação que reúne vários partidos (seats_1 = 304); não compare como se fosse um partido"
+      - "dados de partido nulos em 17,9% das linhas (party_1 NULL); total_seats nulo em 18%: eleições sem resultado por partido (flag_non_partisan = true em 310 linhas, flag_appointed = true em 327, flag_coup = true em 22, flag_inconsequential = true em 32 com flag_inconsequential_note 'Cancelled', 'Dissolved', 'Annulled')"
+      - "source = 'Nohlen' (1337), 'Wiki' (1059), 'PARL' (788), 'AC' (278), 'IPU' (252), nulo em 876"
+      - "para um partido específico é preciso procurar em todas as colunas party_1..party_74 (formato largo); passe a linhas com UNPIVOT"
+    use_para: "composição do parlamento por país e eleição ao longo do tempo (partido, cadeiras, percentual)"
+    nao_use_para: "somar seat_share ou contar partidos com colunas numeradas sem unpivot; votos populares: só há cadeiras"
+    rascunho: [use_para, nao_use_para, "significado de source (siglas das fontes não documentadas)"]
+    verificado: "4900 linhas = 4900 (country_id, year, month, date); 4817 (country_id, year); 211 country_id; linha inteira distinta 4900; type uma só categoria; BRA conferido para 2014 e 2022 — medido 2026-10-27"
+  presidential_elections:
+    grao: "uma eleição presidencial de um país numa data, no formato largo: candidatos em colunas numeradas candidate_1..candidate_39 com party_N, votes1_N, votes2_N, vote_share1_N, vote_share2_N, e_votes_N, e_vote_share_N"
+    chave: "(country_id, year, month, date) (1409 linhas = 1409 distintos); (country_id, year) NÃO é único (1395 distintos)"
+    tempo: {natureza: serie_de_periodos, coluna: year, cobertura: "1789–2023 (date de 1789-01-10 a 2023-12-20, nula em 3,34%)"}
+    territorio: {nivel: outro, colunas: {country_id: "código de país de 3 letras (BRA, AFG...), 123 distintos"}}
+    medidas:
+      - {coluna: "votes1_N", o_que: "votos do N-ésimo candidato no 1º turno (ou no turno único)", unidade: "votos", soma: sim}
+      - {coluna: "votes2_N", o_que: "votos do N-ésimo candidato no 2º turno; preenchido só quando há segundo turno (nulo em 82,6% das linhas)", unidade: "votos", soma: sim}
+      - {coluna: "vote_share1_N / vote_share2_N", o_que: "percentual dos votos no 1º e no 2º turno", unidade: "%", soma: nao}
+      - {coluna: "e_votes_N / e_vote_share_N", o_que: "votos e percentual no colégio eleitoral (eleições indiretas, como a dos EUA); nulos em 95,8%", unidade: "votos do colégio / %", soma: nao}
+    filtros_tipicos:
+      - "type = 'Presidential' em todas as 1409 linhas"
+      - "country_id = 'BRA' para o Brasil; a date do Brasil em 2018 e 2022 é a do 2º turno (2018-10-28, 2022-10-30) e flag_two_round = true; a linha tem votos dos dois turnos"
+      - "flag_two_round = true em 250 linhas; flag_unopposed = true em 161; flag_plebiscite = true em 76; flag_indirect = true em 59; flag_coup = true em 20; flag_inconsequential = true em 37 (notas 'Cancelled' 23, 'Death' 5, 'Invalid (turno...)' 5)"
+      - "candidate_1 não é necessariamente o mais votado: em 83 linhas votes1_1 < votes1_2; ordene por votos antes de falar em vencedor"
+      - "candidate_1 nulo em 9,5% das linhas (sem resultado por candidato); source = 'Nohlen' (546), 'IFES' (279), 'Wiki' (239), 'AC' (109), 'USA' (57), nulo em 134"
+    use_para: "resultados de eleições presidenciais por país: candidatos, partidos, votos e percentuais, turno a turno"
+    nao_use_para: "afirmar quem venceu a partir da posição N (a ordem não é por votos) ou somar candidatos sem unpivot; eleições legislativas (use parliamentary_elections)"
+    rascunho: [use_para, nao_use_para, "significado de source"]
+    verificado: "1409 linhas = 1409 (country_id, year, month, date); 1395 (country_id, year); 123 country_id; candidate_1 com votes1_1 < votes1_2 em 83 linhas; BRA conferido para 2014, 2018, 2022 — medido 2026-10-27"

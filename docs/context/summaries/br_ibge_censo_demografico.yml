@@ -1,0 +1,299 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ibge_censo_demografico
+tabelas:
+  microdados_pessoa_2022:
+    grao: "uma pessoa da amostra do Censo 2022 (21,5 milhões de linhas, 170 colunas)"
+    chave: "(id_uf, controle, numero_ordem): confirmada em sigla_uf = 'DF' (141.502 = 141.502); controle só é único dentro da UF (gotcha censo2022_controle_por_uf)"
+    tempo: {natureza: retrato_atual, coluna: "(tabela de um único censo)", cobertura: "2022–2022"}
+    territorio: {nivel: uf, colunas: {id_uf: "UF (2 dígitos)", sigla_uf: "sigla", id_regiao: "região"}}
+    medidas:
+      - {coluna: peso_amostral, o_que: "peso; SUM(peso_amostral) = 203.080.756 no Brasil (gotcha censo2022_amostra_com_peso); DF = 2.817.381", unidade: "pessoas", soma: sim}
+    filtros_tipicos: ["sigla_uf = 'DF' (texto)", "sem município: gotcha censo2022_publico_sem_municipio"]
+    use_para: "estimativas do Censo 2022 ponderadas por amostra"
+    nao_use_para: "contar linhas como população: é amostra"
+    rascunho: [use_para, nao_use_para]
+    verificado: "21.538.508 linhas no perfil; DF 141.502 linhas, chave confirmada, peso soma 2.817.381 — medido 2026-10-27"
+  microdados_domicilio_2022:
+    grao: "um domicílio da amostra do Censo 2022 (7,69 milhões de linhas)"
+    chave: "(id_uf, controle): confirmada em DF (51.024 = 51.024) e no Brasil pelo gotcha (7.689.914)"
+    tempo: {natureza: retrato_atual, coluna: "(tabela de um único censo)", cobertura: "2022–2022"}
+    territorio: {nivel: uf, colunas: {id_uf: "UF (2 dígitos)", sigla_uf: "sigla", id_regiao: "região"}}
+    medidas:
+      - {coluna: peso_amostral, o_que: "peso do domicílio", unidade: "domicílios", soma: sim}
+    filtros_tipicos: ["junte com a pessoa por (id_uf, controle), nunca só controle"]
+    use_para: "estimativas do Censo 2022 ponderadas por amostra"
+    nao_use_para: "contar linhas como população: é amostra"
+    rascunho: [use_para, nao_use_para]
+    verificado: "DF 51.024 linhas, chave confirmada — medido 2026-10-27"
+  microdados_familia_2022:
+    grao: "uma família da amostra do Censo 2022 (6,55 milhões de linhas)"
+    chave: "(id_uf, controle, numero_ordem_familia): confirmada em DF (42.097 = 42.097)"
+    tempo: {natureza: retrato_atual, coluna: "(tabela de um único censo)", cobertura: "2022–2022"}
+    territorio: {nivel: uf, colunas: {id_uf: "UF (2 dígitos)", sigla_uf: "sigla", id_regiao: "região"}}
+    medidas:
+      - {coluna: peso_amostral, o_que: "peso da família", unidade: "famílias", soma: sim}
+    filtros_tipicos: ["junte por (id_uf, controle)"]
+    use_para: "estimativas do Censo 2022 ponderadas por amostra"
+    nao_use_para: "contar linhas como população: é amostra"
+    rascunho: [use_para, nao_use_para]
+    verificado: "DF 42.097 linhas, chave confirmada — medido 2026-10-27"
+  microdados_mortalidade_2022:
+    grao: "um falecido declarado no domicílio no Censo 2022 (430.961 linhas)"
+    chave: "(id_uf, controle, numero_ordem_falecido): confirmada em DF (2.155 = 2.155)"
+    tempo: {natureza: retrato_atual, coluna: "(tabela de um único censo)", cobertura: "2022–2022"}
+    territorio: {nivel: uf, colunas: {id_uf: "UF (2 dígitos)", sigla_uf: "sigla", id_regiao: "região"}}
+    medidas:
+      - {coluna: peso_amostral, o_que: "peso do falecido", unidade: "óbitos", soma: sim}
+    filtros_tipicos: ["junte por (id_uf, controle)"]
+    use_para: "estimativas do Censo 2022 ponderadas por amostra"
+    nao_use_para: "contar linhas como população: é amostra"
+    rascunho: [use_para, nao_use_para]
+    verificado: "DF 2.155 linhas, chave confirmada — medido 2026-10-27"
+  microdados_layout_2022:
+    grao: "uma variável do layout dos microdados do Censo 2022 (tabela × var × coluna × descrição)"
+    chave: "(tabela, var): 261 linhas = 261 distintos"
+    use_para: "traduzir códigos de coluna (p0120 etc.) para descrição"
+    verificado: "261 linhas, chave confirmada — medido 2026-10-27"
+  dicionario:
+    grao: "um código (id_tabela × nome_coluna × chave) com o significado em valor (3.846 linhas)"
+    use_para: "traduzir códigos dos microdados de todos os censos"
+    verificado: "3.846 linhas — medido 2026-10-27"
+  microdados_pessoa_2010:
+    grao: "uma pessoa da amostra do Censo 2010 (20,6 milhões de linhas)"
+    chave: "(id_municipio, controle, numero_ordem): confirmada em sigla_uf = 'AC' (93.675 = 93.675)"
+    tempo: {natureza: retrato_atual, coluna: "(tabela de um único censo)", cobertura: "2010–2010"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "município (7 dígitos)", sigla_uf: "sigla", area_ponderacao: "área de ponderação", id_regiao_metropolitana: "RM"}}
+    medidas:
+      - {coluna: peso_amostral, o_que: "peso; AC soma 733.559 pessoas", unidade: "pessoas", soma: sim}
+    filtros_tipicos: ["sigla_uf = 'AC'", "situacao_setor é 100% NULL (column_codes: pendente)"]
+    use_para: "estimativas do Censo 2010 ponderadas por amostra"
+    nao_use_para: "contar linhas como população: é amostra"
+    rascunho: [use_para, nao_use_para]
+    verificado: "AC 93.675 linhas, chave confirmada; o perfil falhou com erro do banco, mas consultas filtradas funcionam — medido 2026-10-27"
+  microdados_domicilio_2010:
+    grao: "um domicílio da amostra do Censo 2010 (6,19 milhões de linhas)"
+    chave: "(id_municipio, controle): confirmada em AC (24.339 = 24.339)"
+    tempo: {natureza: retrato_atual, coluna: "(tabela de um único censo)", cobertura: "2010–2010"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "município (7 dígitos)", sigla_uf: "sigla", area_ponderacao: "área de ponderação", id_regiao_metropolitana: "RM"}}
+    medidas:
+      - {coluna: peso_amostral, o_que: "peso do domicílio; AC soma 193.692", unidade: "domicílios", soma: sim}
+    filtros_tipicos: ["situacao_setor 100% NULL; use situacao_domicilio"]
+    use_para: "estimativas do Censo 2010 ponderadas por amostra"
+    nao_use_para: "contar linhas como população: é amostra"
+    rascunho: [use_para, nao_use_para]
+    verificado: "AC 24.339 linhas, chave confirmada — medido 2026-10-27"
+  microdados_pessoa_2000:
+    grao: "uma pessoa da amostra do Censo 2000 (20,3 milhões de linhas)"
+    chave: "(id_municipio, controle, serie): confirmada em AC (71.063 = 71.063); sem coluna de peso nesta tabela"
+    tempo: {natureza: retrato_atual, coluna: "(tabela de um único censo)", cobertura: "2000–2000"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "município", sigla_uf: "sigla", area_ponderacao: "área de ponderação", id_mesorregiao: "mesorregião"}}
+    medidas:
+      - {expressao: "peso_amostral do domicílio (ligação por id_municipio, controle não conferida)", o_que: "peso", unidade: "pessoas", soma: sim}
+    filtros_tipicos: ["sigla_uf = 'AC'"]
+    use_para: "estimativas do Censo 2000 ponderadas por amostra"
+    nao_use_para: "contar linhas como população: é amostra"
+    rascunho: [medidas, use_para, nao_use_para]
+    verificado: "AC 71.063 linhas, chave confirmada — medido 2026-10-27"
+  microdados_domicilio_2000:
+    grao: "um domicílio da amostra do Censo 2000 (5,3 milhões de linhas)"
+    chave: "(id_municipio, controle): confirmada em AC (16.818 = 16.818)"
+    tempo: {natureza: retrato_atual, coluna: "(tabela de um único censo)", cobertura: "2000–2000"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "município", sigla_uf: "sigla", area_ponderacao: "área de ponderação", id_mesorregiao: "mesorregião"}}
+    medidas:
+      - {coluna: peso_amostral, o_que: "peso do domicílio", unidade: "domicílios", soma: sim}
+    filtros_tipicos: ["tipo_setor = 1 é aglomerado subnormal (column_codes)", "situacao_setor 1–3 urbano, 4–8 rural"]
+    use_para: "estimativas do Censo 2000 ponderadas por amostra"
+    nao_use_para: "contar linhas como população: é amostra"
+    rascunho: [use_para, nao_use_para]
+    verificado: "AC 16.818 linhas, chave confirmada — medido 2026-10-27"
+  microdados_pessoa_1991:
+    grao: "uma pessoa da amostra do Censo 1991 (17 milhões de linhas)"
+    chave: "(id_municipio, id_questionario, numero_ordem): confirmada em AC (44.930 = 44.930); sem coluna de peso"
+    tempo: {natureza: retrato_atual, coluna: "(tabela de um único censo)", cobertura: "1991–1991"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "município", sigla_uf: "sigla"}}
+    medidas:
+      - {expressao: "peso_amostral do domicílio (ligação por id_questionario não conferida)", o_que: "peso", unidade: "pessoas", soma: sim}
+    filtros_tipicos: ["sigla_uf = 'AC'"]
+    use_para: "estimativas do Censo 1991 ponderadas por amostra"
+    nao_use_para: "contar linhas como população: é amostra"
+    rascunho: [medidas, use_para, nao_use_para]
+    verificado: "AC 44.930 linhas, chave confirmada — medido 2026-10-27"
+  microdados_domicilio_1991:
+    grao: "um domicílio da amostra do Censo 1991 (4 milhões de linhas)"
+    chave: "(id_municipio, id_questionario): confirmada em AC (9.824 = 9.824)"
+    tempo: {natureza: retrato_atual, coluna: "(tabela de um único censo)", cobertura: "1991–1991"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "município", sigla_uf: "sigla"}}
+    medidas:
+      - {coluna: peso_amostral, o_que: "peso do domicílio", unidade: "domicílios", soma: sim}
+    filtros_tipicos: ["sigla_uf = 'AC'"]
+    use_para: "estimativas do Censo 1991 ponderadas por amostra"
+    nao_use_para: "contar linhas como população: é amostra"
+    rascunho: [use_para, nao_use_para]
+    verificado: "AC 9.824 linhas, chave confirmada — medido 2026-10-27"
+  microdados_pessoa_1980:
+    grao: "uma pessoa da amostra do Censo 1980 (29,4 milhões de linhas)"
+    chave: "nenhuma: (id_municipio, numero_ordem) dá 186 distintos em 70.503 linhas de AC; não há identificador de domicílio"
+    tempo: {natureza: retrato_atual, coluna: "(tabela de um único censo)", cobertura: "1980–1980"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "município", sigla_uf: "sigla"}}
+    medidas:
+      - {expressao: "count(*)", o_que: "sem coluna de peso identificada", unidade: "pessoas da amostra", soma: nao}
+    filtros_tipicos: ["sigla_uf = 'AC'"]
+    use_para: "estimativas do Censo 1980 ponderadas por amostra"
+    nao_use_para: "contar linhas como população: é amostra"
+    rascunho: [medidas, use_para, nao_use_para]
+    verificado: "AC 70.503 linhas, chave inexistente — medido 2026-10-27"
+  microdados_domicilio_1980:
+    grao: "um domicílio da amostra do Censo 1980 (6,5 milhões de linhas)"
+    chave: "nenhuma: (id_municipio, id_distrito) dá 15 distintos em 14.803 linhas de AC"
+    tempo: {natureza: retrato_atual, coluna: "(tabela de um único censo)", cobertura: "1980–1980"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "município", sigla_uf: "sigla"}}
+    medidas:
+      - {expressao: "count(*)", o_que: "sem coluna de peso identificada", unidade: "domicílios da amostra", soma: nao}
+    filtros_tipicos: ["sigla_uf = 'AC'"]
+    use_para: "estimativas do Censo 1980 ponderadas por amostra"
+    nao_use_para: "contar linhas como população: é amostra"
+    rascunho: [medidas, use_para, nao_use_para]
+    verificado: "AC 14.803 linhas, chave inexistente — medido 2026-10-27"
+  microdados_pessoa_1970:
+    grao: "uma pessoa da amostra do Censo 1970 (24,8 milhões de linhas)"
+    chave: "(id_municipio, id_domicilio, numero_familia, ordem): confirmada em AC (59.870 = 59.870)"
+    tempo: {natureza: retrato_atual, coluna: "(tabela de um único censo)", cobertura: "1970–1970"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "município", sigla_uf: "sigla"}}
+    medidas:
+      - {expressao: "count(*)", o_que: "sem coluna de peso identificada", unidade: "pessoas da amostra", soma: nao}
+    filtros_tipicos: ["sigla_uf = 'AC'"]
+    use_para: "estimativas do Censo 1970 ponderadas por amostra"
+    nao_use_para: "contar linhas como população: é amostra"
+    rascunho: [medidas, use_para, nao_use_para]
+    verificado: "AC 59.870 linhas, chave confirmada — medido 2026-10-27"
+  microdados_domicilio_1970:
+    grao: "um domicílio/família da amostra do Censo 1970 (4,7 milhões de linhas)"
+    chave: "(id_municipio, id_domicilio, numero_familia): confirmada em AC (9.686 = 9.686)"
+    tempo: {natureza: retrato_atual, coluna: "(tabela de um único censo)", cobertura: "1970–1970"}
+    territorio: {nivel: municipio, colunas: {id_municipio: "município", sigla_uf: "sigla"}}
+    medidas:
+      - {expressao: "count(*)", o_que: "sem coluna de peso identificada", unidade: "domicílios da amostra", soma: nao}
+    filtros_tipicos: ["sigla_uf = 'AC'"]
+    use_para: "estimativas do Censo 1970 ponderadas por amostra"
+    nao_use_para: "contar linhas como população: é amostra"
+    rascunho: [medidas, use_para, nao_use_para]
+    verificado: "AC 9.686 linhas, chave confirmada — medido 2026-10-27"
+  setor_censitario_basico_2010:
+    grao: "um setor censitário do Censo 2010 (universo, não amostra), variáveis v001..v014 do arquivo Básico"
+    chave: "id_setor_censitario: 310.120 linhas = 310.120 distintos"
+    tempo: {natureza: retrato_atual, coluna: "(único censo)", cobertura: "2010–2010"}
+    territorio: {nivel: outro, colunas: {id_setor_censitario: "setor (15 dígitos)", sigla_uf: "sigla"}}
+    medidas:
+      - {coluna: v001, o_que: "contagem do arquivo Básico; soma 57.324.167 (significado não documentado aqui)", unidade: "contagem", soma: sim}
+      - {coluna: v002, o_que: "contagem do arquivo Básico; soma 189.790.211 (significado não documentado aqui)", unidade: "contagem", soma: sim}
+    filtros_tipicos: ["NOT isnan(v001): 773 setores têm NaN (não NULL) e SUM sobre eles devolve NaN; filtre antes de somar"]
+    use_para: "população e domicílios por setor; base para agregar com os demais setor_censitario_*"
+    nao_use_para: "somar sem tratar NaN; Censo 2022 (use br_ibge_censo_2022)"
+    rascunho: [use_para, nao_use_para, medidas]
+    verificado: "310.120 linhas, chave confirmada; v001 soma 57.324.167 e v002 soma 189.790.211 excluindo NaN; 773 NaN — medido 2026-10-27"
+  setor_censitario_alfabetizacao_homens_mulheres_2010:
+    grao: "mesmo grão de setor_censitario_basico_2010: um setor censitário do Censo 2010 (310.120 linhas); colunas v001.. com contagens do recorte alfabetizacao homens mulheres (significado só no layout do IBGE)"
+    chave: "mesmo grão de setor_censitario_basico_2010 (id_setor_censitario); não medida aqui"
+    use_para: "recorte temático por setor; junte ao básico por id_setor_censitario"
+    rascunho: [chave, use_para]
+  setor_censitario_alfabetizacao_total_2010:
+    grao: "mesmo grão de setor_censitario_basico_2010: um setor censitário do Censo 2010 (310.120 linhas); colunas v001.. com contagens do recorte alfabetizacao total (significado só no layout do IBGE)"
+    chave: "mesmo grão de setor_censitario_basico_2010 (id_setor_censitario); não medida aqui"
+    use_para: "recorte temático por setor; junte ao básico por id_setor_censitario"
+    rascunho: [chave, use_para]
+  setor_censitario_domicilio_caracteristicas_gerais_2010:
+    grao: "mesmo grão de setor_censitario_basico_2010: um setor censitário do Censo 2010 (310.120 linhas); colunas v001.. com contagens do recorte domicilio caracteristicas gerais (significado só no layout do IBGE)"
+    chave: "mesmo grão de setor_censitario_basico_2010 (id_setor_censitario); não medida aqui"
+    use_para: "recorte temático por setor; junte ao básico por id_setor_censitario"
+    rascunho: [chave, use_para]
+  setor_censitario_domicilio_moradores_2010:
+    grao: "mesmo grão de setor_censitario_basico_2010: um setor censitário do Censo 2010 (310.120 linhas); colunas v001.. com contagens do recorte domicilio moradores (significado só no layout do IBGE)"
+    chave: "mesmo grão de setor_censitario_basico_2010 (id_setor_censitario); não medida aqui"
+    use_para: "recorte temático por setor; junte ao básico por id_setor_censitario"
+    rascunho: [chave, use_para]
+  setor_censitario_domicilio_renda_2010:
+    grao: "mesmo grão de setor_censitario_basico_2010: um setor censitário do Censo 2010 (310.120 linhas); colunas v001.. com contagens do recorte domicilio renda (significado só no layout do IBGE)"
+    chave: "mesmo grão de setor_censitario_basico_2010 (id_setor_censitario); não medida aqui"
+    use_para: "recorte temático por setor; junte ao básico por id_setor_censitario"
+    rascunho: [chave, use_para]
+  setor_censitario_entorno_2010:
+    grao: "mesmo grão de setor_censitario_basico_2010: um setor censitário do Censo 2010 (310.120 linhas); colunas v001.. com contagens do recorte entorno (significado só no layout do IBGE)"
+    chave: "mesmo grão de setor_censitario_basico_2010 (id_setor_censitario); não medida aqui"
+    use_para: "recorte temático por setor; junte ao básico por id_setor_censitario"
+    rascunho: [chave, use_para]
+  setor_censitario_idade_homens_2010:
+    grao: "mesmo grão de setor_censitario_basico_2010: um setor censitário do Censo 2010 (310.120 linhas); colunas v001.. com contagens do recorte idade homens (significado só no layout do IBGE)"
+    chave: "mesmo grão de setor_censitario_basico_2010 (id_setor_censitario); não medida aqui"
+    use_para: "recorte temático por setor; junte ao básico por id_setor_censitario"
+    rascunho: [chave, use_para]
+  setor_censitario_idade_mulheres_2010:
+    grao: "mesmo grão de setor_censitario_basico_2010: um setor censitário do Censo 2010 (310.120 linhas); colunas v001.. com contagens do recorte idade mulheres (significado só no layout do IBGE)"
+    chave: "mesmo grão de setor_censitario_basico_2010 (id_setor_censitario); não medida aqui"
+    use_para: "recorte temático por setor; junte ao básico por id_setor_censitario"
+    rascunho: [chave, use_para]
+  setor_censitario_idade_total_2010:
+    grao: "mesmo grão de setor_censitario_basico_2010: um setor censitário do Censo 2010 (310.120 linhas); colunas v001.. com contagens do recorte idade total (significado só no layout do IBGE)"
+    chave: "mesmo grão de setor_censitario_basico_2010 (id_setor_censitario); não medida aqui"
+    use_para: "recorte temático por setor; junte ao básico por id_setor_censitario"
+    rascunho: [chave, use_para]
+  setor_censitario_pessoa_renda_2010:
+    grao: "mesmo grão de setor_censitario_basico_2010: um setor censitário do Censo 2010 (310.120 linhas); colunas v001.. com contagens do recorte pessoa renda (significado só no layout do IBGE)"
+    chave: "mesmo grão de setor_censitario_basico_2010 (id_setor_censitario); não medida aqui"
+    use_para: "recorte temático por setor; junte ao básico por id_setor_censitario"
+    rascunho: [chave, use_para]
+  setor_censitario_raca_alfabetizacao_idade_genero_2010:
+    grao: "mesmo grão de setor_censitario_basico_2010: um setor censitário do Censo 2010 (310.099 linhas); colunas v001.. com contagens do recorte raca alfabetizacao idade genero (significado só no layout do IBGE)"
+    chave: "mesmo grão de setor_censitario_basico_2010 (id_setor_censitario); não medida aqui"
+    use_para: "recorte temático por setor; junte ao básico por id_setor_censitario"
+    rascunho: [chave, use_para]
+  setor_censitario_raca_idade_0_4_genero_2010:
+    grao: "mesmo grão de setor_censitario_basico_2010: um setor censitário do Censo 2010 (310.120 linhas); colunas v001.. com contagens do recorte raca idade 0 4 genero (significado só no layout do IBGE)"
+    chave: "mesmo grão de setor_censitario_basico_2010 (id_setor_censitario); não medida aqui"
+    use_para: "recorte temático por setor; junte ao básico por id_setor_censitario"
+    rascunho: [chave, use_para]
+  setor_censitario_raca_idade_genero_2010:
+    grao: "mesmo grão de setor_censitario_basico_2010: um setor censitário do Censo 2010 (310.120 linhas); colunas v001.. com contagens do recorte raca idade genero (significado só no layout do IBGE)"
+    chave: "mesmo grão de setor_censitario_basico_2010 (id_setor_censitario); não medida aqui"
+    use_para: "recorte temático por setor; junte ao básico por id_setor_censitario"
+    rascunho: [chave, use_para]
+  setor_censitario_registro_civil_2010:
+    grao: "mesmo grão de setor_censitario_basico_2010: um setor censitário do Censo 2010 (310.120 linhas); colunas v001.. com contagens do recorte registro civil (significado só no layout do IBGE)"
+    chave: "mesmo grão de setor_censitario_basico_2010 (id_setor_censitario); não medida aqui"
+    use_para: "recorte temático por setor; junte ao básico por id_setor_censitario"
+    rascunho: [chave, use_para]
+  setor_censitario_relacao_parentesco_conjuges_2010:
+    grao: "mesmo grão de setor_censitario_basico_2010: um setor censitário do Censo 2010 (310.120 linhas); colunas v001.. com contagens do recorte relacao parentesco conjuges (significado só no layout do IBGE)"
+    chave: "mesmo grão de setor_censitario_basico_2010 (id_setor_censitario); não medida aqui"
+    use_para: "recorte temático por setor; junte ao básico por id_setor_censitario"
+    rascunho: [chave, use_para]
+  setor_censitario_relacao_parentesco_filhos_2010:
+    grao: "mesmo grão de setor_censitario_basico_2010: um setor censitário do Censo 2010 (310.077 linhas); colunas v001.. com contagens do recorte relacao parentesco filhos (significado só no layout do IBGE)"
+    chave: "mesmo grão de setor_censitario_basico_2010 (id_setor_censitario); não medida aqui"
+    use_para: "recorte temático por setor; junte ao básico por id_setor_censitario"
+    rascunho: [chave, use_para]
+  setor_censitario_relacao_parentesco_filhos_enteados_2010:
+    grao: "mesmo grão de setor_censitario_basico_2010: um setor censitário do Censo 2010 (310.120 linhas); colunas v001.. com contagens do recorte relacao parentesco filhos enteados (significado só no layout do IBGE)"
+    chave: "mesmo grão de setor_censitario_basico_2010 (id_setor_censitario); não medida aqui"
+    use_para: "recorte temático por setor; junte ao básico por id_setor_censitario"
+    rascunho: [chave, use_para]
+  setor_censitario_relacao_parentesco_outros_2010:
+    grao: "mesmo grão de setor_censitario_basico_2010: um setor censitário do Censo 2010 (310.120 linhas); colunas v001.. com contagens do recorte relacao parentesco outros (significado só no layout do IBGE)"
+    chave: "mesmo grão de setor_censitario_basico_2010 (id_setor_censitario); não medida aqui"
+    use_para: "recorte temático por setor; junte ao básico por id_setor_censitario"
+    rascunho: [chave, use_para]
+  setor_censitario_responsavel_domicilios_homens_total_2010:
+    grao: "mesmo grão de setor_censitario_basico_2010: um setor censitário do Censo 2010 (310.114 linhas); colunas v001.. com contagens do recorte responsavel domicilios homens total (significado só no layout do IBGE)"
+    chave: "mesmo grão de setor_censitario_basico_2010 (id_setor_censitario); não medida aqui"
+    use_para: "recorte temático por setor; junte ao básico por id_setor_censitario"
+    rascunho: [chave, use_para]
+  setor_censitario_responsavel_domicilios_mulheres_2010:
+    grao: "mesmo grão de setor_censitario_basico_2010: um setor censitário do Censo 2010 (310.114 linhas); colunas v001.. com contagens do recorte responsavel domicilios mulheres (significado só no layout do IBGE)"
+    chave: "mesmo grão de setor_censitario_basico_2010 (id_setor_censitario); não medida aqui"
+    use_para: "recorte temático por setor; junte ao básico por id_setor_censitario"
+    rascunho: [chave, use_para]
+  setor_censitario_responsavel_renda_2010:
+    grao: "mesmo grão de setor_censitario_basico_2010: um setor censitário do Censo 2010 (310.120 linhas); colunas v001.. com contagens do recorte responsavel renda (significado só no layout do IBGE)"
+    chave: "mesmo grão de setor_censitario_basico_2010 (id_setor_censitario); não medida aqui"
+    use_para: "recorte temático por setor; junte ao básico por id_setor_censitario"
+    rascunho: [chave, use_para]

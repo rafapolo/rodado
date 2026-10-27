@@ -1,0 +1,24 @@
+# Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
+# agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
+dataset: br_ms_sipni_dicionarios
+tabelas:
+  cobertura_indicadores:
+    grao: "um imunobiológico (imuno, código de 3 dígitos como '072') com o nome usado nos indicadores de cobertura vacinal"
+    chave: "imuno — 26 linhas, sem repetição (medido)"
+    use_para: "traduzir o código imuno em nome (ex.: '072' = BCG, '061' = Rotavírus Humano, '099' = Hepatite B em crianças até 30 dias)"
+    verificado: "26 linhas; imuno sem duplicata — medido 2026-10-27"
+  doses_tipo:
+    grao: "um tipo de dose (code '1'..'12', label como '1ª dose', 'Dose única', 'Dose Adicional') e os códigos de origem (source_codes, ex.: '01,32') que ele agrupa"
+    chave: "code — 12 linhas, 12 distintos"
+    use_para: "traduzir DOSE de br_ms_sipni_doses_historicas.doses_agregadas em rótulo, via source_codes (lista separada por vírgula, com intervalo '11-31')"
+    verificado: "12 linhas = 12 code distintos — medido 2026-10-27"
+  faixa_etaria:
+    grao: "uma faixa etária (code de 2 posições, label como 'Ate 30 dias') e os códigos de origem (source_codes) que ela agrupa"
+    chave: "nenhuma: 101 linhas, 100 code distintos — code '01' aparece duas vezes ('Ate 30 dias' e 'Homens sem discriminação de idade')"
+    use_para: "traduzir FX_ETARIA de doses_agregadas em faixa; atenção ao code '01' duplicado e à ligação por source_codes"
+    verificado: "101 linhas; 100 code distintos; duplicado: code '01' — medido 2026-10-27"
+  vacinas:
+    grao: "uma vacina (code '01'..'85', label como 'BCG (BCG)') e os códigos de origem (source_codes, nulo em 1,18%) que ela agrupa"
+    chave: "code — 85 linhas, 85 distintos"
+    use_para: "traduzir IMUNO de doses_agregadas em nome de vacina, via source_codes"
+    verificado: "85 linhas = 85 code distintos — medido 2026-10-27"
