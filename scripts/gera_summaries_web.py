@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Gera os cartões das tabelas que a página do MCP mostra ao abrir um dataset.
+"""Gera os cartões das tabelas que o painel do atlas mostra ao abrir uma tabela.
 
 `pages/assets/summaries.json` é o índice (data e nº de tabelas por dataset); os cartões ficam em
 `pages/assets/summaries/<dataset>.json`, buscados só quando o dataset abre.
@@ -8,10 +8,10 @@
 
 Lê `docs/context/summaries/<dataset>.yml` (cartão), `<dataset>.perfil.yml` (só o `erro`; nenhum
 valor medido, como min/max/top, vai para a página) e `_ultima_data.json` (data do dado
-mais recente, de `gera_ultima_data.py`). O JSON usa chaves curtas, que `pages/assets/summaries.js`
+mais recente, de `gera_ultima_data.py`). O JSON usa chaves curtas, que `pages/atlas/_page.html`
 expande: g grão, c chave, tp/te tempo e território, m medidas, f filtros, u use_para, nu
 nao_use_para, v verificado, r campos em rascunho, rn notas em rascunho, d ultima_data, e erro.
-`gera_mcp_datasets.py` importa `carregar` e `formata_data` daqui.
+`gera_schema_graph.py` lê os cartões publicados para o "dados até" do atlas.
 """
 import json
 import re

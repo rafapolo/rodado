@@ -28,21 +28,24 @@ body { background: var(--bg); }
 .lead strong { color: var(--ink); font-weight: 600; }
 .lead-note { font-size: 14px; line-height: 1.6; color: var(--ink-faint); max-width: 70ch; margin: 12px 0 0; }
 .lead-note a { color: var(--accent); }
-/* números à esquerda, conectar à direita: os dois são o que o leitor faz primeiro */
-.header-bottom { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px 48px; align-items: stretch; margin-top: 36px; }
-/* texto dos números alinhado à direita, encostado no .connect, esticado até a altura dele (do título à nota) */
-.stats { display: flex; flex-direction: column; justify-content: space-between; gap: 16px; text-align: right; }
-.stat-num { font-size: 30px; font-weight: 800; letter-spacing: -0.02em; line-height: 1; }
-.stat-label { font-size: 13px; color: var(--ink-soft); margin-top: 6px; letter-spacing: 0.02em; }
-.stat-label .muted { color: var(--ink-faint); }  /* opacity 0.7 derrubava o contraste para 3,5:1 */
-@media (max-width: 1024px) {  /* até tablet: números em linha, em cima do conectar */
-  .header-bottom { grid-template-columns: minmax(0, 1fr); }
-  .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; text-align: left; }
-  .stat-num { font-size: 26px; }
-  .stat-label { font-size: 12px; }
+/* números numa faixa e, embaixo, o conectar: uma coluna só, na largura do texto */
+.header-bottom { display: grid; gap: 28px; max-width: 860px; margin-top: 32px; }
+.stats { display: flex; flex-wrap: wrap; margin: 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.stats > div { display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: 6px; padding: 14px 28px; border-left: 1px solid var(--rule); }
+.stats > div:first-child { padding-left: 0; border-left: 0; }
+.stats dd { margin: 0; font-size: 26px; font-weight: 800; letter-spacing: -0.02em; line-height: 1; font-variant-numeric: tabular-nums; }
+.stats dd a { color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.stats dt { font-size: 12.5px; color: var(--ink-soft); letter-spacing: 0.02em; }
+@media (max-width: 720px) {
+  /* 2 × 2: o filete vertical só entre as colunas, o horizontal entre as linhas */
+  .stats { display: grid; grid-template-columns: 1fr 1fr; }
+  .stats > div { padding: 12px 0 12px 16px; }
+  .stats > div:nth-child(odd) { padding-left: 0; border-left: 0; }
+  .stats > div:nth-child(n+3) { border-top: 1px solid var(--rule); }
+  .stats dd { font-size: 22px; }
 }
 
-/* busca e categoria filtram os datasets e os cards abaixo: ficam junto deles, presos no topo ao rolar */
+/* busca e categoria filtram os cards de tema: ficam colados neles, presos no topo ao rolar */
 .filters-bar { position: sticky; top: 0; z-index: 5; margin: 0 -32px 24px; padding: 12px 32px; background: color-mix(in oklch, var(--bg) 92%, transparent); backdrop-filter: blur(6px); border-bottom: 1px solid var(--rule); }
 .filters { display: flex; flex-wrap: wrap; gap: 10px; }
 .search-input, .category-select { font-family: 'Public Sans', system-ui, sans-serif; font-size: 15px; color: var(--ink); background: var(--card-bg); border: 1px solid var(--rule); border-radius: 10px; padding: 11px 16px; }
@@ -82,33 +85,6 @@ body { background: var(--bg); }
 @media (max-width: 520px) { .connect-cmd { flex-direction: column; align-items: stretch; } .connect-cmd .tools-copy { align-self: flex-end; } }
 .tools-note { font-size: 12px; line-height: 1.5; color: var(--ink-faint); margin: 8px 0 0; }
 .tools-note code { font-family: 'IBM Plex Mono', monospace; color: var(--accent); }
-
-/* ── lista de todos os datasets (gerada por scripts/gera_mcp_datasets.py) ── */
-
-.datasets-panel { margin-bottom: 0; }
-.datasets-panel .tools-desc a, .stat-label .muted a { color: var(--accent); }
-.datasets-panel .tools-desc code { font-family: 'IBM Plex Mono', monospace; color: var(--accent); }
-.ds-group { border-top: 1px solid var(--rule); }
-.ds-group summary { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 16px; padding: 12px 0; cursor: pointer; list-style: none; }
-.ds-group summary::-webkit-details-marker { display: none; }
-.ds-group summary::before { content: "+"; width: 14px; font-family: 'IBM Plex Mono', monospace; color: var(--ink-faint); }
-.ds-group[open] summary::before { content: "−"; }
-.ds-group summary:hover .ds-group-name { color: var(--accent); }
-.ds-group summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
-.ds-group-name { flex: 1; font-size: 14px; font-weight: 700; }
-.ds-group-count { font-size: 12px; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
-.ds-list { list-style: none; margin: 0 0 14px; padding: 0 0 0 18px; }
-.ds-row { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 2px 20px; padding: 8px 0; border-top: 1px solid var(--rule); font-size: 13px; line-height: 1.5; }
-.ds-row[hidden] { display: none; }
-.ds-name { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--accent); text-decoration: none; overflow-wrap: anywhere; }
-.ds-name:hover { text-decoration: underline; }
-.ds-desc { color: var(--ink-soft); }
-.ds-meta { grid-column: 2; font-size: 12px; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
-.ds-empty { font-size: 13px; color: var(--ink-faint); margin: 12px 0 0; }
-@media (max-width: 720px) {
-  .ds-row { grid-template-columns: minmax(0, 1fr); }
-  .ds-meta { grid-column: 1; }
-}
 
 /* ── grade de cards ── */
 
