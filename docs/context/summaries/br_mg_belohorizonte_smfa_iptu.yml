@@ -5,7 +5,7 @@ tabelas:
   iptu:
     ultima_data: "2024-05"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma unidade cadastral (imóvel/economia, por indice_cadastral) de Belo Horizonte × mês de retrato"
-    chave: "ano, mes, indice_cadastral: única nos meses medidos (ex.: 2024-04, 875.845 linhas = 875.845 distintos), exceto 2024-03, em que cada linha vem duplicada (1.749.672 linhas, 874.836 distintas)"
+    chave: "ano, mes, indice_cadastral: única nos meses medidos (ex.: 2024-04, 875.845 linhas = 875.845 distintos), exceto 2024-03, em que cada linha vem duplicada (1.749.672 linhas, 874.836 distintas) (gotcha marco_2024_em_dobro)"
     tempo: {natureza: soma_de_retratos, coluna: "ano + mes", cobertura: "2022 (7 meses), 2023 (12), 2024 (meses 1–5)"}
     territorio:
       nivel: ponto
@@ -16,7 +16,7 @@ tabelas:
       - {coluna: quantidade_economias, o_que: "número de economias da unidade", unidade: "economias", soma: sim}
       - {coluna: fracao_ideal, o_que: "fração ideal da unidade no terreno (0–2)", unidade: "fração", soma: nao}
     filtros_tipicos:
-      - "ano = 2024 AND mes = 4 (um único retrato; sem filtrar mês as linhas se repetem a cada mês, e 2024-03 vem em dobro)"
+      - "ano = 2024 AND mes = 4 (um único retrato; sem filtrar mês as linhas se repetem a cada mês, e 2024-03 vem em dobro) (gotchas marco_2024_em_dobro, retratos_mensais_nao_somam)"
       - "tipo_ocupacao IN ('Residencial','Nao Residencial','Territorial'): sem acento, 'Territorial' = lote vago"
       - "padrao_acabamento IN ('P1','P2','P3','P4','P5'); 'TE' = terreno, só em tipo_ocupacao = 'Territorial'; ordem de P1 a P5 não confirmada (column_codes: pendente)"
       - "tipo_construtivo = 'Apartamento' (maioria), 'Casa', 'Sala', 'Loja', 'Lote Vago'"

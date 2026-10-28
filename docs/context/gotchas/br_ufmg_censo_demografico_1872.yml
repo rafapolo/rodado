@@ -1,0 +1,14 @@
+dataset: br_ufmg_censo_demografico_1872
+gotchas:
+  - id: linha_total_duplica_soma
+    resumo: "As tabelas por id_categoria trazem uma linha Total (id_categoria '31' em populacao_*_idade_corrigido, '30' em estrangeiro_nacionalidade_corrigido, '39' em profissao_corrigido, '24' em *_origem_brasileira_corrigido) que é exatamente a soma das demais: somar a coluna total sem excluí-la dobra o resultado. Nas tabelas *_original há outras linhas de conferência (ex. '34' em populacao_*_idade_original, '29'–'31' em estrangeiro_nacionalidade_original)."
+    detalhe: >
+      O significado de cada id_categoria é específico da tabela: leia
+      dicionario (id_tabela = nome da tabela, nome_coluna = 'id_categoria'). Em
+      profissao_original há quatro linhas de total ('38' Estado, '39' Sexos, '40' Condições,
+      '41' Nacionalidades). A mesma tabela existe em três granularidades (município,
+      paróquia, província): não some entre elas.
+    tabelas: [populacao_total_idade_corrigido_municipio, populacao_presente_idade_corrigido_municipio, populacao_ausente_idade_corrigido_municipio, estrangeiro_nacionalidade_corrigido_municipio, profissao_corrigido_municipio]
+    colunas: [id_categoria, total]
+    severidade: silencioso
+    verificado: "tabelas corrigido de município, soma de total com e sem a linha Total: população total por idade 19.860.956 x 9.930.478; presente 19.735.764 x 9.867.882; ausente 125.192 x 62.596; estrangeiros 764.264 x 382.132; profissão 19.860.956 x 9.930.478 (a linha Total é igual à soma das demais em todas) — medido 2026-10-28"

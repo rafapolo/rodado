@@ -28,3 +28,14 @@ gotchas:
     colunas: [beneficiario_id, responsavel_id, valor_parcela]
     severidade: aviso
     verificado: "total por mês (26 meses, R$ 22,63 bi nos dois caminhos): 3,09 s pela view, 0,16 s na pagamento; 3.310.986 trios de beneficiário (2.892.736 NIS distintos) e 8.545.194 responsáveis para 86.125.204 pagamentos — medido 2026-10-26"
+  - id: beneficiario_sem_identificacao_concentra_pagamentos
+    resumo: "Um único beneficiario_id, sem NIS nem CPF e com nome mascarado, concentra 67,5 milhões das 86,1 milhões de parcelas (78%) e R$ 17,0 bi dos R$ 22,6 bi (75%). Não identifica um estudante (sem NIS e CPF, nome mascarado). Conte estudantes por NIS preenchido e exclua esse registro; não cite o id."
+    detalhe: >
+      Sem ele sobram 3.310.985 beneficiario_id e 2.892.735 NIS distintos
+      nas parcelas. count(DISTINCT beneficiario_id) e média por beneficiário
+      sem excluí-lo ficam sem sentido; o segundo maior beneficiario_id tem
+      27 parcelas.
+    tabelas: [pagamento, pe_de_meia, beneficiario]
+    colunas: [beneficiario_id, nis_beneficiario, valor_parcela]
+    severidade: silencioso
+    verificado: "86.125.204 parcelas e R$ 22.631.280.225: o maior beneficiario_id tem 67.484.961 parcelas (78,4%) e R$ 17.036.797.950 (75,3%), com NIS e CPF vazios e nome mascarado; o segundo maior tem 27 parcelas (R$ 5.650); 3.310.985 ids e 2.892.735 NIS sem ele — medido 2026-10-28"

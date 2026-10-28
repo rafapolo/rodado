@@ -40,7 +40,7 @@ tabelas:
     tempo: {natureza: serie_diaria, coluna: data, cobertura: "2021-10-01–2024-03-01 (48 meias horas por dia)"}
     territorio: {nivel: uf, colunas: {sigla_uf: "UF (RN, BA, CE, PI, RS, PE, PB, SC, MA)", id_ons: "código ONS do conjunto", usina: "nome", id_empreendimento_aneel: "pode ser vazio"}}
     medidas:
-      - {coluna: geracao, o_que: "geração verificada", unidade: "MW médios, valores já em escala de MW (máx 675); não está ×1e8, diferente de geracao_usina", soma: sim}
+      - {coluna: geracao, o_que: "geração verificada", unidade: "MW médios, valores já em escala de MW (máx 675); não está ×1e8, diferente de geracao_usina (gotcha escala_1e8_so_em_duas_tabelas)", soma: sim}
       - {coluna: geracao_limitada, o_que: "geração limitada por restrição (95% nulo)", unidade: "MW", soma: sim}
       - {coluna: disponibilidade, o_que: "geração disponível", unidade: "MW", soma: sim}
       - {coluna: geracao_referencia, o_que: "geração de referência", unidade: "MW", soma: sim}

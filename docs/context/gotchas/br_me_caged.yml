@@ -13,3 +13,25 @@ gotchas:
     colunas: [id_municipio, saldo_movimentacao, ano, mes]
     severidade: silencioso
     verificado: "julho de 2025 convertido da fonte = 4.373.105 linhas, as mesmas do disco, 4 linhas diferentes; 13 meses do MTE (2025-08 a 2026-08) somam 56.316.636 linhas, exatamente o que o metadado do BigQuery dizia faltar; agosto de 2025: saldo +147.358, 441 linhas sem município; agosto de 2026: 1.346 sem município — medido 2026-10-11"
+  - id: tipo_movimentacao_97_e_admissao
+    resumo: "tipo_movimentacao = '97' não está no dicionario e é o código da maior parte das admissões desde 2021 (saldo_movimentacao = +1 em 100% das linhas). Contar admissões por '10', '20' ou '25' só funciona em 2020 e, pela metade, em 2021: depois quase tudo é '97'. Para admitidos use saldo_movimentacao = 1."
+    detalhe: >
+      Em 2022 as admissões (saldo 1) são 22,24 milhões, das quais 22,12
+      milhões com '97'; em 2026 são 18,37 milhões, 18,36 milhões com '97' e
+      só 10.914 com '35' (reintegração). Os '10', '20' e '25' do dicionario
+      (primeiro emprego, reemprego, prazo determinado) somem do dado. Os
+      códigos de desligamento ('31', '32', '40', '43', '90') seguem em uso.
+    tabelas: [microdados_movimentacao]
+    colunas: [tipo_movimentacao, saldo_movimentacao]
+    severidade: silencioso
+    verificado: "'97': 11.678.417 linhas em 2021, 22.118.986 em 2022, 25.321.966 em 2024, 18.359.083 em 2026, todas com saldo +1 e nenhuma em 2020; 2020: '20' 13.500.485, '10' 987.740; 2021: '97' 11.678.417 e '20' 7.420.663; 2022: '20' 76.154; 2026 saldo +1: '97' 18.359.083, '35' 10.914; dicionario sem chave '97' para tipo_movimentacao — medido 2026-10-28"
+  - id: linhas_iguais_nao_sao_duplicata
+    resumo: "Linhas idênticas em microdados_movimentacao NÃO são carga duplicada: sem id do trabalhador, duas movimentações com os mesmos 22 atributos são normais (4% a 5% de cada mês). Não deduplique; some saldo_movimentacao e conte linhas."
+    detalhe: >
+      Em 2026-08 há 225.286 linhas repetidas em 4.423.299 (5,1%), mas todos
+      os meses medidos têm taxa parecida (de 4,0% em 2024-08 a 5,1% em
+      2026-08), sem salto que indique carga em dobro. Deduplicar subestimaria
+      o saldo.
+    tabelas: [microdados_movimentacao]
+    severidade: aviso
+    verificado: "linhas menos linhas distintas: 2024-08 169.180 de 4.230.307 (4,0%), 2025-08 176.784 de 4.332.432 (4,1%), 2025-12 179.290 de 3.664.782 (4,9%), 2026-06 188.454 de 4.295.101 (4,4%), 2026-07 207.200 de 4.467.208 (4,6%), 2026-08 225.286 de 4.423.299 (5,1%) — medido 2026-10-28"

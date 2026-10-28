@@ -6,3 +6,9 @@ gotchas:
     colunas: [quantidade_matricula]
     severidade: silencioso
     verificado: "2024, Classes Comuns: etapa_ensino 1.955.026; localizacao, tempo_ensino e sexo_raca_cor 1.923.692 — medido 2026-10-20"
+  - id: deficiencia_conta_aluno_varias_vezes
+    resumo: "tipo_deficiencia conta o aluno uma vez em cada deficiência que ele tem: somar quantidade_matricula excede o número de alunos (2024, Classes Comuns: +13,3% sobre localizacao; Classes Exclusivas: +32,9%). Use-a só para a distribuição por deficiência; para o total de matrículas use localizacao, tempo_ensino ou sexo_raca_cor."
+    tabelas: [tipo_deficiencia]
+    colunas: [quantidade_matricula, tipo_deficiencia, tipo_classe]
+    severidade: silencioso
+    verificado: "2024, Classes Comuns: tipo_deficiencia 2.180.461 x localizacao 1.923.692 (+13,3%); Classes Exclusivas: 203.570 x 153.133 (+32,9%) — medido 2026-10-28"

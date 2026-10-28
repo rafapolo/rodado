@@ -20,7 +20,7 @@ tabelas:
     use_para: "rastrear de que município/bioma vem a carne exportada e quem a exporta e importa"
     nao_use_para: "volume de produção de gado (só exportação) nem anos fora de 2015–2017; municipality_id_production é produção, não sede da exportadora (ver gotcha municipio_de_producao)"
     rascunho: [use_para, nao_use_para, unidade de cattle_deforestation_exposure e co2_emissions_deforestation_5]
-    verificado: "1497805 linhas, 1497805 distintos da chave de 13 colunas; 2017: beef_equivalent_tonnes = 2.126.244 t e fob_usd = US$ 5,93 bi (o gotcha cita 1,90 Mt em equivalente de carcaça — valor diferente do somado aqui; conferir antes de citar) — medido 2026-10-27; fob_usd e beef_equivalent_tonnes são DOUBLE no banco apesar do gotcha numeros_em_texto"
+    verificado: "1497805 linhas, 1497805 distintos da chave de 13 colunas; 2017: beef_equivalent_tonnes = 2.126.244 t e fob_usd = US$ 5,93 bi — medido 2026-10-27; fob_usd e beef_equivalent_tonnes são DOUBLE no banco (o gotcha numeros_em_texto vale só para as colunas *_deforestation_exposure)"
   soy_beans:
     ultima_data: "2020"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um fluxo de soja: ano × município de produção × polo logístico × porto de exportação × exportadora × importadora × país do primeiro destino × bioma"

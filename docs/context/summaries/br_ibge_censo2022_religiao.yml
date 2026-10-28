@@ -153,7 +153,7 @@ tabelas:
     territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos (texto)", municipio: "nome com UF: 'São Paulo (SP)'"}}
     medidas:
       - {coluna: valor, o_que: "pessoas (ou mulheres/filhos, conforme variavel); nulo em parte das linhas, significado do nulo não documentado", unidade: "pessoas", soma: sim}
-    filtros_tipicos: ['religiao <> ''Total'' (10 valores: Católica Apostólica Romana, Evangélicas, Espírita, Umbanda e Candomblé, Tradições indígenas, Outras religiosidades, Sem religião, Não sabe, Sem declaração, Total): ''Total'' é agregado e duplica a soma', 'categoria_principal: categoria_principal: ''1 filho'' a ''5 filhos'', ''6 filhos ou mais'', ''Total''. Idêntica linha a linha a mulheres_filhos_numero_instrucao (EXCEPT = 0 linhas): o sufixo não distingue nada']
+    filtros_tipicos: ['religiao <> ''Total'' (10 valores: Católica Apostólica Romana, Evangélicas, Espírita, Umbanda e Candomblé, Tradições indígenas, Outras religiosidades, Sem religião, Não sabe, Sem declaração, Total): ''Total'' é agregado e duplica a soma', 'categoria_principal: categoria_principal: ''1 filho'' a ''5 filhos'', ''6 filhos ou mais'', ''Total''. Idêntica linha a linha a mulheres_filhos_numero_instrucao (EXCEPT = 0 linhas) (gotcha filhos_idade_igual_instrucao): o sufixo não distingue nada']
     use_para: "recorte religioso do indicador por município."
     nao_use_para: "somar religiao e categoria_principal juntas sem tirar as linhas 'Total' (conta em dobro)."
     rascunho: [use_para, nao_use_para]
@@ -192,7 +192,7 @@ tabelas:
     territorio: {nivel: outro, colunas: {nivel: "'brasil' (10 linhas), 'uf' (270), 'municipio' (55.700)", id_localidade: "'1' para Brasil, código IBGE de UF (2 dígitos) ou de município (7)", localidade: "nome; município vem como 'São Paulo - SP'"}}
     medidas:
       - {coluna: populacao_10_mais, o_que: "pessoas de 10 anos ou mais com a religião (nulo em 26%, significado não documentado)", unidade: "pessoas", soma: sim}
-    filtros_tipicos: ["nivel = 'municipio' (ou 'uf'/'brasil'): a tabela MISTURA os três níveis, somar sem filtrar triplica; religiao <> 'Total' para não duplicar", "Brasil, Total = 176.600.150; soma das UFs = 176.600.151; soma dos municípios = 176.600.152 (diferença de arredondamento)"]
+    filtros_tipicos: ["nivel = 'municipio' (ou 'uf'/'brasil'): a tabela MISTURA os três níveis, somar sem filtrar triplica (gotcha niveis_misturados); religiao <> 'Total' para não duplicar", "Brasil, Total = 176.600.150; soma das UFs = 176.600.151; soma dos municípios = 176.600.152 (diferença de arredondamento)"]
     use_para: "composição religiosa (Católica 100.216.153, Evangélicas 47.418.024, Sem religião 16.385.342 no Brasil) por município, UF ou país."
     nao_use_para: "somar sem filtrar nivel e religiao."
     rascunho: [use_para, nao_use_para]

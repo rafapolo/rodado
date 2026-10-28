@@ -20,7 +20,7 @@ tabelas:
     use_para: "comparar países da OCDE no tempo em carga tributária, gasto público, PIB, mercado de trabalho e governança"
     nao_use_para: "comparação em nível entre países sem converter moeda, e qualquer análise do Brasil (país não está entre os 36)"
     observacoes:
-      - "sentinela -2147483648 (int32 mínimo) em dezenas de colunas (revenue_*, expenditure_*, current_receipt, gross_domestic_product_volume etc.); excluir antes de somar ou tirar média. Colunas como total_receipt, total_expenditure e *_adjusted ficam quase só com sentinela/nulo"
+      - "sentinela -2147483648 (int32 mínimo) em dezenas de colunas (gotcha sentinela_int32_minimo) (revenue_*, expenditure_*, current_receipt, gross_domestic_product_volume etc.); excluir antes de somar ou tirar média. Colunas como total_receipt, total_expenditure e *_adjusted ficam quase só com sentinela/nulo"
       - "nulos de 30% a 99% em quase todas as colunas; governança/cultura (rule_of_law_*, government_confidence, share_women_*) têm mais de 94% de nulo"
     rascunho: [use_para, nao_use_para, unidade das medidas, definição de *_adjusted]
     verificado: "2.646 linhas, 36 países, year 1945–2019; (country,year) 2.575 distintos, SVN 146 linhas; 53 linhas duplicadas exatas; total_receipt = -2147483648 em 1.304 linhas e NULL em 1.321 — medido 2026-10-27"

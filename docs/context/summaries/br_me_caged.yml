@@ -5,7 +5,7 @@ tabelas:
   microdados_movimentacao:
     ultima_data: "2026-08"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma movimentação de emprego formal (admissão ou desligamento) declarada no prazo, Novo CAGED"
-    chave: "nenhuma: não há identificador do vínculo; em ano = 2026, mes = 8 há 4.423.299 linhas e 4.198.013 combinações das 22 colunas de atributos, 225.286 linhas repetem"
+    chave: "nenhuma: não há identificador do vínculo; em ano = 2026, mes = 8 há 4.423.299 linhas e 4.198.013 combinações das 22 colunas de atributos, 225.286 linhas repetem (gotcha linhas_iguais_nao_sao_duplicata: não é carga duplicada)"
     tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2020–2026-08"}
     territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos (NULL se o IBGE não reconhece o código)", sigla_uf: "UF, inclui 'UF não identificada'"}}
     medidas:
@@ -16,7 +16,7 @@ tabelas:
       - "ano e mes numéricos; a tabela tem 288 milhões de linhas, sempre filtre ano"
       - "saldo_movimentacao = 1 admissões, -1 desligamentos (números, não texto)"
       - "sexo = '1' homem, '3' mulher, '9' não identificado (texto)"
-      - "tipo_movimentacao como texto: '10' primeiro emprego, '20' reemprego, '25' prazo determinado, '31' sem justa causa, '40' a pedido, '97' (o mais frequente em 2026, 1.126.760 no perfil) não consta no dicionario: significado não documentado, '98' desligamento ignorado"
+      - "tipo_movimentacao como texto: '10' primeiro emprego, '20' reemprego, '25' prazo determinado, '31' sem justa causa, '40' a pedido, '97' (o mais frequente em 2026, 1.126.760 no perfil) (gotcha tipo_movimentacao_97_e_admissao) não consta no dicionario: significado não documentado, '98' desligamento ignorado"
       - "saldo líquido 'com ajuste' = esta tabela + fora_prazo - excluida (gotcha duas_origens_na_mesma_tabela)"
     use_para: "saldo de empregos, admissões e desligamentos por município, setor (cnae_2_secao), sexo etc."
     nao_use_para: "contar pessoas distintas (não há id do trabalhador) ou o saldo ajustado sem somar fora_prazo e descontar excluida"

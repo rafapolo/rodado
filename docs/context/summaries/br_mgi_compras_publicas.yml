@@ -10,7 +10,7 @@ tabelas:
     medidas:
       - {coluna: valor_total, o_que: "valor total da ata (VARCHAR: use TRY_CAST AS DOUBLE)", unidade: "R$", soma: sim}
       - {coluna: quantidade_itens, o_que: "itens da ata", unidade: "itens", soma: sim}
-    filtros_tipicos: ["ata_excluido = 'False' (texto; 40 linhas são 'True')", "status_ata = 'Ata de Registro de Preços' (367.872 na amostra); 'Cancelada' 3.343", "codigo_modalidade_compra = '05' (368.435 na amostra do perfil; significado não documentado)", "numero_ata_registro_preco IS NOT NULL: o arquivo de 2023 (31.495 linhas, 7,8% da tabela) está malformado e vem tudo nulo, com o conteúdo numa coluna única de nome gigante"]
+    filtros_tipicos: ["ata_excluido = 'False' (texto; 40 linhas são 'True')", "status_ata = 'Ata de Registro de Preços' (367.872 na amostra); 'Cancelada' 3.343", "codigo_modalidade_compra = '05' (368.435 na amostra do perfil; significado não documentado)", "numero_ata_registro_preco IS NOT NULL: o arquivo de 2023 (31.495 linhas, 7,8% da tabela) está malformado (gotcha parquets_malformados_cabecalho_numa_coluna) e vem tudo nulo, com o conteúdo numa coluna única de nome gigante"]
     use_para: "atas de registro de preços vigentes por órgão, modalidade e período."
     nao_use_para: "preço por item (use ata_registro_preco_item); contar atas de 2023 (arquivo defeituoso)."
     rascunho: [use_para, nao_use_para]
@@ -37,14 +37,14 @@ tabelas:
     medidas:
       - {coluna: valor_total_estimado, o_que: "valor estimado da compra (VARCHAR: TRY_CAST AS DOUBLE)", unidade: "R$", soma: sim}
       - {coluna: valor_total_homologado, o_que: "valor homologado (nulo quando não há resultado)", unidade: "R$", soma: sim}
-    filtros_tipicos: ["cod_compra IS NOT NULL: cerca de 24% das linhas (arquivos mensais malformados) vêm sem colunas separadas", "contratacao_excluida = 'False' (2.514 são 'True')", "situacao_compra_id_pncp = '1' (a maioria; significado de '2','3','4' não documentado)", "srp = 'True' para sistema de registro de preços (108.812 na amostra)"]
+    filtros_tipicos: ["cod_compra IS NOT NULL: cerca de 24% das linhas (arquivos mensais malformados (gotcha parquets_malformados_cabecalho_numa_coluna)) vêm sem colunas separadas", "contratacao_excluida = 'False' (2.514 são 'True')", "situacao_compra_id_pncp = '1' (a maioria; significado de '2','3','4' não documentado)", "srp = 'True' para sistema de registro de preços (108.812 na amostra)"]
     use_para: "contagem e valor de compras federais por modalidade, órgão e mês."
     nao_use_para: "preço por item (use contratacao_item); somar sem tirar linhas malformadas e excluídas."
     rascunho: [use_para, nao_use_para, filtros_tipicos]
-    verificado: "1.001.583 linhas, 763.371 com cod_compra preenchido, todas únicas; o arquivo 2025_02 (e outros de 15-out) tem o cabeçalho colado numa coluna só — medido 2026-10-27"
+    verificado: "1.001.583 linhas, 763.371 com cod_compra preenchido, todas únicas; o arquivo 2025_02 (e outros de 15-out) tem o cabeçalho colado numa coluna só (gotcha parquets_malformados_cabecalho_numa_coluna) — medido 2026-10-27"
   contratacao_item:
     grao: "um item de uma contratação do PNCP, com o resultado (fornecedor, valor homologado) junto; um item com vários resultados aparece em mais de uma linha"
-    chave: "nenhuma: no arquivo 2026_01, 164.181 linhas com dados e 160.836 srk_pncp_item_compra distintos; com cod_resultado_item, 163.788. Alguns arquivos mensais estão malformados e a view os une por nome de coluna (142 colunas), então várias vêm nulas."
+    chave: "nenhuma: no arquivo 2026_01, 164.181 linhas com dados e 160.836 srk_pncp_item_compra distintos; com cod_resultado_item, 163.788. Alguns arquivos mensais estão malformados (gotcha parquets_malformados_cabecalho_numa_coluna) e a view os une por nome de coluna (142 colunas), então várias vêm nulas."
     tempo: {natureza: serie_mensal, coluna: data_inclusao_pncp, cobertura: "2021-08 a 2026-09 (um arquivo por mês; datas em VARCHAR)"}
     territorio: {nivel: outro, colunas: {orgao_entidade_cnpj: "órgão contratante (CNPJ de órgão público)", unidade_orgao_codigo_unidade: "unidade compradora"}}
     medidas:

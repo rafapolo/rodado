@@ -9,7 +9,7 @@ tabelas:
     tempo: {natureza: serie_de_periodos, coluna: data_propositura, cobertura: "1992-01-01–2024-02-15 (data_cadastro 2008–2024-02-26; data_pena 1993–2024)"}
     territorio: {nivel: uf, colunas: {sigla_uf: "UF (nula em 8,4% das linhas)", tribunal: "tribunal por extenso (35 valores)", comarca: "comarca (nula em 30%)"}}
     medidas:
-      - {coluna: valor_multa, o_que: "valor da multa civil; nulo quando não houve multa (teve_multa = false); há valor-sentinela 111111111111.11", unidade: "R$", soma: sim}
+      - {coluna: valor_multa, o_que: "valor da multa civil; nulo quando não houve multa (teve_multa = false); há valor-sentinela 111111111111.11 (gotcha valores_sentinela)", unidade: "R$", soma: sim}
       - {coluna: valor_ressarcimento, o_que: "valor a ressarcir ao erário; 2 linhas com sentinela ~888888888888.88", unidade: "R$", soma: sim}
       - {coluna: valor_perda_bens, o_que: "valor da perda de bens; máximo 888888888.88 parece sentinela", unidade: "R$", soma: sim}
     filtros_tipicos:

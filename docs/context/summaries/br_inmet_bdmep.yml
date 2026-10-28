@@ -15,7 +15,7 @@ tabelas:
   microdados:
     ultima_data: "2025-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma observação horária de uma estação (id_estacao × data × hora)"
-    chave: "id_estacao, data, hora — única até 2024 (mar/2015, 2020, 2024: linhas = chaves), mas em 2025 cada linha vem duplicada: 4.891.176 linhas para 2.452.104 chaves (mar/2025: 837.000 linhas, 419.616 chaves, 421.103 linhas distintas)"
+    chave: "id_estacao, data, hora — única até 2024 (mar/2015, 2020, 2024: linhas = chaves), mas em 2025 cada linha vem duplicada: 4.891.176 linhas para 2.452.104 chaves (mar/2025: 837.000 linhas, 419.616 chaves, 421.103 linhas distintas) (gotcha ano_2025_linhas_em_dobro)"
     tempo: {natureza: serie_diaria, coluna: data, cobertura: "2000–2025 (2025 só até 2025-06-30); hora é TIME WITH TIME ZONE, 00:00–23:00 em UTC"}
     territorio: {nivel: ponto, colunas: {id_estacao: "estação; junte a estacao para município e coordenada"}}
     medidas:
@@ -26,7 +26,7 @@ tabelas:
       - {coluna: radiacao_global, o_que: "radiação global na hora", unidade: "kJ/m² (unidade não documentada)", soma: sim}
       - {coluna: "vento_velocidade, vento_rajada_max, vento_direcao", o_que: "vento", unidade: "m/s; graus", soma: nao}
     filtros_tipicos:
-      - "ano = <ano> (partição; 84,5 milhões de linhas no total); ano = 2025 exige DISTINCT/deduplicação"
+      - "ano = <ano> (partição; 84,5 milhões de linhas no total); ano = 2025 exige DISTINCT/deduplicação (gotcha ano_2025_linhas_em_dobro: DISTINCT não basta, agrupe pela chave)"
       - "precipitacao_total IS NOT NULL e cobertura ≥ 90% das horas antes de somar o ano (gotcha horas_sem_chuva_medida); em 2025 (jan–jun) cerca de 37% é NULL"
     use_para: "séries horárias de clima por estação (chuva, temperatura, vento)."
     nao_use_para: "somar precipitacao_total sem checar nulos e, em 2025, sem deduplicar."

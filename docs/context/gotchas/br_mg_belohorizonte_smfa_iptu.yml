@@ -1,0 +1,19 @@
+dataset: br_mg_belohorizonte_smfa_iptu
+gotchas:
+  - id: marco_2024_em_dobro
+    resumo: "O mês 2024-03 vem com cada linha duas vezes (1.749.672 linhas para 874.836 imóveis); os outros meses têm uma linha por indice_cadastral. Conte com count(DISTINCT indice_cadastral) ou use outro mês."
+    detalhe: >
+      Somar area_construida em 2024-03 dá 286,27 milhões de m², o dobro dos
+      meses vizinhos (143,08 em 2024-02, 143,12 em 2024-04). Uma linha por
+      imóvel num mês é a regra; a duplicata é exata (as 874.836 linhas
+      distintas, poligono à parte, são as de um retrato normal).
+    tabelas: [iptu]
+    colunas: [ano, mes, indice_cadastral]
+    severidade: silencioso
+    verificado: "2024-03: 1.749.672 linhas, 874.836 indice_cadastral distintos, soma de area_construida 286,27 Mm² (2024-02: 143,08; 2024-04: 143,12) — medido 2026-10-28"
+  - id: retratos_mensais_nao_somam
+    resumo: "Cada mês é o cadastro inteiro de Belo Horizonte (~860 a 876 mil imóveis), não o movimento do mês: somar meses conta o mesmo imóvel de novo. Fixe ano e mes. Fevereiro de 2023 está incompleto (646.215 linhas)."
+    tabelas: [iptu]
+    colunas: [ano, mes]
+    severidade: silencioso
+    verificado: "2022-06 a 2024-05 (24 meses); 857.619 linhas em 2022-06, 875.845 em 2024-04; 2023-02 tem 646.215 (75% do mês vizinho, 864.706 em 2023-03) — medido 2026-10-28"

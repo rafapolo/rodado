@@ -1,0 +1,11 @@
+dataset: br_ibge_pac
+gotchas:
+  - id: mesma_celula_em_varias_tabelas
+    resumo: "Em sidra, a mesma célula (localidade, período, variável e categorias) aparece em mais de uma id_tabela, e em 50.709 de 61.550 casos com valor diferente: as tabelas de eras diferentes se sobrepõem. Somar ou contar sem filtrar uma id_tabela repete e mistura metodologias."
+    detalhe: >
+      Escolha a id_tabela pelo tema e pela era em sidra_tabelas e filtre-a sempre. O
+      período 2007 é o mais afetado (6.744 células repetidas) por estar em duas séries.
+    tabelas: [sidra]
+    colunas: [id_tabela, valor, periodo, id_variavel]
+    severidade: silencioso
+    verificado: "61.550 células (ignorando id_tabela) aparecem em mais de uma id_tabela, 50.709 com valor distinto, em 151.302 das 503.922 linhas — medido 2026-10-28"

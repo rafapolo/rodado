@@ -1,0 +1,15 @@
+dataset: br_fnde_fundeb
+gotchas:
+  - id: valor_muda_de_unidade_por_indicador
+    resumo: "valor mistura percentual, R$ e R$ por aluno conforme o indicador, e a coluna não diz qual. Fixe id_indicador (ou codigo_exibicao) antes de somar, comparar ou tirar média, e leia a unidade pelo nome em indicador."
+    detalhe: >
+      Em 2025, olhando a mediana municipal: 4.x (investimento ou despesa por
+      aluno, exceto 4.12 e 4.13, que são %) e 2.10 (material didático por
+      aluno) são R$ por aluno; 7.x e 8.x são R$ totais (8.1, mínimo de
+      25% em MDE, tem mediana de R$ 12 milhões); 1.x, 2.x, 3.x e 6.x são
+      percentuais, mas sem trava em 0-100 (2.8 chega a 595, 2.1 tem 103).
+      Alguns percentuais (2.3, 3.2, 3.5, 6.x) têm todas as linhas em 0.
+    tabelas: [indicador_municipal, indicador_estadual]
+    colunas: [valor, id_indicador, codigo_exibicao]
+    severidade: silencioso
+    verificado: "indicador_municipal 2025, último período: 49 indicadores; 1.2 mediana 84,9%; 4.8 mediana R$ 16.717 por aluno; 8.1 mediana R$ 12.068.496; 7.1 de R$ -911.819.569 a R$ 7.990.666.647; 2.8 máximo 595; 2.3, 3.2 e 3.5 têm 1.788 linhas, todas com valor 0 — medido 2026-10-28"

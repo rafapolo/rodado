@@ -1,0 +1,12 @@
+dataset: br_ipea_avs
+gotchas:
+  - id: udh_dentro_do_municipio
+    resumo: "municipio mistura udh = 'geral' (o município inteiro) com 11.122 UDHs de 363 municípios, que já estão dentro do 'geral': somar sem filtrar udh conta essa gente duas vezes (população 15+ de 2010: 144,5 mi com 'geral', 205,0 mi com as UDHs junto). Filtre udh = 'geral' para o município, ou udh <> 'geral' só para análise intramunicipal."
+    detalhe: >
+      As UDHs só existem no recorte raca_cor, sexo e localizacao = 'total' (valores literais
+      minúsculos), e só nos 363 municípios que têm UDH. Vale para 2000 e 2010: em cada
+      ano, 11.122 UDHs distintas.
+    tabelas: [municipio]
+    colunas: [udh, id_municipio, populacao_15_mais, raca_cor, sexo, localizacao]
+    severidade: silencioso
+    verificado: "recorte total: 2010 udh 'geral' 5.565 linhas somam 144.471.582 de população 15+, 11.122 UDHs em 363 municípios somam 60.539.861; 2000: 118.808.170 e 50.041.594 — medido 2026-10-28"

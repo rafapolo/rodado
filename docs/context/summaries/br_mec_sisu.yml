@@ -16,7 +16,7 @@ tabelas:
     filtros_tipicos:
       - "ano = <ano> AND semestre = '1' (texto): tabela grande, filtre a partição"
       - "status_matricula = 'Efetivada' para matriculados (208.732 linhas em 2022)"
-      - "status_aprovado = true NÃO significa selecionado: em 2022 é true em todas as linhas de 'Não convocado' (502.309), 'Não compareceu', 'Efetivada', 'Documentação rejeitada', 'Cancelada' e em toda a Lista de Espera (649.058), e em 146.605 das 2.587.003 'Pendente'; 619.427 true no perfil"
+      - "status_aprovado = true NÃO significa selecionado (gotcha status_aprovado_nao_e_selecionado): em 2022 é true em todas as linhas de 'Não convocado' (502.309), 'Não compareceu', 'Efetivada', 'Documentação rejeitada', 'Cancelada' e em toda a Lista de Espera (833.265 em 2022), e em 146.605 das 2.587.003 'Pendente'; 619.427 true no perfil"
       - "etapa = 'Chamada Regular' ou 'Lista de Espera' (texto literal): o mesmo candidato aparece nas duas"
       - "tipo_cota tem espaços à direita ('PPI ', 'D   '): use trim(tipo_cota); NULL na ampla concorrência (56%)"
     use_para: "inscrições, notas e matrículas efetivadas do SISU por curso, IES, município do campus e modalidade de cota"

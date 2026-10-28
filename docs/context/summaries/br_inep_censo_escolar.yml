@@ -19,7 +19,7 @@ tabelas:
       - "tipo_localizacao = '1' (Urbana, 144.217) / '2' (Rural)"
       - "indicadores 0/1 (agua_potavel = 1, internet = 1, biblioteca = 1, etc.) são nulos em 15,71% das linhas (33.652, as sem informação, escolas inativas), não zero"
     use_para: "matrículas por escola, município e rede; infraestrutura (água, internet, biblioteca, laboratório) por escola"
-    nao_use_para: "somar quantidade_* sem tratar o valor 88888 (código de 'não informado', 696 linhas em quantidade_profissional_saude em 2025, 1.893 em quantidade_equipamento_tv); contar escolas sem filtrar tipo_situacao_funcionamento; somar etapas sobrepostas; ~60 colunas de 'etapa_ensino_*', 'organizacao_*' e outras são 100% nulas na partição 2025"
+    nao_use_para: "somar quantidade_* sem tratar o valor 88888 (gotcha quantidade_88888_nao_informado) (código de 'não informado', 696 linhas em quantidade_profissional_saude em 2025, 1.893 em quantidade_equipamento_tv); contar escolas sem filtrar tipo_situacao_funcionamento; somar etapas sobrepostas; ~60 colunas de 'etapa_ensino_*', 'organizacao_*' e outras são 100% nulas na partição 2025"
     rascunho: [use_para, nao_use_para, "88888 como sentinela de não informado", "significado de tipo_situacao_funcionamento"]
     verificado: "2025: 214.192 linhas = 214.192 distintos de id_escola; escolas 2007–2025 conferidas por ano (de 198.507 a 242.929 linhas); tipo_situacao_funcionamento 1/2/3 = 180.540/29.780/3.872, matrículas só no 1; soma quantidade_matricula_educacao_basica 2025 = 46.018.380 (nula em 35.426 linhas) — medido 2026-10-27"
   turma:

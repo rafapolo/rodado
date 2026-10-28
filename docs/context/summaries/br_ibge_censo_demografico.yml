@@ -187,7 +187,7 @@ tabelas:
     medidas:
       - {coluna: v001, o_que: "contagem do arquivo Básico; soma 57.324.167 (significado não documentado aqui)", unidade: "contagem", soma: sim}
       - {coluna: v002, o_que: "contagem do arquivo Básico; soma 189.790.211 (significado não documentado aqui)", unidade: "contagem", soma: sim}
-    filtros_tipicos: ["NOT isnan(v001): 773 setores têm NaN (não NULL) e SUM sobre eles devolve NaN; filtre antes de somar"]
+    filtros_tipicos: ["NOT isnan(v001): 773 setores têm NaN (gotcha setor_basico_2010_nan) (não NULL) e SUM sobre eles devolve NaN; filtre antes de somar"]
     use_para: "população e domicílios por setor; base para agregar com os demais setor_censitario_*"
     nao_use_para: "somar sem tratar NaN; Censo 2022 (use br_ibge_censo_2022)"
     rascunho: [use_para, nao_use_para, medidas]

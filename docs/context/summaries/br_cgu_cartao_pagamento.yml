@@ -8,13 +8,13 @@ tabelas:
   microdados_governo_federal:
     ultima_data: "2026-01-29"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma transação no cartão de pagamento do governo federal (CPGF), num extrato mensal"
-    chave: "nenhuma: 1.801.842 linhas contra 1.546.528 linhas distintas (255.314 cópias exatas, que podem ser compras idênticas legítimas)"
+    chave: "nenhuma: 1.801.842 linhas contra 1.546.528 linhas distintas (255.314 cópias exatas, que podem ser compras idênticas legítimas) (gotcha linhas_repetidas_e_sigilo)"
     tempo: {natureza: serie_mensal, coluna: "ano_extrato, mes_extrato (data_transacao é nula em 19,23%)", cobertura: "2013–2026 (data_transacao 2012-10-28–2026-01-29)"}
     territorio: {nivel: nenhum, colunas: {codigo_orgao_superior: "órgão superior (33 valores)", codigo_unidade_gestora: "unidade gestora que pagou"}}
     medidas:
       - {coluna: valor_transacao, o_que: "valor da transação, sem negativos nesta tabela", unidade: "R$", soma: sim}
     filtros_tipicos:
-      - "transacao = 'Informações protegidas por sigilo' (346.581 linhas, soma 440.221.810,58): sem cpf_portador, data_transacao nula e cnpj_cpf_favorecido/nome_favorecido = 'Sigiloso'; não entram em análises por pessoa, favorecido ou data"
+      - "transacao = 'Informações protegidas por sigilo' (346.581 linhas, soma 440.221.810,58): sem cpf_portador, data_transacao nula e cnpj_cpf_favorecido/nome_favorecido = 'Sigiloso'; não entram em análises por pessoa, favorecido ou data (gotcha linhas_repetidas_e_sigilo)"
       - "transacao = 'SAQUE CASH/ATM BB' (217.217 linhas, soma 87.165.406) é saque em terminal do BB; 'COMPRA A/V - R$ - APRES' (1.225.532) é compra à vista em reais (dicionário)"
       - "regexp_full_match(cpf_portador, '[0-9]{11}') para CPF completo (gotcha cpf_completado)"
     use_para: "gasto de cartão corporativo por órgão, unidade gestora, favorecido e mês de extrato"

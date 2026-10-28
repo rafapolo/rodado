@@ -38,3 +38,15 @@ gotchas:
     colunas: [cnpj_basico, CPF_CNPJ]
     severidade: aviso
     verificado: "cinco raízes no db.rodado.xyz: 19,2 s com a regexp, 0,05 s com cnpj_basico IN (...), mesmas 10 linhas; 32.339.322 linhas de pessoa jurídica, todas com cnpj_basico de 8 dígitos — medido 2026-10-25"
+  - id: divida_repetida_por_devedor
+    resumo: "Em divida, VALOR_CONSOLIDADO se repete em cada devedor da mesma NUMERO_INSCRICAO: somar por linha dá R$ 7,385 tri, por inscrição (max por NUMERO_INSCRICAO) R$ 3,513 tri. Para a dívida total da União some por inscrição; para a dívida de um devedor, por linha."
+    detalhe: >
+      12,7 milhões de inscrições têm mais de um devedor (principal, corresponsável,
+      solidário) e o valor nunca diverge entre as linhas da mesma inscrição. TIPO_DEVEDOR
+      tem variação de caixa ('PRINCIPAL' 30.845.336, 'Principal' 4.148.227): use
+      upper(TIPO_DEVEDOR) = 'PRINCIPAL'. Cada inscrição tem exatamente um devedor principal:
+      filtrar upper(TIPO_DEVEDOR) = 'PRINCIPAL' dá a soma por inscrição (R$ 3,513 tri).
+    tabelas: [divida]
+    colunas: [NUMERO_INSCRICAO, VALOR_CONSOLIDADO, TIPO_DEVEDOR]
+    severidade: silencioso
+    verificado: "49.702.198 linhas, 34.993.563 inscrições; soma por linha R$ 7,385 tri, max por inscrição R$ 3,513 tri; 0 inscrições com VALOR_CONSOLIDADO divergente; 34.993.563 inscrições têm 1 linha PRINCIPAL cada, somando R$ 3,513 tri; TIPO_DEVEDOR PRINCIPAL 30.845.336 e Principal 4.148.227 — medido 2026-10-28"

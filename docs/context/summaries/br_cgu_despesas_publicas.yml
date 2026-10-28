@@ -13,7 +13,7 @@ tabelas:
       - {coluna: valor_pago_r, o_que: "valor pago no mês", unidade: "R$", soma: sim}
       - {coluna: valor_restos_a_pagar_inscritos_r, o_que: "restos a pagar inscritos", unidade: "R$", soma: sim}
       - {coluna: valor_restos_a_pagar_pagos_r, o_que: "restos a pagar pagos", unidade: "R$", soma: sim}
-    filtros_tipicos: ["ano_e_mes_do_lancamento LIKE '2025/%' para um ano (formato AAAA/MM, ao contrário de favorecido)", "codigo_orgao_superior = '26000' (código literal do top do perfil; significado do código não conferido no dicionário)", "codigo_categoria_economica = '3' despesa corrente, '4' capital (palpite não medido; cheque o nome_categoria_economica)"]
+    filtros_tipicos: ["ano_e_mes_do_lancamento LIKE '2025/%' para um ano (formato AAAA/MM, ao contrário de favorecido) (gotcha formato_do_mes_difere_entre_tabelas)", "codigo_orgao_superior = '26000' (código literal do top do perfil; significado do código não conferido no dicionário)", "codigo_categoria_economica = '3' despesa corrente, '4' capital (palpite não medido; cheque o nome_categoria_economica)"]
     use_para: "total empenhado, liquidado e pago da União por órgão, função, ação ou natureza de despesa ao longo dos meses."
     nao_use_para: "saber quem recebeu o dinheiro (use favorecido) ou análise municipal (uf/município quase sempre nulos)."
     rascunho: [use_para, nao_use_para, filtros_tipicos]
@@ -25,7 +25,7 @@ tabelas:
     territorio: {nivel: municipio, colunas: {sigla_uf: "UF do favorecido (inclui '-1' como não informado)", nome_municipio: "município do favorecido, por nome, sem código IBGE", codigo_orgao_superior: "órgão superior pagador", codigo_unidade_gestora: "unidade pagadora"}}
     medidas:
       - {coluna: valor_recebido, o_que: "valor recebido pelo favorecido no mês; há valores negativos (estornos: 8.390 linhas em 12/2025)", unidade: "R$", soma: sim}
-    filtros_tipicos: ["ano_e_mes_do_lancamento LIKE '%/2025' para um ano (formato MM/AAAA)", "codigo_orgao_superior = '26000' (literal do top do perfil; significado não conferido)"]
+    filtros_tipicos: ["ano_e_mes_do_lancamento LIKE '%/2025' para um ano (formato MM/AAAA) (gotcha formato_do_mes_difere_entre_tabelas)", "codigo_orgao_superior = '26000' (literal do top do perfil; significado não conferido)"]
     use_para: "ranking de favorecidos, totais recebidos por UF/município ou por órgão pagador."
     nao_use_para: "execução orçamentária por ação (use execucao); não filtre a tabela inteira (120 mi de linhas) sem mês; não liste codigo_favorecido, que é documento de pessoa."
     rascunho: [use_para, nao_use_para, filtros_tipicos]

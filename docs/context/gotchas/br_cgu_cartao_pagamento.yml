@@ -13,3 +13,15 @@ gotchas:
     colunas: [cpf_portador]
     severidade: silencioso
     verificado: "governo federal 1.089.902 de 1.351.203; defesa civil 111.706 de 125.493 linhas completadas — medido 2026-10-07"
+  - id: linhas_repetidas_e_sigilo
+    resumo: "microdados_governo_federal tem linhas totalmente repetidas (1,80 mi linhas, 1,55 mi distintas) e 346.581 transações sigilosas (R$ 440 mi) sem portador nem data. Somar por linha dá R$ 917 mi; com select distinct * R$ 629 mi. Tire as sigilosas (transacao <> 'Informações protegidas por sigilo') antes de qualquer análise por pessoa, favorecido ou data."
+    detalhe: >
+      A maior parte da repetição está nas sigilosas, que têm os campos ocultos e por isso
+      se parecem: 346.581 linhas viram 118.135 distintas (R$ 440 mi viram R$ 170 mi). Fora
+      do sigilo são 1.455.261 linhas e 1.428.393 distintas (R$ 477 mi x R$ 459 mi), e essas
+      cópias podem ser compras iguais legítimas: a fonte não tem id da transação para
+      distinguir. Declare qual leitura usou.
+    tabelas: [microdados_governo_federal]
+    colunas: [valor_transacao, transacao, cpf_portador, data_transacao]
+    severidade: silencioso
+    verificado: "1.801.842 linhas, 1.546.528 distintas, soma R$ 917 mi por linha e 629 mi distinct *; sigilosas 346.581 linhas (118.135 distintas), R$ 440,2 mi, todas sem cpf_portador e sem data_transacao — medido 2026-10-28"

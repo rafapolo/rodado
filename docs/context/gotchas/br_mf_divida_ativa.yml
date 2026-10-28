@@ -1,0 +1,13 @@
+dataset: br_mf_divida_ativa
+gotchas:
+  - id: trimestre_3_de_2020_repete_o_2
+    resumo: "Em fgts e em previdenciario o retrato de 2020 tri 3 é cópia do de 2020 tri 2 (mesmas linhas, mesmo valor). Não leia a diferença entre os dois como variação: o estoque real de tri 3 não está na base."
+    detalhe: >
+      Nos demais trimestres cada retrato difere do anterior (no fgts, 2020
+      tri 1 a tri 4 vão de R$ 36,95 bi a 38,12 bi, com tri 2 e tri 3
+      iguais a 37,80). Em fgts as 440.888 inscrições de tri 2 e de tri 3
+      coincidem em número, devedor, valor e situação.
+    tabelas: [fgts, previdenciario]
+    colunas: [ano, trimestre, valor_consolidado]
+    severidade: silencioso
+    verificado: "fgts 2020 tri 2 = tri 3 = 440.888 linhas e R$ 37,796 bi, 440.888 de 440.888 iguais em (numero_inscricao, cpf_cnpj, valor, situacao); previdenciario 2020 tri 2 = tri 3 = 5.047.884 linhas e R$ 550,359 bi — medido 2026-10-28"

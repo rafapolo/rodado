@@ -1,0 +1,14 @@
+dataset: br_ibge_ipca
+gotchas:
+  - id: variacao_anual_e_acumulado_no_ano
+    resumo: "variacao_anual NÃO é a inflação de 12 meses: é o acumulado do ano calendário até o mês (janeiro = variação do mês). A inflação anual oficial é variacao_doze_meses; as duas só coincidem em dezembro."
+    tabelas: [mes_brasil, mes_categoria_brasil, mes_categoria_municipio, mes_categoria_rm]
+    colunas: [variacao_anual, variacao_doze_meses]
+    severidade: silencioso
+    verificado: "mes_brasil 2025: jan variacao_anual 0,16 e variacao_doze_meses 4,56; jun 2,99 e 5,35; dez 4,26 e 4,26 — medido 2026-10-28"
+  - id: categoria_mistura_quatro_niveis
+    resumo: "id_categoria traz grupo, subgrupo, item e subitem na mesma coluna (length 1, 2, 4 e 7) mais a linha de índice geral (id_categoria nulo). Cada nível soma peso_mensal 100: somar ou rankear sem filtrar o nível conta o mesmo gasto até quatro vezes."
+    tabelas: [mes_categoria_brasil, mes_categoria_municipio, mes_categoria_rm]
+    colunas: [id_categoria, peso_mensal]
+    severidade: silencioso
+    verificado: "mes_categoria_brasil 2025-12: grupos 9 (peso 100,0), subgrupos 19 (100,0), itens 51 (100,0), subitens 377 (100,0), geral 1 linha com id_categoria nulo; soma de peso_mensal das 456 linhas com id_categoria 400,0 — medido 2026-10-28"

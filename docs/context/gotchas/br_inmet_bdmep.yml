@@ -12,3 +12,15 @@ gotchas:
     colunas: [geolocalizacao]
     severidade: silencioso
     verificado: "Manaus: POINT(-3.10333333 -60.01638888) — medido 2026-10-22 (bragro)"
+  - id: ano_2025_linhas_em_dobro
+    resumo: "Em microdados, ano = 2025 tem quase toda observação duas vezes (4.891.176 linhas para 2.452.104 chaves id_estacao × data × hora); 2015, 2020 e 2024 têm uma por chave. Deduplique por (id_estacao, data, hora) antes de somar: a chuva de 2025 bruta (541.025 mm) é o dobro da deduplicada (271.310 mm)."
+    detalhe: >
+      2.439.072 chaves aparecem duas vezes e 13.032 uma só; nenhuma três.
+      Em 6.818 pares as duas linhas não são idênticas (por exemplo, um valor
+      preenchido e o outro nulo), então SELECT DISTINCT não basta (2.463.184
+      linhas distintas): agrupe pela chave e pegue max() ou any_value() de
+      cada medida.
+    tabelas: [microdados]
+    colunas: [ano, id_estacao, data, hora, precipitacao_total]
+    severidade: silencioso
+    verificado: "ano = 2025: 4.891.176 linhas, 2.452.104 chaves (2 linhas em 2.439.072, 1 em 13.032), 2.463.184 linhas distintas; sum(precipitacao_total) 541.025,4 bruto e 271.309,7 com max() por chave; 2015 (4.191.888), 2020 (5.173.776) e 2024 (4.542.600): linhas = chaves — medido 2026-10-28"

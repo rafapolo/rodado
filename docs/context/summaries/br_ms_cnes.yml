@@ -20,7 +20,7 @@ tabelas:
       - "tipo_unidade = '2' UBS, '5' hospital geral, '7' hospital especializado, '22' consultório isolado (maior grupo), '36' clínica/ambulatório especializado, '45' unidade de saúde da família; significados no dicionario"
       - "indicador_atencao_hospitalar = 1 (10.395) para estabelecimentos com atenção hospitalar"
     use_para: "contar e caracterizar estabelecimentos de saúde por município, tipo de unidade, gestão e vínculo SUS, num mês."
-    nao_use_para: "contar estabelecimentos somando meses; leitos por especialidade (use leito); profissionais (use profissional); tipo_esfera_administrativa e tipo_natureza_administrativa."
+    nao_use_para: "contar estabelecimentos somando meses; leitos por especialidade (use leito); profissionais (use profissional); tipo_esfera_administrativa e tipo_natureza_administrativa. (gotcha esfera_administrativa_copia_da_gestao)"
     rascunho: [use_para, nao_use_para]
     verificado: "partição 2025-08: 465.866 linhas, 465.866 distintos de id_estabelecimento_cnes; tipo_esfera_administrativa tem M 449.740 / E 13.822 / D 2.303 / F 1, idêntico a tipo_gestao (M/E/D), códigos que o dicionario marca como 'Não encontrado' — não é esfera federal/estadual/municipal/privada; tipo_natureza_administrativa 100% nulo; não há ano 2026 nesta tabela — medido 2026-10-27"
   equipe:
@@ -84,7 +84,7 @@ tabelas:
       - {coluna: "carga_horaria_ambulatorial, carga_horaria_hospitalar, carga_horaria_outros", o_que: "horas semanais do vínculo em cada tipo de atendimento", unidade: "horas/semana", soma: sim}
     filtros_tipicos:
       - "ano = 2025 AND mes = 8: a tabela tem ~869 milhões de linhas (~6,3 milhões por mês), sempre filtre a partição"
-      - "id_municipio é 100% nulo em 2025-08: junte com estabelecimento por id_estabelecimento_cnes (mesmo ano e mes) para obter o município"
+      - "id_municipio é 100% nulo em 2025-08 (gotcha profissional_sem_municipio_desde_2025_02: nulo desde 2025-02): junte com estabelecimento por id_estabelecimento_cnes (mesmo ano e mes) para obter o município"
       - "indicador_atende_sus = 1 (4.749.959) atende SUS; indicador_atende_nao_sus = 1 (1.600.114): complementares em quase todas as linhas"
       - "tipo_vinculo é texto de 6 dígitos ('010101' é o mais frequente, 1.182.827); significado no dicionario"
     use_para: "contar vínculos e horas por estabelecimento e (via join) por município, no mês."
@@ -195,7 +195,7 @@ tabelas:
     medidas:
       - {coluna: "quantidade_salas_*, quantidade_maquinas_proporcao, quantidade_outras_maquinas", o_que: "salas e máquinas do serviço complementar", unidade: "unidades", soma: sim}
     filtros_tipicos:
-      - "ano = 2026 AND mes = 2 para o retrato mais recente; antes de 2006-12 a tabela cobria quase todos os estabelecimentos e depois só os com serviço complementar, então séries cruzando 2006 não são comparáveis"
+      - "ano = 2026 AND mes = 2 para o retrato mais recente; antes de 2006-12 a tabela cobria quase todos os estabelecimentos e depois só os com serviço complementar, então séries cruzando 2006 não são comparáveis (gotcha dados_complementares_muda_de_universo_em_2006_12)"
       - "colunas cns_* usam a string 'nan' (não NULL) quando ausentes"
     use_para: "quais estabelecimentos têm hemodiálise, radioterapia e oncologia declaradas e quantas salas/máquinas."
     nao_use_para: "contar equipamentos em geral (use equipamento) ou séries contínuas atravessando 2006-12."
