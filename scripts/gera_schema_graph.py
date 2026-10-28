@@ -712,7 +712,7 @@ def _ordenadas():
 def write_details(out_datasets, out_tables):
     """O que `describe_table` do MCP diz de cada tabela, para o painel do atlas:
     armadilhas (gotchas), colunas com código (dicionário, código que diverge entre
-    datasets, código sem significado conhecido, significado pesquisado), métricas
+    datasets, significado pesquisado), métricas
     prontas, busca rápida no db.rodado.xyz, data da coleta e, do perfil, nulos e
     valores mais frequentes. Um JSON por dataset em pages/atlas/detalhes/, buscado
     quando o painel abre; tabela sem nada não entra, dataset sem nada não tem arquivo.
@@ -727,11 +727,6 @@ def write_details(out_datasets, out_tables):
         coleta = {}
     le = lambda f: yaml.safe_load(f.read_text()) if f.exists() else None
     cobertura = json.loads((CONTEXT / "dicionario_coverage.json").read_text()).get("tables", {})
-    nao_verif = defaultdict(list)
-    for chave, info in json.loads((CONTEXT / "schema_dict_status.json").read_text()).get("columns", {}).items():
-        if info.get("label") == "nao_verificado":
-            tid, _, col = chave.rpartition(".")
-            nao_verif[tid].append(col)
     diverge = []   # (coluna, escopo ou "", motivo): "faixa_etaria (br_ans_beneficiario.informacao_consolidada)"
     for chave, info in ((le(CONTEXT / "bridges.yaml") or {}).get("coded_differently") or {}).items():
         m = re.match(r"(\w+)(?:\s*\((.*)\))?$", chave)
@@ -786,8 +781,6 @@ def write_details(out_datasets, out_tables):
             for col, escopo, motivo in diverge:
                 if col in nomes and (not escopo or tid in escopo or (ds in escopo and "." not in escopo)):
                     cols.setdefault(nomes[col], {})["div"] = motivo
-            for c in nao_verif.get(tid, []):
-                cols.setdefault(c, {})["nv"] = 1
             p = perfil.get(tb) or {}
             for c, info in (p.get("colunas") or {}).items():
                 if not isinstance(info, dict) or info.get("pessoal"):
