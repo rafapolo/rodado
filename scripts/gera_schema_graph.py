@@ -440,7 +440,7 @@ def load_row_counts() -> dict[str, dict]:
 
 
 def add_dataset_info(out_datasets, out_tables):
-    """O que a lista de datasets da página do MCP mostra, para o painel do atlas.
+    """Descrição, fonte e "dados até" de cada dataset, para o painel do atlas.
 
     Por dataset: descrição (`de`), fonte mais frequente das tabelas (`fn`) e a data do
     dado mais recente (`ate`); por tabela, `ate`. A data vem dos cartões publicados
