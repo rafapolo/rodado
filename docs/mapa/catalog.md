@@ -2,7 +2,7 @@
 
 **Gerado por `scripts/gera_catalog_md.py`, a partir de `_rodado_metadata/catalog.parquet` — não editar à mão.** Descrições vêm de `docs/context/dataset_descriptions.yaml`; a coluna Dado até vem de `docs/context/dataset_freshness.yaml` (curado, só ~6 datasets por enquanto — vazio não significa "sem gap", significa "não conferido ainda"). Editar os YAML e regenerar (`build_metadata_catalog.py` → `gera_catalog_md.py`), nunca este arquivo.
 
-**276 datasets, 1.610 tabelas, 34.663.054.081 linhas.** 14 dataset(s) sem descrição. 4 com data de frescor conferida (de 276).
+**276 datasets, 1.612 tabelas, 34.674.113.476 linhas.** 14 dataset(s) sem descrição. 4 com data de frescor conferida (de 276).
 
 | Dataset | Descrição | Tabelas | Linhas | Dado até | Fonte |
 |---|---|---:|---:|---|---|
@@ -23,12 +23,12 @@
 | `br_anp_precos_combustiveis` | ANP — preços de combustíveis pesquisados (via Base dos Dados) | 1 | 16.887.683 | — | Base dos Dados |
 | `br_ans_beneficiario` | ANS — beneficiários de planos de saúde suplementar | 1 | 2.307.338.481 | — | Base dos Dados |
 | `br_ans_operadoras` | ANS — operadoras de planos de saúde (cadastro, reclamações, penalidades, ressarcimento ao SUS, demonstrações contábeis) | 18 | 111.128.794 | — | ANS — pastas restantes da raiz PDA (SIP, IGR, histórico de planos, características dos produtos, painel de precificação, TISS dados de planos) |
-| `br_antt_dadosabertos` | ANTT — RNTRC (transportadores e veículos de carga), CIOT e acidentes nas rodovias federais concedidas | 4 | 18.186.812 | — | ANTT — RNTRC, veículos, CIOT, acidentes em rodovias concedidas |
+| `br_antt_dadosabertos` | ANTT — RNTRC (transportadores e veículos de carga), CIOT e acidentes nas rodovias federais concedidas | 4 | 18.909.325 | — | ANTT — RNTRC, veículos, CIOT, acidentes em rodovias concedidas |
 | `br_anvisa_cmed` | CMED/ANVISA — preços regulados de medicamentos | 1 | 52.816 | — | CMED (preços de medicamentos, ANVISA) |
 | `br_anvisa_consultas` | ANVISA — registros de agrotóxicos, alimentos e produtos regulados | 3 | 101.284 | — | ANVISA (consulta completa) |
 | `br_anvisa_medicamentos_industrializados` | ANVISA — medicamentos industrializados registrados | 1 | 10.000.000 | — | Base dos Dados |
 | `br_ba_feiradesantana_camara_leis` | Câmara Municipal de Feira de Santana — leis municipais | 1 | 6.033 | — | Base dos Dados |
-| `br_bcb_agencia` | BCB — agências bancárias, retrato mensal 2007–2024 (endereço, município, instituição) e o retrato atual do Olinda | 2 | 4.113.708 | — | Base dos Dados |
+| `br_bcb_agencia` | BCB — agências bancárias, retrato mensal 2007–2024 (endereço, município, instituição) e o retrato atual do Olinda | 2 | 4.113.708 | — | BCB — agências bancárias (série mensal 2007–2024 e retrato do Olinda) |
 | `br_bcb_desenrola` | BCB — programa Desenrola Brasil (renegociação de dívidas de pessoa física) | 1 | 13.638 | — | BCB Desenrola Brasil |
 | `br_bcb_estban` | BCB ESTBAN — estatísticas bancárias por agência/município | 3 | 699.984.822 | — | Base dos Dados |
 | `br_bcb_ifdata` | BCB IF.data — indicadores financeiros de instituições financeiras | 5 | 55.700.812 | — | BCB — IF.data (valores e cadastro por instituição) |
@@ -57,7 +57,7 @@
 | `br_cgu_beneficios_cidadao` | CGU — benefícios sociais federais (Bolsa Família, Auxílio Emergencial, BPC etc.) | 6 | 3.321.211.133 | — | Base dos Dados |
 | `br_cgu_cartao_pagamento` | CGU — gastos com cartão de pagamento do governo federal | 4 | 3.213.220 | — | Base dos Dados |
 | `br_cgu_dados_abertos` | CGU — metadados do catálogo dados.gov.br (conjuntos, recursos, organizações), foto de fev/2024 | 3 | 89.771 | — | Base dos Dados |
-| `br_cgu_despesas_publicas` | CGU/Portal da Transparência — execução da despesa federal (empenhado, liquidado, pago, restos a pagar) e recebimentos por favorecido, mês a mês desde 2014 | 2 | 130.395.546 | — | Base dos Dados |
+| `br_cgu_despesas_publicas` | CGU/Portal da Transparência — execução da despesa federal (empenhado, liquidado, pago, restos a pagar) e recebimentos por favorecido, mês a mês desde 2014 | 2 | 130.395.546 | — | CGU — despesas do Governo Federal (execução e recebimentos por favorecido) |
 | `br_cgu_ebt` | CGU — Escala Brasil Transparente 360°, nota de transparência de 665 municípios avaliados e das 27 UFs, 2020 e 2021 | 2 | 1.384 | — | Base dos Dados |
 | `br_cgu_emendas_parlamentares` | CGU — emendas parlamentares ao orçamento federal | 4 | 1.094.989 | — | Portal da Transparência — Emendas parlamentares por favorecido e convênios |
 | `br_cgu_fef` | CGU — Fundo de Erradicação da Pobreza e sorteios de fiscalização | 3 | 84.945 | — | Base dos Dados |
@@ -89,7 +89,7 @@
 | `br_fgv_igp` | FGV — índices de preços (IGP-M, IGP-DI e variantes) | 7 | 2.536 | — | Base dos Dados |
 | `br_fipe_veiculos` | FIPE — tabela de preços de referência de veículos | 1 | 11.425 | — | FIPE veículos |
 | `br_firjan_ifgf` | FIRJAN — Índice de Gestão Fiscal municipal | 1 | 55.680 | — | Base dos Dados |
-| `br_fnde_fundeb` | FNDE/SIOPE — indicadores legais e educacionais de estados e municípios (aplicação em MDE, Fundeb, pessoal), anual até 2016 e bimestral desde 2017 | 2 | 15.063.256 | — | Base dos Dados |
+| `br_fnde_fundeb` | FNDE/SIOPE — indicadores legais e educacionais de estados e municípios (aplicação em MDE, Fundeb, pessoal), anual até 2016 e bimestral desde 2017 | 2 | 15.063.256 | — | FNDE/SIOPE — indicadores de financiamento da educação (estadual e municipal) |
 | `br_geobr_mapas` | geobr — malhas geográficas oficiais do IBGE (municípios, UFs, biomas, terras indígenas etc.) | 25 | 984.345 | — | Base dos Dados |
 | `br_ggb_relatorio_lgbtqi` | Grupo Gay da Bahia — relatório de mortes de pessoas LGBTQI+ | 5 | 145 | — | Base dos Dados |
 | `br_ibama_autos` | IBAMA — autos de infração ambiental | 8 | 3.097.591 | — | IBAMA — autos de infração |
@@ -120,7 +120,7 @@
 | `br_ibge_pib` | IBGE — PIB municipal e estadual | 7 | 201.871 | — | Base dos Dados |
 | `br_ibge_pnad` | IBGE — PNAD, microdados compatibilizados históricos | 3 | 9.587.801 | — | Base dos Dados |
 | `br_ibge_pnad_covid` | IBGE — PNAD-COVID19, microdados mensais de mai a nov/2020 (2,65 mi pessoas, pesar por v1032) e o dicionário | 2 | 2.651.013 | — | IBGE — PNAD COVID19, microdados mensais mai–nov/2020 |
-| `br_ibge_pnadc` | IBGE — PNAD Contínua, mercado de trabalho e rendimento | 14 | 29.867.248 | — | Base dos Dados |
+| `br_ibge_pnadc` | IBGE — PNAD Contínua, mercado de trabalho e rendimento | 14 | 31.529.302 | — | Base dos Dados |
 | `br_ibge_pof` | IBGE — Pesquisa de Orçamentos Familiares | 14 | 2.238.882 | — | Base dos Dados |
 | `br_ibge_populacao` | IBGE — estimativas populacionais por município, UF e Brasil | 3 | 192.080 | — | Base dos Dados |
 | `br_ibge_ppm` | IBGE — Pesquisa Pecuária Municipal (rebanhos, aquicultura, produção animal) | 4 | 3.111.747 | — | Base dos Dados |
@@ -140,7 +140,7 @@
 | `br_inep_indicadores_educacionais` | INEP — indicadores educacionais (transição de etapa, remuneração docente) | 12 | 5.135.062 | — | Base dos Dados |
 | `br_inep_saeb` | INEP — SAEB, proficiência de alunos por etapa/disciplina | 11 | 200.886.659 | — | Base dos Dados |
 | `br_inep_sinopse_estatistica_educacao_basica` | INEP — sinopse estatística da educação básica | 18 | 121.127.598 | — | Base dos Dados |
-| `br_inmet_bdmep` | INMET — Banco de Dados Meteorológicos, séries por estação | 2 | 84.515.289 | — | Base dos Dados |
+| `br_inmet_bdmep` | INMET — Banco de Dados Meteorológicos, séries por estação | 2 | 90.064.017 | — | Base dos Dados |
 | `br_inpe_deter` | INPE DETER — alertas quase em tempo real de desmatamento | 2 | 1.398.154 | — | INPE DETER (avisos de desmatamento) |
 | `br_inpe_prodes` | INPE PRODES — desmatamento anual agregado por município e bioma | 1 | 156.864 | — | Base dos Dados |
 | `br_inpe_prodes_acumulado` | INPE PRODES — polígonos de desmatamento acumulado por bioma, geometria em centroide | 3 | 14.457.350 | — | INPE — polígonos do PRODES (6 biomas) e do DETER |
@@ -170,8 +170,8 @@
 | `br_mec_sisu` | MEC SISU — microdados de inscrição no Sistema de Seleção Unificada | 1 | 34.700.256 | — | Base dos Dados |
 | `br_mf_divida_ativa` | PGFN — estoque trimestral da dívida ativa do FGTS e previdenciária, uma linha por inscrição e devedor (via Base dos Dados) | 2 | 143.151.652 | — | Base dos Dados |
 | `br_mg_belohorizonte_smfa_iptu` | Prefeitura de Belo Horizonte — cadastro de IPTU | 2 | 21.463.825 | — | Base dos Dados |
-| `br_mgi_compras_publicas` | Compras públicas federais do Compras.gov.br (MGI) — licitações, pregões, itens, ofertas, compras sem licitação, fornecedores e catálogo de materiais e serviços | 19 | 97.765.275 | — | Base dos Dados |
-| `br_mgi_pncp` | Portal Nacional de Contratações Públicas (PNCP) via Base dos Dados — dicionário de códigos (as tabelas grandes estão sob acesso restrito no BD) | 4 | 1.491.321 | — | Base dos Dados |
+| `br_mgi_compras_publicas` | Compras públicas federais do Compras.gov.br (MGI) — licitações, pregões, itens, ofertas, compras sem licitação, fornecedores e catálogo de materiais e serviços | 21 | 98.115.757 | — | SEGES/Compras.gov.br — atas, contratações (Lei 14.133) e contratos SIASG em lote |
+| `br_mgi_pncp` | Portal Nacional de Contratações Públicas (PNCP) via Base dos Dados — dicionário de códigos (as tabelas grandes estão sob acesso restrito no BD) | 4 | 1.493.757 | — | PNCP — API de consulta: atas de registro de preço, instrumentos de cobrança, contratações |
 | `br_minc_salic` | MinC — SALIC/Lei Rouanet, projetos culturais incentivados | 18 | 4.370.266 | — | SALIC/Lei Rouanet (MinC) |
 | `br_mj_consumidorgovbr` | Consumidor.gov.br — reclamações contra empresas, 2014–2025 (2025 parcial; os arquivos de 2019 vêm sem Data Abertura, usar Data Finalização; Data Finalização mistura ISO (2020–2025) e dd/mm/aaaa (2014–2021) — parsear os dois) | 1 | 15.392.507 | — | Consumidor.gov.br |
 | `br_mj_sinesp` | SINESP (MJSP) via Base dos Dados — ocorrências criminais e vítimas por município e mês e por UF e mês | 3 | 9.097.924 | — | Base dos Dados |
@@ -259,7 +259,7 @@
 | `br_transferegov` | TransfereGov — planos de ação, programas e transferências (API normalizada) | 3 | 30.346 | — | TransfereGov |
 | `br_transferegov_siconv` | TransfereGov/SICONV — convênios, contratos de repasse e execução física/financeira completa | 62 | 69.060.758 | — | Transferegov/SICONV completo |
 | `br_trase_supply_chain` | Trase — cadeia de suprimentos de soja e carne bovina, do frigorífico/esmagadora à origem | 7 | 1.824.843 | — | Base dos Dados |
-| `br_tse_eleicoes` | TSE — eleições 2026 (candidatos, votação, resultados, bens, receitas) | 31 | 1.713.188.854 | — | Base dos Dados |
+| `br_tse_eleicoes` | TSE — eleições 2026 (candidatos, votação, resultados, bens, receitas) | 31 | 1.715.962.036 | — | Base dos Dados |
 | `br_tse_filiacao_partidaria` | TSE — filiação partidária | 2 | 42.201.443 | — | Base dos Dados |
 | `br_ufmg_censo_demografico_1872` | Recenseamento Geral do Império do Brasil de 1872 (UFMG) por província, município e paróquia, nos dados originais e corrigidos | 58 | 1.251.630 | — | Base dos Dados |
 | `eu_sanctions` | União Europeia — lista de sanções | 1 | 43.891 | — | EU Sanctions |
