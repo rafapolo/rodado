@@ -82,14 +82,6 @@
 		reverse_proxy 127.0.0.1:18081
 	}
 
-	# Acesso aberto, sem senha nem token, até 26/10/2026 inclusive (horário de Brasília), a
-	# pedido. 1793070000 = 2026-10-27 00:00 -03:00; passada a hora, a expressão falha e tudo
-	# volta a cair no link curto, no token e na senha abaixo, sem precisar de deploy.
-	@aberto expression `int({time.now.unix}) < 1793070000`
-	handle @aberto {
-		import app
-	}
-
 	# Link curto /q/<id>: quem abre um link que existe (o SQL salvo em /dados/q/<id>.sql, no
 	# volume deste container) entra como quem tem o token — terminal completo, a pedido — e a
 	# página executa o SQL. Um id que não existe cai na senha, como qualquer outra rota:

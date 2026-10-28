@@ -33,10 +33,6 @@ nem dependência do beelink ligado.
   simultâneas, até 10.000 linhas) logo depois de salvar e na subida, para os links ainda sem
   medida, e é refeito por todo `/query` com o mesmo texto de um link. Cliques contam só a partir
   do deploy (os de antes estavam só no log do container)
-- **Até 26/10/2026 inclusive o site inteiro está aberto, sem senha nem token** (a pedido):
-  `@aberto` no `proxy/Caddyfile` compara `{time.now.unix}` com 1793070000 (2026-10-27 00:00
-  -03:00). Passada a hora, a senha e o token voltam sozinhos, sem deploy; o aviso em `llm.md`
-  e o bloco `@aberto` podem sair depois
 - `?token=<token>` em qualquer URL dispensa a senha: `https://db.rodado.xyz/?token=…&query=…`
   é um link que um terceiro abre e já vê o resultado. O token fica em
   `/root/rodado-db/.token` no finland (nunca no repositório); o primeiro acesso o grava num

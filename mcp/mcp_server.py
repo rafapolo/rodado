@@ -47,8 +47,8 @@ BEELINK_DUCKDB_BIN = os.environ.get("MCP_BEELINK_DUCKDB_BIN", "~/bin/duckdb")
 BEELINK_DUCKDB_PATH = os.environ.get("MCP_BEELINK_DUCKDB_PATH", "~/rodado/basedosdados.duckdb")
 # Absolute home on beelink: DuckDB's allowed_directories wants absolute paths.
 BEELINK_HOME = os.environ.get("MCP_BEELINK_HOME", "/home/polo")
-# "http" (default) sends every query to the public db.rodado.xyz API: open,
-# nothing local but docs/context/. "ssh" shells out to beelink. "inprocess" embeds
+# "http" (default) sends every query to the db.rodado.xyz API (credential in
+# RODADO_TOKEN or RODADO_SENHA), nothing local but docs/context/. "ssh" shells out to beelink. "inprocess" embeds
 # DuckDB in this process and reads the parquet itself — for a host that has
 # the data (local disk or an S3 mirror) and serves several callers over HTTP:
 # one process means one memory cap, one shared thread pool and no
