@@ -30,3 +30,9 @@ gotchas:
     colunas: [AREA_HA, QUANTIDADE, UNIDADE_MEDIDA, camada]
     severidade: silencioso
     verificado: "sema: 4.727 linhas, AREA_HA 761.043 ha, QUANTIDADE nula; siga: 2.174 linhas, QUANTIDADE 364.060 ha (UNIDADE_MEDIDA só 'HECTARE'), AREA_HA nula; total COALESCE 1.125.103 ha, sum(AREA_HA) sozinha 761.043 — medido 2026-10-28"
+  - id: desembargo_parcial_de_termo_vigente
+    resumo: "Um termo pode estar ao mesmo tempo em areas_embargadas e em areas_desembargadas: o desembargo é de parte da área. Case pelo termo (trim(termo_embargo) = trim(COALESCE(T_EMBARGO, NUMERO_TERMO_EMBARGO)), sem o termo em branco) E pela interseção dos polígonos, e tire a área desembargada com ST_Difference. Só o termo não basta: o número se repete em áreas que não se tocam (560 pares pelo termo, 247 que se tocam), e um desembargo que toca área de outro termo não a desembarga (2.661 pares)."
+    tabelas: [areas_embargadas, areas_desembargadas]
+    colunas: [termo_embargo, T_EMBARGO, NUMERO_TERMO_EMBARGO, geometria]
+    severidade: silencioso
+    verificado: "353 desembargos com termo que ainda consta como embargado; 247 pares termo × polígono que se tocam, em 204 áreas embargadas: 18 ficam com menos de 1% (desembargo total), 1.828 ha saem no todo. Termo repetido: 20034054 em 7 desembargos; 2 áreas embargadas com termo em branco — medido 2026-10-28 (chao)"
