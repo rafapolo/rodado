@@ -13,11 +13,11 @@ gotchas:
     severidade: silencioso
     verificado: "ano=2026: 189.666 linhas, R$ 6,73 bi, prestação até 2026-10-25, cpf_cnpj_doador_orig 0 preenchidos — medido 2026-10-25"
   - id: receitas_2026_data_futura
-    resumo: "66 receitas de 2026 têm data_receita depois da carga (até 29/11/2026). Erro do prestador, mantido como veio."
+    resumo: "Receitas de 2026 com data_receita depois da carga (30 em 2026-10-28, até 23/12/2026). Erro do prestador, mantido como veio."
     tabelas: [receitas_candidato]
     colunas: [data_receita]
     severidade: silencioso
-    verificado: "66 linhas com data_receita > 2026-10-07 na carga de 2026-10-07"
+    verificado: "30 linhas com data_receita > 2026-10-28 (máx. 2026-12-23) em 194.461 receitas de 2026, espelho da BD ressincronizado em 2026-10-28; eram 66 > 2026-10-07 na carga de 2026-10-07"
   - id: doacao_presidencial_2022_pix
     resumo: "Em 2022, a campanha de Bolsonaro tem 392 mil receitas (Pix de pessoa física) e a de Lula 533. Contar doações mede o canal, não o apoio."
     tabelas: [receitas_candidato]
@@ -93,36 +93,17 @@ gotchas:
     colunas: [sequencial_despesa, valor_despesa, valor_pagamento]
     severidade: silencioso
     verificado: "2018–2026: 1.096.000 linhas contratadas para 839.658 (ano, sequencial_despesa); 866.927 pagas, todas casam com uma contratada — medido 2026-10-25"
-  - id: segundo_turno_2026_so_municipio
-    resumo: "O 2º turno de 2026 (presidente e governador) vem do sistema de divulgação do TSE, só no nível de município: resultados_candidato_municipio_zona, _secao e os detalhes por zona/seção ainda não têm turno=2."
+  - id: aptos_mudam_entre_turnos_2026
+    resumo: "Em 2026 o número de aptos muda entre o 1º e o 2º turno em 3.726 municípios (o total nacional é igual): comparecimento de um turno para o outro tem denominador que se move."
     detalhe: >
-      Até 26/10/2026 os dados abertos do TSE (votacao_*_2026.zip) só traziam o
-      1º turno. Os arquivos 2026_t2_divulgacao.parquet saem de
-      scripts/scrap/tse_resultados_2t_2026.py, que lê o JSON por município de
-      resultados.tse.jus.br. secoes_agregadas, aptos_totalizadas e
-      secoes_totalizadas ficam nulos (o JSON não tem o primeiro; a BD grava 0
-      nos outros dois). votos_nulos inclui os nulos técnicos (tvn), como a BD.
-      data_eleicao = 2026-10-25. Governador só em AC, AM, DF, ES, RN e TO.
-      aptos muda entre os turnos em 3.779 municípios (soma das diferenças
-      absolutas 19.048, máximo 845; o total nacional é igual), provavelmente o
-      voto em trânsito, pedido por turno: comparecimento de um turno para o
-      outro tem denominador que se move. Quando a BD publicar o 2º turno nos
-      shards numerados, apague os 2026_t2_divulgacao.parquet das quatro
-      tabelas e rode scripts/repara_views_beelink.py --apply; sem isso as
-      views somam o turno duas vezes (o script avisa pela trava).
-    tabelas: [resultados_candidato_municipio, resultados_partido_municipio, detalhes_votacao_municipio, resultados_candidato, resultados_candidato_municipio_zona, resultados_candidato_secao]
-    colunas: [turno, secoes_agregadas, aptos_totalizadas, secoes_totalizadas]
+      Provavelmente o voto em trânsito, pedido por turno. Ao comparar
+      comparecimento ou abstenção entre turnos num município, use os aptos do
+      próprio turno, nunca os do 1º para os dois. O 2º turno (presidente;
+      governador em AC, AM, DF, ES, RN e TO) entrou pela Base dos Dados em
+      2026-10-28 em todas as tabelas de resultado, por seção inclusive; os
+      arquivos provisórios 2026_t2_divulgacao.parquet (sistema de divulgação,
+      só município) saíram na mesma troca.
+    tabelas: [detalhes_votacao_municipio, detalhes_votacao_municipio_zona, detalhes_votacao_secao]
+    colunas: [aptos, comparecimento]
     severidade: silencioso
-    verificado: "turno=2: presidente 5.757 municípios (186 ZZ), Lula 64.256.232 × Flávio 59.826.041, aptos 158.745.502 = 1º turno; governador 469 municípios em 6 UFs; o mesmo código remontou o 1º turno com 0 diferença em 69.084 linhas — medido 2026-10-26"
-  - id: governador_rj_2026_resultado_defasado
-    resumo: "No 1º turno de 2026, Douglas Ruas e Eduardo Paes (governador do RJ) estão como resultado = '2º turno', mas não houve 2º turno no RJ: a retotalização de 10/10 elegeu Ruas no 1º turno com 50,88% dos válidos."
-    detalhe: >
-      O espelho da BD é do sync de 09/10, anterior à retotalização. Os votos
-      já são os finais (Ruas 4.271.199 de 8.394.627 válidos, iguais ao
-      rj-c0003-e006259-u.json do TSE); só a coluna resultado ficou velha. Não
-      conte "quantas UFs tiveram 2º turno" pelo resultado do 1º turno: use a
-      existência de linhas com turno=2.
-    tabelas: [resultados_candidato, resultados_candidato_municipio]
-    colunas: [resultado]
-    severidade: silencioso
-    verificado: "ano=2026, turno=1, governador, RJ: 22 e 55 com resultado '2º turno'; divulgação do TSE (6259, 10/10/2026 15:09) dá 22 'Eleito' com 4.271.199 votos — medido 2026-10-26"
+    verificado: "ano=2026, presidente, detalhes_votacao_municipio: aptos diferem entre turnos em 3.726 municípios (soma das diferenças absolutas 19.012, máximo 845), total 158.745.502 nos dois; soma das seções do 2º turno = município (Lula 64.256.232, Flávio 59.826.041, válidos 124.082.273, comparecimento 128.236.074) — medido 2026-10-28"

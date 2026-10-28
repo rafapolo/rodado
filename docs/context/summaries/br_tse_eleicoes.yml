@@ -180,7 +180,7 @@ tabelas:
     tempo:
       natureza: serie_de_periodos
       coluna: ano
-      cobertura: 1994–2026 (2026 vai até 2026-10-25, inclui 2º turno)
+      cobertura: 1994–2026 (2026 vai até 2026-10-25, inclui 2º turno, da Base dos Dados desde 2026-10-28)
     territorio: &id001
       nivel: municipio
       colunas:
@@ -222,7 +222,7 @@ tabelas:
       soma: sim
     filtros_tipicos:
     - cargo IN ('presidente','governador','senador','deputado federal','deputado estadual','deputado distrital') em 2026 (minúsculas; também 'conselheiro distrital'); filtre sempre o cargo antes de somar
-    - turno IN (1,2); em 2026, 2º turno só no município (ver gotcha segundo_turno_2026_so_municipio)
+    - turno IN (1,2); aptos mudam entre os turnos de 2026 (gotcha aptos_mudam_entre_turnos_2026)
     - 'id_eleicao: em ano de eleição geral há dois (federal só presidente; estadual para os demais cargos; ver gotcha dois_id_eleicao_no_ano_geral)'
     use_para: comparecimento, abstenção e brancos/nulos por município e cargo
     nao_use_para: somar aptos entre cargos (o eleitor é o mesmo); proporções sem filtrar cargo
@@ -237,7 +237,7 @@ tabelas:
     tempo:
       natureza: serie_de_periodos
       coluna: ano
-      cobertura: 1994–2026 (2026 até 2026-10-05; sem 2º turno)
+      cobertura: 1994–2026 (2026 até 2026-10-25, com 2º turno desde 2026-10-28)
     territorio: *id001
     medidas:
     - coluna: aptos
@@ -653,7 +653,6 @@ tabelas:
     - turno IN (1,2)
     - resultado IN ('eleito','eleito por qp','eleito por media','nao eleito','suplente','2º turno') (literais do perfil; 'qp' = quociente partidário)
     - 'id_eleicao: em ano de eleição geral há dois (federal só presidente; estadual para os demais cargos; ver gotcha dois_id_eleicao_no_ano_geral)'
-    - governador do RJ no 1º turno de 2026 com resultado '2º turno' é defasado (gotcha governador_rj_2026_resultado_defasado)
     use_para: votos totais por candidato e situação de eleição
     nao_use_para: votos por município (use resultados_candidato_municipio); somar votos de senador como se fosse um voto por eleitor
     rascunho:
@@ -667,7 +666,7 @@ tabelas:
     tempo:
       natureza: serie_de_periodos
       coluna: ano
-      cobertura: 1994–2026; 2º turno de 2026 só aqui entre as tabelas de resultado (gotcha segundo_turno_2026_so_municipio)
+      cobertura: 1994–2026 (2º turno de 2026 da Base dos Dados desde 2026-10-28)
     territorio: *id001
     medidas:
     - coluna: votos
@@ -691,7 +690,7 @@ tabelas:
     tempo:
       natureza: serie_de_periodos
       coluna: ano
-      cobertura: perfil mede 2026 turno 1; sem 2º turno em 2026
+      cobertura: 1994–2026, com 2º turno de 2026 desde 2026-10-28 (o perfil ainda mede só o turno 1)
     territorio: *id001
     medidas:
     - coluna: votos
