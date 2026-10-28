@@ -22,6 +22,7 @@ COPY --chown=rodado docs/context/rodado-schema.json docs/context/join_keys.md \
      docs/context/dicionario_coverage.json docs/context/schema_dict_status.json \
      docs/context/column_codes.yaml docs/context/
 COPY --chown=rodado docs/context/gotchas docs/context/gotchas
+COPY --chown=rodado docs/context/summaries docs/context/summaries
 
 ENV MCP_BACKEND=inprocess \
     MCP_TRANSPORT=http \

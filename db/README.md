@@ -196,10 +196,12 @@ scp db/{Dockerfile,haloy.yml,inicia.sh,rodado_sql.py,consulta.py,terminal.py,cat
 scp db/proxy/{Caddyfile,og.html} finland:/root/rodado-db/proxy/
 # o MCP de /mcp: o servidor e a camada semântica que ele lê, arquivo por arquivo
 # (nunca docs/context/privado/); rodado-schema.json fica fora do git, gere antes
-ssh finland 'mkdir -p /root/rodado-db/mcp/context/gotchas && rm -f /root/rodado-db/mcp/context/gotchas/*'
+ssh finland 'mkdir -p /root/rodado-db/mcp/context/{gotchas,summaries} && rm -f /root/rodado-db/mcp/context/{gotchas,summaries}/*'
 scp mcp/mcp_server.py finland:/root/rodado-db/mcp/
 scp docs/context/{rodado-schema.json,join_keys.md,bridges.yaml,metrics.yaml,hierarchies.yaml,dicionario_coverage.json,schema_dict_status.json,column_codes.yaml} finland:/root/rodado-db/mcp/context/
 scp docs/context/gotchas/* finland:/root/rodado-db/mcp/context/gotchas/
+# cartões e perfis das tabelas (describe_table lê sob demanda, um dataset por vez; ~13 MB)
+scp docs/context/summaries/* finland:/root/rodado-db/mcp/context/summaries/
 ssh finland 'cd /root/rodado-db && set -a && . /etc/haloy/.env && . ./.s3 && set +a &&
   DB_USUARIO=rodado DB_SENHA_HASH="$(cat .senha_hash)" DB_TOKEN="$(cat .token)" haloy deploy -c haloy.yml'
 

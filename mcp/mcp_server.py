@@ -105,6 +105,14 @@ DICIONARIO_COVERAGE_PATH = CONTEXT_DIR / "dicionario_coverage.json"
 SCHEMA_DICT_STATUS_PATH = CONTEXT_DIR / "schema_dict_status.json"
 COLUMN_CODES_PATH = CONTEXT_DIR / "column_codes.yaml"
 GOTCHAS_DIR = CONTEXT_DIR / "gotchas"
+SUMMARIES_DIR = CONTEXT_DIR / "summaries"
+# Teto do perfil anexado às colunas: a mediana por tabela é 2,5 KB, mas o censo
+# chega a 310 KB — sem corte, uma tabela larga ocupa o contexto inteiro.
+DESCRIBE_MAX_PERFIL_CHARS = 4000
+# top de valores só para coluna de poucos valores (código, categoria): é ali que
+# o literal do WHERE erra ('2' x '02'); em coluna de texto livre o top não ensina nada
+PERFIL_TOP_MAX_DISTINTOS = 50
+PERFIL_TOP_N = 3
 # Teto do bloco `gotchas` por resposta: o describe_table já corta em 150 colunas
 # e o bloco novo não pode ser o que estoura o contexto de um modelo local.
 DESCRIBE_MAX_GOTCHAS = 8
@@ -276,6 +284,98 @@ def _gotchas_for(dataset: str, table_name: str) -> list[dict]:
                     for k in ("id", "resumo", "detalhe", "colunas",
                               "severidade", "verificado") if g.get(k)})
     return out
+
+
+# tasks/plans/cartao_tabela.md: o cartão de cada tabela (grão, chave, tempo,
+# medidas, filtros, use/não use para) levou o Haiku de 21/27 a 27/27; o perfil
+# gerado (nulos, distintos, min/max, top) acerta o literal do filtro. Lidos sob
+# demanda, um dataset por vez: os perfis somam 11 MB de YAML.
+_YAML_LOADER = getattr(yaml, "CSafeLoader", yaml.SafeLoader)
+CARTAO_CAMPOS = ("grao", "chave", "tempo", "territorio", "medidas", "filtros_tipicos",
+                 "use_para", "nao_use_para", "observacoes", "ultima_data", "verificado", "rascunho")
+
+
+@functools.lru_cache(maxsize=64)
+def _summary_doc(dataset: str, sufixo: str) -> dict:
+    path = SUMMARIES_DIR / f"{dataset}{sufixo}.yml"
+    if not path.exists():
+        return {}
+    with open(path, encoding="utf-8") as f:
+        return (yaml.load(f, Loader=_YAML_LOADER) or {}).get("tabelas") or {}
+
+
+@functools.lru_cache(maxsize=1)
+def _ultima_data() -> dict:
+    path = SUMMARIES_DIR / "_ultima_data.json"
+    return json.loads(path.read_text()) if path.exists() else {}
+
+
+def _cartao_for(dataset: str, table_name: str) -> dict | None:
+    c = _summary_doc(dataset, "").get(table_name)
+    if not isinstance(c, dict):
+        return None
+    out = {k: c[k] for k in CARTAO_CAMPOS if c.get(k) not in (None, "", [], {})}
+    ultima = (_ultima_data().get(f"{dataset}.{table_name}") or {}).get("ultima_data")
+    if ultima and "ultima_data" not in out:
+        out["ultima_data"] = ultima
+    if out.get("rascunho"):
+        out["rascunho_nota"] = ("Os campos listados em `rascunho` foram deduzidos, não medidos: "
+                                "confira antes de confiar.")
+    return out or None
+
+
+def _valor_curto(v):
+    if isinstance(v, str) and len(v) > 40:
+        return v[:40] + "…"
+    return v
+
+
+def _perfil_coluna(p: dict) -> dict:
+    """O que do perfil de uma coluna vale o espaço: nulos, distintos, o formato
+    real dos valores (top em coluna de poucos valores, senão min/max)."""
+    out = {}
+    if p.get("nulos_pct"):
+        out["nulos_pct"] = p["nulos_pct"]
+    if p.get("distintos_aprox") is not None:
+        out["distintos"] = p["distintos_aprox"]
+    if p.get("pessoal") or p.get("nulos_pct") == 100:
+        return out
+    top = p.get("top") or []
+    if top and (p.get("distintos_aprox") or 0) <= PERFIL_TOP_MAX_DISTINTOS:
+        out["top"] = [[_valor_curto(v), n] for v, n in top[:PERFIL_TOP_N]]
+    elif p.get("min") is not None:
+        out["min"], out["max"] = _valor_curto(p["min"]), _valor_curto(p.get("max"))
+    return out
+
+
+def _columns_with_perfil(dataset: str, table_name: str, columns: list[dict]):
+    """As colunas com o perfil de cada uma anexado, até DESCRIBE_MAX_PERFIL_CHARS.
+    Devolve (colunas, nota ou None)."""
+    perfil = _summary_doc(dataset, ".perfil").get(table_name) or {}
+    por_coluna = perfil.get("colunas") or {}
+    if not por_coluna:
+        return columns, None
+    # perfil da última partição: a coluna da partição teria um valor só ("ano: 2024")
+    # e diria que a tabela só tem aquele ano
+    fonte = perfil.get("fonte_do_perfil") or ""
+    particao = set(re.findall(r"\((\w+) = ", fonte))
+    out, gasto, cortadas = [], 0, 0
+    for c in columns:
+        extra = {} if c["name"] in particao else _perfil_coluna(por_coluna.get(c["name"]) or {})
+        custo = len(json.dumps(extra, ensure_ascii=False, default=str)) if extra else 0
+        if extra and gasto + custo <= DESCRIBE_MAX_PERFIL_CHARS:
+            out.append({**c, **extra})
+            gasto += custo
+        else:
+            cortadas += bool(extra)
+            out.append(c)
+    nota = {"fonte": fonte, "file": f"docs/context/summaries/{dataset}.perfil.yml"}
+    if particao:
+        nota["aviso"] = (f"top/min/max vêm só da última partição ({', '.join(sorted(particao))}); "
+                         "as outras partições podem ter outros valores")
+    if cortadas:
+        nota["sem_perfil_por_teto"] = cortadas
+    return out, nota
 
 
 def _norm(s: str) -> str:
@@ -941,7 +1041,14 @@ def describe_table(table: str) -> dict:
     happens the reply carries a `columns_truncated` block with the real total;
     query `parquet_path` with DESCRIBE via `run_sql` to see the rest.
 
-    Six things surface here that the bare column list would hide:
+    Each column may carry its measured profile (docs/context/summaries/
+    <dataset>.perfil.yml, sampled — `perfil.fonte` says from what): `nulos_pct`,
+    `distintos`, and the real format of the values — `top` (value, count) for
+    columns with few distinct values, else `min`/`max`. Copy filter literals
+    from `top` (`'2'`, not `'02'`). Profiles stop at a size cap;
+    `perfil.sem_perfil_por_teto` counts the columns left without one.
+
+    Seven things surface here that the bare column list would hide:
       * `gotchas` — READ FIRST. Measured traps of this table's dataset, where
         a column exists, decodes cleanly and is still the wrong one (e.g. in
         br_ms_sim, cause of death is `causa_basica`, not
@@ -949,6 +1056,11 @@ def describe_table(table: str) -> dict:
         what was measured and when. `severidade: silencioso` means the wrong
         query returns a plausible number, not an error. No block means
         nothing was measured for this dataset, not that it has no traps.
+      * `cartao` — the table card: `grao` (what one row is), `chave`, `tempo`
+        (snapshot vs series, coverage), `territorio`, `medidas` (what sums and
+        what must not), `filtros_tipicos` with literal values, `use_para` /
+        `nao_use_para`, `ultima_data` and `verificado`. Fields named in
+        `rascunho` were inferred, not measured.
       * `warning` — this table returns every row twice (leftover tmp*.parquet
         next to the real export); same check `resolve_join` runs, but here it
         fires even when you're not joining anything.
@@ -1003,7 +1115,14 @@ def describe_table(table: str) -> dict:
                 "total": len(gotchas),
                 "file": f"docs/context/gotchas/{dataset}.yml",
             }
-    result["columns"] = columns[:DESCRIBE_MAX_COLS]
+    # o cartão diz o que é uma linha e como somar; sem ele o modelo escolhe a coluna
+    # plausível em vez da certa (tasks/plans/cartao_tabela.md)
+    cartao = _cartao_for(dataset, table_name)
+    if cartao:
+        result["cartao"] = cartao
+    result["columns"], perfil_nota = _columns_with_perfil(dataset, table_name, columns[:DESCRIBE_MAX_COLS])
+    if perfil_nota:
+        result["perfil"] = perfil_nota
     result["parquet_path"] = _PARQUET_GLOBS[table]
     if len(columns) > DESCRIBE_MAX_COLS:
         result["columns_truncated"] = {

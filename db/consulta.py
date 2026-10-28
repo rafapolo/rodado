@@ -513,6 +513,15 @@ def _junta(v):
     return ", ".join(map(str, v)) if isinstance(v, list) else str(v)
 
 
+def _achata(v):
+    """Campo do cartão (texto, lista, dict de dicts) numa linha só de markdown."""
+    if isinstance(v, dict):
+        return "; ".join(f"{k}: {_achata(x)}" for k, x in v.items() if x not in (None, "", [], {}))
+    if isinstance(v, list):
+        return " | ".join(_achata(x) for x in v)
+    return " ".join(str(v).split())
+
+
 def _contexto_geral():
     c = CONTEXTO
     partes = [f"# rodado · camada semântica (geral)\n\nGerado de docs/context/ em {c.get('gerado', '?')}. "
@@ -553,6 +562,40 @@ def _contexto_dataset(dataset, tabela=""):
             if g.get("detalhe"):
                 partes.append(f"  {' '.join(g['detalhe'].split())}")
             partes.append(f"  medido: {g['verificado']}")
+    cartoes = CONTEXTO["datasets"].get(dataset, {}).get("cartoes", {})
+    if tabela and tabela in cartoes:
+        partes.append("\n## Cartão da tabela — o que é uma linha e como somar\n")
+        c = cartoes[tabela]
+        rotulos = {"grao": "uma linha é", "chave": "chave", "tempo": "tempo", "territorio": "território",
+                   "medidas": "medidas", "filtros_tipicos": "filtros típicos", "use_para": "use para",
+                   "nao_use_para": "não use para", "observacoes": "observações", "ultima_data": "dados até",
+                   "verificado": "medido"}
+        for k, rotulo in rotulos.items():
+            if c.get(k) not in (None, "", [], {}):
+                partes.append(f"- **{rotulo}**: {_achata(c[k])}")
+        if c.get("rascunho"):
+            partes.append(f"- deduzidos, não medidos (confira antes de confiar): {_junta(c['rascunho'])}")
+    elif cartoes and not tabela:
+        partes.append("\n## Tabelas — o que é uma linha (cartão completo em `&tabela=<tabela>`)\n")
+        partes.extend(f"- `{t}`: {c.get('grao', '?')}" for t, c in sorted(cartoes.items()))
+    perfil = CONTEXTO["datasets"].get(dataset, {}).get("perfis", {}).get(tabela) if tabela else None
+    if perfil and perfil.get("colunas"):
+        partes.append(f"\n## Perfil das colunas — formato real dos valores ({perfil['fonte']})\n")
+        if perfil.get("particao"):
+            partes.append(f"Valores só da última partição ({_junta(perfil['particao'])}): as outras podem ter outros.")
+        for col, p in perfil["colunas"].items():
+            itens = []
+            if "nulos_pct" in p:
+                itens.append(f"{p['nulos_pct']}% nulos")
+            if "distintos" in p:
+                itens.append(f"~{p['distintos']} distintos")
+            if p.get("top"):
+                itens.append("top " + ", ".join(f"{json.dumps(v, ensure_ascii=False)} ({n})" for v, n in p["top"]))
+            elif "min" in p:
+                itens.append(f"de {p['min']} a {p['max']}")
+            partes.append(f"- `{col}`: " + " · ".join(itens))
+        if perfil.get("sem_perfil_por_teto"):
+            partes.append(f"- … mais {perfil['sem_perfil_por_teto']} colunas sem perfil (teto de tamanho)")
     # "não é código" sem nada a dizer só gasta linha
     codigos = [e for e in ctx.get("codigos", []) if (not alvo or e["tabela"] == alvo)
                and (e.get("status") != "nao_e_codigo" or e.get("nota"))]

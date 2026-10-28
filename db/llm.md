@@ -13,7 +13,7 @@ própria. Tudo passa por HTTP: descobrir tabelas, ler o schema, consultar, expor
 1. tema (lista no fim desta página) → `/tabelas?tema=<tema>` ou `/tabelas?busca=<palavras>`
 2. dataset → `/tabelas?dataset=<dataset>` (as tabelas e quantas linhas cada uma tem)
 3. tabela → `/colunas?t=<dataset>.<tabela>` (colunas, tipos, partição)
-4. **contexto → `/contexto?dataset=<dataset>&tabela=<tabela>`** (armadilhas medidas, códigos, joins)
+4. **contexto → `/contexto?dataset=<dataset>&tabela=<tabela>`** (cartão da tabela, formato real dos valores, armadilhas medidas, códigos, joins)
 5. **ensaio → `POST /confere`** com a SQL: diz, sem executar, se a tabela existe, se a partição
    está filtrada e que armadilha medida a consulta toca
 6. consulta → `POST /query`, agregando no servidor; leia os `avisos` que vêm junto das `linhas`. Se a SQL
@@ -59,6 +59,11 @@ resposta. Sem credencial a resposta é `401`. Nos exemplos abaixo, `$AUTH` é `-
 3. **Ler o contexto** do dataset — o que já se mediu sobre ele e não está no schema:
    `curl $AUTH 'https://db.rodado.xyz/contexto?dataset=br_ms_sim'` (e `&tabela=microdados`
    para estreitar). Markdown com:
+   - **cartão da tabela** (com `&tabela=`): o que é uma linha, a chave, retrato ou série e a
+     cobertura, o que se soma, filtros típicos com o valor literal, use / não use para; sem
+     `&tabela=`, uma linha por tabela com o grão;
+   - **perfil das colunas** (com `&tabela=`): nulos, distintos e o formato real dos valores
+     (top ou min/max) — copie daqui o literal do `WHERE` (`'2'`, não `'02'`);
    - **armadilhas medidas**: a coluna plausível que é a errada, a partição que é retrato e não
      fluxo, a unidade trocada, a sentinela — cada uma com o número que a confirmou;
    - **significado dos códigos** (valor → rótulo) de colunas que nenhum dicionário decodifica;
