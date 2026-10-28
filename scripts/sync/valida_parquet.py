@@ -36,7 +36,7 @@ vão para ~/logs/valida_parquet_rejeitados.log.
     python3 valida_parquet.py --stdin < lista            # caminhos relativos a ~/rodado ou absolutos
     python3 valida_parquet.py --sem-anterior ...         # não compara com o COLD
 """
-import fnmatch, json, os, re, subprocess, sys, time
+import fnmatch, json, os, re, subprocess, sys, tempfile, time
 
 H = os.path.expanduser("~")
 RAIZ = f"{H}/rodado"
@@ -107,10 +107,12 @@ def _confere(p, anterior):
     return {"ok": not motivos, "linhas": n, "motivos": motivos}
 
 
-def _trabalhador():
-    """Lê `caminho\tanterior` do stdin; antes de cada arquivo avisa qual é, para o pai saber
-    quem matou o processo se ele morrer."""
-    for linha in sys.stdin:
+def _trabalhador(lista):
+    """Lê `caminho\tanterior` do arquivo `lista`; antes de cada arquivo avisa qual é, para o pai
+    saber quem matou o processo se ele morrer. A lista vem por arquivo, não pelo stdin: com mais
+    de 64 KB o pai travava escrevendo no stdin enquanto o filho travava escrevendo no stdout
+    (2026-10-28, 1.400 arquivos da SIA)."""
+    for linha in open(lista):
         p, anterior = linha.rstrip("\n").split("\t")
         print(json.dumps({"inicio": p}), flush=True)
         try:
@@ -168,10 +170,10 @@ def valida(caminhos, anterior=True):
             ids = dict(falta)
             entrada = "".join(f"{p}\t{(os.path.join(COLD, _rel(p)) if anterior and os.path.isdir(COLD) else '')}\n"
                               for p, _ in falta)
-            proc = subprocess.Popen(["nice", "-n", "15", sys.executable, os.path.abspath(__file__), "--trabalhador"],
-                                    stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True)
-            proc.stdin.write(entrada)
-            proc.stdin.close()
+            with tempfile.NamedTemporaryFile("w", prefix="valida_parquet.", suffix=".lista", delete=False) as tf:
+                tf.write(entrada)
+            proc = subprocess.Popen(["nice", "-n", "15", sys.executable, os.path.abspath(__file__), "--trabalhador", tf.name],
+                                    stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, text=True)
             atual = None
             for linha in proc.stdout:
                 r = json.loads(linha)
@@ -182,6 +184,7 @@ def valida(caminhos, anterior=True):
                 p = r.pop("f")
                 _grava(fc, fl, out, p, ids[p], r, libera)
             proc.wait()
+            os.unlink(tf.name)
             feitos = set(out)
             if atual:   # morreu lendo este arquivo
                 _grava(fc, fl, out, atual, ids[atual],
@@ -214,7 +217,7 @@ def _grava(fc, fl, out, p, k, r, libera):
 if __name__ == "__main__":
     a = sys.argv[1:]
     if a[:1] == ["--trabalhador"]:
-        _trabalhador()
+        _trabalhador(a[1])
         sys.exit()
     ant = "--sem-anterior" not in a
     a = [x for x in a if x != "--sem-anterior"]
