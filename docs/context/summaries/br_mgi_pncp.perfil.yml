@@ -1,16 +1,86 @@
 dataset: br_mgi_pncp
-gerado_em: '2026-10-27'
+gerado_em: '2026-10-28'
 gerado_por: scripts/gera_perfil.py — não edite à mão
 tabelas:
-  ata_registro_preco: {linhas: 1176452, erro: 'Conversion Error: Error while reading file "/home/polo/rodado/br_mgi_pncp/ata_registro_preco/202403.parquet":
-      failed to cast column "nomeOrgaoSubrogado" from type VARCHAR to JSON: : Malformed JSON at byte 0 of input: unexpected character.  Input:
-      "PROCURADORIA GERAL DA JUSTICA"'}
+  ata_registro_preco:
+    linhas: 1176452
+    fonte_do_perfil: tabela inteira
+    colunas:
+      json:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 1176452]
+      numeroControlePNCPAta: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1108467, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numeroAtaRegistroPreco: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 132763, pessoal: 'só contagens: valores seriam dado pessoal'}
+      anoAta:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 41
+        min: '0'
+        max: '23042025'
+        media: 2045.0946
+        quartis: [2024, 2025, 2026]
+        top:
+        - ['2025', 485822]
+        - ['2024', 329931]
+        - ['2026', 308080]
+        - ['2023', 50849]
+        - ['2424', 1352]
+        - ['2022', 353]
+        - ['2027', 20]
+        - ['2021', 11]
+        - ['0', 1]
+        - ['1015', 1]
+      numeroControlePNCPCompra: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 289304, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cancelado:
+        tipo: BOOLEAN
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - ['false', 1172340]
+        - ['true', 4112]
+      dataCancelamento: {tipo: DATE, nulos_pct: 99.64, distintos_aprox: 780, min: '2023-10-04', max: '2027-09-10'}
+      dataAssinatura: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1392, min: '2021-04-07', max: '9201-12-09'}
+      vigenciaInicio: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1648, min: '2021-05-04', max: '9201-12-09'}
+      vigenciaFim: {tipo: DATE, nulos_pct: 0, distintos_aprox: 2202, min: '2022-01-12', max: '9999-12-31'}
+      dataPublicacaoPncp: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1380, min: '2022-07-25', max: '2026-09-30'}
+      dataInclusao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1380, min: '2022-07-25', max: '2026-09-30'}
+      dataAtualizacao: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1355, min: '2022-07-25', max: '2026-09-30'}
+      dataAtualizacaoGlobal: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1355, min: '2022-07-25', max: '2026-09-30'}
+      usuario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 257, min: 3Tecnos Tecnologia LTDA, max: digifred sistemas de informação ltda}
+      objetoContratacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 266709, min: "\tABERTURA DE LICITAÇÃO PARA A CONTRATAÇÃO DE EMPRESA PARA\
+          \ A LOCAÇÃO DE CAMINHÕES. MAQUINÁRIOS, ÔNIBUS E EQUIPAMENTOS A S…", max: "\tNº DA ATA ADERIDA: 01.001.4/2025\n\tEMPRESA FREEDOM HOSPITALAR\
+          \ LTDA \n\tORIGEM DA ATA: SECRETARIA DE SAÚDE E HOSPITAL MU…"}
+      cnpjOrgao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 9807, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nomeOrgao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 8235, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnpjOrgaoSubrogado: {tipo: VARCHAR, nulos_pct: 99.54, distintos_aprox: 110, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nomeOrgaoSubrogado: {tipo: VARCHAR, nulos_pct: 99.54, distintos_aprox: 72, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigoUnidadeOrgao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7704, min: --, max: ´01}
+      nomeUnidadeOrgao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 12336, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigoUnidadeOrgaoSubrogado: {tipo: VARCHAR, nulos_pct: 99.54, distintos_aprox: 207, min: '0101', max: '9890'}
+      nomeUnidadeOrgaoSubrogado: {tipo: VARCHAR, nulos_pct: 99.54, distintos_aprox: 219, pessoal: 'só contagens: valores seriam dado pessoal'}
+      possibilidadeAdesao:
+        tipo: BOOLEAN
+        nulos_pct: 66.81
+        distintos_aprox: 2
+        min: 'false'
+        max: 'true'
+        top:
+        - [null, 785961]
+        - ['true', 196578]
+        - ['false', 193913]
   contratacao:
     linhas: 3171
     fonte_do_perfil: tabela inteira
     colunas:
       json:
-        tipo: JSON
+        tipo: VARCHAR
         nulos_pct: 100
         distintos_aprox: 0
         min: null
@@ -31,8 +101,11 @@ tabelas:
       dataInclusao: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 2510, min: '2021-08-10 07:54:24', max: '2021-10-29 18:47:36'}
       dataAtualizacao: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 2510, min: '2021-08-10 07:54:24', max: '2026-09-15 14:59:09'}
       numeroControlePNCP: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3442, pessoal: 'só contagens: valores seriam dado pessoal'}
-      objetoCompra: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3124}
-      informacaoComplementar: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1746}
+      objetoCompra: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3124, min: 'A Dispensa de Licitação para a referida aquisição está fundamentada  no
+          DECRETO N°10.024, DE 2019,  instrução normativa …', max: 'ÓTICA 30˚ - Endoscópio Rígido, HOPKINGS, uso médico, ângulo visão: 30˚, revestimento:
+          aço  inoxidável, formato: reta, rí…'}
+      informacaoComplementar: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1746, min: '', max: '“Banner” em lona, impresso ou plotado, medindo
+          90cm X 120cm, com acabamento em bastão, ponteira e estirante branco.'}
       dataAberturaProposta: {tipo: TIMESTAMP, nulos_pct: 0.41, distintos_aprox: 235, min: '2021-06-21 08:00:00', max: '2021-10-29 18:21:09'}
       dataEncerramentoProposta: {tipo: TIMESTAMP, nulos_pct: 0.41, distintos_aprox: 591, min: '2021-07-27 09:00:00', max: '2021-11-09 14:00:00'}
       dataPublicacaoPncp: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 2510, min: '2021-08-10 07:54:24', max: '2021-10-29 18:47:36'}
@@ -42,7 +115,7 @@ tabelas:
           4. BATALHAO DE INFANTARIA DE SELVA/MES/AC, ''…', max: '{''ufNome'': Tocantins, ''ufSigla'': TO, ''municipioNome'': Palmas, ''nomeUnidade'':
           SUPERINTENDENCIA REG.DEP.POLICIA FEDERAL - …'}
       orgaoSubRogado:
-        tipo: JSON
+        tipo: VARCHAR
         nulos_pct: 100
         distintos_aprox: 0
         min: null
@@ -50,7 +123,7 @@ tabelas:
         top:
         - [null, 3171]
       unidadeSubRogada:
-        tipo: JSON
+        tipo: VARCHAR
         nulos_pct: 100
         distintos_aprox: 0
         min: null
@@ -101,9 +174,9 @@ tabelas:
             científico e tecnológico e estímulo à inovação, inclusive para gerir administrativa e financeiramente essas atividades, ou para contratação
             de instituição dedicada à recuperação social da pessoa presa, desde que o contratado tenha inquestionável reputação ética e profissional
             e não tenha fins lucrativos'', ''codigo'': 45}', 2]
-      linkSistemaOrigem: {tipo: VARCHAR, nulos_pct: 65, distintos_aprox: 1206}
+      linkSistemaOrigem: {tipo: VARCHAR, nulos_pct: 65, distintos_aprox: 1206, min: 'HTTPS://WWW.SAOJOSEDOINHACORA.RS.GOV.BR/', max: 'https://www.saojosedoinhacora.rs.gov.br/site'}
       linkProcessoEletronico:
-        tipo: JSON
+        tipo: VARCHAR
         nulos_pct: 100
         distintos_aprox: 0
         min: null
@@ -111,7 +184,7 @@ tabelas:
         top:
         - [null, 3171]
       justificativaPresencial:
-        tipo: JSON
+        tipo: VARCHAR
         nulos_pct: 100
         distintos_aprox: 0
         min: null
@@ -146,7 +219,7 @@ tabelas:
         media: 319.2759
         quartis: [12, 83, 583]
       emendaParlamentar:
-        tipo: JSON
+        tipo: BOOLEAN
         nulos_pct: 99.97
         distintos_aprox: 1
         min: 'false'
@@ -155,7 +228,7 @@ tabelas:
         - [null, 3170]
         - ['false', 1]
       numeroCompra: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 552, pessoal: 'só contagens: valores seriam dado pessoal'}
-      processo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2404}
+      processo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2404, min: ' 23072.543442021', max: xxx}
       valorTotalEstimado:
         tipo: DOUBLE
         nulos_pct: 0
@@ -203,7 +276,7 @@ tabelas:
         - ['1', 1]
       tipoInstrumentoConvocatorioNome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 3, pessoal: 'só contagens: valores seriam dado pessoal'}
       fontesOrcamentarias:
-        tipo: JSON[]
+        tipo: VARCHAR[]
         nulos_pct: 0
         distintos_aprox: 1
         min: '[]'
@@ -223,5 +296,92 @@ tabelas:
         - ['2', 2]
       situacaoCompraNome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
       usuarioNome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5, pessoal: 'só contagens: valores seriam dado pessoal'}
-  instrumento_cobranca: {linhas: 311474, erro: 'Conversion Error: Error while reading file "/home/polo/rodado/br_mgi_pncp/instrumento_cobranca/202505.parquet":
-      failed to cast column "observacao" from type VARCHAR to JSON: : Malformed JSON at byte 0 of input: unexpected character.  Input: "."'}
+  instrumento_cobranca:
+    linhas: 311474
+    fonte_do_perfil: tabela inteira
+    colunas:
+      cnpj: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 273, pessoal: 'só contagens: valores seriam dado pessoal'}
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '2021'
+        max: '2026'
+        media: 2024.7218
+        quartis: [2024, 2025, 2025]
+        top:
+        - ['2025', 182772]
+        - ['2024', 81854]
+        - ['2026', 29967]
+        - ['2023', 15936]
+        - ['2022', 880]
+        - ['2021', 65]
+      sequencialContrato:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 9961
+        min: '1'
+        max: '20727'
+        media: 1278.9471
+        quartis: [104, 425, 1324]
+      sequencialInstrumentoCobranca:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1585
+        min: '1'
+        max: '1303'
+        media: 25.6311
+        quartis: [1, 3, 12]
+      tipoInstrumentoCobranca:
+        tipo: STRUCT(id BIGINT, nome VARCHAR, descricao VARCHAR, dataInclusao TIMESTAMP, dataAtualizacao TIMESTAMP, statusAtivo BOOLEAN)
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '{''id'': 1, ''nome'': ''Nota Fiscal Eletrônica (NF-e)'', ''descricao'': ''Documento de existência apenas digital, emitido e armaz…'
+        max: '{''id'': 1, ''nome'': ''Nota Fiscal Eletrônica (NF-e)'', ''descricao'': ''Documento de existência apenas digital, emitido e armaz…'
+        top:
+        - ['{''id'': 1, ''nome'': ''Nota Fiscal Eletrônica (NF-e)'', ''descricao'': ''Documento de existência apenas digital, emitido e armazenado
+            eletronicamente, com o intuito de documentar, para fins fiscais, uma operação de circulação de mercadorias ou uma prestação de serviços,
+            ocorrida entre as partes. Sua validade jurídica é garantida pela assinatura digital do remetente (garantia de autoria e de integridade)
+            e a Autorização de uso fornecida pelo Fisco, antes da ocorrência do fato gerador.'', ''dataInclusao'': ''2025-02-07 14:51:49'', ''dataAtualizacao'':
+            ''2025-02-07 14:53:31'', ''statusAtivo'': true}', 311474]
+      numeroInstrumentoCobranca: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 149266, pessoal: 'só contagens: valores seriam dado pessoal'}
+      dataEmissaoDocumento: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1035, pessoal: 'só contagens: valores seriam dado pessoal'}
+      observacao: {tipo: VARCHAR, nulos_pct: 94.06, distintos_aprox: 6206, min: ' ', max: uc 4004332661}
+      chaveNFe: {tipo: VARCHAR, nulos_pct: 3.64, distintos_aprox: 288309, min: "\f", max: 􀀘􀀖􀀓􀀓􀀔􀀓􀀛􀀔􀀕􀀓􀀛􀀕􀀗􀀚􀀜􀀙􀀓􀀓􀀓􀀓􀀔􀀙􀀕􀀓􀀓}
+      fonteNFe:
+        tipo: BIGINT
+        nulos_pct: 3.64
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        media: 1
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 300124]
+        - [null, 11350]
+      dataConsultaNFe: {tipo: TIMESTAMP, nulos_pct: 3.64, distintos_aprox: 304817, min: '2025-03-21 07:21:57', max: '2026-10-15 14:28:02'}
+      statusResponseNFe: {tipo: VARCHAR, nulos_pct: 3.64, distintos_aprox: 9, pessoal: 'só contagens: valores seriam dado pessoal'}
+      jsonResponseNFe: {tipo: VARCHAR, nulos_pct: 3.64, distintos_aprox: 107995, pessoal: 'só contagens: valores seriam dado pessoal'}
+      notaFiscalEletronica: {tipo: 'STRUCT(instrumentoCobrancaId BIGINT, chave VARCHAR, nfTransparenciaID BIGINT, numero BIGINT, serie BIGINT,
+          dataEmissao VARCHAR, niEmitente VARCHAR, nomeEmitente VARCHAR, nomeMunicipioEmitente VARCHAR, codigoOrgaoDestinatario VARCHAR, nomeOrgaoDestinatario
+          VARCHAR, codigoOrgaoSuperiorDestinatario VARCHAR, nomeOrgaoSuperiorDestinatario VARCHAR, valorNotaFiscal VARCHAR, tipoEventoMaisRecente
+          VARCHAR, dataTipoEventoMaisRecente VARCHAR, dataInclusao TIMESTAMP, dataAtualizacao TIMESTAMP, itens STRUCT(numeroItem VARCHAR, descricaoProdutoServico
+          VARCHAR, codigoNCM VARCHAR, descricaoNCM VARCHAR, cfop VARCHAR, quantidade VARCHAR, unidade VARCHAR, valorUnitario VARCHAR, valorTotal
+          VARCHAR)[], eventos VARCHAR[])', nulos_pct: 66.88, distintos_aprox: 102155, min: '{''instrumentoCobrancaId'': 1, ''chave'': 15250126174873000104550030000010201651717123,
+          ''nfTransparenciaID'': 247180205, ''num…', max: '{''instrumentoCobrancaId'': 2770773, ''chave'': 43260913083475000130550010000004901000004963,
+          ''nfTransparenciaID'': 249776979…'}
+      dataInclusao: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 321520, min: '2025-03-21 07:21:57', max: '2026-09-30 23:41:32'}
+      dataAtualizacao: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 336611, min: '2025-03-21 07:21:57', max: '2026-10-15 14:28:01'}
+      recuperarContratoDTO: {tipo: 'STRUCT(codigoPaisFornecedor VARCHAR, numeroControlePncpCompra VARCHAR, numeroControlePncpAta VARCHAR, orgaoEntidade
+          STRUCT(cnpj VARCHAR, razaoSocial VARCHAR, poderId VARCHAR, esferaId VARCHAR), anoContrato BIGINT, sequencialContrato BIGINT, dataAtualizacao
+          TIMESTAMP, tipoPessoa VARCHAR, niFornecedor VARCHAR, nomeRazaoSocialFornecedor VARCHAR, receita BOOLEAN, numeroParcelas BIGINT, numeroRetificacao
+          BIGINT, temRemanejamento BOOLEAN, frutoAdesao BOOLEAN, tipoContrato STRUCT(id BIGINT, nome VARCHAR), numeroContratoEmpenho VARCHAR,
+          categoriaProcesso STRUCT(id BIGINT, nome VARCHAR), tipoPessoaSubContratada VARCHAR, niFornecedorSubContratado VARCHAR, nomeFornecedorSubContratado
+          VARCHAR, objetoContrato VARCHAR, valorInicial DOUBLE, valorParcela DOUBLE, valorGlobal DOUBLE, valorAcumulado DOUBLE, dataAssinatura
+          DATE, dataVigenciaInicio DATE, dataVigenciaFim DATE, identificadorCipi VARCHAR, urlCipi VARCHAR, numeroControlePNCP VARCHAR, emendaParlamentar
+          BOOLEAN, processo VARCHAR, informacaoComplementar VARCHAR, dataPublicacaoPncp TIMESTAMP, dataAtualizacaoGlobal TIMESTAMP, unidadeOrgao
+          STRUCT(ufNome VARCHAR, ufSigla VARCHAR, municipioNome VARCHAR, codigoUnidade VARCHAR, nomeUnidade VARCHAR, codigoIbge VARCHAR), orgaoSubRogado
+          STRUCT(cnpj VARCHAR, razaoSocial VARCHAR, poderId VARCHAR, esferaId VARCHAR), unidadeSubRogada STRUCT(ufNome VARCHAR, ufSigla VARCHAR,
+          municipioNome VARCHAR, codigoUnidade VARCHAR, nomeUnidade VARCHAR, codigoIbge VARCHAR), usuarioNome VARCHAR)', nulos_pct: 0, distintos_aprox: 118350,
+        min: '{''codigoPaisFornecedor'': ARG, ''numeroControlePncpCompra'': 00396895000125-1-000528/2025, ''numeroControlePncpAta'': NULL, ''…',
+        max: '{''codigoPaisFornecedor'': NULL, ''numeroControlePncpCompra'': 95782785000108-1-000001/2024, ''numeroControlePncpAta'': NULL, …'}

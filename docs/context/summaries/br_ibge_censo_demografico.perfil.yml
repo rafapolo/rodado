@@ -1,5 +1,5 @@
 dataset: br_ibge_censo_demografico
-gerado_em: '2026-10-27'
+gerado_em: '2026-10-28'
 gerado_por: scripts/gera_perfil.py — não edite à mão
 tabelas:
   microdados_domicilio_1970:
@@ -23,8 +23,8 @@ tabelas:
         - [GB, 107944]
         - [CE, 94185]
         - [SC, 59344]
-      id_municipio: {tipo: VARCHAR, nulos_pct: 1.03, distintos_aprox: 4188}
-      id_domicilio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 667420}
+      id_municipio: {tipo: VARCHAR, nulos_pct: 1.03, distintos_aprox: 4188, min: '1100106', max: '5300108'}
+      id_domicilio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 667420, min: '1', max: '99999'}
       numero_familia: {tipo: BIGINT, nulos_pct: 0, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
       v001: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 413, min: '001', max: '941'}
       v002: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 362, min: '001', max: '929'}
@@ -131,8 +131,8 @@ tabelas:
         - ['3', 210970]
         - ['2', 158901]
         - ['0', 755]
-        - ['9', 1]
         - [null, 1]
+        - ['9', 1]
       v012:
         tipo: VARCHAR
         nulos_pct: 0
@@ -146,9 +146,9 @@ tabelas:
         - ['3', 118258]
         - ['2', 109424]
         - ['0', 36]
+        - [null, 1]
         - ['7', 1]
         - ['9', 1]
-        - [null, 1]
       v013:
         tipo: VARCHAR
         nulos_pct: 0
@@ -173,8 +173,8 @@ tabelas:
         - ['2', 1105141]
         - ['1', 962777]
         - ['0', 37]
-        - ['9', 1]
         - [null, 1]
+        - ['9', 1]
       v015:
         tipo: VARCHAR
         nulos_pct: 0
@@ -315,8 +315,8 @@ tabelas:
         - [CE, 67995]
         - [GO, 59937]
         - [MA, 58716]
-      id_municipio: {tipo: VARCHAR, nulos_pct: 0.47, distintos_aprox: 4188}
-      id_distrito: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4345}
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0.47, distintos_aprox: 4188, min: '1100023', max: '5300108'}
+      id_distrito: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4345, min: '.050000001', max: '530010816'}
       v201:
         tipo: VARCHAR
         nulos_pct: 0
@@ -620,8 +620,8 @@ tabelas:
         - [CE, 77278]
         - [SC, 71891]
         - [GO, 63213]
-      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5485}
-      id_questionario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2603226}
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5485, min: '1100015', max: '5300108'}
+      id_questionario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2603226, min: '110001004', max: '530237150'}
       peso_amostral:
         tipo: DOUBLE
         nulos_pct: 0
@@ -630,7 +630,7 @@ tabelas:
         max: '90.52257032'
         media: 8.792
         quartis: [5.4485, 8.0818, 11.2151]
-      v0109: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2744}
+      v0109: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2744, min: '1', max: '9995'}
       v1061:
         tipo: VARCHAR
         nulos_pct: 0
@@ -1207,9 +1207,9 @@ tabelas:
         - ['5', 33339]
         - ['7', 30571]
         - ['28', 27348]
-      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6050}
-      id_distrito: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5501}
-      id_subdistrito: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7060}
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6050, min: '1100015', max: '5300108'}
+      id_distrito: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5501, min: '110001505', max: '530010805'}
+      id_subdistrito: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7060, min: '11000150599', max: '53001080530'}
       controle:
         tipo: BIGINT
         nulos_pct: 0
@@ -1903,7 +1903,7 @@ tabelas:
         - ['40', 24843]
         - ['7', 24431]
         - ['23', 22883]
-      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859, min: '1100015', max: '5300108'}
       situacao_setor:
         tipo: BIGINT
         nulos_pct: 100
@@ -1988,7 +1988,7 @@ tabelas:
         - ['4', 63835]
         - [null, 21979]
         - ['6', 11853]
-      v2011: {tipo: VARCHAR, nulos_pct: 84.19, distintos_aprox: 1120}
+      v2011: {tipo: VARCHAR, nulos_pct: 84.19, distintos_aprox: 1120, min: '1', max: '999'}
       v2012:
         tipo: DOUBLE
         nulos_pct: 84.19
@@ -3686,10 +3686,8 @@ tabelas:
         - [BIGINT, 33]
         - [DOUBLE, 7]
       descricao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 244, min: 'Abastecimento de água do domicílio, categoria 1 - Rede geral de distribuição
-          2 - Poço Profundo ou artesiano 3 - Poço Raso, freático ou cacimba 4 - Fonte, nascente ou mina 5 - Carro-pipa 6 - Água da chuva armazenada
-          7 - Rios, açudes, córregos, lagos e igarapés 8 - Outra Branco', max: 'Último ano concluído com aprovação no curso frequentado anteriormente
-          da pessoa, categoria 01 - Nenhum 02 - Primeiro 03 - Segundo 04 - Terceiro 05 - Quarto 06 - Quinto 07 - Sexto 08 - Sétimo 09 - Oitavo
-          10 - Nono 11 - Curso não era classificado em anos 99 - Ignorado Branco'}
+          2 - Poço Profundo ou artesiano 3 - Poço Ras…', max: 'Último ano concluído com aprovação no curso frequentado anteriormente da pessoa,
+          categoria 01 - Nenhum 02 - Primeiro 03 …'}
   microdados_mortalidade_2022:
     linhas: 430961
     fonte_do_perfil: tabela inteira
@@ -3747,7 +3745,7 @@ tabelas:
         min: '13'
         max: '7806704'
         media: 3900532.8312
-        quartis: [1943548, 3898865, 5859492]
+        quartis: [1942814, 3897716, 5860839]
       numero_ordem_falecido: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 15, pessoal: 'só contagens: valores seriam dado pessoal'}
       peso_amostral:
         tipo: DOUBLE
@@ -3756,7 +3754,7 @@ tabelas:
         min: '1.0000000000002'
         max: '88.1259079904315'
         media: 9.3441
-        quartis: [4.3598, 8.4648, 11.7347]
+        quartis: [4.3601, 8.4585, 11.7355]
       m0120:
         tipo: VARCHAR
         nulos_pct: 0
@@ -3876,10 +3874,10 @@ tabelas:
         - [CE, 114622]
         - [GB, 91918]
         - [SC, 76101]
-      id_municipio: {tipo: VARCHAR, nulos_pct: 0.91, distintos_aprox: 4188}
-      id_domicilio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 653897}
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0.91, distintos_aprox: 4188, min: '1100106', max: '5300108'}
+      id_domicilio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 653897, min: '1', max: '99999'}
       numero_familia: {tipo: BIGINT, nulos_pct: 1.39, distintos_aprox: 4, pessoal: 'só contagens: valores seriam dado pessoal'}
-      ordem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1367}
+      ordem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1367, min: '1', max: '999'}
       v001: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 413, min: '001', max: '941'}
       v002: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 362, min: '001', max: '929'}
       v003: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 58, min: '1', max: '90'}
@@ -4345,7 +4343,7 @@ tabelas:
         - [CE, 95172]
         - [MA, 69602]
         - [GO, 68627]
-      id_municipio: {tipo: VARCHAR, nulos_pct: 0.62, distintos_aprox: 4188}
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0.62, distintos_aprox: 4188, min: '1100023', max: '5300108'}
       numero_ordem: {tipo: BIGINT, nulos_pct: 0, distintos_aprox: 24, pessoal: 'só contagens: valores seriam dado pessoal'}
       v211:
         tipo: BIGINT
@@ -4694,7 +4692,7 @@ tabelas:
         - ['6', 34135]
         - [null, 24408]
         - ['7', 6694]
-      v527: {tipo: VARCHAR, nulos_pct: 1.16, distintos_aprox: 2699}
+      v527: {tipo: VARCHAR, nulos_pct: 1.16, distintos_aprox: 2699, min: '0', max: '8000002'}
       v528:
         tipo: VARCHAR
         nulos_pct: 0.03
@@ -5097,8 +5095,8 @@ tabelas:
         - [CE, 88087]
         - [SC, 70233]
         - [PA, 65141]
-      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5485}
-      id_questionario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1247750}
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5485, min: '1100015', max: '5300108'}
+      id_questionario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1247750, min: '110001002', max: '530237159'}
       numero_ordem: {tipo: BIGINT, nulos_pct: 0, distintos_aprox: 29, pessoal: 'só contagens: valores seriam dado pessoal'}
       v0301:
         tipo: VARCHAR
@@ -5458,7 +5456,7 @@ tabelas:
         - ['26', 18818]
         - ['23', 16127]
         - ['52', 15054]
-      v3191: {tipo: VARCHAR, nulos_pct: 81.93, distintos_aprox: 1161}
+      v3191: {tipo: VARCHAR, nulos_pct: 81.93, distintos_aprox: 1161, min: '0', max: '9999'}
       v0320:
         tipo: BIGINT
         nulos_pct: 81.93
@@ -5489,7 +5487,7 @@ tabelas:
         - ['26', 9829]
         - ['33', 9537]
         - ['23', 8500]
-      v3211: {tipo: VARCHAR, nulos_pct: 63.08, distintos_aprox: 1161}
+      v3211: {tipo: VARCHAR, nulos_pct: 63.08, distintos_aprox: 1161, min: '0', max: '995'}
       v0322:
         tipo: VARCHAR
         nulos_pct: 90.55
@@ -6432,9 +6430,9 @@ tabelas:
         - ['3', 31392]
         - ['28', 30658]
         - ['17', 29416]
-      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6050}
-      id_distrito: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5501}
-      id_subdistrito: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7060}
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6050, min: '1100015', max: '5300108'}
+      id_distrito: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5501, min: '110001505', max: '530010805'}
+      id_subdistrito: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 7060, min: '11000150599', max: '53001080530'}
       controle:
         tipo: BIGINT
         nulos_pct: 0
@@ -6787,9 +6785,9 @@ tabelas:
         - ['4', 43888]
         - ['6', 16354]
         - ['5', 1729]
-      v4250: {tipo: VARCHAR, nulos_pct: 90.95, distintos_aprox: 6050}
+      v4250: {tipo: VARCHAR, nulos_pct: 90.95, distintos_aprox: 6050, min: '1100001', max: '5400007'}
       v4260: {tipo: VARCHAR, nulos_pct: 90.87, distintos_aprox: 82, min: '1', max: '99'}
-      v4276: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5293}
+      v4276: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5293, min: '100008', max: '8000986'}
       v0428:
         tipo: VARCHAR
         nulos_pct: 0
@@ -7516,7 +7514,2478 @@ tabelas:
         - ['724', 16]
       v4451: {tipo: VARCHAR, nulos_pct: 61.72, distintos_aprox: 379, min: '0', max: '999'}
       v4461: {tipo: VARCHAR, nulos_pct: 61.72, distintos_aprox: 144, min: '100', max: '999'}
-  microdados_pessoa_2010: {linhas: 20635472, erro: 'duckdb saiu com 255 sem mensagem (memória?)'}
+  microdados_pessoa_2010:
+    linhas: 20635472
+    fonte_do_perfil: amostra de 9.692%. ~2.000.000 linhas
+    colunas:
+      id_regiao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '1'
+        max: '5'
+        top:
+        - ['3', 791987]
+        - ['2', 628089]
+        - ['4', 364137]
+        - ['1', 176411]
+        - ['5', 153431]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 376949]
+        - [MG, 257116]
+        - [BA, 158328]
+        - [RS, 142043]
+        - [PR, 132829]
+        - [RJ, 116919]
+        - [PE, 90793]
+        - [SC, 89265]
+        - [CE, 85621]
+        - [MA, 80996]
+      id_mesorregiao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 16
+        min: '1'
+        max: '9'
+        top:
+        - ['3', 329569]
+        - ['1', 310924]
+        - ['2', 266604]
+        - ['4', 246178]
+        - ['5', 215478]
+        - ['6', 199737]
+        - ['7', 145930]
+        - ['15', 139972]
+        - ['10', 76626]
+        - ['12', 59330]
+      id_microrregiao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 68, min: '1', max: '9'}
+      id_regiao_metropolitana:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 46
+        min: '0'
+        max: '9'
+        top:
+        - ['0', 1420519]
+        - ['20', 125333]
+        - ['19', 71239]
+        - ['16', 41510]
+        - ['34', 33882]
+        - ['11', 26342]
+        - ['23', 24638]
+        - ['40', 24488]
+        - ['7', 23761]
+        - ['15', 23324]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859, min: '1100015', max: '5300108'}
+      area_ponderacao:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 14397
+        min: '1100015001001'
+        max: '5300108005051'
+        media: 3230293598295.5093
+        quartis: [2606355323681, 3177659787063, 3643840713374]
+      situacao_setor:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2114055]
+      situacao_domicilio:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        media: 1.2329
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 1621682]
+        - ['2', 492373]
+      controle:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1862997
+        min: '1'
+        max: '6192328'
+        media: 3095412.4029
+        quartis: [1544716, 3093690, 4646383]
+      numero_ordem: {tipo: BIGINT, nulos_pct: 0, distintos_aprox: 43, pessoal: 'só contagens: valores seriam dado pessoal'}
+      peso_amostral:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 1937563
+        min: '1.0000000000002'
+        max: '105.680103451216'
+        media: 9.2547
+        quartis: [4.6842, 8.5391, 11.6424]
+      v0502:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 22
+        min: '1'
+        max: '9'
+        top:
+        - ['1', 631761]
+        - ['4', 546637]
+        - ['2', 424822]
+        - ['5', 216079]
+        - ['10', 101359]
+        - ['14', 38204]
+        - ['6', 34292]
+        - ['12', 33688]
+        - ['8', 27910]
+        - ['7', 23419]
+      v0601:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 1058086]
+        - ['2', 1055969]
+      v6033:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 137
+        min: '1'
+        max: '911'
+        media: 45.0851
+        quartis: [15, 29, 47]
+      v6036:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 133
+        min: '0'
+        max: '132'
+        media: 31.4042
+        quartis: [14, 29, 46]
+      v6037:
+        tipo: BIGINT
+        nulos_pct: 98.49
+        distintos_aprox: 13
+        min: '0'
+        max: '11'
+        media: 5.547
+        quartis: [3, 6, 9]
+        top:
+        - [null, 2082116]
+        - ['10', 2868]
+        - ['7', 2800]
+        - ['9', 2775]
+        - ['4', 2766]
+        - ['1', 2708]
+        - ['3', 2658]
+        - ['8', 2639]
+        - ['11', 2619]
+        - ['2', 2613]
+      v6040:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 2015230]
+        - ['2', 98825]
+      v0606:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '1'
+        max: '9'
+        top:
+        - ['1', 993962]
+        - ['4', 937469]
+        - ['2', 149192]
+        - ['3', 21756]
+        - ['5', 11398]
+        - ['9', 278]
+      v0613:
+        tipo: VARCHAR
+        nulos_pct: 82.02
+        distintos_aprox: 5
+        min: '1'
+        max: '9'
+        top:
+        - [null, 1733911]
+        - ['1', 373672]
+        - ['2', 3215]
+        - ['4', 2108]
+        - ['3', 797]
+        - ['5', 307]
+        - ['9', 45]
+      v0614:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '1'
+        max: '9'
+        top:
+        - ['4', 1720854]
+        - ['3', 318736]
+        - ['2', 68898]
+        - ['1', 4998]
+        - ['9', 569]
+      v0615:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '1'
+        max: '9'
+        top:
+        - ['4', 2003964]
+        - ['3', 85190]
+        - ['2', 20967]
+        - ['1', 3553]
+        - ['9', 381]
+      v0616:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '1'
+        max: '9'
+        top:
+        - ['4', 1964963]
+        - ['3', 98934]
+        - ['2', 41774]
+        - ['1', 7975]
+        - ['9', 409]
+      v0617:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 2084154]
+        - ['1', 29540]
+        - ['9', 361]
+      v0618:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - ['1', 1250427]
+        - ['3', 779205]
+        - ['2', 84423]
+      v0619:
+        tipo: VARCHAR
+        nulos_pct: 63.14
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - [null, 1334850]
+        - ['1', 464614]
+        - ['3', 280243]
+        - ['2', 34348]
+      v0620:
+        tipo: VARCHAR
+        nulos_pct: 86.74
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - [null, 1833812]
+        - ['1', 275427]
+        - ['3', 3346]
+        - ['2', 1470]
+      v0621:
+        tipo: BIGINT
+        nulos_pct: 99.77
+        distintos_aprox: 98
+        min: '1911'
+        max: '2010'
+        media: 1979.0494
+        quartis: [1957, 1980, 2003]
+      v0622:
+        tipo: VARCHAR
+        nulos_pct: 86.74
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 1833812]
+        - ['1', 275427]
+        - ['2', 4816]
+      v6222:
+        tipo: VARCHAR
+        nulos_pct: 86.97
+        distintos_aprox: 27
+        min: '1100000'
+        max: '9900000'
+        top:
+        - [null, 1838628]
+        - ['3100000', 35780]
+        - ['3500000', 28668]
+        - ['2900000', 27750]
+        - ['4100000', 25602]
+        - ['2600000', 17674]
+        - ['2100000', 16049]
+        - ['4300000', 14135]
+        - ['2300000', 13572]
+        - ['2500000', 10078]
+      v6224: {tipo: VARCHAR, nulos_pct: 99.77, distintos_aprox: 83, min: '8000012', max: '8000999'}
+      v0623:
+        tipo: BIGINT
+        nulos_pct: 81.13
+        distintos_aprox: 102
+        min: '0'
+        max: '101'
+        media: 20.6983
+        quartis: [6, 17, 30]
+      v0624:
+        tipo: BIGINT
+        nulos_pct: 59.15
+        distintos_aprox: 98
+        min: '0'
+        max: '108'
+        media: 16.8489
+        quartis: [4, 13, 25]
+      v0625:
+        tipo: VARCHAR
+        nulos_pct: 84.1
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 1777820]
+        - ['1', 331969]
+        - ['2', 4266]
+      v6252:
+        tipo: VARCHAR
+        nulos_pct: 84.3
+        distintos_aprox: 28
+        min: '1100000'
+        max: '9900000'
+        top:
+        - [null, 1782086]
+        - ['3500000', 58014]
+        - ['3100000', 33619]
+        - ['4100000', 23408]
+        - ['4300000', 22680]
+        - ['2900000', 22036]
+        - ['8888888', 17372]
+        - ['3300000', 14079]
+        - ['4200000', 14055]
+        - ['5200000', 12718]
+      v6254: {tipo: VARCHAR, nulos_pct: 84.3, distintos_aprox: 6859, min: '1100015', max: '9999999'}
+      v6256: {tipo: VARCHAR, nulos_pct: 99.8, distintos_aprox: 97, min: '8000008', max: '8000999'}
+      v0626:
+        tipo: VARCHAR
+        nulos_pct: 89.81
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 1898626]
+        - ['1', 212846]
+        - ['2', 2583]
+      v6262:
+        tipo: VARCHAR
+        nulos_pct: 89.93
+        distintos_aprox: 28
+        min: '1100000'
+        max: '9900000'
+        top:
+        - [null, 1901209]
+        - ['3500000', 37368]
+        - ['3100000', 21800]
+        - ['4100000', 15004]
+        - ['4300000', 14643]
+        - ['2900000', 13925]
+        - ['4200000', 9602]
+        - ['3300000', 9131]
+        - ['8888888', 9092]
+        - ['5200000', 8752]
+      v6264: {tipo: VARCHAR, nulos_pct: 89.94, distintos_aprox: 6859, min: '1100015', max: '9999999'}
+      v6266: {tipo: VARCHAR, nulos_pct: 99.88, distintos_aprox: 79, min: '8000008', max: '8000998'}
+      v0627:
+        tipo: VARCHAR
+        nulos_pct: 7.73
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 1701019]
+        - ['2', 249680]
+        - [null, 163356]
+      v0628:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        top:
+        - ['3', 1229978]
+        - ['1', 539269]
+        - ['4', 235565]
+        - ['2', 109243]
+      v0629:
+        tipo: VARCHAR
+        nulos_pct: 69.32
+        distintos_aprox: 12
+        min: '1'
+        max: '9'
+        top:
+        - [null, 1465543]
+        - ['5', 328610]
+        - ['7', 91723]
+        - ['2', 58726]
+        - ['9', 55519]
+        - ['3', 33446]
+        - ['1', 24475]
+        - ['6', 19595]
+        - ['8', 17448]
+        - ['4', 11209]
+      v0630:
+        tipo: VARCHAR
+        nulos_pct: 84.46
+        distintos_aprox: 10
+        min: '1'
+        max: '9'
+        top:
+        - [null, 1785445]
+        - ['6', 46334]
+        - ['5', 44615]
+        - ['4', 42577]
+        - ['7', 39430]
+        - ['3', 37731]
+        - ['9', 35448]
+        - ['8', 33403]
+        - ['2', 29005]
+        - ['1', 18545]
+      v0631:
+        tipo: VARCHAR
+        nulos_pct: 95.66
+        distintos_aprox: 5
+        min: '1'
+        max: '5'
+        top:
+        - [null, 2022332]
+        - ['1', 31342]
+        - ['2', 24290]
+        - ['3', 22516]
+        - ['5', 9251]
+        - ['4', 4324]
+      v0632:
+        tipo: VARCHAR
+        nulos_pct: 97.37
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 2058536]
+        - ['2', 50187]
+        - ['1', 5332]
+      v0633:
+        tipo: VARCHAR
+        nulos_pct: 41.82
+        distintos_aprox: 14
+        min: '1'
+        max: '9'
+        top:
+        - [null, 884077]
+        - ['10', 344379]
+        - ['7', 242926]
+        - ['5', 194683]
+        - ['6', 116384]
+        - ['3', 107732]
+        - ['11', 102529]
+        - ['8', 30040]
+        - ['2', 22015]
+        - ['1', 18421]
+      v0634:
+        tipo: VARCHAR
+        nulos_pct: 56.53
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 1195144]
+        - ['1', 578577]
+        - ['2', 340334]
+      v0635:
+        tipo: VARCHAR
+        nulos_pct: 94.56
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - [null, 1999010]
+        - ['1', 109449]
+        - ['2', 4027]
+        - ['3', 1569]
+      v6400:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '1'
+        max: '5'
+        top:
+        - ['1', 1325257]
+        - ['3', 367410]
+        - ['2', 297092]
+        - ['4', 115045]
+        - ['5', 9251]
+      v6352: {tipo: VARCHAR, nulos_pct: 94.82, distintos_aprox: 84, min: '140', max: '863'}
+      v6354: {tipo: VARCHAR, nulos_pct: 99.81, distintos_aprox: 70, min: '142', max: '97'}
+      v6356: {tipo: VARCHAR, nulos_pct: 99.93, distintos_aprox: 65, min: '142', max: '97'}
+      v0636:
+        tipo: VARCHAR
+        nulos_pct: 69.32
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - [null, 1465543]
+        - ['1', 596070]
+        - ['2', 52139]
+        - ['3', 303]
+      v6362:
+        tipo: VARCHAR
+        nulos_pct: 97.53
+        distintos_aprox: 28
+        min: '1100000'
+        max: '9900000'
+        top:
+        - [null, 2061916]
+        - ['3500000', 9932]
+        - ['3100000', 6025]
+        - ['4300000', 4159]
+        - ['4100000', 3717]
+        - ['2900000', 3012]
+        - ['4200000', 2766]
+        - ['3300000', 2694]
+        - ['2600000', 2580]
+        - ['2500000', 1801]
+      v6364: {tipo: VARCHAR, nulos_pct: 97.54, distintos_aprox: 5388, min: '1100015', max: '9999999'}
+      v6366:
+        tipo: VARCHAR
+        nulos_pct: 99.99
+        distintos_aprox: 32
+        min: '8000032'
+        max: '8000858'
+        top:
+        - [null, 2113752]
+        - ['8000858', 56]
+        - ['8000600', 43]
+        - ['8000068', 42]
+        - ['8000840', 28]
+        - ['8000620', 25]
+        - ['8000032', 20]
+        - ['8000724', 16]
+        - ['8000392', 11]
+        - ['8000170', 8]
+      v0637:
+        tipo: VARCHAR
+        nulos_pct: 16.17
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - ['1', 914975]
+        - ['3', 609000]
+        - [null, 341745]
+        - ['2', 248335]
+      v0638:
+        tipo: BIGINT
+        nulos_pct: 98.48
+        distintos_aprox: 20
+        min: '1'
+        max: '99'
+        media: 3.5875
+        quartis: [3, 3, 4]
+        top:
+        - [null, 2081923]
+        - ['3', 10214]
+        - ['4', 8588]
+        - ['2', 5697]
+        - ['5', 3528]
+        - ['6', 1546]
+        - ['1', 1217]
+        - ['7', 705]
+        - ['8', 321]
+        - ['9', 167]
+      v0639:
+        tipo: VARCHAR
+        nulos_pct: 56.72
+        distintos_aprox: 4
+        min: '1'
+        max: '4'
+        top:
+        - [null, 1199080]
+        - ['1', 400476]
+        - ['4', 326518]
+        - ['2', 149634]
+        - ['3', 38347]
+      v0640:
+        tipo: VARCHAR
+        nulos_pct: 16.17
+        distintos_aprox: 5
+        min: '1'
+        max: '5'
+        top:
+        - ['5', 970019]
+        - ['1', 634918]
+        - [null, 341745]
+        - ['4', 88597]
+        - ['3', 49059]
+        - ['2', 29717]
+      v0641:
+        tipo: VARCHAR
+        nulos_pct: 16.17
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 939040]
+        - ['1', 833270]
+        - [null, 341745]
+      v0642:
+        tipo: VARCHAR
+        nulos_pct: 55.58
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 1175015]
+        - ['2', 904868]
+        - ['1', 34172]
+      v0643:
+        tipo: VARCHAR
+        nulos_pct: 57.2
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 1209187]
+        - ['2', 883134]
+        - ['1', 21734]
+      v0644:
+        tipo: VARCHAR
+        nulos_pct: 58.23
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 1230921]
+        - ['2', 825882]
+        - ['1', 57252]
+      v0645:
+        tipo: VARCHAR
+        nulos_pct: 57.94
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 1224879]
+        - ['1', 850402]
+        - ['2', 38774]
+      v6461: {tipo: VARCHAR, nulos_pct: 55.23, distintos_aprox: 499, min: '0', max: '999'}
+      v6471: {tipo: VARCHAR, nulos_pct: 55.23, distintos_aprox: 247, min: '0', max: '99000'}
+      v0648:
+        tipo: VARCHAR
+        nulos_pct: 57.94
+        distintos_aprox: 7
+        min: '1'
+        max: '7'
+        top:
+        - [null, 1224879]
+        - ['1', 378350]
+        - ['5', 213697]
+        - ['4', 209702]
+        - ['3', 46671]
+        - ['7', 19680]
+        - ['6', 17138]
+        - ['2', 3938]
+      v0649:
+        tipo: VARCHAR
+        nulos_pct: 99.19
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 2096917]
+        - ['1', 11274]
+        - ['2', 5864]
+      v0650:
+        tipo: VARCHAR
+        nulos_pct: 79.14
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - [null, 1673075]
+        - ['3', 346676]
+        - ['1', 93403]
+        - ['2', 901]
+      v0651:
+        tipo: VARCHAR
+        nulos_pct: 58.85
+        distintos_aprox: 3
+        min: '0'
+        max: '2'
+        top:
+        - [null, 1244116]
+        - ['1', 858999]
+        - ['2', 10497]
+        - ['0', 443]
+      v6511:
+        tipo: BIGINT
+        nulos_pct: 58.85
+        distintos_aprox: 3273
+        min: '0'
+        max: '952513'
+        media: 1107.8467
+        quartis: [510, 628, 1041]
+      v6513:
+        tipo: BIGINT
+        nulos_pct: 55.23
+        distintos_aprox: 3273
+        min: '0'
+        max: '952513'
+        media: 1018.312
+        quartis: [400, 600, 1002]
+      v6514:
+        tipo: DOUBLE
+        nulos_pct: 55.23
+        distintos_aprox: 1288
+        min: '0.0'
+        max: '1867.67'
+        media: 1.9964
+        quartis: [0.7807, 1.18, 1.9633]
+      v0652:
+        tipo: VARCHAR
+        nulos_pct: 98.17
+        distintos_aprox: 3
+        min: '0'
+        max: '2'
+        top:
+        - [null, 2075281]
+        - ['1', 31604]
+        - ['0', 5790]
+        - ['2', 1380]
+      v6521:
+        tipo: BIGINT
+        nulos_pct: 98.17
+        distintos_aprox: 895
+        min: '0'
+        max: '954010'
+        media: 990.4408
+        quartis: [133, 509, 1000]
+      v6524:
+        tipo: BIGINT
+        nulos_pct: 99.53
+        distintos_aprox: 10
+        min: '0'
+        max: '20'
+        media: 0.3363
+        quartis: [0, 0, 1]
+        top:
+        - [null, 2104089]
+        - ['0', 7170]
+        - ['1', 2490]
+        - ['2', 239]
+        - ['3', 31]
+        - ['10', 14]
+        - ['5', 11]
+        - ['4', 6]
+        - ['20', 3]
+        - ['6', 2]
+      v6525:
+        tipo: BIGINT
+        nulos_pct: 55.23
+        distintos_aprox: 4005
+        min: '0'
+        max: '1906523'
+        media: 1058.8892
+        quartis: [398, 600, 1011]
+      v6526:
+        tipo: DOUBLE
+        nulos_pct: 55.23
+        distintos_aprox: 3591
+        min: '0.0'
+        max: '3738.28039'
+        media: 2.0763
+        quartis: [0.7813, 1.1765, 1.9815]
+      v6527:
+        tipo: BIGINT
+        nulos_pct: 16.17
+        distintos_aprox: 5655
+        min: '0'
+        max: '1906523'
+        media: 764.7644
+        quartis: [0, 510, 800]
+      v6528:
+        tipo: DOUBLE
+        nulos_pct: 16.17
+        distintos_aprox: 5127
+        min: '0.0'
+        max: '3738.28039'
+        media: 1.4995
+        quartis: [0, 0.9993, 1.569]
+      v6529:
+        tipo: BIGINT
+        nulos_pct: 0.33
+        distintos_aprox: 11865
+        min: '0'
+        max: '2006523'
+        media: 2220.3221
+        quartis: [646, 1285, 2394]
+      v6530:
+        tipo: DOUBLE
+        nulos_pct: 0.33
+        distintos_aprox: 13432
+        min: '0.0'
+        max: '3934.35882'
+        media: 4.3536
+        quartis: [1.2664, 2.5194, 4.6949]
+      v6531:
+        tipo: BIGINT
+        nulos_pct: 41.06
+        distintos_aprox: 5137
+        min: '0'
+        max: '975000'
+        media: 737.8026
+        quartis: [200, 404, 742]
+      v6532:
+        tipo: DOUBLE
+        nulos_pct: 0.33
+        distintos_aprox: 39792
+        min: '0.0'
+        max: '1911.76471'
+        media: 1.2569
+        quartis: [0.3299, 0.6797, 1.2817]
+      v0653:
+        tipo: BIGINT
+        nulos_pct: 55.23
+        distintos_aprox: 138
+        min: '1'
+        max: '140'
+        media: 39.6789
+        quartis: [36, 40, 48]
+      v0654:
+        tipo: VARCHAR
+        nulos_pct: 60.93
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 1288173]
+        - ['2', 751846]
+        - ['1', 74036]
+      v0655:
+        tipo: VARCHAR
+        nulos_pct: 96.5
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 2040019]
+        - ['1', 70871]
+        - ['2', 3165]
+      v0656:
+        tipo: VARCHAR
+        nulos_pct: 16.17
+        distintos_aprox: 3
+        min: '0'
+        max: '9'
+        top:
+        - ['0', 1505432]
+        - [null, 341745]
+        - ['1', 265795]
+        - ['9', 1083]
+      v0657:
+        tipo: VARCHAR
+        nulos_pct: 16.17
+        distintos_aprox: 3
+        min: '0'
+        max: '9'
+        top:
+        - ['0', 1633252]
+        - [null, 341745]
+        - ['1', 137975]
+        - ['9', 1083]
+      v0658:
+        tipo: VARCHAR
+        nulos_pct: 16.17
+        distintos_aprox: 3
+        min: '0'
+        max: '9'
+        top:
+        - ['0', 1730427]
+        - [null, 341745]
+        - ['1', 40800]
+        - ['9', 1083]
+      v0659:
+        tipo: VARCHAR
+        nulos_pct: 16.17
+        distintos_aprox: 3
+        min: '0'
+        max: '9'
+        top:
+        - ['0', 1694095]
+        - [null, 341745]
+        - ['1', 77132]
+        - ['9', 1083]
+      v6591:
+        tipo: BIGINT
+        nulos_pct: 16.17
+        distintos_aprox: 3121
+        min: '0'
+        max: '937000'
+        media: 199.309
+        quartis: [0, 0, 45]
+      v0660:
+        tipo: VARCHAR
+        nulos_pct: 55.23
+        distintos_aprox: 5
+        min: '1'
+        max: '5'
+        top:
+        - [null, 1167627]
+        - ['2', 601147]
+        - ['1', 221107]
+        - ['3', 112988]
+        - ['5', 10779]
+        - ['4', 407]
+      v6602:
+        tipo: VARCHAR
+        nulos_pct: 94.66
+        distintos_aprox: 27
+        min: '1100000'
+        max: '9900000'
+        top:
+        - [null, 2001067]
+        - ['3500000', 32694]
+        - ['3100000', 11840]
+        - ['3300000', 10221]
+        - ['4300000', 8182]
+        - ['4100000', 7564]
+        - ['4200000', 5271]
+        - ['2600000', 5211]
+        - ['2900000', 4231]
+        - ['5200000', 3235]
+      v6604: {tipo: VARCHAR, nulos_pct: 94.66, distintos_aprox: 5806, min: '1100015', max: '9999999'}
+      v6606:
+        tipo: VARCHAR
+        nulos_pct: 99.98
+        distintos_aprox: 34
+        min: '8000024'
+        max: '8000999'
+        top:
+        - [null, 2113648]
+        - ['8000600', 136]
+        - ['8000858', 56]
+        - ['8000068', 25]
+        - ['8000032', 20]
+        - ['8000276', 19]
+        - ['8000840', 16]
+        - ['8000254', 15]
+        - ['8000392', 12]
+        - ['8000024', 11]
+      v0661:
+        tipo: VARCHAR
+        nulos_pct: 66.2
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 1399513]
+        - ['1', 666304]
+        - ['2', 48238]
+      v0662:
+        tipo: VARCHAR
+        nulos_pct: 68.48
+        distintos_aprox: 5
+        min: '1'
+        max: '5'
+        top:
+        - [null, 1447751]
+        - ['2', 365737]
+        - ['3', 130416]
+        - ['1', 111835]
+        - ['4', 48887]
+        - ['5', 9429]
+      v0663:
+        tipo: VARCHAR
+        nulos_pct: 57.98
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 1225770]
+        - ['1', 575509]
+        - ['2', 312776]
+      v6631:
+        tipo: BIGINT
+        nulos_pct: 72.78
+        distintos_aprox: 27
+        min: '0'
+        max: '30'
+        media: 1.6044
+        quartis: [1, 1, 2]
+        top:
+        - [null, 1538546]
+        - ['1', 216899]
+        - ['2', 125463]
+        - ['0', 121621]
+        - ['3', 55590]
+        - ['4', 25613]
+        - ['5', 14022]
+        - ['6', 7729]
+        - ['7', 4095]
+        - ['8', 2180]
+      v6632:
+        tipo: BIGINT
+        nulos_pct: 72.78
+        distintos_aprox: 27
+        min: '0'
+        max: '30'
+        media: 1.5493
+        quartis: [1, 1, 2]
+        top:
+        - [null, 1538546]
+        - ['1', 218792]
+        - ['0', 130731]
+        - ['2', 119944]
+        - ['3', 52894]
+        - ['4', 24355]
+        - ['5', 13108]
+        - ['6', 7519]
+        - ['7', 4008]
+        - ['8', 2036]
+      v6633:
+        tipo: BIGINT
+        nulos_pct: 57.98
+        distintos_aprox: 30
+        min: '0'
+        max: '31'
+        media: 2.0433
+        quartis: [0, 1, 3]
+        top:
+        - [null, 1225770]
+        - ['0', 312776]
+        - ['2', 151926]
+        - ['1', 139231]
+        - ['3', 124022]
+        - ['4', 56283]
+        - ['5', 28779]
+        - ['6', 20613]
+        - ['7', 14692]
+        - ['8', 12481]
+      v0664:
+        tipo: VARCHAR
+        nulos_pct: 72.78
+        distintos_aprox: 1
+        min: '1'
+        max: '1'
+        top:
+        - [null, 1538546]
+        - ['1', 575509]
+      v6641:
+        tipo: BIGINT
+        nulos_pct: 72.78
+        distintos_aprox: 22
+        min: '0'
+        max: '20'
+        media: 1.4704
+        quartis: [1, 1, 2]
+        top:
+        - [null, 1538546]
+        - ['1', 223415]
+        - ['0', 129220]
+        - ['2', 125822]
+        - ['3', 53580]
+        - ['4', 22850]
+        - ['5', 11268]
+        - ['6', 5385]
+        - ['7', 2373]
+        - ['8', 992]
+      v6642:
+        tipo: BIGINT
+        nulos_pct: 72.78
+        distintos_aprox: 21
+        min: '0'
+        max: '18'
+        media: 1.4469
+        quartis: [1, 1, 2]
+        top:
+        - [null, 1538546]
+        - ['1', 223178]
+        - ['0', 136545]
+        - ['2', 120095]
+        - ['3', 51591]
+        - ['4', 22756]
+        - ['5', 11506]
+        - ['6', 5573]
+        - ['7', 2553]
+        - ['8', 1067]
+      v6643:
+        tipo: BIGINT
+        nulos_pct: 72.78
+        distintos_aprox: 25
+        min: '0'
+        max: '31'
+        media: 2.9173
+        quartis: [1, 2, 4]
+        top:
+        - [null, 1538546]
+        - ['2', 159537]
+        - ['1', 144969]
+        - ['3', 123107]
+        - ['4', 54793]
+        - ['5', 29073]
+        - ['6', 20274]
+        - ['7', 14281]
+        - ['8', 10700]
+        - ['9', 6741]
+      v0665:
+        tipo: VARCHAR
+        nulos_pct: 72.78
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 1538546]
+        - ['1', 296285]
+        - ['2', 279224]
+      v6660:
+        tipo: BIGINT
+        nulos_pct: 72.78
+        distintos_aprox: 81
+        min: '0'
+        max: '82'
+        media: 16.2368
+        quartis: [5, 14, 25]
+      v6664:
+        tipo: VARCHAR
+        nulos_pct: 57.98
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - [null, 1225770]
+        - ['0', 857843]
+        - ['1', 30442]
+      v0667:
+        tipo: VARCHAR
+        nulos_pct: 72.78
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 1538546]
+        - ['1', 564571]
+        - ['2', 10938]
+      v0668:
+        tipo: VARCHAR
+        nulos_pct: 99.48
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 2103117]
+        - ['1', 7111]
+        - ['2', 3827]
+      v6681:
+        tipo: BIGINT
+        nulos_pct: 99.66
+        distintos_aprox: 14
+        min: '1'
+        max: '99'
+        media: 8.1125
+        quartis: [4, 7, 10]
+        top:
+        - [null, 2106945]
+        - ['5', 655]
+        - ['7', 645]
+        - ['6', 642]
+        - ['3', 601]
+        - ['8', 577]
+        - ['12', 566]
+        - ['11', 565]
+        - ['4', 559]
+        - ['1', 558]
+      v6682:
+        tipo: BIGINT
+        nulos_pct: 99.66
+        distintos_aprox: 76
+        min: '1937'
+        max: '9999'
+        media: 2135.9692
+        quartis: [1987, 1999, 2006]
+      v0669:
+        tipo: VARCHAR
+        nulos_pct: 57.98
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 1225770]
+        - ['2', 835558]
+        - ['1', 52727]
+      v6691:
+        tipo: BIGINT
+        nulos_pct: 97.7
+        distintos_aprox: 11
+        min: '0'
+        max: '9'
+        media: 0.9166
+        quartis: [0, 1, 1]
+        top:
+        - [null, 2065361]
+        - ['1', 26255]
+        - ['0', 14984]
+        - ['2', 5270]
+        - ['3', 1402]
+        - ['4', 482]
+        - ['5', 173]
+        - ['6', 73]
+        - ['7', 42]
+        - ['8', 8]
+      v6692:
+        tipo: BIGINT
+        nulos_pct: 97.7
+        distintos_aprox: 11
+        min: '0'
+        max: '9'
+        media: 0.6147
+        quartis: [0, 0, 1]
+        top:
+        - [null, 2065361]
+        - ['0', 25086]
+        - ['1', 19148]
+        - ['2', 3254]
+        - ['3', 797]
+        - ['4', 256]
+        - ['5', 91]
+        - ['6', 34]
+        - ['7', 22]
+        - ['8', 5]
+      v6693:
+        tipo: BIGINT
+        nulos_pct: 57.98
+        distintos_aprox: 11
+        min: '0'
+        max: '9'
+        media: 0.0926
+        quartis: [0, 0, 0]
+        top:
+        - [null, 1225770]
+        - ['0', 835558]
+        - ['1', 36161]
+        - ['2', 9998]
+        - ['3', 3507]
+        - ['4', 1485]
+        - ['5', 670]
+        - ['6', 387]
+        - ['7', 269]
+        - ['8', 160]
+      v6800:
+        tipo: BIGINT
+        nulos_pct: 57.98
+        distintos_aprox: 30
+        min: '0'
+        max: '31'
+        media: 2.1359
+        quartis: [0, 1, 3]
+        top:
+        - [null, 1225758]
+        - ['0', 310956]
+        - ['2', 147230]
+        - ['1', 135847]
+        - ['3', 121999]
+        - ['4', 59226]
+        - ['5', 30507]
+        - ['6', 21463]
+        - ['7', 15287]
+        - ['8', 13064]
+      v0670:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '1'
+        max: '9'
+        top:
+        - ['2', 1276851]
+        - ['1', 757891]
+        - ['3', 78766]
+        - ['9', 547]
+      v0671:
+        tipo: BIGINT
+        nulos_pct: 39.6
+        distintos_aprox: 22
+        min: '1'
+        max: '40'
+        media: 1.7656
+        quartis: [1, 2, 2]
+        top:
+        - [null, 837201]
+        - ['1', 608324]
+        - ['2', 499275]
+        - ['3', 88989]
+        - ['4', 46159]
+        - ['5', 20034]
+        - ['6', 8115]
+        - ['7', 3357]
+        - ['8', 1374]
+        - ['9', 609]
+      v6900:
+        tipo: VARCHAR
+        nulos_pct: 16.17
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 1017299]
+        - ['2', 755011]
+        - [null, 341745]
+      v6910:
+        tipo: VARCHAR
+        nulos_pct: 51.88
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - [null, 1096756]
+        - ['1', 946428]
+        - ['2', 70871]
+      v6920:
+        tipo: VARCHAR
+        nulos_pct: 16.17
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 946428]
+        - ['2', 825882]
+        - [null, 341745]
+      v6930:
+        tipo: VARCHAR
+        nulos_pct: 55.23
+        distintos_aprox: 7
+        min: '1'
+        max: '7'
+        top:
+        - [null, 1167627]
+        - ['1', 378350]
+        - ['4', 213697]
+        - ['3', 209702]
+        - ['7', 57252]
+        - ['2', 50609]
+        - ['6', 19680]
+        - ['5', 17138]
+      v6940:
+        tipo: VARCHAR
+        nulos_pct: 69.79
+        distintos_aprox: 5
+        min: '1'
+        max: '5'
+        top:
+        - [null, 1475394]
+        - ['3', 359911]
+        - ['5', 165304]
+        - ['4', 50609]
+        - ['2', 44398]
+        - ['1', 18439]
+      v6121:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 128
+        min: '0'
+        max: '999'
+        media: 173.0868
+        quartis: [110, 110, 112]
+      v0604:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '1'
+        max: '9'
+        media: 1.844
+        quartis: [1, 2, 2]
+        top:
+        - ['1', 860493]
+        - ['2', 737497]
+        - ['3', 504767]
+        - ['4', 10632]
+        - ['9', 666]
+      v0605:
+        tipo: BIGINT
+        nulos_pct: 59.3
+        distintos_aprox: 24
+        min: '1'
+        max: '26'
+        media: 1.8359
+        quartis: [1, 2, 2]
+        top:
+        - [null, 1253562]
+        - ['2', 508596]
+        - ['1', 280525]
+        - ['3', 36860]
+        - ['4', 16849]
+        - ['5', 9387]
+        - ['6', 4520]
+        - ['7', 1951]
+        - ['8', 920]
+        - ['9', 416]
+      v5020:
+        tipo: BIGINT
+        nulos_pct: 0.76
+        distintos_aprox: 9
+        min: '1'
+        max: '8'
+        media: 1.0646
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 1974722]
+        - ['2', 112490]
+        - [null, 16039]
+        - ['3', 9645]
+        - ['4', 965]
+        - ['5', 163]
+        - ['6', 23]
+        - ['7', 7]
+        - ['8', 1]
+      v5060:
+        tipo: BIGINT
+        nulos_pct: 0.76
+        distintos_aprox: 41
+        min: '1'
+        max: '60'
+        media: 3.818
+        quartis: [3, 4, 5]
+        top:
+        - ['4', 545966]
+        - ['3', 542174]
+        - ['2', 363059]
+        - ['5', 310973]
+        - ['6', 135629]
+        - ['1', 72544]
+        - ['7', 62427]
+        - ['8', 31922]
+        - [null, 16039]
+        - ['9', 15707]
+      v5070:
+        tipo: BIGINT
+        nulos_pct: 0.76
+        distintos_aprox: 8106
+        min: '0'
+        max: '975000'
+        media: 642.9126
+        quartis: [165, 346, 658]
+      v5080:
+        tipo: BIGINT
+        nulos_pct: 0.76
+        distintos_aprox: 267
+        min: '0'
+        max: '1911'
+        media: 0.8442
+        quartis: [0, 0, 1]
+      v6462: {tipo: VARCHAR, nulos_pct: 55.23, distintos_aprox: 475, min: '0', max: '9922'}
+      v6472: {tipo: VARCHAR, nulos_pct: 55.23, distintos_aprox: 208, min: '0', max: '99000'}
+      v5110:
+        tipo: BIGINT
+        nulos_pct: 55.23
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        media: 1.4481
+        quartis: [1, 1, 2]
+        top:
+        - [null, 1167627]
+        - ['1', 522362]
+        - ['2', 424066]
+      v5120:
+        tipo: BIGINT
+        nulos_pct: 55.23
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        media: 1.4471
+        quartis: [1, 1, 2]
+        top:
+        - [null, 1167627]
+        - ['1', 523263]
+        - ['2', 423165]
+      v5030:
+        tipo: VARCHAR
+        nulos_pct: 0.76
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - ['3', 2014946]
+        - ['1', 73730]
+        - [null, 16039]
+        - ['2', 9340]
+      v5040:
+        tipo: VARCHAR
+        nulos_pct: 0.76
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['1', 2014788]
+        - ['0', 83228]
+        - [null, 16039]
+      v5090:
+        tipo: VARCHAR
+        nulos_pct: 10.53
+        distintos_aprox: 9
+        min: '1'
+        max: '9'
+        top:
+        - ['3', 1102744]
+        - [null, 222561]
+        - ['1', 196648]
+        - ['5', 172422]
+        - ['4', 162999]
+        - ['9', 88010]
+        - ['6', 81200]
+        - ['2', 50255]
+        - ['7', 25219]
+        - ['8', 11997]
+      v5100:
+        tipo: VARCHAR
+        nulos_pct: 94.17
+        distintos_aprox: 3
+        min: '1'
+        max: '3'
+        top:
+        - [null, 1990761]
+        - ['3', 61173]
+        - ['2', 40739]
+        - ['1', 21382]
+      v5130:
+        tipo: BIGINT
+        nulos_pct: 0.76
+        distintos_aprox: 41
+        min: '1'
+        max: '56'
+        media: 2.4033
+        quartis: [1, 2, 3]
+        top:
+        - ['1', 677171]
+        - ['2', 600589]
+        - ['3', 414520]
+        - ['4', 236294]
+        - ['5', 100160]
+        - ['6', 38928]
+        - ['7', 16395]
+        - [null, 16039]
+        - ['8', 7416]
+        - ['9', 3373]
+      m0502:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2107105]
+        - ['1', 6950]
+      m0601:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2114045]
+        - ['1', 10]
+      m6033:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2114051]
+        - ['1', 4]
+      m0606:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113777]
+        - ['1', 278]
+      m0613:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113908]
+        - ['1', 147]
+      m0614:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113486]
+        - ['1', 569]
+      m0615:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113674]
+        - ['1', 381]
+      m0616:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113646]
+        - ['1', 409]
+      m0617:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113694]
+        - ['1', 361]
+      m0618:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2111065]
+        - ['1', 2990]
+      m0619:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2109937]
+        - ['1', 4118]
+      m0620:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113953]
+        - ['1', 102]
+      m0621:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113758]
+        - ['1', 297]
+      m0622:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113958]
+        - ['1', 97]
+      m6222:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2106851]
+        - ['1', 7204]
+      m6224:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2114000]
+        - ['1', 55]
+      m0623:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2078845]
+        - ['1', 35210]
+      m0624:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2072339]
+        - ['1', 41716]
+      m0625:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113476]
+        - ['1', 579]
+      m6252:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2096610]
+        - ['1', 17445]
+      m6254:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2096576]
+        - ['1', 17479]
+      m6256:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113395]
+        - ['1', 660]
+      m0626:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113209]
+        - ['1', 846]
+      m6262:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2104955]
+        - ['1', 9100]
+      m6264:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2104961]
+        - ['1', 9094]
+      m6266:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113847]
+        - ['1', 208]
+      m0627:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2108716]
+        - ['1', 5339]
+      m0628:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113672]
+        - ['1', 383]
+      m0629:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113738]
+        - ['1', 317]
+      m0630:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2110110]
+        - ['1', 3945]
+      m0631:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2112283]
+        - ['1', 1772]
+      m0632:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113807]
+        - ['1', 248]
+      m0633:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2111556]
+        - ['1', 2499]
+      m0634:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2112420]
+        - ['1', 1635]
+      m0635:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113921]
+        - ['1', 134]
+      m6352:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2109092]
+        - ['1', 4963]
+      m6354:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113941]
+        - ['1', 114]
+      m6356:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2114026]
+        - ['1', 29]
+      m0636:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113898]
+        - ['1', 157]
+      m6362:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2112758]
+        - ['1', 1297]
+      m6364:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2112815]
+        - ['1', 1240]
+      m6366:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2'
+        max: '2'
+        top:
+        - ['2', 2114055]
+      m0637:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2099967]
+        - ['1', 14088]
+      m0638:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2099297]
+        - ['1', 14758]
+      m0639:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2095272]
+        - ['1', 18783]
+      m0640:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2111067]
+        - ['1', 2988]
+      m0641:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2104242]
+        - ['1', 9813]
+      m0642:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2097650]
+        - ['1', 16405]
+      m0643:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2097421]
+        - ['1', 16634]
+      m0644:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113160]
+        - ['1', 895]
+      m0645:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113409]
+        - ['1', 646]
+      m6461:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2044284]
+        - ['1', 69771]
+      m6471:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2080993]
+        - ['1', 33062]
+      m0648:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2077173]
+        - ['1', 36882]
+      m0649:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113937]
+        - ['1', 118]
+      m0650:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2100592]
+        - ['1', 13463]
+      m0651:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2075502]
+        - ['1', 38553]
+      m6511:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2076194]
+        - ['1', 37861]
+      m0652:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113877]
+        - ['1', 178]
+      m6521:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113910]
+        - ['1', 145]
+      m0653:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113173]
+        - ['1', 882]
+      m0654:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113394]
+        - ['1', 661]
+      m0655:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2114038]
+        - ['1', 17]
+      m0656:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2111320]
+        - ['1', 2735]
+      m0657:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2111374]
+        - ['1', 2681]
+      m0658:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2112425]
+        - ['1', 1630]
+      m0659:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2112470]
+        - ['1', 1585]
+      m6591:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2099927]
+        - ['1', 14128]
+      m0660:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113207]
+        - ['1', 848]
+      m6602:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2111965]
+        - ['1', 2090]
+      m6604:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2112041]
+        - ['1', 2014]
+      m6606:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2'
+        max: '2'
+        top:
+        - ['2', 2114055]
+      m0661:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113981]
+        - ['1', 74]
+      m0662:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113989]
+        - ['1', 66]
+      m0663:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113868]
+        - ['1', 187]
+      m6631:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113998]
+        - ['1', 57]
+      m6632:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113997]
+        - ['1', 58]
+      m6633:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113627]
+        - ['1', 428]
+      m0664:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2111855]
+        - ['1', 2200]
+      m6641:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2111848]
+        - ['1', 2207]
+      m6642:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2111848]
+        - ['1', 2207]
+      m6643:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2111838]
+        - ['1', 2217]
+      m0665:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2114022]
+        - ['1', 33]
+      m6660:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113914]
+        - ['1', 141]
+      m0667:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113176]
+        - ['1', 879]
+      m0668:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113899]
+        - ['1', 156]
+      m6681:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2'
+        max: '2'
+        top:
+        - ['2', 2114055]
+      m6682:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2'
+        max: '2'
+        top:
+        - ['2', 2114055]
+      m0669:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2091882]
+        - ['1', 22173]
+      m6691:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2112527]
+        - ['1', 1528]
+      m6692:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2112565]
+        - ['1', 1490]
+      m6693:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2092726]
+        - ['1', 21329]
+      m0670:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113508]
+        - ['1', 547]
+      m0671:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113969]
+        - ['1', 86]
+      m6800:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113225]
+        - ['1', 830]
+      m6121:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113714]
+        - ['1', 341]
+      m0604:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113427]
+        - ['1', 628]
+      m0605:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2113681]
+        - ['1', 374]
+      m6462:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 1973177]
+        - ['1', 140878]
+      m6472:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 2022576]
+        - ['1', 91479]
   microdados_pessoa_2022:
     linhas: 21538508
     fonte_do_perfil: amostra de 9.286%. ~2.000.000 linhas
@@ -9437,7 +11906,7 @@ tabelas:
     linhas: 310120
     fonte_do_perfil: tabela inteira
     colunas:
-      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004}
+      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004, min: '110001505000001', max: '530010805300158'}
       sigla_uf:
         tipo: VARCHAR
         nulos_pct: 0
@@ -11974,7 +14443,7 @@ tabelas:
     linhas: 310120
     fonte_do_perfil: tabela inteira
     colunas:
-      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004}
+      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004, min: '110001505000001', max: '530010805300158'}
       sigla_uf:
         tipo: VARCHAR
         nulos_pct: 0
@@ -13028,7 +15497,7 @@ tabelas:
     linhas: 310120
     fonte_do_perfil: tabela inteira
     colunas:
-      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004}
+      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004, min: '110001505000001', max: '530010805300158'}
       sigla_uf:
         tipo: VARCHAR
         nulos_pct: 0
@@ -13146,7 +15615,7 @@ tabelas:
     linhas: 310120
     fonte_do_perfil: tabela inteira
     colunas:
-      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004}
+      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004, min: '110001505000001', max: '530010805300158'}
       sigla_uf:
         tipo: VARCHAR
         nulos_pct: 0
@@ -13355,7 +15824,7 @@ tabelas:
         min: '0'
         max: '1850'
         media: 175.7747
-        quartis: [97, 176, 243]
+        quartis: [96, 176, 243]
       v025:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -13577,7 +16046,7 @@ tabelas:
         min: '0'
         max: '696'
         media: 6.7417
-        quartis: [0, 0, 4]
+        quartis: [0, 0, 5]
       v050:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -13633,7 +16102,7 @@ tabelas:
         min: '0'
         max: '73'
         media: 3.9225
-        quartis: [1, 3, 6]
+        quartis: [1, 3, 5]
       v057:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -14244,7 +16713,7 @@ tabelas:
         min: '0'
         max: '409'
         media: 4.0363
-        quartis: [0, 0, 2]
+        quartis: [0, 1, 2]
       v104:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -14364,7 +16833,7 @@ tabelas:
         min: '0'
         max: '1389'
         media: 152.2986
-        quartis: [66, 149, 221]
+        quartis: [66, 149, 222]
       v119:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -14396,7 +16865,7 @@ tabelas:
         min: '0'
         max: '419'
         media: 2.8615
-        quartis: [0, 1, 2]
+        quartis: [0, 1, 3]
       v123:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -15326,7 +17795,7 @@ tabelas:
         min: '0'
         max: '1654'
         media: 149.5112
-        quartis: [25, 159, 232]
+        quartis: [24, 159, 232]
       v218:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -15358,7 +17827,7 @@ tabelas:
         min: '0'
         max: '1670'
         media: 163.9142
-        quartis: [60, 173, 243]
+        quartis: [61, 173, 243]
       v222:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -15523,7 +17992,7 @@ tabelas:
     linhas: 310120
     fonte_do_perfil: tabela inteira
     colunas:
-      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004}
+      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004, min: '110001505000001', max: '530010805300158'}
       sigla_uf:
         tipo: VARCHAR
         nulos_pct: 0
@@ -16601,7 +19070,7 @@ tabelas:
     linhas: 310120
     fonte_do_perfil: tabela inteira
     colunas:
-      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004}
+      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004, min: '110001505000001', max: '530010805300158'}
       sigla_uf:
         tipo: VARCHAR
         nulos_pct: 0
@@ -16735,7 +19204,7 @@ tabelas:
     linhas: 310120
     fonte_do_perfil: tabela inteira
     colunas:
-      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004}
+      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004, min: '110001505000001', max: '530010805300158'}
       sigla_uf:
         tipo: VARCHAR
         nulos_pct: 0
@@ -16760,7 +19229,7 @@ tabelas:
         min: '0'
         max: '1861'
         media: 188.3205
-        quartis: [116, 186, 252]
+        quartis: [116, 185, 252]
       v002:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -16776,7 +19245,7 @@ tabelas:
         min: '0'
         max: '810'
         media: 45.3426
-        quartis: [0, 7, 74]
+        quartis: [0, 7, 75]
       v004:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -16864,7 +19333,7 @@ tabelas:
         min: '0'
         max: '822'
         media: 89.6224
-        quartis: [0, 87, 150]
+        quartis: [0, 86, 151]
       v015:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -17024,7 +19493,7 @@ tabelas:
         min: '0'
         max: '882'
         media: 14.7245
-        quartis: [0, 2, 22]
+        quartis: [0, 1, 22]
       v035:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -17064,7 +19533,7 @@ tabelas:
         min: '0'
         max: '1105'
         media: 106.7373
-        quartis: [0, 111, 172]
+        quartis: [0, 111, 171]
       v040:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -17104,7 +19573,7 @@ tabelas:
         min: '0'
         max: '779'
         media: 75.2372
-        quartis: [0, 58, 132]
+        quartis: [0, 58, 131]
       v045:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -17120,7 +19589,7 @@ tabelas:
         min: '0'
         max: '882'
         media: 22.7346
-        quartis: [0, 12, 37]
+        quartis: [0, 12, 38]
       v047:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -17160,7 +19629,7 @@ tabelas:
         min: '0'
         max: '1105'
         media: 98.5732
-        quartis: [0, 101, 161]
+        quartis: [0, 100, 161]
       v052:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -17208,7 +19677,7 @@ tabelas:
         min: '0'
         max: '1105'
         media: 105.8315
-        quartis: [0, 111, 169]
+        quartis: [0, 110, 169]
       v058:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -17344,7 +19813,7 @@ tabelas:
         min: '0'
         max: '983'
         media: 102.1289
-        quartis: [0, 71, 187]
+        quartis: [0, 70, 187]
       v075:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -17352,7 +19821,7 @@ tabelas:
         min: '0'
         max: '1199'
         media: 39.8074
-        quartis: [0, 0, 47]
+        quartis: [0, 0, 48]
       v076:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -17376,7 +19845,7 @@ tabelas:
         min: '0'
         max: '983'
         media: 113.1433
-        quartis: [0, 100, 199]
+        quartis: [0, 101, 199]
       v079:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -17384,7 +19853,7 @@ tabelas:
         min: '0'
         max: '1199'
         media: 28.7931
-        quartis: [0, 0, 24]
+        quartis: [0, 0, 23]
       v080:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -17408,7 +19877,7 @@ tabelas:
         min: '0'
         max: '1199'
         media: 60.9296
-        quartis: [0, 10, 107]
+        quartis: [0, 10, 106]
       v083:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -17416,7 +19885,7 @@ tabelas:
         min: '0'
         max: '1043'
         media: 81.0068
-        quartis: [0, 38, 148]
+        quartis: [0, 38, 147]
       v084:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -17544,7 +20013,7 @@ tabelas:
         min: '0'
         max: '1286'
         media: 135.1708
-        quartis: [0, 145, 222]
+        quartis: [0, 144, 222]
       v100:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -17568,7 +20037,7 @@ tabelas:
         min: '0'
         max: '1198'
         media: 70.0641
-        quartis: [0, 9, 132]
+        quartis: [0, 9, 131]
       v103:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -17616,7 +20085,7 @@ tabelas:
         min: '0'
         max: '1198'
         media: 97.726
-        quartis: [0, 46, 187]
+        quartis: [0, 45, 186]
       v109:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -17664,7 +20133,7 @@ tabelas:
         min: '0'
         max: '982'
         media: 91.7129
-        quartis: [0, 31, 178]
+        quartis: [0, 30, 178]
       v115:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -17712,7 +20181,7 @@ tabelas:
         min: '0'
         max: '982'
         media: 82.6355
-        quartis: [0, 14, 164]
+        quartis: [0, 14, 163]
       v121:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -17875,7 +20344,7 @@ tabelas:
         min: '0'
         max: '1198'
         media: 93.4552
-        quartis: [0, 36, 180]
+        quartis: [0, 36, 179]
       v140:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -17982,7 +20451,7 @@ tabelas:
         min: '0'
         max: '1198'
         media: 95.36
-        quartis: [0, 37, 183]
+        quartis: [0, 37, 184]
       v152:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -18070,7 +20539,7 @@ tabelas:
         min: '0'
         max: '1197'
         media: 87.1902
-        quartis: [0, 48, 159]
+        quartis: [0, 48, 158]
       v163:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -18134,7 +20603,7 @@ tabelas:
         min: '0'
         max: '982'
         media: 117.1334
-        quartis: [0, 107, 205]
+        quartis: [0, 108, 205]
       v171:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -18166,7 +20635,7 @@ tabelas:
         min: '0'
         max: '982'
         media: 100.0225
-        quartis: [0, 62, 185]
+        quartis: [0, 63, 185]
       v175:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -18302,7 +20771,7 @@ tabelas:
         min: '0'
         max: '1197'
         media: 43.2448
-        quartis: [0, 3, 59]
+        quartis: [0, 3, 58]
       v192:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -18334,7 +20803,7 @@ tabelas:
         min: '0'
         max: '1279'
         media: 126.0059
-        quartis: [0, 128, 215]
+        quartis: [0, 127, 215]
       v196:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -18366,7 +20835,7 @@ tabelas:
         min: '0'
         max: '1278'
         media: 133.4428
-        quartis: [0, 142, 222]
+        quartis: [0, 141, 222]
       v200:
         tipo: BIGINT
         nulos_pct: 100
@@ -18713,7 +21182,7 @@ tabelas:
         min: '0'
         max: '1102'
         media: 42.5603
-        quartis: [0, 2, 44]
+        quartis: [0, 2, 45]
       v242:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -18748,7 +21217,7 @@ tabelas:
         min: '0'
         max: '956'
         media: 78.3137
-        quartis: [0, 25, 147]
+        quartis: [0, 24, 147]
       v245:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -18804,7 +21273,7 @@ tabelas:
         min: '0'
         max: '1163'
         media: 103.3112
-        quartis: [0, 71, 190]
+        quartis: [0, 69, 191]
       v252:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -18820,7 +21289,7 @@ tabelas:
         min: '0'
         max: '1005'
         media: 32.9552
-        quartis: [0, 2, 31]
+        quartis: [0, 2, 30]
       v254:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -18852,7 +21321,7 @@ tabelas:
         min: '0'
         max: '1163'
         media: 105.0867
-        quartis: [0, 79, 191]
+        quartis: [0, 78, 191]
       v258:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -18932,7 +21401,7 @@ tabelas:
         min: '0'
         max: '364'
         media: 18.986
-        quartis: [0, 3, 31]
+        quartis: [0, 3, 30]
       v268:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -19020,7 +21489,7 @@ tabelas:
         min: '0'
         max: '433'
         media: 42.5329
-        quartis: [0, 38, 71]
+        quartis: [0, 37, 71]
       v279:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -19444,7 +21913,7 @@ tabelas:
         min: '0'
         max: '579'
         media: 13.0233
-        quartis: [0, 3, 14]
+        quartis: [0, 3, 15]
       v332:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -19492,7 +21961,7 @@ tabelas:
         min: '0'
         max: '331'
         media: 23.8819
-        quartis: [0, 14, 39]
+        quartis: [0, 13, 39]
       v338:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -19636,7 +22105,7 @@ tabelas:
         min: '0'
         max: '465'
         media: 6.7564
-        quartis: [0, 0, 6]
+        quartis: [0, 0, 5]
       v356:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -19812,7 +22281,7 @@ tabelas:
         min: '0'
         max: '595'
         media: 35.452
-        quartis: [0, 27, 59]
+        quartis: [0, 28, 59]
       v378:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -20132,7 +22601,7 @@ tabelas:
         min: '0'
         max: '658'
         media: 55.7883
-        quartis: [0, 52, 90]
+        quartis: [0, 53, 90]
       v418:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -20180,7 +22649,7 @@ tabelas:
         min: '0'
         max: '2997'
         media: 213.7304
-        quartis: [0, 135, 369]
+        quartis: [0, 135, 368]
       v424:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -20276,7 +22745,7 @@ tabelas:
         min: '0'
         max: '3154'
         media: 292.9831
-        quartis: [0, 273, 487]
+        quartis: [0, 273, 488]
       v436:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -20284,7 +22753,7 @@ tabelas:
         min: '0'
         max: '3219'
         media: 78.0657
-        quartis: [0, 0, 44]
+        quartis: [0, 0, 43]
       v437:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -20292,7 +22761,7 @@ tabelas:
         min: '0'
         max: '2654'
         media: 84.197
-        quartis: [0, 58, 140]
+        quartis: [0, 58, 139]
       v438:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -20324,7 +22793,7 @@ tabelas:
         min: '0'
         max: '2890'
         media: 241.8313
-        quartis: [0, 176, 425]
+        quartis: [0, 175, 425]
       v442:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -20332,7 +22801,7 @@ tabelas:
         min: '0'
         max: '3278'
         media: 129.2174
-        quartis: [0, 0, 155]
+        quartis: [0, 0, 154]
       v443:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -20380,7 +22849,7 @@ tabelas:
         min: '0'
         max: '3248'
         media: 97.0044
-        quartis: [0, 0, 80]
+        quartis: [0, 0, 81]
       v449:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -20404,7 +22873,7 @@ tabelas:
         min: '0'
         max: '1471'
         media: 21.1863
-        quartis: [0, 9, 30]
+        quartis: [0, 8, 30]
       v452:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -20420,7 +22889,7 @@ tabelas:
         min: '0'
         max: '2505'
         media: 144.0204
-        quartis: [0, 28, 244]
+        quartis: [0, 28, 245]
       v454:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -20428,7 +22897,7 @@ tabelas:
         min: '0'
         max: '3299'
         media: 227.0284
-        quartis: [0, 108, 392]
+        quartis: [0, 110, 391]
       v455:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -20444,7 +22913,7 @@ tabelas:
         min: '0'
         max: '1408'
         media: 55.1946
-        quartis: [0, 20, 89]
+        quartis: [0, 21, 89]
       v457:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -20492,7 +22961,7 @@ tabelas:
         min: '0'
         max: '2654'
         media: 92.7278
-        quartis: [0, 74, 149]
+        quartis: [0, 74, 150]
       v463:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -20516,7 +22985,7 @@ tabelas:
         min: '0'
         max: '2596'
         media: 245.0982
-        quartis: [0, 185, 422]
+        quartis: [0, 185, 421]
       v466:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -20524,7 +22993,7 @@ tabelas:
         min: '0'
         max: '3409'
         media: 125.9506
-        quartis: [0, 11, 165]
+        quartis: [0, 11, 166]
       v467:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -20532,7 +23001,7 @@ tabelas:
         min: '0'
         max: '2654'
         media: 67.7512
-        quartis: [0, 36, 112]
+        quartis: [0, 36, 113]
       v468:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -20572,7 +23041,7 @@ tabelas:
         min: '0'
         max: '3409'
         media: 323.0448
-        quartis: [0, 317, 525]
+        quartis: [0, 317, 524]
       v473:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -20660,7 +23129,7 @@ tabelas:
         min: '0'
         max: '3388'
         media: 278.4053
-        quartis: [0, 165, 497]
+        quartis: [0, 166, 496]
       v484:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -20668,7 +23137,7 @@ tabelas:
         min: '0'
         max: '3867'
         media: 179.8253
-        quartis: [0, 23, 287]
+        quartis: [0, 22, 288]
       v485:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -20692,7 +23161,7 @@ tabelas:
         min: '0'
         max: '3886'
         media: 443.564
-        quartis: [0, 464, 722]
+        quartis: [0, 463, 722]
       v488:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -20732,7 +23201,7 @@ tabelas:
         min: '0'
         max: '3388'
         media: 78.6154
-        quartis: [0, 0, 39]
+        quartis: [0, 0, 40]
       v493:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -20756,7 +23225,7 @@ tabelas:
         min: '0'
         max: '3232'
         media: 321.4302
-        quartis: [0, 222, 582]
+        quartis: [0, 223, 581]
       v496:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -20788,7 +23257,7 @@ tabelas:
         min: '0'
         max: '3232'
         media: 358.3841
-        quartis: [0, 316, 623]
+        quartis: [0, 315, 624]
       v500:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -20796,7 +23265,7 @@ tabelas:
         min: '0'
         max: '3388'
         media: 99.8463
-        quartis: [0, 0, 78]
+        quartis: [0, 0, 77]
       v501:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -20820,7 +23289,7 @@ tabelas:
         min: '0'
         max: '3388'
         media: 188.5211
-        quartis: [0, 32, 329]
+        quartis: [0, 32, 328]
       v504:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -20860,7 +23329,7 @@ tabelas:
         min: '0'
         max: '3886'
         media: 439.2918
-        quartis: [0, 449, 723]
+        quartis: [0, 450, 723]
       v509:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -20884,7 +23353,7 @@ tabelas:
         min: '0'
         max: '3139'
         media: 312.915
-        quartis: [0, 225, 556]
+        quartis: [0, 224, 555]
       v512:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -20924,7 +23393,7 @@ tabelas:
         min: '0'
         max: '3886'
         media: 406.828
-        quartis: [0, 408, 682]
+        quartis: [0, 406, 681]
       v517:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -20956,7 +23425,7 @@ tabelas:
         min: '0'
         max: '3882'
         media: 434.9518
-        quartis: [0, 451, 710]
+        quartis: [0, 450, 709]
       v521:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -20972,7 +23441,7 @@ tabelas:
         min: '0'
         max: '2754'
         media: 26.6815
-        quartis: [0, 0, 4]
+        quartis: [0, 0, 5]
       v523:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -20980,7 +23449,7 @@ tabelas:
         min: '0'
         max: '3386'
         media: 216.8087
-        quartis: [0, 30, 403]
+        quartis: [0, 30, 405]
       v524:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -21028,7 +23497,7 @@ tabelas:
         min: '0'
         max: '3386'
         media: 306.8416
-        quartis: [0, 145, 577]
+        quartis: [0, 146, 576]
       v530:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -21076,7 +23545,7 @@ tabelas:
         min: '0'
         max: '3219'
         media: 286.4818
-        quartis: [0, 98, 547]
+        quartis: [0, 97, 547]
       v536:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -21124,7 +23593,7 @@ tabelas:
         min: '0'
         max: '3219'
         media: 256.4303
-        quartis: [0, 47, 498]
+        quartis: [0, 47, 497]
       v542:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -21220,7 +23689,7 @@ tabelas:
         min: '0'
         max: '3386'
         media: 152.823
-        quartis: [0, 3, 246]
+        quartis: [0, 3, 245]
       v554:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -21228,7 +23697,7 @@ tabelas:
         min: '0'
         max: '3018'
         media: 160.052
-        quartis: [0, 11, 250]
+        quartis: [0, 11, 249]
       v555:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -21276,7 +23745,7 @@ tabelas:
         min: '0'
         max: '3386'
         media: 296.6401
-        quartis: [0, 116, 561]
+        quartis: [0, 115, 562]
       v561:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -21327,7 +23796,7 @@ tabelas:
         min: '0'
         max: '3075'
         media: 223.7669
-        quartis: [0, 33, 418]
+        quartis: [0, 33, 419]
       v566:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -21383,7 +23852,7 @@ tabelas:
         min: '0'
         max: '3386'
         media: 298.5803
-        quartis: [0, 120, 568]
+        quartis: [0, 118, 567]
       v573:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -21431,7 +23900,7 @@ tabelas:
         min: '0'
         max: '3386'
         media: 299.5157
-        quartis: [0, 136, 564]
+        quartis: [0, 137, 564]
       v579:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -21479,7 +23948,7 @@ tabelas:
         min: '0'
         max: '3231'
         media: 177.2479
-        quartis: [0, 18, 278]
+        quartis: [0, 18, 276]
       v585:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -21503,7 +23972,7 @@ tabelas:
         min: '0'
         max: '3838'
         media: 438.6323
-        quartis: [0, 454, 723]
+        quartis: [0, 453, 724]
       v588:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -21511,7 +23980,7 @@ tabelas:
         min: '0'
         max: '2204'
         media: 13.6611
-        quartis: [0, 0, 0]
+        quartis: [0, 0, 1]
       v589:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -21567,7 +24036,7 @@ tabelas:
         min: '0'
         max: '3231'
         media: 315.3749
-        quartis: [0, 198, 577]
+        quartis: [0, 197, 577]
       v596:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -21631,7 +24100,7 @@ tabelas:
         min: '0'
         max: '3383'
         media: 187.3766
-        quartis: [0, 29, 325]
+        quartis: [0, 28, 325]
       v604:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -21639,7 +24108,7 @@ tabelas:
         min: '0'
         max: '3394'
         media: 264.9166
-        quartis: [0, 108, 476]
+        quartis: [0, 107, 473]
       v605:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -21695,7 +24164,7 @@ tabelas:
         min: '0'
         max: '3077'
         media: 307.479
-        quartis: [0, 206, 550]
+        quartis: [0, 205, 550]
       v612:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -21703,7 +24172,7 @@ tabelas:
         min: '0'
         max: '3383'
         media: 144.8143
-        quartis: [0, 11, 189]
+        quartis: [0, 10, 190]
       v613:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -21735,7 +24204,7 @@ tabelas:
         min: '0'
         max: '3838'
         media: 402.2457
-        quartis: [0, 396, 682]
+        quartis: [0, 396, 681]
       v617:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -21767,7 +24236,7 @@ tabelas:
         min: '0'
         max: '3834'
         media: 429.807
-        quartis: [0, 441, 710]
+        quartis: [0, 442, 710]
       v621:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -21799,7 +24268,7 @@ tabelas:
         min: '0'
         max: '2630'
         media: 112.6739
-        quartis: [0, 4, 145]
+        quartis: [0, 4, 146]
       v625:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -21839,7 +24308,7 @@ tabelas:
         min: '0'
         max: '3299'
         media: 339.2645
-        quartis: [0, 259, 608]
+        quartis: [0, 261, 609]
       v630:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -21855,7 +24324,7 @@ tabelas:
         min: '0'
         max: '3380'
         media: 138.433
-        quartis: [0, 6, 133]
+        quartis: [0, 6, 135]
       v632:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -21887,7 +24356,7 @@ tabelas:
         min: '0'
         max: '3216'
         media: 309.387
-        quartis: [0, 181, 570]
+        quartis: [0, 182, 571]
       v636:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -21895,7 +24364,7 @@ tabelas:
         min: '0'
         max: '3299'
         media: 36.9873
-        quartis: [0, 0, 8]
+        quartis: [0, 0, 7]
       v637:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -21911,7 +24380,7 @@ tabelas:
         min: '0'
         max: '3337'
         media: 58.3939
-        quartis: [0, 0, 12]
+        quartis: [0, 0, 11]
       v639:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -21935,7 +24404,7 @@ tabelas:
         min: '0'
         max: '3216'
         media: 272.9424
-        quartis: [0, 96, 518]
+        quartis: [0, 97, 519]
       v642:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -21943,7 +24412,7 @@ tabelas:
         min: '0'
         max: '3299'
         media: 73.432
-        quartis: [0, 0, 48]
+        quartis: [0, 0, 47]
       v643:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -21959,7 +24428,7 @@ tabelas:
         min: '0'
         max: '3659'
         media: 87.5806
-        quartis: [0, 0, 40]
+        quartis: [0, 0, 39]
       v645:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -21983,7 +24452,7 @@ tabelas:
         min: '0'
         max: '3216'
         media: 295.2908
-        quartis: [0, 150, 549]
+        quartis: [0, 150, 550]
       v648:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -22031,7 +24500,7 @@ tabelas:
         min: '0'
         max: '3299'
         media: 165.3149
-        quartis: [0, 9, 277]
+        quartis: [0, 8, 279]
       v654:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -22055,7 +24524,7 @@ tabelas:
         min: '0'
         max: '3659'
         media: 116.9212
-        quartis: [0, 0, 81]
+        quartis: [0, 0, 80]
       v657:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -22087,7 +24556,7 @@ tabelas:
         min: '0'
         max: '3299'
         media: 329.3543
-        quartis: [0, 224, 596]
+        quartis: [0, 226, 596]
       v661:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -22138,7 +24607,7 @@ tabelas:
         min: '0'
         max: '3059'
         media: 244.4538
-        quartis: [0, 80, 452]
+        quartis: [0, 80, 451]
       v666:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -22146,7 +24615,7 @@ tabelas:
         min: '0'
         max: '3299'
         media: 101.9205
-        quartis: [0, 1, 109]
+        quartis: [0, 2, 109]
       v667:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -22162,7 +24631,7 @@ tabelas:
         min: '0'
         max: '3581'
         media: 62.0394
-        quartis: [0, 0, 24]
+        quartis: [0, 0, 23]
       v669:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -22194,7 +24663,7 @@ tabelas:
         min: '0'
         max: '3299'
         media: 324.6852
-        quartis: [0, 220, 592]
+        quartis: [0, 222, 591]
       v673:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -22210,7 +24679,7 @@ tabelas:
         min: '0'
         max: '3380'
         media: 111.4275
-        quartis: [0, 5, 98]
+        quartis: [0, 5, 99]
       v675:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -22242,7 +24711,7 @@ tabelas:
         min: '0'
         max: '3299'
         media: 331.4726
-        quartis: [0, 248, 596]
+        quartis: [0, 247, 596]
       v679:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -22258,7 +24727,7 @@ tabelas:
         min: '0'
         max: '3657'
         media: 138.5804
-        quartis: [0, 6, 132]
+        quartis: [0, 6, 133]
       v681:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -22314,7 +24783,7 @@ tabelas:
         min: '0'
         max: '1514'
         media: 83.0857
-        quartis: [0, 37, 137]
+        quartis: [0, 38, 137]
       v688:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -22338,7 +24807,7 @@ tabelas:
         min: '0'
         max: '1204'
         media: 36.7709
-        quartis: [0, 5, 53]
+        quartis: [0, 5, 52]
       v691:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -22394,7 +24863,7 @@ tabelas:
         min: '0'
         max: '1609'
         media: 89.8176
-        quartis: [0, 50, 146]
+        quartis: [0, 50, 145]
       v698:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -22426,7 +24895,7 @@ tabelas:
         min: '0'
         max: '1603'
         media: 107.4616
-        quartis: [0, 81, 178]
+        quartis: [0, 80, 179]
       v702:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -22490,7 +24959,7 @@ tabelas:
         min: '0'
         max: '1609'
         media: 68.1968
-        quartis: [0, 31, 109]
+        quartis: [0, 32, 109]
       v710:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -22522,7 +24991,7 @@ tabelas:
         min: '0'
         max: '1603'
         media: 96.3119
-        quartis: [0, 60, 164]
+        quartis: [0, 60, 165]
       v714:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -22546,7 +25015,7 @@ tabelas:
         min: '0'
         max: '1028'
         media: 4.716
-        quartis: [0, 0, 0]
+        quartis: [0, 0, 1]
       v717:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -22578,7 +25047,7 @@ tabelas:
         min: '0'
         max: '2191'
         media: 30.2706
-        quartis: [0, 0, 18]
+        quartis: [0, 0, 17]
       v721:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -22602,7 +25071,7 @@ tabelas:
         min: '0'
         max: '1332'
         media: 94.616
-        quartis: [0, 44, 164]
+        quartis: [0, 45, 164]
       v724:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -22674,7 +25143,7 @@ tabelas:
         min: '0'
         max: '1907'
         media: 24.5392
-        quartis: [0, 0, 10]
+        quartis: [0, 0, 9]
       v733:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -22714,7 +25183,7 @@ tabelas:
         min: '0'
         max: '1603'
         media: 91.7031
-        quartis: [0, 52, 158]
+        quartis: [0, 52, 157]
       v738:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -22730,7 +25199,7 @@ tabelas:
         min: '0'
         max: '2439'
         media: 74.7521
-        quartis: [0, 18, 93]
+        quartis: [0, 18, 94]
       v740:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -22778,7 +25247,7 @@ tabelas:
         min: '0'
         max: '1232'
         media: 27.8447
-        quartis: [0, 2, 36]
+        quartis: [0, 2, 35]
       v746:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -22786,7 +25255,7 @@ tabelas:
         min: '0'
         max: '1467'
         media: 67.3355
-        quartis: [0, 15, 102]
+        quartis: [0, 14, 101]
       v747:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -22882,7 +25351,7 @@ tabelas:
         min: '0'
         max: '1609'
         media: 93.724
-        quartis: [0, 51, 152]
+        quartis: [0, 52, 152]
       v759:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -22914,7 +25383,7 @@ tabelas:
         min: '0'
         max: '1603'
         media: 105.519
-        quartis: [0, 78, 176]
+        quartis: [0, 78, 175]
       v763:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -22930,7 +25399,7 @@ tabelas:
         min: '0'
         max: '2439'
         media: 72.4951
-        quartis: [0, 26, 93]
+        quartis: [0, 25, 93]
       v765:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -23002,7 +25471,7 @@ tabelas:
         min: '0'
         max: '1603'
         media: 78.2776
-        quartis: [0, 37, 130]
+        quartis: [0, 36, 130]
       v774:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -23202,7 +25671,7 @@ tabelas:
         min: '0'
         max: '1603'
         media: 105.4667
-        quartis: [0, 78, 175]
+        quartis: [0, 79, 175]
       v799:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -23250,7 +25719,7 @@ tabelas:
         min: '0'
         max: '3347'
         media: 124.1987
-        quartis: [0, 20, 195]
+        quartis: [0, 21, 196]
       v805:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -23258,7 +25727,7 @@ tabelas:
         min: '0'
         max: '1994'
         media: 114.7568
-        quartis: [0, 66, 190]
+        quartis: [0, 66, 191]
       v806:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -23266,7 +25735,7 @@ tabelas:
         min: '0'
         max: '1749'
         media: 81.6751
-        quartis: [0, 11, 118]
+        quartis: [0, 11, 119]
       v807:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -23274,7 +25743,7 @@ tabelas:
         min: '0'
         max: '2958'
         media: 291.8614
-        quartis: [0, 285, 467]
+        quartis: [0, 285, 466]
       v808:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -23282,7 +25751,7 @@ tabelas:
         min: '0'
         max: '2550'
         media: 11.9966
-        quartis: [0, 0, 1]
+        quartis: [0, 0, 2]
       v809:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -23306,7 +25775,7 @@ tabelas:
         min: '0'
         max: '2680'
         media: 244.1444
-        quartis: [0, 215, 407]
+        quartis: [0, 214, 408]
       v812:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -23314,7 +25783,7 @@ tabelas:
         min: '0'
         max: '2799'
         media: 59.7135
-        quartis: [0, 0, 36]
+        quartis: [0, 0, 35]
       v813:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -23338,7 +25807,7 @@ tabelas:
         min: '0'
         max: '2534'
         media: 204.4832
-        quartis: [0, 141, 359]
+        quartis: [0, 141, 358]
       v816:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -23346,7 +25815,7 @@ tabelas:
         min: '0'
         max: '3347'
         media: 99.3747
-        quartis: [0, 0, 123]
+        quartis: [0, 0, 122]
       v817:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -23362,7 +25831,7 @@ tabelas:
         min: '0'
         max: '1994'
         media: 65.4382
-        quartis: [0, 0, 72]
+        quartis: [0, 0, 73]
       v819:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -23370,7 +25839,7 @@ tabelas:
         min: '0'
         max: '2648'
         media: 229.9337
-        quartis: [0, 190, 390]
+        quartis: [0, 191, 391]
       v820:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -23394,7 +25863,7 @@ tabelas:
         min: '0'
         max: '1994'
         media: 49.5235
-        quartis: [0, 0, 39]
+        quartis: [0, 0, 38]
       v823:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -23402,7 +25871,7 @@ tabelas:
         min: '0'
         max: '2450'
         media: 120.5893
-        quartis: [0, 24, 203]
+        quartis: [0, 24, 202]
       v824:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -23410,7 +25879,7 @@ tabelas:
         min: '0'
         max: '3338'
         media: 183.2686
-        quartis: [0, 89, 315]
+        quartis: [0, 90, 315]
       v825:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -23442,7 +25911,7 @@ tabelas:
         min: '0'
         max: '3347'
         media: 292.1681
-        quartis: [0, 280, 471]
+        quartis: [0, 279, 471]
       v829:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -23458,7 +25927,7 @@ tabelas:
         min: '0'
         max: '1994'
         media: 188.5126
-        quartis: [0, 168, 294]
+        quartis: [0, 168, 295]
       v831:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -23490,7 +25959,7 @@ tabelas:
         min: '0'
         max: '1994'
         media: 68.38
-        quartis: [0, 5, 87]
+        quartis: [0, 5, 86]
       v835:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -23506,7 +25975,7 @@ tabelas:
         min: '0'
         max: '2998'
         media: 268.6258
-        quartis: [0, 249, 439]
+        quartis: [0, 250, 440]
       v837:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -23538,7 +26007,7 @@ tabelas:
         min: '0'
         max: '3347'
         media: 288.2779
-        quartis: [0, 278, 461]
+        quartis: [0, 277, 461]
       v841:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -23618,7 +26087,7 @@ tabelas:
         min: '0'
         max: '503'
         media: 19.6279
-        quartis: [0, 2, 28]
+        quartis: [0, 3, 29]
       v851:
         tipo: BIGINT
         nulos_pct: 5.03
@@ -23626,7 +26095,7 @@ tabelas:
         min: '0'
         max: '2434'
         media: 195.4208
-        quartis: [0, 125, 344]
+        quartis: [0, 125, 343]
       v852:
         tipo: BIGINT
         nulos_pct: 5.03
@@ -23634,7 +26103,7 @@ tabelas:
         min: '0'
         max: '2710'
         media: 133.1105
-        quartis: [0, 25, 220]
+        quartis: [0, 24, 219]
       v853:
         tipo: BIGINT
         nulos_pct: 5.03
@@ -23722,7 +26191,7 @@ tabelas:
         min: '0'
         max: '2782'
         media: 317.7777
-        quartis: [0, 336, 506]
+        quartis: [0, 335, 506]
       v864:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -23818,7 +26287,7 @@ tabelas:
         min: '0'
         max: '2245'
         media: 267.7484
-        quartis: [0, 257, 450]
+        quartis: [0, 258, 451]
       v876:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -23826,7 +26295,7 @@ tabelas:
         min: '0'
         max: '2607'
         media: 62.4853
-        quartis: [0, 0, 39]
+        quartis: [0, 0, 38]
       v877:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -23914,7 +26383,7 @@ tabelas:
         min: '0'
         max: '2303'
         media: 224.6676
-        quartis: [0, 165, 401]
+        quartis: [0, 166, 401]
       v888:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -23994,7 +26463,7 @@ tabelas:
         min: '0'
         max: '598'
         media: 30.3279
-        quartis: [0, 23, 50]
+        quartis: [0, 24, 50]
       v898:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -24010,7 +26479,7 @@ tabelas:
         min: '0'
         max: '2303'
         media: 251.4712
-        quartis: [0, 228, 431]
+        quartis: [0, 230, 431]
       v900:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -24114,7 +26583,7 @@ tabelas:
         min: '0'
         max: '2739'
         media: 196.7809
-        quartis: [0, 102, 351]
+        quartis: [0, 103, 351]
       v913:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -24173,7 +26642,7 @@ tabelas:
         min: '0'
         max: '531'
         media: 27.1417
-        quartis: [0, 22, 43]
+        quartis: [0, 22, 42]
       v919:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -24237,7 +26706,7 @@ tabelas:
         min: '0'
         max: '375'
         media: 51.5553
-        quartis: [0, 47, 83]
+        quartis: [0, 47, 84]
       v927:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -24277,7 +26746,7 @@ tabelas:
         min: '0'
         max: '431'
         media: 23.6196
-        quartis: [0, 15, 39]
+        quartis: [0, 15, 38]
       v932:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -24309,7 +26778,7 @@ tabelas:
         min: '0'
         max: '2237'
         media: 221.4227
-        quartis: [0, 172, 386]
+        quartis: [0, 171, 386]
       v936:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -24317,7 +26786,7 @@ tabelas:
         min: '0'
         max: '2687'
         media: 108.811
-        quartis: [0, 11, 151]
+        quartis: [0, 12, 151]
       v937:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -24413,7 +26882,7 @@ tabelas:
         min: '0'
         max: '2782'
         media: 291.2837
-        quartis: [0, 298, 477]
+        quartis: [0, 299, 477]
       v949:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -24504,7 +26973,7 @@ tabelas:
         min: '0'
         max: '646'
         media: 40.4503
-        quartis: [0, 36, 64]
+        quartis: [0, 35, 64]
       v959:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -24536,7 +27005,7 @@ tabelas:
         min: '0'
         max: '414'
         media: 52.5184
-        quartis: [0, 48, 84]
+        quartis: [0, 47, 85]
       v963:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -24704,7 +27173,7 @@ tabelas:
         min: '0'
         max: '2486'
         media: 214.6023
-        quartis: [0, 164, 361]
+        quartis: [0, 164, 360]
       v984:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -24712,7 +27181,7 @@ tabelas:
         min: '0'
         max: '1995'
         media: 37.7743
-        quartis: [0, 0, 22]
+        quartis: [0, 0, 23]
       v985:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -24752,7 +27221,7 @@ tabelas:
         min: '0'
         max: '2261'
         media: 153.0706
-        quartis: [0, 79, 253]
+        quartis: [0, 79, 254]
       v990:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -24760,7 +27229,7 @@ tabelas:
         min: '0'
         max: '2530'
         media: 50.8197
-        quartis: [0, 0, 21]
+        quartis: [0, 0, 20]
       v991:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -24784,7 +27253,7 @@ tabelas:
         min: '0'
         max: '2399'
         media: 185.605
-        quartis: [0, 106, 325]
+        quartis: [0, 107, 325]
       v994:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -24832,7 +27301,7 @@ tabelas:
         min: '0'
         max: '2261'
         media: 122.4024
-        quartis: [0, 45, 200]
+        quartis: [0, 45, 201]
       v1000:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -24944,7 +27413,7 @@ tabelas:
         min: '0'
         max: '2486'
         media: 117.7745
-        quartis: [0, 17, 188]
+        quartis: [0, 17, 189]
       v1014:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -24952,7 +27421,7 @@ tabelas:
         min: '0'
         max: '1711'
         media: 134.6021
-        quartis: [0, 72, 225]
+        quartis: [0, 72, 226]
       v1015:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -24992,7 +27461,7 @@ tabelas:
         min: '0'
         max: '1819'
         media: 64.3934
-        quartis: [0, 8, 84]
+        quartis: [0, 8, 83]
       v1020:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -25000,7 +27469,7 @@ tabelas:
         min: '0'
         max: '3292'
         media: 139.4969
-        quartis: [0, 32, 216]
+        quartis: [0, 31, 216]
       v1021:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -25032,7 +27501,7 @@ tabelas:
         min: '0'
         max: '2486'
         media: 238.5028
-        quartis: [0, 208, 382]
+        quartis: [0, 209, 382]
       v1025:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -25080,7 +27549,7 @@ tabelas:
         min: '0'
         max: '3304'
         media: 199.3439
-        quartis: [0, 119, 328]
+        quartis: [0, 120, 327]
       v1031:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -25123,7 +27592,7 @@ tabelas:
         min: '0'
         max: '2077'
         media: 69.2852
-        quartis: [0, 8, 93]
+        quartis: [0, 8, 94]
       v1035:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -25203,7 +27672,7 @@ tabelas:
         min: '0'
         max: '2486'
         media: 232.3223
-        quartis: [0, 190, 384]
+        quartis: [0, 191, 384]
       v1045:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -25251,7 +27720,7 @@ tabelas:
         min: '0'
         max: '2976'
         media: 168.9651
-        quartis: [0, 97, 279]
+        quartis: [0, 97, 278]
       v1051:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -25283,7 +27752,7 @@ tabelas:
         min: '0'
         max: '2486'
         media: 241.8191
-        quartis: [0, 211, 388]
+        quartis: [0, 210, 388]
       v1055:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -25299,7 +27768,7 @@ tabelas:
         min: '0'
         max: '1013'
         media: 34.8706
-        quartis: [0, 17, 49]
+        quartis: [0, 17, 50]
       v1057:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -25315,7 +27784,7 @@ tabelas:
         min: '0'
         max: '784'
         media: 5.4166
-        quartis: [0, 1, 6]
+        quartis: [0, 1, 7]
       v1059:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -25331,7 +27800,7 @@ tabelas:
         min: '0'
         max: '3304'
         media: 190.7117
-        quartis: [0, 115, 311]
+        quartis: [0, 116, 311]
       v1061:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -25352,7 +27821,7 @@ tabelas:
     linhas: 310120
     fonte_do_perfil: tabela inteira
     colunas:
-      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004}
+      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004, min: '110001505000001', max: '530010805300158'}
       sigla_uf:
         tipo: VARCHAR
         nulos_pct: 0
@@ -27311,7 +29780,7 @@ tabelas:
     linhas: 310120
     fonte_do_perfil: tabela inteira
     colunas:
-      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004}
+      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004, min: '110001505000001', max: '530010805300158'}
       sigla_uf:
         tipo: VARCHAR
         nulos_pct: 0
@@ -29385,7 +31854,7 @@ tabelas:
     linhas: 310120
     fonte_do_perfil: tabela inteira
     colunas:
-      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004}
+      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004, min: '110001505000001', max: '530010805300158'}
       sigla_uf:
         tipo: VARCHAR
         nulos_pct: 0
@@ -31198,7 +33667,7 @@ tabelas:
     linhas: 310120
     fonte_do_perfil: tabela inteira
     colunas:
-      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004}
+      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004, min: '110001505000001', max: '530010805300158'}
       sigla_uf:
         tipo: VARCHAR
         nulos_pct: 0
@@ -32276,7 +34745,7 @@ tabelas:
     linhas: 310099
     fonte_do_perfil: tabela inteira
     colunas:
-      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004}
+      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004, min: '110001505000001', max: '530010805300158'}
       sigla_uf:
         tipo: VARCHAR
         nulos_pct: 0
@@ -34407,7 +36876,7 @@ tabelas:
     linhas: 310120
     fonte_do_perfil: tabela inteira
     colunas:
-      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004}
+      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004, min: '110001505000001', max: '530010805300158'}
       sigla_uf:
         tipo: VARCHAR
         nulos_pct: 0
@@ -34531,7 +37000,7 @@ tabelas:
     linhas: 310120
     fonte_do_perfil: tabela inteira
     colunas:
-      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004}
+      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004, min: '110001505000001', max: '530010805300158'}
       sigla_uf:
         tipo: VARCHAR
         nulos_pct: 0
@@ -34556,7 +37025,7 @@ tabelas:
         min: '1'
         max: '5315'
         media: 615.1032
-        quartis: [364, 596, 826]
+        quartis: [364, 596, 825]
       v002:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -34572,7 +37041,7 @@ tabelas:
         min: '0'
         max: '2099'
         media: 47.6793
-        quartis: [10, 29, 64]
+        quartis: [10, 29, 63]
       v004:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -34996,7 +37465,7 @@ tabelas:
         min: '0'
         max: '742'
         media: 24.4733
-        quartis: [7, 19, 36]
+        quartis: [7, 19, 35]
       v046:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -35020,7 +37489,7 @@ tabelas:
         min: '0'
         max: '309'
         media: 4.4647
-        quartis: [1, 2, 6]
+        quartis: [1, 3, 6]
       v049:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -35047,7 +37516,7 @@ tabelas:
         min: '0'
         max: '544'
         media: 22.3272
-        quartis: [6, 17, 32]
+        quartis: [7, 17, 32]
       v051:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -35063,7 +37532,7 @@ tabelas:
         min: '0'
         max: '319'
         media: 21.6546
-        quartis: [8, 18, 30]
+        quartis: [9, 18, 30]
       v053:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -35149,7 +37618,7 @@ tabelas:
         min: '0'
         max: '271'
         media: 17.6325
-        quartis: [6, 14, 26]
+        quartis: [5, 14, 26]
       v061:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -35173,7 +37642,7 @@ tabelas:
         min: '0'
         max: '125'
         media: 3.1955
-        quartis: [0, 2, 4]
+        quartis: [0, 2, 5]
       v064:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -35200,7 +37669,7 @@ tabelas:
         min: '0'
         max: '285'
         media: 15.2655
-        quartis: [5, 13, 23]
+        quartis: [5, 13, 22]
       v066:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -35486,7 +37955,7 @@ tabelas:
         min: '0'
         max: '86'
         media: 4.3171
-        quartis: [2, 3, 6]
+        quartis: [2, 4, 6]
         top:
         - ['2', 38978]
         - ['1', 38783]
@@ -35656,7 +38125,7 @@ tabelas:
         min: '0'
         max: '250'
         media: 14.3394
-        quartis: [3, 10, 20]
+        quartis: [3, 10, 21]
       v101:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -35707,7 +38176,7 @@ tabelas:
         min: '0'
         max: '274'
         media: 13.6101
-        quartis: [3, 10, 20]
+        quartis: [4, 10, 20]
       v106:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -35858,7 +38327,7 @@ tabelas:
         min: '0'
         max: '564'
         media: 12.5223
-        quartis: [5, 11, 18]
+        quartis: [5, 10, 18]
       v118:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -37055,7 +39524,7 @@ tabelas:
         min: '0'
         max: '102'
         media: 1.8027
-        quartis: [0, 1, 3]
+        quartis: [0, 1, 2]
         top:
         - ['0', 121446]
         - ['1', 66200]
@@ -37661,7 +40130,7 @@ tabelas:
     linhas: 310120
     fonte_do_perfil: tabela inteira
     colunas:
-      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004}
+      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004, min: '110001505000001', max: '530010805300158'}
       sigla_uf:
         tipo: VARCHAR
         nulos_pct: 0
@@ -37707,7 +40176,7 @@ tabelas:
     linhas: 310120
     fonte_do_perfil: tabela inteira
     colunas:
-      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004}
+      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004, min: '110001505000001', max: '530010805300158'}
       sigla_uf:
         tipo: VARCHAR
         nulos_pct: 0
@@ -41681,7 +44150,7 @@ tabelas:
     linhas: 310077
     fonte_do_perfil: tabela inteira
     colunas:
-      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004}
+      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004, min: '110001505000001', max: '530010805300158'}
       sigla_uf:
         tipo: VARCHAR
         nulos_pct: 0
@@ -45252,7 +47721,7 @@ tabelas:
     linhas: 310120
     fonte_do_perfil: tabela inteira
     colunas:
-      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004}
+      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004, min: '110001505000001', max: '530010805300158'}
       sigla_uf:
         tipo: VARCHAR
         nulos_pct: 0
@@ -47541,7 +50010,7 @@ tabelas:
         min: '0'
         max: '23'
         media: 0.9626
-        quartis: [0, 1, 2]
+        quartis: [0, 1, 1]
         top:
         - ['0', 142310]
         - ['1', 85548]
@@ -49748,7 +52217,7 @@ tabelas:
     linhas: 310120
     fonte_do_perfil: tabela inteira
     colunas:
-      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004}
+      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004, min: '110001505000001', max: '530010805300158'}
       sigla_uf:
         tipo: VARCHAR
         nulos_pct: 0
@@ -53880,7 +56349,7 @@ tabelas:
     linhas: 310114
     fonte_do_perfil: tabela inteira
     colunas:
-      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004}
+      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004, min: '110001505000001', max: '530010805300158'}
       sigla_uf:
         tipo: VARCHAR
         nulos_pct: 0
@@ -53905,7 +56374,7 @@ tabelas:
         min: '0'
         max: '1861'
         media: 185.2521
-        quartis: [112, 184, 251]
+        quartis: [111, 184, 251]
       v002:
         tipo: BIGINT
         nulos_pct: 2.03
@@ -54290,7 +56759,7 @@ tabelas:
         min: '0'
         max: '68'
         media: 4.0596
-        quartis: [2, 3, 6]
+        quartis: [1, 3, 6]
         top:
         - ['2', 42307]
         - ['1', 41045]
@@ -54352,7 +56821,7 @@ tabelas:
         min: '0'
         max: '66'
         media: 4.1579
-        quartis: [2, 4, 6]
+        quartis: [2, 3, 6]
         top:
         - ['2', 41546]
         - ['3', 40266]
@@ -56879,7 +59348,7 @@ tabelas:
         min: '0'
         max: '14'
         media: 0.8167
-        quartis: [0, 0, 1]
+        quartis: [0, 1, 1]
         top:
         - ['0', 152023]
         - ['1', 89427]
@@ -57553,7 +60022,7 @@ tabelas:
     linhas: 310114
     fonte_do_perfil: tabela inteira
     colunas:
-      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004}
+      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004, min: '110001505000001', max: '530010805300158'}
       sigla_uf:
         tipo: VARCHAR
         nulos_pct: 0
@@ -59486,7 +61955,7 @@ tabelas:
     linhas: 310120
     fonte_do_perfil: tabela inteira
     colunas:
-      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004}
+      id_setor_censitario: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 330004, min: '110001505000001', max: '530010805300158'}
       sigla_uf:
         tipo: VARCHAR
         nulos_pct: 0
