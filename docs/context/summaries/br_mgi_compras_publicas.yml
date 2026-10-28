@@ -10,7 +10,7 @@ tabelas:
     medidas:
       - {coluna: valor_total, o_que: "valor total da ata (VARCHAR: use TRY_CAST AS DOUBLE; converte em todas as linhas)", unidade: "R$", soma: sim}
       - {coluna: quantidade_itens, o_que: "itens da ata", unidade: "itens", soma: sim}
-    filtros_tipicos: ["ata_excluido = 'False' (texto; 402.676; 48 são 'True')", "status_ata = 'Ata de Registro de Preços' (399.223); 'Cancelada' 3.487; 'Em elaboração' 11; 3 nulos", "codigo_modalidade_compra = '05' na maioria (2.817 linhas têm outro código; significado não documentado)"]
+    filtros_tipicos: ["ata_excluido = 'False' (texto; 402.676; 48 são 'True')", "status_ata = 'Ata de Registro de Preços' (399.223); 'Cancelada' 3.487; 'Em elaboração' 11; 3 nulos", "codigo_modalidade_compra = '05' na maioria (399.907; '06' 2.233, '03' 419, '07' 165; significado não documentado)"]
     use_para: "atas de registro de preços por órgão, modalidade e período."
     nao_use_para: "preço por item (use ata_registro_preco_item); contar atas por numero_controle_pncp_ata sem checar os repetidos."
     rascunho: [use_para, nao_use_para]
@@ -18,17 +18,17 @@ tabelas:
   ata_registro_preco_item:
     grao: "um item de uma ata de registro de preços × fornecedor vencedor (uma linha por cod_arp_item)"
     chave: "cod_arp_item (2.327.820 linhas = 2.327.820 distintos)"
-    tempo: {natureza: serie_de_periodos, coluna: "data_assinatura, ano_compra", cobertura: "ano_compra 2023–2026"}
+    tempo: {natureza: serie_de_periodos, coluna: "data_assinatura, ano_compra", cobertura: "ano_compra 2022–2027"}
     territorio: {nivel: outro, colunas: {codigo_unidade_gerenciadora: "unidade gerenciadora da ata"}}
     medidas:
       - {coluna: valor_total, o_que: "valor total do item homologado (VARCHAR: TRY_CAST)", unidade: "R$", soma: sim}
       - {coluna: valor_unitario, o_que: "preço unitário registrado (VARCHAR)", unidade: "R$ por unidade", soma: nao}
       - {coluna: quantidade_homologada_item, o_que: "quantidade homologada", unidade: "unidades do item", soma: sim}
-    filtros_tipicos: ["item_excluido = 'False' (texto; 27.585 são 'True' na amostra)", "tipo_item = 'Material' ou 'Serviço'", "aceita_adesao = 'True' para atas que aceitam carona"]
+    filtros_tipicos: ["item_excluido = 'False' (texto; 34.878 são 'True')", "tipo_item = 'Material' ou 'Serviço'", "aceita_adesao = 'True' para atas que aceitam carona"]
     use_para: "preços registrados por item (codigo_item, descricao_item) e fornecedor em atas."
     nao_use_para: "dados de pessoas: ni_fornecedor é documento do fornecedor; nem comparar valor_unitario entre unidades de medida diferentes."
     rascunho: [use_para, nao_use_para, filtros_tipicos]
-    verificado: "2.327.820 linhas; cod_arp_item único (2.327.820 distintos); (numero_controle_pncp_ata, numero_item, ni_fornecedor) tem só 2.202.791 distintos — medido 2026-10-27"
+    verificado: "2.327.820 linhas; cod_arp_item único (2.327.820 distintos); (numero_controle_pncp_ata, numero_item, ni_fornecedor) tem só 2.202.791 distintos — medido 2026-10-28"
   contratacao:
     grao: "uma contratação (compra) publicada no PNCP pelos órgãos federais, com modalidade, valores estimado e homologado e órgão"
     chave: "cod_compra e numero_controle_pncp: 1.001.583 linhas = 1.001.583 distintos (nenhum nulo); id_compra tem 998.900 (não use). Todas têm ind_atual = 'True'."
@@ -44,32 +44,32 @@ tabelas:
     verificado: "1.001.583 linhas, 1.001.583 cod_compra e numero_controle_pncp distintos, 59 colunas, nenhuma linha com campo deslocado em situacao_compra_id_pncp, srp, contratacao_excluida ou ano_compra_pncp — medido 2026-10-28"
   contratacao_item:
     grao: "um item de uma contratação do PNCP já com o resultado (fornecedor, valor homologado) junto; um item com vários resultados aparece em mais de uma linha"
-    chave: "(srk_pncp_item_compra, cod_resultado_item): nas 9.151.650 linhas válidas (ano_compra '20xx') é única; srk_pncp_item_compra sozinho tem 8.952.794 distintos (item com mais de um resultado repete). Das 9.277.203 linhas, 125.553 estão com colunas deslocadas (gotcha linhas_deslocadas_contratacao_item)."
-    tempo: {natureza: serie_mensal, coluna: data_inclusao_pncp, cobertura: "2021-08-10–2026-09-29 nas linhas válidas (VARCHAR; 125.420 valores não convertem em timestamp, quase todos linhas deslocadas); ano_compra 2021–2027"}
+    chave: "(srk_pncp_item_compra, cod_resultado_item): 9.190.387 linhas = 9.190.387 distintos, nenhum nulo; srk_pncp_item_compra sozinho tem 8.991.164 distintos (item com mais de um resultado repete)."
+    tempo: {natureza: serie_mensal, coluna: data_inclusao_pncp, cobertura: "2021-08-10–2026-09-29 (VARCHAR, mas converte em timestamp em todas as linhas); ano_compra 2021–2027"}
     territorio: {nivel: outro, colunas: {orgao_entidade_cnpj: "órgão contratante (CNPJ de órgão público)", unidade_orgao_codigo_unidade: "unidade compradora"}}
     medidas:
-      - {coluna: valor_total, o_que: "valor total estimado do item (VARCHAR: TRY_CAST AS DOUBLE; converte em todas as linhas válidas)", unidade: "R$", soma: "sim, mas só entre itens distintos (o item repete por resultado)"}
+      - {coluna: valor_total, o_que: "valor total estimado do item (VARCHAR: TRY_CAST AS DOUBLE; converte em todas as linhas)", unidade: "R$", soma: "sim, mas só entre itens distintos (o item repete por resultado)"}
       - {coluna: valor_total_resultado, o_que: "valor homologado do resultado", unidade: "R$", soma: sim}
       - {coluna: quantidade, o_que: "quantidade", unidade: "conforme unidade_medida", soma: nao}
-    filtros_tipicos: ["ano_compra ~ '^20[0-9]{2}$' para tirar linhas deslocadas (ano_compra é VARCHAR; 9.151.650 válidas de 9.277.203)", "situacao_compra_item = '2' (Homologado; 6.410.457 nas válidas); '1' 1.302.648, '5' 672.882, '4' 410.666, '3' 354.997 (significado de 1, 3, 4, 5 não documentado aqui)", "material_ou_servico = 'M' (7.545.095) ou 'S' (1.606.555)"]
+    filtros_tipicos: ["situacao_compra_item = '2' (Homologado; 6.428.755); '1' 1.318.849, '5' 675.205, '4' 411.438, '3' 356.140 (significado de 1, 3, 4, 5 não documentado aqui)", "material_ou_servico = 'M' (7.572.070) ou 'S' (1.618.317)"]
     use_para: "itens e preços de compras federais por catálogo (cod_item_catalogo) e fornecedor."
-    nao_use_para: "somar valor_total sem separar item de resultado; contar itens por count(*) (usa count(distinct srk_pncp_item_compra)); ler sem o filtro de ano_compra."
+    nao_use_para: "somar valor_total sem separar item de resultado; contar itens por count(*) (usa count(distinct srk_pncp_item_compra)); ler sem separar o resultado cancelado."
     rascunho: [use_para, nao_use_para]
-    verificado: "9.277.203 linhas; 9.151.650 com ano_compra 20xx, todas com situacao_compra_item 1–5 e srk não nulo, chave (srk_pncp_item_compra, cod_resultado_item) única nelas; 117.247 com ano_compra nulo e 8.306 com ano_compra que não é ano — medido 2026-10-28"
+    verificado: "9.190.387 linhas, todas com ano_compra 20xx (2021–2027), situacao_compra_item 1–5, srk e cod_resultado_item não nulos; chave (srk_pncp_item_compra, cod_resultado_item) única; srk sozinho 8.991.164 distintos — medido 2026-10-28"
   contratacao_item_resultado:
     grao: "o resultado de um item de contratação: um fornecedor vencedor por item (valores homologados)"
-    chave: "srk_item_resultado e cod_resultado_item: nas 6.564.572 linhas válidas são únicos (6.564.572 distintos cada). Na tabela inteira (6.565.099) srk tem 6.564.819 distintos entre 6.565.053 não nulos: 527 linhas têm campos deslocados (gotcha linhas_deslocadas_contratacao_item)."
+    chave: "srk_item_resultado e cod_resultado_item: 6.564.756 linhas = 6.564.756 distintos cada, nenhum nulo."
     tempo: {natureza: serie_mensal, coluna: data_resultado_pncp, cobertura: "2021-08-16–2026-09-29 (um arquivo por mês); ano_compra 2021–2027"}
     territorio: {nivel: uf, colunas: {unidade_orgao_uf_sigla: "UF da unidade compradora", unidade_orgao_codigo_unidade: "unidade compradora"}}
     medidas:
       - {coluna: valor_total_homologado, o_que: "valor homologado do item para o fornecedor (VARCHAR: TRY_CAST AS DOUBLE)", unidade: "R$", soma: sim}
       - {coluna: valor_unitario_homologado, o_que: "preço unitário homologado", unidade: "R$ por unidade", soma: nao}
       - {coluna: quantidade_homologada, o_que: "quantidade homologada", unidade: "unidades do item", soma: sim}
-    filtros_tipicos: ["situacao_compra_item_resultado_id IN ('1','2','4') tira as linhas deslocadas (valores como '2062' ou '15698859' são lixo): '1' Informado (6.453.136), '2' Cancelado (111.400), '4' (36)", "srk_item_resultado IS NOT NULL (46 nulos, todos deslocados)"]
+    filtros_tipicos: ["situacao_compra_item_resultado_id: '1' Informado (6.453.136), '2' Cancelado (111.584), '4' (36; significado não documentado); só esses três valores existem"]
     use_para: "quem ganhou cada item de compra e por quanto (ligue a contratacao_item por id_compra_item)."
     nao_use_para: "dados de pessoas: ni_fornecedor e nome do fornecedor podem ser pessoa física; somar sem excluir resultados cancelados (situacao '2')."
     rascunho: [use_para, nao_use_para]
-    verificado: "6.565.099 linhas; 6.564.572 válidas (ano_compra 20xx, situacao 1/2/4, srk não nulo) com srk_item_resultado e cod_resultado_item únicos; valor_total_homologado converte em todas as válidas — medido 2026-10-28"
+    verificado: "6.564.756 linhas; situacao 1/2/4 em todas; srk_item_resultado e cod_resultado_item únicos e não nulos; valor_total_homologado converte em todas — medido 2026-10-28"
   catalogo_material:
     ultima_data: "2026-10-04"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um item do catálogo de materiais (CATMAT) na extração de 2026-10-04"

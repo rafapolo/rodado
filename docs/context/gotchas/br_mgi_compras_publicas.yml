@@ -18,14 +18,3 @@ gotchas:
     colunas: [cnpj]
     severidade: silencioso
     verificado: "772.020 de 772.073 CNPJs no SICAF, mesmo indicador de ativo — medido 2026-10-15"
-  - id: linhas_deslocadas_contratacao_item
-    resumo: "Em contratacao_item (125.553 de 9.277.203 linhas) e contratacao_item_resultado (527 de 6.565.099) algumas linhas têm as colunas deslocadas: ano_compra traz um CNPJ ou número de compra, situacao_compra_item traz texto como 'Menor preço', valores de data viram 'False'. Filtre ano_compra ~ '^20[0-9]{2}$' em contratacao_item e situacao_compra_item_resultado_id IN ('1','2','4') em contratacao_item_resultado."
-    detalhe: >
-      Não é mais o defeito antigo (cabeçalho inteiro numa coluna só): ata_registro_preco e
-      contratacao estão limpas e contratacao_item não tem coluna de nome gigante. Nas linhas
-      deslocadas, 117.247 têm ano_compra nulo e 8.306 têm ano_compra que não é ano; boa parte
-      mantém srk_pncp_item_compra, então filtrar por srk IS NOT NULL não basta.
-    tabelas: [contratacao_item, contratacao_item_resultado]
-    colunas: [ano_compra, situacao_compra_item, situacao_compra_item_resultado_id, data_inclusao_pncp]
-    severidade: silencioso
-    verificado: "contratacao_item 9.277.203 linhas, 9.151.650 com ano_compra 20xx (única por srk_pncp_item_compra + cod_resultado_item), 125.553 deslocadas; contratacao_item_resultado 6.565.099 linhas, 6.564.572 válidas, 527 deslocadas — medido 2026-10-28"
