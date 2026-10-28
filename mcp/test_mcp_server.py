@@ -739,3 +739,55 @@ def test_http_sends_credential_from_env(monkeypatch):
         m.run_sql("SELECT 1")
     import base64
     assert seen["auth"] == "Basic " + base64.b64encode(b"rodado:s3gredo").decode()
+
+
+# ---------------------------------------------------------------------------
+# Cartão e perfil (docs/context/summaries/)
+# ---------------------------------------------------------------------------
+
+def test_describe_table_carries_cartao_after_gotchas():
+    result = m.describe_table("br_ms_sim.microdados")
+    assert list(result)[:3] == ["table", "gotchas", "cartao"]
+    assert result["cartao"]["grao"]
+
+
+def test_describe_table_attaches_perfil_to_columns():
+    cols = {c["name"]: c for c in m.describe_table("br_bcb_agencia.agencia")["columns"]}
+    # o literal certo do filtro está no top, não no nome do banco
+    assert ["Banco do Brasil - Banco Múltiplo", 11992] in cols["segmento"]["top"]
+
+
+def test_perfil_skips_partition_column():
+    # perfil da última partição: `ano` teria um valor só e mentiria a cobertura
+    result = m.describe_table("br_bcb_agencia.agencia")
+    ano = next(c for c in result["columns"] if c["name"] == "ano")
+    assert set(ano) == {"name", "type"}
+    assert "aviso" in result["perfil"]
+
+
+def test_perfil_respects_size_cap(monkeypatch):
+    monkeypatch.setattr(m, "DESCRIBE_MAX_PERFIL_CHARS", 200)
+    result = m.describe_table("br_ms_sim.microdados")
+    extras = sum(len(json.dumps({k: v for k, v in c.items() if k not in ("name", "type")},
+                                ensure_ascii=False)) for c in result["columns"] if len(c) > 2)
+    assert extras <= 200
+    assert result["perfil"]["sem_perfil_por_teto"] > 0
+
+
+def test_perfil_never_shows_personal_values():
+    for ds in ("br_cgu_servidores_executivo_federal", "br_bcb_agencia"):
+        for t in m._SCHEMA.get(ds, {}):
+            for c in m.describe_table(f"{ds}.{t}")["columns"]:
+                p = (m._summary_doc(ds, ".perfil").get(t) or {}).get("colunas", {}).get(c["name"]) or {}
+                if p.get("pessoal"):
+                    assert not {"top", "min", "max"} & set(c), f"{ds}.{t}.{c['name']}"
+
+
+def test_no_cartao_without_summary(monkeypatch, tmp_path):
+    monkeypatch.setattr(m, "SUMMARIES_DIR", tmp_path)
+    m._summary_doc.cache_clear()
+    try:
+        result = m.describe_table("br_ms_sim.microdados")
+        assert "cartao" not in result and "perfil" not in result
+    finally:
+        m._summary_doc.cache_clear()

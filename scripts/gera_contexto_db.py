@@ -4,7 +4,8 @@
 O container do db.rodado.xyz só leva o que está em db/ (ver db/Dockerfile), e os YAML
 inteiros estouram o contexto de um agente (join_keys.md tem 319 KB). Este script lê só o
 que é público e escrito à mão — gotchas/*.yml, column_codes.yaml, bridges.yaml,
-metrics.yaml, hierarchies.yaml —, as notas de coluna do harness (harness/dados/notas.json, lido
+metrics.yaml, hierarchies.yaml, o cartão de cada tabela (summaries/<dataset>.yml) —, o perfil
+gerado das colunas (summaries/<dataset>.perfil.yml, recortado como no describe_table do MCP), as notas de coluna do harness (harness/dados/notas.json, lido
 do branch harness-gemma quando ele existe), as respostas conferidas e as perguntas diretas de
 treino (os holdouts ficam de fora: são a régua de scripts/avalia_agente_cego.py), mais o tema de
 cada dataset do atlas, e grava já fatiado
@@ -38,6 +39,82 @@ def _texto(v):
 def _datasets_do_padrao(padrao):
     """bridges.yaml escreve a tabela para humanos: `ds.a / b`, `ds.prefixo*`."""
     return {padrao.split(".", 1)[0].strip()} if "." in padrao else set()
+
+
+# o mesmo recorte do describe_table (mcp/mcp_server.py), copiado para não importar o servidor
+CARTAO_CAMPOS = ("grao", "chave", "tempo", "territorio", "medidas", "filtros_tipicos",
+                 "use_para", "nao_use_para", "observacoes", "ultima_data", "verificado", "rascunho")
+PERFIL_MAX_CHARS = 4000
+PERFIL_TOP_MAX_DISTINTOS = 50
+PERFIL_TOP_N = 3
+Loader = getattr(yaml, "CSafeLoader", yaml.SafeLoader)
+
+
+def _curto(v):
+    return v[:40] + "…" if isinstance(v, str) and len(v) > 40 else v
+
+
+def _perfil_coluna(p):
+    out = {}
+    if p.get("nulos_pct"):
+        out["nulos_pct"] = p["nulos_pct"]
+    if p.get("distintos_aprox") is not None:
+        out["distintos"] = p["distintos_aprox"]
+    if p.get("pessoal") or p.get("nulos_pct") == 100:
+        return out
+    top = p.get("top") or []
+    if top and (p.get("distintos_aprox") or 0) <= PERFIL_TOP_MAX_DISTINTOS:
+        out["top"] = [[_curto(v), n] for v, n in top[:PERFIL_TOP_N]]
+    elif p.get("min") is not None:
+        out["min"], out["max"] = _curto(p["min"]), _curto(p.get("max"))
+    return out
+
+
+def _perfil_tabela(perfil):
+    """{fonte, colunas: {col: recorte}, sem_perfil_por_teto?}: a coluna da partição fica de fora
+    (perfil da última partição diria que a tabela só tem aquele ano)."""
+    fonte = perfil.get("fonte_do_perfil") or ""
+    particao = set(re.findall(r"\((\w+) = ", fonte))
+    colunas, gasto, cortadas = {}, 0, 0
+    for nome, p in (perfil.get("colunas") or {}).items():
+        extra = {} if nome in particao else _perfil_coluna(p or {})
+        if not extra:
+            continue
+        custo = len(json.dumps(extra, ensure_ascii=False, default=str))
+        if gasto + custo > PERFIL_MAX_CHARS:
+            cortadas += 1
+            continue
+        colunas[nome] = extra
+        gasto += custo
+    out = {"fonte": fonte, "colunas": colunas}
+    if particao:
+        out["particao"] = sorted(particao)
+    if cortadas:
+        out["sem_perfil_por_teto"] = cortadas
+    return out
+
+
+def _cartoes_e_perfis(por_ds):
+    pasta = CTX / "summaries"
+    ultima = json.loads((pasta / "_ultima_data.json").read_text()) if (pasta / "_ultima_data.json").exists() else {}
+    for arq in sorted(pasta.glob("*.yml")):
+        if arq.name.endswith(".perfil.yml") or arq.name.startswith("_"):
+            continue
+        ds = arq.stem
+        for tb, c in ((yaml.load(arq.read_text(), Loader=Loader) or {}).get("tabelas") or {}).items():
+            if not isinstance(c, dict):
+                continue
+            cartao = {k: c[k] for k in CARTAO_CAMPOS if c.get(k) not in (None, "", [], {})}
+            data = (ultima.get(f"{ds}.{tb}") or {}).get("ultima_data")
+            if data and "ultima_data" not in cartao:
+                cartao["ultima_data"] = data
+            if cartao:
+                por_ds[ds].setdefault("cartoes", {})[tb] = cartao
+        perfil = pasta / f"{ds}.perfil.yml"
+        if perfil.exists():
+            for tb, p in ((yaml.load(perfil.read_text(), Loader=Loader) or {}).get("tabelas") or {}).items():
+                if isinstance(p, dict) and p.get("colunas"):
+                    por_ds[ds].setdefault("perfis", {})[tb] = _perfil_tabela(p)
 
 
 def _do_branch(caminho, branch="harness-gemma"):
@@ -109,6 +186,8 @@ def main():
     metricas = yaml.safe_load((CTX / "metrics.yaml").read_text())["metrics"]
     for nome, m in metricas.items():
         por_ds[m["source_table"].split(".", 1)[0]]["metricas"].append(nome)
+
+    _cartoes_e_perfis(por_ds)
 
     notas = json.loads(_do_branch("harness/dados/notas.json") or "{}")
     for tabela, cols in notas.items():
