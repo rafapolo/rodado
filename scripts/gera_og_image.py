@@ -36,12 +36,12 @@ PAD = 78
 
 VARIANTS = {
     "og.png": {
-        "eyebrow": "1.403 TABELAS · 256 DATASETS · 103 FONTES · 743 GB",
+        "eyebrow": "1.612 TABELAS · 276 DATASETS · 116 FONTES · 571 GB",
         "head": ["Brasil em números,", "retratos dos dados oficiais"],
         "dek": "Vínculos de emprego, óbitos, contratos públicos, resultados\neleitorais — cruzados por raça, classe, gênero e território.",
     },
     "og-en.png": {
-        "eyebrow": "1,403 TABLES · 256 DATASETS · 103 SOURCES · 743 GB",
+        "eyebrow": "1,612 TABLES · 276 DATASETS · 116 SOURCES · 571 GB",
         "head": ["Brazil by the numbers,", "portraits from official data"],
         "dek": "Employment records, deaths, public contracts, election results —\ncross-referenced by race, class, gender and territory.",
     },
@@ -223,7 +223,7 @@ def gera_analises(raiz: Path) -> int:
 # Repete a abertura do terminal.py: o logo ASCII em degradê mauve -> pêssego sobre o
 # fundo radial do index.html (--fundo-terminal), com a moldura lavanda da página.
 
-DB_RESUMO = [("1.403", "tabelas"), ("256", "datasets"), ("743 GB", "de dados"), ("103", "fontes")]
+DB_RESUMO = [("1.612", "tabelas"), ("276", "datasets"), ("571 GB", "de dados"), ("103", "fontes")]
 JETBRAINS = str(Path.home() / "Library/Fonts/JetBrainsMono-Regular.ttf")
 JETBRAINS_BOLD = str(Path.home() / "Library/Fonts/JetBrainsMono-Bold.ttf")
 DB_CENTRO, DB_BORDA = (33, 33, 52), (24, 24, 37)        # #222237ab sobre o --base #1e1e2e -> #181825
