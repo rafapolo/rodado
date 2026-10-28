@@ -49,7 +49,8 @@ def pessoal(ds, nome):
 def duck(sql, timeout=1800):
     # o timeout vale também no beelink: matar só o ssh local deixava o duckdb órfão lá, rodando por horas
     # (2026-10-27: dois SUMMARIZE de PNS e PIRLS a 100% de CPU, 11 h e 6 h depois de o script desistir deles)
-    remoto = f"timeout -k 30 {timeout - 60} ~/bin/duckdb -readonly -json ~/rodado/basedosdados.duckdb"
+    # o ssh não interativo tem ulimit -n 1024: tabela larga estoura "Too many open files"
+    remoto = f"ulimit -n 65536; timeout -k 30 {timeout - 60} ~/bin/duckdb -readonly -json ~/rodado/basedosdados.duckdb"
     r = subprocess.run(["ssh", "beelink", remoto],
                        input="SET enable_progress_bar=false;\nSET threads=8;\n" + sql, capture_output=True, text=True,
                        errors="replace", timeout=timeout)
@@ -93,21 +94,33 @@ def num(v):
         return v
 
 
+def ident(x):
+    """Nome de coluna como identificador SQL: há coluna com aspas no nome (infopen)."""
+    return '"' + x.replace('"', '""') + '"'
+
+
 def resumo_manual(ds, tb, q):
     """O que o SUMMARIZE devolve, sem o desvio-padrão, uma consulta por coluna."""
     out = []
     for c in duck(f"DESCRIBE {ds}.{tb};"):
         n, t = c["column_name"], c["column_type"]
         numerica = re.match(r"(BIG|SMALL|TINY|U)?INT|DOUBLE|FLOAT|DECIMAL|HUGEINT", t)
-        extra = (f", avg(\"{n}\") avg, quantile_cont(\"{n}\", 0.25) q25, quantile_cont(\"{n}\", 0.5) q50, "
-                 f"quantile_cont(\"{n}\", 0.75) q75") if numerica else ", NULL avg, NULL q25, NULL q50, NULL q75"
-        r = duck(f"SELECT min(\"{n}\")::VARCHAR min, max(\"{n}\")::VARCHAR max, approx_count_distinct(\"{n}\") approx_unique, "
-                 f"100.0 * count(*) FILTER (\"{n}\" IS NULL) / greatest(count(*), 1) null_percentage{extra} FROM {q};")[0]
+        i = ident(n)
+        extra = (f", avg({i}) avg, quantile_cont({i}, 0.25) q25, quantile_cont({i}, 0.5) q50, "
+                 f"quantile_cont({i}, 0.75) q75") if numerica else ", NULL avg, NULL q25, NULL q50, NULL q75"
+        r = duck(f"SELECT min({i})::VARCHAR min, max({i})::VARCHAR max, approx_count_distinct({i}) approx_unique, "
+                 f"100.0 * count(*) FILTER ({i} IS NULL) / greatest(count(*), 1) null_percentage{extra} FROM {q};")[0]
         out.append({"column_name": n, "column_type": t, **r})
     return out
 
 
+# lidas pela rede (R2), não do disco do beelink: o perfil passa da hora de teto
+REMOTAS = {"br_ms_sipni_microdados"}
+
+
 def perfil_tabela(ds, tb, linhas):
+    if ds in REMOTAS:
+        raise RuntimeError("lida pelo R2, não do disco: perfil pulado (um LIMIT 1 levou 173 s em 2026-10-28)")
     if not linhas:  # view: o catálogo guarda 0 linhas
         linhas = duck(f"SELECT count(*) n FROM {ds}.{tb};", timeout=3600)[0]["n"]
     q, como = fonte(ds, tb, linhas)
@@ -141,20 +154,30 @@ def perfil_tabela(ds, tb, linhas):
                 poucas.append(nome)
         colunas[nome] = p
     if poucas:
-        # os tops de todas as colunas de poucos valores numa consulta só, sobre a mesma amostra
-        partes = [f"(SELECT '{c}' c, \"{c}\"::VARCHAR v, count(*) n FROM {q} GROUP BY 2 ORDER BY 3 DESC, 2 LIMIT 10)" for c in poucas]
-        for t in duck(" UNION ALL ".join(partes) + ";", timeout=3600):
-            colunas[t["c"]].setdefault("top", []).append([t["v"], t["n"]])
+        # um scan só, com histogram() de todas as colunas de poucos valores; os 10 maiores saem aqui.
+        # Um UNION ALL com um ramo por coluna abria o arquivo uma vez por ramo: "Too many open
+        # files" e OOM em tabela larga (2.223 colunas nos agregados do Censo 2022). histogram()
+        # ignora nulo: a contagem dele é count(*) - count(c)
+        sel = ", ".join(f"map_entries(histogram({ident(c)}::VARCHAR)) h{k}, count(*) - count({ident(c)}) z{k}"
+                        for k, c in enumerate(poucas))
+        r = duck(f"SELECT {sel} FROM {q};", timeout=3600)[0]
+        for k, c in enumerate(poucas):
+            pares = [[e["key"], e["value"]] for e in r[f"h{k}"] or []]
+            if r[f"z{k}"]:
+                pares.append([None, r[f"z{k}"]])
+            pares.sort(key=lambda kv: (-kv[1], "" if kv[0] is None else str(kv[0])))
+            if pares:
+                colunas[c]["top"] = pares[:10]
     if geo:
         # no lugar do min/max: tipos de geometria, caixa envolvente e pontos por linha
-        sel = ", ".join(f"list(DISTINCT ST_GeometryType(\"{g}\")::VARCHAR) \"{g}_tipos\", "
-                        f"[min(ST_XMin(\"{g}\")), min(ST_YMin(\"{g}\")), max(ST_XMax(\"{g}\")), max(ST_YMax(\"{g}\"))] \"{g}_caixa\", "
-                        f"avg(ST_NPoints(\"{g}\")) \"{g}_pontos\"" for g in geo)
+        sel = ", ".join(f"list(DISTINCT ST_GeometryType({ident(g)})::VARCHAR) t{k}, "
+                        f"[min(ST_XMin({ident(g)})), min(ST_YMin({ident(g)})), max(ST_XMax({ident(g)})), max(ST_YMax({ident(g)}))] c{k}, "
+                        f"avg(ST_NPoints({ident(g)})) p{k}" for k, g in enumerate(geo))
         r = duck(f"LOAD spatial;\nSELECT {sel} FROM {q};", timeout=3600)[0]
-        for g in geo:
-            colunas[g]["geometrias"] = sorted(t for t in r[f"{g}_tipos"] or [] if t)
-            colunas[g]["caixa_xmin_ymin_xmax_ymax"] = [round(v, 4) if v is not None else None for v in r[f"{g}_caixa"] or []]
-            colunas[g]["pontos_media"] = num(r[f"{g}_pontos"])
+        for k, g in enumerate(geo):
+            colunas[g]["geometrias"] = sorted(t for t in r[f"t{k}"] or [] if t)
+            colunas[g]["caixa_xmin_ymin_xmax_ymax"] = [round(v, 4) if v is not None else None for v in r[f"c{k}"] or []]
+            colunas[g]["pontos_media"] = num(r[f"p{k}"])
     return {"linhas": linhas, "fonte_do_perfil": como, "colunas": colunas}
 
 

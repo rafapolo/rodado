@@ -1,5 +1,5 @@
 dataset: br_inep_saeb
-gerado_em: '2026-10-27'
+gerado_em: '2026-10-28'
 gerado_por: scripts/gera_perfil.py — não edite à mão
 tabelas:
   aluno_ef_2ano:
@@ -47,7 +47,7 @@ tabelas:
         - [MG, 12314]
         - [RS, 12292]
         - [CE, 12120]
-      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2151}
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 2151, min: '6311031', max: '6327738'}
       area:
         tipo: VARCHAR
         nulos_pct: 0
@@ -57,7 +57,7 @@ tabelas:
         top:
         - ['2', 185310]
         - ['1', 120112]
-      id_escola: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4681}
+      id_escola: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4681, min: '61250222', max: '61471778'}
       rede:
         tipo: VARCHAR
         nulos_pct: 0
@@ -79,7 +79,7 @@ tabelas:
         top:
         - ['1', 253148]
         - ['2', 52274]
-      id_turma: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6714}
+      id_turma: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6714, min: '1000046', max: '999810'}
       turno:
         tipo: VARCHAR
         nulos_pct: 43.82
@@ -100,7 +100,7 @@ tabelas:
         quartis: [2, 2, 2]
         top:
         - ['2', 305422]
-      id_aluno: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 158531}
+      id_aluno: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 158531, min: '34795422', max: '56443913'}
       situacao_censo:
         tipo: BIGINT
         nulos_pct: 0
@@ -218,8 +218,8 @@ tabelas:
         - ['5', 43566]
         - ['1', 43282]
         - ['3', 43240]
-      respostas_bloco_1: {tipo: VARCHAR, nulos_pct: 56.18, distintos_aprox: 35805}
-      respostas_bloco_2: {tipo: VARCHAR, nulos_pct: 56.18, distintos_aprox: 43406}
+      respostas_bloco_1: {tipo: VARCHAR, nulos_pct: 56.18, distintos_aprox: 35805, min: '********', max: DDDDDDDD}
+      respostas_bloco_2: {tipo: VARCHAR, nulos_pct: 56.18, distintos_aprox: 43406, min: '********', max: DDDDDDDD}
       conceito_q1:
         tipo: VARCHAR
         nulos_pct: 0
@@ -374,8 +374,4039 @@ tabelas:
         max: '40.703353'
         media: 23.1826
         quartis: [20.2173, 23.3896, 25.7972]
-  aluno_ef_5ano: {linhas: 47145686, erro: 'duckdb saiu com 255 sem mensagem (memória?)'}
-  aluno_ef_9ano: {linhas: 54557089, erro: 'duckdb saiu com 255 sem mensagem (memória?)'}
+  aluno_ef_5ano:
+    linhas: 47145686
+    fonte_do_perfil: amostra de 40.948% da última partição (ano = 2023). ~2.000.000 linhas
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2023'
+        max: '2023'
+        media: 2023
+        quartis: [2023, 2023, 2023]
+        top:
+        - ['2023', 2068212]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 426446]
+        - [MG, 198209]
+        - [BA, 140567]
+        - [RJ, 132588]
+        - [PR, 112616]
+        - [PA, 107527]
+        - [RS, 106246]
+        - [PE, 86120]
+        - [CE, 84481]
+        - [SC, 83472]
+      id_regiao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '1'
+        max: '5'
+        top:
+        - ['3', 800476]
+        - ['2', 555398]
+        - ['4', 302334]
+        - ['1', 236829]
+        - ['5', 173175]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5903, min: '6322170', max: '6327738'}
+      area:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      mascara:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      ano_mascara:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      id_escola: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 60126, min: '61398210', max: '61471804'}
+      rede:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['1', 2023519]
+        - ['0', 44693]
+      escola_publica:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['1', 2023519]
+        - ['0', 44693]
+      localizacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 1823719]
+        - ['2', 244493]
+      id_turma: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 90016, min: '1475304', max: '1727754'}
+      turno:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      serie:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '5'
+        max: '5'
+        media: 5
+        quartis: [5, 5, 5]
+        top:
+        - ['5', 2068212]
+      id_aluno: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1529580, min: '49372322', max: '56445431'}
+      situacao_censo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['1', 2060171]
+        - ['0', 8041]
+      disciplina:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: LP
+        max: MT
+        top:
+        - [LP, 1034638]
+        - [MT, 1033574]
+      preenchimento_caderno:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.8416
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 1740664]
+        - ['0', 327548]
+      presenca:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.8468
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 1751369]
+        - ['0', 316843]
+      caderno:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 24
+        min: '1'
+        max: '9'
+        top:
+        - ['15', 116981]
+        - ['21', 111507]
+        - ['2', 109028]
+        - ['6', 106238]
+        - ['17', 105606]
+        - ['18', 104247]
+        - ['14', 103678]
+        - ['12', 103243]
+        - ['4', 101333]
+        - ['10', 101232]
+      bloco_1:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '1'
+        max: '7'
+        top:
+        - ['7', 311872]
+        - ['4', 305207]
+        - ['3', 302115]
+        - ['1', 294790]
+        - ['2', 287372]
+        - ['5', 286726]
+        - ['6', 280130]
+      bloco_2:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '1'
+        max: '7'
+        top:
+        - ['7', 313728]
+        - ['6', 304695]
+        - ['4', 297587]
+        - ['3', 297048]
+        - ['5', 295580]
+        - ['2', 289340]
+        - ['1', 270234]
+      bloco_3:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      respostas_bloco_1: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 869294, min: '***********', max: DDDDDDDDDDD}
+      respostas_bloco_2: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 889702, min: '***********', max: DDDDDDDDDDD}
+      respostas_bloco_3:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      gabarito_bloco_1:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      gabarito_bloco_2:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      gabarito_bloco_3:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      indicador_proficiencia:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.8425
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 1742472]
+        - ['0', 325740]
+      indicador_prova_brasil:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      amostra:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['0', 2023519]
+        - ['1', 44693]
+      estrato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 11153, min: '11411', max: '632773822'}
+      peso_escola:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      peso_turma:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      peso_aluno_turma:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      peso_aluno:
+        tipo: DOUBLE
+        nulos_pct: 15.93
+        distintos_aprox: 7604
+        min: '0.054235089'
+        max: '130.63476507'
+        media: 1.3013
+        quartis: [1, 1.0504, 1.1248]
+      proficiencia:
+        tipo: DOUBLE
+        nulos_pct: 15.75
+        distintos_aprox: 1067596
+        min: '-2.822384'
+        max: '2.091043'
+        media: -0.6548
+        quartis: [-1.3577, -0.6765, 0.011]
+      erro_padrao:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      proficiencia_saeb:
+        tipo: DOUBLE
+        nulos_pct: 15.75
+        distintos_aprox: 1209984
+        min: '94.490364'
+        max: '366.837642'
+        media: 213.679
+        quartis: [174.6307, 212.3884, 250.6303]
+      erro_padrao_saeb:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      desempenho_aluno:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      preenchimento_questionario:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.8392
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 1735680]
+        - ['0', 332532]
+      sexo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '*'
+        max: C
+        top:
+        - [A, 845626]
+        - [B, 810314]
+        - [., 363359]
+        - [C, 45533]
+        - ['*', 3380]
+      raca_cor:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '*'
+        max: F
+        top:
+        - [C, 800496]
+        - [A, 487146]
+        - [., 370709]
+        - [B, 211759]
+        - [F, 116508]
+        - [D, 41737]
+        - [E, 35396]
+        - ['*', 4461]
+      mes_nascimento:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      ano_nascimento:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      idade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '*'
+        max: F
+        top:
+        - [C, 841208]
+        - [B, 673592]
+        - [., 363259]
+        - [D, 116663]
+        - [E, 37876]
+        - [F, 22696]
+        - [A, 11446]
+        - ['*', 1472]
+      faixa_etaria:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      aniversariante:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      possui_necessidade_especial:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '*'
+        max: B
+        top:
+        - [A, 1615211]
+        - [., 373017]
+        - [B, 77683]
+        - ['*', 2301]
+      com_quem_mora:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      mora_mae:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '*'
+        max: B
+        top:
+        - [B, 1439365]
+        - [., 427792]
+        - [A, 169386]
+        - ['*', 31669]
+      mora_pai:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '*'
+        max: B
+        top:
+        - [B, 1158087]
+        - [., 493975]
+        - [A, 391703]
+        - ['*', 24447]
+      mora_irmaos:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      mora_avos:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '*'
+        max: B
+        top:
+        - [A, 1025178]
+        - [., 659229]
+        - [B, 379606]
+        - ['*', 4199]
+      mora_outros_parentes:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '*'
+        max: B
+        top:
+        - [B, 1059251]
+        - [., 576372]
+        - [A, 424689]
+        - ['*', 7900]
+      mora_amigos:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      idioma_domicilio:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      quantidade_pessoas_domicilio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '*'
+        max: E
+        top:
+        - [C, 549638]
+        - [., 386784]
+        - [D, 367898]
+        - [B, 336470]
+        - [E, 325395]
+        - [A, 98893]
+        - ['*', 3134]
+      quantidade_pessoas_despesas_domicilio:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      indicador_inse:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.788
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 1629712]
+        - ['0', 438500]
+      inse:
+        tipo: DOUBLE
+        nulos_pct: 21.37
+        distintos_aprox: 521
+        min: '2.12'
+        max: '7.62'
+        media: 4.9531
+        quartis: [4.3627, 4.9467, 5.5304]
+      nivel_inse:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '1'
+        max: '8'
+        top:
+        - ['1', 463010]
+        - ['4', 357608]
+        - ['5', 349007]
+        - ['3', 278599]
+        - ['6', 245647]
+        - ['2', 192110]
+        - ['7', 160582]
+        - ['8', 21649]
+      peso_inse:
+        tipo: DOUBLE
+        nulos_pct: 21.37
+        distintos_aprox: 7157
+        min: '0.2841125539'
+        max: '134.75221753'
+        media: 1.3808
+        quartis: [1.036, 1.1012, 1.2065]
+      possui_trabalho:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      turma_bolsa_escola:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      aluno_bolsa_escola:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      possui_moradia_rua_urbanizada:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '*'
+        max: B
+        top:
+        - [B, 1257311]
+        - [A, 398396]
+        - [., 389594]
+        - ['*', 22911]
+      possui_agua_encanada:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '*'
+        max: B
+        top:
+        - [B, 1414717]
+        - [., 419630]
+        - [A, 226946]
+        - ['*', 6919]
+      possui_eletrecidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '*'
+        max: B
+        top:
+        - [B, 1523301]
+        - [., 430736]
+        - [A, 110534]
+        - ['*', 3641]
+      possui_eletrodomestico_sem_eletricidade:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      possui_casa_dormitorio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '*'
+        max: D
+        top:
+        - [C, 752300]
+        - [D, 629796]
+        - [., 441171]
+        - [B, 189096]
+        - ['*', 29886]
+        - [A, 25963]
+      possui_casa_quarto_individual: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4, pessoal: 'só contagens: valores seriam dado pessoal'}
+      possui_casa_cozinha:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      possui_casa_banheiro:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '*'
+        max: D
+        top:
+        - [B, 987016]
+        - [., 460675]
+        - [C, 424723]
+        - [D, 140901]
+        - [A, 37699]
+        - ['*', 17198]
+      possui_casa_sala:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      possui_casa_garagem:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '*'
+        max: B
+        top:
+        - [B, 958079]
+        - [A, 635614]
+        - [., 470568]
+        - ['*', 3951]
+      possui_automovel:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '*'
+        max: D
+        top:
+        - [A, 657492]
+        - [B, 645252]
+        - [., 492368]
+        - [C, 186680]
+        - [D, 73318]
+        - ['*', 13102]
+      possui_geladeira:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '*'
+        max: D
+        top:
+        - [B, 1285299]
+        - [., 404543]
+        - [C, 227451]
+        - ['*', 62143]
+        - [D, 56476]
+        - [A, 32300]
+      possui_geladeira_freezer:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      possui_freezer:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '*'
+        max: B
+        top:
+        - [B, 1148497]
+        - [., 475897]
+        - [A, 437237]
+        - ['*', 6581]
+      possui_microondas:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '*'
+        max: B
+        top:
+        - [B, 972468]
+        - [A, 633294]
+        - [., 450179]
+        - ['*', 12271]
+      possui_maquina_lavar_roupa:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '*'
+        max: B
+        top:
+        - [B, 1402970]
+        - [., 465500]
+        - [A, 192505]
+        - ['*', 7237]
+      possui_aspirador_po:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '*'
+        max: B
+        top:
+        - [A, 990577]
+        - [B, 604894]
+        - [., 459213]
+        - ['*', 13528]
+      possui_radio:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      possui_tv:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '*'
+        max: D
+        top:
+        - [B, 787668]
+        - [C, 507911]
+        - [., 444694]
+        - [D, 249524]
+        - [A, 60578]
+        - ['*', 17837]
+      possui_tv_assinatura:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '*'
+        max: B
+        top:
+        - [B, 1277253]
+        - [., 426945]
+        - [A, 335055]
+        - ['*', 28959]
+      possui_videocassete_dvd:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      possui_internet:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '*'
+        max: B
+        top:
+        - [B, 1439694]
+        - [., 432876]
+        - [A, 167082]
+        - ['*', 28560]
+      possui_computador:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '*'
+        max: D
+        top:
+        - [A, 794852]
+        - [B, 472772]
+        - [., 437005]
+        - [C, 198692]
+        - [D, 90117]
+        - ['*', 74774]
+      possui_computador_sem_internet:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      possui_tablet:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      possui_telefone: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      possui_celular:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      possui_escrivaninha:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '*'
+        max: B
+        top:
+        - [B, 959693]
+        - [A, 646274]
+        - [., 445154]
+        - ['*', 17091]
+      possui_enciclopedia:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      possui_atlas:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      possui_dicionario:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      possui_calculadora:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      possui_empregada_domestica:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      possui_empregada_domestica_cinco_dias:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      escolaridade_mae:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '*'
+        max: F
+        top:
+        - [F, 822615]
+        - [., 397046]
+        - [D, 267172]
+        - [E, 212488]
+        - [C, 149027]
+        - [B, 110981]
+        - [A, 91966]
+        - ['*', 16917]
+      mae_sabe_ler_escrever:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      mae_le:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      ocupacao_mae:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      escolaridade_pai:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '*'
+        max: F
+        top:
+        - [F, 962330]
+        - [., 398416]
+        - [D, 209623]
+        - [E, 158671]
+        - [C, 128794]
+        - [B, 109876]
+        - [A, 89899]
+        - ['*', 10603]
+      pai_sabe_ler_escrever:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      pai_le:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      ocupacao_pai:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      pessoa_acompanha_vida_escolar: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      escolaridade_pessoa: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_conhecem_diretor: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_conhecem_professor: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_conhecem_amigo: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_conhecem_responsavel_amigo: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      responsaveis_conversam_professor_diretor: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      responsaveis_almocam_jantam_contigo: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_ouvem_musica_contigo: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_conversam_livros_contigo: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_conversam_filmes_contigo: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_conversam_programas_tv_contigo: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      responsaveis_conversam_amigos: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_conversam_responsaveis_amigo: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      responsaveis_conversam_outros_assuntos_contigo: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      responsaveis_conversam_escola: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_conversam_boletim: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_conversam_comportamento: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_leem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_cobram_realizacao_licao_casa: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      responsaveis_ajudam_realizacao_licao_casa: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      responsaveis_incentivam_realizacao_licao_casa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      responsaveis_incentivam_estudos: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_incentivam_leitura: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_incentivam_comparecer_aulas: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      responsaveis_incentivam_pontualidade: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_incentivam_boas_notas: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_comparecem_reuniao_pais: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_participam_festas_escola: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_participam_trabalho_voluntario: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      tempo_chegada_escola:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '*'
+        max: C
+        top:
+        - [A, 1182021]
+        - [., 496329]
+        - [B, 298935]
+        - [C, 88990]
+        - ['*', 1937]
+      forma_chegada_escola:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: '*'
+        max: I
+        top:
+        - [A, 671512]
+        - [., 404738]
+        - [F, 284741]
+        - [D, 282085]
+        - [C, 117748]
+        - [B, 116116]
+        - [H, 76896]
+        - [I, 51890]
+        - ['*', 46792]
+        - [G, 9000]
+      transporte_escolar:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '*'
+        max: B
+        top:
+        - [A, 1143247]
+        - [B, 483336]
+        - [., 433490]
+        - ['*', 8139]
+      inicio_estudos:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      quantos_anos_primeiro_grau:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      idade_entrada_escola:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '*'
+        max: D
+        top:
+        - [A, 666490]
+        - [B, 574612]
+        - [., 414766]
+        - [C, 288057]
+        - [D, 116719]
+        - ['*', 7568]
+      quantidade_mudancas_escola:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      rede_ef:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '*'
+        max: C
+        top:
+        - [A, 1259617]
+        - [., 422689]
+        - [C, 262814]
+        - [B, 118957]
+        - ['*', 4135]
+      estudos_mesma_escola:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      reprovacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '*'
+        max: C
+        top:
+        - [A, 1400517]
+        - [., 424335]
+        - [B, 183330]
+        - [C, 58010]
+        - ['*', 2020]
+      evasao_escolar_ate_final_ano:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '*'
+        max: C
+        top:
+        - [A, 1491242]
+        - [., 419535]
+        - [B, 117522]
+        - [C, 37944]
+        - ['*', 1969]
+      evasao_escolar_temporaria:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      motivo_evasao_escolar:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      faltas_aula:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      motivo_faltas:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      tempo_lazer:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '*'
+        max: D
+        top:
+        - [D, 975331]
+        - [., 459187]
+        - [C, 310154]
+        - [B, 230593]
+        - [A, 85664]
+        - ['*', 7283]
+      tipo_programacao_tv:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      tempo_cursos:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '*'
+        max: D
+        top:
+        - [A, 889641]
+        - [., 446705]
+        - [B, 334075]
+        - [C, 233850]
+        - [D, 128682]
+        - ['*', 35259]
+      tempo_trabalho_domestico:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '*'
+        max: D
+        top:
+        - [B, 629773]
+        - [., 447464]
+        - [C, 421828]
+        - [D, 299691]
+        - [A, 250551]
+        - ['*', 18905]
+      tempo_estudos:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '*'
+        max: D
+        top:
+        - [B, 832457]
+        - [C, 456910]
+        - [., 412026]
+        - [A, 181126]
+        - [D, 144639]
+        - ['*', 41054]
+      gosta_leitura:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      tipo_leitura:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      quantidade_livros:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      recebe_jornais:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      recebe_revistas:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      leitura_jornais:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      leitura_noticias:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      leitura_livros_geral:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      leitura_literatura:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      leitura_literatura_infantojuvenil:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      leitura_historia_quadrinhos:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      leitura_revistas_tematicas:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      leitura_revista_comportamento:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      leitura_revistas_geral:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      leitura_internet:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      leitura_outros_materiais:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      frequenta_biblioteca:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      frequenta_cinema:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      frequenta_museu:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      frequenta_espetaculo_exposicao:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      frequenta_teatro:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      frequenta_show:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      frequenta_festas_comunidade:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      participa_atividades_esporte:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      participa_atividades_artisticas:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      participa_trabalho_solidario:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      participa_reforco_escolar:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      participa_excursao_acampamento:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      participa_festas:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      curso_atividades_artisticas:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      curso_reforco_escolar:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      curso_idioma_externo:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      curso_informatica:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      quando_nao_entende_materia:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      gosta_estudar_disciplina:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      entendimento_ensino:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      professor_disciplina:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      faz_licao_casa:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      tempo_licao_casa:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      fez_redacao:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      professor_leitura_livros_licao_casa:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      correcao_licao_casa:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      correcao_licao_casa_alunos:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      consulta_jornais_revistas_licao_casa:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      estuda_fazendo_licao_casa:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      estuda_fazendo_resumos:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      estuda_lendo_relendo_livros:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      estuda_refazendo_exercicios:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      estuda_fazendo_anotacoes:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      estuda_lendo_anotacoes:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      estuda_somente_assistindo_aulas:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      estuda_fora_sala_aula:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      utiliza_computador_licao_casa:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      utiliza_computador:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      utiliza_computador_escola:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      utiliza_biblioteca_escola:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      utiliza_biblioteca_externa:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      existe_lugar_calmo_estudos:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      comparacao_colegas_disciplina:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      boas_notas_disciplina:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      professor_importa_voce_diz:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      professor_conversa_avaliacao:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      professor_elogia_merecimento:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      professor_esforca_aprendizado:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      professor_trata_carinho:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      turma_exclui:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      alunos_desordeiros:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      alunos_atentos:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      alunos_obedientes:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      possui_amigos_sala:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      motivo_estar_escola:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      utiliza_aprendizado_diariamente:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      pandemia_equipamento_ensino_remoto:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      pandemia_internet_ensino_remoto:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      pandemia_facilidade_programas:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      pandemia_recebeu_material:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      pandemia_auxilio_professor:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      pandemia_compreensao_conteudo:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      pandemia_ambiente_tranquilo:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      pandemia_apoio_familia:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      pandemia_apoio_colegas:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      pretensao_futura:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+      opiniao_teste:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2068212]
+  aluno_ef_9ano:
+    linhas: 54557089
+    fonte_do_perfil: amostra de 39.954% da última partição (ano = 2023). ~2.000.000 linhas
+    colunas:
+      ano:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2023'
+        max: '2023'
+        media: 2023
+        quartis: [2023, 2023, 2023]
+        top:
+        - ['2023', 2087125]
+      sigla_uf:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [SP, 414073]
+        - [MG, 209767]
+        - [BA, 146758]
+        - [RJ, 120788]
+        - [PR, 115068]
+        - [PA, 105565]
+        - [RS, 98947]
+        - [CE, 97195]
+        - [PE, 90092]
+        - [MA, 87141]
+      id_regiao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '1'
+        max: '5'
+        top:
+        - ['3', 785556]
+        - ['2', 594672]
+        - ['4', 292974]
+        - ['1', 237638]
+        - ['5', 176285]
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5903, min: '6322170', max: '6327738'}
+      area:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['2', 1682147]
+        - ['1', 404978]
+      mascara:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      ano_mascara:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      id_escola: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 47263, min: '61398210', max: '61471803'}
+      rede:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        top:
+        - ['1', 2039477]
+        - ['0', 47648]
+      escola_publica:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.9772
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 2039477]
+        - ['0', 47648]
+      localizacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '1'
+        max: '2'
+        top:
+        - ['1', 1859520]
+        - ['2', 227605]
+      id_turma: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 93139, min: '1475303', max: '1727753'}
+      turno:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      serie:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '9'
+        max: '9'
+        media: 9
+        quartis: [9, 9, 9]
+        top:
+        - ['9', 2087125]
+      id_aluno: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1637075, min: '49372361', max: '56445808'}
+      situacao_censo:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.9946
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 2075867]
+        - ['0', 11258]
+      disciplina:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: LP
+        max: MT
+        top:
+        - [MT, 1043938]
+        - [LP, 1043187]
+      preenchimento_caderno:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.8357
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 1744296]
+        - ['0', 342829]
+      presenca:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.8382
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 1749368]
+        - ['0', 337757]
+      caderno:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 24
+        min: '1'
+        max: '9'
+        top:
+        - ['12', 124937]
+        - ['2', 108545]
+        - ['18', 108528]
+        - ['14', 107089]
+        - ['7', 105803]
+        - ['9', 104168]
+        - ['5', 103460]
+        - ['3', 101964]
+        - ['19', 101655]
+        - ['11', 99640]
+      bloco_1:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '1'
+        max: '7'
+        top:
+        - ['5', 330052]
+        - ['7', 311758]
+        - ['2', 304691]
+        - ['4', 298996]
+        - ['6', 290047]
+        - ['3', 286140]
+        - ['1', 265441]
+      bloco_2:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '1'
+        max: '7'
+        top:
+        - ['7', 330917]
+        - ['1', 305512]
+        - ['4', 297507]
+        - ['6', 294053]
+        - ['3', 293215]
+        - ['2', 289892]
+        - ['5', 276029]
+      bloco_3:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      bloco_1_aberto:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      bloco_2_aberto:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      respostas_bloco_1: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1111648, min: '*************', max: DDDDDDDDDDDDD}
+      respostas_bloco_2: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1410821, min: '*************', max: DDDDDDDDDDDDD}
+      respostas_bloco_3:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      conceito_q1:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      conceito_q2:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      gabarito_bloco_1:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      gabarito_bloco_2:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      gabarito_bloco_3:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      indicador_proficiencia:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.836
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 1744873]
+        - ['0', 342252]
+      indicador_prova_brasil:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      amostra:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.0228
+        quartis: [0, 0, 0]
+        top:
+        - ['0', 2039477]
+        - ['1', 47648]
+      estrato:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 12722
+        min: '11411'
+        max: '632773822'
+        media: 618051420.3934
+        quartis: [632339711, 632521254, 632599980]
+      peso_escola:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      peso_turma:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      peso_aluno_turma:
+        tipo: DOUBLE
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      peso_aluno:
+        tipo: DOUBLE
+        nulos_pct: 16.58
+        distintos_aprox: 7178
+        min: '0.0265805091'
+        max: '203.48009165'
+        media: 1.3122
+        quartis: [1.0055, 1.0739, 1.1669]
+      proficiencia:
+        tipo: DOUBLE
+        nulos_pct: 16.4
+        distintos_aprox: 1318298
+        min: '-2.524899'
+        max: '3.041524'
+        media: 0.0551
+        quartis: [-0.6085, 0.0651, 0.7187]
+      erro_padrao:
+        tipo: DOUBLE
+        nulos_pct: 16.4
+        distintos_aprox: 412099
+        min: '0.255501'
+        max: '1.206344'
+        media: 0.4201
+        quartis: [0.343, 0.3954, 0.4842]
+      proficiencia_saeb:
+        tipo: DOUBLE
+        nulos_pct: 16.4
+        distintos_aprox: 1443020
+        min: '108.841898'
+        max: '419.962238'
+        media: 253.0226
+        quartis: [216.1632, 253.586, 289.8406]
+      erro_padrao_saeb:
+        tipo: DOUBLE
+        nulos_pct: 16.4
+        distintos_aprox: 820869
+        min: '14.280546'
+        max: '67.425374'
+        media: 23.3234
+        quartis: [18.9798, 21.9378, 26.9214]
+      desempenho_aluno:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      preenchimento_questionario:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.834
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 1740597]
+        - ['0', 346528]
+      sexo:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '*'
+        max: C
+        top:
+        - [A, 858790]
+        - [B, 836626]
+        - [., 363743]
+        - [C, 25728]
+        - ['*', 2238]
+      raca_cor:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '*'
+        max: F
+        top:
+        - [C, 810916]
+        - [A, 543516]
+        - [., 369285]
+        - [B, 240494]
+        - [D, 46611]
+        - [F, 42623]
+        - [E, 31842]
+        - ['*', 1838]
+      mes_nascimento:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      ano_nascimento:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      idade:
+        tipo: BIGINT
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      faixa_etaria:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '*'
+        max: F
+        top:
+        - [C, 798667]
+        - [B, 671219]
+        - [., 365318]
+        - [D, 164898]
+        - [E, 51276]
+        - [F, 20914]
+        - [A, 14164]
+        - ['*', 669]
+      possui_necessidade_especial:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '*'
+        max: B
+        top:
+        - [A, 1663076]
+        - [., 375771]
+        - [B, 47413]
+        - ['*', 865]
+      estado_civil:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      possui_filhos:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      com_quem_mora:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      mora_mae:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '*'
+        max: B
+        top:
+        - [B, 1461876]
+        - [., 432943]
+        - [A, 177717]
+        - ['*', 14589]
+      mora_pai:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '*'
+        max: B
+        top:
+        - [B, 1147470]
+        - [., 506824]
+        - [A, 424262]
+        - ['*', 8569]
+      mora_irmaos:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      mora_avos:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '*'
+        max: B
+        top:
+        - [A, 1085674]
+        - [., 721358]
+        - [B, 278635]
+        - ['*', 1458]
+      mora_conjuge:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      mora_filhos:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      mora_outros_parentes:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '*'
+        max: B
+        top:
+        - [B, 1121005]
+        - [., 539194]
+        - [A, 421358]
+        - ['*', 5568]
+      mora_amigos:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      idioma_domicilio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '*'
+        max: D
+        top:
+        - [A, 1698394]
+        - [., 366239]
+        - [B, 10625]
+        - [D, 6822]
+        - [C, 2659]
+        - ['*', 2386]
+      quantidade_pessoas_domicilio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: '*'
+        max: E
+        top:
+        - [C, 556160]
+        - [B, 393973]
+        - [., 385326]
+        - [D, 348969]
+        - [E, 256318]
+        - [A, 143463]
+        - ['*', 2916]
+      quantidade_pessoas_despesas_domicilio:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      situacao_economica:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      possui_trabalho:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '*'
+        max: D
+        top:
+        - [A, 1151392]
+        - [., 441148]
+        - [D, 304021]
+        - [B, 103164]
+        - [C, 83263]
+        - ['*', 4137]
+      turma_bolsa_escola:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      aluno_bolsa_escola:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      indicador_inse:
+        tipo: BIGINT
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: '0'
+        max: '1'
+        media: 0.7991
+        quartis: [1, 1, 1]
+        top:
+        - ['1', 1667749]
+        - ['0', 419376]
+      inse:
+        tipo: DOUBLE
+        nulos_pct: 20.27
+        distintos_aprox: 499
+        min: '2.12'
+        max: '7.62'
+        media: 5.0042
+        quartis: [4.3711, 5.0058, 5.6271]
+      nivel_inse:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '1'
+        max: '8'
+        top:
+        - ['1', 443398]
+        - ['5', 349550]
+        - ['4', 327638]
+        - ['3', 277417]
+        - ['6', 259852]
+        - ['7', 207525]
+        - ['2', 197900]
+        - ['8', 23845]
+      peso_inse:
+        tipo: DOUBLE
+        nulos_pct: 20.27
+        distintos_aprox: 9324
+        min: '0.1620145188'
+        max: '210.41813208'
+        media: 1.3758
+        quartis: [1.0441, 1.1194, 1.2355]
+      possui_moradia_rua_urbanizada:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '*'
+        max: B
+        top:
+        - [B, 1334111]
+        - [A, 377543]
+        - [., 372105]
+        - ['*', 3366]
+      possui_agua_encanada:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '*'
+        max: B
+        top:
+        - [B, 1507276]
+        - [., 392914]
+        - [A, 184115]
+        - ['*', 2820]
+      possui_eletrecidade:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '*'
+        max: B
+        top:
+        - [B, 1587233]
+        - [., 389288]
+        - [A, 109048]
+        - ['*', 1556]
+      possui_eletrodomestico_sem_eletricidade:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      possui_casa_dormitorio:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '*'
+        max: D
+        top:
+        - [D, 768940]
+        - [C, 739618]
+        - [., 434052]
+        - [B, 117777]
+        - ['*', 15079]
+        - [A, 11659]
+      possui_casa_quarto_individual: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 4, pessoal: 'só contagens: valores seriam dado pessoal'}
+      possui_casa_cozinha:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      possui_casa_banheiro:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '*'
+        max: D
+        top:
+        - [B, 989013]
+        - [C, 482879]
+        - [., 428490]
+        - [D, 152658]
+        - [A, 22505]
+        - ['*', 11580]
+      possui_casa_sala:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      possui_automovel:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '*'
+        max: D
+        top:
+        - [A, 718447]
+        - [B, 667167]
+        - [., 443014]
+        - [C, 188965]
+        - [D, 62352]
+        - ['*', 7180]
+      possui_casa_garagem:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '*'
+        max: B
+        top:
+        - [B, 1020578]
+        - [A, 634962]
+        - [., 430219]
+        - ['*', 1366]
+      possui_geladeira:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '*'
+        max: D
+        top:
+        - [B, 1346966]
+        - [., 416211]
+        - [C, 250051]
+        - [D, 47283]
+        - [A, 19006]
+        - ['*', 7608]
+      possui_geladeira_freezer:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      possui_freezer:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '*'
+        max: B
+        top:
+        - [B, 1272393]
+        - [., 434287]
+        - [A, 376443]
+        - ['*', 4002]
+      possui_microondas:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '*'
+        max: B
+        top:
+        - [B, 995939]
+        - [A, 654908]
+        - [., 430425]
+        - ['*', 5853]
+      possui_maquina_lavar_roupa:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      possui_aspirador_po:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '*'
+        max: B
+        top:
+        - [A, 1056638]
+        - [B, 589593]
+        - [., 431785]
+        - ['*', 9109]
+      possui_radio:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      possui_tv:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '*'
+        max: D
+        top:
+        - [B, 790336]
+        - [C, 529086]
+        - [., 426824]
+        - [D, 267315]
+        - [A, 63906]
+        - ['*', 9658]
+      possui_tv_assinatura:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '*'
+        max: B
+        top:
+        - [B, 1250379]
+        - [., 425440]
+        - [A, 408763]
+        - ['*', 2543]
+      possui_videocassete_dvd:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      possui_internet:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '*'
+        max: B
+        top:
+        - [B, 1510472]
+        - [., 427200]
+        - [A, 138766]
+        - ['*', 10687]
+      possui_computador:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '*'
+        max: D
+        top:
+        - [A, 781843]
+        - [B, 514470]
+        - [., 436770]
+        - [C, 212814]
+        - [D, 96967]
+        - ['*', 44261]
+      possui_computador_sem_internet:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      possui_tablet:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      possui_telefone: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      possui_celular:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '*'
+        max: D
+        top:
+        - [D, 1303844]
+        - [., 426234]
+        - [C, 226471]
+        - [B, 97394]
+        - [A, 30167]
+        - ['*', 3015]
+      possui_escrivaninha:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '*'
+        max: B
+        top:
+        - [B, 1007913]
+        - [A, 642695]
+        - [., 431355]
+        - ['*', 5162]
+      possui_enciclopedia:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      possui_atlas:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      possui_dicionario:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      possui_calculadora:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      possui_empregada_domestica:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      possui_empregada_domestica_cinco_dias:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      escolaridade_mae:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '*'
+        max: F
+        top:
+        - [D, 496727]
+        - [F, 480966]
+        - [., 378670]
+        - [E, 253770]
+        - [C, 210303]
+        - [B, 158783]
+        - [A, 98166]
+        - ['*', 9740]
+      mae_sabe_ler_escrever:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      mae_le:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      ocupacao_mae:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      escolaridade_pai:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 9
+        min: '*'
+        max: F
+        top:
+        - [F, 706563]
+        - [., 380482]
+        - [D, 368839]
+        - [C, 175781]
+        - [B, 169982]
+        - [E, 163828]
+        - [A, 116893]
+        - ['*', 4757]
+      pai_sabe_ler_escrever:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      pai_le:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      ocupacao_pai:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      pessoa_acompanha_vida_escolar: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      escolaridade_pessoa: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_conhecem_diretor: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_conhecem_professor: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_conversam_professor_diretor: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      responsaveis_conversam_diretor: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_conversam_professor: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_conhecem_amigo: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_conhecem_responsavel_amigo: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      responsaveis_leem: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_almocam_jantam_contigo: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_ouvem_musica_contigo: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_conversam_livros_contigo: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_conversam_filmes_contigo: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_conversam_programas_tv_contigo: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      responsaveis_conversam_amigos: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_conversam_amigos_escola: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_conversam_responsaveis_amigo: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      responsaveis_conversam_outros_assuntos_contigo: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      responsaveis_conversam_escola: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_conversam_boletim: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_conversam_comportamento: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_cobram_realizacao_tarefa_casa: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      responsaveis_ajudam_realizacao_tarefa_casa: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      responsaveis_incentivam_realizacao_licao_casa: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      responsaveis_incentivam_estudos: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_incentivam_leitura: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_incentivam_comparecer_aulas: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5, pessoal: 'só contagens: valores seriam dado
+          pessoal'}
+      responsaveis_incentivam_pontualidade: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_incentivam_boas_notas: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_comparecem_reuniao_pais: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_participam_festas_escola: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam dado pessoal'}
+      responsaveis_participam_trabalho_voluntario: {tipo: VARCHAR, nulos_pct: 100, distintos_aprox: 0, pessoal: 'só contagens: valores seriam
+          dado pessoal'}
+      tempo_chegada_escola:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '*'
+        max: C
+        top:
+        - [A, 1234224]
+        - [., 466746]
+        - [B, 317140]
+        - [C, 67924]
+        - ['*', 1091]
+      forma_chegada_escola:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 11
+        min: '*'
+        max: I
+        top:
+        - [A, 826292]
+        - [., 413328]
+        - [D, 369474]
+        - [F, 184293]
+        - [B, 112158]
+        - [H, 62971]
+        - [C, 62172]
+        - ['*', 26238]
+        - [I, 16915]
+        - [G, 10784]
+      transporte_escolar:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 4
+        min: '*'
+        max: B
+        top:
+        - [A, 1168681]
+        - [B, 466489]
+        - [., 451239]
+        - ['*', 716]
+      inicio_estudos:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      quantos_anos_primeiro_grau:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      quantos_anos_segundo_grau:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      idade_entrada_escola:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '*'
+        max: D
+        top:
+        - [A, 700894]
+        - [B, 646884]
+        - [., 419886]
+        - [C, 252267]
+        - [D, 60522]
+        - ['*', 6672]
+      quantidade_mudancas_escola:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      presenca_professor:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      supletivo_ef:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      rede_ef:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      reprovacao:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '*'
+        max: C
+        top:
+        - [A, 1330898]
+        - [., 422113]
+        - [B, 255015]
+        - [C, 78041]
+        - ['*', 1058]
+      evasao_escolar_ate_final_ano:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 5
+        min: '*'
+        max: C
+        top:
+        - [A, 1566223]
+        - [., 423538]
+        - [B, 80221]
+        - [C, 16361]
+        - ['*', 782]
+      evasao_escolar_temporaria:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      motivo_evasao_escolar:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      faltas_aula:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      motivo_faltas:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      desempenho_prejudicado_falta:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      tempo_lazer:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '*'
+        max: D
+        top:
+        - [D, 1100888]
+        - [., 429368]
+        - [C, 319825]
+        - [B, 169561]
+        - [A, 65900]
+        - ['*', 1583]
+      tipo_programacao_tv:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      tempo_cursos:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '*'
+        max: D
+        top:
+        - [A, 831766]
+        - [., 439821]
+        - [B, 346566]
+        - [C, 277554]
+        - [D, 170826]
+        - ['*', 20592]
+      tempo_trabalho_domestico:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '*'
+        max: D
+        top:
+        - [C, 579392]
+        - [B, 475998]
+        - [D, 458440]
+        - [., 433398]
+        - [A, 131283]
+        - ['*', 8614]
+      tempo_estudos:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 6
+        min: '*'
+        max: D
+        top:
+        - [B, 747053]
+        - [C, 547012]
+        - [., 420436]
+        - [A, 252528]
+        - [D, 114550]
+        - ['*', 5546]
+      quantidade_livros:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      recebe_jornais:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      recebe_revistas:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      leitura_jornais:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      leitura_noticias:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      leitura_livros_geral:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      leitura_literatura:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      leitura_literatura_infantojuvenil:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      leitura_historia_quadrinhos:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      leitura_revistas_tematicas:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      leitura_revista_comportamento:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      leitura_revistas_geral:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      leitura_internet:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      leitura_outros_materiais:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      frequenta_biblioteca:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      frequenta_cinema:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      frequenta_espetaculo_exposicao:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      frequenta_teatro:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      frequenta_show:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      frequenta_festas_comunidade:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      participa_gremio_escolar:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      participa_associacao_desportiva:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      participa_associacao_moradores:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      participa_sindicato:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      participa_movimento_religioso:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      participa_partido_politico:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      participa_ong:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      nao_participa:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      participa_atividades_esporte:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      participa_atividades_artisticas:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      participa_trabalho_solidario:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      participa_reforco_escolar:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      participa_excursao_acampamento:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      participa_festas:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      curso_atividades_artisticas:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      curso_reforco_escolar:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      curso_idioma_externo:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      curso_informatica:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      curso_outros:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      quando_nao_entende_materia:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      gosta_estudar_disciplina:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      entendimento_ensino:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      disciplina_auxilia_compreensao:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      professor_disciplina:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      faz_licao_casa:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      tempo_licao_casa:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      fez_redacao:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      professor_leitura_livros_licao_casa:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      correcao_licao_casa:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      correcao_licao_casa_alunos:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      consulta_jornais_revistas_licao_casa:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      utiliza_computador_licao_casa:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      utiliza_computador:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      utiliza_computador_escola:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      utiliza_biblioteca_escola:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      utiliza_biblioteca_externa:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      existe_lugar_calmo_estudos:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      comparacao_colegas_disciplina:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      boas_notas_disciplina:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      desempenho_disciplina:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      professor_importa_voce_diz:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      professor_conversa_avaliacao:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      professor_elogia_merecimento:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      professor_ajuda_se_necessario:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      professor_atende_prontamente:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      professor_esforca_aprendizado:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      professor_utiliza_espacos_externos:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      professor_espera_silencio:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      professor_cobra:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      brigou_professor:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      turma_exclui:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      familia_avisada_falta:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      alunos_desordeiros:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      alunos_atentos:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      alunos_obedientes:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      possui_amigos_sala:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      estuda_habitualmente:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      motivo_estar_escola:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      utiliza_aprendizado_diariamente:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      pandemia_equipamento_ensino_remoto:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      pandemia_internet_ensino_remoto:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      pandemia_facilidade_programas:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      pandemia_recebeu_material:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      pandemia_auxilio_professor:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      pandemia_compreensao_conteudo:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      pandemia_ambiente_tranquilo:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      pandemia_apoio_familia:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      pandemia_apoio_colegas:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      pretensao_futura:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      opiniao_teste:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      opiniao_frase_1:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      opiniao_frase_2:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
+      opiniao_frase_3:
+        tipo: VARCHAR
+        nulos_pct: 100
+        distintos_aprox: 0
+        min: null
+        max: null
+        top:
+        - [null, 2087125]
   aluno_em_34ano:
     linhas: 2873104
     fonte_do_perfil: amostra de 69.611% da última partição (ano = 2023). ~2.000.000 linhas
@@ -419,7 +4450,7 @@ tabelas:
         - [PA, 90119]
         - [MA, 85681]
         - [RS, 68910]
-      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5618}
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5618, min: '6322170', max: '6327738'}
       area:
         tipo: VARCHAR
         nulos_pct: 0
@@ -429,7 +4460,7 @@ tabelas:
         top:
         - ['2', 1601893]
         - ['1', 399875]
-      id_escola: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 19488}
+      id_escola: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 19488, min: '61398224', max: '61471800'}
       escola_publica:
         tipo: VARCHAR
         nulos_pct: 0
@@ -448,7 +4479,7 @@ tabelas:
         top:
         - ['1', 1893340]
         - ['2', 108428]
-      id_turma: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 73008}
+      id_turma: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 73008, min: '1475307', max: '1727749'}
       serie:
         tipo: VARCHAR
         nulos_pct: 0
@@ -458,7 +4489,7 @@ tabelas:
         top:
         - ['12', 1806954]
         - ['13', 194814]
-      id_aluno: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1097229}
+      id_aluno: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1097229, min: '49372431', max: '56445811'}
       situacao_censo:
         tipo: VARCHAR
         nulos_pct: 0
@@ -539,8 +4570,8 @@ tabelas:
         - ['7', 285154]
         - ['1', 285077]
         - ['6', 285068]
-      respostas_bloco_1: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1768358}
-      respostas_bloco_2: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1823354}
+      respostas_bloco_1: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1768358, min: '*************', max: EEEEEEDDDEEEE}
+      respostas_bloco_2: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1823354, min: '*************', max: EEEEEEDDDEEEE}
       indicador_proficiencia:
         tipo: VARCHAR
         nulos_pct: 0
@@ -559,7 +4590,7 @@ tabelas:
         top:
         - ['0', 1963376]
         - ['1', 38392]
-      estrato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 9354}
+      estrato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 9354, min: '1141112', max: '63277382212'}
       peso_aluno:
         tipo: DOUBLE
         nulos_pct: 0.32
@@ -1748,7 +5779,7 @@ tabelas:
         - [GO, 82654]
         - [PI, 81078]
         - [CE, 80980]
-      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859}
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 6859, min: '1100015', max: '5300108'}
       disciplina:
         tipo: VARCHAR
         nulos_pct: 0
@@ -1780,7 +5811,7 @@ tabelas:
         min: '107.19'
         max: '414.91'
         media: 234.8508
-        quartis: [211.769, 237.6122, 259.8802]
+        quartis: [211.6574, 237.6414, 259.7971]
       nivel_0:
         tipo: DOUBLE
         nulos_pct: 1.2
@@ -1788,7 +5819,7 @@ tabelas:
         min: '0.0'
         max: '100.0'
         media: 11.3086
-        quartis: [0.9697, 7.769, 17.8475]
+        quartis: [0.9646, 7.7529, 17.852]
       nivel_1:
         tipo: DOUBLE
         nulos_pct: 0.57
@@ -1796,7 +5827,7 @@ tabelas:
         min: '0.0'
         max: '100.0'
         media: 12.0906
-        quartis: [4.73, 11.7192, 18.137]
+        quartis: [4.7263, 11.7199, 18.1294]
       nivel_2:
         tipo: DOUBLE
         nulos_pct: 0.28
@@ -1804,7 +5835,7 @@ tabelas:
         min: '0.0'
         max: '100.0'
         media: 15.5815
-        quartis: [9.8476, 16.5488, 21.4081]
+        quartis: [9.8037, 16.5572, 21.401]
       nivel_3:
         tipo: DOUBLE
         nulos_pct: 0.18
@@ -1812,7 +5843,7 @@ tabelas:
         min: '0.0'
         max: '100.0'
         media: 16.3149
-        quartis: [12.08, 17.3556, 21.4659]
+        quartis: [12.0574, 17.3542, 21.468]
       nivel_4:
         tipo: DOUBLE
         nulos_pct: 0.27
@@ -1820,7 +5851,7 @@ tabelas:
         min: '0.0'
         max: '85.0'
         media: 14.1527
-        quartis: [8.712, 14.9402, 19.6619]
+        quartis: [8.7233, 14.9387, 19.6733]
       nivel_5:
         tipo: DOUBLE
         nulos_pct: 0.68
@@ -1828,7 +5859,7 @@ tabelas:
         min: '0.0'
         max: '100.0'
         media: 10.1915
-        quartis: [3.815, 9.3348, 15.5864]
+        quartis: [3.8106, 9.3338, 15.5969]
       nivel_6:
         tipo: DOUBLE
         nulos_pct: 1.99
@@ -1836,7 +5867,7 @@ tabelas:
         min: '0.0'
         max: '100.0'
         media: 6.008
-        quartis: [0.7202, 3.9567, 9.107]
+        quartis: [0.7116, 3.9551, 9.1197]
       nivel_7:
         tipo: DOUBLE
         nulos_pct: 4.78
@@ -1844,7 +5875,7 @@ tabelas:
         min: '0.0'
         max: '72.0'
         media: 2.9467
-        quartis: [0, 1.0029, 4.0101]
+        quartis: [0, 1.0, 4.0146]
       nivel_8:
         tipo: DOUBLE
         nulos_pct: 8.3
@@ -1852,7 +5883,7 @@ tabelas:
         min: '0.0'
         max: '76.92'
         media: 1.2003
-        quartis: [0, 0, 1.1798]
+        quartis: [0, 0, 1.1722]
       nivel_9:
         tipo: DOUBLE
         nulos_pct: 17.11
@@ -1912,8 +5943,8 @@ tabelas:
         - ['4', 251662]
         - ['1', 236860]
         - ['5', 177581]
-      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5372}
-      id_escola: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 43988}
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 5372, min: '6316600', max: '6322169'}
+      id_escola: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 43988, min: '61323674', max: '61398204'}
       rede:
         tipo: VARCHAR
         nulos_pct: 0
@@ -1963,8 +5994,8 @@ tabelas:
         top:
         - [LP, 1101969]
         - [MT, 966199]
-      id_turma: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 156252}
-      id_aluno: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1162538}
+      id_turma: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 156252, min: '1220563', max: '1475290'}
+      id_aluno: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1162538, min: '41907626', max: '49372218'}
       sexo:
         tipo: VARCHAR
         nulos_pct: 0.44

@@ -1,7 +1,145 @@
 dataset: br_icmbio_embargos
-gerado_em: '2026-10-27'
+gerado_em: '2026-10-28'
 gerado_por: scripts/gera_perfil.py — não edite à mão
 tabelas:
-  termo_embargo: {linhas: 14806, erro: 'Invalid Input Error: Invalid string encoding found in Parquet file "/home/polo/rodado/br_icmbio_embargos/termo_embargo/data.parquet":
-      value "Danificar remanescentes de vegeta\xC3\xA7\xC3\xA3o nativa em est\xC3\xA1gio m\xC3\xA9dio de regenera\xC3\xA7\xC3\xA3o da Mata Atl\xC3\xA2ntica,
-      em uma \xC3\xA1'}
+  termo_embargo:
+    linhas: 14806
+    fonte_do_perfil: tabela inteira
+    colunas:
+      numero_emb: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 16578, pessoal: 'só contagens: valores seriam dado pessoal'}
+      serie:
+        tipo: VARCHAR
+        nulos_pct: 51.14
+        distintos_aprox: 2
+        min: A
+        max: B
+        top:
+        - [null, 7572]
+        - [A, 3813]
+        - [B, 3421]
+      origem:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Eletrônico
+        max: Papel
+        top:
+        - [Eletrônico, 7572]
+        - [Papel, 7234]
+      numero_ai: {tipo: VARCHAR, nulos_pct: 14.76, distintos_aprox: 11853, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cpf_cnpj: {tipo: VARCHAR, nulos_pct: 18.13, distintos_aprox: 9904, pessoal: 'só contagens: valores seriam dado pessoal'}
+      autuado: {tipo: VARCHAR, nulos_pct: 11.12, distintos_aprox: 8927, min: '-', max: Édio Marques da Silva}
+      desc_infra: {tipo: VARCHAR, nulos_pct: 16.91, distintos_aprox: 9322, min: "\n\n Destruir 0,43 hectares de vegetação nativa secundária no\
+          \ estágio inicial de regeneração do bioma Mata Atlântica sem l…", max: ¿Instalar obras (estradas e edificações) fazendo funcionar empreendimento
+          turístico (Complexo de Cachoeiras Santa Maria)…}
+      desc_sanc: {tipo: VARCHAR, nulos_pct: 1.05, distintos_aprox: 10858, min: '
+
+
+          Fica embargada para toda e qualquer atividade a casa irregularmente construída pelo autuado no Monumento Natural do Ri…', max: É proibido
+          adentrar na UC e fazer uso de suas áreas sem permissão do órgão gestor.}
+      artigo_1:
+        tipo: VARCHAR
+        nulos_pct: 2.26
+        distintos_aprox: 43
+        min: '24'
+        max: '93'
+        top:
+        - ['50', 3227]
+        - ['48', 2391]
+        - ['66', 2103]
+        - ['49', 1780]
+        - ['91', 974]
+        - ['43', 739]
+        - ['45', 644]
+        - ['90', 614]
+        - ['52', 452]
+        - [null, 334]
+      artigo_2:
+        tipo: VARCHAR
+        nulos_pct: 35.59
+        distintos_aprox: 32
+        min: '0'
+        max: '98'
+        top:
+        - ['93', 7654]
+        - [null, 5270]
+        - ['0', 1101]
+        - ['101', 456]
+        - ['60', 121]
+        - ['72', 68]
+        - ['3', 33]
+        - ['90', 23]
+        - ['91', 22]
+        - ['10', 5]
+      tipo_infra:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 7
+        min: Das Infrações Administrativas Contra a Administração Ambiental
+        max: Enquadramento não informado
+        top:
+        - [Das Infrações Contra a Flora, 9886]
+        - [Das Infrações Relativas à Poluição e outras Infrações Ambientais, 2491]
+        - [Das Infrações Cometidas Exclusivamente em Unidades de Conservação, 1724]
+        - [Enquadramento não informado, 334]
+        - [Das Infrações Administrativas Contra a Administração Ambiental, 253]
+        - [Das Infrações Contra o Ordenamento Urbano e o Patrimônio Cultural, 91]
+        - [Das Infrações Contra a Fauna, 27]
+      nome_uc: {tipo: VARCHAR, nulos_pct: 0.06, distintos_aprox: 277, pessoal: 'só contagens: valores seriam dado pessoal'}
+      cnuc: {tipo: VARCHAR, nulos_pct: 0.06, distintos_aprox: 298, min: 0000.00.0000, max: 0000.00.4855}
+      municipio: {tipo: VARCHAR, nulos_pct: 0.11, distintos_aprox: 612, min: Abelardo Luz, max: Águia Branca}
+      uf:
+        tipo: VARCHAR
+        nulos_pct: 0.12
+        distintos_aprox: 28
+        min: AC
+        max: TO
+        top:
+        - [PA, 4164]
+        - [AC, 1265]
+        - [SC, 1002]
+        - [BA, 957]
+        - [MG, 855]
+        - [RJ, 847]
+        - [DF, 743]
+        - [RO, 695]
+        - [CE, 510]
+        - [PR, 450]
+      data: {tipo: DATE, nulos_pct: 0.03, distintos_aprox: 4302, min: '2009-05-17', max: '2026-10-13'}
+      ano:
+        tipo: VARCHAR
+        nulos_pct: 0.03
+        distintos_aprox: 17
+        min: '2009'
+        max: '2026'
+        top:
+        - ['2022', 1474]
+        - ['2025', 1453]
+        - ['2023', 1263]
+        - ['2024', 1097]
+        - ['2021', 1011]
+        - ['2018', 856]
+        - ['2020', 799]
+        - ['2026', 794]
+        - ['2017', 776]
+        - ['2019', 771]
+      obs: {tipo: VARCHAR, nulos_pct: 80.41, distintos_aprox: 864, min: '0,3 ha', max: área não informada.}
+      julgamento: {tipo: VARCHAR, nulos_pct: 86.67, distintos_aprox: 790, min: 02120.000068/2015-42, max: Óbito (SEI 16800713) antes do Julgamento
+          1ª Instância}
+      area: {tipo: VARCHAR, nulos_pct: 20.54, distintos_aprox: 10869, min: '0', max: 'Área total AI 003675-B: 0,04 ha'}
+      processo: {tipo: VARCHAR, nulos_pct: 23.13, distintos_aprox: 11428, min: '*02026.000322/2010-76', max:  02089.000004/2012-32}
+      geometria:
+        tipo: GEOMETRY('OGC:CRS84')
+        nulos_pct: 1.84
+        distintos_aprox: 14466
+        geometrias: [GEOMETRYCOLLECTION, MULTIPOLYGON, POLYGON]
+        caixa_xmin_ymin_xmax_ymax: [-73.593, -32.6916, -32.3996, 4.0271]
+        pontos_media: 81.4723
+      area_calc_ha:
+        tipo: DOUBLE
+        nulos_pct: 1.84
+        distintos_aprox: 15062
+        min: '1.0310500471194615e-08'
+        max: '108625.48840900206'
+        media: 65.5636
+        quartis: [0.0113, 1.3474, 12.8632]

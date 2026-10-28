@@ -1,6 +1,78 @@
 dataset: br_semas_pa_ldi
-gerado_em: '2026-10-27'
+gerado_em: '2026-10-28'
 gerado_por: scripts/gera_perfil.py — não edite à mão
 tabelas:
-  areas_embargadas: {linhas: 5387, erro: 'Invalid Input Error: Invalid string encoding found in Parquet file "/home/polo/rodado/br_semas_pa_ldi/areas_embargadas/data.parquet":
-      value "AMAZ\xD4NIA VIVA 24" is not valid UTF8!'}
+  areas_embargadas:
+    linhas: 5387
+    fonte_do_perfil: tabela inteira
+    colunas:
+      lista:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: automatizada
+        max: manual
+        top:
+        - [manual, 3356]
+        - [automatizada, 2031]
+      cod: {tipo: VARCHAR, nulos_pct: 0.06, distintos_aprox: 4457, min: '0', max: C-19-12-00578}
+      ano_desmat:
+        tipo: INTEGER
+        nulos_pct: 0
+        distintos_aprox: 37
+        min: '2008'
+        max: '7510'
+        media: 2031.9181
+        quartis: [2016, 2018, 2020]
+        top:
+        - ['2018', 1227]
+        - ['2020', 746]
+        - ['2021', 637]
+        - ['2017', 614]
+        - ['2014', 428]
+        - ['2016', 318]
+        - ['2022', 266]
+        - ['2023', 246]
+        - ['2015', 203]
+        - ['2009', 159]
+      embarg_ha:
+        tipo: DOUBLE
+        nulos_pct: 0
+        distintos_aprox: 5904
+        min: '0.00128948495'
+        max: '6740.76311546429'
+        media: 102.2261
+        quartis: [6.8642, 24.8848, 95.662]
+      fonte: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 236, min: 2018/0000020352, max: SIRADX}
+      municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 84, min: Abaetetuba, max: Óbidos}
+      status:
+        tipo: VARCHAR
+        nulos_pct: 0
+        distintos_aprox: 2
+        min: Embargado-Com CAR
+        max: Embargado-Sem CAR
+        top:
+        - [Embargado-Com CAR, 4198]
+        - [Embargado-Sem CAR, 1189]
+      dt_geracao:
+        tipo: DATE
+        nulos_pct: 0
+        distintos_aprox: 1
+        min: '2026-10-22'
+        max: '2026-10-22'
+        top:
+        - ['2026-10-22', 5387]
+      codigo: {tipo: VARCHAR, nulos_pct: 62.3, distintos_aprox: 1329, min: P-18-04-00325, max: P-19-12-01590}
+      processo_sem_car: {tipo: VARCHAR, nulos_pct: 78.04, distintos_aprox: 1288, min: '0,2022/0000030582', max: 'SEM CAR,2024/0000028783'}
+      processo_com_car: {tipo: VARCHAR, nulos_pct: 23.13, distintos_aprox: 4121, min: 0000024841, max: PA-1505809-545A28D3F6464DD688F0976FA4B70E85}
+      num_car: {tipo: VARCHAR, nulos_pct: 22.07, distintos_aprox: 2279, min: '0', max: Sem car}
+      dat_antes: {tipo: DATE, nulos_pct: 6.16, distintos_aprox: 895, min: '1995-10-10', max: '2027-06-05'}
+      dat_depois: {tipo: DATE, nulos_pct: 6.11, distintos_aprox: 695, min: '1970-01-01', max: '2028-04-02'}
+      difisc_dat: {tipo: DATE, nulos_pct: 0.02, distintos_aprox: 220, min: '2008-01-01', max: '7510-01-01'}
+      geometria:
+        tipo: GEOMETRY('OGC:CRS84')
+        nulos_pct: 0
+        distintos_aprox: 5337
+        geometrias: [MULTIPOLYGON, POLYGON]
+        caixa_xmin_ymin_xmax_ymax: [-58.2095, -9.7372, -46.2929, 0.4869]
+        pontos_media: 180.5302
