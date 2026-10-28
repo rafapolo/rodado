@@ -3,7 +3,22 @@
 dataset: br_ibge_censo_2022
 tabelas:
   agregados_bairro:
-    grao: 'não lida: IO Error: Cannot open file "/home/polo/rodado/br_ibge_censo_2022/agregados_bairro/000000000000.parquet": Too m'
+    grao: "um bairro × subdistrito (Censo 2022) × cerca de 3.400 variáveis agregadas; só municípios com bairro oficial"
+    chave: "nenhuma só com id_bairro: 17.576 linhas, 17.575 id_bairro distintos (o bairro 3205200069 repete, gotcha bairro_repetido); (id_bairro, id_subdistrito) é única nas 17.576"
+    tempo: {natureza: retrato_atual, coluna: "(sem coluna; Censo 2022)", cobertura: "2022"}
+    territorio: {nivel: outro, colunas: {id_bairro: "bairro IBGE (10 dígitos)", id_subdistrito: subdistrito, id_distrito: distrito, id_municipio: município}}
+    medidas:
+      - {coluna: pessoas, o_que: "população residente", unidade: "pessoas", soma: sim}
+      - {coluna: domicilios, o_que: "domicílios (particulares + coletivos)", unidade: "domicílios", soma: sim}
+      - {coluna: domicilios_particulares_ocupados, o_que: "domicílios particulares ocupados", unidade: "domicílios", soma: sim}
+      - {coluna: area_km2, o_que: "área da unidade", unidade: "km2", soma: sim}
+      - {coluna: media_moradores_domicilios, o_que: "média de moradores por domicílio", unidade: "pessoas por domicílio", soma: nao}
+      - {coluna: "v00001 ... v0NNNN (cerca de 3.400 colunas)", o_que: "contagens do Censo; significado de cada uma em agregados_dicionario_variaveis (tabelas = 'agregados'). Atenção: v00001 é 'Domicílios Particulares Permanentes Ocupados', não população", unidade: "conforme a variável", soma: "sim entre unidades, mas NULL é sigilo (gotcha sigilo_e_null)"}
+    filtros_tipicos: ["id_municipio como texto de 7 dígitos (ex.: '3550308')", "NULL nas v* e em pessoas é sigilo estatístico, não zero (gotcha sigilo_e_null)"]
+    use_para: "população e domicílios por bairro nos municípios com bairro na base territorial."
+    nao_use_para: "total de município ou de país: soma de pessoas é 83,6 milhões de 203 milhões; nome_bairro não é único."
+    rascunho: [use_para, nao_use_para]
+    verificado: "17.576 linhas, 17.575 id_bairro distintos, 17.576 (id_bairro, id_subdistrito) distintos; 1.158 municípios; soma de pessoas 83.649.397 (cobertura parcial; 86 linhas com pessoas nulo) — medido 2026-10-28"
   agregados_bairro_entorno_domicilios:
     grao: um bairro × variáveis v05xxx do entorno dos domicílios (Pesquisa Urbanística do Entorno, só favelas e comunidades urbanas)
     chave: 'nenhuma só com id_bairro: 17.576 linhas, 17.575 id_bairro distintos (gotcha bairro_repetido: a chave é id_bairro + id_subdistrito, não medida aqui)'
@@ -74,7 +89,22 @@ tabelas:
     - nao_use_para
     verificado: 3.505 linhas, 3.505 pares (tabelas, coluna) distintos; tabelas ∈ agregados (3.400), entorno_domicilios, entorno_faces, entorno_moradores (35 cada) — medido 2026-10-27
   agregados_distrito:
-    grao: 'não lida: IO Error: Cannot open file "/home/polo/rodado/br_ibge_censo_2022/agregados_distrito/000000000000.parquet": Too'
+    grao: "um distrito (Censo 2022) × cerca de 3.400 variáveis agregadas"
+    chave: "id_distrito: 10.698 linhas, 10.698 distintos; cobrem os 5.570 municípios"
+    tempo: {natureza: retrato_atual, coluna: "(sem coluna; Censo 2022)", cobertura: "2022"}
+    territorio: {nivel: outro, colunas: {id_distrito: "distrito (9 dígitos)", id_municipio: município, id_uf: UF}}
+    medidas:
+      - {coluna: pessoas, o_que: "população residente", unidade: "pessoas", soma: sim}
+      - {coluna: domicilios, o_que: "domicílios (particulares + coletivos)", unidade: "domicílios", soma: sim}
+      - {coluna: domicilios_particulares_ocupados, o_que: "domicílios particulares ocupados", unidade: "domicílios", soma: sim}
+      - {coluna: area_km2, o_que: "área da unidade", unidade: "km2", soma: sim}
+      - {coluna: media_moradores_domicilios, o_que: "média de moradores por domicílio", unidade: "pessoas por domicílio", soma: nao}
+      - {coluna: "v00001 ... v0NNNN (cerca de 3.400 colunas)", o_que: "contagens do Censo; significado de cada uma em agregados_dicionario_variaveis (tabelas = 'agregados'). Atenção: v00001 é 'Domicílios Particulares Permanentes Ocupados', não população", unidade: "conforme a variável", soma: "sim entre unidades, mas NULL é sigilo (gotcha sigilo_e_null)"}
+    filtros_tipicos: ["id_municipio como texto de 7 dígitos (ex.: '3550308')", "NULL nas v* e em pessoas é sigilo estatístico, não zero (gotcha sigilo_e_null)"]
+    use_para: "pessoas e domicílios por distrito; a soma dos distritos fecha o total do país."
+    nao_use_para: "nome de distrito como chave (nome_distrito se repete entre municípios); bairro (use agregados_bairro)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "10.698 linhas = 10.698 id_distrito distintos, 5.570 id_municipio distintos; soma de pessoas 203.080.756 (igual ao município; 2 linhas com pessoas nulo) — medido 2026-10-28"
   agregados_distrito_entorno_domicilios:
     grao: um distrito × variáveis v05xxx do entorno dos domicílios (Pesquisa Urbanística do Entorno, só favelas e comunidades urbanas)
     chave: 'id_distrito: 10698 linhas, 10698 distintos'
@@ -131,7 +161,22 @@ tabelas:
     - nao_use_para
     verificado: 10.698 linhas (chave não medida) — medido 2026-10-27
   agregados_municipio:
-    grao: 'não lida: IO Error: Cannot open file "/home/polo/rodado/br_ibge_censo_2022/agregados_municipio/000000000000.parquet": To'
+    grao: "um município (Censo 2022) × cerca de 3.400 variáveis agregadas"
+    chave: "id_municipio"
+    tempo: {natureza: retrato_atual, coluna: "(sem coluna; Censo 2022)", cobertura: "2022"}
+    territorio: {nivel: outro, colunas: {id_municipio: "município (7 dígitos)", id_uf: UF, id_regiao_imediata: região geográfica imediata, id_regiao_intermediaria: região intermediária}}
+    medidas:
+      - {coluna: pessoas, o_que: "população residente", unidade: "pessoas", soma: sim}
+      - {coluna: domicilios, o_que: "domicílios (particulares + coletivos)", unidade: "domicílios", soma: sim}
+      - {coluna: domicilios_particulares_ocupados, o_que: "domicílios particulares ocupados", unidade: "domicílios", soma: sim}
+      - {coluna: area_km2, o_que: "área da unidade", unidade: "km2", soma: sim}
+      - {coluna: media_moradores_domicilios, o_que: "média de moradores por domicílio", unidade: "pessoas por domicílio", soma: nao}
+      - {coluna: "v00001 ... v0NNNN (cerca de 3.400 colunas)", o_que: "contagens do Censo; significado de cada uma em agregados_dicionario_variaveis (tabelas = 'agregados'). Atenção: v00001 é 'Domicílios Particulares Permanentes Ocupados', não população", unidade: "conforme a variável", soma: "sim entre unidades, mas NULL é sigilo (gotcha sigilo_e_null)"}
+    filtros_tipicos: ["id_municipio como texto de 7 dígitos (ex.: '3550308')", "NULL nas v* e em pessoas é sigilo estatístico, não zero (gotcha sigilo_e_null)"]
+    use_para: "total de pessoas e domicílios por município e qualquer variável do Censo no nível municipal."
+    nao_use_para: "recorte intramunicipal (use distrito, subdistrito, bairro ou setor_censitario)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "5.570 linhas = 5.570 id_municipio distintos; soma de pessoas 203.080.756 (total oficial); 0 nulos em v00001 — medido 2026-10-28"
   agregados_municipio_entorno_domicilios:
     grao: um município × variáveis v05xxx do entorno dos domicílios (Pesquisa Urbanística do Entorno, só favelas e comunidades urbanas)
     chave: 'id_municipio: 5570 linhas, 5570 distintos'
@@ -187,7 +232,22 @@ tabelas:
     - medidas.unidade
     verificado: 5570 linhas, 5570 id_municipio distintos — medido 2026-10-27
   agregados_subdistrito:
-    grao: 'não lida: IO Error: Cannot open file "/home/polo/rodado/br_ibge_censo_2022/agregados_subdistrito/000000000000.parquet": '
+    grao: "um subdistrito (Censo 2022) × cerca de 3.400 variáveis agregadas; só existe em parte dos municípios"
+    chave: "id_subdistrito: 643 linhas, 643 distintos"
+    tempo: {natureza: retrato_atual, coluna: "(sem coluna; Censo 2022)", cobertura: "2022"}
+    territorio: {nivel: outro, colunas: {id_subdistrito: "subdistrito (11 dígitos)", id_distrito: distrito, id_municipio: município}}
+    medidas:
+      - {coluna: pessoas, o_que: "população residente", unidade: "pessoas", soma: sim}
+      - {coluna: domicilios, o_que: "domicílios (particulares + coletivos)", unidade: "domicílios", soma: sim}
+      - {coluna: domicilios_particulares_ocupados, o_que: "domicílios particulares ocupados", unidade: "domicílios", soma: sim}
+      - {coluna: area_km2, o_que: "área da unidade", unidade: "km2", soma: sim}
+      - {coluna: media_moradores_domicilios, o_que: "média de moradores por domicílio", unidade: "pessoas por domicílio", soma: nao}
+      - {coluna: "v00001 ... v0NNNN (cerca de 3.400 colunas)", o_que: "contagens do Censo; significado de cada uma em agregados_dicionario_variaveis (tabelas = 'agregados'). Atenção: v00001 é 'Domicílios Particulares Permanentes Ocupados', não população", unidade: "conforme a variável", soma: "sim entre unidades, mas NULL é sigilo (gotcha sigilo_e_null)"}
+    filtros_tipicos: ["id_municipio como texto de 7 dígitos (ex.: '3550308')", "NULL nas v* e em pessoas é sigilo estatístico, não zero (gotcha sigilo_e_null)"]
+    use_para: "detalhe intramunicipal nos municípios que têm subdistrito na base territorial."
+    nao_use_para: "total de município ou de país: cobre só 54 municípios (soma de pessoas 36,2 milhões de 203 milhões)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "643 linhas = 643 id_subdistrito distintos, em 54 municípios e 77 distritos; soma de pessoas 36.211.548 (cobertura parcial do país; 3 linhas com pessoas nulo) — medido 2026-10-28"
   agregados_subdistrito_entorno_domicilios:
     grao: um subdistrito × variáveis v05xxx do entorno dos domicílios (Pesquisa Urbanística do Entorno, só favelas e comunidades urbanas)
     chave: 'id_subdistrito: 643 linhas, 643 distintos'

@@ -3,4 +3,14 @@
 dataset: br_semas_pa_ldi
 tabelas:
   areas_embargadas:
-    grao: 'não lida: Invalid Input Error: Invalid string encoding found in Parquet file (valor "AMAZ\xD4NIA VIVA 24" não é UTF8 válido)'
+    grao: "uma área embargada por desmatamento ilegal no Pará (polígono em geometria) na lista de desmatamento ilegal (LDI) da SEMAS-PA, exportada em 2026-10-22"
+    chave: "nenhuma confiável: 5.387 linhas; cod é nulo em 3 e (lista, cod) tem só 5.377 distintos entre 5.384 não nulos (cerca de 7 repetem). Não use cod sozinho (5.375 distintos)."
+    tempo: {natureza: serie_de_periodos, coluna: ano_desmat, cobertura: "2008– (ano do desmatamento; 14 linhas com ano acima de 2026 são erro de digitação, gotcha ano_digitado_errado); dt_geracao = 2026-10-22 em todas"}
+    territorio: {nivel: municipio, colunas: {municipio: "nome do município paraense (84 valores, sem código IBGE)", geometria: "polígono da área (CRS84)"}}
+    medidas:
+      - {coluna: embarg_ha, o_que: "área embargada", unidade: "hectares", soma: sim}
+    filtros_tipicos: ["lista = 'manual' (3.356 linhas) ou 'automatizada' (2.031): publicações distintas que somam (gotcha duas_listas)", "status = 'Embargado-Com CAR' (4.198) ou 'Embargado-Sem CAR' (1.189)", "ano_desmat <= 2026 para tirar erro de digitação (gotcha ano_digitado_errado)"]
+    use_para: "área e número de embargos por desmatamento no Pará por município, ano do desmatamento, lista e situação do CAR."
+    nao_use_para: "data do embargo ou de entrada na lista (gotcha sem_data_de_embargo); chave por cod."
+    rascunho: [use_para, nao_use_para]
+    verificado: "5.387 linhas; cod distintos 5.375, (lista, cod) 5.377; hectares: automatizada com CAR 1.574 linhas 62.690 ha, sem CAR 457 / 24.839 ha, manual com CAR 2.624 / 347.550 ha, sem CAR 732 / 115.613 ha (total cerca de 550.692 ha) — medido 2026-10-28"
