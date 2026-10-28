@@ -330,7 +330,7 @@ canvas.drag { cursor: grabbing; }
 .gt .ver { font-size: 11px; color: var(--ink-3); }
 .mk { font-family: "IBM Plex Mono", monospace; font-size: 9.5px; padding: 0 4px; border-radius: 3px;
   border: 1px solid var(--line-2); color: var(--ink-2); margin-left: 4px; white-space: nowrap; }
-.mk.div, .mk.nv { border-color: var(--t-saude); color: var(--t-saude); }
+.mk.div { border-color: var(--t-saude); color: var(--t-saude); }
 .col.tem { cursor: pointer; }
 .col > span:not(.ty):not(.mk) { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .col .ty { flex-shrink: 0; }
@@ -1335,10 +1335,9 @@ const gotchaHtml = g => `<details class="gt ${esc(g.severidade || "")}"><summary
   g.verificado ? `<p class="ver">medido: ${esc(g.verificado)}</p>` : ""}</details>`;
 const MARCA = { dic: ["dic", "tem dicionário: o significado dos códigos está em <dataset>.dicionario"],
   div: ["varia", "o código desta coluna muda de um dataset para outro"],
-  nv: ["?", "parece código, e o significado não foi verificado em lugar nenhum"],
   cod: ["cód", "significado dos códigos pesquisado (column_codes.yaml)"] };
 function marcas(info) {
-  return ["dic", "cod", "div", "nv"].filter(k => info[k]).map(k =>
+  return ["dic", "cod", "div"].filter(k => info[k]).map(k =>
     `<span class="mk ${k}" title="${esc(MARCA[k][1])}">${MARCA[k][0]}</span>`).join("");
 }
 function colinfoHtml(info) {
@@ -1347,7 +1346,6 @@ function colinfoHtml(info) {
     Object.entries(info.cod.valores).map(([k, v]) => `<tr><td>${esc(k === "" ? "''" : k)}</td><td>${esc(v)}</td></tr>`).join("")}</table>` : ""}${
     info.cod.nota ? `<div>${esc(info.cod.nota)}</div>` : ""}`;
   if (info.div) h += `<div>${esc(info.div)}</div>`;
-  if (info.nv && !info.cod) h += `<div>${esc(MARCA.nv[1])}: confira na fonte antes de filtrar.</div>`;
   if (info.dic) h += `<div>decodifique com <code>dicionario</code> desta tabela, filtrando <code>nome_coluna</code>.</div>`;
   if (info.nul) h += `<div>${String(info.nul).replace(".", ",")}% nulos</div>`;
   if (info.top) h += `<div>mais frequentes (na amostra do perfil):</div><table>${
@@ -1363,9 +1361,9 @@ function detalheTblHtml(x, T) {
   if (x.metricas) h += `<p class="sec">Métricas prontas</p><div class="card"><ul>${x.metricas.map(m =>
     `<li><code>${esc(m.nome)}</code> — ${esc(m.description || "")}${m.unit ? ` (${esc(m.unit)})` : ""}: <code>${esc(m.expression || "")}</code>${
       m.required_filters ? `; filtre por ${m.required_filters.map(f => `<code>${esc(f)}</code>`).join(", ")}` : ""}</li>`).join("")}</ul></div>`;
-  const cols = Object.entries(x.cols || {}).filter(([, i]) => i.dic || i.div || i.nv || i.cod);
+  const cols = Object.entries(x.cols || {}).filter(([, i]) => i.dic || i.div || i.cod);
   if (cols.length) {
-    const ordem = i => i.div ? 0 : i.nv && !i.cod ? 1 : i.cod ? 2 : 3;
+    const ordem = i => i.div ? 0 : i.cod ? 1 : 2;
     cols.sort((a, b) => ordem(a[1]) - ordem(b[1]));
     const mostra = cols.slice(0, 15);
     h += `<p class="sec">Colunas com código · ${fmt(cols.length)}</p><div class="cols">${mostra.map(([n, i]) =>
@@ -1492,13 +1490,12 @@ function renderTbl(ti) {
       x.cols = x.cols || {};
       const i = (x.cols[n] = x.cols[n] || {});
       i.cod = c;
-      if (c.status === "documentado") delete i.nv;   // pesquisado e conferido: não é mais "sem significado"
     }));
     alvo.innerHTML = (x.coleta ? `<p class="note-src">coletada em ${quando(x.coleta)}</p>` : "") + detalheTblHtml(x, T);
     // marca as colunas da lista e abre, ao clicar, o código, os nulos e os valores mais frequentes
     iBody.querySelectorAll(".cols .col").forEach(el => {
       const n = el.dataset.col || el.querySelector("span").textContent, info = (x.cols || {})[n];
-      if (!info || !(info.dic || info.div || info.nv || info.cod || info.top || info.nul)) return;
+      if (!info || !(info.dic || info.div || info.cod || info.top || info.nul)) return;
       el.classList.add("tem");
       if (!el.dataset.col) el.querySelector(".ty").insertAdjacentHTML("beforebegin", marcas(info));
       el.onclick = () => abreColuna(el, info);
