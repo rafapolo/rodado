@@ -18,23 +18,14 @@ gotchas:
     colunas: [cnpj]
     severidade: silencioso
     verificado: "772.020 de 772.073 CNPJs no SICAF, mesmo indicador de ativo — medido 2026-10-15"
-  - id: parquets_malformados_cabecalho_numa_coluna
-    resumo: "Parte dos parquets de ata_registro_preco, contratacao, contratacao_item e contratacao_item_resultado veio malformada: o cabeçalho inteiro virou o nome de UMA coluna enorme, com as linhas dentro dela em texto separado por ';' e todas as colunas reais nulas. Essas linhas entram na view e contam em count(*). Filtre pela chave da tabela IS NOT NULL: numero_ata_registro_preco (ata), cod_compra (contratacao), srk_pncp_item_compra (contratacao_item), srk_item_resultado (contratacao_item_resultado)."
+  - id: linhas_deslocadas_contratacao_item
+    resumo: "Em contratacao_item (125.553 de 9.277.203 linhas) e contratacao_item_resultado (527 de 6.565.099) algumas linhas têm as colunas deslocadas: ano_compra traz um CNPJ ou número de compra, situacao_compra_item traz texto como 'Menor preço', valores de data viram 'False'. Filtre ano_compra ~ '^20[0-9]{2}$' em contratacao_item e situacao_compra_item_resultado_id IN ('1','2','4') em contratacao_item_resultado."
     detalhe: >
-      Filtrar por mês ou ano (ano_compra, data_publicacao_pncp) também
-      descarta as linhas ruins, que vêm com essas colunas nulas, e então o
-      mês parece vazio. ata_registro_preco: o arquivo 2023.parquet inteiro
-      (31.495 linhas, 7,8% do total); as atas de ano_compra 2023 da tabela
-      vêm de outros arquivos. contratacao: 15 de 62 arquivos mensais
-      inteiros (238.212 linhas, 23,8%), por exemplo 2023_07, 2023_08,
-      2023_10, 2024_12, 2025_02 e 2026_09. contratacao_item: 25 arquivos
-      inteiros mais 14 arquivos com algumas linhas, 5,33 milhões de 9,52
-      milhões de linhas (56%); há dois nomes diferentes de coluna enorme (um
-      com ';' e outro com '";"'). contratacao_item_resultado: só 732 linhas
-      (2022_01 inteiro, mais 7 e 39 linhas em 2024_07 e 2025_07). A linha
-      ruim pode ser recuperada separando a coluna gigante por ';', mas campos
-      com ';' no texto (objeto, descricao) quebram a divisão.
-    tabelas: [ata_registro_preco, contratacao, contratacao_item, contratacao_item_resultado]
-    colunas: [numero_ata_registro_preco, cod_compra, srk_pncp_item_compra, srk_item_resultado]
-    severidade: erro
-    verificado: "ata_registro_preco 402.724 linhas, 371.229 com numero_ata_registro_preco (2023.parquet 31.495 linhas, 0 válidas); contratacao 1.001.583 linhas, 763.371 com cod_compra, 62 arquivos dos quais 15 sem nenhuma linha válida; contratacao_item 9.521.510 linhas, 4.192.871 com srk_pncp_item_compra (25 arquivos sem nenhuma, 14 com poucas ruins), cod_compra preenchido em 4.096.302; contratacao_item_resultado 6.565.099 linhas, 6.564.367 com srk_item_resultado (3 arquivos afetados: 2022_01 686, 2024_07 7, 2025_07 39) — medido 2026-10-28"
+      Não é mais o defeito antigo (cabeçalho inteiro numa coluna só): ata_registro_preco e
+      contratacao estão limpas e contratacao_item não tem coluna de nome gigante. Nas linhas
+      deslocadas, 117.247 têm ano_compra nulo e 8.306 têm ano_compra que não é ano; boa parte
+      mantém srk_pncp_item_compra, então filtrar por srk IS NOT NULL não basta.
+    tabelas: [contratacao_item, contratacao_item_resultado]
+    colunas: [ano_compra, situacao_compra_item, situacao_compra_item_resultado_id, data_inclusao_pncp]
+    severidade: silencioso
+    verificado: "contratacao_item 9.277.203 linhas, 9.151.650 com ano_compra 20xx (única por srk_pncp_item_compra + cod_resultado_item), 125.553 deslocadas; contratacao_item_resultado 6.565.099 linhas, 6.564.572 válidas, 527 deslocadas — medido 2026-10-28"

@@ -3,7 +3,15 @@
 dataset: br_mgi_pncp
 tabelas:
   ata_registro_preco:
-    grao: "não lida: tabela sem view no banco (Catalog Error: Table with name ata_registro_preco does not exist)"
+    grao: "uma ata de registro de preços publicada no PNCP (cabeçalho: órgão, compra de origem, vigência, adesão); cada linha traz também a coluna json, sempre nula"
+    chave: "numeroControlePNCPAta: 1.176.452 linhas = 1.176.452 distintos (nenhum nulo). Colunas em camelCase, precisam de aspas duplas."
+    tempo: {natureza: serie_de_periodos, coluna: dataPublicacaoPncp, cobertura: "2022–2026 (publicação); anoAta tem 1.386 valores fora de 2021–2027 (ex.: 2424, 1.352 linhas), e dataAssinatura/vigenciaFim têm datas absurdas (ex.: 9201, 9999)"}
+    territorio: {nivel: outro, colunas: {cnpjOrgao: "órgão (8.128 distintos)", codigoUnidadeOrgao: "unidade", numeroControlePNCPCompra: "compra de origem"}}
+    filtros_tipicos: ["cancelado = false (BOOLEAN; 1.172.340) — true são 4.112", "use year(dataPublicacaoPncp) para o ano, não anoAta", "possibilidadeAdesao é nula em 66,8% das linhas (true 196.578, false 193.913)"]
+    use_para: "contar atas de registro de preços por órgão e ano de publicação."
+    nao_use_para: "preço ou item (a tabela só tem o cabeçalho; veja br_mgi_compras_publicas.ata_registro_preco_item); ano por anoAta."
+    rascunho: [use_para, nao_use_para]
+    verificado: "1.176.452 linhas = 1.176.452 numeroControlePNCPAta distintos; linhas inteiras distintas 1.176.452; dataPublicacaoPncp 2022–2026 (205 / 37.629 / 302.667 / 482.931 / 353.020 por ano) — medido 2026-10-28"
   contratacao:
     grao: "uma contratação (compra) publicada no PNCP em ago-out/2021, quase toda dispensa de licitação"
     chave: "numeroControlePNCP (3.171 linhas = 3.171 distintos). Colunas em camelCase, precisam de aspas duplas."
@@ -18,7 +26,18 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "3.171 linhas; numeroControlePNCP único; modalidadeId 8 em 3.170 linhas — medido 2026-10-27"
   instrumento_cobranca:
-    grao: "não lida: tabela sem view no banco (Catalog Error: Table with name instrumento_cobranca does not exist)"
+    grao: "um instrumento de cobrança (nota fiscal eletrônica) ligado a um contrato do PNCP, com a nota e o contrato embutidos em colunas STRUCT"
+    chave: "(cnpj, ano, sequencialContrato, sequencialInstrumentoCobranca): 311.474 linhas = 311.474 distintos. (cnpj, ano, sequencialContrato) tem só 125.405 distintos: um contrato tem várias notas."
+    tempo: {natureza: serie_de_periodos, coluna: dataEmissaoDocumento, cobertura: "2021-12-07–2026-10-14 (ano do contrato 2021–2026)"}
+    territorio: {nivel: uf, colunas: {"recuperarContratoDTO.unidadeOrgao.ufSigla": "UF da unidade (RJ 48.860, DF 36.591, RS 33.507 no topo)", cnpj: "órgão contratante"}}
+    medidas:
+      - {expressao: "recuperarContratoDTO.valorGlobal", o_que: "valor global do contrato (DOUBLE; repete em cada nota do contrato)", unidade: "R$", soma: "nao: soma repetida por nota"}
+      - {expressao: "notaFiscalEletronica.valorNotaFiscal", o_que: "valor da nota, em texto no formato brasileiro ('4.920,00'); preenchido em 103.152 linhas", unidade: "R$", soma: "sim, depois de replace('.','') e replace(',','.') e cast para DOUBLE (try_cast direto dá NULL em todas)"}
+    filtros_tipicos: ["tipoInstrumentoCobranca.nome = 'Nota Fiscal Eletrônica (NF-e)' (todas as 311.474)", "statusResponseNFe = '200' (291.369); 403, 405 e 400 são consultas à NF-e que falharam; nulo em 11.350", "notaFiscalEletronica IS NOT NULL (103.152): sem isso a nota detalhada não existe (208.322 nulas)"]
+    use_para: "ligar contratos do PNCP às notas fiscais emitidas contra eles (valor, itens da nota, emitente)."
+    nao_use_para: "somar valorGlobal (repete por nota); dados de pessoas: emitente e fornecedor podem ser pessoa física."
+    rascunho: [use_para, nao_use_para]
+    verificado: "311.474 linhas = 311.474 chaves distintas; notaFiscalEletronica não nulo em 103.152; valorNotaFiscal só converte para DOUBLE depois de trocar ponto e vírgula (103.152 de 103.152) — medido 2026-10-28"
   dicionario:
     grao: "um código (id_tabela × nome_coluna × chave) com o seu significado em valor; 224 linhas, chave confirmada"
     chave: "(id_tabela, nome_coluna, chave): 224 linhas = 224 distintos"

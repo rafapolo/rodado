@@ -103,4 +103,15 @@ tabelas:
     rascunho: [use_para, nao_use_para, medidas]
     verificado: "413.387 linhas, 864 colunas; chave de 7 colunas única; version = '6' e scope = '1' em todas — medido 2026-10-27"
   within_country_scoring_reliability:
-    grao: 'não lida: IO Error: Cannot open file ... Too many open files'
+    grao: "um aluno cuja correção de itens de resposta construída foi recodificada por um segundo avaliador (confiabilidade da correção dentro do país); são as 243.691 linhas de student_achievement com reliability_coding_status = true"
+    chave: "(country_id, student_id): 243.691 linhas = 243.691 distintas; student_id sozinho NÃO é único (69.471 distintos). Também única com student_wave_indicator."
+    tempo: {natureza: sem_tempo, coluna: "(PIRLS 2021)", cobertura: "PIRLS 2021"}
+    territorio: {nivel: outro, colunas: {country_id: "código IEA do país (65 valores)", country_iso3_code: "código numérico ISO em texto; nulo em 40.715 linhas (16,7%)"}}
+    medidas:
+      - {coluna: "rpr*, rer* (ex.: rpr41b01)", o_que: "avaliação da resposta pelo primeiro/segundo avaliador: '1' = Acceptable Response, '0' = Unacceptable Response (pelo dicionário)", unidade: "código 0/1 em texto", soma: nao}
+      - {coluna: "rpi*, rei* (ex.: rpi41b01)", o_que: "concordância entre os dois avaliadores: '1' = Identical codes, '0' = Different Codes (pelo dicionário)", unidade: "código 0/1 em texto", soma: nao}
+    filtros_tipicos: ["pirls_type = 'Normal' (222.113 linhas, 65 países) ou 'Bridge' (21.578, 26 países): gotcha amostra_ponte", "grade_id = '4' (161.136), '5' (80.786), '6' (1.769)", "item de interesse não nulo: cada item é preenchido em só 5% das linhas (o aluno só responde parte dos itens do caderno)"]
+    use_para: "medir concordância entre avaliadores por item e país (confiabilidade da correção)."
+    nao_use_para: "notas ou proficiência (estão em student_achievement); contar alunos do país (é subconjunto recodificado)."
+    rascunho: [use_para, nao_use_para]
+    verificado: "243.691 linhas = 243.691 (country_id, student_id) distintos; 1.057 colunas; dicionário traz 2.460 códigos desta tabela; 243.691 = linhas de student_achievement com reliability_coding_status — medido 2026-10-28"
