@@ -4,7 +4,7 @@ This file provides guidance to coding agents (Claude Code, Pi, and others) when 
 
 ## Project Overview
 
-**baseldosdados** mirrors public Brazilian government tables from [Base dos Dados](https://basedosdados.org) — stored as Parquet+zstd in `~/rodado` on beelink — and extends that mirror with independently-scraped sources that fill the remaining gaps (sanctions lists, SICAF, SINAN microdata, consumer complaints and more — see `tasks/done/datasets_to_scrap_done.md` for the provenance of every scraped source and `tasks/plans/datasets_to_scrap.md` for the queue). 1.403 tabelas · 256 datasets · 103 fontes · 743 GB (36,33 bilhões de linhas) as of 2026-10-14 — 904 espelhadas do Base dos Dados, 499 raspadas pelo projeto. A DuckDB view `_rodado_metadata` on beelink tracks each table's rows, source, status, and provenance; `_rodado_datasets` aggregates by dataset. DuckDB queries the data on-demand without local imports.
+**baseldosdados** mirrors public Brazilian government tables from [Base dos Dados](https://basedosdados.org) — stored as Parquet+zstd in `~/rodado` on beelink — and extends that mirror with independently-scraped sources that fill the remaining gaps (sanctions lists, SICAF, SINAN microdata, consumer complaints and more — see `tasks/done/datasets_to_scrap_done.md` for the provenance of every scraped source and `tasks/plans/datasets_to_scrap.md` for the queue). 1.612 tabelas · 276 datasets · 116 fontes · 571 GB (34,67 bilhões de linhas) as of 2026-10-28 — 984 espelhadas do Base dos Dados, 628 raspadas pelo projeto. A DuckDB view `_rodado_metadata` on beelink tracks each table's rows, source, status, and provenance; `_rodado_datasets` aggregates by dataset. DuckDB queries the data on-demand without local imports.
 
 ## Commands
 
@@ -45,7 +45,7 @@ see `db/README.md`. It is a locked-down Python front end, not the DuckDB CLI.
 O harness TS de apuração (pi + Gemma 4 local) vive no branch `harness-gemma`, fora de `main`.
 
 ### `docs/mapa/ERD.md` — the map
-One mermaid `erDiagram` per domain covering all 1.403 tables: entity = dataset, attribute = table, edge = join key to a reference hub (solid = direct, dashed = needs normalization). Lists what connects to nothing. `ERD.md` is pt-BR (default), `ERD_EN.md` is the English twin — both generated from the same data by `scripts/gera_erd.py`.
+One mermaid `erDiagram` per domain covering all 1.612 tables: entity = dataset, attribute = table, edge = join key to a reference hub (solid = direct, dashed = needs normalization). Lists what connects to nothing. `ERD.md` is pt-BR (default), `ERD_EN.md` is the English twin — both generated from the same data by `scripts/gera_erd.py`.
 
 ### `docs/context/` — Schema metadata
 Um `README.md` na própria pasta descreve arquivo por arquivo, quem gera cada um e a ordem do regen.
