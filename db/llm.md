@@ -36,9 +36,7 @@ antes). Detalhes em `mcp/MCP.md`.
 
 ## 1. Credencial
 
-**Até 26/10/2026 o acesso está aberto**: nenhuma rota pede credencial e os exemplos abaixo
-funcionam sem o `$AUTH`. Depois disso, toda rota além desta página pede **uma** destas, que
-quem te pediu a tarefa precisa te dar:
+Toda rota além desta página pede **uma** destas, que quem te pediu a tarefa precisa te dar:
 
 - usuário e senha (HTTP Basic): `curl -u rodado:$RODADO_SENHA ...`
 - token: `?token=$RODADO_TOKEN` em qualquer URL

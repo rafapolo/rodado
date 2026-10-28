@@ -986,11 +986,11 @@ mcp = FastMCP("rodado")
 def list_datasets() -> dict:
     """List all datasets in the unified catalog, with their table counts.
 
-    253 datasets, 1396 tables total: the Base dos Dados mirror (RAIS, SIM, TSE,
-    CGU, IBGE, INEP and others) plus independently-scraped sources filling
-    gaps Base dos Dados doesn't cover (SICAF, SINAN Violência, EU/UN
-    Sanctions, Consumidor.gov.br and more — see tasks/plans/datasets_to_scrap.md
-    for provenance). Use this to get oriented before drilling into a
+    The Base dos Dados mirror (RAIS, SIM, TSE, CGU, IBGE, INEP and others)
+    plus independently-scraped sources filling gaps Base dos Dados doesn't
+    cover (SICAF, SINAN Violência, EU/UN Sanctions, Consumidor.gov.br and
+    more). Each table's provenance is in `_rodado_metadata` (`source_name`,
+    `source_url`, `scrape_date`). Use this to get oriented before drilling into a
     specific dataset with list_tables().
     """
     return {
@@ -1032,9 +1032,9 @@ def describe_table(table: str) -> dict:
     `table` must be "dataset.table", e.g. "br_tse_eleicoes.candidatos".
     On a miss, returns close-match suggestions from the full table list.
 
-    Column descriptions are not available: the mirrored schema carries only
-    name and type. Use `list_tables`/`list_datasets` to find a table and
-    `docs/mapa/overview/` for what a dataset actually means.
+    The mirrored schema carries no per-column descriptions; what a row is and
+    what to use the table for come in the `cartao` block below, and
+    `docs/mapa/overview/` has prose summaries per theme.
 
     Very wide tables are truncated to the first 150 columns (survey mirrors
     reach 3.957) — the leading columns are the identifying ones. When that
@@ -1085,7 +1085,7 @@ def describe_table(table: str) -> dict:
         easy to find, and silent. Treat a flagged column the same way —
         don't trust what the name implies, confirm against the source before
         using it. See docs/context/schema_dict_status.json for the full
-        reasoning per column (tasks/done/generate-full-schema-dict.md).
+        reasoning per column.
       * `column_codes` — the researched meaning of this table's code columns
         (docs/context/column_codes.yaml): value -> label, the official source
         URL, what was measured on beelink, and traps found while checking
@@ -1447,9 +1447,10 @@ def rollup(code_column: str, to_level: str) -> dict:
 @mcp.tool()
 @_instrumented
 def run_sql(sql: str, max_rows: int = 500, ciente: bool = False) -> dict:
-    """Run a read-only DuckDB SQL query over the rodado mirror (1.400 tables of
-    Brazilian public data). By default it goes to the open API at
-    https://db.rodado.xyz — tables are `dataset.table` views; functions that
+    """Run a read-only DuckDB SQL query over the rodado mirror (~1.600 tables of
+    Brazilian public data). By default it goes to the db.rodado.xyz API,
+    which needs RODADO_TOKEN or RODADO_SENHA in this server's environment —
+    tables are `dataset.table` views; functions that
     open files (read_parquet, read_csv, glob) are refused there.
 
     Only SELECT/WITH queries are allowed; everything else is rejected before

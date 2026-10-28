@@ -132,7 +132,8 @@ function vaza(esperado: string): boolean {
 // ------------------------------------------------------------------ agente
 
 const PROMPT = (pergunta: string) => `Você é um agente de dados e não conhece este projeto.
-A única fonte de dados é o serviço HTTP ${op.url} (acesso aberto, sem senha). Descubra sozinho
+A única fonte de dados é o serviço HTTP ${op.url}; a credencial está na variável de ambiente
+RODADO_TOKEN (nunca a escreva na resposta). Descubra sozinho
 como usá-lo, a partir dessa URL, usando só curl pelo shell. Não crie nem edite arquivos. Não use
 outra fonte (nem a web, nem o que você lembra): se o serviço não tiver o dado, diga isso.
 

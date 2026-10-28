@@ -328,7 +328,7 @@ Ali ele usa `MCP_BACKEND=http` com `RODADO_URL=http://127.0.0.1:18081`: a
 consulta vai direto ao `consulta.py` do próprio container, sem voltar pela
 internet, e devolve os mesmos `avisos` e recusas. Não há Bearer próprio
 (`MCP_HTTP_BEHIND_AUTH=1`): `/mcp` fica atrás da autenticação do Caddy, a mesma
-de `/query` — aberto até 26/10/2026; depois, `?token=` na URL
+de `/query`: `?token=` na URL
 (`https://db.rodado.xyz/mcp?token=…`) ou HTTP Basic no cabeçalho
 (`--header "Authorization: Basic …"` no `claude mcp add`). Os arquivos de
 `docs/context/` que ele lê vão para a imagem no deploy (`db/README.md`,
