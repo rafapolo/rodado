@@ -237,6 +237,17 @@ def ressincroniza(client, leitor, bq, pq, alvo, backup_dir, aplicar, estimado=0,
             sh(f"rm -rf {remoto}.novo")
             return {"tabela": alvo, "erro": f"rsync: {r.stderr[:200]}"}
 
+    # lido inteiro antes da troca: em 2026-10-28, ~21% dos arquivos da br_ms_sia vindos do BdD
+    # tinham texto latin-1 numa coluna que só falhava ao ser lida (docs/tecnico/housekeeping.md, item 13)
+    v = subprocess.run(["ssh", BEELINK, f"ls {remoto}.novo/*.parquet | "
+                        "python3 ~/scripts/valida_parquet.py --stdin --sem-anterior"],
+                       capture_output=True, text=True, timeout=7200)
+    if v.returncode != 0:
+        ruins = [l for l in v.stdout.splitlines() if '"ok": false' in l]
+        sh(f"rm -rf {remoto}.novo")
+        return {"tabela": alvo, "erro": f"valida_parquet reprovou {len(ruins)} arquivo(s): "
+                                        f"{(ruins[0] if ruins else v.stderr)[:300]}"}
+
     # troca: o antigo vai inteiro para o backup, nunca para o lixo
     # tabela nova não tem o que guardar
     sh(f"if [ -d {remoto} ]; then mkdir -p {backup_dir}/{ds} && "

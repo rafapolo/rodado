@@ -297,6 +297,42 @@ do beelink exige, em `scripts/sync/rezstd.py`. Antes de trocar o codec de
 uma tabela, medir: em 2 arquivos de 384 o zstd saiu maior que o snappy, e
 eles ficaram como estavam.
 
+## 13. Parquet gravado errado: conferir lendo tudo, não só contando
+
+Em 2026-10-28, a geração de perfis (`gera_perfil.py`) achou cinco classes de parquet
+quebrado que estavam havia semanas no disco, **e no S3 e no COLD**, porque os dois syncs
+só comparavam nome e tamanho e copiaram o erro por cima da cópia boa. O que deu errado
+e a regra que ficou:
+
+| erro | onde | causa | regra |
+|---|---|---|---|
+| cabeçalho inteiro numa coluna (`a;b;c`) + `column01..NN` nulas | 42 arquivos de `br_mgi_compras_publicas` | o sniffer do `read_csv` escolheu `,` por causa das vírgulas no texto; a leitura certa foi recusada porque o script comparava registros com **linhas físicas** (quebra de linha dentro de aspas) | delimitador tirado do cabeçalho; registros contados pelo módulo `csv`; recusar nome com `;`, `"` ou `column\d+` |
+| coluna `JSON` 100% nula | 81 arquivos de `br_mgi_pncp` | `read_json` grava `JSON` quando o campo nunca veio no mês; a view com `union_by_name` herda o tipo do primeiro arquivo e quebra no primeiro texto | coluna `JSON` vira o tipo dos meses irmãos (ou `VARCHAR`) antes do `COPY`, inclusive folha dentro de struct |
+| UTF-8 cortado no meio do caractere | `br_icmbio_embargos` | campo DBF tem 254 **bytes**; texto UTF-8 longo é cortado no meio | cortar a sequência incompleta do fim (`corrige_encoding_parquet.py corta`) |
+| texto latin-1 | `br_semas_pa_ldi` (shapefile sem `.cpg`), `br_ms_sia.codigo_autorizacao_apac` (~21% dos arquivos, espelho do BdD) | o GDAL e o export não recodificam | `ST_Read(..., open_options=['ENCODING=ISO-8859-1'])`; no parquet, decodificar como latin-1 só o valor inválido |
+| "Too many open files" / OOM no perfil | tabelas de 200 a 3.957 colunas | `UNION ALL` com um ramo por coluna: um descritor e um scan por ramo; `memory_limit` não segura (9 GB com limite de 6) | um scan só com `histogram()`; `ulimit -n 65536` no comando remoto |
+
+Três lições gerais:
+
+- **A conferência do scraper não pode comparar o parquet com a mesma leitura errada.**
+  O `seges_compras.py` conferia contagem e hash do parquet contra o próprio `read_csv`
+  que tinha errado. Conferir contra uma contagem independente (módulo `csv`, linhas do
+  JSONL, `num_rows` da fonte).
+- **Uma leitura que o DuckDB só faz por coluna esconde o erro.** `count(*)` e consulta que
+  não toca a coluna ruim passam; o erro só aparece em quem lê tudo. Conferir com
+  `SELECT count(*), sum(hash(t)) FROM read_parquet(f) t`, que decodifica todas as colunas.
+- **Cópia não é backup se copia o erro.** Desde 2026-10-28 `~/scripts/s3_sync_check.py` e
+  `~/scripts/backup_rodado_to_cold.sh` passam todo parquet que vão copiar por
+  `~/scripts/valida_parquet.py` (fonte: `scripts/sync/valida_parquet.py`): leitura
+  completa, cabeçalho colado, coluna JSON nula, e queda de mais da metade das linhas ou
+  dos nomes de coluna contra a cópia do COLD. Reprovado não é copiado; a cópia antiga
+  fica. Motivos em `~/logs/valida_parquet_rejeitados.log` e em
+  `~/s3sync_work/rejeitados.txt`. Mudança de propósito (tabela que encolheu de verdade)
+  se libera por glob em `~/scripts/valida_parquet_libera.txt`; leitura quebrada nunca.
+
+Antes de consertar um parquet no lugar, guardar o original fora de `~/rodado` (o COLD
+recebe a versão nova na rodada seguinte e não guarda a anterior).
+
 ## Ordem completa, resumida
 
 ```
@@ -312,4 +348,5 @@ scrape novo/retomado
   -> 9. dataset ligado no atlas: tema fora de `outros` + chave canônica ou ponte com concept_aliases
   -> 10. mexeu em parquet que já tinha view? duckdb_columns() contra DESCRIBE; divergiu, recria a view
   -> 11. armadilha achada vai para gotchas/<dataset>.yml E harness/dados/notas.json (branch harness-gemma), com verificado
+  -> 13. parquet novo/regravado passa em scripts/sync/valida_parquet.py (lê tudo); S3 e COLD só copiam o que passa
 ```
