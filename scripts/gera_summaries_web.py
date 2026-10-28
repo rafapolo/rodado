@@ -21,6 +21,9 @@ from pathlib import Path
 
 import yaml
 
+# o atlas lê estes cartões e não cita o Base dos Dados: mesma troca do schema_graph.json
+from gera_schema_graph import sem_bdd
+
 RAIZ = Path(__file__).resolve().parent.parent
 PASTA = RAIZ / "docs" / "context" / "summaries"
 SAIDA = RAIZ / "pages" / "assets" / "summaries.json"
@@ -140,9 +143,9 @@ def main():
         if antigo.stem not in dados:
             antigo.unlink()
     for ds, d in dados.items():
-        (POR_DATASET / f"{ds}.json").write_text(json.dumps(d, ensure_ascii=False, separators=(",", ":")))
+        (POR_DATASET / f"{ds}.json").write_text(json.dumps(sem_bdd(d), ensure_ascii=False, separators=(",", ":")))
     indice = {ds: {"d": d["d"], "n": len(d["t"])} for ds, d in dados.items()}
-    SAIDA.write_text(json.dumps(indice, ensure_ascii=False, separators=(",", ":")))
+    SAIDA.write_text(json.dumps(sem_bdd(indice), ensure_ascii=False, separators=(",", ":")))
     tamanhos = [f.stat().st_size for f in POR_DATASET.glob("*.json")]
     print(f"{SAIDA.relative_to(RAIZ)}: {len(dados)} datasets, {SAIDA.stat().st_size / 1e3:.0f} kB; "
           f"{POR_DATASET.relative_to(RAIZ)}/: {sum(tamanhos) / 1e6:.2f} MB, maior {max(tamanhos) / 1e3:.0f} kB")

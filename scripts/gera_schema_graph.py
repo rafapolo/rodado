@@ -492,6 +492,42 @@ def select_keys(idx) -> list[str]:
     return sorted(curated | connecting)
 
 
+# O atlas não cita o Base dos Dados (a pedido): a fonte espelhada some do `fn`, e a prosa
+# dos cartões, gotchas e descrições troca o nome por "espelho". Ordem importa: as formas
+# mais longas antes da genérica.
+_SEM_BDD = [
+    (re.compile(r"^Base dos Dados — (.)"), lambda m: m.group(1).upper()),
+    (re.compile(r" \(via Base dos Dados\)| via Base dos Dados"), ""),
+    # a sigla, na prosa dos gotchas: "a BD grava 0", "no BD", "O espelho da BD"
+    (re.compile(r"espelho d[ao] BD\b"), "espelho"),
+    (re.compile(r"\b([Nn])[ao] BD\b"), r"\1o espelho"),
+    (re.compile(r"\b([Aa]) BD\b"), lambda m: ("O" if m.group(1) == "A" else "o") + " espelho"),
+    (re.compile(r"\bBD\b"), "espelho"),
+    (re.compile(r" \(Base dos Dados\)"), ""),
+    (re.compile(r"espelho d[ao] Base dos Dados"), "espelho"),
+    (re.compile(r"(descrição|API) d[ao] Base dos Dados"), r"\1 de origem"),
+    (re.compile(r"\b(d|n|p?el)[ao] Base dos Dados"), lambda m: {"d": "do", "n": "no", "pel": "pelo"}[m.group(1)] + " espelho"),
+    (re.compile(r"\b([Oo]) Base dos Dados"), r"\1 espelho"),
+    (re.compile(r"Base dos Dados"), "espelho"),
+    # o literal do project_id do catálogo de origem, citado na prosa de br_bd_metadados
+    (re.compile(r"'basedosdados[\w-]*'"), "o mesmo valor"),
+]
+
+
+def sem_bdd(v):
+    if isinstance(v, str):
+        for padrao, troca in _SEM_BDD:
+            v = padrao.sub(troca, v)
+        return v
+    if isinstance(v, list):
+        # valor de coluna (top do perfil) que é o próprio nome do projeto de origem
+        return [sem_bdd(x) for x in v
+                if not (isinstance(x, list) and x and isinstance(x[0], str) and "basedosdados" in x[0])]
+    if isinstance(v, dict):
+        return {k: sem_bdd(x) for k, x in v.items() if not (k == "fn" and x == "Base dos Dados")}
+    return v
+
+
 def build():
     schema = json.loads(SCHEMAS.read_text())
     tables = schema["tables"]
@@ -643,7 +679,7 @@ def build():
     }
 
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT.write_text(json.dumps(graph, ensure_ascii=False, separators=(",", ":")))
+    OUTPUT.write_text(json.dumps(sem_bdd(graph), ensure_ascii=False, separators=(",", ":")))
     size = OUTPUT.stat().st_size / 1024
     print(f"{OUTPUT.relative_to(REPO_ROOT)} — {len(out_tables)} tabelas, "
           f"{len(out_datasets)} datasets, {len(out_keys)} chaves, "
@@ -771,7 +807,7 @@ def write_details(out_datasets, out_tables):
                 saida[tb] = x
         arq = DETALHES / f"{ds}.json"
         if saida:
-            arq.write_text(json.dumps(saida, ensure_ascii=False, separators=(",", ":")))
+            arq.write_text(json.dumps(sem_bdd(saida), ensure_ascii=False, separators=(",", ":")))
             escritos.add(arq.name)
             maior = max(maior, (arq.stat().st_size, ds))
         elif arq.exists():
