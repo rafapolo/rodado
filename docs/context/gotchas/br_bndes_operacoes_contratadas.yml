@@ -1,0 +1,15 @@
+dataset: br_bndes_operacoes_contratadas
+gotchas:
+  - id: contrato_em_varias_linhas
+    resumo: "Em operacoes_nao_automaticas, id_contrato aparece em várias linhas (8.409 contratos em 23.896 linhas) e valor_operacao muda entre elas: cada linha é um subcrédito do contrato (taxa e prazo próprios), então o valor do contrato é a SOMA das linhas (R$ 1.237 bi no total), não o máximo (R$ 808 bi). Para contar contratos use count(DISTINCT id_contrato)."
+    detalhe: >
+      4.050 contratos têm valor_operacao diferente entre linhas; nesses, as linhas
+      divergem em taxa_juros (2.373 contratos), produto (374) e às vezes na data
+      (364). Pegar o máximo por contrato descarta os demais subcréditos e subestima o
+      total em um terço. Há ainda 395 linhas repetidas por inteiro (SELECT DISTINCT *
+      dá R$ 1.216,8 bi): podem ser cópias ou subcréditos idênticos, e a fonte não
+      distingue.
+    tabelas: [operacoes_nao_automaticas]
+    colunas: [id_contrato, valor_operacao, valor_desembolsado, taxa_juros]
+    severidade: silencioso
+    verificado: "23.896 linhas, 8.409 id_contrato; soma valor_operacao R$ 1.236,7 bi, máximo por contrato R$ 808,3 bi, DISTINCT * R$ 1.216,8 bi; 4.050 contratos com valor divergente entre linhas — medido 2026-10-28"

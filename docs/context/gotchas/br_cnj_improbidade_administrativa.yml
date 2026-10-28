@@ -1,0 +1,8 @@
+dataset: br_cnj_improbidade_administrativa
+gotchas:
+  - id: valores_sentinela
+    resumo: "valor_multa tem 111111111111,11 em uma linha e valor_ressarcimento tem 88888888888,88 e 888888888888,88 em duas; valor_perda_bens tem 888888888,88 em duas. Sem tirá-los a multa soma R$ 114,9 bi (R$ 3,77 bi sem) e o ressarcimento R$ 987 bi (R$ 9,27 bi sem). Filtre valor < 1e9 (perda de bens: < 8e8)."
+    tabelas: [condenacao]
+    colunas: [valor_multa, valor_ressarcimento, valor_perda_bens]
+    severidade: silencioso
+    verificado: "53.342 linhas; valor_multa soma 114.882.779.478 com e 3.771.668.367 com valor_multa < 1e9 (maior valor real 188.700.468; 1 linha >= 1e9); valor_ressarcimento 987.042.969.767 com e 9.265.191.989 sem (2 linhas >= 1e9; maior real 866.299.455); valor_perda_bens 888.888.888,88 em 2 linhas (maior real 700.083.814) — medido 2026-10-28"

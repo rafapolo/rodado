@@ -211,7 +211,7 @@ tabelas:
     - coluna: homens_catolicos_solteiros, homens_catolicos_casados, homens_catolicos_viuvos, homens_acatolicos_solteiros, homens_acatolicos_casados, homens_acatolicos_viuvos, homens_sem_informacao, mulheres_catolicas_solteiras, mulheres_catolicas_casadas, mulheres_catolicas_viuvas, mulheres_acatolicas_solteiras, mulheres_acatolicas_casadas, mulheres_acatolicas_viuvas, mulheres_sem_informacao, total
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'no corrigido id_categoria = ''30'' é ''Total''; no original ''29''–''31'' são linhas de conferência (Estado civil, Religião, Total de estrangeiros) — excluí-las ao somar nacionalidades; ''1'' e ''2'' são africanos escravos e livres; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: estrangeiros por nacionalidade, religião e estado civil
@@ -238,7 +238,7 @@ tabelas:
     - coluna: homens_catolicos_solteiros, homens_catolicos_casados, homens_catolicos_viuvos, homens_acatolicos_solteiros, homens_acatolicos_casados, homens_acatolicos_viuvos, homens_sem_informacao, mulheres_catolicas_solteiras, mulheres_catolicas_casadas, mulheres_catolicas_viuvas, mulheres_acatolicas_solteiras, mulheres_acatolicas_casadas, mulheres_acatolicas_viuvas, mulheres_sem_informacao, total
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'no corrigido id_categoria = ''30'' é ''Total''; no original ''29''–''31'' são linhas de conferência (Estado civil, Religião, Total de estrangeiros) — excluí-las ao somar nacionalidades; ''1'' e ''2'' são africanos escravos e livres; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: estrangeiros por nacionalidade, religião e estado civil
@@ -263,7 +263,7 @@ tabelas:
     - coluna: homens_catolicos_solteiros, homens_catolicos_casados, homens_catolicos_viuvos, homens_acatolicos_solteiros, homens_acatolicos_casados, homens_acatolicos_viuvos, homens_sem_informacao, mulheres_catolicas_solteiras, mulheres_catolicas_casadas, mulheres_catolicas_viuvas, mulheres_acatolicas_solteiras, mulheres_acatolicas_casadas, mulheres_acatolicas_viuvas, mulheres_sem_informacao, total
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'no corrigido id_categoria = ''30'' é ''Total''; no original ''29''–''31'' são linhas de conferência (Estado civil, Religião, Total de estrangeiros) — excluí-las ao somar nacionalidades; ''1'' e ''2'' são africanos escravos e livres; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: estrangeiros por nacionalidade, religião e estado civil
@@ -289,7 +289,7 @@ tabelas:
     - coluna: homens_catolicos_solteiros, homens_catolicos_casados, homens_catolicos_viuvos, homens_acatolicos_solteiros, homens_acatolicos_casados, homens_acatolicos_viuvos, mulheres_catolicas_solteiras, mulheres_catolicas_casadas, mulheres_catolicas_viuvas, mulheres_acatolicas_solteiras, mulheres_acatolicas_casadas, mulheres_acatolicas_viuvas, total
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'no corrigido id_categoria = ''30'' é ''Total''; no original ''29''–''31'' são linhas de conferência (Estado civil, Religião, Total de estrangeiros) — excluí-las ao somar nacionalidades; ''1'' e ''2'' são africanos escravos e livres; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: estrangeiros por nacionalidade, religião e estado civil
@@ -316,7 +316,7 @@ tabelas:
     - coluna: homens_catolicos_solteiros, homens_catolicos_casados, homens_catolicos_viuvos, homens_acatolicos_solteiros, homens_acatolicos_casados, homens_acatolicos_viuvos, mulheres_catolicas_solteiras, mulheres_catolicas_casadas, mulheres_catolicas_viuvas, mulheres_acatolicas_solteiras, mulheres_acatolicas_casadas, mulheres_acatolicas_viuvas, total
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'no corrigido id_categoria = ''30'' é ''Total''; no original ''29''–''31'' são linhas de conferência (Estado civil, Religião, Total de estrangeiros) — excluí-las ao somar nacionalidades; ''1'' e ''2'' são africanos escravos e livres; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: estrangeiros por nacionalidade, religião e estado civil
@@ -341,7 +341,7 @@ tabelas:
     - coluna: homens_catolicos_solteiros, homens_catolicos_casados, homens_catolicos_viuvos, homens_acatolicos_solteiros, homens_acatolicos_casados, homens_acatolicos_viuvos, mulheres_catolicas_solteiras, mulheres_catolicas_casadas, mulheres_catolicas_viuvas, mulheres_acatolicas_solteiras, mulheres_acatolicas_casadas, mulheres_acatolicas_viuvas, total
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'no corrigido id_categoria = ''30'' é ''Total''; no original ''29''–''31'' são linhas de conferência (Estado civil, Religião, Total de estrangeiros) — excluí-las ao somar nacionalidades; ''1'' e ''2'' são africanos escravos e livres; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: estrangeiros por nacionalidade, religião e estado civil
@@ -367,7 +367,7 @@ tabelas:
     - coluna: solteiros_brancos_livres, solteiros_pardos_livres, solteiros_pretos_livres, solteiros_caboclos_livres, casados_brancos_livres, casados_pardos_livres, casados_pretos_livres, casados_caboclos_livres, viuvos_brancos_livres, viuvos_pardos_livres, viuvos_pretos_livres, viuvos_caboclos_livres, livres_sem_informacao, solteiros_pardos_escravizados, solteiros_pretos_escravizados, casados_pardos_escravizados, casados_pretos_escravizados, viuvos_pardos_escravizados, viuvos_pretos_escravizados, escravizados_sem_informacao
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'no corrigido id_categoria = ''24'' é ''Total''; no original ''23''–''26'' são linhas de conferência (Raças, Estado, Condição, Sexos) — excluir ao somar origens; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: 'migração interna: onde nasceram os homens brasileiros recenseados'
@@ -394,7 +394,7 @@ tabelas:
     - coluna: solteiros_brancos_livres, solteiros_pardos_livres, solteiros_pretos_livres, solteiros_caboclos_livres, casados_brancos_livres, casados_pardos_livres, casados_pretos_livres, casados_caboclos_livres, viuvos_brancos_livres, viuvos_pardos_livres, viuvos_pretos_livres, viuvos_caboclos_livres, livres_sem_informacao, solteiros_pardos_escravizados, solteiros_pretos_escravizados, casados_pardos_escravizados, casados_pretos_escravizados, viuvos_pardos_escravizados, viuvos_pretos_escravizados, escravizados_sem_informacao
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'no corrigido id_categoria = ''24'' é ''Total''; no original ''23''–''26'' são linhas de conferência (Raças, Estado, Condição, Sexos) — excluir ao somar origens; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: 'migração interna: onde nasceram os homens brasileiros recenseados'
@@ -419,7 +419,7 @@ tabelas:
     - coluna: solteiros_brancos_livres, solteiros_pardos_livres, solteiros_pretos_livres, solteiros_caboclos_livres, casados_brancos_livres, casados_pardos_livres, casados_pretos_livres, casados_caboclos_livres, viuvos_brancos_livres, viuvos_pardos_livres, viuvos_pretos_livres, viuvos_caboclos_livres, livres_sem_informacao, solteiros_pardos_escravizados, solteiros_pretos_escravizados, casados_pardos_escravizados, casados_pretos_escravizados, viuvos_pardos_escravizados, viuvos_pretos_escravizados, escravizados_sem_informacao
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'no corrigido id_categoria = ''24'' é ''Total''; no original ''23''–''26'' são linhas de conferência (Raças, Estado, Condição, Sexos) — excluir ao somar origens; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: 'migração interna: onde nasceram os homens brasileiros recenseados'
@@ -445,7 +445,7 @@ tabelas:
     - coluna: solteiros_brancos_livres, solteiros_pardos_livres, solteiros_pretos_livres, solteiros_caboclos_livres, casados_brancos_livres, casados_pardos_livres, casados_pretos_livres, casados_caboclos_livres, viuvos_brancos_livres, viuvos_pardos_livres, viuvos_pretos_livres, viuvos_caboclos_livres, solteiros_pardos_escravizados, solteiros_pretos_escravizados, casados_pardos_escravizados, casados_pretos_escravizados, viuvos_pardos_escravizados, viuvos_pretos_escravizados
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'no corrigido id_categoria = ''24'' é ''Total''; no original ''23''–''26'' são linhas de conferência (Raças, Estado, Condição, Sexos) — excluir ao somar origens; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: 'migração interna: onde nasceram os homens brasileiros recenseados'
@@ -472,7 +472,7 @@ tabelas:
     - coluna: solteiros_brancos_livres, solteiros_pardos_livres, solteiros_pretos_livres, solteiros_caboclos_livres, casados_brancos_livres, casados_pardos_livres, casados_pretos_livres, casados_caboclos_livres, viuvos_brancos_livres, viuvos_pardos_livres, viuvos_pretos_livres, viuvos_caboclos_livres, solteiros_pardos_escravizados, solteiros_pretos_escravizados, casados_pardos_escravizados, casados_pretos_escravizados, viuvos_pardos_escravizados, viuvos_pretos_escravizados
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'no corrigido id_categoria = ''24'' é ''Total''; no original ''23''–''26'' são linhas de conferência (Raças, Estado, Condição, Sexos) — excluir ao somar origens; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: 'migração interna: onde nasceram os homens brasileiros recenseados'
@@ -497,7 +497,7 @@ tabelas:
     - coluna: solteiros_brancos_livres, solteiros_pardos_livres, solteiros_pretos_livres, solteiros_caboclos_livres, casados_brancos_livres, casados_pardos_livres, casados_pretos_livres, casados_caboclos_livres, viuvos_brancos_livres, viuvos_pardos_livres, viuvos_pretos_livres, viuvos_caboclos_livres, solteiros_pardos_escravizados, solteiros_pretos_escravizados, casados_pardos_escravizados, casados_pretos_escravizados, viuvos_pardos_escravizados, viuvos_pretos_escravizados
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'no corrigido id_categoria = ''24'' é ''Total''; no original ''23''–''26'' são linhas de conferência (Raças, Estado, Condição, Sexos) — excluir ao somar origens; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: 'migração interna: onde nasceram os homens brasileiros recenseados'
@@ -523,7 +523,7 @@ tabelas:
     - coluna: solteiras_brancas_livres, solteiras_pardas_livres, solteiras_pretas_livres, solteiras_caboclas_livres, casadas_brancas_livres, casadas_pardas_livres, casadas_pretas_livres, casadas_caboclas_livres, viuvas_brancas_livres, viuvas_pardas_livres, viuvas_pretas_livres, viuvas_caboclas_livres, livres_sem_informacao, solteiras_pardas_escravizadas, solteiras_pretas_escravizadas, casadas_pardas_escravizadas, casadas_pretas_escravizadas, viuvas_pardas_escravizadas, viuvas_pretas_escravizadas, escravizadas_sem_informacao
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'no corrigido id_categoria = ''24'' é ''Total''; no original as categorias finais são linhas de conferência — excluir ao somar origens; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: 'migração interna: onde nasceram as mulheres brasileiras recenseadas'
@@ -550,7 +550,7 @@ tabelas:
     - coluna: solteiras_brancas_livres, solteiras_pardas_livres, solteiras_pretas_livres, solteiras_caboclas_livres, casadas_brancas_livres, casadas_pardas_livres, casadas_pretas_livres, casadas_caboclas_livres, viuvas_brancas_livres, viuvas_pardas_livres, viuvas_pretas_livres, viuvas_caboclas_livres, livres_sem_informacao, solteiras_pardas_escravizadas, solteiras_pretas_escravizadas, casadas_pardas_escravizadas, casadas_pretas_escravizadas, viuvas_pardas_escravizadas, viuvas_pretas_escravizadas, escravizadas_sem_informacao
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'no corrigido id_categoria = ''24'' é ''Total''; no original as categorias finais são linhas de conferência — excluir ao somar origens; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: 'migração interna: onde nasceram as mulheres brasileiras recenseadas'
@@ -575,7 +575,7 @@ tabelas:
     - coluna: solteiras_brancas_livres, solteiras_pardas_livres, solteiras_pretas_livres, solteiras_caboclas_livres, casadas_brancas_livres, casadas_pardas_livres, casadas_pretas_livres, casadas_caboclas_livres, viuvas_brancas_livres, viuvas_pardas_livres, viuvas_pretas_livres, viuvas_caboclas_livres, livres_sem_informacao, solteiras_pardas_escravizadas, solteiras_pretas_escravizadas, casadas_pardas_escravizadas, casadas_pretas_escravizadas, viuvas_pardas_escravizadas, viuvas_pretas_escravizadas, escravizadas_sem_informacao
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'no corrigido id_categoria = ''24'' é ''Total''; no original as categorias finais são linhas de conferência — excluir ao somar origens; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: 'migração interna: onde nasceram as mulheres brasileiras recenseadas'
@@ -601,7 +601,7 @@ tabelas:
     - coluna: solteiras_brancas_livres, solteiras_pardas_livres, solteiras_pretas_livres, solteiras_caboclas_livres, casadas_brancas_livres, casadas_pardas_livres, casadas_pretas_livres, casadas_caboclas_livres, viuvas_brancas_livres, viuvas_pardas_livres, viuvas_pretas_livres, viuvas_caboclas_livres, solteiras_pardas_escravizadas, solteiras_pretas_escravizadas, casadas_pardas_escravizadas, casadas_pretas_escravizadas, viuvas_pardas_escravizadas, viuvas_pretas_escravizadas
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'no corrigido id_categoria = ''24'' é ''Total''; no original as categorias finais são linhas de conferência — excluir ao somar origens; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: 'migração interna: onde nasceram as mulheres brasileiras recenseadas'
@@ -628,7 +628,7 @@ tabelas:
     - coluna: solteiras_brancas_livres, solteiras_pardas_livres, solteiras_pretas_livres, solteiras_caboclas_livres, casadas_brancas_livres, casadas_pardas_livres, casadas_pretas_livres, casadas_caboclas_livres, viuvas_brancas_livres, viuvas_pardas_livres, viuvas_pretas_livres, viuvas_caboclas_livres, solteiras_pardas_escravizadas, solteiras_pretas_escravizadas, casadas_pardas_escravizadas, casadas_pretas_escravizadas, viuvas_pardas_escravizadas, viuvas_pretas_escravizadas
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'no corrigido id_categoria = ''24'' é ''Total''; no original as categorias finais são linhas de conferência — excluir ao somar origens; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: 'migração interna: onde nasceram as mulheres brasileiras recenseadas'
@@ -653,7 +653,7 @@ tabelas:
     - coluna: solteiras_brancas_livres, solteiras_pardas_livres, solteiras_pretas_livres, solteiras_caboclas_livres, casadas_brancas_livres, casadas_pardas_livres, casadas_pretas_livres, casadas_caboclas_livres, viuvas_brancas_livres, viuvas_pardas_livres, viuvas_pretas_livres, viuvas_caboclas_livres, solteiras_pardas_escravizadas, solteiras_pretas_escravizadas, casadas_pardas_escravizadas, casadas_pretas_escravizadas, viuvas_pardas_escravizadas, viuvas_pretas_escravizadas
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'no corrigido id_categoria = ''24'' é ''Total''; no original as categorias finais são linhas de conferência — excluir ao somar origens; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: 'migração interna: onde nasceram as mulheres brasileiras recenseadas'
@@ -705,7 +705,7 @@ tabelas:
     - coluna: homens_brancos_livres, homens_pardos_livres, homens_pretos_livres, homens_caboclos_livres, homens_pardos_escravizados, homens_pretos_escravizados, mulheres_brancas_livres, mulheres_pardas_livres, mulheres_pretas_livres, mulheres_caboclas_livres, mulheres_pardas_escravizadas, mulheres_pretas_escravizadas, total
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'no corrigido id_categoria = ''31'' é ''Total''; no original as categorias finais são linhas de conferência — excluí-las ao somar faixas; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: estimar ausentes por idade, cor e condição
@@ -732,7 +732,7 @@ tabelas:
     - coluna: homens_brancos_livres, homens_pardos_livres, homens_pretos_livres, homens_caboclos_livres, homens_pardos_escravizados, homens_pretos_escravizados, mulheres_brancas_livres, mulheres_pardas_livres, mulheres_pretas_livres, mulheres_caboclas_livres, mulheres_pardas_escravizadas, mulheres_pretas_escravizadas, total
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'no corrigido id_categoria = ''31'' é ''Total''; no original as categorias finais são linhas de conferência — excluí-las ao somar faixas; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: estimar ausentes por idade, cor e condição
@@ -757,7 +757,7 @@ tabelas:
     - coluna: homens_brancos_livres, homens_pardos_livres, homens_pretos_livres, homens_caboclos_livres, homens_pardos_escravizados, homens_pretos_escravizados, mulheres_brancas_livres, mulheres_pardas_livres, mulheres_pretas_livres, mulheres_caboclas_livres, mulheres_pardas_escravizadas, mulheres_pretas_escravizadas, total
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'no corrigido id_categoria = ''31'' é ''Total''; no original as categorias finais são linhas de conferência — excluí-las ao somar faixas; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: estimar ausentes por idade, cor e condição
@@ -783,7 +783,7 @@ tabelas:
     - coluna: homens_brancos_livres, homens_pardos_livres, homens_pretos_livres, homens_caboclos_livres, homens_pardos_escravizados, homens_pretos_escravizados, mulheres_brancas_livres, mulheres_pardas_livres, mulheres_pretas_livres, mulheres_caboclas_livres, mulheres_pardas_escravizadas, mulheres_pretas_escravizadas, total
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'no corrigido id_categoria = ''31'' é ''Total''; no original as categorias finais são linhas de conferência — excluí-las ao somar faixas; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: estimar ausentes por idade, cor e condição
@@ -810,7 +810,7 @@ tabelas:
     - coluna: homens_brancos_livres, homens_pardos_livres, homens_pretos_livres, homens_caboclos_livres, homens_pardos_escravizados, homens_pretos_escravizados, mulheres_brancas_livres, mulheres_pardas_livres, mulheres_pretas_livres, mulheres_caboclas_livres, mulheres_pardas_escravizadas, mulheres_pretas_escravizadas, total
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'no corrigido id_categoria = ''31'' é ''Total''; no original as categorias finais são linhas de conferência — excluí-las ao somar faixas; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: estimar ausentes por idade, cor e condição
@@ -835,7 +835,7 @@ tabelas:
     - coluna: homens_brancos_livres, homens_pardos_livres, homens_pretos_livres, homens_caboclos_livres, homens_pardos_escravizados, homens_pretos_escravizados, mulheres_brancas_livres, mulheres_pardas_livres, mulheres_pretas_livres, mulheres_caboclas_livres, mulheres_pardas_escravizadas, mulheres_pretas_escravizadas, total
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'no corrigido id_categoria = ''31'' é ''Total''; no original as categorias finais são linhas de conferência — excluí-las ao somar faixas; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: estimar ausentes por idade, cor e condição
@@ -861,7 +861,7 @@ tabelas:
     - coluna: homens_livres, mulheres_livres, total_livres, homens_escravizados, mulheres_escravizadas, total_escravizados, total
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'id_categoria = ''1'' é ''Total: Almas'' (9.930.478 no Brasil, corrigido); as demais categorias são recortes que se sobrepõem (raça, estado civil, religião…), cada grupo soma ao total — não some categorias entre si; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: contar população total do Império ou comparar livres × escravizados por recorte
@@ -888,7 +888,7 @@ tabelas:
     - coluna: homens_livres, mulheres_livres, total_livres, homens_escravizados, mulheres_escravizadas, total_escravizados, total
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'id_categoria = ''1'' é ''Total: Almas'' (9.930.478 no Brasil, corrigido); as demais categorias são recortes que se sobrepõem (raça, estado civil, religião…), cada grupo soma ao total — não some categorias entre si; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: contar população total do Império ou comparar livres × escravizados por recorte
@@ -913,7 +913,7 @@ tabelas:
     - coluna: homens_livres, mulheres_livres, total_livres, homens_escravizados, mulheres_escravizadas, total_escravizados, total
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'id_categoria = ''1'' é ''Total: Almas'' (9.930.478 no Brasil, corrigido); as demais categorias são recortes que se sobrepõem (raça, estado civil, religião…), cada grupo soma ao total — não some categorias entre si; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: contar população total do Império ou comparar livres × escravizados por recorte
@@ -939,7 +939,7 @@ tabelas:
     - coluna: homens_livres, mulheres_livres, total_livres, homens_escravizados, mulheres_escravizadas, total_escravizados, total
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'id_categoria = ''1'' é ''Total: Almas'' (9.930.478 no Brasil, corrigido); as demais categorias são recortes que se sobrepõem (raça, estado civil, religião…), cada grupo soma ao total — não some categorias entre si; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: contar população total do Império ou comparar livres × escravizados por recorte
@@ -966,7 +966,7 @@ tabelas:
     - coluna: homens_livres, mulheres_livres, total_livres, homens_escravizados, mulheres_escravizadas, total_escravizados, total
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'id_categoria = ''1'' é ''Total: Almas'' (9.930.478 no Brasil, corrigido); as demais categorias são recortes que se sobrepõem (raça, estado civil, religião…), cada grupo soma ao total — não some categorias entre si; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: contar população total do Império ou comparar livres × escravizados por recorte
@@ -991,7 +991,7 @@ tabelas:
     - coluna: homens_livres, mulheres_livres, total_livres, homens_escravizados, mulheres_escravizadas, total_escravizados, total
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'id_categoria = ''1'' é ''Total: Almas'' (9.930.478 no Brasil, corrigido); as demais categorias são recortes que se sobrepõem (raça, estado civil, religião…), cada grupo soma ao total — não some categorias entre si; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: contar população total do Império ou comparar livres × escravizados por recorte
@@ -1017,7 +1017,7 @@ tabelas:
     - coluna: homens_brancos_livres, homens_pardos_livres, homens_pretos_livres, homens_caboclos_livres, homens_pardos_escravizados, homens_pretos_escravizados, mulheres_brancas_livres, mulheres_pardas_livres, mulheres_pretas_livres, mulheres_caboclas_livres, mulheres_pardas_escravizadas, mulheres_pretas_escravizadas, total
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'no corrigido id_categoria = ''31'' é ''Total''; no original ''31''–''34'' são linhas de conferência (raça, condições, sexo, total) com somas que não batem entre si — excluí-las ao somar faixas; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: pirâmide etária da população presente
@@ -1044,7 +1044,7 @@ tabelas:
     - coluna: homens_brancos_livres, homens_pardos_livres, homens_pretos_livres, homens_caboclos_livres, homens_pardos_escravizados, homens_pretos_escravizados, mulheres_brancas_livres, mulheres_pardas_livres, mulheres_pretas_livres, mulheres_caboclas_livres, mulheres_pardas_escravizadas, mulheres_pretas_escravizadas, total
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'no corrigido id_categoria = ''31'' é ''Total''; no original ''31''–''34'' são linhas de conferência (raça, condições, sexo, total) com somas que não batem entre si — excluí-las ao somar faixas; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: pirâmide etária da população presente
@@ -1069,7 +1069,7 @@ tabelas:
     - coluna: homens_brancos_livres, homens_pardos_livres, homens_pretos_livres, homens_caboclos_livres, homens_pardos_escravizados, homens_pretos_escravizados, mulheres_brancas_livres, mulheres_pardas_livres, mulheres_pretas_livres, mulheres_caboclas_livres, mulheres_pardas_escravizadas, mulheres_pretas_escravizadas, total
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'no corrigido id_categoria = ''31'' é ''Total''; no original ''31''–''34'' são linhas de conferência (raça, condições, sexo, total) com somas que não batem entre si — excluí-las ao somar faixas; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: pirâmide etária da população presente
@@ -1095,7 +1095,7 @@ tabelas:
     - coluna: homens_brancos_livres, homens_pardos_livres, homens_pretos_livres, homens_caboclos_livres, homens_pardos_escravizados, homens_pretos_escravizados, mulheres_brancas_livres, mulheres_pardas_livres, mulheres_pretas_livres, mulheres_caboclas_livres, mulheres_pardas_escravizadas, mulheres_pretas_escravizadas, total
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'no corrigido id_categoria = ''31'' é ''Total''; no original ''31''–''34'' são linhas de conferência (raça, condições, sexo, total) com somas que não batem entre si — excluí-las ao somar faixas; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: pirâmide etária da população presente
@@ -1122,7 +1122,7 @@ tabelas:
     - coluna: homens_brancos_livres, homens_pardos_livres, homens_pretos_livres, homens_caboclos_livres, homens_pardos_escravizados, homens_pretos_escravizados, mulheres_brancas_livres, mulheres_pardas_livres, mulheres_pretas_livres, mulheres_caboclas_livres, mulheres_pardas_escravizadas, mulheres_pretas_escravizadas, total
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'no corrigido id_categoria = ''31'' é ''Total''; no original ''31''–''34'' são linhas de conferência (raça, condições, sexo, total) com somas que não batem entre si — excluí-las ao somar faixas; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: pirâmide etária da população presente
@@ -1147,7 +1147,7 @@ tabelas:
     - coluna: homens_brancos_livres, homens_pardos_livres, homens_pretos_livres, homens_caboclos_livres, homens_pardos_escravizados, homens_pretos_escravizados, mulheres_brancas_livres, mulheres_pardas_livres, mulheres_pretas_livres, mulheres_caboclas_livres, mulheres_pardas_escravizadas, mulheres_pretas_escravizadas, total
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'no corrigido id_categoria = ''31'' é ''Total''; no original ''31''–''34'' são linhas de conferência (raça, condições, sexo, total) com somas que não batem entre si — excluí-las ao somar faixas; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: pirâmide etária da população presente
@@ -1173,7 +1173,7 @@ tabelas:
     - coluna: homens_brancos_livres, homens_pardos_livres, homens_pretos_livres, homens_caboclos_livres, homens_pardos_escravizados, homens_pretos_escravizados, mulheres_brancas_livres, mulheres_pardas_livres, mulheres_pretas_livres, mulheres_caboclas_livres, mulheres_pardas_escravizadas, mulheres_pretas_escravizadas, total
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'id_categoria = ''31'' é a linha Total (soma das faixas ''1''..''30''; 9.930.478 no Brasil, corrigido); excluir ''31'' para somar faixas; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: pirâmide etária e composição por cor/condição em 1872
@@ -1200,7 +1200,7 @@ tabelas:
     - coluna: homens_brancos_livres, homens_pardos_livres, homens_pretos_livres, homens_caboclos_livres, homens_pardos_escravizados, homens_pretos_escravizados, mulheres_brancas_livres, mulheres_pardas_livres, mulheres_pretas_livres, mulheres_caboclas_livres, mulheres_pardas_escravizadas, mulheres_pretas_escravizadas, total
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'id_categoria = ''31'' é a linha Total (soma das faixas ''1''..''30''; 9.930.478 no Brasil, corrigido); excluir ''31'' para somar faixas; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: pirâmide etária e composição por cor/condição em 1872
@@ -1225,7 +1225,7 @@ tabelas:
     - coluna: homens_brancos_livres, homens_pardos_livres, homens_pretos_livres, homens_caboclos_livres, homens_pardos_escravizados, homens_pretos_escravizados, mulheres_brancas_livres, mulheres_pardas_livres, mulheres_pretas_livres, mulheres_caboclas_livres, mulheres_pardas_escravizadas, mulheres_pretas_escravizadas, total
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'id_categoria = ''31'' é a linha Total (soma das faixas ''1''..''30''; 9.930.478 no Brasil, corrigido); excluir ''31'' para somar faixas; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: pirâmide etária e composição por cor/condição em 1872
@@ -1251,7 +1251,7 @@ tabelas:
     - coluna: homens_brasileiros_solteiros, homens_brasileiros_casados, homens_brasileiros_viuvos, homens_brasileiros_sem_informacao, mulheres_brasileiras_solteiras, mulheres_brasileiras_casadas, mulheres_brasileiras_viuvas, mulheres_brasileiras_sem_informacao, homens_estrangeiros_solteiros, homens_estrangeiros_casados, homens_estrangeiros_viuvos, homens_estrangeiros_sem_informacao, mulheres_estrangeiras_solteiras, mulheres_estrangeiras_casadas, mulheres_estrangeiras_viuvas, mulheres_estrangeiras_sem_informacao, homens_escravizados, mulheres_escravizadas, total
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'no corrigido id_categoria = ''39'' é ''Total'' (soma das profissões ''1''..''38'' = 9.930.478 no Brasil); no original ''38''–''41'' são totais de conferência (Estado, Sexos, Condições, Nacionalidades) — excluir ao somar profissões; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: distribuição profissional da população em 1872
@@ -1278,7 +1278,7 @@ tabelas:
     - coluna: homens_brasileiros_solteiros, homens_brasileiros_casados, homens_brasileiros_viuvos, homens_brasileiros_sem_informacao, mulheres_brasileiras_solteiras, mulheres_brasileiras_casadas, mulheres_brasileiras_viuvas, mulheres_brasileiras_sem_informacao, homens_estrangeiros_solteiros, homens_estrangeiros_casados, homens_estrangeiros_viuvos, homens_estrangeiros_sem_informacao, mulheres_estrangeiras_solteiras, mulheres_estrangeiras_casadas, mulheres_estrangeiras_viuvas, mulheres_estrangeiras_sem_informacao, homens_escravizados, mulheres_escravizadas, total
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'no corrigido id_categoria = ''39'' é ''Total'' (soma das profissões ''1''..''38'' = 9.930.478 no Brasil); no original ''38''–''41'' são totais de conferência (Estado, Sexos, Condições, Nacionalidades) — excluir ao somar profissões; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: distribuição profissional da população em 1872
@@ -1303,7 +1303,7 @@ tabelas:
     - coluna: homens_brasileiros_solteiros, homens_brasileiros_casados, homens_brasileiros_viuvos, homens_brasileiros_sem_informacao, mulheres_brasileiras_solteiras, mulheres_brasileiras_casadas, mulheres_brasileiras_viuvas, mulheres_brasileiras_sem_informacao, homens_estrangeiros_solteiros, homens_estrangeiros_casados, homens_estrangeiros_viuvos, homens_estrangeiros_sem_informacao, mulheres_estrangeiras_solteiras, mulheres_estrangeiras_casadas, mulheres_estrangeiras_viuvas, mulheres_estrangeiras_sem_informacao, homens_escravizados, mulheres_escravizadas, total
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'no corrigido id_categoria = ''39'' é ''Total'' (soma das profissões ''1''..''38'' = 9.930.478 no Brasil); no original ''38''–''41'' são totais de conferência (Estado, Sexos, Condições, Nacionalidades) — excluir ao somar profissões; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: distribuição profissional da população em 1872
@@ -1329,7 +1329,7 @@ tabelas:
     - coluna: homens_brasileiros_solteiros, homens_brasileiros_casados, homens_brasileiros_viuvos, mulheres_brasileiras_solteiras, mulheres_brasileiras_casadas, mulheres_brasileiras_viuvas, homens_estrangeiros_solteiros, homens_estrangeiros_casados, homens_estrangeiros_viuvos, mulheres_estrangeiras_solteiras, mulheres_estrangeiras_casadas, mulheres_estrangeiras_viuvas, homens_escravizados, mulheres_escravizadas, total
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'no corrigido id_categoria = ''39'' é ''Total'' (soma das profissões ''1''..''38'' = 9.930.478 no Brasil); no original ''38''–''41'' são totais de conferência (Estado, Sexos, Condições, Nacionalidades) — excluir ao somar profissões; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: distribuição profissional da população em 1872
@@ -1356,7 +1356,7 @@ tabelas:
     - coluna: homens_brasileiros_solteiros, homens_brasileiros_casados, homens_brasileiros_viuvos, mulheres_brasileiras_solteiras, mulheres_brasileiras_casadas, mulheres_brasileiras_viuvas, homens_estrangeiros_solteiros, homens_estrangeiros_casados, homens_estrangeiros_viuvos, mulheres_estrangeiras_solteiras, mulheres_estrangeiras_casadas, mulheres_estrangeiras_viuvas, homens_escravizados, mulheres_escravizadas, total
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'no corrigido id_categoria = ''39'' é ''Total'' (soma das profissões ''1''..''38'' = 9.930.478 no Brasil); no original ''38''–''41'' são totais de conferência (Estado, Sexos, Condições, Nacionalidades) — excluir ao somar profissões; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: distribuição profissional da população em 1872
@@ -1381,7 +1381,7 @@ tabelas:
     - coluna: homens_brasileiros_solteiros, homens_brasileiros_casados, homens_brasileiros_viuvos, mulheres_brasileiras_solteiras, mulheres_brasileiras_casadas, mulheres_brasileiras_viuvas, homens_estrangeiros_solteiros, homens_estrangeiros_casados, homens_estrangeiros_viuvos, mulheres_estrangeiras_solteiras, mulheres_estrangeiras_casadas, mulheres_estrangeiras_viuvas, homens_escravizados, mulheres_escravizadas, total
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'no corrigido id_categoria = ''39'' é ''Total'' (soma das profissões ''1''..''38'' = 9.930.478 no Brasil); no original ''38''–''41'' são totais de conferência (Estado, Sexos, Condições, Nacionalidades) — excluir ao somar profissões; o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: distribuição profissional da população em 1872
@@ -1420,7 +1420,7 @@ tabelas:
     - coluna: homens_livres, mulheres_livres, total_livres, homens_escravizados, mulheres_escravizadas, total_escravizados, total
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'id_categoria = ''1'' é ''Total: Almas''; categorias de grupos diferentes se sobrepõem — some só dentro de um grupo; ler o rótulo em dicionario (id_tabela = esta tabela); o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: uma única tabela com quase todos os recortes do censo por local
@@ -1447,7 +1447,7 @@ tabelas:
     - coluna: homens_livres, mulheres_livres, total_livres, homens_escravizados, mulheres_escravizadas, total_escravizados, total
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'id_categoria = ''1'' é ''Total: Almas''; categorias de grupos diferentes se sobrepõem — some só dentro de um grupo; ler o rótulo em dicionario (id_tabela = esta tabela); o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: uma única tabela com quase todos os recortes do censo por local
@@ -1472,7 +1472,7 @@ tabelas:
     - coluna: homens_livres, mulheres_livres, total_livres, homens_escravizados, mulheres_escravizadas, total_escravizados, total
       o_que: 'contagem de pessoas por célula do quadro (colunas pelo nome: sexo, raça/estado civil, livre/escravizado)'
       unidade: pessoas
-      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência)
+      soma: sim (dentro de uma mesma id_categoria e sem as linhas de Total/conferência; gotcha linha_total_duplica_soma)
     filtros_tipicos:
     - 'id_categoria = ''1'' é ''Total: Almas''; categorias de grupos diferentes se sobrepõem — some só dentro de um grupo; ler o rótulo em dicionario (id_tabela = esta tabela); o significado de cada id_categoria é específico da tabela: ler br_ufmg_censo_demografico_1872.dicionario com id_tabela = nome da tabela e nome_coluna = ''id_categoria'' (chave é texto, ex.: ''1'')'
     use_para: uma única tabela com quase todos os recortes do censo por local

@@ -6,3 +6,15 @@ gotchas:
     colunas: [anoContrato, dataAssinatura]
     severidade: aviso
     verificado: "72 de 5.229.507 linhas com anoContrato fora de 2000–2030 (máx 26042024) — medido 2026-10-20"
+  - id: contrato_repetido
+    resumo: "contratos repete o mesmo contrato em várias linhas: 5.229.507 linhas para 4.249.999 numeroControlePNCP. Deduplique antes de somar valorGlobal ou contar: select distinct * (4.252.624 linhas) ou max(valorGlobal) por numeroControlePNCP."
+    detalhe: >
+      A maioria das repetições é cópia exata da linha (distinct * já tira quase tudo);
+      sobram 2.625 linhas a mais que chaves, versões do mesmo contrato com dataAtualizacao
+      ou campos diferentes, e 19 contratos têm valorGlobal divergente entre as cópias. Para
+      a versão mais recente, row_number() sobre numeroControlePNCP ordenando por
+      dataAtualizacao desc. O ano da soma: use year(dataAssinatura), não anoContrato.
+    tabelas: [contratos]
+    colunas: [numeroControlePNCP, valorGlobal, valorInicial, dataAtualizacao]
+    severidade: silencioso
+    verificado: "5.229.507 linhas, 4.249.999 numeroControlePNCP distintos, 4.252.624 linhas distintas, 19 chaves com valorGlobal divergente; assinados em 2025: valorGlobal R$ 15.590 bi por linha, 14.233 bi com max por contrato e 14.235 bi com distinct *; 2024: 3.979 bi x 3.961 bi — medido 2026-10-28"

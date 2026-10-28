@@ -1,0 +1,13 @@
+dataset: br_inep_censo_escolar
+gotchas:
+  - id: quantidade_88888_nao_informado
+    resumo: "Em escola, quantidade_equipamento_*, quantidade_profissional_*, quantidade_desktop_aluno, quantidade_computador_portatil_aluno e quantidade_tablet_aluno guardam 88888 quando a escola não informou. Exclua quantidade = 88888 antes de somar: em 2025 a soma de TVs vai de 532 mil para 168,8 milhões com ele."
+    detalhe: >
+      As colunas de matrícula, docente, turma e sala não têm o código em 2025;
+      ele aparece só nas colunas de equipamento, profissional e computador
+      de aluno. O mesmo
+      88888 existe em todos os anos conferidos (2019 a 2025).
+    tabelas: [escola]
+    colunas: [quantidade_equipamento_tv, quantidade_profissional_saude, quantidade_profissional_pedagogia, quantidade_desktop_aluno]
+    severidade: silencioso
+    verificado: "2025: 88888 em 24 colunas quantidade_* (maiores: quantidade_equipamento_tv 1.893 linhas, quantidade_profissional_pedagogia 1.219, quantidade_profissional_monitor 1.179, quantidade_equipamento_multimidia 1.091, quantidade_profissional_saude 696); sum(quantidade_equipamento_tv) 168.797.409 com e 532.425 sem; tv = 88888 em 1.116 (2019), 1.079 (2021), 2.383 (2023), 2.478 (2024) — medido 2026-10-28"

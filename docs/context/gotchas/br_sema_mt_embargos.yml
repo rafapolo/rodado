@@ -24,3 +24,9 @@ gotchas:
     colunas: [situacao]
     severidade: aviso
     verificado: "siga: TRIAGEM 5.944, PROVIDÊNCIAS 1.733, Instrução e julgamento 1.543, nulo 2.245 — medido 2026-10-25 (chao)"
+  - id: area_desembargada_em_duas_colunas
+    resumo: "Em areas_desembargadas a área está em AREA_HA na camada 'sema' e em QUANTIDADE (UNIDADE_MEDIDA = 'HECTARE') na camada 'siga'; cada camada deixa a outra nula. Somar só AREA_HA perde 364 mil ha (32%). Use COALESCE(AREA_HA, QUANTIDADE)."
+    tabelas: [areas_desembargadas]
+    colunas: [AREA_HA, QUANTIDADE, UNIDADE_MEDIDA, camada]
+    severidade: silencioso
+    verificado: "sema: 4.727 linhas, AREA_HA 761.043 ha, QUANTIDADE nula; siga: 2.174 linhas, QUANTIDADE 364.060 ha (UNIDADE_MEDIDA só 'HECTARE'), AREA_HA nula; total COALESCE 1.125.103 ha, sum(AREA_HA) sozinha 761.043 — medido 2026-10-28"

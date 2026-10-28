@@ -1,0 +1,14 @@
+dataset: world_wwf_hydrosheds
+gotchas:
+  - id: lago_duas_linhas_pol_pnt
+    resumo: "Em lakes_atlas cada lago tem duas linhas, uma pol_* (polígono) e uma pnt_* (ponto), com os mesmos atributos. Filtre region LIKE 'pol%' (ou 'pnt%') antes de contar ou somar; sem filtro tudo dobra (2.855.376 linhas para 1.427.688 lagos)."
+    tabelas: [lakes_atlas]
+    colunas: [region, hylak_id]
+    severidade: silencioso
+    verificado: "region: pol_west 1.051.418, pnt_west 1.051.418, pol_east 376.270, pnt_east 376.270; 1.427.688 hylak_id distintos, cada um com exatamente 2 linhas — medido 2026-10-28"
+  - id: menos_9999_sem_dado
+    resumo: "-9999 em colunas numéricas de lakes_atlas (dis_avg, res_time e várias do HydroATLAS) é sem dado, não valor. Exclua antes de média ou soma."
+    tabelas: [lakes_atlas]
+    colunas: [dis_avg, res_time, tmp_dc_lyr, ele_mt_lav, lka_pc_use]
+    severidade: silencioso
+    verificado: "region pol_*: dis_avg = -9999 e res_time = -9999 em 793 de 1.427.688 lagos (os mesmos 793 em tmp_dc_lyr, ele_mt_lav e lka_pc_use; 0 em depth_avg, vol_res, elevation); avg(res_time) 1790,2 com e 1796,7 sem — medido 2026-10-28"

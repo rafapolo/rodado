@@ -28,7 +28,7 @@ tabelas:
       - {coluna: valor_demanda, o_que: "demanda", unidade: "MWmed × 10^8 (média NE = 13.137 MW após /1e8)", soma: sim}
       - {coluna: usina_hidraulica_verificada, o_que: "geração hidráulica de usinas", unidade: "× 10^8", soma: sim}
       - {coluna: "geracao_usina_termica_verificada", o_que: "geração térmica", unidade: "× 10^8", soma: sim}
-      - {coluna: "geracao_eolica_verificada, geracao_fotovoltaica_verificada, geracao_pequena_usina_*_verificada", o_que: "eólica, solar e pequenas usinas", unidade: "NÃO ×1e8: eólica média do NE = 992.136 (já em escala de MW/kW, unidade não documentada)", soma: sim}
+      - {coluna: "geracao_eolica_verificada, geracao_fotovoltaica_verificada, geracao_pequena_usina_*_verificada", o_que: "eólica, solar e pequenas usinas", unidade: "NÃO ×1e8: eólica média do NE (gotcha escala_1e8_so_em_parte_das_colunas) = 992.136 (já em escala de MW/kW, unidade não documentada)", soma: sim}
     filtros_tipicos:
       - "data >= '2023-08-15' (única cobertura)"
     use_para: "balanço do modelo DESSEM em meia hora, por subsistema"
@@ -70,7 +70,7 @@ tabelas:
     tempo: {natureza: serie_de_periodos, coluna: data_inicio, cobertura: "2019-12-28–2024-03-08 (data_fim até 2024-03-08)"}
     territorio: {nivel: regiao, colunas: {id_subsistema: "N, NE, S, SE", subsistema: "nome", usina: "nome (145 distintos)"}}
     medidas:
-      - {coluna: custo_variavel_unitario, o_que: "CVU da usina na semana", unidade: "R$/MWh (escala normal, sem ×1e8; máx 5.298)", soma: nao}
+      - {coluna: custo_variavel_unitario, o_que: "CVU da usina na semana", unidade: "R$/MWh (escala normal, sem ×1e8; máx 5.298) (gotcha escala_1e8_so_em_parte_das_colunas)", soma: nao}
     filtros_tipicos:
       - "semana_operativa = 'PMO Janeiro 2020' (texto livre); ano_pmo/mes_pmo coincidem com ano/mes de data_inicio (PMO Janeiro 2020: ano_pmo 2019, mes_pmo 12), não com o mês do nome"
     use_para: "custo variável de térmicas por semana e subsistema"

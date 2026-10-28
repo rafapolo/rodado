@@ -1,0 +1,18 @@
+dataset: br_ibge_censo2022_religiao
+gotchas:
+  - id: niveis_misturados
+    resumo: "populacao_religiao mistura Brasil, UF e município na mesma coluna populacao_10_mais: somar sem filtrar nivel triplica (cada nível dá ~176,6 milhões). Filtre nivel = 'municipio' (ou 'uf', 'brasil') e religiao <> 'Total'."
+    detalhe: >
+      Os três níveis diferem por arredondamento (Brasil 176.600.150 no Total, UFs
+      176.600.151, municípios 176.600.152). A soma por religião, sem a linha Total, dá
+      176.600.151 no nível uf e 176.600.191 no municipal.
+    tabelas: [populacao_religiao]
+    colunas: [nivel, id_localidade, religiao, populacao_10_mais]
+    severidade: silencioso
+    verificado: "nivel brasil 10 linhas, uf 270, municipio 55.700; religiao 'Total': brasil 176.600.150, uf 176.600.151, municipio 176.600.152 — medido 2026-10-28"
+  - id: filhos_idade_igual_instrucao
+    resumo: "mulheres_filhos_numero_idade e mulheres_filhos_numero_instrucao são cópia exata uma da outra (350.973 linhas iguais): o sufixo não distingue nada e somar as duas dobra. Use uma só."
+    tabelas: [mulheres_filhos_numero_idade, mulheres_filhos_numero_instrucao]
+    colunas: [categoria_principal, valor]
+    severidade: silencioso
+    verificado: "EXCEPT nos dois sentidos dá 0 linhas, em 350.973 linhas cada — medido 2026-10-28"

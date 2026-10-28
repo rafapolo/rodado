@@ -11,3 +11,9 @@ gotchas:
     colunas: [geracao]
     severidade: silencioso
     verificado: "2023, tipo_usina = 'EOLIELETRICA': 191 usinas, 1.455.192 linhas horárias, sum(geracao) = 9,463e15 -> 94,6 TWh após /1e8 — medido 2026-10-20"
+  - id: escala_1e8_so_em_duas_tabelas
+    resumo: "Só geracao_usina.geracao e geracao_termica_motivo_despacho (as colunas *_programada_* e *_verificada) vêm ×10^8; divida por 1e8. Em restricao_operacao_usinas_eolicas, energia_armazenada_reservatorio, energia_natural_afluente e reservatorio os valores já estão em escala própria: não divida."
+    tabelas: [geracao_usina, geracao_termica_motivo_despacho, restricao_operacao_usinas_eolicas, energia_armazenada_reservatorio, energia_natural_afluente, reservatorio]
+    colunas: [geracao, geracao_programada_total, geracao_verificada, geracao_limitada, energia_armazenada_subsistema, energia_natural_afluente_bruta]
+    severidade: silencioso
+    verificado: "2023: geracao_usina avg(geracao) 1,14e10 (114 MW depois de /1e8; máximo 1,39e12); geracao_termica_motivo_despacho avg(geracao_verificada) 4,97e9 e máximo 1,37e11 (1.366 MW depois de /1e8); restricao_operacao_usinas_eolicas avg(geracao) 66,9 e máximo 772; energia_armazenada_subsistema média 3.070; energia_natural_afluente_bruta média 477; reservatorio volume_maximo média 3.798 — medido 2026-10-28"

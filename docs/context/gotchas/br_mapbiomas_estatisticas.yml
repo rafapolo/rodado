@@ -18,3 +18,9 @@ gotchas:
     colunas: [id_classe]
     severidade: aviso
     verificado: "classes 6 (37,93 M ha em 2024), 7 (0,04), 35 (0,25), 75 (0,04), 84 (0,01), 91 (0,03) presentes na cobertura e ausentes de classe — medido 2026-10-21"
+  - id: uf_em_km2_e_municipio_em_ha
+    resumo: "cobertura_uf_classe.area está em km² e cobertura_municipio_classe.area_ha em hectares (100 vezes mais): o Brasil soma 8.506.526 km² numa e 850.704.918 ha na outra. Ao comparar ou juntar UF com município converta (1 km² = 100 ha). A UF só vai até 2021; a municipal, até 2025."
+    tabelas: [cobertura_uf_classe, cobertura_municipio_classe]
+    colunas: [area, area_ha]
+    severidade: silencioso
+    verificado: "2021: sum(area) em cobertura_uf_classe 8.506.526 km², sum(area_ha) em cobertura_municipio_classe 850.704.918 ha; MT 903.114 km² contra 90.316.405 ha somando os municípios de id 51; cobertura_uf_classe de 1985 a 2021 — medido 2026-10-28"

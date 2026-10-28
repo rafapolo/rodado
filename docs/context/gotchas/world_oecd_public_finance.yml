@@ -1,0 +1,12 @@
+dataset: world_oecd_public_finance
+gotchas:
+  - id: sentinela_int32_minimo
+    resumo: "-2147483648 (mínimo de int32) significa sem dado em 55 colunas numéricas de country; não é valor. Exclua value = -2147483648 antes de somar ou tirar média: a média de expenditure_education sai -1,52 bi com ele e 1,13 bi sem."
+    detalhe: >
+      Nas colunas dominadas pelo código (total_receipt, total_expenditure,
+      current_receipt, gross_domestic_product_volume) sobram quase só
+      sentinelas e nulos; elas não servem para série.
+    tabelas: [country]
+    colunas: [expenditure_education, total_receipt, total_expenditure, current_receipt, gross_domestic_product_volume]
+    severidade: silencioso
+    verificado: "2.646 linhas; 46.023 células = -2147483648 em 55 das 161 colunas numéricas; total_receipt 1.304 linhas, gross_domestic_product_volume 1.734, expenditure_education 625 (nulo em 1.873); avg(expenditure_education) -1.519.214.463 com e 1.133.949.324 sem — medido 2026-10-28"

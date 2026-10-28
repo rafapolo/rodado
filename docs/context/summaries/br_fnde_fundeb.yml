@@ -8,7 +8,7 @@ tabelas:
     tempo: {natureza: serie_de_periodos, coluna: "ano, periodo", cobertura: "2008–2026 (periodo 1 a 6, bimestres do relatório; 2026 só até 4; significado não documentado)"}
     territorio: {nivel: uf, colunas: {id_uf: "código IBGE da UF", sigla_uf: "sigla"}}
     medidas:
-      - {coluna: valor, o_que: "valor do indicador; a unidade depende de id_indicador (percentual, R$, R$ por aluno ou índice)", unidade: "varia por indicador", soma: nao}
+      - {coluna: valor, o_que: "valor do indicador; a unidade depende de id_indicador (gotcha valor_muda_de_unidade_por_indicador) (percentual, R$, R$ por aluno ou índice)", unidade: "varia por indicador", soma: nao}
     filtros_tipicos: ["id_indicador = '<id>' (texto; um indicador por vez, ex.: '47' = % dos recursos do FUNDEB no ensino médio) e um periodo", "valor_texto repete valor, ambos DOUBLE"]
     use_para: "comparar um indicador do FUNDEB entre UFs e ao longo dos anos."
     nao_use_para: "somar valores de indicadores diferentes, nem somar percentuais entre UFs."
@@ -21,7 +21,7 @@ tabelas:
     territorio: {nivel: municipio, colunas: {id_municipio: "código IBGE de 7 dígitos", id_municipio_6: "código de 6 dígitos", id_uf: "código da UF", sigla_uf: "sigla"}}
     medidas:
       - {coluna: valor, o_que: "valor do indicador; unidade depende do indicador (percentual, R$, R$ por aluno); há percentuais fora de 0–100 (ex.: indicador 1.1 de -246 a 1.346 em 2025)", unidade: "varia por indicador", soma: nao}
-    filtros_tipicos: ["ano = <ano> AND id_indicador = '<id>' (texto): sem fixar o indicador, a soma mistura unidades", "codigo_exibicao = '1.2' é o percentual do FUNDEB na remuneração dos profissionais (mínimo 70%)"]
+    filtros_tipicos: ["ano = <ano> AND id_indicador = '<id>' (texto): sem fixar o indicador, a soma mistura unidades (gotcha valor_muda_de_unidade_por_indicador)", "codigo_exibicao = '1.2' é o percentual do FUNDEB na remuneração dos profissionais (mínimo 70%)"]
     use_para: "indicador FUNDEB por município (cumprimento dos mínimos legais, gasto por aluno)."
     nao_use_para: "somar valor entre indicadores; tabela com 15 mi de linhas, sempre filtre ano e indicador."
     rascunho: [use_para, nao_use_para]

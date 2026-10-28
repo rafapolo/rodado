@@ -6,3 +6,13 @@ gotchas:
     colunas: [gas, setor, tipo, categoria]
     severidade: silencioso
     verificado: "2022, gas '2', setor 1, tipo 2: 617 Mt CO2e; categorias 9 (entérica) 399, 28 (solos) 178, 14 (dejetos) 29, 5 (arroz) 10 — medido 2026-10-22 (bragro)"
+  - id: gas_gtp_e_gwp_repetem_inventario
+    resumo: "Em municipio, gas '1' (CO2e GTP) e gas '2' (CO2e GWP) trazem as mesmas 1.506.695 combinações de município × setor × categoria, cada uma por uma métrica: somar sem fixar gas dobra o inventário. Fixe gas = '2' (bate com o SEEG publicado) e sempre filtre tipo."
+    detalhe: >
+      Em 2022 o total de emissão (tipo '2') com emissao_ar5 é 4.654 Mt somando os dois
+      gases e 2.586 Mt só com gas '2' (agropecuária: 617 Mt com gas '2', 227 Mt com gas '1'). O gas '1' não é
+      outro gás: é a mesma emissão convertida pelo potencial de temperatura (GTP), menor.
+    tabelas: [municipio]
+    colunas: [gas, emissao_ar5, emissao_ar6, tipo]
+    severidade: silencioso
+    verificado: "ano 2022: gas '1' e gas '2' com 1.506.695 linhas e 1.506.695 chaves distintas cada; setor '1', tipo '2', emissao_ar5: gas '2' = 617,36 Mt, gas '1' = 227,00 Mt; tipo '2' todos os setores: gas '2' 2.586,1 Mt, os dois gases 4.654,5 Mt — medido 2026-10-28"

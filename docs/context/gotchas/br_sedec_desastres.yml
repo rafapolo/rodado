@@ -6,3 +6,13 @@ gotchas:
     colunas: [data_ocorrencia]
     severidade: aviso
     verificado: "20.380 linhas, ano de ocorrência só 2026 — medido 2026-10-22 (bragro)"
+  - id: extracoes_empilhadas
+    resumo: "reconhecimentos_vigentes empilha 17 extrações: cada reconhecimento aparece em várias (20.380 linhas para 1.795 reconhecimentos distintos). Filtre data_extracao = (select max(data_extracao) ...) para o retrato atual, ou conte count(DISTINCT (id_municipio, id_cobrade, data_ocorrencia, data_vigencia, situacao))."
+    detalhe: >
+      Cada extração tem de 1.164 a 1.237 linhas. A última (2026-10-09) tem 1.189. Contar
+      linhas sem filtrar multiplica cada reconhecimento pelo número de extrações em que
+      esteve vigente.
+    tabelas: [reconhecimentos_vigentes]
+    colunas: [data_extracao, id_municipio, id_cobrade, data_ocorrencia, data_vigencia, situacao]
+    severidade: silencioso
+    verificado: "20.380 linhas, 17 datas de extração (2026-08-06 a 2026-10-09), 1.795 combinações distintas sem data_extracao; última extração 1.189 linhas — medido 2026-10-28"

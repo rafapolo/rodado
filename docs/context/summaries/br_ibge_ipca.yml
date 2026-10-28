@@ -41,7 +41,7 @@ tabelas:
       soma: nao
     filtros_tipicos:
     - ano = <ano> AND mes = <mes> para um mês (ambos inteiros, mes de 1 a 12)
-    - variacao_doze_meses é a inflação anual 'oficial'; variacao_anual é só o acumulado do ano até aquele mês
+    - variacao_doze_meses é a inflação anual 'oficial'; variacao_anual é só o acumulado do ano até aquele mês (gotcha variacao_anual_e_acumulado_no_ano)
     use_para: 'Série nacional de inflação (IPCA): variação mensal, no ano e em 12 meses.'
     nao_use_para: 'Não some nem faça média das variações (são taxas acumuladas): encadeie com a razão entre índices
       ou multiplique (1+v/100). Antes de 1994 o `indice` não é comparável em nível (mudança de moeda; no IPCA o
@@ -81,7 +81,7 @@ tabelas:
       soma: nao
     filtros_tipicos:
     - 'id_categoria IS NULL = linha ''Índice geral'' (total); length(id_categoria)=1 grupos, 2 subgrupos, 4 itens,
-      7 subitens (medido: em cada nível o peso soma 100). Misturar níveis conta o mesmo gasto várias vezes'
+      7 subitens (medido: em cada nível o peso soma 100) (gotcha categoria_mistura_quatro_niveis). Misturar níveis conta o mesmo gasto várias vezes'
     - 'id_categoria é VARCHAR (ex.: ''1'', ''11''), categoria é o nome; nomes repetem entre níveis (ex.: ''Transportes''
       é id 5 e id 51 no IPCA)'
     use_para: Inflação por categoria de despesa (Brasil) e peso de cada uma na cesta.
@@ -125,7 +125,7 @@ tabelas:
       soma: nao
     filtros_tipicos:
     - 'id_categoria IS NULL = linha ''Índice geral'' (total); length(id_categoria)=1 grupos, 2 subgrupos, 4 itens,
-      7 subitens (medido: em cada nível o peso soma 100). Misturar níveis conta o mesmo gasto várias vezes'
+      7 subitens (medido: em cada nível o peso soma 100) (gotcha categoria_mistura_quatro_niveis). Misturar níveis conta o mesmo gasto várias vezes'
     - 'id_categoria é VARCHAR (ex.: ''1'', ''11''), categoria é o nome; nomes repetem entre níveis (ex.: ''Transportes''
       é id 5 e id 51 no IPCA)'
     - 'peso_mensal e variações são NULOS em 33% das linhas (só subitens, length(id_categoria)=7: 1363 de 3393 em
@@ -173,7 +173,7 @@ tabelas:
       soma: nao
     filtros_tipicos:
     - 'id_categoria IS NULL = linha ''Índice geral'' (total); length(id_categoria)=1 grupos, 2 subgrupos, 4 itens,
-      7 subitens (medido: em cada nível o peso soma 100). Misturar níveis conta o mesmo gasto várias vezes'
+      7 subitens (medido: em cada nível o peso soma 100) (gotcha categoria_mistura_quatro_niveis). Misturar níveis conta o mesmo gasto várias vezes'
     - 'id_categoria é VARCHAR (ex.: ''1'', ''11''), categoria é o nome; nomes repetem entre níveis (ex.: ''Transportes''
       é id 5 e id 51 no IPCA)'
     - peso e variações nulos em ~32% das linhas; não há código de município nesta tabela

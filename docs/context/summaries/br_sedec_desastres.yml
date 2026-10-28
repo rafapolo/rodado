@@ -11,10 +11,10 @@ tabelas:
     medidas:
       - {expressao: "count(DISTINCT (id_municipio, id_cobrade, data_ocorrencia, data_vigencia, situacao))", o_que: "reconhecimentos distintos (a contagem de linhas multiplica cada um pelo número de extrações)", unidade: "reconhecimentos", soma: nao}
     filtros_tipicos:
-      - "data_extracao = (SELECT max(data_extracao) FROM br_sedec_desastres.reconhecimentos_vigentes) para o retrato atual (2026-10-09: 1.189 linhas, as extrações têm de 1.180 a 1.237 linhas); sem esse filtro tudo é contado várias vezes"
+      - "data_extracao = (SELECT max(data_extracao) FROM br_sedec_desastres.reconhecimentos_vigentes) para o retrato atual (2026-10-09: 1.189 linhas, as extrações têm de 1.180 a 1.237 linhas); sem esse filtro tudo é contado várias vezes (gotcha extracoes_empilhadas)"
       - "situacao = 'Situação de Emergência' (20.361 linhas) ou 'Estado de Calamidade Pública' (19)"
       - "id_cobrade = '14110' etc.: o código vem como texto; o significado está em nome_cobrade (25 distintos), não conferi o mapa código-nome"
     use_para: "ver quais municípios têm emergência ou calamidade reconhecida hoje, por tipo de desastre (COBRADE) e UF"
     nao_use_para: "histórico de desastres (só vigentes, ocorrências de 2026 — ver gotcha so_vigentes) nem contar linhas sem filtrar uma data_extracao"
     rascunho: [use_para, nao_use_para]
-    verificado: "20.380 linhas; chave de 6 colunas com 20.380 distintos; 16 datas de extração; sem data_extracao 1.795 combinações distintas; data_ocorrencia 2026-01-02–2026-10-01, data_vigencia 2026-08-07–2027-03-31 — medido 2026-10-27"
+    verificado: "20.380 linhas; chave de 6 colunas com 20.380 distintos; 17 datas de extração; sem data_extracao 1.795 combinações distintas; data_ocorrencia 2026-01-02–2026-10-01, data_vigencia 2026-08-07–2027-03-31 — medido 2026-10-27"

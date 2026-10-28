@@ -12,7 +12,7 @@ tabelas:
       - {coluna: emissao_ar5, o_que: "emissão (positiva) ou remoção (negativa) em CO2 equivalente, convertida pelos potenciais do AR5 do IPCC; é a coluna que bate com o SEEG publicado quando gas = '2'", unidade: "t CO2e", soma: sim}
       - {coluna: emissao_ar6, o_que: "mesma estimativa pelos potenciais do AR6 (alternativas: emissao_ar2, emissao_ar4; ar4 tem 2,83% nulos na amostra de 2024)", unidade: "t CO2e", soma: sim}
     filtros_tipicos:
-      - "gas = '2' (no dicionario: 'CO2e (t) GWP') e gas = '1' ('CO2e (t) GTP') repetem o mesmo inventário em duas métricas: somar os dois dobra o total. Medido 2022, setor '1', tipo '2': gas '2' emissao_ar5 = 617,4 Mt; gas '1' = 227,0 Mt"
+      - "gas = '2' (no dicionario: 'CO2e (t) GWP') e gas = '1' ('CO2e (t) GTP') repetem o mesmo inventário em duas métricas: somar os dois dobra o total (gotcha gas_gtp_e_gwp_repetem_inventario). Medido 2022, setor '1', tipo '2': gas '2' emissao_ar5 = 617,4 Mt; gas '1' = 227,0 Mt"
       - "tipo = '2' (dicionario: 'Emissão'); '4' e '5' são remoções (valores negativos); '3' é 'Emissão NCI' e '1' 'Bunker'; se NCI/bunker entram no total não está documentado — ver gotcha gas_e_dicionario"
       - "setor = '1' (Agropecuária), '2' Energia, '3' Mudança de Uso da Terra e Floresta, '4' Processos Industriais, '5' Resíduos (do dicionario)"
       - "ano = 2024 (tabela de 165,7 milhões de linhas: sempre filtre ano)"

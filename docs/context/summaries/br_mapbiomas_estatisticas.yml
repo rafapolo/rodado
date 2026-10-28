@@ -29,7 +29,7 @@ tabelas:
     tempo: {natureza: serie_anual, coluna: ano, cobertura: "1985–2021"}
     territorio: {nivel: uf, colunas: {sigla_uf: "UF"}}
     medidas:
-      - {coluna: area, o_que: "área da classe na UF", unidade: "km² (o Brasil soma 8,5 milhões em 2021; em ha seriam 100 vezes mais)", soma: sim}
+      - {coluna: area, o_que: "área da classe na UF", unidade: "km² (o Brasil soma 8,5 milhões em 2021; em ha seriam 100 vezes mais) (gotcha uf_em_km2_e_municipio_em_ha)", soma: sim}
     filtros_tipicos: ["ano = <ano>", "id_classe é VARCHAR (ex.: '15')"]
     use_para: "cobertura por UF até 2021"
     nao_use_para: "anos após 2021 (use cobertura_municipio_classe, que vai a 2025, em ha)"

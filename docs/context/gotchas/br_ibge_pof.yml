@@ -1,0 +1,14 @@
+dataset: br_ibge_pof
+gotchas:
+  - id: valor_nominal_com_sentinela
+    resumo: "V8000 tem 9999999,99 e V8500 tem 9999999 quando o valor não foi informado. Use V8000_deflacionado e V8500_deflacionado (sem sentinela), ponderados por peso_final, e nunca somem o valor bruto."
+    detalhe: >
+      Na despesa_coletiva_2017 a soma bruta de V8000 dá R$ 248 bi sem
+      peso, contra R$ 194 mi na deflacionada, também sem peso: 24.811 linhas
+      de sentinela valem, sozinhas, R$ 248 bi. Em rendimento_trabalho a
+      V8500_deflacionado é nula em 5.827 linhas, então a soma deflacionada
+      ainda precisa de peso_final e de tratar o nulo.
+    tabelas: [aluguel_estimado_2017, despesa_coletiva_2017, servico_nao_monetario_pof2_2017, servico_nao_monetario_pof4_2017, outros_rendimentos_2017, rendimento_trabalho_2017]
+    colunas: [V8000, V8500, V8000_deflacionado, V8500_deflacionado]
+    severidade: silencioso
+    verificado: "V8000 = 9999999.99 em aluguel_estimado 2.478/48.935, despesa_coletiva 24.811/478.572, servico_nao_monetario_pof4 31.515/122.684, pof2 5.855/14.711; V8500 = 9999999 em outros_rendimentos 8.052/206.108 e rendimento_trabalho 2.089/97.075; despesa_coletiva sum(V8000) 248.295.848.212 vs sum(V8000_deflacionado) 193.756.909; V8000_deflacionado nulo em 0 linhas nas quatro tabelas de despesa, V8500_deflacionado nulo em 5.827 de rendimento_trabalho — medido 2026-10-28"

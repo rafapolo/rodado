@@ -19,12 +19,15 @@ gotchas:
       preenchido pelo município que contém o centroide, e AREAMUNKM = area_km.
       Na Amazônia e no Cerrado, ao contrário, o INPE parte o polígono por
       município: um alerta vira várias linhas e AREAMUNKM é a fatia de cada um.
-      Contar alertas por count(*) nesses dois biomas conta pedaços, não alertas
-      (use count(DISTINCT FID)).
+      Contar alertas por count(*) nesses dois biomas conta pedaços, não alertas,
+      e a tabela não traz id do alerta inteiro para reagrupar: FID é único por
+      linha dentro de cada bioma (a chave é (bioma_arquivo, OGC_FID)) e se repete
+      entre biomas, então count(DISTINCT FID) não dedupe nada por bioma e, somando
+      os biomas, perde 145.550 linhas. Diga "fatias município-alerta" ao contar.
     tabelas: [avisos]
     colunas: [GEOCODIBGE, AREAMUNKM, FID]
     severidade: silencioso
-    verificado: "pantanal 24.152 e nao_floresta_amz 79.677 alertas com município pelo centroide — medido 2026-10-07"
+    verificado: "pantanal 24.152 e nao_floresta_amz 79.677 alertas com município pelo centroide — medido 2026-10-07; FID: 699.077 linhas, 553.527 FID distintos no total, mas count(DISTINCT FID) = count(*) em cada um dos 4 biomas — medido 2026-10-28"
   - id: classe_em_duas_colunas
     resumo: "A classe está em CLASSNAME (Amazônia, Cerrado) ou em class_name (Pantanal, não-floresta), com nomes diferentes ('DESMATAMENTO_CR' × 'supressão com solo exposto'). Use coalesce e mapeie as duas grafias."
     tabelas: [avisos]

@@ -1,11 +1,15 @@
 dataset: br_icmbio_embargos
 gotchas:
   - id: varias_feicoes_por_embargo
-    resumo: "termo_embargo tem uma linha por feição, não por embargo: o embargo é numero_emb + serie, e um embargo pode ter muitas feições. Conte e una por essa chave."
+    resumo: "termo_embargo tem uma linha por feição, não por embargo: 14.806 feições são 13.585 embargos, chave (numero_emb, coalesce(serie, '')). numero_emb sozinho dá 13.357 (repete entre séries do tipo Papel) e numero_emb || serie dá 6.398, porque serie é NULL em todo o tipo Eletrônico e a concatenação descarta as 7.572 feições."
+    detalhe: >
+      origem 'Papel' (7.234 feições, 6.398 embargos, serie sempre preenchida) e
+      'Eletrônico' (7.572 feições, 7.187 embargos, serie sempre NULL). Em SQL, NULL
+      em || dá NULL e count(DISTINCT) ignora NULL: trate a série com coalesce. 228 numero_emb aparecem com mais de uma série.
     tabelas: [termo_embargo]
     colunas: [numero_emb, serie, geometria]
     severidade: silencioso
-    verificado: "14.806 feições, 6.398 embargos distintos (numero_emb || serie); 272 feições sem geometria e 13 GEOMETRYCOLLECTION — medido 2026-10-25 (chao)"
+    verificado: "14.806 feições; 13.585 embargos distintos por (numero_emb, coalesce(serie,'')) = 6.398 Papel + 7.187 Eletrônico; numero_emb || serie dá só 6.398; 272 feições sem geometria e 13 GEOMETRYCOLLECTION — medido 2026-10-28"
   - id: sem_desembargo
     resumo: "Não há data de desembargo. julgamento é texto livre sobre o auto de infração ('Homologado 1ª instancia', 'Anulado 1ª instancia, Embargo mantido'); o embargo quase sempre fica. Tratar como vigente desde data é a leitura possível."
     tabelas: [termo_embargo]

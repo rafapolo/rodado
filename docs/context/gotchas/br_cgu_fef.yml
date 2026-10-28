@@ -1,0 +1,17 @@
+dataset: br_cgu_fef
+gotchas:
+  - id: montante_repetido_por_constatacao
+    resumo: "montante_fiscalizado repete o valor da ordem de serviço em cada constatação dela: somar por linha dá R$ 376,8 bi, sobre linhas distintas R$ 90,3 bi e por ordem de serviço (max por numero_ordem_servico) R$ 45,8 bi. Use o último; conte constatações com select distinct *, pois 82.664 linhas são 28.591 distintas."
+    detalhe: >
+      numero_ordem_servico tem 22.713 distintos e nenhum tem dois montantes diferentes.
+      Além da repetição por constatação, há linhas inteiras repetidas (53.000 a mais).
+    tabelas: [microdados]
+    colunas: [montante_fiscalizado, numero_ordem_servico]
+    severidade: silencioso
+    verificado: "82.664 linhas, 28.591 distintas, 22.713 ordens, 0 ordens com mais de um montante; soma R$ 376,75 bi por linha, 90,29 bi distinct *, 45,84 bi por ordem — medido 2026-10-28"
+  - id: funcao_com_espaco_a_direita
+    resumo: "funcao vem preenchida com espaços até 60 caracteres ('EDUCACAO' + espaços): funcao = 'EDUCACAO' casa 0 linhas. Use trim(funcao) e note que a mesma função também aparece como 'Educação' (outra grafia)."
+    tabelas: [microdados]
+    colunas: [funcao]
+    severidade: silencioso
+    verificado: "70.430 linhas com funcao <> trim(funcao); funcao = 'EDUCACAO' 0 linhas, trim(funcao) = 'EDUCACAO' 20.673; 'Educação' 4.395 — medido 2026-10-28"

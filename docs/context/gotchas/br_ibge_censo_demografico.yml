@@ -17,3 +17,14 @@ gotchas:
     colunas: [controle, id_uf]
     severidade: silencioso
     verificado: "7.689.914 pares (id_uf, controle) distintos nas pessoas = linhas de domicílio — medido 2026-09-25"
+  - id: setor_basico_2010_nan
+    resumo: "setor_censitario_basico_2010 tem 773 setores com NaN (não NULL) em v001 e v002: SUM devolve NaN. Filtre NOT isnan(v001) antes de somar; o IS NOT NULL não pega."
+    detalhe: >
+      Somando v001 sem filtro dá NaN; sem os NaN, 57.324.167 (v002:
+      189.790.211). Nas outras tabelas setor_censitario_* conferidas
+      (alfabetização total, idade total, domicílio renda, pessoa renda,
+      entorno, moradores) não há NaN em v001.
+    tabelas: [setor_censitario_basico_2010]
+    colunas: [v001, v002]
+    severidade: silencioso
+    verificado: "310.120 linhas; isnan(v001) 773 (v001 nulo em 0 linhas, v002 NaN em 773); sum(v001) = NaN, sum(v001) sem NaN = 57.324.167; 0 NaN em v001 de 6 outras tabelas setor_censitario_* — medido 2026-10-28"

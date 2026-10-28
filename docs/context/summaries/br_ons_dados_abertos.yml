@@ -238,8 +238,8 @@ tabelas:
       unidade: MWmed
       soma: sim
     filtros_tipicos:
-    - 'id_subsistema <> ''SIN'' para somar por subsistema: a linha ''SIN'' já é o total e duplica a soma (5 linhas por hora, 1 delas SIN)'
-    - 'id_subsistema vem com espaços no fim a partir de 2026 (''N  '', ''NE '', ''S  '', ''SE ''): use trim(id_subsistema)'
+    - 'id_subsistema <> ''SIN'' para somar por subsistema: a linha ''SIN'' já é o total e duplica a soma (5 linhas por hora, 1 delas SIN) (gotcha sin_ja_e_o_total)'
+    - 'id_subsistema vem com espaços no fim a partir de 2026 (''N  '', ''NE '', ''S  '', ''SE ''): use trim(id_subsistema) (gotcha id_subsistema_com_espaco)'
     use_para: geração por fonte, carga e intercâmbio por subsistema/SIN, hora a hora, desde 2000.
     nao_use_para: somar todas as linhas sem excluir SIN (conta o dobro).
     rascunho:

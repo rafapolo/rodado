@@ -1,0 +1,13 @@
+dataset: br_senado_dados_abertos
+gotchas:
+  - id: votou_e_voto_secreto
+    resumo: "Em votacao_parlamentar, voto = 'Votou' quer dizer voto registrado sem revelar o sentido (votação secreta), não 'sim': 97.951 das 98.177 linhas. Só 'Sim', 'Não', 'Abstenção' e 'Obstrução' dizem como o senador votou."
+    detalhe: >
+      Juntando com votacao, 'Votou' cai em votacao_secreta = 'S' em 97.951
+      linhas e em 'N' em 226; 'Sim' e 'Não' só aparecem em votações
+      abertas. Contar linhas como votos infla o total com os secretos e as
+      ausências ('P-NRV', 'AP', 'LS').
+    tabelas: [votacao_parlamentar]
+    colunas: [voto]
+    severidade: silencioso
+    verificado: "284.400 linhas; 'Votou' 98.177 (secreta 97.951, não secreta 226), 'Sim' 84.194 e 'Não' 22.293 todas em votação não secreta; 1.822 votações secretas, 1.820 com linhas 'Votou' — medido 2026-10-28"

@@ -153,7 +153,7 @@ tabelas:
     territorio: {nivel: uf, colunas: {sigla_uf: "UF do senador (1,53% nulos)"}}
     filtros_tipicos:
       - "voto = 'Sim' (84.194), 'Não' (22.293), 'Abstenção' (1.619), 'Obstrução' (39): são os votos de fato (literais, com acento)"
-      - "voto = 'Votou' (98.177): voto registrado sem revelar o sentido; em 97.951 dessas linhas a votação é secreta (votacao.votacao_secreta = 'S')"
+      - "voto = 'Votou' (98.177) (gotcha votou_e_voto_secreto): voto registrado sem revelar o sentido; em 97.951 dessas linhas a votação é secreta (votacao.votacao_secreta = 'S')"
       - "voto = 'P-NRV' (44.120, 'Presente – Não registrou voto'), 'AP' (15.264, atividade parlamentar), 'LS' (5.373, licença saúde), 'NCom' (5.322), 'MIS' (3.597, missão): ausências; 'descricao_voto' traz o texto"
     use_para: "votos nominais de cada senador, por partido, UF e votação"
     nao_use_para: "contar linhas como votos: só 'Sim', 'Não', 'Abstenção' e 'Obstrução' são votos; as demais são ausência ou voto secreto"

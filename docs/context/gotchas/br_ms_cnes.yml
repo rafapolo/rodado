@@ -6,3 +6,21 @@ gotchas:
     colunas: [mes_competencia_final]
     severidade: silencioso
     verificado: "habilitacao: 4.304.563 de 4.785.178 linhas com mes_competencia_final = 99; estabelecimento_filantropico: todas — medido 2026-10-20"
+  - id: esfera_administrativa_copia_da_gestao
+    resumo: "estabelecimento.tipo_esfera_administrativa muda de significado: códigos 1 a 4 até 2015, NULL de 2016 a 2025-07 e, em 2025-08, cópia de tipo_gestao (M/E/D, 465.865 de 465.866 linhas). Não é esfera federal/estadual/municipal/privada; para quem administra, use tipo_gestao."
+    tabelas: [estabelecimento]
+    colunas: [tipo_esfera_administrativa, tipo_gestao]
+    severidade: silencioso
+    verificado: "mes 6 de cada ano: 2006 a 2015 todas as linhas preenchidas com códigos 1 a 4 (2015: '4' 186.293 e '3' 68.093 sobre tipo_gestao M, entre outras combinações), 2016 a 2024 0 preenchidas; 2025-01 a 2025-07 0; 2025-08: M/M 449.740, E/E 13.822, D/D 2.303, F/E 1 — medido 2026-10-28"
+  - id: profissional_sem_municipio_desde_2025_02
+    resumo: "profissional.id_municipio é 100% nulo a partir de 2025-02 (6,35 milhões de linhas em 2025-08), embora preenchido até 2025-01. Junte com estabelecimento por id_estabelecimento_cnes (mesmo ano e mes) para ter o município."
+    tabelas: [profissional]
+    colunas: [id_municipio, id_estabelecimento_cnes]
+    severidade: silencioso
+    verificado: "2025-01: 6.099.997 linhas, 6.099.997 com id_municipio; 2025-02 a 2025-08: 0 com id_municipio (2025-08: 6.350.074 linhas); 2020-08 4.451.001 de 4.451.001; meses 6 e 12 de 2021 a 2024: 100% — medido 2026-10-28"
+  - id: dados_complementares_muda_de_universo_em_2006_12
+    resumo: "dados_complementares cobre quase todos os estabelecimentos até 2006-11 (143.287 linhas) e só os com serviço complementar de 2006-12 em diante (2.565). Série que cruza 2006-12 mostra uma queda de 98% que é mudança de universo, não fechamento."
+    tabelas: [dados_complementares]
+    colunas: [ano, mes]
+    severidade: silencioso
+    verificado: "2006-10: 149.175 linhas; 2006-11: 143.287; 2006-12: 2.565; 2007-01: 2.574; 2010-06: 2.555; 2020-06: 3.021; 2026-02: 2.647 — medido 2026-10-28"

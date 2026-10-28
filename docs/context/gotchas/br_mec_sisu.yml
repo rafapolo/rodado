@@ -1,0 +1,15 @@
+dataset: br_mec_sisu
+gotchas:
+  - id: status_aprovado_nao_e_selecionado
+    resumo: "status_aprovado = true vale também para quem foi 'Não convocado', 'Não compareceu', teve a documentação rejeitada ou está em Lista de Espera: em 2022 são 1.100.346 true contra 208.732 matrículas efetivadas. Para matriculado use status_matricula = 'Efetivada'."
+    detalhe: >
+      Por status_matricula em 2022, 'Não convocado' (502.309), 'Não
+      compareceu' (226.735), 'Efetivada' (208.732), 'Documentação rejeitada'
+      (12.330) e 'Cancelada' (3.621) têm status_aprovado true em 100% das
+      linhas, e 'Pendente' em 146.605 de 2.587.003. Por etapa, toda a 'Lista
+      de Espera' (833.265) é true; a 'Chamada Regular' tem 267.081. Efetivada
+      aparece nas duas etapas (118.944 e 89.788).
+    tabelas: [microdados]
+    colunas: [status_aprovado, status_matricula, etapa]
+    severidade: silencioso
+    verificado: "ano = 2022, 3.540.744 linhas: status_aprovado true 1.100.346, status_matricula = 'Efetivada' 208.732 (2017: 2.544.537 true e 7.487 efetivadas; 2021: 1.226.161 e 152.211) — medido 2026-10-28"

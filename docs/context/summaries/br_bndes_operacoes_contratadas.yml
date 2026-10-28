@@ -75,7 +75,7 @@ tabelas:
       - {coluna: prazo_amortizacao, o_que: "amortização", unidade: "meses", soma: nao}
     filtros_tipicos: ["situacao_operacao IN ('ATIVO','LIQUIDADO') (9.441 / 14.187); '-' em 268 linhas; atenção: aqui é ATIVO/LIQUIDADO (masculino), nas demais tabelas ATIVA/LIQUIDADA", "forma_apoio = 'DIRETA' (19.826) ou 'INDIRETA' (4.070)", "modalidade_apoio = 'NÃO REEMBOLSÁVEL' (1.612) para doações", "porte_cliente = 'GRANDE' (20.657)"]
     use_para: "grandes financiamentos diretos e não reembolsáveis do BNDES, por setor, produto e município."
-    nao_use_para: "somar valor_operacao por id_contrato com dedup via MAX: dá 808 bi contra 1.237 bi somando todas as linhas; e indicador_inovacao é 100% nulo."
+    nao_use_para: "somar valor_operacao por id_contrato com dedup via MAX (gotcha contrato_em_varias_linhas): dá 808 bi contra 1.237 bi somando todas as linhas; e indicador_inovacao é 100% nulo."
     rascunho: [use_para, nao_use_para]
     verificado: "23.896 linhas; 8.409 id_contrato; 4.196 contratos com mais de uma linha (19.683 linhas); soma valor_operacao 1.236,7 bi, 395 duplicadas inteiras — medido 2026-10-27"
   operacoes_pre_embarque:

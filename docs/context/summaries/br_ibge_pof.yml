@@ -76,7 +76,7 @@ tabelas:
     medidas:
       - {coluna: V8000_deflacionado, o_que: "valor mensal do aluguel estimado deflacionado para a data de referência", unidade: "R$ por mês (rascunho)", soma: "sim, ponderado por peso_final"}
       - {coluna: V8000, o_que: "valor nominal; 9999999.99 é código de valor imputado/sem informação (2.478 linhas)", unidade: "R$", soma: nao}
-    filtros_tipicos: ["use V8000_deflacionado, nunca V8000 (sentinela 9999999.99)", "indicador_imputacao_valor = 0 para valor declarado (46.446) e 1 para imputado (2.489)"]
+    filtros_tipicos: ["use V8000_deflacionado, nunca V8000 (sentinela 9999999.99) (gotcha valor_nominal_com_sentinela)", "indicador_imputacao_valor = 0 para valor declarado (46.446) e 1 para imputado (2.489)"]
     use_para: "aluguel imputado na despesa de habitação."
     nao_use_para: "somar V8000 bruto ou sem peso_final."
     rascunho: [use_para, nao_use_para, "unidade mensal"]
@@ -89,7 +89,7 @@ tabelas:
     medidas:
       - {coluna: V8000_deflacionado, o_que: "valor da despesa deflacionado", unidade: "R$", soma: "sim, com fator_anualizacao e peso_final (rascunho: forma exata de anualizar não conferida)"}
       - {coluna: V8000, o_que: "valor nominal; 9999999.99 é sentinela de valor sem informação (24.811 linhas, quase todas com indicador_imputacao_valor = 1)", unidade: "R$", soma: nao}
-    filtros_tipicos: ["use V8000_deflacionado, não V8000", "V9002 forma de aquisição: '1' monetária à vista para a UC, '3' a prazo, '7' doação, '10' produção própria (dicionário)", "id_quadro e V9001 identificam o grupo de despesa; rótulo em cadastro_de_produtos_2017 via id_codigo_7_bd"]
+    filtros_tipicos: ["use V8000_deflacionado, não V8000 (gotcha valor_nominal_com_sentinela)", "V9002 forma de aquisição: '1' monetária à vista para a UC, '3' a prazo, '7' doação, '10' produção própria (dicionário)", "id_quadro e V9001 identificam o grupo de despesa; rótulo em cadastro_de_produtos_2017 via id_codigo_7_bd"]
     use_para: "despesas coletivas da família por produto, quadro e forma de aquisição."
     nao_use_para: "despesa individual (não está no banco: só as tabelas listadas) ou V8000 bruto."
     rascunho: [use_para, nao_use_para, "anualização"]
@@ -114,7 +114,7 @@ tabelas:
     medidas:
       - {coluna: V8500_deflacionado, o_que: "valor do rendimento deflacionado", unidade: "R$", soma: "sim, com fator_anualizacao (1 em todas) e peso_final"}
       - {coluna: V8500, o_que: "valor nominal; 9999999.0 é sentinela (8.052 linhas)", unidade: "R$", soma: nao}
-    filtros_tipicos: ["use V8500_deflacionado; indicador_imputacao_valor = 0 declarado (197.874), 1 imputado (8.234)", "id_quadro '54' a '57' (tipos de rendimento; significado não documentado no cartão)"]
+    filtros_tipicos: ["use V8500_deflacionado; (gotcha valor_nominal_com_sentinela) indicador_imputacao_valor = 0 declarado (197.874), 1 imputado (8.234)", "id_quadro '54' a '57' (tipos de rendimento; significado não documentado no cartão)"]
     use_para: "rendimentos não do trabalho (transferências, aposentadoria, aluguel) por informante."
     nao_use_para: "V8500 bruto."
     rascunho: [use_para, nao_use_para, "significado de id_quadro"]

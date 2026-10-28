@@ -1,0 +1,14 @@
+dataset: br_ons_dados_abertos
+gotchas:
+  - id: sin_ja_e_o_total
+    resumo: "balanco_energia_subsistema_ho tem, a cada hora, uma linha por subsistema (N, NE, S, SE) e uma 'SIN' que já é o total nacional: somar tudo conta o dobro. Exclua 'SIN' para somar subsistemas, ou use só 'SIN' para o total."
+    tabelas: [balanco_energia_subsistema_ho]
+    colunas: [id_subsistema, val_carga, val_gerhidraulica, val_gertermica, val_gereolica, val_gersolar]
+    severidade: silencioso
+    verificado: "5 linhas por hora; em 2025 (8.760 horas) a carga somada dos 4 subsistemas é 697,374 mil GWmed-hora e a da linha SIN 697,374 (diferença máxima por hora 0,005 MWmed) — medido 2026-10-28"
+  - id: id_subsistema_com_espaco
+    resumo: "Desde 2026-01-01 id_subsistema vem com espaço no fim ('N  ', 'NE ', 'S  ', 'SE '; 'SIN' não): id_subsistema = 'N' perde todas as linhas de 2026. Use trim(id_subsistema)."
+    tabelas: [balanco_energia_subsistema_ho]
+    colunas: [id_subsistema]
+    severidade: silencioso
+    verificado: "28.416 linhas de 2026-01-01 a 2026-10-23 com id_subsistema <> trim(id_subsistema) (7.104 por N, NE, S, SE); id_subsistema = 'N' tem 0 linhas em 2026 — medido 2026-10-28"

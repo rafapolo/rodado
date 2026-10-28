@@ -14,7 +14,7 @@ tabelas:
       - {coluna: populacao_15_mais, o_que: "população de 15 anos ou mais (144.471.582 somando udh = 'geral', recorte total, 2010)", unidade: "pessoas", soma: sim}
       - {coluna: renda_per_capita, o_que: "renda per capita", unidade: "R$ (valor de referência do censo, não documentado)", soma: nao}
     filtros_tipicos:
-      - "udh = 'geral' para o município inteiro (149.576 linhas em 2010, 5.565 municípios, 27 combinações de raca_cor × sexo × localizacao); linhas de UDH somadas com as 'geral' contam duas vezes"
+      - "udh = 'geral' para o município inteiro (149.576 linhas em 2010, 5.565 municípios, 27 combinações de raca_cor × sexo × localizacao); linhas de UDH somadas com as 'geral' contam duas vezes (gotcha udh_dentro_do_municipio)"
       - "raca_cor = 'total' AND sexo = 'total' AND localizacao = 'total' para o recorte sem desagregação (valores literais minúsculos; as UDH só existem neste recorte)"
       - "ano = 2010 (ou 2000): nunca somar os dois anos"
     use_para: "vulnerabilidade social, IDHM e população por município, UDH e recorte de raça/sexo/localização nos censos 2000 e 2010"

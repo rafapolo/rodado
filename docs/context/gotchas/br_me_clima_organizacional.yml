@@ -1,14 +1,16 @@
 dataset: br_me_clima_organizacional
 gotchas:
   - id: soma_repetida
-    resumo: "Somar quantidade_resposta dá 764.186; os respondentes são 32.393. Use a linha classe = 'Médias' ou só os órgãos de nível 1 com area_empresa = 'Empresa'."
+    resumo: "Somar quantidade_resposta dá 764.186; os respondentes são 32.393. Use a linha classe = 'Médias' ou só os órgãos de nível 1 (código sem ponto) em UMA das duas leituras: area_empresa 'Empresa' e 'Área' têm a mesma quantidade_resposta mas médias diferentes, não são cópia."
     detalhe: >
-      Cada linha vem duas vezes (area_empresa 'Empresa' e 'Área'), cada classe
-      (Órgão, UF, Gênero, Idade...) é um corte do mesmo conjunto, e dentro de
-      'Órgão' os códigos são hierárquicos (116.5.14.15), então somar os níveis
-      repete gente. Os 188 órgãos cujo código não tem ponto somam exatamente
-      32.393, e a média ponderada deles (55,8) é a oficial.
+      Cada corte vem duas vezes (area_empresa 'Empresa' e 'Área'): mesma
+      quantidade_resposta, mas outra ponderação das médias (media_geral 55,84 x
+      62,04 na linha Médias; nenhuma linha tem media_geral igual nas duas).
+      Escolha uma leitura e filtre, senão a soma dobra. Cada classe (Órgão, UF,
+      Gênero, Idade...) é um corte do mesmo conjunto, e dentro de 'Órgão' os
+      códigos são hierárquicos (116.5.14.15), então somar os níveis repete
+      gente. Os 188 órgãos cujo código não tem ponto somam exatamente 32.393.
     tabelas: [microdados]
     colunas: [quantidade_resposta, classe, area_empresa, subclasse]
     severidade: silencioso
-    verificado: "Médias = 32.393; 188 órgãos nível 1 somam 32.393, média ponderada 55,84 = media_geral da linha Médias — medido 2026-09-25"
+    verificado: "Médias: Empresa e Área com 32.393 cada, media_geral 55,84 x 62,04; 188 órgãos nível 1 somam 32.393 em cada leitura, média ponderada 55,83 (Empresa) e 62,05 (Área); 0 linhas com media_geral igual nas duas leituras — medido 2026-10-28"

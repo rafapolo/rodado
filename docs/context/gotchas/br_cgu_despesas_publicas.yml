@@ -1,0 +1,8 @@
+dataset: br_cgu_despesas_publicas
+gotchas:
+  - id: formato_do_mes_difere_entre_tabelas
+    resumo: "ano_e_mes_do_lancamento é 'AAAA/MM' em execucao ('2025/12') e 'MM/AAAA' em favorecido ('12/2025'). O formato trocado devolve zero linhas, sem erro. Em favorecido o texto não ordena como data."
+    tabelas: [execucao, favorecido]
+    colunas: [ano_e_mes_do_lancamento]
+    severidade: silencioso
+    verificado: "execucao = '2025/12' 92.907 linhas e = '12/2025' 0; favorecido = '12/2025' 843.921 e = '2025/12' 0; execucao vai de 2014/01 a 2026/10, favorecido de 01/2014 a 12/2025 — medido 2026-10-28"
