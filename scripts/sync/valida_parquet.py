@@ -153,18 +153,20 @@ def valida(caminhos, anterior=True):
         if p.endswith(".parquet") and os.path.isfile(p):
             alvos.append(p)
     cache, out, falta = _cache(), {}, []
+    libera = _libera()
     for p in alvos:
         try:
             k = _id(p)
         except FileNotFoundError:
             continue
         if k in cache:
-            out[p] = cache[k]
+            # liberação acrescentada depois da reprovação vale também para o resultado em cache
+            # (2026-10-29: os 10 do INMET liberados seguiam reprovados no COLD pelo cache)
+            out[p] = _aplica_libera(p, cache[k], libera)
         else:
             falta.append((p, k))
     os.makedirs(os.path.dirname(CACHE), exist_ok=True)
     os.makedirs(os.path.dirname(LOG), exist_ok=True)
-    libera = _libera()
     with open(CACHE, "a") as fc, open(LOG, "a") as fl:
         while falta:
             ids = dict(falta)
@@ -199,12 +201,18 @@ def valida(caminhos, anterior=True):
     return out
 
 
-def _grava(fc, fl, out, p, k, r, libera):
-    rel = _rel(p)
-    if not r["ok"] and any(fnmatch.fnmatch(rel, g) for g in libera):
+def _aplica_libera(p, r, libera):
+    """Só `encolheu`/`colunas_trocadas` se liberam; leitura, rodapé e afins nunca."""
+    if not r["ok"] and any(fnmatch.fnmatch(_rel(p), g) for g in libera):
         duros = [m for m in r["motivos"] if not m.startswith(("encolheu", "colunas_trocadas"))]
         if not duros:
             r = {**r, "ok": True, "liberado": r["motivos"], "motivos": []}
+    return r
+
+
+def _grava(fc, fl, out, p, k, r, libera):
+    rel = _rel(p)
+    r = _aplica_libera(p, r, libera)
     r = {"id": k, **r}
     out[p] = r
     fc.write(json.dumps(r) + "\n")
