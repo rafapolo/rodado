@@ -1,11 +1,11 @@
 dataset: br_me_cnpj
 gotchas:
   - id: so_o_ultimo_retrato
-    resumo: "empresas, estabelecimentos e socios têm só o cadastro mais recente (2026-09). O passado está em *_historico; filtrar ano/mes antigo devolve zero linhas."
+    resumo: "empresas, estabelecimentos e socios têm só o cadastro mais recente (2026-10). O passado está em *_historico; filtrar ano/mes antigo devolve zero linhas."
     detalhe: >
       Até 2026-10-13 cada (ano, mes) era o cadastro inteiro da Receita e as
       três tabelas guardavam 56 retratos. Hoje guardam um só, e a série
-      2021-11 a 2026-09 vive compacta em empresas_historico,
+      2021-11 a 2026-10 vive compacta em empresas_historico,
       estabelecimentos_historico e socios_historico. Para o cadastro atual
       não é preciso filtrar ano/mes; para qualquer data anterior, ou para
       saber quem saiu, use o histórico. O retrato muda a cada atualização:
@@ -14,9 +14,9 @@ gotchas:
     tabelas: [empresas, estabelecimentos, socios]
     colunas: [ano, mes, data]
     severidade: erro
-    verificado: "empresas, estabelecimentos e socios: min e max de ano*100+mes = 202609; 70.081.764, 73.366.147 e 28.341.092 linhas — medido 2026-10-13"
+    verificado: "empresas, estabelecimentos e socios: min e max de ano*100+mes = 202610; 70.517.438, 73.809.379 e 28.495.961 linhas — medido 2026-10-29 (retrato da Receita, cnpj_receita.py)"
   - id: historico_como_ler
-    resumo: "Nas tabelas *_historico o retrato é aaaamm (202609). Vigente = fim = (SELECT max(fim)) em empresas/estabelecimentos, no_ultimo_retrato em sócios."
+    resumo: "Nas tabelas *_historico o retrato é aaaamm (202610). Vigente = fim = (SELECT max(fim)) em empresas/estabelecimentos, no_ultimo_retrato em sócios."
     detalhe: >
       empresas_historico e estabelecimentos_historico: uma linha por período
       em que nenhuma coluna mudou, com inicio e fim. Estado numa data X:
@@ -31,7 +31,7 @@ gotchas:
     tabelas: [empresas_historico, estabelecimentos_historico, socios_historico]
     colunas: [inicio, fim, primeiro_retrato, ultimo_retrato, no_ultimo_retrato]
     severidade: silencioso
-    verificado: "socios_historico 35.022.573 linhas, 28.340.770 com no_ultimo_retrato; empresas_historico 80.024.491 períodos, 70.081.764 com fim=202609 = empresas; estabelecimentos_historico 196.655.712 períodos, 73.366.147 vigentes = estabelecimentos; os três de 202111 a 202609 — medido 2026-10-13"
+    verificado: "socios_historico 35.263.888 linhas, 28.495.638 com no_ultimo_retrato; empresas_historico 80.610.946 períodos, 70.517.437 com fim=202610 = cnpj_basico distintos de empresas; estabelecimentos_historico 197.930.433 períodos, 73.809.379 com fim=202610 = estabelecimentos — medido 2026-10-29 depois do --anexa de 202610"
   - id: historico_meses_ausentes
     resumo: "O histórico não tem 2022-02 a 2022-04 (nenhuma tabela), 2024-09 em sócios e 2024-10 em estabelecimentos. Fim ou saída no mês anterior a um buraco pode ter ocorrido em qualquer mês do buraco."
     detalhe: >
@@ -60,7 +60,7 @@ gotchas:
     tabelas: [empresas, empresas_historico]
     colunas: [capital_social]
     severidade: silencioso
-    verificado: "124 linhas com capital_social = 999999999999 em empresas (retrato 2026-09) — medido 2026-10-13; 906 com capital_social entre 1e11 e a sentinela somam R$ 128,8 tri, as abaixo de 1e10 R$ 16,7 tri — medido 2026-10-20"
+    verificado: "124 linhas com capital_social = 999999999999 em empresas (retrato 2026-10) — medido 2026-10-29 (eram 124 em 2026-09); 906 com capital_social entre 1e11 e a sentinela somam R$ 128,8 tri, as abaixo de 1e10 R$ 16,7 tri — medido 2026-10-20"
   - id: cpf_completado
     resumo: "A coluna de CPF mistura CPF completo (completado pelo projeto) e CPF mascarado. count(DISTINCT cpf) conta máscara como pessoa."
     detalhe: >
@@ -74,7 +74,7 @@ gotchas:
     tabelas: [socios, socios_historico]
     colunas: [documento, cpf_representante_legal]
     severidade: silencioso
-    verificado: "documento com 11 dígitos: 22.375.377 de 28.341.092 linhas em socios, 27.146.498 de 35.022.573 em socios_historico — medido 2026-10-13"
+    verificado: "documento com 11 dígitos: 22.478.860 de 28.495.961 linhas em socios (retrato 2026-10, completado antes do --anexa), 27.317.099 de 35.263.888 em socios_historico — medido 2026-10-29; eram 22.375.377 de 28.341.092 e 27.146.498 de 35.022.573 em 2026-10-13"
   - id: socios_linha_repetida
     resumo: "socios tem o mesmo vínculo em mais de uma linha. Para contar vínculos use socios_historico com no_ultimo_retrato."
     detalhe: >
@@ -82,8 +82,9 @@ gotchas:
       documento, nome, qualificacao), às vezes com as outras colunas
       diferentes. socios_historico guarda uma linha por vínculo, com a versão
       de menos colunas vazias. empresas e estabelecimentos não têm repetição
-      no retrato atual.
+      no retrato atual — exceto 1 cnpj_basico em empresas 2026-10 (08314885,
+      uma linha sem razão social e outra com), que o histórico guarda uma vez.
     tabelas: [socios]
     colunas: [cnpj_basico, documento, nome, qualificacao]
     severidade: silencioso
-    verificado: "socios 2026-09: 28.341.092 linhas, 28.340.770 vínculos distintos; empresas 70.081.764 linhas = cnpj_basico distintos; estabelecimentos 73.366.147 linhas = cnpj distintos — medido 2026-10-13"
+    verificado: "socios 2026-10: 28.495.961 linhas, 28.495.638 vínculos distintos; empresas 70.517.438 linhas, 70.517.437 cnpj_basico distintos; estabelecimentos 73.809.379 linhas = cnpj distintos — medido 2026-10-29"
