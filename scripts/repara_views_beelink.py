@@ -42,10 +42,15 @@ DUCKDB = "~/bin/duckdb"
 PATH_RE = re.compile(r"'(/home/[^']*\.parquet)'")
 
 
+def remoto(cmd):
+    """BEELINK_HOST=local: rodando no próprio beelink (o encadeamento offline do PNCP, 2026-10-29)."""
+    return ["bash", "-c", cmd] if BEELINK == "local" else ["ssh", BEELINK, cmd]
+
+
 def duck(sql, readonly=True, timeout=900):
     flag = "-readonly " if readonly else ""
     proc = subprocess.run(
-        ["ssh", BEELINK, f"{DUCKDB} {flag}-json {DB}"],
+        remoto(f"{DUCKDB} {flag}-json {DB}"),
         input="SET enable_progress_bar=false;\n" + sql + "\n.quit\n",
         capture_output=True, text=True, timeout=timeout,
     )
@@ -57,7 +62,7 @@ def duck(sql, readonly=True, timeout=900):
 
 
 def sh(cmd, timeout=300):
-    return subprocess.run(["ssh", BEELINK, cmd], capture_output=True,
+    return subprocess.run(remoto(cmd), capture_output=True,
                           text=True, timeout=timeout).stdout
 
 
