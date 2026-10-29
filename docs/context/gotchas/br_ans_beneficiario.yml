@@ -11,3 +11,13 @@ gotchas:
     colunas: [data_carga, quantidade_beneficiario_ativo]
     severidade: silencioso
     verificado: "dez/2022, médico-hospitalar: carga 2024-03-01 = 25,3M, carga 2024-07-02 = 50,1M (oficial ANS ~50,9M); soma ingênua 75,4M — medido 2026-09-25"
+  - id: ordenada_pela_chave
+    resumo: "informacao_consolidada está ordenada por ano e, dentro do ano, por cnpj da operadora: filtre pelo cnpj cru (= ou IN, 14 dígitos com zero à esquerda), com ou sem ano, e o min/max dos row groups pula quase tudo. Outros filtros (município, mes, modalidade) leem o ano inteiro."
+    tabelas: [informacao_consolidada]
+    colunas: [cnpj, ano]
+    severidade: aviso
+    detalhe: >
+      95 arquivos numerados de ~100 MB, nenhum com mais de um ano, com faixas contíguas de
+      cnpj (desempate por mes) dentro de cada ano. cnpj é VARCHAR de 14 dígitos
+      ('00006037000127'), não número.
+    verificado: "95 arquivos, 18.827 row groups, zero sobrepostos em cnpj, 2.307.338.481 linhas e soma de hash conferidas na troca — medido 2026-10-29 no beelink; cnpj = '00006037000127' sem ano (12 anos, 765.902 linhas) em 1,1 s"

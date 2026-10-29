@@ -40,3 +40,13 @@ gotchas:
     colunas: [ano, mes, id_municipio]
     severidade: silencioso
     verificado: "Nova Friburgo sem jan/24, out/24 e fev/25 (só 1.573 linhas tardias daqueles meses de realização); RJ tem 69–92 de 92 municípios por mês — medido 2026-10-15"
+  - id: ordenada_pela_chave
+    resumo: "producao_ambulatorial está ordenada por ano e, dentro do ano, por id_estabelecimento_cnes: filtre pelo CNES cru (= ou IN), com ou sem ano, e o min/max dos row groups pula quase tudo. Outros filtros (município, procedimento, mes) leem o ano inteiro."
+    tabelas: [producao_ambulatorial]
+    colunas: [id_estabelecimento_cnes, ano]
+    severidade: aviso
+    detalhe: >
+      495 arquivos numerados de ~100 MB, nenhum com mais de um ano, com faixas contíguas de
+      id_estabelecimento_cnes (desempate por mes) dentro de cada ano. CNES vai como texto de 7
+      dígitos com zero à esquerda ('2077485'), não número.
+    verificado: "495 arquivos, 50.370 row groups, zero sobrepostos em id_estabelecimento_cnes, 6.159.969.884 linhas e soma de hash conferidas na troca — medido 2026-10-29 no beelink; CNES 2077485 sem ano (18 anos, 18.216.213 linhas) em 3,9 s"
