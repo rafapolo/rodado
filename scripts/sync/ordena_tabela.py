@@ -3,7 +3,7 @@
 
 Roda NO beelink (o ressincroniza_bq.py o chama por ssh depois da troca):
 
-    python3 ordena_tabela.py ~/rodado/<dataset>/<tabela> <chave> [desempate] [--mb 100] [--por ano] [--mem 12GB]
+    python3 ordena_tabela.py ~/rodado/<dataset>/<tabela> <chave> [desempate] [--mb 100] [--por ano] [--mem 12GB] [--threads 14]
 
 Ordem global, e cada arquivo recebe uma faixa contígua da chave: a busca por um valor cai
 num arquivo só, e dentro dele o min/max dos row groups pula o resto. Sem --mb, os nomes ficam
@@ -24,8 +24,15 @@ linha trocada (4 em ~25) e uma com o parquet corrompido no disco, no 1.5.5 e no 
 sem pressão, as mesmas partes releem estáveis. Cada faixa é conferida e regravada.
 
 Só troca depois de conferir contagem, colunas e soma de hash de todas as linhas.
+
+Retomável: o beelink derruba o processo com segfault depois de ~10-20 min de carga a ~92 °C
+(SIA, 2026-10-29, duas rodadas; nenhum try pega isso). Os limites das faixas (amostra aleatória)
+ficam em limites.json na pasta de trabalho e cada faixa conferida deixa um .ok com o hash; outra
+execução com a mesma origem e os mesmos argumentos pula o que já está conferido. Rodar em laço:
+    until python3 ordena_tabela.py ...; do sleep 30; done
 """
 import glob
+import json
 import math
 import os
 import shutil
@@ -34,18 +41,19 @@ import sys
 import duckdb
 
 
-def ordena(diretorio, chave, desempate=None, mb=None, por=None, mem="12GB"):
+def ordena(diretorio, chave, desempate=None, mb=None, por=None, mem="12GB", threads=14):
     diretorio = os.path.expanduser(diretorio.rstrip("/"))
     orig = sorted(glob.glob(f"{diretorio}/*.parquet"))
     if not orig:
         sys.exit(f"nenhum parquet em {diretorio}")
     # fora de ~/rodado: o rsync do COLD (a cada 6 h, sem --delete) levaria as partes para lá e
     # elas ficariam órfãs para sempre. Mesmo disco, então o os.replace segue atômico
-    tmp = os.path.expanduser(f"~/duckdb_tmp/ordenando_{os.path.basename(diretorio)}_{os.getpid()}")
+    # sem o pid no nome: a execução seguinte acha o trabalho da que morreu
+    tmp = os.path.expanduser(f"~/duckdb_tmp/ordenando_{os.path.basename(diretorio)}")
     # temp_directory próprio: dois processos no mesmo ~/duckdb_tmp colidiram nos arquivos de
     # despejo e os dois morreram com "Could not read enough bytes" (2026-10-25)
     despejo = os.path.expanduser(f"~/duckdb_tmp/ordena_{os.getpid()}")
-    con = duckdb.connect(config={"memory_limit": mem, "threads": 14, "temp_directory": despejo})
+    con = duckdb.connect(config={"memory_limit": mem, "threads": threads, "temp_directory": despejo})
     lista = "[" + ",".join("'" + f.replace("'", "''") + "'" for f in orig) + "]"
     fonte = f"read_parquet({lista}, union_by_name=true, hive_partitioning=false)"
     colunas = [r[0] for r in con.execute(f"DESCRIBE SELECT * FROM {fonte}").fetchall()]
@@ -61,31 +69,67 @@ def ordena(diretorio, chave, desempate=None, mb=None, por=None, mem="12GB"):
         sys.exit("--por exige --mb")
     if por and por not in colunas:
         sys.exit(f"{por} não é coluna de {diretorio}")
-    shutil.rmtree(tmp, ignore_errors=True)
-    os.makedirs(tmp)
+    assinatura = [len(orig), sum(map(os.path.getsize, orig)), chave, desempate, mb, por]
+    manifesto = f"{tmp}/limites.json"
+    estado = {}
+    if os.path.exists(manifesto):
+        estado = json.load(open(manifesto))
+        if estado.get("assinatura") != assinatura:   # origem ou argumentos mudaram: recomeça
+            estado = {}
+    if not estado:
+        shutil.rmtree(tmp, ignore_errors=True)
+        os.makedirs(tmp)
+        estado = {"assinatura": assinatura, "limites": {}}
+    else:
+        print(f"retomando {tmp}: {len(glob.glob(f'{tmp}/*.ok'))} faixas já conferidas", flush=True)
     c = f'"{chave}"'
     lit = lambda v: repr(v) if isinstance(v, (int, float)) else "'" + str(v).replace("'", "''") + "'"
     partes = []
     hash_de = lambda origem: con.execute(f"SELECT count(*), sum(hash(t)::HUGEINT) FROM {origem} t").fetchone()
 
+    def temperatura():
+        for h in glob.glob("/sys/class/hwmon/hwmon*"):
+            try:
+                if open(f"{h}/name").read().strip() == "k10temp":
+                    return f"{int(open(f'{h}/temp1_input').read()) // 1000}C"
+            except OSError:
+                pass
+        return "?"
+
     def grava(origem, onde, destino):
         """COPY ordenado conferido contra a origem: o beelink errou conta de vez em quando mesmo
         depois do memtest (2026-10-26: uma linha de hash trocado em ~30 min de carga, ora na
         gravação, ora no próprio hash). Diverge: recalcula os dois lados; segue divergindo: regrava."""
+        if os.path.exists(f"{destino}.ok") and os.path.exists(destino):
+            return
         for tentativa in range(4):
-            con.execute(f"""COPY (SELECT * FROM {origem} WHERE {onde} ORDER BY {ordem})
-                            TO '{destino}' (FORMAT parquet, COMPRESSION zstd, ROW_GROUP_SIZE 122880)""")
+            # o erro também aparece lendo a origem íntegra ("Payload value bigger than allowed",
+            # SIA 2011, 2026-10-29; duas releituras do ano bateram): conta como divergência
+            try:
+                con.execute(f"""COPY (SELECT * FROM {origem} WHERE {onde} ORDER BY {ordem})
+                                TO '{destino}' (FORMAT parquet, COMPRESSION zstd, ROW_GROUP_SIZE 122880)""")
+            except duckdb.Error as e:
+                a, b = "COPY", str(e)[:80]
+                print(f"  {os.path.basename(destino)} divergiu ({a} x {b}), regravando {temperatura()}", flush=True)
+                continue
+            b = None
             for _ in range(2):
-                a = hash_de(f"(SELECT * FROM {origem} WHERE {onde})")
+                try:
+                    a = hash_de(f"(SELECT * FROM {origem} WHERE {onde})")
+                except duckdb.Error as e:
+                    a = str(e)[:80]
+                    continue
                 try:
                     b = hash_de(f"read_parquet('{destino}')")
                 except duckdb.Error as e:   # "dictionary offset out of range": gravou corrompido, regravar
                     b = str(e)[:80]
                     break
                 if a == b:
+                    with open(f"{destino}.ok", "w") as f:
+                        f.write(f"{a[0]} {a[1]}\n")
                     return
-            print(f"  {os.path.basename(destino)} divergiu ({a} x {b}), regravando", flush=True)
-        shutil.rmtree(tmp, ignore_errors=True)
+            print(f"  {os.path.basename(destino)} divergiu ({a} x {b}), regravando {temperatura()}", flush=True)
+        # tmp fica: as faixas já conferidas valem para a próxima execução
         sys.exit(f"{destino} divergiu da origem em 4 gravações, nada trocado")
 
     def faixas(origem, k, filtro="true", aproximado=False):
@@ -98,9 +142,16 @@ def ordena(diretorio, chave, desempate=None, mb=None, por=None, mem="12GB"):
         # USING SAMPLE vale antes do WHERE da mesma consulta: amostra fora do filtro, senão sobram
         # só as linhas do ano dentro de 1 milhão tiradas da tabela inteira
         amostra = " USING SAMPLE 1000000 ROWS" if aproximado else ""
-        limites = con.execute(f'SELECT quantile_disc({c}, [{q}]) FROM (SELECT {c} FROM {origem} WHERE ({filtro}) '
-                              f'AND {c} IS NOT NULL){amostra}').fetchone()[0] if k > 1 else []
-        limites = sorted(set(v for v in (limites or []) if v is not None))   # chave repetida demais junta faixas
+        if filtro in estado["limites"]:   # a amostra muda a cada execução: retomar exige os mesmos limites
+            limites = estado["limites"][filtro]
+        else:
+            limites = con.execute(f'SELECT quantile_disc({c}, [{q}]) FROM (SELECT {c} FROM {origem} WHERE ({filtro}) '
+                                  f'AND {c} IS NOT NULL){amostra}').fetchone()[0] if k > 1 else []
+            limites = sorted(set(v for v in (limites or []) if v is not None))   # chave repetida demais junta faixas
+            estado["limites"][filtro] = limites
+            with open(f"{manifesto}.novo", "w") as f:
+                json.dump(estado, f, default=str)
+            os.replace(f"{manifesto}.novo", manifesto)
         for i in range(len(limites) + 1):
             conds = []
             if i > 0:
@@ -122,7 +173,7 @@ def ordena(diretorio, chave, desempate=None, mb=None, por=None, mem="12GB"):
             filtro = f"{p} IS NULL" if valor is None else f"{p} = {lit(valor)}"
             k = max(1, math.ceil(tamanho * linhas / n / (mb * 1e6)))
             faixas(fonte, k, filtro, aproximado=True)
-            print(f"{por}={valor}: {linhas} linhas em {k} arquivos", flush=True)
+            print(f"{por}={valor}: {linhas} linhas em {k} arquivos {temperatura()}", flush=True)
         saida = [f"{diretorio}/{i:012d}.parquet" for i in range(len(partes))]
     else:
         faixas(fonte, len(saida))
@@ -173,6 +224,9 @@ if __name__ == "__main__":
         i = args.index("--por"); por = args[i + 1]; del args[i:i + 2]
     if "--mem" in args:   # menos que o padrão quando outra coisa pesada divide o beelink
         i = args.index("--mem"); mem = args[i + 1]; del args[i:i + 2]
+    threads = 14
+    if "--threads" in args:   # menos threads, menos calor (o beelink erra quente)
+        i = args.index("--threads"); threads = int(args[i + 1]); del args[i:i + 2]
     if len(args) < 2:
         sys.exit(__doc__)
-    ordena(args[0], args[1], args[2] if len(args) > 2 else None, mb, por, mem)
+    ordena(args[0], args[1], args[2] if len(args) > 2 else None, mb, por, mem, threads)

@@ -685,10 +685,13 @@ ORDENADA_POR = {
     ("br_cgu_beneficios_cidadao", "auxilio_brasil"): "nis_favorecido",
     ("br_cgu_beneficios_cidadao", "auxilio_emergencial"): "cpf_beneficiario",
     ("br_ms_sih", "aihs_reduzidas"): "id_estabelecimento_cnes",
+    ("br_ans_beneficiario", "informacao_consolidada"): "cnpj",
+    ("br_ms_sia", "producao_ambulatorial"): "id_estabelecimento_cnes",
 }
 # ordenadas por ano e, dentro do ano, pela chave (ordena_tabela.py --por ano): o filtro por ano
 # segue pulando arquivos. Entram aqui e em ORDENADA_POR
-ORDENADA_POR_ANO = {("br_ms_sih", "aihs_reduzidas")}
+ORDENADA_POR_ANO = {("br_ms_sih", "aihs_reduzidas"), ("br_ans_beneficiario", "informacao_consolidada"),
+                    ("br_ms_sia", "producao_ambulatorial")}
 
 
 def _particoes(con, dataset, tabela):

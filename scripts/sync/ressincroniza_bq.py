@@ -61,6 +61,8 @@ ORDEM_DE_BUSCA = {
     "br_cgu_beneficios_cidadao.bolsa_familia_pagamento": ("nis_favorecido", "cpf_favorecido"),
     "br_cgu_beneficios_cidadao.auxilio_emergencial": ("cpf_beneficiario", "nis_beneficiario"),
     "br_ms_sih.aihs_reduzidas": ("id_estabelecimento_cnes", "mes", "--por", "ano"),
+    "br_ans_beneficiario.informacao_consolidada": ("cnpj", "mes", "--por", "ano"),
+    "br_ms_sia.producao_ambulatorial": ("id_estabelecimento_cnes", "mes", "--por", "ano"),
 }
 
 
