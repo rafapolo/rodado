@@ -1,0 +1,31 @@
+dataset: br_bcb_agencia
+gotchas:
+  - id: cnpj_em_dois_formatos
+    resumo: "Em agencia, cnpj (a raiz de 8 dígitos da instituição) vem só com dígitos até 2010-03 e pontuado ('00.000.000') de 2010-04 em diante. Para juntar com br_me_cnpj, use regexp_replace(cnpj, '[^0-9]', '', 'g') = cnpj_basico."
+    detalhe: >
+      Até 2026-10-29 o espelho tinha, além disso, os números das planilhas
+      gravados como texto de float ('0.0' para o Banco do Brasil, '10866788.0'),
+      sem os zeros à esquerda, em 10 colunas, e o rodapé "FONTE: INSTITUIÇÕES
+      FINANCEIRAS..." como linha (197). Corrigido no lugar nessa data: inteiros
+      sem '.0', cnpj/sequencial/dv/cep completados com zeros, rodapé apagado
+      (originais em ~/backups/bcb_agencia_20261029 no beelink). O cep segue em
+      três formatos da fonte: 8 dígitos, '69.005-300' e 9 dígitos (sem explicação
+      conhecida, não mexido); data_inicio é um número (2936, 3105...),
+      provavelmente o serial de data do Excel, não conferido.
+    tabelas: [agencia]
+    colunas: [cnpj, sequencial_do_cnpj, dv_do_cnpj, cep, data_inicio]
+    severidade: silencioso
+    verificado: "depois do conserto: cnpj com 8 caracteres em 2.760.063 linhas, 10 (pontuado, 2010-04 a 2024-11) em 1.339.784; 0 linhas de rodapé; 0 valores com '.0'; cep 8 dígitos 1.500.074, 9 dígitos 1.572.922, '69.005-300' 1.017.426; 617 de 636 raízes de 2024-11 achadas em br_me_cnpj.empresas — medido 2026-10-29"
+  - id: cabecalho_muda_ao_longo_da_serie
+    resumo: "A planilha mudou de cabeçalho em 17 anos, e cada nome virou uma coluna: o mesmo dado está em colunas diferentes conforme o mês (nome_da_agencia até 2019-08, nome_agencia depois; nome_da_instituicao só em 2007-09 e 2007-10, nome_instituicao depois; estado de 2007-11 a 2014-04, uf em toda a série). Use coalesce entre os pares."
+    detalhe: >
+      municipio_ibge só existe de 2021-08 em diante e id_instalacao de 2020-05
+      em diante: para série longa por município, case pelo nome do município
+      e a UF. coluna e coluna_2 estão 100% vazias (colunas sem título da
+      planilha). A série mensal tem buracos em 2024 (só 01, 05 e 11) e acaba
+      em 2024-11: a fonte não publicou mais. Depois disso só existe o retrato
+      do dia em agencia_olinda (1 coleta, 2026-10-15, sem id_instalacao).
+    tabelas: [agencia, agencia_olinda]
+    colunas: [nome_agencia, nome_da_agencia, nome_instituicao, nome_da_instituicao, uf, estado, municipio_ibge, id_instalacao]
+    severidade: silencioso
+    verificado: "4.099.847 linhas em 199 meses de 2007-09 a 2024-11; 2024 só meses 1, 5 e 11; nome_agencia preenchido 2019-09 a 2024-11, nome_da_agencia 2007-09 a 2019-08; municipio_ibge 2021-08 a 2024-11; id_instalacao 2020-05 a 2024-11; coluna e coluna_2 100% nulas; agencia_olinda 13.664 linhas de uma coleta (2026-10-15) — medido 2026-10-29"

@@ -850,6 +850,13 @@ concepts:
     notes:
     - Parties rename and merge (PMDB→MDB, PSDC→DC). Compare within a single election year, or map through
       `br_camara_dados_abertos.sigla_partido`.
+  sequencial_candidato:
+    category: politica
+    description: Sequencial do candidato no TSE (texto). Junta uma candidatura às redes sociais, bens,
+      receitas e despesas da mesma eleição. Não é único sozinho; a chave é (ano, sigla_uf, sequencial).
+    canonical_table: br_tse_eleicoes.candidatos
+    notes:
+    - Repete entre UFs e eleições; sempre junte com ano e sigla_uf.
   id_deputado:
     category: politica
     description: Câmara dos Deputados member ID. Joins the member to expenses, votes, committees and parliamentary
@@ -1440,6 +1447,16 @@ bridges:
     concept: sigla_uf
     join_expr: '{s}.sigla_uf_arquivo = {d}.sigla_uf'
   identity:
+  - table: br_tse_eleicoes.rede_social_candidato
+    column: sequencial_candidato
+    description: 'Sequencial do candidato (texto), com ano e sigla_uf. Em candidatos a coluna se chama
+      `sequencial`. Deduplique candidatos por (ano, sigla_uf, sequencial) antes: o mesmo
+      sequencial aparece em mais de uma linha'
+    expr: r.ano = c.ano AND r.sigla_uf = c.sigla_uf AND r.sequencial_candidato = c.sequencial
+    verified: 'casam com br_tse_eleicoes.candidatos: 2018 97,84%, 2020 99,50%, 2022 98,82%, 2024
+      99,56%, 2026 99,98% (63.240 de 63.251) — 2026-10-29'
+    concept: sequencial_candidato
+    join_expr: '{s}.ano = {d}.ano AND {s}.sigla_uf = {d}.sigla_uf AND {s}.sequencial_candidato = {d}.sequencial'
   - table: br_mte_listasuja.empregadores / empregadores_historico
     column: cnpj
     description: 'CNPJ de 14 dígitos sem pontuação; `cnpj_basico` já vem separado. `cpf_cnpj` mistura

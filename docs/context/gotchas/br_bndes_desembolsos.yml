@@ -1,0 +1,18 @@
+dataset: br_bndes_desembolsos
+gotchas:
+  - id: ano_corrente_incompleto
+    resumo: "mensal vai até 2026-03: o ano de 2026 tem só janeiro a março (R$ 36,2 bi). Não compare o total de 2026 com anos fechados nem faça média anual com ele."
+    tabelas: [mensal]
+    colunas: [ano, mes, valor_desembolsado]
+    severidade: silencioso
+    verificado: "2026: meses 1, 2 e 3, R$ 36,2 bi; anos fechados 2023 R$ 114,4 bi, 2024 R$ 133,7 bi (= o total oficial do BNDES), 2025 R$ 169,7 bi — medido 2026-10-29"
+  - id: desembolso_sem_municipio
+    resumo: "17% do valor desembolsado (2024) está em linhas com id_municipio nulo, mas com sigla_uf preenchida. Somar por município subestima; some por UF, ou trate o nulo como 'não localizado no município'."
+    detalhe: >
+      São operações diretas e indiretas (26.022 e 23.613 linhas) sem município
+      atribuído pela fonte, concentradas em SP (R$ 134,7 bi na série), RJ
+      (R$ 70,1 bi) e PA (R$ 38,3 bi). Não há linha sem UF.
+    tabelas: [mensal]
+    colunas: [id_municipio, sigla_uf, valor_desembolsado]
+    severidade: silencioso
+    verificado: "49.635 de 3.762.192 linhas com id_municipio nulo; 17,1% do valor de 2024; 0 linhas sem sigla_uf; 0 valores negativos ou zero — medido 2026-10-29"
