@@ -4,16 +4,9 @@ This file provides guidance to coding agents (Claude Code, Pi, and others) when 
 
 ## Project Overview
 
-**baseldosdados** mirrors public Brazilian government tables from [Base dos Dados](https://basedosdados.org) — stored as Parquet+zstd in `~/rodado` on beelink — and extends that mirror with independently-scraped sources that fill the remaining gaps (sanctions lists, SICAF, SINAN microdata, consumer complaints and more — see `tasks/done/datasets_to_scrap_done.md` for the provenance of every scraped source and `tasks/plans/datasets_to_scrap.md` for the queue). 1.612 tabelas · 276 datasets · 116 fontes · 571 GB (34,67 bilhões de linhas) as of 2026-10-28 — 984 espelhadas do Base dos Dados, 628 raspadas pelo projeto. A DuckDB view `_rodado_metadata` on beelink tracks each table's rows, source, status, and provenance; `_rodado_datasets` aggregates by dataset. DuckDB queries the data on-demand without local imports.
+**baseldosdados** mirrors public Brazilian government tables from [Base dos Dados](https://basedosdados.org) — stored as Parquet+zstd in `~/rodado` on beelink — and extends that mirror with independently-scraped sources that fill the remaining gaps (sanctions lists, SICAF, SINAN microdata, consumer complaints and more — see `tasks/done/datasets_to_scrap_done.md` for the provenance of every scraped source and `tasks/plans/datasets_to_scrap.md` for the queue). 1.612 tabelas · 276 datasets · 116 fontes · 571 GB (34,67 bilhões de linhas) as of 2026-10-28. DuckDB queries the data on-demand without local imports.
 
 ## Commands
-
-### Python services
-```bash
-python scripts/gera_schemas.py        # extract table schemas → JSON/text
-python scripts/gera_join_keys.py      # schemas.json → docs/context/join_keys.md
-python scripts/gera_erd.py            # schemas.json → ERD.md (pt-BR) + ERD_EN.md
-```
 
 ### Querying data
 ```bash
@@ -23,238 +16,42 @@ SELECT ...;
 SQL
 ```
 
+### Scripts that regenerate derived files
+```bash
+python scripts/gera_schemas.py        # extract table schemas → JSON/text
+python scripts/gera_join_keys.py      # schemas.json → docs/context/join_keys.md
+python scripts/gera_erd.py            # schemas.json → docs/mapa/ERD.md (pt-BR) + ERD_EN.md
+```
+Ordem completa de regen (rodar depois de qualquer sync que mude tabelas): `docs/context/README.md`.
+
 ## Architecture
 
-Everything is local: parquet on beelink (`~/rodado/<dataset>/<tabela>/*.parquet`), queried through
-DuckDB over SSH — no live web service, no cloud object storage. The former
-`db.xn--2dk.xyz` HTTP endpoint (`auth.py`, a BigQuery → GCS → Hetzner Object
-Storage pipeline via `scripts/roda.sh`, DuckDB httpfs reads on query) is
-retired; its deployment files (`auth.py`, `start.sh`, `Caddyfile`,
-`haloy.yml`, `Dockerfile`) were removed on 2026-09-24 — `git log --all --
-Caddyfile` finds them.
-
-`mcp/mcp_server.py` is the current interface — see `mcp/MCP.md`.
+Everything is local: parquet on beelink (`~/rodado/<dataset>/<tabela>/*.parquet`), queried through DuckDB over SSH — no live web service, no cloud object storage by default. `mcp/mcp_server.py` is the agent interface — see `mcp/MCP.md`.
 
 Since 2026-10-09 the same data is also reachable at `https://db.rodado.xyz`
 (password, read-only): a browser SQL terminal and `POST /query` for curl. Since
 2026-10-11 it runs entirely in a haloy container on finland reading the
-`s3://baseldosdados` copy (no SSH tunnel to beelink anymore; `db/exporta_views.py`
-ships the view SQL with each S3 sync and `db/catalogo.py` rebuilds the catalog) —
-see `db/README.md`. It is a locked-down Python front end, not the DuckDB CLI.
+`s3://baseldosdados` copy (no SSH tunnel to beelink anymore) — see
+`db/README.md`. It is a locked-down Python front end, not the DuckDB CLI.
 
 O harness TS de apuração (pi + Gemma 4 local) vive no branch `harness-gemma`, fora de `main`.
 
-### `docs/mapa/ERD.md` — the map
-One mermaid `erDiagram` per domain covering all 1.612 tables: entity = dataset, attribute = table, edge = join key to a reference hub (solid = direct, dashed = needs normalization). Lists what connects to nothing. `ERD.md` is pt-BR (default), `ERD_EN.md` is the English twin — both generated from the same data by `scripts/gera_erd.py`.
+## Onde fica cada coisa
 
-### `docs/context/` — Schema metadata
-Um `README.md` na própria pasta descreve arquivo por arquivo, quem gera cada um e a ordem do regen.
-- `datasets.md` — um dataset por linha (tabelas, linhas, `last_update` = data do parquet mais recente no beelink), regenerado por `scripts/build_metadata_catalog.py` a cada rodada; substituiu o `all_tables.txt` (lista chapada de `dataset.tabela`) em 2026-10-07
-- `rodado-schema.json` — full schema (275 datasets / 1.611 tabelas; o catálogo conta uma a mais, `_local_rais_cnpj.rais_estab_2010_2021`, de uso local). Renomeado de `basedosdados-schema.json` — o nome antigo mentia escopo (parquet só) desde que `gera_schemas.py` passou a incluir as 7 tabelas `duckdb_native` (sem parquet, lidas direto de dentro de `basedosdados.duckdb`) que antes ficavam invisíveis por o script só varrer diretório
-- `bridges.yaml` — **a fonte única do conhecimento de join**. Conceitos-hub, as 78 pontes (coluna que significa a mesma coisa sob outro nome), os `false_friends`, os `coded_differently` (mesmo conceito, código numérico diverge por dataset/ano — `sexo`, `raca_cor`, `estado_civil`... achado ao vivo num teste cego do MCP, ver `tasks/done/mcp_search_refino.md`) e os `concept_aliases`. Editar aqui; `join_keys.md` é gerado
-- `join_keys.md` — o render de `bridges.yaml` + as chaves auto-detectadas do `schemas.json`: 157 colunas de join ao todo. Gerado por `scripts/gera_join_keys.py` — regenerar, nunca editar à mão
-- `metrics.yaml` / `metrics.json` — 12 cálculos nomeados (expressão DuckDB, grain, unidade, sinônimos pt-BR, `required_filters`, `verified`). O `.json` é gerado do `.yaml` por `scripts/gera_metrics_json.py`; `mcp_server.py` lê o `.yaml` diretamente. A TUI Rust que lia o `.json` foi removida (`ask/` apagado em `58ab7c7`, 2026-08-23); hoje quem consome o `.json` é `scripts/build_ask_web_assets.ts`, que empacota `metrics.json` + `bridges.yaml` em `web/static/index/semantica.json` — vive só no branch local `ask-web` (sem cópia no remoto, não mesclado), não neste checkout em `main`
-- `hierarchies.yaml` — rollup de município→UF→região, CNAE e CID-10. CNAE e CID são prefixais: o pai sai de `substr()`, sem join
-- `schema_ddl.sql` — snapshot DDL parcial (527 tabelas, 109 datasets) da porção espelhada do **Base dos Dados**; serve de referência de procedência para `scripts/build_metadata_catalog.py`. Cobre parte do mirror, não todo ele
-- `dicionario_coverage.json` — quais colunas de quais tabelas têm decode chave→valor disponível em `{dataset}.dicionario`, escaneado em **45 datasets** (168 tabelas, 6.256 colunas) — não só o censo IBGE histórico (`v0502` etc.) que motivou o mecanismo, generalizado 2026-08-24 depois que um teste cego do MCP achou o mesmo padrão em RAIS/CAGED/ENEM/SIM e outros 40. Gerado por `scripts/gera_dicionario_coverage.py`; `describe_table` lê pra avisar quais colunas de uma tabela são decodificáveis (`dicionario_coverage`) e quais têm código que **diverge entre datasets** pro mesmo conceito (`coded_value_warning`, cruzado com `bridges.yaml`'s `coded_differently`)
-- `schema_dict_status.json` — estágios 1+2 de [`tasks/done/generate-full-schema-dict.md`](tasks/done/generate-full-schema-dict.md), mais uma passada de leitura humana/LLM (não regex) por cima: toda coluna STRING/INTEGER fora de `dicionario_coverage.json` etiquetada (`dicionario_disponivel` fica implícito, fora do escopo do arquivo) — quatro etiquetas: **`nao_verificado`** (candidato real a código, sem fonte de significado em lugar nenhum — a etiqueta que importa, generaliza o alerta que o harness teve que escrever à mão pra `br_ms_sim.circunstancia_obito`; a CVM e a ANS ainda estão sem leitura), `nao_e_codigo` (nome autoexplicativo, cardinalidade alta demais, ou confirmado por leitura direta: o SISDEPEN inteiro é a pergunta literal do formulário oficial convertida em slug), `documentado_em_outro_lugar` (inclui os códigos V- do "Agregados por Setores Censitários" do Censo 2010, achado com dicionário oficial do IBGE mas não conferido célula a célula, e as variáveis `v*` dos agregados do Censo 2022, cujo dicionário está em `br_ibge_censo_2022.agregados_dicionario_variaveis`) e `padrao_externo` (CNAE/CID/CBO/NCM/geografia, já cobertos por `hierarchies.yaml`/`bridges.yaml`). As contagens atuais saem do próprio JSON. Tabelas acima de 50M linhas (6,3 bilhões no maior caso) têm a cardinalidade adiada por custo, não medida. Gerado por `scripts/gera_schema_dict_status.py` + `scripts/llm_triage_schema_dict_status.py` + `scripts/aplica_column_codes.py`; `describe_table` lê e expõe `nao_verificado_warning` por tabela
-- `column_codes.yaml` — **escrito à mão**: o significado pesquisado (fonte oficial + valores medidos no beelink) de 371 colunas que nada decodificava — SINAN violência/malária/esquistossomose, SIM, SINASC, Censo 2000, Novo CAGED, Siconfi, SIOP, OFAC, SISU, Comex, MapBiomas, natureza jurídica, `id_municipio_*` —, e as armadilhas medidas junto (coluna vazia em faixa de anos, dois formatos na mesma coluna, sentinela, mojibake, categorias que se sobrepõem). `describe_table` devolve no bloco `column_codes`; `aplica_column_codes.py` propaga o status para `schema_dict_status.json`. A fila do que pesquisar a seguir é `schema_dict_prioridade.json` (`scripts/prioriza_schema_dict_status.py`, ranking por uso real)
-- `gotchas/<dataset>.yml` — **escrito à mão**: armadilhas semânticas por dataset (coluna certa × coluna plausível, partição que é snapshot e não fluxo, unidade trocada, sentinela), 123 datasets e 327 armadilhas, todas com `verificado` medido no beelink. `describe_table` devolve no bloco `gotchas`, antes das colunas; o loader recusa entrada sem `verificado`. Plano e fases em `tasks/gotchas_por_dataset.md`. Candidatos novos saem de `scripts/varre_anomalias.py` (min/max/nulos de cada coluna pelos metadados dos parquet, ~15 s no espelho inteiro) — cada um medido antes de virar gotcha.
-- `summaries/<dataset>.yml` — o **cartão** de cada tabela: grão (o que é uma linha), chave, natureza temporal, território, o que se soma, filtros típicos com o valor literal, use para / não use para, e `verificado`. Os campos que o agente deduziu sem medir ficam em `rascunho`. Ao lado, `summaries/<dataset>.perfil.yml` é **gerado** por `scripts/gera_perfil.py` e não se edita à mão: tipo, nulos, distintos, min/max, quartis e top de valores por coluna. Plano e avaliação em `tasks/plans/cartao_tabela.md`: o cartão levou o acerto do Haiku de 21/27 a 27/27; o perfil sozinho ficou em 21/27, porque sem o grão o modelo pega a coluna errada. Os dois chegam aos agentes: `describe_table` do MCP devolve o bloco `cartao` e anexa o perfil recortado a cada coluna (nulos, distintos, `top` em coluna de até 50 valores, senão min/max; a coluna da partição fica sem perfil, porque o perfil da última partição mentiria a cobertura), e `/contexto?dataset=&tabela=` do db.rodado.xyz traz o mesmo via `gera_contexto_db.py`.
-  - **Aprendeu algo numa consulta? Leve para o cartão.** O grão confirmado, o código no formato real (`'2'`, não `'02'`), o filtro sem o qual a conta sai errada, uma coluna que parece a certa e não é, um sentinela. Corrija o campo do cartão do dataset, tire-o de `rascunho` e acrescente ao `verificado` o número medido e a data. O que for armadilha silenciosa (erro que alguém cometeria sem perceber) vai também para `gotchas/<dataset>.yml`, e o cartão cita o `id`. Achado sem medição não entra.
+- `docs/mapa/ERD.md` / `ERD_EN.md` — diagrama mermaid de join por domínio, as 1.612 tabelas (pt-BR / inglês, mesma fonte).
+- `docs/context/` — a camada semântica do espelho: joins (`bridges.yaml`), métricas nomeadas (`metrics.yaml`), hierarquias (`hierarchies.yaml`), armadilhas por dataset (`gotchas/<dataset>.yml`), decode de código (`column_codes.yaml`, `dicionario_coverage.json`). **Leia `docs/context/README.md` antes de escrever join ou métrica à mão** — `resolve_join()`/`get_metric()`/`explain_column()` existem porque isso já saiu errado em produção (ver as 3 regras lá).
+- `docs/pesquisa/hipoteses/` — perguntas e respostas de pesquisa sobre o espelho, incluindo o espaço de trincas de família e o grafo de identificadores CNPJ/CPF. Ver `docs/pesquisa/hipoteses/README.md`.
+- `_rodado_metadata/catalog.parquet` — o catálogo de tabelas (linhas, status, procedência). Colunas e armadilhas conhecidas: `docs/mapa/metadata_catalog.md`.
+- `pages/atlas/` (rodado.xyz/atlas) — mapa navegável de tabelas e join keys. Como é construído: `docs/mapa/atlas.md`. Como ligar um dataset novo nele: `docs/tecnico/housekeeping.md`, item 9.
+- `docs/tecnico/housekeeping.md` — checklist a rodar depois de qualquer scrape novo (view existe? regen de metadados? atlas ligado? contagens no texto atualizadas?).
+- `docs/tecnico/beelink_duckdbrc.md` — tuning do `~/.duckdbrc` no beelink, toggle do llama-server, o que nunca fazer com `temp_directory`.
 
-### Camada semântica — `bridges.yaml`, `metrics.yaml`, `hierarchies.yaml`
+## O que é só local — fora do git
 
-O espelho não tem foreign key, não tem métrica nomeada e não tem hierarquia declarada. Os três YAML em `docs/context/` são onde isso passa a existir como **dado**, não como prosa que o modelo tem que interpretar.
-
-| Arquivo | Responde | Ferramenta MCP |
-|---|---|---|
-| `bridges.yaml` | como duas tabelas se ligam, e qual expressão converte uma ponta na outra | `resolve_join(a, b)`, `explain_column(col)`, `get_join_keys(col)` |
-| `metrics.yaml` | qual é *a* definição de "população", "saldo do CAGED" | `get_metric(nome)`, `list_metrics()` |
-| `hierarchies.yaml` | como subir de subclasse CNAE para divisão, de subcategoria CID para categoria | `rollup(coluna, nivel)` |
-
-Três regras que valem mais que o resto:
-
-1. **`resolve_join` antes de escrever join à mão.** Ele devolve a cláusula `ON` pronta e, quando existe ponte, ela **substitui** a igualdade ingênua em vez de concorrer com ela — `br_anp_combustiveis.precos` guarda `cnpj` sem padding, então `a.cnpj = b.cnpj` está errado e é exatamente o que um match por nome devolveria. Ele também avisa quando uma das pontas está duplicada por sobra de sync — hoje nenhuma está: as 80 sobras de `tmp*.parquet` do sync abortado de 2026-07-05 foram triadas e removidas em 2026-08-23.
-2. **`false_friends` são silenciosos e caros.** `valor` aparece em 91 tabelas de 56 datasets significando coisas diferentes; juntar por ele dá resultado grande, plausível e errado. `explain_column` diz o porquê.
-3. **`verified` não é enfeite.** Toda ponte, métrica e `parent_expr` carrega o que casou quando foi rodado no beelink, com data. Sem isso a linha é aspiracional — trate como não conferida.
-
-Regenerar, na ordem, depois de qualquer sync que mude tabelas:
-
-```bash
-python3 scripts/gera_schemas.py            # beelink        -> schemas.json
-python3 scripts/sync_mcp_schema.py         # schemas.json   -> docs/context/rodado-schema.json
-python3 scripts/build_metadata_catalog.py  # beelink        -> catalog.parquet + views + datasets.md
-python3 scripts/gera_catalog_md.py         # catalog.parquet -> docs/mapa/catalog.md (ver docs/tecnico/housekeeping.md item 7)
-python3 scripts/gera_join_keys.py          # bridges.yaml   -> docs/context/join_keys.md
-python3 scripts/gera_metrics_json.py       # metrics.yaml   -> docs/context/metrics.json
-python3 scripts/valida_metrics.py          # confere metrics.yaml + hierarchies.yaml
-python3 scripts/gera_schema_graph.py       # -> pages/atlas/schema_graph.json
-python3 scripts/build_atlas.py             # -> pages/atlas/index.html
-python3 scripts/gera_contexto_db.py        # gotchas + YAML + atlas + respostas -> db/contexto.json (/contexto, /exemplos do db.rodado.xyz; redistribuir)
-python3 scripts/gera_summaries_web.py      # docs/context/summaries/*.yml + _ultima_data.json -> pages/assets/summaries.json e summaries/<dataset>.json (cartões das tabelas e "dados até" do painel do atlas)
-python3 scripts/gera_dicionario_coverage.py  # beelink -> docs/context/dicionario_coverage.json (rerodar quando um dicionario mudar)
-python3 scripts/gera_schema_dict_status.py   # beelink + dicionario_coverage.json + bridges.yaml + hierarchies.yaml -> docs/context/schema_dict_status.json
-python3 scripts/llm_triage_schema_dict_status.py  # passada de leitura humana/LLM em cima do resultado acima — sempre depois, não é automático
-python3 scripts/aplica_column_codes.py       # column_codes.yaml -> schema_dict_status.json — sempre depois dos dois acima
-python3 scripts/prioriza_schema_dict_status.py  # uso real -> docs/context/schema_dict_prioridade.json (fila do estágio 4)
-```
-
-`sync_mcp_schema.py` é o passo que se esquece: sem ele `mcp_server.py` continua lendo o
-schema antigo em `docs/context/rodado-schema.json` e não enxerga nenhuma coluna
-nova — `describe_table` mente calado.
-
-`schemas.json` e `rodado-schema.json` ficam **fora do git** (`.gitignore`, purgados do
-histórico em 2026-09-24): um clone novo não os tem, e `mcp_server.py` só
-funciona depois de `gera_schemas.py` + `sync_mcp_schema.py`.
-
-`join_keys.md` e `metrics.json` são **gerados** — editar o YAML, nunca a saída. `valida_metrics.py` separa hard de soft como o firewall de `run_sql`: DML na expressão rejeita, coluna ausente só avisa, porque `_check_read_only` revalida antes de executar.
-
-### `docs/pesquisa/hipoteses/` — perguntas e respostas
-
-`docs/pesquisa/hipoteses/perguntas.md` é a fonte fixa (43 temas × 5 perguntas,
-`n=X: dataset_a, dataset_b*`, nunca editado por script);
-`docs/pesquisa/hipoteses/respostas.md` é o log de trabalho vivo — cada pergunta
-respondida no beelink muda o status ali (`✅`/`◐`/`⏳` por `T<tema>-<item>`), e
-o harness (branch `harness-gemma`) lê os dois para montar seus casos. Um item `⏳`
-costuma vir com o motivo exato no próprio texto (dado corrompido, tabela
-ausente, sem chave compartilhada) — a seção "Bloqueios mapeados" ao fim de
-`respostas.md` cataloga o que está estruturalmente bloqueado (precisa de
-re-scraping ou campo novo), separado do que só ainda não foi tentado.
-
-`respostas.md` marca **dois eixos** desde 2026-09-07: o status (`✅ ◐ ⏳ ❌`, "a
-query rodou?") e a **força do achado** (`🟢` forte, `🟡` moderada, `🟠` fraca,
-`⚪` nula, `⬜` descritivo, mais os modificadores `↯` contraria a hipótese e `⚠`
-número frágil), logo depois do status. O segundo eixo é documental: um achado
-`⚪` (relação nula) segue valendo como pergunta respondida.
-
-### `docs/pesquisa/hipoteses/respostas_trincas.md` — o espaço inteiro, enumerado
-
-`docs/pesquisa/hipoteses/respostas.md` responde perguntas escritas uma a uma.
-`respostas_trincas.md` **enumera e roda o espaço inteiro de trincas de
-família de uma vez**, em duas rodadas fundidas num único documento (h2+h3,
-mescladas manualmente em 2026-09-07). O que torna isso barato: uma trinca de
-famílias é um **trio de colunas do painel municipal**, e o painel já foi
-extraído do beelink pelas rodadas anteriores. A rodada h2 fundiu três painéis
-(`20260906`, `inedito`, `familias`) em 5.571 municípios × 270 colunas e rodou
-as **1.330 trincas** que isso permitia, em 8 segundos, sem tocar no beelink. A
-rodada h3 estendeu o painel para **358 colunas** (37 datasets novos — ENEM,
-Censo Escolar, SEEG, MapBiomas, ESTBAN, BNDES, SIA, ANS, SISVAN, Imunizações,
-filiação partidária) e abriu um segundo eixo que a cascata F0–F7 de
-`tasks/plans/hipoteses.md` nunca contava por exigir chave territorial: o **grafo de
-identificadores** CNPJ/CPF (papéis de CNPJ sobre o mesmo cadastro — sancionado,
-fornecedor, embargado — e político-candidato como sócio).
-
-Os scripts de ambas as rodadas vivem em `scripts/hipoteses/` com prefixo `h2_`/
-`h3_` (evita colidir com a numeração dos blocos SQL originais):
-
-```bash
-python3 scripts/hipoteses/h2_00_painel_mestre.py     # 3 paineis -> painel_mestre.csv
-python3 scripts/hipoteses/h2_10_roda_trincas.py      # -> pares.csv + trincas.csv
-python3 scripts/hipoteses/h2_20_escreve_respostas.py # -> a secao de trincas de respostas_trincas.md
-
-python3 scripts/hipoteses/h3_10_estende_painel.py    # painel 270 -> 358 colunas
-python3 scripts/hipoteses/h3_40_roda_trincas.py      # eixo territorio (extensao do h2)
-python3 scripts/hipoteses/h3_20_matriz_cnpj.py       # eixo identificador (lift, nao correlacao)
-python3 scripts/hipoteses/h3_30_politico_empresa.py  # a ponte entre os dois eixos
-python3 scripts/hipoteses/h3_50_escreve.py           # -> fragmento em tasks/hipoteses_resultado/, colar a mao
-```
-
-**Os dois `_escreve` geram documentos separados, não o arquivo final** — a
-fusão em `respostas_trincas.md` foi manual; rodar `h3_50_escreve.py` de novo
-produz um fragmento em `tasks/hipoteses_resultado/hipoteses3/respostas_h3_fragmento.md`
-que precisa ser colado à mão nas seções correspondentes ("O que a corrida
-achou" até "Como refazer"), não um doc pronto para publicar.
-
-A extração SQL do h3 (`scripts/hipoteses/h3_*.sql` + `h3_roda.sh`, retomável por
-sentinela `.done_<nome>`) roda no beelink offline — como os arquivos ficam soltos
-junto com o resto de `scripts/hipoteses/`, faça stage antes do `scp` (`mkdir -p
-/tmp/h3 && cp scripts/hipoteses/h3_*.sql scripts/hipoteses/h3_roda.sh /tmp/h3/`).
-
-`scripts/hipoteses/h2_familias_colunas.yaml` é o elo que faltava — `familias.yaml`
-mapeia dataset→família, o painel tem coluna, e ninguém mapeava coluna→família.
-Ele também carrega as duas guardas sem as quais a corrida devolve artefato como
-descoberta: `duplicatas_conceituais` (mesma quantidade por duas fontes, ou
-elegibilidade compartilhada — o Pé-de-Meia exige CadÚnico, então correlacioná-lo
-com o Bolsa Família é tautologia) e `metricas_de_registro` (coluna que mede a
-capacidade de notificar/declarar/fiscalizar antes do fenômeno). `h3_familias_colunas.yaml`
-complementa com as famílias novas do painel estendido. **Editar o YAML, nunca o
-`respostas_trincas*.md` gerado.**
-
-Três decisões de método que não devem ser redescobertas: `log(área)` entra
-**sempre** no controle (metade do painel é normalizada por área, e o `1/área`
-compartilhado produz correlação sozinho — foi o que separou o B5 publicado, +0,36,
-do valor correto, +0,32); só colunas **intensivas** entram como perna; e o FDR
-de Benjamini-Hochberg corre sobre os pares testados (5.325 no h2, 10.279 no h3),
-porque escolher o maior |r| de milhares de testes sem correção é garimpo de
-ruído. O resultado territorial é negativo e vale registrar: sob controle de
-porte, renda, área e UF, nenhuma trinca fecha as três pernas acima de |r| = 0,50
-no h2; o h3 amplia a base (1.950 pares sobrevivem de 10.279) sem mudar essa
-conclusão. No eixo de identificador, a medida é **lift** (`P(B|A) ÷ P(B)`), não
-correlação — e o Mantel-Haenszel estratificado por CNAE×idade cumpre o papel do
-parcial: quando ele desaba, o achado era porte e setor, não papel de CNPJ.
-
-A TUI Rust `ask`, que resolvia métrica por frase ("Tier 1"), foi removida (`ask/` apagado em `58ab7c7`, 2026-08-23). A mesma lógica de Tier 1 sobrevive reimplementada em JS — `resolverMetrica()` em `web/static/prompt.js` —, parte do app web `ask-web` que vive só no branch local `ask-web` (sem cópia no remoto, não mesclado em `main`, sem worktree). Ela resolve métrica **antes** da seleção por embedding, por match exato de nome ou sinônimo — nunca por similaridade, porque "população de SP" e "população carcerária" ficam perto no espaço vetorial e querem tabelas diferentes. **Isto não é `mcp_server.py`**: o `get_metric()` do MCP é um lookup direto sem parser de frase (confirmado em `mcp/MCP.md`) — não faz longest-match sobre uma pergunta em texto livre, não tem Tier 2/3. Três detalhes do Tier 1 que custaram trabalho na versão Rust e não devem ser redescobertos:
-
-1. O match é por nome **ou sinônimo**, exato, depois de normalizar acento e caixa, e **o mais longo vence** — sem isso "pib per capita" resolve como "pib".
-2. O Tier 1 roda **antes** do embedding. Depois dele economiza a chamada ao modelo mas ainda paga o embedding inteiro (~18s → 0,00s).
-3. Cai para o modelo quando sobra **qualquer** termo não explicado na pergunta. "população por município em 2022" tem que cair: responder o agregado nacional a uma pergunta sobre municípios é errado e silencioso.
-
-### `_rodado_metadata/catalog.parquet` — o catálogo
-Gerado por `scripts/build_metadata_catalog.py`, que também recria as views `_rodado_metadata` (1 linha por tabela) e `_rodado_datasets` (1 linha por dataset) no beelink. Rode-o depois de qualquer sync que mude tabelas — nunca edite o parquet à mão.
-
-| Coluna | O que é |
-|---|---|
-| `dataset`, `table` | identificação; `dataset.table` é o caminho DuckDB |
-| `source_name` / `source_url` / `source_type` | procedência. `Base dos Dados` + `mirror` para o espelho; nome do órgão + formato para o que o projeto raspa |
-| `rows`, `num_files`, `size_bytes` | medidos via `parquet_metadata`, incluindo tabelas particionadas; para `duckdb_native` o `rows` vem de um `count(*)` no DuckDB |
-| `scrape_date` | data do `done/datasets_to_scrap_done.md`, ou o mtime do parquet mais recente |
-| `status` | `mirrored`, `done`, `blocked → mcp-todo`, `view_orfa`… |
-| `source` | `disk` (parquet local, contado por `parquet_metadata`), `duckdb_native` (sem parquet, mas a view lê tabela nativa dentro do `.duckdb` — contado pelo próprio DuckDB) ou `view_only` (sem parquet **e** sem linhas) |
-| `provenance_notes` | notas do `done/datasets_to_scrap_done.md`, truncadas em 500 chars |
-
-Ao contar tabelas ou linhas, filtre **`source <> 'view_only'`** — nunca `source = 'disk'`.
-
-As 8 tabelas que eram registradas como `view_orfa` com `rows=0` não têm parquet local, e `duckdb_native` descreve só uma delas direito. Conferido em 2026-09-24: há uma única tabela nativa dentro de `basedosdados.duckdb`, de uso local. As 6 do SIPNI (`br_ms_sipni_dicionarios.*`, `br_ms_sipni_doses_historicas.doses_agregadas`, `br_ms_sipni_microdados.vacinacao_2020` — ~196M linhas no catálogo de 04/09) são views sobre **`s3://healthbr-data/...` no Cloudflare R2**, um bucket público de terceiros ([healthbr-data](https://github.com/SidneyBissoli/healthbr-data), CC-BY 4.0) com token de leitura publicado no próprio README. O `~/.duckdbrc` o lê pelo `SECRET healthbr` (restrito a esse bucket), e a trava de arquivo libera só o prefixo `s3://healthbr-data/`. Leitura remota é lenta (minutos num `count(*)` da `vacinacao_2020`); espelhar em disco está em [`tasks/plans/espelhar_healthbr_data.md`](tasks/plans/espelhar_healthbr_data.md), adiado por falta de HD (217,9 GiB).
-
-### `pages/atlas/` — Rodado Atlas (rodado.xyz/atlas)
-Mapa navegável das tabelas e das colunas de join que as conectam. O espelho não tem foreign key — o que o liga são colunas que significam a mesma coisa em mais de uma tabela, a mesma seleção que `gera_join_keys.py` faz.
-
-```bash
-python3 scripts/gera_schema_graph.py   # schemas.json + catalog.parquet -> pages/atlas/schema_graph.json
-python3 scripts/build_atlas.py         # + pages/atlas/_page.html       -> pages/atlas/index.html
-python3 scripts/build_atlas.py /tmp/atlas.html   # também emite a cópia autocontida pra Artifact
-```
-
-- `_page.html` é a **única fonte**; `index.html` é gerado — não edite o gerado.
-- O grafo é **bipartido**: tabela→chave, nunca tabela→tabela. Par a par seriam 89.598 arestas (novelo); pela chave são 2.151.
-- Duas distribuições, ambas pré-calculadas em Python e embarcadas no JSON: `grade` (cartões de dataset empacotados) e `temas` (um território por tema, chaves flutuando entre os que ligam).
-- O painel repete o que `describe_table` do MCP diz de cada tabela: armadilhas (`gotchas/`), colunas com código (`dicionario_coverage.json`, `coded_differently`, `column_codes.yaml`; o `nao_verificado` fica de fora, a pedido), métricas (`metrics.yaml`), busca rápida (`ORDENADA_POR` de `db/consulta.py`), data da coleta e, dos perfis, nulos e valores mais frequentes, além do cartão e do "dados até" de `pages/assets/summaries/`. `gera_schema_graph.py` grava um JSON por dataset em `pages/atlas/detalhes/`, buscado quando o painel abre. A fonte aparece só pelo nome: a URL das fontes raspadas é o mapa de coleta, que fica fora do repo.
-- `?db=<dataset>` abre o atlas já centrado naquele dataset com o painel aberto (`rodado.xyz/atlas?db=br_me_rais`); o parâmetro acompanha a seleção via `replaceState`, então a barra de endereço é sempre um link pro que está na tela.
-- **Cor = tema**, nunca chave. Só 4 matizes passam o gate all-pairs de CVD, então os 10 temas dependem de território rotulado + isolamento por clique; a cor reforça, não carrega sozinha.
-- Depois de qualquer sync que mude tabelas: `gera_schemas.py` → `build_metadata_catalog.py` → `gera_schema_graph.py` → `build_atlas.py`.
-
-## O que é só local — `scripts/scrap/` e `docs/context/privado/`
-
-Desde 2026-10-07 os scrapers (`scripts/scrap/`) e o mapa de fontes e macetes de coleta
-(`docs/context/privado/source_freshness_checks.yaml`) ficam **fora do git**, a pedido:
-são meses de trabalho para chegar a cada fonte (endpoints não documentados, contornos de
-WAF, proxy BR) e o repositório é público. Procedimentos de manutenção
-sensíveis também vivem só em `docs/context/privado/` (ver o `README.md` de lá). Um clone novo não os tem, e o histórico foi reescrito em 2026-10-07 para tirá-los
-também dos commits antigos. Nada que dependa
-deles pode ser obrigatório no caminho de quem só consulta o espelho.
-
-## `tasks/` — local, fora do git
-
-`tasks/` está no `.gitignore` desde 2026-09-24: existe só no disco desta máquina, sem histórico. `tasks/README.md` é o índice único do que está **em andamento**: o projeto na raiz de `tasks/`, o harness em `tasks/harness_tasks.md` (era `harness/tasks/`, depois a pasta `tasks/harness/`), os planos que ainda não começaram em `tasks/plans/`. Plano que começa a rodar vai para `tasks/`; mudou o status de um arquivo, mude a linha dele no índice na mesma edição. Como não há `git log` para recuperar nada, **apagar um arquivo de `tasks/` é definitivo** — o que ele ensinou vai antes para um lugar versionado (`docs/`). Scripts que leem dali (`build_metadata_catalog.py` lê `tasks/done/datasets_to_scrap_done.md` e, se existir, `tasks/plans/datasets_to_scrap.md`) seguem funcionando localmente e toleram a ausência dos arquivos num clone novo.
-
-## beelink: `~/.duckdbrc` e a trava de arquivo
-
-Desde 2026-10-04, o llama-server (Gemma, `127.0.0.1:8099`) não fica mais sempre no ar: sobe com `~/bin/llama-on` e desce com `~/bin/llama-off` (argumentos em `~/llm/llama-server.args`, log em `~/llm/llama-server.log`). Os dois chamam `~/bin/duckdb-modo`, que ajusta o `~/.duckdbrc`: com o modelo no ar, `memory_limit = '8GB'` e `threads = 8` (o limite é **por processo**, e o llama-server ocupa ~20 dos 27 GB); sem ele, `'16GB'` e `14` threads (de 16). O harness (branch `harness-gemma`) precisa de `llama-on` antes. O `~/.duckdbrc` tem ainda `enable_progress_bar = false`, `autoinstall_known_extensions = false` e o despejo em `~/duckdb_tmp` no NVMe, com teto de 100 GB. O `SECRET healthbr` vem entre `.output /dev/null` e `.output`: sem isso o `CREATE SECRET` imprime uma tabela no stdout de toda sessão e quebra o `-json` do `run_sql` e do harness. **Nunca** apontar `temp_directory` para `/dev/shm` nem `/tmp`: os dois são tmpfs, e despejar lá é despejar na RAM. Em 2026-09-24 havia 10 GB de despejo órfão em `/dev/shm` com o swap 100% cheio, e o OOM killer matou o llama-server. Nenhuma chave vai no `.duckdbrc`.
-
-`mcp_server.py` com `MCP_BACKEND=ssh` (`_run_sql_ssh`) — e `harness/beelink.ts`, no branch `harness-gemma` — abrem cada sessão com `allowed_directories` em `~/rodado` e `~/duckdb_tmp`, o prefixo `s3://healthbr-data/`, `enable_external_access=false` e `lock_configuration=true`: a SQL vem de um modelo, e um `SELECT * FROM read_text('~/.ssh/...')` passa pela checagem de somente-leitura. Ferramenta nova que leia fora de `~/rodado` precisa entrar na lista, não desligar a trava.
-
-**Corrigiu um parquet, recrie a view que o lê.** A view guarda no catálogo os nomes e tipos de coluna do momento em que foi criada. Em 2026-09-24, `information_schema.columns` e `duckdb_columns()` falhavam no `.duckdb` inteiro (`Invalid unicode (byte sequence mismatch)`) porque a view `br_mjsp_ckan.infopen` ainda tinha os nomes de coluna com bytes inválidos, de antes do patch de footer de 2026-09-10 no parquet. `DESCRIBE` não acusa, porque religa a view contra o parquet atual; só `duckdb_columns()` lê o nome guardado. Um `WHERE` não isola a tabela culpada (a função materializa o catálogo todo antes de filtrar): bisecte por `DROP` numa cópia do arquivo. A correção é reexecutar o próprio SQL da view (`duckdb_views().sql`) como `CREATE OR REPLACE VIEW`, pelo CLI `~/bin/duckdb`, com ninguém segurando o arquivo.
+- `scripts/scrap/` e `docs/context/privado/` (endpoints não documentados, contornos de WAF, proxy BR): fora do git desde 2026-10-07, a pedido — meses de trabalho para chegar a cada fonte, repositório é público. Histórico reescrito para tirá-los dos commits antigos também. Nada que dependa deles pode ser obrigatório no caminho de quem só consulta o espelho.
+- `tasks/`: gitignored desde 2026-09-24, sem histórico no git — **apagar um arquivo de lá é definitivo**. `tasks/README.md` é o índice único do que está em andamento. O que um arquivo ensinou vai para um lugar versionado (`docs/`) antes de ser removido.
+- `schemas.json` e `docs/context/rodado-schema.json`: fora do git (purgados do histórico em 2026-09-24) — um clone novo não os tem, e `mcp_server.py` só funciona depois de `gera_schemas.py` + `sync_mcp_schema.py`.
+- `join_keys.md` e `metrics.json` são **gerados** — editar o YAML de origem, nunca a saída.
 
 ## Environment Variables
 
@@ -262,37 +59,35 @@ Desde 2026-10-04, o llama-server (Gemma, `127.0.0.1:8099`) não fica mais sempre
 |----------|---------|---------|
 | `BEELINK_HOST` | scripts, mcp_server | SSH hostname for beelink (default: `beelink`) |
 
-## Data Querying (DuckDB/CNPJ datasets)
+## Data Querying (DuckDB)
 
 - Always include partition filters on large tables to avoid timeouts.
-- **Check `list_metrics()`/`get_metric()` before hand-writing a per-capita/rate/ratio.** `metrics.yaml` exists specifically because unit assumptions are easy to get wrong and the wrong number still looks plausible — `pib_per_capita` is pre-verified (`SUM(pib)/NULLIF(SUM(populacao),0)`, no scaling factor) precisely because `pib` is stored in whole BRL, not thousands, and assuming otherwise silently inflates results 1,000x.
-- **Classifying `br_me_cnpj.estabelecimentos` by name never needs a join to `.empresas`** — `nome_fantasia` already lives on `estabelecimentos`. An unbounded multi-`ILIKE` join against the full `.empresas` table (tens of millions of rows) is both unnecessary and the most expensive mistake available in this mirror — a hung one held an exclusive DuckDB lock on beelink for 2+ hours on 2026-08-24 (see `tasks/done/mcp_search_refino.md` item 7).
-- **`br_me_cnpj` guarda só o cadastro mais recente; o passado está em `*_historico`.** Desde 2026-10-13 `empresas`, `estabelecimentos` e `socios` têm um único retrato (o último mês publicado) — não precisam de filtro de `ano`/`mes`, e filtrar um mês antigo devolve zero linhas. A série 2021-11 em diante vive em `empresas_historico` e `estabelecimentos_historico` (uma linha por período sem mudança, `inicio`/`fim` em `aaaamm`; estado na data X = `inicio <= X AND fim >= X`) e em `socios_historico` (uma linha por vínculo, `primeiro_retrato`/`ultimo_retrato`; ex-sócio = `NOT no_ultimo_retrato`). Os retratos mensais antigos (283 GB) foram apagados e não têm cópia: o histórico é a única fonte do passado. Mês novo, na ordem: `scripts/sync/atualiza_cnpj_rf.py --apply` (baixa só o que é mais novo que o disco) → `scripts/sync/gera_cnpj_historico.py --tabela <t> --anexa` para as três → apagar os `rf_<mês anterior>_*` → `scripts/repara_views_beelink.py --apply` → regen do catálogo. O `--anexa` precisa do retrato novo **e** do histórico publicado, e dá o mesmo resultado de regerar tudo (conferido linha a linha em 2026-10-13). Armadilhas em `docs/context/gotchas/br_me_cnpj.yml`.
+- **Check `list_metrics()`/`get_metric()` before hand-writing a per-capita/rate/ratio.** `metrics.yaml` exists specifically because unit assumptions are easy to get wrong and the wrong number still looks plausible — `pib_per_capita` is pre-verified (`SUM(pib)/NULLIF(SUM(populacao),0)`, no scaling factor) precisely because `pib` is stored in whole BRL, not thousands, and assuming otherwise silently inflates results 1.000x.
+- **Check `docs/context/gotchas/<dataset>.yml` before querying a dataset.** E.g. `br_me_cnpj`: `empresas`/`estabelecimentos`/`socios` hold only the latest snapshot — history lives in `*_historico`, and filtering an old `ano`/`mes` on the current tables silently returns zero rows. Monthly-refresh procedure: `docs/tecnico/mes_novo_cnpj.md`.
+- **Classifying `br_me_cnpj.estabelecimentos` by name never needs a join to `.empresas`** — `nome_fantasia` already lives on `estabelecimentos`. An unbounded multi-`ILIKE` join against the full `.empresas` table is both unnecessary and the most expensive mistake available in this mirror — a hung one held an exclusive DuckDB lock on beelink for 2+ hours on 2026-08-24.
 - Validate query results against sanity bounds (e.g., contract values, row counts) before reporting; flag anomalies like trillion-real totals.
 - Prefer name-based filtering combined with CPF when CPF joins alone produce implausible cardinality.
 - Before presenting query results: (1) state the expected order of magnitude, (2) flag any row that exceeds it, (3) verify the count two independent ways. Only report numbers that pass all three checks.
 
-## BigQuery, GCP e S3: fora do caminho das consultas
+## ⚠️ BigQuery, GCP e S3: fora do caminho das consultas — SEM EXCEÇÕES
 
-**Não use BigQuery, GCP nem a CLI `bq` para consultar dados, qualquer que seja o tamanho da tabela ou a complexidade do join: toda consulta vai pelo DuckDB no beelink (`ssh beelink`).** O motivo é custo, explicado abaixo junto da única exceção.
+**NUNCA usar BigQuery, GCP ou a CLI `bq` para consultar dados. JAMAIS.** Não importa o tamanho da tabela ou a complexidade do join — toda consulta vai pelo DuckDB no beelink via SSH (`ssh beelink`).
 
-**S3/Hetzner só para o `db.rodado.xyz`.** O bucket `s3://baseldosdados` é a cópia do espelho que o beelink envia com `~/scripts/s3_sync_rodado.sh` (alias `hzS3` do `mc`). Desde 2026-10-11, a pedido, o `db.rodado.xyz` (`db/`) é o **único** consumidor que consulta por ele (roda no finland, sem túnel para o beelink). Desde 2026-10-28, também a pedido, o `mcp_server.py` pode chegar ao S3 **através** do db.rodado.xyz: o padrão `MCP_BACKEND=http` manda a SQL ao `/query`, com as mesmas recusas e avisos, e nunca abre o bucket ele mesmo. Todo o resto (agentes por SSH, harness, scripts, análises) não consulta pelo S3: vai pelo beelink, e toda view do DuckDB no beelink que ainda referencie `s3://baseldosdados` está obsoleta — use `read_parquet('~/rodado/<dataset>/<table>/*.parquet')` com o caminho local. Lembrete de custo: o antigo `db.xn--2dk.xyz` saiu do S3 por lentidão de throughput do httpfs em scan OLAP, não por latência (ver "Architecture"); consulta pesada no `db.rodado.xyz` vai sentir isso.
+**NUNCA consultar por S3/Hetzner diretamente fora do `db.rodado.xyz`.** O bucket `s3://baseldosdados` é a cópia do espelho que o beelink envia; desde 2026-10-11 o **único** consumidor que consulta por ele é `db.rodado.xyz` (`db/`, roda no finland, sem túnel para o beelink). Desde 2026-10-28 `mcp_server.py` pode chegar ao S3 **através** do db.rodado.xyz (`MCP_BACKEND=http`, manda a SQL ao `/query`, nunca abre o bucket ele mesmo). Todo o resto — agentes por SSH, harness, scripts, análises — consulta pelo beelink; toda view do DuckDB que ainda referencie `s3://baseldosdados` está obsoleta (use `read_parquet('~/rodado/<dataset>/<table>/*.parquet')` com o caminho local).
 
-Essa regra é sobre **servir consultas de dado** — nunca usar BigQuery pra isso, sem exceção.
+Essa regra é sobre **servir consultas de dado** — nunca usar BigQuery pra isso, sem exceção. **Única exceção, estritamente escopada**: manutenção do mirror (`scripts/sync-with-source.md`), usando **somente** consulta interativa em modo Sandbox gratuito do BigQuery (sem conta de billing, cota mensal ~900GB/1TB) — `bq query` ou a Storage Read API sem billing —, nunca `bq extract` nem operação que dependa de billing ativo. **Se billing for ativado em qualquer projeto GCP usado aqui, essa exceção acaba imediatamente** — volta a ser JAMAIS, sem exceção nenhuma.
 
-Existe uma **única exceção, estritamente escopada**: manutenção do mirror do beelink (`scripts/sync-with-source.md`), usando **somente consulta interativa em modo Sandbox gratuito** (sem conta de billing, cota mensal ~900GB/1TB) — `bq query` ou a mesma consulta com o resultado lido pela Storage Read API, que funciona sem billing e é o que `scripts/sync/ressincroniza_bq.py` usa (confirmado a pedido em 2026-10-08) —, nunca `bq extract` nem qualquer operação que dependa de billing ativo. Essa exceção existe só porque o Sandbox sem billing tem custo zero garantido.
-
-**Se billing for ativado em qualquer projeto GCP usado aqui, essa exceção acaba imediatamente — volta a ser JAMAIS, sem exceção nenhuma**, já que o que torna o uso pontual de BigQuery seguro hoje é justamente a impossibilidade de gerar custo.
+`mcp_server.py` (`MCP_BACKEND=ssh`, `_run_sql_ssh`) e `harness/beelink.ts` (branch `harness-gemma`) abrem cada sessão com `allowed_directories` restrito a `~/rodado` e `~/duckdb_tmp` (+ o prefixo `s3://healthbr-data/`), `enable_external_access=false` e `lock_configuration=true`: a SQL vem de um modelo, e um `SELECT * FROM read_text('~/.ssh/...')` passa pela checagem de somente-leitura. Ferramenta nova que leia fora de `~/rodado` precisa entrar na lista, não desligar a trava.
 
 ---
 
 ## Key Conventions
 
 - **Never use GCP, BigQuery, or `bq` CLI for queries** — all data access goes through DuckDB only.
-- **Never query through S3/Hetzner** — the only exception is the `db.rodado.xyz` front end (`db/`), which may read `s3://baseldosdados` instead of tunneling to beelink; the MCP's default `http` backend reaches it only through db.rodado.xyz's `/query`. Agents, harness and scripts otherwise go through beelink.
-- **SSH to beelink** for all SQL queries — `ssh beelink '~/bin/duckdb -readonly -json ~/rodado/basedosdados.duckdb'` (SQL piped over stdin, SET enable_progress_bar=false first). Always pass `-readonly`: DuckDB takes an exclusive file lock even for a bare SELECT unless told otherwise, and multiple sessions query this same file concurrently — a non-readonly connection blocks every other one, including read-only attempts, until it disconnects. See `feedback_duckdb_readonly_no_kill` — never kill the process holding the lock, it's very likely another session's real work, not a stuck query. beelink is the project's only data source — everything is local parquet + DuckDB, no live web service. Set BEELINK_HOST env var if the hostname differs.
+- **Never query through S3/Hetzner** — the only exception is the `db.rodado.xyz` front end (`db/`), which may read `s3://baseldosdados` instead of tunneling to beelink; the MCP's `http` backend reaches it only through db.rodado.xyz's `/query`. Agents, harness and scripts otherwise go through beelink.
+- **SSH to beelink** for all SQL queries — `ssh beelink '~/bin/duckdb -readonly -json ~/rodado/basedosdados.duckdb'` (SQL piped over stdin, SET enable_progress_bar=false first). Always pass `-readonly`: DuckDB takes an exclusive file lock even for a bare SELECT unless told otherwise, and multiple sessions query this same file concurrently — a non-readonly connection blocks every other one until it disconnects. Never kill the process holding the lock, it's very likely another session's real work, not a stuck query. beelink is the project's only data source by default. Set `BEELINK_HOST` if the hostname differs.
 - DuckDB always runs read-only; no writes to the database from queries.
-- Queries on large tables must filter on partition columns (`ano`, `mes`, `sigla_uf`) — this is enforced in prompts.
+- Queries on large tables must filter on partition columns (`ano`, `mes`, `sigla_uf`).
 - SQL dialect is DuckDB; BigQuery syntax does not apply.
 - `docs/mapa/overview/` contains per-theme markdown summaries used as LLM context.
 - `docs/pesquisa/queries/` contains example SQL and CNAE audit analysis files.

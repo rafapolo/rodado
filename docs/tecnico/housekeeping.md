@@ -48,8 +48,8 @@ diferentes para dois problemas diferentes.)
 
 ## 2. Regen de metadados, sempre nesta ordem
 
-Depois que a view existir, roda a cadeia inteira documentada na seção
-"Camada semântica" deste `AGENTS.md` — `gera_schemas.py` →
+Depois que a view existir, roda a cadeia inteira documentada em
+`docs/context/README.md`, seção "Ordem do regen" — `gera_schemas.py` →
 `sync_mcp_schema.py` → `build_metadata_catalog.py` → `gera_join_keys.py` (e
 o resto, se o schema mudou o bastante). `sync_mcp_schema.py` é o passo mais
 esquecido: sem ele, `describe_table` continua mentindo sobre colunas novas.
@@ -236,8 +236,8 @@ DESCRIBE <dataset>.<tabela>;
 
 Divergiu: reexecute o próprio SQL da view (`duckdb_views().sql`) como
 `CREATE OR REPLACE VIEW`, ou `scripts/repara_views_beelink.py`, com ninguém
-segurando o arquivo e o SQL antigo salvo antes (ver `AGENTS.md`, "beelink:
-`~/.duckdbrc` e a trava de arquivo").
+segurando o arquivo e o SQL antigo salvo antes (ver
+`docs/tecnico/beelink_duckdbrc.md`).
 
 ## 11. Armadilha achada → vai para os **dois** canais de conhecimento
 
