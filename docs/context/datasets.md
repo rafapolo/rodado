@@ -158,7 +158,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_me_caged` | 4 | 298.358.844 | 2026-10-11 |
 | `br_me_clima_organizacional` | 1 | 16.436 | 2026-07-09 |
 | `br_me_cno` | 3 | 1.020.894 | 2026-07-09 |
-| `br_me_cnpj` | 8 | 533.889.400 | 2026-10-13 |
+| `br_me_cnpj` | 8 | 537.025.666 | 2026-10-29 |
 | `br_me_comex_stat` | 5 | 133.659.718 | 2026-10-09 |
 | `br_me_estoque_divida_publica` | 1 | 124.419 | 2026-07-09 |
 | `br_me_exportadoras_importadoras` | 1 | 3 | 2026-07-09 |
@@ -173,7 +173,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_mf_divida_ativa` | 2 | 143.151.652 | 2026-10-15 |
 | `br_mg_belohorizonte_smfa_iptu` | 2 | 21.463.825 | 2026-07-06 |
 | `br_mgi_compras_publicas` | 21 | 98.115.757 | 2026-10-28 |
-| `br_mgi_pncp` | 4 | 1.493.757 | 2026-10-28 |
+| `br_mgi_pncp` | 4 | 1.526.824 | 2026-10-29 |
 | `br_minc_salic` | 18 | 4.370.266 | 2026-10-25 |
 | `br_mj_consumidorgovbr` | 1 | 15.392.507 | 2026-10-21 |
 | `br_mj_sinesp` | 3 | 9.097.924 | 2026-10-07 |
