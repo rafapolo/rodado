@@ -1,0 +1,25 @@
+dataset: br_camara_dados_abertos
+gotchas:
+  - id: cnpj_fornecedor_pontuacao_deslocada
+    resumo: "Em despesa, cnpj_cpf_fornecedor vem com a pontuação no lugar errado ('133.470.160/0011-7' é o CNPJ 13.347.016/0001-17). Os dígitos estão certos: compare só os dígitos."
+    detalhe: >
+      É assim no CSV da própria Câmara (Ano-AAAA.csv.zip), não erro de
+      conversão. Juntar com br_me_cnpj ou com a CEAPS do Senado pelo texto
+      cru não casa nada; use regexp_replace(cnpj_cpf_fornecedor, '[^0-9]',
+      '', 'g') e, para a empresa, os 8 primeiros dígitos (cnpj_basico).
+    tabelas: [despesa]
+    colunas: [cnpj_cpf_fornecedor]
+    severidade: silencioso
+    verificado: "5.194.376 de 5.235.506 linhas no padrão 000.000.000/0000-0 e nenhuma no padrão 00.000.000/0000-00; as mesmas 5.194.376 têm 14 dígitos — medido 2026-10-30, depois da recoleta da fonte"
+  - id: fornecedor_por_intermediario
+    resumo: "O mesmo fornecedor aparece com vários nomes e às vezes por intermediário de pagamento ('ADYEN A SERVIÇO DE FACEBOOK', 'DLOCAL A SERVIÇO DE FACEBOOK'). Agrupe por raiz de CNPJ, não por nome; e saiba que o intermediário tem CNPJ próprio."
+    detalhe: >
+      Facebook Serviços Online do Brasil aparece com pelo menos 6 grafias
+      sob o mesmo CNPJ 13347016; buscar por nome pega também falsos
+      positivos ('AMAZON' casa gráficas e rádios do Amazonas, 'META' casa
+      postos e agências). O impulsionamento pago por agência de marketing
+      fica no CNPJ da agência e não aparece como big tech.
+    tabelas: [despesa]
+    colunas: [fornecedor, cnpj_cpf_fornecedor]
+    severidade: silencioso
+    verificado: "raiz 13347016 em DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR: 4.742 linhas, R$ 12.185.925; pelo nome (FACEBOOK SERVI*) ~R$ 12,2 mi; Adyen (raiz 14796606) e dLocal (25021356) a serviço do Facebook somam ~R$ 19 mil — medido 2026-10-30"

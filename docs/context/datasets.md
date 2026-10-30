@@ -23,14 +23,14 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_anm` | 22 | 8.380.445 | 2026-10-21 |
 | `br_anp_combustiveis` | 1 | 2.205.259 | 2026-10-21 |
 | `br_anp_precos_combustiveis` | 1 | 16.887.683 | 2026-10-09 |
-| `br_ans_beneficiario` | 1 | 2.307.338.481 | 2026-07-05 |
+| `br_ans_beneficiario` | 1 | 2.307.338.481 | 2026-10-29 |
 | `br_ans_operadoras` | 18 | 111.128.794 | 2026-10-25 |
 | `br_antt_dadosabertos` | 4 | 18.909.325 | 2026-10-28 |
 | `br_anvisa_cmed` | 1 | 52.816 | 2026-10-21 |
 | `br_anvisa_consultas` | 3 | 101.284 | 2026-10-21 |
 | `br_anvisa_medicamentos_industrializados` | 1 | 10.000.000 | 2026-07-09 |
 | `br_ba_feiradesantana_camara_leis` | 1 | 6.033 | 2026-07-05 |
-| `br_bcb_agencia` | 2 | 4.113.708 | 2026-10-21 |
+| `br_bcb_agencia` | 2 | 4.113.511 | 2026-10-29 |
 | `br_bcb_desenrola` | 1 | 13.638 | 2026-10-21 |
 | `br_bcb_estban` | 3 | 699.984.822 | 2026-07-05 |
 | `br_bcb_ifdata` | 5 | 55.700.812 | 2026-09-25 |
@@ -53,7 +53,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_brasilio_holdings` | 1 | 515.191 | 2026-07-10 |
 | `br_caixa_sinapi` | 1 | 2.159.399 | 2026-10-07 |
 | `br_caixa_sorteios` | 1 | 15.294 | 2026-07-05 |
-| `br_camara_dados_abertos` | 30 | 14.637.072 | 2026-10-09 |
+| `br_camara_dados_abertos` | 30 | 14.998.570 | 2026-10-30 |
 | `br_capes_bolsas` | 1 | 146.036 | 2026-10-07 |
 | `br_ce_fortaleza_sefin_iptu` | 1 | 68.932 | 2026-07-05 |
 | `br_cgu_beneficios_cidadao` | 6 | 3.321.211.133 | 2026-10-26 |
@@ -173,7 +173,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_mf_divida_ativa` | 2 | 143.151.652 | 2026-10-15 |
 | `br_mg_belohorizonte_smfa_iptu` | 2 | 21.463.825 | 2026-07-06 |
 | `br_mgi_compras_publicas` | 21 | 98.115.757 | 2026-10-28 |
-| `br_mgi_pncp` | 4 | 1.526.824 | 2026-10-29 |
+| `br_mgi_pncp` | 4 | 5.730.937 | 2026-10-30 |
 | `br_minc_salic` | 18 | 4.370.266 | 2026-10-25 |
 | `br_mj_consumidorgovbr` | 1 | 15.392.507 | 2026-10-21 |
 | `br_mj_sinesp` | 3 | 9.097.924 | 2026-10-07 |
@@ -194,7 +194,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_ms_imunizacoes` | 1 | 149.124 | 2026-07-09 |
 | `br_ms_pns` | 3 | 521.059 | 2026-07-06 |
 | `br_ms_populacao` | 1 | 4.919.222 | 2026-07-06 |
-| `br_ms_sia` | 3 | 6.298.035.211 | 2026-10-28 |
+| `br_ms_sia` | 3 | 6.298.035.211 | 2026-10-29 |
 | `br_ms_sih` | 3 | 2.619.388.412 | 2026-10-26 |
 | `br_ms_sim` | 6 | 106.800.444 | 2026-10-15 |
 | `br_ms_sinan` | 3 | 38.468.299 | 2026-07-07 |
@@ -216,7 +216,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_ons_avaliacao_operacao` | 6 | 89.805.415 | 2026-10-07 |
 | `br_ons_dados_abertos` | 87 | 642.725.055 | 2026-10-25 |
 | `br_ons_estimativa_custos` | 5 | 1.407.872 | 2026-10-07 |
-| `br_pgfn_dividaativa` | 2 | 857.126.441 | 2026-10-25 |
+| `br_pgfn_dividaativa` | 2 | 914.557.709 | 2026-10-30 |
 | `br_pncp` | 1 | 5.229.507 | 2026-10-07 |
 | `br_poder360_pesquisas` | 1 | 162.075 | 2026-10-09 |
 | `br_presidencia_comunicabr` | 3 | 1.566.488 | 2026-10-13 |
@@ -236,7 +236,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_seeg_emissoes` | 3 | 183.668.150 | 2026-07-08 |
 | `br_sema_mt_embargos` | 2 | 27.093 | 2026-10-25 |
 | `br_semas_pa_ldi` | 1 | 5.387 | 2026-10-28 |
-| `br_senado_ceaps` | 1 | 396.755 | 2026-10-07 |
+| `br_senado_ceaps` | 1 | 398.027 | 2026-10-30 |
 | `br_senado_dados_abertos` | 18 | 612.322 | 2026-10-09 |
 | `br_senado_dados_abertos_administrativos` | 40 | 641.617 | 2026-10-09 |
 | `br_senado_dadosabertos` | 4 | 166.837 | 2026-10-21 |

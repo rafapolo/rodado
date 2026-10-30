@@ -2,7 +2,7 @@
 
 **Gerado por `scripts/gera_catalog_md.py`, a partir de `_rodado_metadata/catalog.parquet` — não editar à mão.** Descrições vêm de `docs/context/dataset_descriptions.yaml`; a coluna Dado até vem de `docs/context/dataset_freshness.yaml` (curado, só ~6 datasets por enquanto — vazio não significa "sem gap", significa "não conferido ainda"). Editar os YAML e regenerar (`build_metadata_catalog.py` → `gera_catalog_md.py`), nunca este arquivo.
 
-**276 datasets, 1.612 tabelas, 34.677.282.809 linhas.** 14 dataset(s) sem descrição. 4 com data de frescor conferida (de 276).
+**276 datasets, 1.612 tabelas, 34.739.280.763 linhas.** 14 dataset(s) sem descrição. 4 com data de frescor conferida (de 276).
 
 | Dataset | Descrição | Tabelas | Linhas | Dado até | Fonte |
 |---|---|---:|---:|---|---|
@@ -28,7 +28,7 @@
 | `br_anvisa_consultas` | ANVISA — registros de agrotóxicos, alimentos e produtos regulados | 3 | 101.284 | — | ANVISA (consulta completa) |
 | `br_anvisa_medicamentos_industrializados` | ANVISA — medicamentos industrializados registrados | 1 | 10.000.000 | — | Base dos Dados |
 | `br_ba_feiradesantana_camara_leis` | Câmara Municipal de Feira de Santana — leis municipais | 1 | 6.033 | — | Base dos Dados |
-| `br_bcb_agencia` | BCB — agências bancárias, retrato mensal 2007–2024 (endereço, município, instituição) e o retrato atual do Olinda | 2 | 4.113.708 | — | BCB — agências bancárias (série mensal 2007–2024 e retrato do Olinda) |
+| `br_bcb_agencia` | BCB — agências bancárias, retrato mensal 2007–2024 (endereço, município, instituição) e o retrato atual do Olinda | 2 | 4.113.511 | — | BCB — agências bancárias (série mensal 2007–2024 e retrato do Olinda) |
 | `br_bcb_desenrola` | BCB — programa Desenrola Brasil (renegociação de dívidas de pessoa física) | 1 | 13.638 | — | BCB Desenrola Brasil |
 | `br_bcb_estban` | BCB ESTBAN — estatísticas bancárias por agência/município | 3 | 699.984.822 | — | Base dos Dados |
 | `br_bcb_ifdata` | BCB IF.data — indicadores financeiros de instituições financeiras | 5 | 55.700.812 | — | BCB — IF.data (valores e cadastro por instituição) |
@@ -51,7 +51,7 @@
 | `br_brasilio_holdings` | Brasil.IO — estrutura societária de holdings empresariais | 1 | 515.191 | — | Brasil.IO holdings |
 | `br_caixa_sinapi` | SINAPI/Caixa — custos e insumos de construção civil | 1 | 2.159.399 | — | SINAPI (custos/insumos de construção civil) |
 | `br_caixa_sorteios` | Caixa Econômica — resultados da Mega-Sena | 1 | 15.294 | — | Base dos Dados |
-| `br_camara_dados_abertos` | Câmara dos Deputados — deputados, votações, despesas, licitações internas | 30 | 14.637.072 | — | Base dos Dados |
+| `br_camara_dados_abertos` | Câmara dos Deputados — deputados, votações, despesas, licitações internas | 30 | 14.998.570 | — | Base dos Dados |
 | `br_capes_bolsas` | CAPES — bolsas de mobilidade acadêmica internacional | 1 | 146.036 | — | Base dos Dados |
 | `br_ce_fortaleza_sefin_iptu` | Prefeitura de Fortaleza — cadastro de IPTU por face de quadra | 1 | 68.932 | — | Base dos Dados |
 | `br_cgu_beneficios_cidadao` | CGU — benefícios sociais federais (Bolsa Família, Auxílio Emergencial, BPC etc.) | 6 | 3.321.211.133 | — | Base dos Dados |
@@ -171,7 +171,7 @@
 | `br_mf_divida_ativa` | PGFN — estoque trimestral da dívida ativa do FGTS e previdenciária, uma linha por inscrição e devedor (via Base dos Dados) | 2 | 143.151.652 | — | Base dos Dados |
 | `br_mg_belohorizonte_smfa_iptu` | Prefeitura de Belo Horizonte — cadastro de IPTU | 2 | 21.463.825 | — | Base dos Dados |
 | `br_mgi_compras_publicas` | Compras públicas federais do Compras.gov.br (MGI) — licitações, pregões, itens, ofertas, compras sem licitação, fornecedores e catálogo de materiais e serviços | 21 | 98.115.757 | — | SEGES/Compras.gov.br — atas, contratações (Lei 14.133) e contratos SIASG em lote |
-| `br_mgi_pncp` | Portal Nacional de Contratações Públicas (PNCP) via Base dos Dados — dicionário de códigos (as tabelas grandes estão sob acesso restrito no BD) | 4 | 1.526.824 | — | PNCP — API de consulta: atas de registro de preço, instrumentos de cobrança, contratações |
+| `br_mgi_pncp` | Portal Nacional de Contratações Públicas (PNCP) via Base dos Dados — dicionário de códigos (as tabelas grandes estão sob acesso restrito no BD) | 4 | 5.730.937 | — | PNCP — API de consulta: atas de registro de preço, instrumentos de cobrança, contratações |
 | `br_minc_salic` | MinC — SALIC/Lei Rouanet, projetos culturais incentivados | 18 | 4.370.266 | — | SALIC/Lei Rouanet (MinC) |
 | `br_mj_consumidorgovbr` | Consumidor.gov.br — reclamações contra empresas, 2014–2025 (2025 parcial; os arquivos de 2019 vêm sem Data Abertura, usar Data Finalização; Data Finalização mistura ISO (2020–2025) e dd/mm/aaaa (2014–2021) — parsear os dois) | 1 | 15.392.507 | — | Consumidor.gov.br |
 | `br_mj_sinesp` | SINESP (MJSP) via Base dos Dados — ocorrências criminais e vítimas por município e mês e por UF e mês | 3 | 9.097.924 | — | Base dos Dados |
@@ -214,7 +214,7 @@
 | `br_ons_avaliacao_operacao` | ONS — avaliação da operação do Sistema Interligado Nacional (geração por usina, térmicas por motivo de despacho, restrição de eólicas, energia armazenada e afluente por reservatório) | 6 | 89.805.415 | — | Base dos Dados |
 | `br_ons_dados_abertos` | _(sem descrição)_ | 87 | 642.725.055 | — | Base dos Dados |
 | `br_ons_estimativa_custos` | ONS — estimativas de custo da operação (balanço de energia por subsistema, custo marginal semanal e semi-horário, custo variável das térmicas) | 5 | 1.407.872 | — | Base dos Dados |
-| `br_pgfn_dividaativa` | PGFN — dívida ativa da União (tributária, FGTS, previdenciária) | 2 | 857.126.441 | — | PGFN |
+| `br_pgfn_dividaativa` | PGFN — dívida ativa da União (tributária, FGTS, previdenciária) | 2 | 914.557.709 | — | PGFN |
 | `br_pncp` | PNCP — Portal Nacional de Contratações Públicas, licitações e contratos de todos os entes | 1 | 5.229.507 | — | PNCP — Portal Nacional de Contratações Públicas |
 | `br_poder360_pesquisas` | Poder360 — pesquisas eleitorais | 1 | 162.075 | — | Base dos Dados |
 | `br_presidencia_comunicabr` | Presidência — ComunicaBR, painel de 84 programas federais (Bolsa Família, MCMV, PNAE, Mais Médicos, Plano Safra…) por município, UF e Brasil, 2023–2026, agregado e com ref por variável; um parquet por coleta | 3 | 1.566.488 | — | Presidência — ComunicaBR, painel de indicadores dos programas federais por município |
@@ -234,7 +234,7 @@
 | `br_seeg_emissoes` | SEEG — emissões estimadas de gases de efeito estufa por município e setor | 3 | 183.668.150 | — | Base dos Dados |
 | `br_sema_mt_embargos` | _(sem descrição)_ | 2 | 27.093 | — | SEMA-MT — áreas embargadas e desembargadas |
 | `br_semas_pa_ldi` | _(sem descrição)_ | 1 | 5.387 | — | SEMAS-PA — Lista de Desmatamento Ilegal (LDI) |
-| `br_senado_ceaps` | Senado Federal — Cota para Exercício da Atividade Parlamentar (CEAPS) | 1 | 396.755 | — | Senado CEAPS (cota parlamentar) |
+| `br_senado_ceaps` | Senado Federal — Cota para Exercício da Atividade Parlamentar (CEAPS) | 1 | 398.027 | — | Senado CEAPS (cota parlamentar) |
 | `br_senado_dados_abertos` | Senado Federal — senadores, votações, discursos, comissões | 18 | 612.322 | — | Base dos Dados |
 | `br_senado_dados_abertos_administrativos` | Senado Federal — dados administrativos (CEAPS, remuneração de servidores) | 40 | 641.617 | — | Base dos Dados |
 | `br_senado_dadosabertos` | Senado Federal — comissões, matérias, senadores e votações (fonte alternativa) | 4 | 166.837 | — | Senado (geral) |
