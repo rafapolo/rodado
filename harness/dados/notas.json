@@ -177,5 +177,12 @@
   },
   "br_me_cnpj.estabelecimentos": {
     "*": "SÓ o cadastro mais recente (retrato 2026-10): filtrar ano/mes antigo devolve ZERO linhas. Passado: br_me_cnpj.estabelecimentos_historico (inicio e fim em aaaamm). nome_fantasia já está aqui: classificar por nome não precisa de join com empresas"
+  },
+  "br_camara_dados_abertos.despesa": {
+    "cnpj_cpf_fornecedor": "pontuação deslocada na fonte ('133.470.160/0011-7' = CNPJ 13347016000117): compare só os dígitos, regexp_replace(col,'[^0-9]','','g'); empresa = 8 primeiros dígitos",
+    "fornecedor": "mesmo CNPJ com várias grafias e intermediários ('ADYEN A SERVIÇO DE FACEBOOK'): agrupe por raiz do CNPJ, não por nome ('AMAZON' casa rádios do Amazonas)"
+  },
+  "br_senado_ceaps.despesas": {
+    "data": "data digitada pelo gabinete: 108 linhas fora de 2007–2026 (max = 5201-05-08). Para série use ano e mes"
   }
 }
