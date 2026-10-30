@@ -166,11 +166,16 @@
     "ied_ef_anos_finais_nivel_1": "IED = Indicador de Esforço Docente: % dos professores da escola em cada nível 1–6 (os seis somam 100, conferido 2021), não nota do SAEB"
   },
   "br_me_cnpj.socios": {
-    "data": "Nos retratos 2023-04 e 2025-10 em diante (vindos do br_rf_cnpj, arquivos rf_*) data é SEMPRE o dia 1; nos retratos antigos é o dia real da publicação (ex.: 2025-09-14). Não agrupe nem ordene por data: use ano*100+mes como chave do retrato (2026-09: data=2026-09-01 em 28.341.092 linhas)",
-    "documento": "CPF misto: completo (completado pelo projeto) e mascarado. Para só completos use regexp_full_match(documento,'[0-9]{11}'); a máscara repete entre pessoas diferentes, count(DISTINCT documento) conta máscara como pessoa"
+    "*": "SÓ o cadastro mais recente (retrato 2026-10): filtrar ano/mes antigo devolve ZERO linhas. Passado e ex-sócios: br_me_cnpj.socios_historico, uma linha por vínculo; ex-sócio = NOT no_ultimo_retrato",
+    "documento": "CPF misto: completo (completado pelo projeto) e mascarado. Para só completos use regexp_full_match(documento,'[0-9]{11}'); a máscara repete entre pessoas diferentes, count(DISTINCT documento) conta máscara como pessoa",
+    "cnpj_basico": "o mesmo vínculo repete em mais de uma linha: count(*) não é nº de vínculos. Para contar use socios_historico com no_ultimo_retrato (2026-10: 28.495.961 linhas, 28.495.638 vínculos)"
   },
   "br_me_cnpj.empresas": {
-    "cnpj_basico": "Empresa pode aparecer mais de uma vez no mesmo retrato (duplicata idêntica ou versão vazia ao lado da real: razao_social NULL e natureza_juridica 0000). count(*) não é nº de empresas: use count(DISTINCT cnpj_basico); entre versões, fique com a de menos colunas vazias (2022-09: 51.127.182 linhas, 51.127.181 chaves)",
-    "data": "Nos retratos vindos do br_rf_cnpj (2023-04, 2025-10 em diante) é sempre o dia 1; use ano e mes como chave do retrato"
+    "*": "SÓ o cadastro mais recente (retrato 2026-10): filtrar ano/mes antigo devolve ZERO linhas. Passado: br_me_cnpj.empresas_historico, um período por linha com inicio e fim em aaaamm; vigente = fim = (SELECT max(fim))",
+    "cnpj_basico": "1 empresa repete no retrato (08314885, uma versão sem razão social): nº de empresas = count(DISTINCT cnpj_basico) (2026-10: 70.517.437 contra 70.517.438 linhas)",
+    "capital_social": "999999999999 é SENTINELA (124 empresas), não capital: exclua antes de SUM/média; mesmo sem ela 906 empresas declaram R$ 100 bi ou mais — use mediana ou corte"
+  },
+  "br_me_cnpj.estabelecimentos": {
+    "*": "SÓ o cadastro mais recente (retrato 2026-10): filtrar ano/mes antigo devolve ZERO linhas. Passado: br_me_cnpj.estabelecimentos_historico (inicio e fim em aaaamm). nome_fantasia já está aqui: classificar por nome não precisa de join com empresas"
   }
 }
