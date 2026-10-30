@@ -1,0 +1,12 @@
+dataset: br_senado_ceaps
+gotchas:
+  - id: data_digitada_errada
+    resumo: "Em despesas, data é a do documento como o gabinete digitou: há datas no ano 5201, 0023 e 2106. Para série no tempo use ano e mes (a competência), não data."
+    detalhe: >
+      108 linhas têm data fora de 2007 a 2026 (ex.: 5201-05-08, 0202-10-03,
+      2106-03-16), 3.874 têm year(data) diferente de ano e 3.144 não têm
+      data. max(data) ou ORDER BY data devolve lixo no topo.
+    tabelas: [despesas]
+    colunas: [data, ano, mes]
+    severidade: silencioso
+    verificado: "398.027 linhas; 108 com ano de data fora de 2007–2026, 3.874 com year(data) <> ano, 3.144 com data nula; max(data) = 5201-05-08 — medido 2026-10-30, depois da recoleta da fonte"
