@@ -1,0 +1,58 @@
+dataset: br_cgu_transferencias
+gotchas:
+  - id: uma_linha_nao_e_um_repasse
+    resumo: "Valor é por combinação de mês, ação, favorecido e localizador: some valor_transferido, não conte linhas. Há 6.688 estornos negativos (R$ -8,08 bi)."
+    detalhe: >
+      Cada linha agrega o que foi pago naquele mês para aquela classificação
+      orçamentária e aquele favorecido. Valores negativos são devolução ou
+      estorno e entram na soma; filtrar valor > 0 infla o total.
+    tabelas: [transferencias]
+    colunas: [valor_transferido]
+    severidade: aviso
+    verificado: "23.060.808 linhas, R$ 6.621,2 bi em 2014-01..2026-10, 6.688 linhas negativas — medido 2026-10-31"
+  - id: orgao_sem_informacao
+    resumo: "Constitucionais e parte das emergenciais vêm sem órgão (nome_orgao 'Sem informação' ou nulo): filtre programa pela coluna acao, nunca por nome_orgao."
+    detalhe: >
+      4,8 milhões de linhas para municípios têm nome_orgao 'Sem informação'; a
+      ação 00UR (Lei Paulo Gustavo) vem com órgão nulo. A mesma ação também muda
+      de órgão: 00UV (PNAB) aparece em Fundo Nacional de Cultura e no MinC no
+      mesmo mês. Códigos úteis: 00UV PNAB, 00S8 Aldir Blanc 2020, 00UR Paulo
+      Gustavo, 00R2 FNSP, 00R3 FUNPEN.
+    tabelas: [transferencias]
+    colunas: [nome_orgao, acao]
+    severidade: silencioso
+    verificado: "4.818.399 linhas sem órgão em favorecido municipal; 00UV com os dois órgãos em 2026-09 — medido 2026-10-31"
+  - id: municipio_siafi
+    resumo: "codigo_municipio_siafi é código SIAFI, não IBGE: cruzar com o resto do espelho exige o diretório de municípios. ~1,15 M de linhas não têm município."
+    detalhe: >
+      Repasse a estado e parte das entidades vêm sem município. Para mapear por
+      município, junte pelo diretório que traduz SIAFI em IBGE, e diga que o
+      total municipal fica abaixo do total da tabela.
+    tabelas: [transferencias]
+    colunas: [codigo_municipio_siafi, nome_municipio]
+    severidade: silencioso
+    verificado: "1.152.116 linhas sem município nos seis maiores tipos de favorecido — medido 2026-10-31"
+  - id: paulo_gustavo_so_audiovisual
+    resumo: "A Lei Paulo Gustavo (00UR) aqui é quase só o audiovisual: R$ 2,82 bi dos R$ 3,862 bi da LC 195/2022. Faltam R$ 1,04 bi das demais áreas da cultura; não some isto como o total da lei."
+    detalhe: >
+      A ação tem dois planos orçamentários. AUDIOVISUAL (0001) soma R$ 2.796,9 mi,
+      os R$ 2,797 bi do art. 5º. DEMAIS AREAS DA CULTURA (0002) soma R$ 21,5 mi,
+      contra R$ 1,065 bi do art. 8º. A falta é proporcional em cada ente, a soma
+      confere com o CSV da fonte e nenhuma outra ação cobre a diferença: o fundo
+      estadual de SP só tem a 00UR em 2023. O Ministério da Cultura declara R$ 3,93 bi
+      executados, então o dinheiro saiu; por qual via, este arquivo não mostra.
+      Para o total da lei, cite a LC 195; para o repasse por ente, use só o plano 0001.
+    tabelas: [transferencias]
+    colunas: [acao, codigo_plano_orcamentario, valor_transferido]
+    severidade: silencioso
+    verificado: "plano 0001: R$ 2.796,9 mi, 5.483 favorecidos; plano 0002: R$ 21,5 mi, 442 favorecidos, meses 8 a 10 de 2023 — medido 2026-10-31"
+  - id: mes_corrente_parcial
+    resumo: "O último mês publicado pode estar incompleto: 2026 tem 10 meses e o de outubro saiu com o mês em curso. Compare anos fechados."
+    detalhe: >
+      A fonte regrava arquivos antigos (os CSVs de 2024 e 2026 baixados em
+      2026-10-31 têm data de 26 e 28/10), portanto valor de mês passado pode
+      mudar entre coletas.
+    tabelas: [transferencias]
+    colunas: [ano, mes]
+    severidade: aviso
+    verificado: "2026 com 10 meses e R$ 690,9 bi na coleta de 2026-10-31"

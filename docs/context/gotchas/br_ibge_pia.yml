@@ -1,0 +1,20 @@
+dataset: br_ibge_pia
+gotchas:
+  - id: mesma_celula_em_varias_tabelas
+    resumo: "Em sidra, a mesma célula (localidade, período, variável e categorias) aparece em mais de uma id_tabela, e em 19.607 de 60.545 casos com valor diferente: as tabelas de eras diferentes se sobrepõem. Filtre sempre uma id_tabela, escolhida em sidra_tabelas."
+    tabelas: [sidra]
+    colunas: [id_tabela, valor, periodo, id_variavel]
+    severidade: silencioso
+    verificado: "60.545 células em mais de uma id_tabela, 19.607 com valor distinto, em 129.022 linhas — medido 2026-10-31"
+  - id: valor_nulo_tem_motivo
+    resumo: "valor NULL não é zero: simbolo diz o motivo ('...' não disponível, 'X' sigilo; as letras A a D têm sentido definido na nota de cada tabela). Somar UFs não fecha com o Brasil onde há 'X'."
+    tabelas: [sidra]
+    colunas: [valor, simbolo]
+    severidade: silencioso
+    verificado: "259.887 valores nulos em 1.004.359 linhas; 173.432 com '...', 67.135 com 'X' — medido 2026-10-31"
+  - id: percentual_e_valor_na_mesma_coluna
+    resumo: "valor mistura Mil Reais, Percentual, Unidades, Pessoas e Coeficiente na mesma coluna: filtre id_variavel e olhe unidade antes de somar."
+    tabelas: [sidra]
+    colunas: [valor, unidade, id_variavel]
+    severidade: erro
+    verificado: "445.027 linhas em Percentual, 376.716 em Mil Reais — medido 2026-10-31"

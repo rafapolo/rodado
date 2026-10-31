@@ -12,3 +12,16 @@ gotchas:
     colunas: [V8000, V8500, V8000_deflacionado, V8500_deflacionado]
     severidade: silencioso
     verificado: "V8000 = 9999999.99 em aluguel_estimado 2.478/48.935, despesa_coletiva 24.811/478.572, servico_nao_monetario_pof4 31.515/122.684, pof2 5.855/14.711; V8500 = 9999999 em outros_rendimentos 8.052/206.108 e rendimento_trabalho 2.089/97.075; despesa_coletiva sum(V8000) 248.295.848.212 vs sum(V8000_deflacionado) 193.756.909; V8000_deflacionado nulo em 0 linhas nas quatro tabelas de despesa, V8500_deflacionado nulo em 5.827 de rendimento_trabalho — medido 2026-10-28"
+  - id: registros_vindos_do_ftp_tem_sentinela_e_nomes_proprios
+    resumo: "caderneta_coletiva_2017, consumo_alimentar_2017, despesa_individual_2017 e morador_quali_vida_2017 vieram direto do FTP do IBGE: V8000 tem a mesma sentinela 9999999,99 e os identificadores seguem as tabelas irmãs. Some V8000_deflacionado × fator_anualizacao × peso_final."
+    detalhe: >
+      id_domicilio e id_unidade_consumo foram montados no formato das irmãs
+      (UPA + domicílio + UC), então os joins por id_unidade_consumo funcionam.
+      Colunas de questionário sem etiqueta ficam com o nome da fonte (V9001...),
+      em texto. id_informante existe aqui e não em todas as irmãs.
+      consumo_alimentar_2017 não é da amostra inteira: só 46.164 informantes de
+      10 anos ou mais em subamostra, com dois dias de recordatório.
+    tabelas: [caderneta_coletiva_2017, consumo_alimentar_2017, despesa_individual_2017, morador_quali_vida_2017]
+    colunas: [V8000, V8000_deflacionado, id_unidade_consumo, id_domicilio]
+    severidade: silencioso
+    verificado: "2026-10-31: V8000 sentinela em 92.151 linhas de despesa_individual_2017 e 10.041 de caderneta_coletiva_2017; 57.861 de 57.986 unidades de consumo de despesa_individual casam com despesa_coletiva; 46.164 informantes distintos em consumo_alimentar_2017"

@@ -1,0 +1,20 @@
+dataset: br_rf_simples_estatisticas
+gotchas:
+  - id: estoque_nao_fluxo
+    resumo: "optantes_municipio é estoque no último dia do mês, não fluxo: somar meses conta a mesma empresa várias vezes. Filtre uma data e um regime; os 4 regimes se sobrepõem (simei_total = simei_portal + simei_inicio_exercicio), e o MEI também é optante do Simples."
+    tabelas: [optantes_municipio]
+    colunas: [data, regime, optantes]
+    severidade: erro
+    verificado: "em 2025-12-31: simples 24.645.420, simei_total 16.750.387, simei_portal 16.389.041, simei_inicio_exercicio 361.346 — medido 2026-10-31"
+  - id: ente_total_ja_soma
+    resumo: "eventos_mes traz uma linha ente = 'total' que já é a soma de municipios, contribuintes, receita_federal e estados: somar a coluna total sem filtrar ente dobra tudo."
+    tabelas: [eventos_mes]
+    colunas: [ente, total]
+    severidade: silencioso
+    verificado: "soma dos 4 entes = 153.236.762 = linha 'total' — medido 2026-10-31"
+  - id: municipio_sem_codigo_ibge
+    resumo: "64 linhas de optantes_municipio não têm id_municipio: o código da Receita não casou com o diretório. Agregar por id_municipio joga essas linhas no grupo NULL."
+    tabelas: [optantes_municipio]
+    colunas: [id_municipio, id_municipio_rf]
+    severidade: aviso
+    verificado: "20 simples, 15 simei_total, 15 simei_portal, 14 simei_inicio_exercicio, em 4.254.282 — medido 2026-10-31"

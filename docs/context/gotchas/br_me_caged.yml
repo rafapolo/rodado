@@ -35,3 +35,28 @@ gotchas:
     tabelas: [microdados_movimentacao]
     severidade: aviso
     verificado: "linhas menos linhas distintas: 2024-08 169.180 de 4.230.307 (4,0%), 2025-08 176.784 de 4.332.432 (4,1%), 2025-12 179.290 de 3.664.782 (4,9%), 2026-06 188.454 de 4.295.101 (4,4%), 2026-07 207.200 de 4.467.208 (4,6%), 2026-08 225.286 de 4.423.299 (5,1%) — medido 2026-10-28"
+  - id: caged_antigo_nao_emenda_no_novo
+    resumo: "microdados_antigos (2007-2019) e o Novo CAGED (2020+) não formam uma série: mudaram a fonte (eSocial), a cobertura e as categorias. E as colunas têm nomes e códigos diferentes: nada de UNION direto."
+    detalhe: >
+      O antigo tem saldo_mov (+1/-1), competencia_declarada e admitidos_desligados;
+      codigos seguem o layout CAGEDEST_layout_Atualizado.xls, no FTP. Os meses vêm
+      como foram entregues no prazo: as declarações fora do prazo estão em
+      microdados_antigos_ajustes, com arquivos anuais até 2009 e mensais depois, e
+      somar só a tabela principal subestima o estoque. id_municipio_6 é o código de 6
+      dígitos: ligue por br_bd_diretorios_brasil.municipio.id_municipio_6.
+    tabelas: [microdados_antigos, microdados_antigos_ajustes]
+    colunas: [saldo_mov, id_municipio_6, competencia_declarada]
+    severidade: silencioso
+    verificado: "2026-10-31: formato e colunas conferidos em 2015-01 (3.281.962 registros, 40 colunas); o resumo sobre a mudança de série vem da nota técnica do MTE no próprio FTP"
+  - id: caged_antigo_dois_arquivos_corrompidos_na_fonte
+    resumo: "microdados_antigos não tem 2011-03 e microdados_antigos_ajustes não tem 2010-10: os dois .7z do FTP do MTE estão corrompidos. Somar 2011 ou o estoque de 2010 pela tabela sai baixo sem aviso."
+    detalhe: >
+      CAGEDEST_032011.7z e CAGEDEST_AJUSTES_102010.7z descem inteiros, mas `7z t`
+      acusa Data Error nos dois, repetido em 2 rodadas. Não é falha de download.
+      2012-06 (arquivo republicado na fonte em 27/10/2026) tem 67.520 linhas no fim
+      com um `;` a mais e campos sem zeros à esquerda (idade 25 em vez de 040); a
+      coluna extra vem vazia, não desloca nada.
+    tabelas: [microdados_antigos, microdados_antigos_ajustes]
+    colunas: [competencia_declarada]
+    severidade: silencioso
+    verificado: "2026-10-31: curl rc=0 com tamanho igual ao do FTP (31.836.791 e 1.922.197 bytes) e Data Error no 7z; 2012-06 com 3.344.214 registros, as 67.520 linhas de 41 campos têm o último vazio"

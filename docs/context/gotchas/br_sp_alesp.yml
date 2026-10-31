@@ -1,0 +1,25 @@
+dataset: br_sp_alesp
+gotchas:
+  - id: despesa_e_retrato_inteiro
+    resumo: "despesas_gabinete é a verba de gabinete de 2002 a 2026 num arquivo só, regravado a cada coleta; o ano corrente está incompleto. cnpj guarda CPF quando o fornecedor é pessoa física e fica nulo em parte das linhas."
+    detalhe: >
+      Fornecedor com 14 dígitos é CNPJ, com 11 é CPF (31.991 linhas), e 12.215
+      linhas não têm documento. Filtre pelo tamanho antes de ligar a br_me_cnpj.
+      Não há id de deputado comum com o TSE: matricula só liga a deputado.matricula,
+      e deputado traz apenas a legislatura atual (94), então deputado de legislatura
+      passada só tem nome.
+    tabelas: [despesas_gabinete, deputado]
+    colunas: [cnpj, matricula, valor]
+    severidade: aviso
+    verificado: "2026-10-31: 621.905 linhas, R$ 537,18 mi, 577.696 com 14 dígitos, 31.991 com 11, 12.215 nulos; 2025 = R$ 38,1 mi e 96 matrículas"
+  - id: lotacao_e_historico_nao_quadro_atual
+    resumo: "funcionarios_lotacoes é o histórico de lotações desde 1947: data_fim nula é a lotação aberta. Sem filtrar, conta quem já saiu."
+    detalhe: >
+      O Base dos Dados separa assessores de gabinete e de liderança; aqui é uma
+      tabela só e os gabinetes aparecem como 'Gabinete do Deputado <nome>' em nome_ua.
+      Só nome, sem CPF nem cargo, e a última data_inicio é de 2023-07: a fonte parece
+      parada desde então.
+    tabelas: [funcionarios_lotacoes]
+    colunas: [data_fim, data_inicio, nome_ua]
+    severidade: aviso
+    verificado: "2026-10-31: 64.546 linhas, 3.431 com data_fim nula, 30.219 em gabinete, data_inicio de 1947-01-14 a 2023-07-31"
