@@ -1,0 +1,14 @@
+dataset: br_ibge_paic
+gotchas:
+  - id: mesma_celula_em_varias_tabelas
+    resumo: "Em sidra, a mesma célula aparece em mais de uma id_tabela, e em 2.427 de 14.802 casos com valor diferente. Filtre sempre uma id_tabela, escolhida em sidra_tabelas."
+    tabelas: [sidra]
+    colunas: [id_tabela, valor, periodo, id_variavel]
+    severidade: silencioso
+    verificado: "14.802 células em mais de uma id_tabela, 2.427 com valor distinto, em 40.194 linhas — medido 2026-10-31"
+  - id: moeda_muda_na_serie
+    resumo: "A série começa em 1990: unidade vem em Milhões de Cruzeiros e Cruzeiros Reais antes de chegar a Mil Reais. Comparar valores ao longo da série sem converter a moeda não faz sentido."
+    tabelas: [sidra]
+    colunas: [valor, unidade, periodo]
+    severidade: erro
+    verificado: "6.864 linhas em Milhões de Cruzeiros, 2.288 em Milhões de Cruzeiros Reais, 143.742 em Mil Reais — medido 2026-10-31"

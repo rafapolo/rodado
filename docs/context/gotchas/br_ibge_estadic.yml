@@ -1,0 +1,13 @@
+dataset: br_ibge_estadic
+gotchas:
+  - id: duas_familias_de_tabela
+    resumo: "O dataset tem as tabelas normalizadas da Base dos Dados e as base_<tema>_<ano> cruas do IBGE, de 2020 a 2024, com uma linha por UF e coluna por código de variável, que muda a cada edição. Traduza pelo dicionario_base, nunca pelo nome."
+    tabelas: [dicionario_base, base_recursos_humanos_2024]
+    colunas: [coluna, pergunta, casamento]
+    severidade: erro
+    verificado: "31 tabelas cruas, 27 linhas por tabela temática, 3.386 linhas de dicionario_base — medido 2026-10-31"
+  - id: tudo_varchar_com_sentinela
+    resumo: "Nas base_*, toda coluna é VARCHAR e pode trazer 'Recusa', 'Não informou', 'Não sabe informar', '-' (não se aplica) e '(*)'. Use TRY_CAST e trate cada sentinela: '-' não é zero."
+    tabelas: [base_saude_2021]
+    severidade: silencioso
+    verificado: "mesmo tratamento de br_ibge_munic, scraper de 2026-10-25"

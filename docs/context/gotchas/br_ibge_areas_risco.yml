@@ -1,0 +1,25 @@
+dataset: br_ibge_areas_risco
+gotchas:
+  - id: base_censo_2010
+    resumo: "Publicação de 2018 com dados do Censo 2010, não de 2022. Não existe versão com o Censo 2022 na fonte: leia como retrato de 2010."
+    tabelas: [morador, domicilio, bater]
+    severidade: aviso
+    verificado: "geoftp só tem PARBR2018 — conferido 2026-10-25"
+  - id: sem_estatistica_nao_e_zero
+    resumo: "Só 6.440 dos 8.309 polígonos têm estatística. Os outros não aparecem em domicilio e morador, e isso é falta de dado, não zero: o join a partir de bater é LEFT e um município pode parecer vazio sem estar."
+    tabelas: [bater, domicilio, morador]
+    colunas: [tem_estatistica, cod_bater]
+    severidade: silencioso
+    verificado: "tem_estatistica: 6.435 true, 1.874 false — medido 2026-10-31"
+  - id: populacao_e_d004
+    resumo: "A população em risco é sum(d004), 8.273.067, contra 8.270.127 da publicação. m001 e d001 são domicílios, não pessoas: as variáveis 001 a 024 são iguais nas duas tabelas. Confira o código em dicionario."
+    tabelas: [domicilio, morador, dicionario]
+    colunas: [d004, m001, d001]
+    severidade: erro
+    verificado: "sum(d004) = 8.273.067; sum(m001) = 2.472.243 domicílios ocupados — medido 2026-10-31"
+  - id: cod_bater_nao_e_setor
+    resumo: "cod_bater é id_municipio + sequencial de 4 dígitos, não código de setor censitário. O elo com o resto do espelho é id_municipio. Uma linha de domicilio tem id_municipio fora do diretório."
+    tabelas: [bater, domicilio, morador]
+    colunas: [cod_bater, id_municipio]
+    severidade: silencioso
+    verificado: "830 municípios em domicilio, 829 casam com o diretório — medido 2026-10-25"

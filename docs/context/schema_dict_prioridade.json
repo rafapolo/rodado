@@ -3,15 +3,15 @@
   "generated_by": "scripts/prioriza_schema_dict_status.py",
   "fonte": "docs/context/schema_dict_status.json (label nao_verificado)",
   "sinais": {
-   "consultas_sql_lidas": 4631,
-   "harness_consultar": 2259,
-   "claude_run_sql_ou_bash_duckdb": 2372,
-   "describe_table_lidos": 1216,
+   "consultas_sql_lidas": 4853,
+   "harness_consultar": 2260,
+   "claude_run_sql_ou_bash_duckdb": 2593,
+   "describe_table_lidos": 1219,
    "docs_versionados_lidos": 157
   },
-  "nao_verificado_total": 14671,
-  "com_uso_observado_sql_ou_docs": 369,
-  "com_uso_em_sql": 282,
+  "nao_verificado_total": 14881,
+  "com_uso_observado_sql_ou_docs": 382,
+  "com_uso_em_sql": 295,
   "formula": "10*sql + 5*docs + 1*desc + 0.5*perg + 0.5*log10(linhas+1)",
   "top": 300
  },
@@ -77,6 +77,16 @@
    "reason": "consulta de cardinalidade falhou no beelink: \u001b[90m-- Loading resources from /home/polo/.duckdbrc\n\u001b[00mIO Error: No files found that match the pattern \"~/rodado/br_cgu_novo_bolsa_familia/novo_bolsa_familia/**/*.parquet\"\n\nLINE 1: ...ount_distinct(\"nome_favorecido\") AS \"nome_favorecido\" FROM read_parquet('~/rodado/br_cgu_novo_bolsa_familia/novo_bolsa...\n                                                                      ^"
   },
   {
+   "coluna": "br_senado_ceaps.despesas.tipo_despesa",
+   "score": 208.8,
+   "sql": 20,
+   "docs": 1,
+   "desc": 1,
+   "perg": 0,
+   "linhas": 398027,
+   "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
    "coluna": "br_me_cnpj.socios_historico.ultimo_retrato",
    "score": 193.77,
    "sql": 16,
@@ -85,6 +95,16 @@
    "perg": 0,
    "linhas": 35263888,
    "reason": "candidato real: ~52 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_pgfn_dividaativa.divida.NOME_DEVEDOR",
+   "score": 184.86,
+   "sql": 16,
+   "docs": 4,
+   "desc": 1,
+   "perg": 0,
+   "linhas": 53566733,
+   "reason": "tabela grande (~53.566.733 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_me_cnpj.socios_historico.primeiro_retrato",
@@ -118,10 +138,10 @@
   },
   {
    "coluna": "br_me_cnpj.estabelecimentos_historico.fim",
-   "score": 159.15,
+   "score": 160.15,
    "sql": 15,
    "docs": 1,
-   "desc": 0,
+   "desc": 1,
    "perg": 0,
    "linhas": 197930433,
    "reason": "tabela grande (~197.930.433 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
@@ -148,30 +168,40 @@
   },
   {
    "coluna": "br_me_cnpj.estabelecimentos.telefone_1",
-   "score": 147.93,
+   "score": 148.93,
    "sql": 12,
    "docs": 2,
-   "desc": 14,
+   "desc": 15,
    "perg": 0,
    "linhas": 73809379,
    "reason": "tabela grande (~73.809.379 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
+   "coluna": "br_mgi_pncp.contratacao.json",
+   "score": 143.31,
+   "sql": 14,
+   "docs": 0,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 4242787,
+   "reason": "candidato real: ~0 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
    "coluna": "br_me_cnpj.estabelecimentos.ddd_1",
-   "score": 137.93,
+   "score": 138.93,
    "sql": 11,
    "docs": 2,
-   "desc": 14,
+   "desc": 15,
    "perg": 0,
    "linhas": 73809379,
    "reason": "tabela grande (~73.809.379 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_me_cnpj.estabelecimentos_historico.inicio",
-   "score": 129.15,
+   "score": 130.15,
    "sql": 12,
    "docs": 1,
-   "desc": 0,
+   "desc": 1,
    "perg": 0,
    "linhas": 197930433,
    "reason": "tabela grande (~197.930.433 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
@@ -217,13 +247,23 @@
    "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
+   "coluna": "br_cgu_gas_do_povo.gas_do_povo.ano_mes",
+   "score": 108.69,
+   "sql": 10,
+   "docs": 1,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 24494950,
+   "reason": "candidato real: ~11 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
    "coluna": "br_ms_sinan_zika.microdados_zika.ano_sinan",
    "score": 107.89,
    "sql": 10,
    "docs": 1,
    "desc": 0,
    "perg": 0,
-   "linhas": 607162,
+   "linhas": 607893,
    "reason": "candidato real: ~13 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
@@ -243,7 +283,7 @@
    "docs": 1,
    "desc": 0,
    "perg": 0,
-   "linhas": 2507780,
+   "linhas": 2514085,
    "reason": "candidato real: ~15 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
@@ -277,16 +317,6 @@
    "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
-   "coluna": "br_senado_ceaps.despesas.tipo_despesa",
-   "score": 88.8,
-   "sql": 8,
-   "docs": 1,
-   "desc": 1,
-   "perg": 0,
-   "linhas": 396755,
-   "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
    "coluna": "br_me_siconfi.municipio_despesas_orcamentarias.id_conta_bd",
    "score": 85.72,
    "sql": 8,
@@ -307,13 +337,33 @@
    "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
+   "coluna": "br_bcb_agencia.agencia.dv_do_cnpj",
+   "score": 83.31,
+   "sql": 8,
+   "docs": 0,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 4099847,
+   "reason": "candidato real: ~90 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_mgi_pncp.ata_registro_preco.json",
+   "score": 83.04,
+   "sql": 8,
+   "docs": 0,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 1176452,
+   "reason": "candidato real: ~0 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.REL_SEXUAL",
-   "score": 80.35,
+   "score": 80.37,
    "sql": 6,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "column_codes.yaml (pendente): Valores {'',1,2,3,8,9}, preenchido só de 2009 a ~2021 (4.242.249 vazios de 4.939.266). Não está no dicionário v5 vigente nem no 5.0 não vigente: é campo de ficha anterior. Significado dos códigos NÃO confirmado — não usar sem o dicionário da ficha 2009–2014."
   },
   {
@@ -367,6 +417,36 @@
    "reason": "consulta de cardinalidade falhou no beelink: \u001b[90m-- Loading resources from /home/polo/.duckdbrc\n\u001b[00mIO Error: No files found that match the pattern \"~/rodado/br_cgu_garantia_safra/garantia_safra/**/*.parquet\"\n\nLINE 1: ...ount_distinct(\"nome_favorecido\") AS \"nome_favorecido\" FROM read_parquet('~/rodado/br_cgu_garantia_safra/garantia_safra...\n                                                                      ^"
   },
   {
+   "coluna": "br_pgfn_dividaativa.divida.SITUACAO_INSCRICAO",
+   "score": 74.86,
+   "sql": 6,
+   "docs": 2,
+   "desc": 1,
+   "perg": 0,
+   "linhas": 53566733,
+   "reason": "tabela grande (~53.566.733 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_me_cnpj.estabelecimentos.ddd_2",
+   "score": 73.93,
+   "sql": 5,
+   "docs": 1,
+   "desc": 15,
+   "perg": 0,
+   "linhas": 73809379,
+   "reason": "tabela grande (~73.809.379 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_me_cnpj.estabelecimentos.telefone_2",
+   "score": 73.93,
+   "sql": 5,
+   "docs": 1,
+   "desc": 15,
+   "perg": 0,
+   "linhas": 73809379,
+   "reason": "tabela grande (~73.809.379 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
    "coluna": "br_presidencia_comunicabr.municipio.unidade",
    "score": 73.1,
    "sql": 7,
@@ -377,41 +457,31 @@
    "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
-   "coluna": "br_me_cnpj.estabelecimentos.ddd_2",
-   "score": 72.93,
-   "sql": 5,
-   "docs": 1,
-   "desc": 14,
+   "coluna": "br_tcu_inidoneos.resp_contas_julgadas_irreg_implicacao_eleitoral.CARGO/FUNCAO",
+   "score": 71.99,
+   "sql": 7,
+   "docs": 0,
+   "desc": 0,
    "perg": 0,
-   "linhas": 73809379,
-   "reason": "tabela grande (~73.809.379 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_me_cnpj.estabelecimentos.telefone_2",
-   "score": 72.93,
-   "sql": 5,
-   "docs": 1,
-   "desc": 14,
-   "perg": 0,
-   "linhas": 73809379,
-   "reason": "tabela grande (~73.809.379 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+   "linhas": 9340,
+   "reason": "candidato real: ~0 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_me_rais.microdados_vinculos.ano_chegada_brasil",
-   "score": 70.67,
+   "score": 71.67,
    "sql": 0,
    "docs": 0,
-   "desc": 66,
+   "desc": 67,
    "perg": 0,
    "linhas": 2163605953,
    "reason": "tabela grande (~2.163.605.953 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_me_cnpj.estabelecimentos_historico.complemento",
-   "score": 69.15,
+   "score": 70.15,
    "sql": 6,
    "docs": 1,
-   "desc": 0,
+   "desc": 1,
    "perg": 0,
    "linhas": 197930433,
    "reason": "tabela grande (~197.930.433 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
@@ -447,6 +517,16 @@
    "reason": "consulta de cardinalidade falhou no beelink: \u001b[90m-- Loading resources from /home/polo/.duckdbrc\n\u001b[00mIO Error: No files found that match the pattern \"~/rodado/br_cgu_seguro_defeso/seguro_defeso/**/*.parquet\"\n\nLINE 1: ...ount_distinct(\"nome_favorecido\") AS \"nome_favorecido\" FROM read_parquet('~/rodado/br_cgu_seguro_defeso/seguro_defeso...\n                                                                      ^"
   },
   {
+   "coluna": "br_pgfn_dividaativa.divida_trimestres.NOME_DEVEDOR",
+   "score": 64.47,
+   "sql": 6,
+   "docs": 0,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 860990976,
+   "reason": "tabela grande (~860.990.976 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
    "coluna": "br_tesouro_capag.municipios.Código Município Completo",
    "score": 63.87,
    "sql": 5,
@@ -455,6 +535,16 @@
    "perg": 0,
    "linhas": 5568,
    "reason": "candidato real: ~0 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_cgu_gas_do_povo.gas_do_povo.mes_referencia",
+   "score": 63.69,
+   "sql": 6,
+   "docs": 0,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 24494950,
+   "reason": "candidato real: ~11 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_me_siconfi.municipio_execucao_restos_pagar.conta_bd",
@@ -477,16 +567,6 @@
    "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
-   "coluna": "br_mgi_pncp.contratacao.json",
-   "score": 62.29,
-   "sql": 6,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 38674,
-   "reason": "candidato real: ~0 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
    "coluna": "br_inpe_deter.avisos.class_name",
    "score": 60.92,
    "sql": 5,
@@ -495,6 +575,16 @@
    "perg": 0,
    "linhas": 699077,
    "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_me_cnpj.estabelecimentos_historico.telefone_1",
+   "score": 55.15,
+   "sql": 5,
+   "docs": 0,
+   "desc": 1,
+   "perg": 0,
+   "linhas": 197930433,
+   "reason": "tabela grande (~197.930.433 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_inep_enem.microdados.sigla_uf_escola",
@@ -517,26 +607,6 @@
    "reason": "tabela grande (~6.159.969.884 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
-   "coluna": "br_pgfn_dividaativa.divida_trimestres.NOME_DEVEDOR",
-   "score": 54.45,
-   "sql": 5,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 807424243,
-   "reason": "tabela grande (~807.424.243 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_me_cnpj.estabelecimentos_historico.telefone_1",
-   "score": 54.15,
-   "sql": 5,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 197930433,
-   "reason": "tabela grande (~197.930.433 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
    "coluna": "br_me_cnpj.socios_historico.n_retratos",
    "score": 53.77,
    "sql": 5,
@@ -557,13 +627,23 @@
    "reason": "candidato real: ~51 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
+   "coluna": "br_cgu_transferencias.transferencias.nome_funcao",
+   "score": 53.68,
+   "sql": 5,
+   "docs": 0,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 23060808,
+   "reason": "candidato real: ~35 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
    "coluna": "br_ms_sinan_chikungunya.microdados_chikungunya.SG_UF",
    "score": 53.2,
    "sql": 5,
    "docs": 0,
    "desc": 0,
    "perg": 0,
-   "linhas": 2507780,
+   "linhas": 2514085,
    "reason": "candidato real: ~30 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
@@ -583,15 +663,15 @@
    "docs": 0,
    "desc": 0,
    "perg": 0,
-   "linhas": 607162,
+   "linhas": 607893,
    "reason": "candidato real: ~30 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_me_cnpj.estabelecimentos_historico.logradouro",
-   "score": 49.15,
+   "score": 50.15,
    "sql": 4,
    "docs": 1,
-   "desc": 0,
+   "desc": 1,
    "perg": 0,
    "linhas": 197930433,
    "reason": "tabela grande (~197.930.433 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
@@ -637,6 +717,16 @@
    "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
+   "coluna": "br_me_cnpj.estabelecimentos_historico.ddd_1",
+   "score": 45.15,
+   "sql": 4,
+   "docs": 0,
+   "desc": 1,
+   "perg": 0,
+   "linhas": 197930433,
+   "reason": "tabela grande (~197.930.433 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
    "coluna": "br_bndes_operacoes_contratadas.operacoes_indiretas_automaticas.situacao_operacao",
    "score": 44.19,
    "sql": 4,
@@ -645,16 +735,6 @@
    "perg": 0,
    "linhas": 2392704,
    "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_me_cnpj.estabelecimentos_historico.ddd_1",
-   "score": 44.15,
-   "sql": 4,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 197930433,
-   "reason": "tabela grande (~197.930.433 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_inpe_queimadas.microdados.satelite",
@@ -723,7 +803,7 @@
    "docs": 0,
    "desc": 39,
    "perg": 0,
-   "linhas": 36318526,
+   "linhas": 36723995,
    "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
@@ -733,7 +813,7 @@
    "docs": 0,
    "desc": 39,
    "perg": 0,
-   "linhas": 36318526,
+   "linhas": 36723995,
    "reason": "candidato real: ~47 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
@@ -743,8 +823,8 @@
    "docs": 0,
    "desc": 39,
    "perg": 0,
-   "linhas": 36318526,
-   "reason": "candidato real: ~7 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+   "linhas": 36723995,
+   "reason": "candidato real: ~9 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sim.microdados.versao_sistema",
@@ -753,7 +833,7 @@
    "docs": 0,
    "desc": 39,
    "perg": 0,
-   "linhas": 36318526,
+   "linhas": 36723995,
    "reason": "candidato real: ~10 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
@@ -808,10 +888,10 @@
   },
   {
    "coluna": "br_me_cnpj.estabelecimentos.situacao_especial",
-   "score": 37.93,
+   "score": 38.93,
    "sql": 2,
    "docs": 0,
-   "desc": 14,
+   "desc": 15,
    "perg": 0,
    "linhas": 73809379,
    "reason": "tabela grande (~73.809.379 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
@@ -837,34 +917,74 @@
    "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
+   "coluna": "br_me_cnpj.estabelecimentos_historico.ddd_2",
+   "score": 35.15,
+   "sql": 3,
+   "docs": 0,
+   "desc": 1,
+   "perg": 0,
+   "linhas": 197930433,
+   "reason": "tabela grande (~197.930.433 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_me_cnpj.estabelecimentos_historico.telefone_2",
+   "score": 35.15,
+   "sql": 3,
+   "docs": 0,
+   "desc": 1,
+   "perg": 0,
+   "linhas": 197930433,
+   "reason": "tabela grande (~197.930.433 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_pgfn_dividaativa.divida.UF_DEVEDOR",
+   "score": 34.86,
+   "sql": 3,
+   "docs": 0,
+   "desc": 1,
+   "perg": 0,
+   "linhas": 53566733,
+   "reason": "tabela grande (~53.566.733 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
    "coluna": "br_cgu_novo_bolsa_familia.pagamento.ano_mes",
-   "score": 34.46,
+   "score": 34.47,
    "sql": 3,
    "docs": 0,
    "desc": 0,
    "perg": 0,
-   "linhas": 840156267,
-   "reason": "tabela grande (~840.156.267 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+   "linhas": 858851845,
+   "reason": "tabela grande (~858.851.845 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_cgu_novo_bolsa_familia.pagamento.mes_competencia",
-   "score": 34.46,
+   "score": 34.47,
    "sql": 3,
    "docs": 0,
    "desc": 0,
    "perg": 0,
-   "linhas": 840156267,
-   "reason": "tabela grande (~840.156.267 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+   "linhas": 858851845,
+   "reason": "tabela grande (~858.851.845 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_cgu_novo_bolsa_familia.pagamento.mes_referencia",
-   "score": 34.46,
+   "score": 34.47,
    "sql": 3,
    "docs": 0,
    "desc": 0,
    "perg": 0,
-   "linhas": 840156267,
-   "reason": "tabela grande (~840.156.267 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+   "linhas": 858851845,
+   "reason": "tabela grande (~858.851.845 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_pgfn_dividaativa.divida_trimestres.UF_DEVEDOR",
+   "score": 34.47,
+   "sql": 3,
+   "docs": 0,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 860990976,
+   "reason": "tabela grande (~860.990.976 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_pncp.contratos.anoContrato",
@@ -875,26 +995,6 @@
    "perg": 0,
    "linhas": 5229507,
    "reason": "candidato real: ~52 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_me_cnpj.estabelecimentos_historico.ddd_2",
-   "score": 34.15,
-   "sql": 3,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 197930433,
-   "reason": "tabela grande (~197.930.433 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_me_cnpj.estabelecimentos_historico.telefone_2",
-   "score": 34.15,
-   "sql": 3,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 197930433,
-   "reason": "tabela grande (~197.930.433 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_anatel_telefonia_movel.microdados.ddd_chip",
@@ -997,6 +1097,26 @@
    "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
+   "coluna": "br_cgu_transferencias.transferencias.tipo_favorecido",
+   "score": 33.68,
+   "sql": 3,
+   "docs": 0,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 23060808,
+   "reason": "candidato real: ~9 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_cgu_transferencias.transferencias.tipo_transferencia",
+   "score": 33.68,
+   "sql": 3,
+   "docs": 0,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 23060808,
+   "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
    "coluna": "br_mj_consumidorgovbr.reclamacoes.Ano Abertura",
    "score": 33.59,
    "sql": 3,
@@ -1025,16 +1145,6 @@
    "perg": 0,
    "linhas": 3173646,
    "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_mgi_pncp.ata_registro_preco.json",
-   "score": 33.04,
-   "sql": 3,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 1176452,
-   "reason": "candidato real: ~0 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_mgi_pncp.ata_registro_preco.nomeOrgaoSubrogado",
@@ -1117,6 +1227,16 @@
    "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
+   "coluna": "br_senatran_estatisticas.uf_tipo.tipo_veiculo",
+   "score": 32.6,
+   "sql": 2,
+   "docs": 2,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 159327,
+   "reason": "candidato real: ~27 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
    "coluna": "br_ms_sinan.dicionario.id_tabela",
    "score": 32.46,
    "sql": 3,
@@ -1135,16 +1255,6 @@
    "perg": 0,
    "linhas": 50396768,
    "reason": "tabela grande (~50.396.768 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_cgu_gas_do_povo.gas_do_povo.ano_mes",
-   "score": 28.66,
-   "sql": 2,
-   "docs": 1,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 20817231,
-   "reason": "candidato real: ~9 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_me_rais.microdados_estabelecimentos.subatividade_ibge",
@@ -1407,6 +1517,26 @@
    "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
+   "coluna": "br_me_cnpj.estabelecimentos_historico.nome_fantasia",
+   "score": 25.15,
+   "sql": 2,
+   "docs": 0,
+   "desc": 1,
+   "perg": 0,
+   "linhas": 197930433,
+   "reason": "tabela grande (~197.930.433 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_me_cnpj.estabelecimentos_historico.situacao_cadastral",
+   "score": 25.15,
+   "sql": 2,
+   "docs": 0,
+   "desc": 1,
+   "perg": 0,
+   "linhas": 197930433,
+   "reason": "tabela grande (~197.930.433 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
    "coluna": "br_inep_enem.microdados.sigla_uf_prova",
    "score": 25.02,
    "sql": 2,
@@ -1447,24 +1577,14 @@
    "reason": "tabela grande (~2.419.206.382 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
-   "coluna": "br_me_cnpj.estabelecimentos_historico.nome_fantasia",
-   "score": 24.15,
+   "coluna": "br_pgfn_dividaativa.divida_trimestres.SITUACAO_INSCRICAO",
+   "score": 24.47,
    "sql": 2,
    "docs": 0,
    "desc": 0,
    "perg": 0,
-   "linhas": 197930433,
-   "reason": "tabela grande (~197.930.433 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_me_cnpj.estabelecimentos_historico.situacao_cadastral",
-   "score": 24.15,
-   "sql": 2,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 197930433,
-   "reason": "tabela grande (~197.930.433 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+   "linhas": 860990976,
+   "reason": "tabela grande (~860.990.976 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_bcb_estban.dicionario.chave",
@@ -1567,6 +1687,26 @@
    "reason": "tabela grande (~54.741.513 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
+   "coluna": "br_cgu_transferencias.transferencias.nome_grupo_despesa",
+   "score": 23.68,
+   "sql": 2,
+   "docs": 0,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 23060808,
+   "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_cgu_transferencias.transferencias.nome_modalidade_aplicacao_despesa",
+   "score": 23.68,
+   "sql": 2,
+   "docs": 0,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 23060808,
+   "reason": "candidato real: ~16 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
    "coluna": "br_senatran_frota.municipio_tipo.tipo_veiculo",
    "score": 23.65,
    "sql": 1,
@@ -1575,6 +1715,16 @@
    "perg": 0,
    "linhas": 20101202,
    "reason": "candidato real: ~23 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_mgi_pncp.contratacao.modalidadeNome",
+   "score": 23.31,
+   "sql": 2,
+   "docs": 0,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 4242787,
+   "reason": "candidato real: ~16 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_stj_dadosabertos.documentos.tipoDocumento",
@@ -1718,12 +1868,12 @@
   },
   {
    "coluna": "br_anac_dadosabertos.voos.Situação Voo",
-   "score": 22.92,
+   "score": 22.94,
    "sql": 2,
    "docs": 0,
    "desc": 0,
    "perg": 0,
-   "linhas": 679492,
+   "linhas": 765248,
    "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
@@ -1775,16 +1925,6 @@
    "perg": 0,
    "linhas": 173754,
    "reason": "candidato real: ~52 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_senatran_estatisticas.uf_tipo.tipo_veiculo",
-   "score": 22.6,
-   "sql": 1,
-   "docs": 2,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 159327,
-   "reason": "candidato real: ~27 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_cgu_emendas_parlamentares.emendas.ano_emenda",
@@ -1848,392 +1988,392 @@
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.ATEND_MULH",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.CLASSI_FIN",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.CONS_ABORT",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.CONS_COMP",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.CONS_DST",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.CONS_ESTRE",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.CONS_GRAV",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.CONS_MENT",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.CONS_OUTR",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.CONS_SUIC",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.CS_ESCOL_N",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "candidato real: ~12 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.DELEG_MULH",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.DT_TRANSRM",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "candidato real: ~0 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.ENC_ABRIGO",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.ENC_CREAS",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.ENC_DEAM",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.ENC_DELEG",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.ENC_DPCA",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.ENC_IML",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.ENC_MPU",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.ENC_MULHER",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.ENC_OUTR",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.ENC_SAUDE",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.ENC_SENTIN",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.ENC_TUTELA",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.ENC_VARA",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.EVOLUCAO",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.LESAO_CORP",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "candidato real: ~15 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.LESAO_NAT",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "candidato real: ~16 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.NDUPLIC",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.NUM_ENVOLV",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.PEN_ANAL",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.PEN_ORAL",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.PEN_VAGINA",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.REDE_SAU",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.REL_IRMAO",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.SEX_ASSEDI",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.SEX_PUDOR",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "column_codes.yaml (pendente): Valores medidos parecem sim/não ({'',1,2,9} ou {'',1,2,8,9}; CONS_ABORT/CONS_DST/SEX_ASSEDI trazem também letras N/O/F/M), mas o DBF não aparece no dicionário v5 vigente nem no 5.0 não vigente — são campos de versões antigas da ficha. Plausível 1=Sim/2=Não/9=Ignorado, não confirmado."
   },
   {
    "coluna": "br_ms_sinan_violencia.microdados_violencia.TPUNINOT",
-   "score": 20.35,
+   "score": 20.37,
    "sql": 0,
    "docs": 0,
    "desc": 17,
    "perg": 0,
-   "linhas": 4939266,
+   "linhas": 5384473,
    "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
@@ -2307,6 +2447,36 @@
    "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
+   "coluna": "br_me_cnpj.estabelecimentos.ddd_fax",
+   "score": 18.93,
+   "sql": 0,
+   "docs": 0,
+   "desc": 15,
+   "perg": 0,
+   "linhas": 73809379,
+   "reason": "tabela grande (~73.809.379 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_me_cnpj.estabelecimentos.fax",
+   "score": 18.93,
+   "sql": 0,
+   "docs": 0,
+   "desc": 15,
+   "perg": 0,
+   "linhas": 73809379,
+   "reason": "tabela grande (~73.809.379 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_me_cnpj.estabelecimentos.nome_cidade_exterior",
+   "score": 18.93,
+   "sql": 0,
+   "docs": 0,
+   "desc": 15,
+   "perg": 0,
+   "linhas": 73809379,
+   "reason": "tabela grande (~73.809.379 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
    "coluna": "br_transferegov_siconv.siconv_convenio.INSTRUMENTO_ATIVO",
    "score": 18.73,
    "sql": 1,
@@ -2335,36 +2505,6 @@
    "perg": 0,
    "linhas": 1799733,
    "reason": "candidato real: ~63 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_me_cnpj.estabelecimentos.ddd_fax",
-   "score": 17.93,
-   "sql": 0,
-   "docs": 0,
-   "desc": 14,
-   "perg": 0,
-   "linhas": 73809379,
-   "reason": "tabela grande (~73.809.379 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_me_cnpj.estabelecimentos.fax",
-   "score": 17.93,
-   "sql": 0,
-   "docs": 0,
-   "desc": 14,
-   "perg": 0,
-   "linhas": 73809379,
-   "reason": "tabela grande (~73.809.379 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_me_cnpj.estabelecimentos.nome_cidade_exterior",
-   "score": 17.93,
-   "sql": 0,
-   "docs": 0,
-   "desc": 14,
-   "perg": 0,
-   "linhas": 73809379,
-   "reason": "tabela grande (~73.809.379 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_me_estoque_divida_publica.microdados.classe_carteira",
@@ -2857,16 +2997,6 @@
    "reason": "candidato real: ~7 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
-   "coluna": "br_me_caged.microdados_movimentacao_excluida.saldo_movimentacao",
-   "score": 15.92,
-   "sql": 1,
-   "docs": 0,
-   "desc": 3,
-   "perg": 0,
-   "linhas": 699106,
-   "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
    "coluna": "br_inpe_prodes_acumulado.desmatamento.class_name",
    "score": 15.44,
    "sql": 1,
@@ -2885,136 +3015,6 @@
    "perg": 2,
    "linhas": 392731053,
    "reason": "column_codes.yaml (pendente): Código de fonte de recurso e de órgão do orçamento LOCAL de cada município (fonte: '1', '00', '100', '99'…; orgao: '54900'…). Não há tabela nacional: o mesmo código significa coisas diferentes em entes diferentes. Não agrupar entre municípios."
-  },
-  {
-   "coluna": "world_wb_mides.pagamento.nome_credor",
-   "score": 15.3,
-   "sql": 1,
-   "docs": 0,
-   "desc": 0,
-   "perg": 2,
-   "linhas": 392731053,
-   "reason": "tabela grande (~392.731.053 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_ms_sia.producao_ambulatorial.id_paciente_proto",
-   "score": 14.89,
-   "sql": 0,
-   "docs": 2,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 6159969884,
-   "reason": "tabela grande (~6.159.969.884 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_pgfn_dividaativa.divida.UF_DEVEDOR",
-   "score": 14.85,
-   "sql": 1,
-   "docs": 0,
-   "desc": 1,
-   "perg": 0,
-   "linhas": 49702198,
-   "reason": "candidato real: ~30 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_pgfn_dividaativa.divida_trimestres.SITUACAO_INSCRICAO",
-   "score": 14.45,
-   "sql": 1,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 807424243,
-   "reason": "tabela grande (~807.424.243 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_pgfn_dividaativa.divida_trimestres.UF_DEVEDOR",
-   "score": 14.45,
-   "sql": 1,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 807424243,
-   "reason": "tabela grande (~807.424.243 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_pncp.contratos.codigoPaisFornecedor",
-   "score": 14.36,
-   "sql": 0,
-   "docs": 0,
-   "desc": 11,
-   "perg": 0,
-   "linhas": 5229507,
-   "reason": "candidato real: ~55 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_pncp.contratos.tipoPessoaSubContratada",
-   "score": 14.36,
-   "sql": 0,
-   "docs": 0,
-   "desc": 11,
-   "perg": 0,
-   "linhas": 5229507,
-   "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_mds_cadunico.indicadores_municipio.id_indicador",
-   "score": 14.27,
-   "sql": 1,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 350069210,
-   "reason": "tabela grande (~350.069.210 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_mds_cadunico.indicadores_municipio.variavel",
-   "score": 14.27,
-   "sql": 1,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 350069210,
-   "reason": "tabela grande (~350.069.210 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_ibge_censo_2022.populacao_idade_sexo.forma_declaracao_idade",
-   "score": 14.2,
-   "sql": 0,
-   "docs": 0,
-   "desc": 11,
-   "perg": 0,
-   "linhas": 2495360,
-   "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_bndes_operacoes_contratadas.operacoes_indiretas_automaticas.setor_bndes",
-   "score": 14.19,
-   "sql": 1,
-   "docs": 0,
-   "desc": 1,
-   "perg": 0,
-   "linhas": 2392704,
-   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_me_cnpj.estabelecimentos_historico.bairro",
-   "score": 14.15,
-   "sql": 1,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 197930433,
-   "reason": "tabela grande (~197.930.433 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_me_cnpj.estabelecimentos_historico.identificador_matriz_filial",
-   "score": 14.15,
-   "sql": 1,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 197930433,
-   "reason": "tabela grande (~197.930.433 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   }
  ]
 }

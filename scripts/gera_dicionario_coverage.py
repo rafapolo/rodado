@@ -45,8 +45,10 @@ ORDER BY table_schema;
 
 # br_seeg_emissoes.dicionario uses tabela/coluna instead of id_tabela/nome_coluna
 # — every other dataset checked (44/45) uses the id_tabela/nome_coluna pair.
+# br_ibge_areas_risco.dicionario describes columns: codigo is the column name (d001).
 COLUMN_ALIASES = {
     "br_seeg_emissoes": ("tabela", "coluna"),
+    "br_ibge_areas_risco": ("tabela", "codigo"),
 }
 
 
