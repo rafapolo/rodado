@@ -1,0 +1,23 @@
+dataset: br_ms_sinan_chikungunya
+gotchas:
+  - id: notificacao_nao_e_caso
+    resumo: "microdados_chikungunya é notificação: pela ficha do SINAN (sem dicionário no espelho), confirmado é CLASSI_FIN = '13' (49%) e '5' é descartado. '1' e '2' também aparecem, e vazio é '', não NULL."
+    detalhe: >
+      Em 2014 e 2015 quase nada está como '13' (10 e 665 linhas): a série de
+      confirmados só faz sentido de 2016 em diante. Há 3 valores corrompidos.
+    tabelas: [microdados_chikungunya]
+    colunas: [CLASSI_FIN]
+    severidade: silencioso
+    verificado: "2026-10-31: '13' em 1.234.465, '5' em 821.418, '' em 267.551, '1' em 89.398, '8' em 54.732, '2' em 45.852; 2014 com 10 de 4.622, 2016 com 88.688 de 310.746, 2024 com 232.047 de 426.214"
+  - id: id_agravo_em_dois_formatos
+    resumo: "Em microdados_chikungunya, ID_AGRAVO vem como 'A92.0' e 'A920': filtrar um só perde anos inteiros. Não precisa filtrar, a tabela só tem chikungunya."
+    tabelas: [microdados_chikungunya]
+    colunas: [ID_AGRAVO]
+    severidade: silencioso
+    verificado: "2026-10-31: 'A92.0' em 2.434.901 e 'A920' em 79.184 (2014 e 2015 inteiros, 12.007 em 2020, 6.028 em 2025)"
+  - id: ano_sinan_e_nu_ano_divergem
+    resumo: "Em microdados_chikungunya, ano_sinan e NU_ANO divergem em ~4,4 mil linhas, e 2026 é parcial."
+    tabelas: [microdados_chikungunya]
+    colunas: [ano_sinan, NU_ANO]
+    severidade: silencioso
+    verificado: "2026-10-31: NU_ANO=2026 com 2.195 em ano_sinan=2025 e 139.795 em 2026; NU_ANO=2025 com 989 em ano_sinan=2024"

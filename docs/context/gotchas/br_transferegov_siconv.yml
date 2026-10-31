@@ -1,0 +1,35 @@
+dataset: br_transferegov_siconv
+gotchas:
+  - id: proposta_nao_e_convenio
+    resumo: "siconv_proposta tem toda proposta enviada: só 1 em 4 vira convênio. Valor pactuado vem de siconv_convenio; cancelada fica em siconv_proposta_cancelada."
+    detalhe: >
+      Junte por ID_PROPOSTA (texto). siconv_proposta_cancelada não se sobrepõe a
+      siconv_proposta, então não some as duas achando que é parte do total.
+    tabelas: [siconv_proposta, siconv_convenio, siconv_proposta_cancelada]
+    colunas: [ID_PROPOSTA]
+    severidade: silencioso
+    verificado: "2026-10-31: 1.153.701 propostas, 285.743 convênios (1 por proposta), 45.332 canceladas, 0 em comum com siconv_proposta"
+  - id: convenio_inclui_anulado_e_cancelado
+    resumo: "Em siconv_convenio, somar VL_GLOBAL_CONV inclui anulado, cancelado, situação vazia e plano ainda não assinado: R$ 64,4 bi de R$ 354,6 bi."
+    tabelas: [siconv_convenio]
+    colunas: [SIT_CONVENIO, VL_GLOBAL_CONV]
+    severidade: silencioso
+    verificado: "2026-10-31: 23.101 'Convênio Anulado', 7.453 'Cancelado', 23.320 'Proposta/Plano de Trabalho Aprovado', 18.047 NULL; soma total R$ 354.623.365.143, esses quatro R$ 64.370.809.456"
+  - id: ano_tem_tipo_diferente
+    resumo: "ANO é texto em siconv_convenio e inteiro em siconv_proposta (ANO_PROP): compare com '2023' em convênio e 2023 em proposta."
+    tabelas: [siconv_convenio, siconv_proposta]
+    colunas: [ANO, ANO_PROP]
+    severidade: aviso
+    verificado: "2026-10-31: typeof VARCHAR em siconv_convenio.ANO, INTEGER em siconv_proposta.ANO_PROP, ambos de 2008 a 2026"
+  - id: fornecedor_mascarado
+    resumo: "Em siconv_pagamento, IDENTIF_FORNECEDOR pode vir mascarado ('***54671***'): não junte direto com CPF."
+    tabelas: [siconv_pagamento]
+    colunas: [IDENTIF_FORNECEDOR]
+    severidade: silencioso
+    verificado: "2026-10-31: 4.308.970 de 7.359.136 linhas com máscara; 2.472.426 com 14 caracteres (CNPJ)"
+  - id: datas_fora_da_faixa
+    resumo: "Há data impossível isolada: 1 desembolso de 1900 (R$ 274 mil) e 1 pagamento em 2031. Em siconv_emenda, VALOR_REPASSE_EMENDA é NULL em 38% e VALOR_REPASSE_PROPOSTA_EMENDA é texto."
+    tabelas: [siconv_desembolso, siconv_pagamento, siconv_emenda]
+    colunas: [ANO_DESEMBOLSO, DATA_PAG, VALOR_REPASSE_EMENDA, VALOR_REPASSE_PROPOSTA_EMENDA]
+    severidade: silencioso
+    verificado: "2026-10-31: ANO_DESEMBOLSO=1900 em 1 de 378.212 (total R$ 150,2 bi); DATA_PAG até 2031-06-03, 1 linha futura; VALOR_REPASSE_EMENDA NULL em 114.189 de 297.828"

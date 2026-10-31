@@ -1,0 +1,37 @@
+dataset: br_ms_sinasc
+gotchas:
+  - id: ano_2023_incompleto
+    resumo: "Em microdados, o ano 2023 acaba em 05/06/2023: 986.591 nascidos, ~1/3 do ano. Não compare com os anos anteriores."
+    detalhe: >
+      A última partição não é um ano fechado: janeiro a maio estão completos e
+      junho tem só 295 registros, de 18 UFs. Esta tabela é atualizada pela origem;
+      reconfira max(data_nascimento) antes de usar 2023.
+    tabelas: [microdados]
+    colunas: [ano, data_nascimento]
+    severidade: silencioso
+    verificado: "2026-10-31: 2022 com 2.560.319; 2023 com 986.591, de 2023-01-01 a 2023-06-05; maio com 133.040 e junho com 295"
+  - id: sigla_uf_e_residencia
+    resumo: "Em microdados, sigla_uf é a UF de residência da mãe, não a do nascimento: 1,4% nascem em outra UF."
+    detalhe: >
+      Para onde o parto aconteceu, use id_municipio_nascimento. Em 2020,
+      id_municipio_residencia está vazio em 95 linhas.
+    tabelas: [microdados]
+    colunas: [sigla_uf, id_municipio_residencia, id_municipio_nascimento]
+    severidade: silencioso
+    verificado: "2026-10-31, ano=2020: 2.691.802 linhas com sigla_uf igual às duas UFs, 38.247 só à de residência, 0 só à de nascimento"
+  - id: colunas_entram_ao_longo_da_serie
+    resumo: "Em microdados, várias colunas só valem de certo ano em diante: semana_gestacao ~2012, raca_cor_mae ~2012, escolaridade_2010_mae 2012, raca_cor 2000, data_nascimento 1997, id_anomalia 2001."
+    detalhe: >
+      Filtrar ou agrupar por essas colunas em anos anteriores devolve vazio ou uma
+      amostra enviesada, sem erro. codigo_anomalia só existe para nascidos com
+      anomalia registrada (~0,9%), então não indica cobertura.
+    tabelas: [microdados]
+    colunas: [semana_gestacao, raca_cor, raca_cor_mae, escolaridade_2010_mae, data_nascimento, id_anomalia, codigo_anomalia]
+    severidade: silencioso
+    verificado: "2026-10-31: semana_gestacao 69.479 em 2010, 1.573.425 em 2011, 2.665.931 em 2012; raca_cor 39.091 em 1996, 2.797.661 em 2000; data_nascimento 2.028.363 de 2.720.503 em 1994 e cheia em 1997; id_anomalia 658 em 2000 e 2.950.962 em 2001"
+  - id: sentinelas
+    resumo: "Em microdados, idade_mae = 99 é ignorado, sexo = '0' é ignorado e tipo_parto = '9' idem: tire antes de média ou proporção."
+    tabelas: [microdados]
+    colunas: [idade_mae, sexo, tipo_parto]
+    severidade: silencioso
+    verificado: "2026-10-31, ano=2020: idade_mae = 99 em 17 linhas; sexo '0' em 444; tipo_parto '9' em 59 e NULL em 2.163. Em 2005, sexo '0' em 3.419"

@@ -1,0 +1,16 @@
+dataset: br_saude_bps
+gotchas:
+  - id: historico_so_no_espelho
+    resumo: "A API do BPS encolheu: 2020 e boa parte dos outros anos só existem aqui. Linha nova entra somada ao disco, nunca no lugar dele."
+    detalhe: >
+      A varredura completa de 2026-10-31 (14.464 chaves, nenhuma falha) devolveu
+      228.572 compras e 3.521 CATMAT, contra 371.128 e 13.592 no espelho, sem
+      nenhuma de 2020. Promover a coleta apagaria o histórico; o gate recusa por
+      encolhimento, e --aceitar-encolher não deve ser usado aqui. Só foram
+      acrescentadas as 1.573 linhas com data_da_insercao posterior ao disco. Linha
+      antiga corrigida na fonte não é atualizada, e descricao_catmat tem texto
+      em formatos diferentes entre o histórico e a API nova.
+    tabelas: [dados]
+    colunas: [data_da_insercao, descricao_catmat]
+    severidade: silencioso
+    verificado: "372.701 linhas depois de somar 1.573 às 371.128; data_da_insercao máxima de 2026-10-06 para 2026-10-29 — medido 2026-10-31"

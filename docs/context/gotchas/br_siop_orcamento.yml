@@ -1,0 +1,32 @@
+dataset: br_siop_orcamento
+gotchas:
+  - id: nao_e_o_orcamento_executado
+    resumo: "dados, localizadores e planos_orcamentarios são só 2025 e cadastro qualitativo: o único custo é de Projeto (R$ 879 bi), não o total da LOA."
+    detalhe: >
+      "Custo OFSS/OI" só vem preenchido em ações do tipo Projeto; Atividade,
+      Operações Especiais e Reserva de Contingência vêm vazias. Somar a coluna não
+      dá despesa autorizada. O total de localizadores é o mesmo de dados: não some
+      os dois. O dataset é da União, sem orçamento municipal.
+    tabelas: [dados, localizadores, planos_orcamentarios]
+    colunas: ["Custo OFSS/OI", "Custo Demais Fontes", "Exercício"]
+    severidade: silencioso
+    verificado: "2026-10-31: dados com 5.610 linhas, todas de 2025; Projeto com 468 custos de 490 linhas, soma R$ 879.186.498.042; Atividade (3.262) e Operações Especiais (1.728) com 0; localizadores soma o mesmo valor"
+  - id: colunas_com_mojibake_e_bom
+    resumo: "localizadores, planos_orcamentarios e alteracoes_orcamentarias têm nome de coluna e texto com mojibake, e a 1ª coluna traz BOM: é \"ï»¿ano\", não ano."
+    detalhe: >
+      A consulta precisa do nome literal entre aspas: "ï»¿ano",
+      "ï»¿ExercÃ­cio", "FunÃ§Ã£o". Valores também vêm assim ('CrÃ©dito
+      ExtraordinÃ¡rio'): filtre com ILIKE num trecho sem acento. A tabela dados
+      está em UTF-8 correto.
+    tabelas: [localizadores, planos_orcamentarios, alteracoes_orcamentarias]
+    severidade: aviso
+    verificado: "2026-10-31: 1ª coluna de alteracoes_orcamentarias com hex C3AFC2BBC2BF616E6F; de localizadores e planos com C3AFC2BBC2BF4578657263C383C2AD63696F; dados sem BOM"
+  - id: alteracoes_valor_em_texto
+    resumo: "Em alteracoes_orcamentarias, val_acrescimo e val_reducao são texto com vírgula decimal ('99978,00'): sum() falha e o CAST direto também."
+    detalhe: >
+      Use replace(val_acrescimo, ',', '.')::DOUBLE. data_publicacao_instrumento_legal
+      é texto dia-mês-ano ('07-01-2026'): min/max ordenam errado. A tabela só tem 2026.
+    tabelas: [alteracoes_orcamentarias]
+    colunas: [val_acrescimo, val_reducao, data_publicacao_instrumento_legal]
+    severidade: aviso
+    verificado: "2026-10-31: 10.093 linhas de 2026, todas sem ponto; acréscimos R$ 1.494.297.178.659, reduções R$ 1.341.693.923.531"
