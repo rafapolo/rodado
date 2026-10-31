@@ -10,12 +10,26 @@ gotchas:
     colunas: [NU_ANO, ano_sinan]
     severidade: silencioso
     verificado: "ano_sinan=2020: 326.503 linhas, todas com NU_ANO vazio; 2019 tem 60 vazios em 405.497, 2021-2023 nenhum — medido 2026-09-25"
-  - id: ano_2022_magro
-    resumo: "2022 tem menos da metade das notificações dos vizinhos: não use em série ano a ano sem ressalva."
+  - id: id_unidade_so_no_espelho
+    resumo: "ID_UNIDADE (CNES da unidade notificadora) saiu dos arquivos do DATASUS: só existe aqui, e é nula em 8,6% das linhas, sobretudo 2018 e 2022."
     detalhe: >
-      Os 12 meses estão presentes, sem truncamento visível. Cara de release
-      incompleto na fonte, não de raspagem interrompida.
+      Os 17 .dbc baixados em 2026-10-31 (2009 a 2025) não trazem mais a coluna,
+      nem outra com CNES ou unidade. Os valores vêm da coleta anterior, levados
+      por linha idêntica nas demais colunas e, no que sobrou, por chave
+      demográfica única nos dois lados. Linha que só existe na fonte nova fica
+      NULL: não filtre por unidade em série com 2018 ou 2022. Ressincronizar
+      direto ou usar --conformar zeraria a coluna inteira; o gate recusa
+      o schema sem ela, e aí é preciso refazer a fusão com a versão atual.
+    tabelas: [microdados_violencia]
+    colunas: [ID_UNIDADE]
+    severidade: silencioso
+    verificado: "4.920.019 de 5.384.473 linhas com ID_UNIDADE; 2018: 237.449 de 350.354; 2022: 158.839 de 442.680; 2025: 676.131 de 737.540 — medido 2026-10-31"
+  - id: anos_revisados_em_2026_10
+    resumo: "A fonte republicou 2018, 2022 e 2025: quem citou 2022 com 159.576 notificações citou uma versão incompleta."
+    detalhe: >
+      2022 era metade dos vizinhos por release incompleto na fonte, e a fonte
+      corrigiu. 2025 ainda é preliminar (PRELIM) e pode mudar de novo.
     tabelas: [microdados_violencia]
     colunas: [ano_sinan]
-    severidade: silencioso
-    verificado: "ano_sinan: 373.262 (2021), 159.576 (2022), 588.388 (2023) — medido 2026-09-25"
+    severidade: aviso
+    verificado: "2018: 237.462 -> 350.354; 2022: 159.576 -> 442.680; 2025: 688.329 -> 737.540; total 4.939.266 -> 5.384.473 — medido 2026-10-31"

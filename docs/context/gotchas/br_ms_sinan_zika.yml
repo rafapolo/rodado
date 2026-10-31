@@ -1,0 +1,20 @@
+dataset: br_ms_sinan_zika
+gotchas:
+  - id: notificacao_nao_e_caso
+    resumo: "microdados_zika é notificação: 44% foram descartadas. Pela ficha do SINAN (sem dicionário no espelho), confirmado é CLASSI_FIN = '1', descartado '2', inconclusivo '8'; vazio é '', não NULL."
+    tabelas: [microdados_zika]
+    colunas: [CLASSI_FIN]
+    severidade: silencioso
+    verificado: "2026-10-31: de 607.893 linhas, '2' em 266.177, '1' em 193.918, '8' em 132.981, '' em 14.563, '0' em 254, NULL em 0"
+  - id: ano_sinan_e_nu_ano_divergem
+    resumo: "Em microdados_zika, ano_sinan (arquivo de origem) e NU_ANO (ano da notificação) divergem em poucas linhas; 2026 é ano parcial."
+    tabelas: [microdados_zika]
+    colunas: [ano_sinan, NU_ANO, ID_AGRAVO]
+    severidade: silencioso
+    verificado: "2026-10-31: ano_sinan=2024 com 69 linhas de NU_ANO 2025; ano_sinan=2025 com 6 de 2024 e 6 de 2026; 2026 com 14.115. ID_AGRAVO em dois formatos: 'A928' 588.114 e 'A92.' 19.779"
+  - id: idade_codificada
+    resumo: "Em microdados_zika, NU_IDADE_N é texto com unidade no 1º dígito: '4021' = 21 anos. Não trate como número."
+    tabelas: [microdados_zika]
+    colunas: [NU_IDADE_N]
+    severidade: silencioso
+    verificado: "2026-10-31: VARCHAR; mais frequentes '4021' (13.609), '4028' (13.537), '4022' (13.474)"

@@ -1,0 +1,43 @@
+dataset: br_inep_enem
+gotchas:
+  - id: 2024_em_diante_em_outras_tabelas
+    resumo: "microdados acaba em 2023. 2024 e 2025 estão em participantes e resultados, que não se juntam: o INEP separou a pessoa da nota."
+    detalhe: >
+      id_inscricao (participantes) e id_sequencial (resultados) não têm valor em
+      comum, de propósito. Não dá para cruzar nota com sexo, raça ou renda de 2024
+      em diante por participante.
+    tabelas: [microdados, participantes, resultados]
+    colunas: [id_inscricao, id_sequencial]
+    severidade: silencioso
+    verificado: "2026-10-31: microdados de 1998 a 2023; participantes e resultados com 4.332.944 em 2024 e 4.810.772 em 2025; 0 ids em comum em 2024"
+  - id: linha_e_inscrito_com_ausente
+    resumo: "Em microdados, linha é inscrito, não participante. Ausente tem nota_redacao = 0 até 2015 (exceto 2012) e NULL de 2016 em diante: filtre presença antes de média."
+    detalhe: >
+      Use presenca_redacao e presenca_matematica. Sem isso a média de redação de
+      2013 fica puxada para baixo por 2,2 mi de zeros, e a comparação com 2016 quebra.
+    tabelas: [microdados]
+    colunas: [nota_redacao, presenca_redacao, presenca_matematica]
+    severidade: silencioso
+    verificado: "2026-10-31: 2013 com 7.173.563 linhas, 2.243.701 zeros, 0 NULL, 5.027.077 presentes em matemática; 2012 com 22 zeros e 1.835.847 NULL; 2016 com 132.429 zeros e 2.782.390 NULL"
+  - id: municipio_de_residencia_so_ate_2007
+    resumo: "Em microdados, id_municipio_residencia e sigla_uf_residencia só existem até 2007. De 2008 em diante use id_municipio_prova; id_municipio_escola cobre ~1/4."
+    tabelas: [microdados]
+    colunas: [id_municipio_residencia, sigla_uf_residencia, id_municipio_prova, id_municipio_escola]
+    severidade: silencioso
+    verificado: "2026-10-31: id_municipio_residencia com 3.405.762 em 2007 e 0 de 2008 a 2023; id_municipio_prova com 0 em 2007, 4.013.442 em 2008, 3.933.955 de 3.933.955 em 2023; id_municipio_escola 958.506 em 2023"
+  - id: escala_e_colunas_antes_de_2009
+    resumo: "Até 2008 a prova é outra: nota_objetiva e nota_redacao em 0-100, sem notas por área. De 2009 em diante as áreas são TRI, em ~0-1000. Séries não se comparam."
+    tabelas: [microdados]
+    colunas: [nota_objetiva, nota_redacao, nota_matematica]
+    severidade: silencioso
+    verificado: "2026-10-31: 2008 com máx. 100 em nota_objetiva e nota_redacao, nota_matematica vazia; 2009 com nota_objetiva vazia e nota_redacao até 1000; máx. nota_matematica 1.008,3 em 2015"
+  - id: codificacao_muda_por_ano
+    resumo: "Em microdados, sexo de 2012 vem '0'/'1' em vez de 'M'/'F', e indicador_treineiro é todo NULL em 2023."
+    detalhe: >
+      Filtrar sexo='F' em 2012 devolve zero linhas. O '1' tem 59% e isso é coerente
+      com feminino, mas o valor não foi conferido em dicionário. Para 2023 não há
+      como tirar treineiros pela coluna.
+    tabelas: [microdados]
+    colunas: [sexo, indicador_treineiro]
+    severidade: silencioso
+    verificado: "2026-10-31: 2012 com '1' em 3.416.410 e '0' em 2.374.655, nenhum 'M' ou 'F'; demais anos M/F; indicador_treineiro 2022 com 512.732 true e 2023 com 3.933.955 NULL"

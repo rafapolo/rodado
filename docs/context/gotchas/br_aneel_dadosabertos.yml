@@ -1,0 +1,47 @@
+dataset: br_aneel_dadosabertos
+gotchas:
+  - id: retrato_unico
+    resumo: "empreendimento_geracao_distribuida e siga_empreendimentos_geracao são retrato de uma só data, não série. No SIGA, a evolução sai de DatEntradaOperacao das usinas ainda ativas."
+    tabelas: [empreendimento_geracao_distribuida, siga_empreendimentos_geracao]
+    colunas: [DatGeracaoConjuntoDados]
+    severidade: silencioso
+    verificado: "2026-10-31: geração distribuída com 1 data (2026-09-04), 4.692.466 linhas, 54,38 GW; SIGA gerado em 2026-10-01 com 25.045 linhas"
+  - id: siga_potencia_outorgada_inclui_nao_construido
+    resumo: "Em siga_empreendimentos_geracao, a soma de MdaPotenciaOutorgadaKw (318 GW) inclui usina não construída: capacidade em operação é DscFaseUsina='Operação' com MdaPotenciaFiscalizadaKw (221 GW)."
+    detalhe: >
+      Há 2.099 usinas com construção não iniciada e 145 em construção. Três CodCEG
+      aparecem duas vezes com a mesma fase: deduplique antes de somar por usina.
+    tabelas: [siga_empreendimentos_geracao]
+    colunas: [MdaPotenciaOutorgadaKw, MdaPotenciaFiscalizadaKw, DscFaseUsina, CodCEG]
+    severidade: silencioso
+    verificado: "2026-10-31: outorgada 317,71 GW; fiscalizada 220,73 GW, 220,69 GW em Operação; 25.045 linhas e 25.042 CodCEG (UHE.PH.MG.001489-3.1, PCH.PH.TO.000031-0.1, PCH.PH.SC.028744-0.1)"
+  - id: gd_com_fonte_e_titular_vazios
+    resumo: "Em empreendimento_geracao_distribuida, 73 mil linhas (0,86 GW) não têm fonte nem tipo de consumidor: filtrar SigTipoGeracao='UFV' as perde. CPF vem mascarado e nome de pessoa física vem como '***'."
+    tabelas: [empreendimento_geracao_distribuida]
+    colunas: [SigTipoGeracao, DscFonteGeracao, SigTipoConsumidor, NumCPFCNPJ, NomTitularEmpreendimento, DthAtualizaCadastralEmpreend]
+    severidade: silencioso
+    verificado: "2026-10-31: SigTipoGeracao NULL em 73.504 linhas (0,856 GW); SigTipoConsumidor NULL em 73.570, PF em 4.255.710, PJ em 363.186; DthAtualizaCadastralEmpreend = 1900 em 16"
+  - id: dec_fec_mensal_e_ponderado
+    resumo: "Em indicadores_continuidade, DEC/FEC são por conjunto e por mês: o anual é a soma de 12 meses da média ponderada por NumCon. avg() dá ~1,3 h, e o certo é ~10,5 h/ano."
+    detalhe: >
+      SigIndicador mistura indicadores e contagens (NumCon é número de
+      consumidores): sempre filtre. Pondere DEC do conjunto pelo NumCon do mesmo
+      conjunto, agente e mês, some por mês e depois some os 12 meses. O conjunto de
+      siglas muda: 4 em 2000, 8 em 2001-2006, 34 em 2010, 23 de 2013 em diante.
+      indicadores_continuidade_limite tem AnoLimiteQualidade em texto, com ano
+      futuro até 2032: filtre o ano que quer.
+    tabelas: [indicadores_continuidade, indicadores_continuidade_limite]
+    colunas: [SigIndicador, VlrIndiceEnviado, NumPeriodoIndice, AnoLimiteQualidade]
+    severidade: silencioso
+    verificado: "2026-10-31: 2023 com 3.119 conjuntos por mês; avg(DEC) 1,34 em janeiro; ponderado 0,87 h/mês e 10,46 h/ano, com 89,7 mi de consumidores; 734.831 linhas e grão único"
+  - id: tarifas_duas_bases_e_duas_unidades
+    resumo: "Em tarifas_homologadas, quase toda tarifa vem duas vezes (Tarifa de Aplicação e Base Econômica), em R$/MWh ou R$/kW: filtre base, unidade e DscDetalhe antes de qualquer média."
+    detalhe: >
+      Para o preço ao consumidor use DscBaseTarifaria = 'Tarifa de Aplicação' e
+      DscDetalhe = 'Não se aplica' (há linhas de APE e SCEE). Na unidade kW,
+      VlrTE é zero: a soma TUSD + TE só faz sentido em MWh. O valor é R$/MWh, não
+      R$/kWh: divida por 1.000 para comparar com a conta de luz.
+    tabelas: [tarifas_homologadas]
+    colunas: [DscBaseTarifaria, DscUnidadeTerciaria, DscDetalhe, VlrTUSD, VlrTE]
+    severidade: silencioso
+    verificado: "2026-10-31: 166.570 Tarifa de Aplicação e 165.595 Base Econômica; 232.365 MWh e 99.800 kW; Não se aplica 228.189, APE 49.294, SCEE 48.680; desde 2024 na Aplicação, VlrTE médio 0 em kW e 133,47 em MWh"

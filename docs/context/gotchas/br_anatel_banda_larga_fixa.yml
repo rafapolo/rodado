@@ -1,0 +1,37 @@
+dataset: br_anatel_banda_larga_fixa
+gotchas:
+  - id: acessos_e_estoque
+    resumo: "Em microdados, acessos é estoque mensal: somar o ano dá 12x o valor. Use um mês (dezembro). Até 2010 há só 4 meses; 2026 tem só jan-fev."
+    tabelas: [microdados]
+    colunas: [acessos, ano, mes]
+    severidade: silencioso
+    verificado: "2026-10-31: dezembro de 2025 com 53.883.546; a soma do ano chega a 648.161.299; 2007-2010 com 4 meses por ano; 2026 com 2 meses; 2007 e 2026 sem dezembro"
+  - id: produto_mistura_nao_internet
+    resumo: "Em microdados, o total soma internet, linha dedicada, m2m e outros: para banda larga, filtre produto = 'internet'. produto é vazio em anos antigos."
+    tabelas: [microdados]
+    colunas: [produto]
+    severidade: silencioso
+    verificado: "2026-10-31: dezembro de 2025 com 52.720.408 internet, 633.468 linha dedicada, 452.396 m2m, 77.274 outros; produto vazio em todo 2010 e 2017, cheio em 2024"
+  - id: mes_com_salto_de_informe
+    resumo: "Há meses com erro de informe: Malacacheta/MG foi de 3.240 a 428.161 acessos em 05/2024 e voltou a 2.473. Confira salto antes de série mensal ou ranking."
+    detalhe: >
+      O erro passa para densidade_municipio (2.444 acessos por 100 habitantes). O
+      total nacional também oscila sem tendência: out/2024 acima dos vizinhos, e
+      dez/2025 abaixo de out/2025 e de jan/2026. Use mediana móvel ou dezembro de
+      vários anos, e descarte densidade municipal absurda.
+    tabelas: [microdados, densidade_municipio]
+    colunas: [acessos, densidade]
+    severidade: silencioso
+    verificado: "2026-10-31: id_municipio=3139201 em 2024: abr 3.240, mai 428.161, jun 2.473; densidade > 100 em 39 município-meses de 2024 (máx. 2.444,4); Brasil set/out/nov 2024: 51.665.989, 53.212.508, 51.233.406; out/dez 2025 e jan 2026: 54.957.261, 53.883.546, 55.845.849"
+  - id: densidade_por_habitante
+    resumo: "densidade é acessos por 100 habitantes, não por domicílio, e as tabelas de densidade param em 09/2025, atrás de microdados (02/2026)."
+    tabelas: [densidade_brasil, densidade_uf, densidade_municipio]
+    colunas: [densidade]
+    severidade: silencioso
+    verificado: "2026-10-31: dez/2024 com 51.990.701 acessos e densidade 24,717 implicam 210,3 mi de denominador; último mês em densidade_brasil 2025-09"
+  - id: velocidade_e_faixa
+    resumo: "Em microdados, velocidade é faixa em texto ('> 34Mbps'), com faixas que mudam ao longo da série; a maior hoje esconde todo o gigabit."
+    tabelas: [microdados]
+    colunas: [velocidade]
+    severidade: aviso
+    verificado: "2026-10-31: VARCHAR com 5 faixas por ano; 2010 com '0Kbps a 64Kbps', 2016 com '0Kbps a 512Kbps'; dez/2025 com 415.229 de 645 mil linhas em '> 34Mbps'"

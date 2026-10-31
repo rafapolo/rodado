@@ -1,0 +1,63 @@
+dataset: br_me_rais
+gotchas:
+  - id: linha_nao_e_emprego
+    resumo: "Em microdados_vinculos, cada linha é um vínculo que existiu no ano, não um emprego em 31/12: count(*) dá ~1,5x o estoque. Estoque = vinculo_ativo_3112 = '1'."
+    detalhe: >
+      Filtre vinculo_ativo_3112 = '1' (coluna de texto) para o estoque de fim de
+      ano. Sem o filtro entram os desligados no ano e as remunerações deles.
+    tabelas: [microdados_vinculos]
+    colunas: [vinculo_ativo_3112]
+    severidade: silencioso
+    verificado: "2026-10-31: 2023 tem 82.966.522 linhas e 55.818.007 ativas; 2019 dá 46.716.492 ativas; 2025 dá 60.691.770"
+  - id: estabelecimento_inclui_rais_negativa
+    resumo: "Em microdados_estabelecimentos, mais da metade das linhas é RAIS Negativa, sem empregado: desde 1995 conte estabelecimento empregador com quantidade_vinculos_ativos > 0."
+    detalhe: >
+      A RAIS Negativa entra na tabela em 1995 (1,6 mi -> 4,5 mi de linhas) e o
+      salto de 2023 (8,5 mi -> 11,8 mi) também é só dela: quem tem vínculo ativo
+      fica em ~4 mi. Antes de 1995 indicador_rais_negativa é vazio.
+    tabelas: [microdados_estabelecimentos]
+    colunas: [indicador_rais_negativa, quantidade_vinculos_ativos]
+    severidade: silencioso
+    verificado: "2026-10-31: 2022 com 8.453.190 linhas, 4.004.271 negativas, 3.930.329 com vínculo; 2023 com 11.768.420, 7.180.937 e 3.909.289; 1994 sem nenhuma negativa, 1995 com 2.724.954"
+  - id: municipio_trabalho_quebrado
+    resumo: "Em microdados_vinculos, id_municipio_trabalho entra e sai da série (0,4% em 2023-2025): use id_municipio, do estabelecimento."
+    detalhe: >
+      Preenchimento medido em SC, por faixa: 0% até 2000; ~21-35% em 2005-2011;
+      100% em 2012-2016; ~24% em 2017-2018; ~60% em 2019-2021; 95% em 2022;
+      0,4% em 2023-2025. Uma série por local de trabalho muda com a cobertura,
+      não com o emprego.
+    tabelas: [microdados_vinculos]
+    colunas: [id_municipio_trabalho]
+    severidade: silencioso
+    verificado: "2026-10-31, sigla_uf='SC': 2016 com 3.327.197 de 3.327.197; 2017 com 808.058 de 3.345.451; 2022 com 4.135.823 de 4.336.073; 2023 com 16.631 de 4.483.134"
+  - id: mes_sem_evento_mudou_em_2023
+    resumo: "Em microdados_vinculos, mes_admissao e mes_desligamento sem evento são NULL até 2022 e 0 de 2023 em diante: filtre mes BETWEEN 1 AND 12."
+    detalhe: >
+      Contar por count(mes_admissao) conta admissões até 2022 e quase todas as
+      linhas a partir de 2023. Em 2006 a coluna vem preenchida em quase todas as
+      linhas, sem zeros (não investigado): trate esse ano com cuidado.
+    tabelas: [microdados_vinculos]
+    colunas: [mes_admissao, mes_desligamento]
+    severidade: silencioso
+    verificado: "2026-10-31, sigla_uf='SC': 2022 com 1.767.699 de 4.336.073 preenchidas e nenhum 0; 2023 com 4.483.134 preenchidas, 2.629.845 iguais a 0; 2006 com 2.472.008 de 2.473.349"
+  - id: remuneracao_cobertura
+    resumo: "Em microdados_vinculos, remuneração em R$ só existe de 1999 em diante (antes, só em salários mínimos); meses de janeiro a novembro só de 2015 em diante, e dezembro vira NULL em 2023."
+    detalhe: >
+      Até 1998 valor_remuneracao_media é vazio e só valor_remuneracao_media_sm
+      permite série. valor_remuneracao_janeiro é vazio até 2014. Em 2023
+      valor_remuneracao_dezembro passa a NULL para quem não recebeu em dezembro,
+      inclusive parte dos ativos. Entre ativos, valor_remuneracao_media = 0 ainda
+      aparece: tire os zeros de média salarial.
+    tabelas: [microdados_vinculos]
+    colunas: [valor_remuneracao_media, valor_remuneracao_media_sm, valor_remuneracao_janeiro, valor_remuneracao_dezembro]
+    severidade: silencioso
+    verificado: "2026-10-31, sigla_uf='SC': media vazia em 1998 e cheia em 1999; janeiro vazio em 2014 e cheio em 2015; 2023 com 1.817.612 dezembros NULL, 227.522 deles ativos; 162.852 ativos com media = 0 em 2.749.816"
+  - id: colunas_mudam_de_nome_por_periodo
+    resumo: "Em microdados_vinculos, ocupação, CNAE, escolaridade e raça têm colunas por período: cbo_1994 em 2000, cbo_2002 em 2005; cnae_2 e raca_cor de 2006 em diante; grau_instrucao troca em 2006."
+    detalhe: >
+      Série longa exige harmonizar as colunas; filtrar só a nova devolve vazio nos
+      anos antigos, sem erro. idade é vazia em 1990 e existe em 2000.
+    tabelas: [microdados_vinculos]
+    colunas: [cbo_1994, cbo_2002, cnae_1, cnae_2, cnae_2_subclasse, raca_cor, grau_instrucao_1985_2005, grau_instrucao_apos_2005, idade]
+    severidade: silencioso
+    verificado: "2026-10-31, sigla_uf='SC': 2000 com cbo_1994 cheio e cbo_2002 vazio; 2005 com cbo_2002 cheio; cnae_2 e grau_instrucao_apos_2005 vazios em 2005 e cheios em 2006; raca_cor com 2.207.505 de 2.473.349 em 2006"
