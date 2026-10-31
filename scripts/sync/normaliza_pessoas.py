@@ -25,6 +25,11 @@ novos com id acima do maior, grava pagamento/<mesmo nome do arquivo> (substitui 
 existia), confere com EXCEPT ALL nos dois sentidos e recria as views da pagamento e das pessoas.
 Nada é gravado se a conferência falhar ou se os tipos não forem os da tabela atual.
 
+O mês novo vem com CPF mascarado e a pessoa antiga pode já estar completada, então `acrescenta`
+compara o CPF pela máscara dos dois lados (os dígitos visíveis contam: NIS + nome sozinhos
+juntariam homônimos de NIS nulo) e a conferência vê a máscara. Sem isso, 2026-09 do Bolsa Família
+criou 9,69 M de pessoas repetidas em 18,7 M. Havendo as duas versões da pessoa, vale a completada.
+
 Depois de qualquer modo: scripts/completa_cpf.py sobre a tabela de pessoa (o CPF da fonte vem
 mascarado) e a regeneração do catálogo. Roda no beelink, por ssh, como o _tipos.py.
 """
@@ -65,28 +70,42 @@ q = lambda c: '"' + c.replace('"', '""') + '"'
 lit = lambda s: "'" + s.replace("'", "''") + "'"
 con = duckdb.connect()
 con.execute(f"SET memory_limit='12GB'; SET threads=8; SET preserve_insertion_order=false; SET temp_directory='{H}/duckdb_tmp'")
+con.execute("""CREATE TEMP MACRO mascara(c) AS CASE WHEN regexp_full_match(c, '[0-9]{11}')
+    THEN '***.' || substr(c, 4, 3) || '.' || substr(c, 7, 3) || '-**' ELSE c END""")
 
 def log(*a): print(time.strftime("%H:%M:%S"), *a, flush=True)
 def igual(a, b, cols): return " AND ".join(f"{a}.{q(c)} IS NOT DISTINCT FROM {b}.{q(c)}" for c in cols)
+def eh_cpf(c): return c.startswith("cpf_")
+def visivel(a, c): return f"mascara({a}.{q(c)})" if eh_cpf(c) else f"{a}.{q(c)}"
+def mesma(a, b, cols): return " AND ".join(f"{visivel(a, c)} IS NOT DISTINCT FROM {visivel(b, c)}" for c in cols)
 def lista(d): return "[" + ", ".join(lit(f) for f in sorted(glob.glob(f"{d}/*.parquet"))) + "]"
 
-def grava_mes(entrada, raiz, cols):
+def grava_mes(entrada, raiz, cols, por_mascara=False):
     """pagamento/<nome do arquivo> a partir de um arquivo no formato antigo, com as pessoas
-    já em tabelas temp p_<papel>; confere e só então troca. Devolve (linhas, MiB)."""
+    já em tabelas temp p_<papel>; confere e só então troca. Devolve (linhas, MiB).
+    por_mascara: a entrada traz CPF mascarado; casa e confere pela máscara (ver `acrescenta`)."""
     resto = [c for c in cols if c not in pessoa]
-    joins = " ".join(f"JOIN p_{p} ON {igual('e', 'p_' + p, pc)}" for p, pc in papeis.items())
-    ids = ", ".join(f"p_{p}.{p}_id" for p in papeis)
     saida = f"{raiz}/pagamento/{os.path.basename(entrada)}"
     con.execute(f"CREATE OR REPLACE TEMP VIEW e AS FROM read_parquet({lit(entrada)})")
-    ord_ = ", ".join([f"e.{q(c)}" for c in ordem if c in cols] + [f"p_{p}.{p}_id" for p in papeis])
+    casa = mesma if por_mascara else igual
+    for p, pc in papeis.items():  # uma pessoa só por valor de entrada: a completada, se houver as duas
+        pref = [f"(mascara(p_{p}.{q(c)}) IS NOT DISTINCT FROM p_{p}.{q(c)})::INT" for c in pc if eh_cpf(c)]
+        con.execute(f"""CREATE OR REPLACE TEMP TABLE m_{p} AS
+            SELECT {', '.join('d.' + q(c) for c in pc)}, arg_min(p_{p}.{p}_id, [{', '.join(pref + [f'p_{p}.{p}_id'])}]) AS {p}_id
+            FROM (SELECT DISTINCT {', '.join(q(c) for c in pc)} FROM e) d JOIN p_{p} ON {casa('d', 'p_' + p, pc)}
+            GROUP BY ALL""")
+    joins = " ".join(f"JOIN m_{p} ON {igual('e', 'm_' + p, pc)}" for p, pc in papeis.items())
+    ids = ", ".join(f"m_{p}.{p}_id" for p in papeis)
+    ord_ = ", ".join([f"e.{q(c)}" for c in ordem if c in cols] + [f"m_{p}.{p}_id" for p in papeis])
     con.execute(f"COPY (SELECT {', '.join('e.' + q(c) for c in resto)}, {ids} FROM e {joins} ORDER BY {ord_}) "
                 f"TO {lit(saida + '.tmp')} ({OPT})")
-    view = (f"SELECT {', '.join(q(c) for c in cols)} FROM read_parquet({lit(saida + '.tmp')}) "
-            + " ".join(f"JOIN p_{p} USING ({p}_id)" for p in papeis))
-    todas = ", ".join(q(c) for c in cols)
+    def lado(a):  # as colunas como a conferência as vê
+        return ", ".join(f"{visivel(a, c)} AS {q(c)}" if por_mascara and c in pessoa else f"{a}.{q(c)}" for c in cols)
+    view = (f"SELECT {lado('v')} FROM (SELECT {', '.join(q(c) for c in cols)} FROM read_parquet({lit(saida + '.tmp')}) "
+            + " ".join(f"JOIN p_{p} USING ({p}_id)" for p in papeis) + ") v")
     n0, n1 = (con.execute(f"SELECT count(*) FROM ({x})").fetchone()[0] for x in ("FROM e", view))
-    d1 = con.execute(f"SELECT count(*) FROM (SELECT {todas} FROM e EXCEPT ALL {view})").fetchone()[0]
-    d2 = con.execute(f"SELECT count(*) FROM ({view} EXCEPT ALL SELECT {todas} FROM e)").fetchone()[0]
+    d1 = con.execute(f"SELECT count(*) FROM (SELECT {lado('e')} FROM e EXCEPT ALL {view})").fetchone()[0]
+    d2 = con.execute(f"SELECT count(*) FROM ({view} EXCEPT ALL SELECT {lado('e')} FROM e)").fetchone()[0]
     if n0 != n1 or d1 or d2:
         os.remove(saida + ".tmp")
         sys.exit(f"{entrada}: NÃO bateu (linhas {n0}->{n1}, diferença {d1}/{d2}); nada gravado")
@@ -171,7 +190,7 @@ elif modo == "acrescenta":
             con.execute(f"""CREATE OR REPLACE TEMP TABLE novos AS
                 SELECT ({maximo} + row_number() OVER (ORDER BY {', '.join(q(c) for c in ordem + pc)}))::INTEGER AS {p}_id, {', '.join(q(c) for c in pc)}
                 FROM (SELECT {', '.join('e.' + q(c) for c in pc)}, {loc} FROM read_parquet({lit(a)}) e
-                      WHERE NOT EXISTS (SELECT 1 FROM p_{p} WHERE {igual('e', 'p_' + p, pc)}) GROUP BY ALL)""")
+                      WHERE NOT EXISTS (SELECT 1 FROM p_{p} WHERE {mesma('e', 'p_' + p, pc)}) GROUP BY ALL)""")
             n = con.execute("SELECT count(*) FROM novos").fetchone()[0]
             if n:
                 base = os.path.splitext(os.path.basename(a))[0]
@@ -182,7 +201,7 @@ elif modo == "acrescenta":
                 con.execute(f"INSERT INTO p_{p} FROM novos")
             log(f"{os.path.basename(a)}: {n} {p}(s) novo(s)")
         try:
-            linhas, mib = grava_mes(a, R, COLS)
+            linhas, mib = grava_mes(a, R, COLS, por_mascara=True)
         except SystemExit:
             for f in glob.glob(f"{R}/*/*.tmp"):
                 os.remove(f)
