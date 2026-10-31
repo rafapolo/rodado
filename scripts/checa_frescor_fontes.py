@@ -19,6 +19,10 @@ Dois avisos de leitura:
   - `http_last_modified` diz quando o ARQUIVO da fonte mudou, não a data do
     dado; compara-se com o updated_at. Fonte regravada todo dia aparece
     sempre "à frente" — o que importa é a distância.
+  - `updated_at` anda quando o espelho é regravado sem coleta nova (tipos, zstd, ordenação).
+    Quem não pode ser enganado por isso declara `ref: scrape_date`: vale a mais nova entre a
+    coleta do catálogo e a última promoção do gate (~/scrap_tmp/backup/<dataset>/<tabela>/).
+    O scrape_date sozinho não anda numa nova coleta, e uma recoleta fora do gate fica invisível.
   - comparação é sempre entre datas, nunca entre strings: "31/12/2025" >
     "26/08/2026" alfabeticamente, e foi assim que uma checagem manual do BCB
     SGS deu gap falso em 2026-09-04.
@@ -40,6 +44,30 @@ BEELINK = os.environ.get("BEELINK_HOST", "beelink")
 UA = "Mozilla/5.0 (rodado-scraper)"
 
 
+POOLS = {}
+
+
+def por_proxy(url, stream=False):
+    """Fonte que filtra por país (`proxy_br: true`). O pool vive em scripts/scrap/, fora do git:
+    sem ele a checagem dá ERRO e as outras seguem. Um pool por host, como no raspador."""
+    sys.path.insert(0, str(RAIZ / "scripts/scrap"))
+    from _proxy_br import Pool
+    host = url.split("/")[2]
+    if host not in POOLS:
+        POOLS[host] = Pool(url)
+    return POOLS[host].get(url, timeout=60, stream=stream, tentativas=8)
+
+
+def endereco(c):
+    hoje = dt.date.today()
+    return (c["url"].replace("{ano}", str(hoje.year)).replace("{hoje}", hoje.strftime("%Y%m%d"))
+            .replace("{ha3}", (hoje - dt.timedelta(days=3)).strftime("%Y%m%d")))
+
+
+def baixa(c):
+    return por_proxy(endereco(c)).content if c.get("proxy_br") else curl([endereco(c)])
+
+
 def curl(args, timeout=90):
     r = subprocess.run(["curl", "-sS", "-L", "-m", str(timeout), "-A", UA, *args], capture_output=True, timeout=timeout + 10)
     if r.returncode != 0:
@@ -48,20 +76,26 @@ def curl(args, timeout=90):
 
 
 def le_data(texto, formato):
+    if formato == "epoch_ms":
+        return dt.datetime.fromtimestamp(int(texto) / 1000, dt.timezone.utc).date()
     d = dt.datetime.strptime(texto, formato)
     # formato sem ano (o mês de um diretório do ano corrente): assume o ano corrente
     return (d.replace(year=dt.date.today().year) if "%Y" not in formato else d).date()
 
 
 def http_json(c):
-    v = json.loads(curl([c["url"]]))
+    v = json.loads(baixa(c))
     for passo in c["json_path"]:
         v = v[passo]
     return le_data(str(v), c["formato"])
 
 
 def http_last_modified(c):
-    cab = curl(["-I", c["url"]], timeout=240).decode(errors="replace")   # o FTP do DATASUS leva minutos no HEAD
+    if c.get("proxy_br"):
+        with por_proxy(endereco(c), stream=True) as r:
+            cab = "".join(f"{k}: {v}\n" for k, v in r.headers.items())
+    else:
+        cab = curl(["-I", endereco(c)], timeout=240).decode(errors="replace")   # o FTP do DATASUS leva minutos no HEAD
     achados = re.findall(r"(?im)^last-modified:\s*(.+?)\s*$", cab)
     if not achados:
         raise RuntimeError("sem Last-Modified")
@@ -69,23 +103,55 @@ def http_last_modified(c):
 
 
 def regex(c):
-    txt = curl([c["url"]]).decode(errors="replace")
+    txt = baixa(c).decode(errors="replace")
     achados = {"".join(m) if isinstance(m, tuple) else m for m in re.findall(c["padrao"], txt)}
     if not achados:
         raise RuntimeError("padrão não casou — a página mudou?")
     return max(le_data(a, c["formato"]) for a in achados)
 
 
-TIPOS = {"http_json": http_json, "http_last_modified": http_last_modified, "regex": regex}
+def retrato(c):
+    """Fonte viva sem data nenhuma: ela vale por hoje, e `ciclo_dias` diz quanto o espelho pode
+    ficar sem coleta. Não prova que a fonte mudou, só que passou o prazo."""
+    if c.get("url"):  # a fonte ao menos responde; ERRO aqui é fonte fora do ar ou caminho que mudou
+        baixa(c)
+    return dt.date.today()
+
+
+TIPOS = {"http_json": http_json, "http_last_modified": http_last_modified, "regex": regex, "retrato": retrato}
+SEM_FONTE = {"dead": "morta", "manual": "manual", "estatico": "estática", "bd": "só pela BD", "derivado": "derivada"}
 
 
 def catalogo():
     sql = ("SET enable_progress_bar=false; "
-           "SELECT dataset || '.' || \"table\" AS t, last_date, scrape_date, "
+           "SELECT dataset || '.' || \"table\" AS t, CAST(last_date AS VARCHAR) AS last_date, "
+           "CAST(scrape_date AS VARCHAR) AS scrape_date, "
            "CAST(updated_at AS VARCHAR) AS updated_at FROM _rodado_metadata;")
     out = subprocess.run(["ssh", BEELINK, "~/bin/duckdb -readonly -json ~/rodado/basedosdados.duckdb"],
                          input=sql, capture_output=True, text=True, timeout=180).stdout
     return {r["t"]: r for r in json.loads(out[out.index("["):])}
+
+
+def promocoes():
+    """Última promoção do gate por tabela, do carimbo em ~/scrap_tmp/backup."""
+    out = subprocess.run(["ssh", BEELINK, "cd ~/scrap_tmp/backup && ls -d */*/*"], capture_output=True, text=True, timeout=60).stdout
+    ult = {}
+    for linha in out.split():
+        partes = linha.split("/")
+        if len(partes) == 3 and re.match(r"\d{8}-", partes[2]):
+            d = f"{partes[2][:4]}-{partes[2][4:6]}-{partes[2][6:8]}"
+            ult[f"{partes[0]}.{partes[1]}"] = max(ult.get(f"{partes[0]}.{partes[1]}", ""), d)
+    return ult
+
+
+def data_no_espelho(tabela, expr):
+    """`espelho: <expr>`: max da expressão na tabela, para o que dataset_freshness.yaml não cobre."""
+    sql = f"SET enable_progress_bar=false; SELECT CAST(max({expr}) AS DATE) AS d FROM {tabela};"
+    r = subprocess.run(["ssh", BEELINK, "~/bin/duckdb -readonly -json ~/rodado/basedosdados.duckdb"],
+                       input=sql, capture_output=True, text=True, timeout=120)
+    if "[" not in r.stdout:
+        raise RuntimeError("espelho: " + r.stderr.strip().splitlines()[-1][:100])
+    return json.loads(r.stdout[r.stdout.index("["):])[0]["d"] or ""
 
 
 def main():
@@ -95,32 +161,35 @@ def main():
         print(f"{CHECKS} não existe — a pasta privado/ fica fora do git e não vem num clone novo", file=sys.stderr)
         return 1
     checks = yaml.safe_load(CHECKS.read_text())
-    cat = catalogo()
+    cat, promovidas = catalogo(), promocoes()
     linhas = []
     for tabela, c in checks.items():
         if args and not any(tabela.startswith(a) for a in args):
             continue
         meta = cat.get(tabela, {})
         espelho = (meta.get("last_date") or "")[:10]
+        coleta = max((meta.get("scrape_date") or "")[:10], promovidas.get(tabela, ""))
         # updated_at = parquet mais novo da tabela (quando regravamos); scrape_date é a 1ª coleta e não anda
         raspado = (meta.get("updated_at") or meta.get("scrape_date") or "")[:10]
         tipo = c["check"]
         fonte, estado = "", ""
-        if tipo == "dead":
-            estado = "morta"
-        elif tipo == "manual":
-            estado = "manual"
+        if tipo in SEM_FONTE:
+            estado = SEM_FONTE[tipo]
         else:
             try:
                 d = TIPOS[tipo](c)
                 fonte = d.isoformat()
+                if c.get("espelho"):
+                    espelho = data_no_espelho(tabela, c["espelho"])
                 # last_modified fala do arquivo: compara com quando raspamos. Os outros falam do dado.
-                ref = raspado if tipo == "http_last_modified" else (espelho or raspado)
+                arquivo = tipo == "http_last_modified" or c.get("compara") == "arquivo" or (tipo == "retrato" and not c.get("espelho"))
+                base = coleta if c.get("ref") == "scrape_date" else raspado
+                ref = base if arquivo else (espelho or raspado)
                 if not ref:
                     estado = "sem referência no catálogo"
                 else:
                     atraso = (d - dt.date.fromisoformat(ref)).days
-                    estado = "em dia" if atraso <= 0 else f"fonte +{atraso} d"
+                    estado = "em dia" if atraso <= c.get("ciclo_dias", 0) else f"fonte +{atraso} d"
             except Exception as e:
                 estado = f"ERRO: {str(e)[:60]}"
         comando = f"atualiza_fonte.py {c['scraper']} {c.get('gate', '')}".strip() if c.get("scraper") else ""
@@ -135,7 +204,7 @@ def main():
         print(f"{s:<26} {t}\n{'':26} fonte={f or '—'} ({tipo})  espelho={e or '—'}  regravado={r or '—'}")
         if s.startswith("fonte +") and cmd:
             print(f"{'':26} $ python3 scripts/scrap/{cmd}")
-        if nota and (s.startswith(("fonte +", "ERRO")) or tipo in ("manual", "dead")):
+        if nota and (s.startswith(("fonte +", "ERRO")) or tipo in SEM_FONTE):
             print(f"{'':26} nota: {nota}")
     atras = sum(1 for l in linhas if l[5].startswith("fonte +"))
     erros = sum(1 for l in linhas if l[5].startswith("ERRO"))
