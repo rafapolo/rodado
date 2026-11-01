@@ -74,6 +74,16 @@ DESCRICOES = {
         "campanha, óbitos do SUS — registros públicos brasileiros cruzados uns "
         "com os outros até aparecer o que nenhum deles mostra sozinho."
     ),
+    "temas/index.html": (
+        "Os 43 temas do rodado: desigualdade racial, educação, saúde, trabalho, "
+        "política, violência, orçamento e mais — cada um uma narrativa "
+        "investigativa com as tabelas oficiais por trás dela."
+    ),
+    "temas-en/index.html": (
+        "The 43 themes of rodado: racial inequality, education, health, labor, "
+        "politics, violence, public budgets and more — each a data-driven "
+        "essay with the official tables behind it."
+    ),
     "plataformas/index.html": (
         "Painéis, mapas e redes navegáveis construídos sobre o mesmo espelho de "
         "dados públicos — o dado inteiro para explorar, não só o recorte de uma "
@@ -91,7 +101,10 @@ DESCRICOES = {
 INDICE_ANALISES = "analises/index.html"
 INDICE_PLATAFORMAS = "plataformas/index.html"
 INDICE_PLATAFORMAS_EN = "plataformas/en.html"
-INDICES = (INDICE_ANALISES, INDICE_PLATAFORMAS, INDICE_PLATAFORMAS_EN)
+INDICE_TEMAS = "temas/index.html"
+INDICE_TEMAS_EN = "temas-en/index.html"
+INDICES = (INDICE_ANALISES, INDICE_PLATAFORMAS, INDICE_PLATAFORMAS_EN,
+           INDICE_TEMAS, INDICE_TEMAS_EN)
 
 SITE_NAME = "rodado"
 

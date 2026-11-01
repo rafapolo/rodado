@@ -525,9 +525,8 @@ CABECA = """<!doctype html>
     <a class="brand" href="/">rodado</a>
     <div class="nav-right">
       <div class="links">
-        <a href="/#temas">Temas</a>
+        <a href="/temas/">Temas</a>
         <a href="/analises/">Análises</a>
-        <a href="/plataformas/">Plataformas</a>
         <a href="/atlas/">Atlas</a>
         <a class="mcp-link" href="/mcp.html">MCP</a>
         <a href="https://xn--2dk.xyz/">DataViz</a>
@@ -551,7 +550,7 @@ RODAPE = """</main>
 
 <footer>
   <div class="footer-inner">
-    <a href="/">Índice temático</a>
+    <a href="/temas/">Índice temático</a>
     <span>Dados: fontes públicas oficiais / DuckDB</span>
     <span class="footer-by">por <a href="https://extrapolo.com" target="_blank" rel="noopener">extrapolo.com</a></span>
   </div>
