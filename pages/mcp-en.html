@@ -87,7 +87,7 @@
         <section class="connect" aria-labelledby="connect-title">
           <h2 class="connect-title" id="connect-title"><i class="fa-solid fa-plug"></i> Connect your agent</h2>
           <div class="connect-box">
-            <div class="connect-tabs" role="tablist" aria-label="MCP client"><button type="button" role="tab" class="connect-tab" id="tab-claude-code" aria-controls="painel-claude-code" aria-selected="true" tabindex="0">Claude Code</button><button type="button" role="tab" class="connect-tab" id="tab-claude-app" aria-controls="painel-claude-app" aria-selected="false" tabindex="-1">Claude.ai / Desktop</button><button type="button" role="tab" class="connect-tab" id="tab-cursor" aria-controls="painel-cursor" aria-selected="false" tabindex="-1">Cursor</button><button type="button" role="tab" class="connect-tab" id="tab-vscode" aria-controls="painel-vscode" aria-selected="false" tabindex="-1">VS Code</button><button type="button" role="tab" class="connect-tab" id="tab-local" aria-controls="painel-local" aria-selected="false" tabindex="-1">Local</button></div>
+            <div class="connect-tabs" role="tablist" aria-label="MCP client"><button type="button" role="tab" class="connect-tab" id="tab-claude-code" aria-controls="painel-claude-code" aria-selected="true" tabindex="0">Claude Code</button><button type="button" role="tab" class="connect-tab" id="tab-claude-app" aria-controls="painel-claude-app" aria-selected="false" tabindex="-1">Claude.ai / Desktop</button><button type="button" role="tab" class="connect-tab" id="tab-cursor" aria-controls="painel-cursor" aria-selected="false" tabindex="-1">Cursor</button><button type="button" role="tab" class="connect-tab" id="tab-vscode" aria-controls="painel-vscode" aria-selected="false" tabindex="-1">VS Code</button><button type="button" role="tab" class="connect-tab" id="tab-local" aria-controls="painel-local" aria-selected="false" tabindex="-1">Local</button><button type="button" role="tab" class="connect-tab" id="tab-agente" aria-controls="painel-agente" aria-selected="false" tabindex="-1">Connect your agent</button></div>
             <div class="connect-panel" role="tabpanel" id="painel-claude-code" aria-labelledby="tab-claude-code">
               <p class="connect-hint">In a terminal:</p>
               <div class="connect-cmd"><pre>claude mcp add --transport http rodado https://db.rodado.xyz/mcp</pre><button type="button" class="tools-copy" aria-label="Copy">copy</button></div>
@@ -109,17 +109,22 @@
               <div class="connect-cmd"><pre>git clone --depth 1 https://github.com/rafapolo/rodado &amp;&amp; cd rodado
 claude mcp add rodado -- uv run "$PWD/mcp/mcp_server.py"</pre><button type="button" class="tools-copy" aria-label="Copy">copy</button></div>
             </div>
+            <div class="connect-panel" role="tabpanel" id="painel-agente" aria-labelledby="tab-agente" hidden>
+              <p class="connect-hint">No install: any agent with web/HTTP access (Claude, ChatGPT, another LLM) uses the mirror through the public guide <a href="https://db.rodado.xyz/llm" target="_blank" rel="noopener">db.rodado.xyz/llm</a>, with the same measured pitfalls and refusals as the MCP. Paste into your agent:</p>
+              <div class="connect-cmd"><pre><code>Use the public-data mirror at https://db.rodado.xyz/llm as a connector: read the guide and follow its flow (examples → tables → context → confere → query) to answer: &lt;your question&gt;. Cite the /q link for every number.</code></pre><button type="button" class="tools-copy" aria-label="Copy">copy</button></div>
+              <p class="connect-hint">Routes beyond the guide require a credential (username and password, or a token) since 26/10/2026; whoever asks the question gives it to the agent.</p>
+            </div>
           </div>
           <p class="tools-note">Hosted and public: nothing to install, no SSH, no local data. Credential required from 2026-10-27 — see <a href="https://github.com/rafapolo/rodado/blob/main/mcp/MCP.md">mcp/MCP.md</a>.</p>
         </section>
       </div>
     </header>
 
-    <section class="tools-panel">
-      <div class="tools-head">
+    <details class="tools-panel">
+      <summary class="tools-head">
         <span class="card-icon"><i class="fa-solid fa-plug"></i></span>
         <h2 class="tools-title">The server's tools</h2>
-      </div>
+      </summary>
       <p class="tools-desc">Seventeen MCP tools expose the catalog, the semantic layer (joins, metrics, hierarchies) and the DuckDB mirror. By default every query goes to the public <a href="https://db.rodado.xyz/llm">db.rodado.xyz</a> API: the measured pitfalls of the tables and columns it touches come back in <code>avisos</code>, and a query that cites a column of a pitfall that yields a wrong answer without an error is refused, with the explanation, until it is repeated with <code>ciente=True</code>.</p>
       <ul class="tools-list">
           <li><code>list_datasets()</code> — the catalog datasets, with table counts</li>
@@ -135,17 +140,8 @@ claude mcp add rodado -- uv run "$PWD/mcp/mcp_server.py"</pre><button type="butt
           <li><code>consultar_divida_ativa · consultar_precos_combustivel · consultar_jurisprudencia_stj · consultar_populacao_carceraria</code> — SQL-free shortcuts over PGFN, ANP, STJ and SISDEPEN</li>
           <li><code>consultar_cep(cep) · consultar_painelprecos(code)</code> — live, on ViaCEP and ComprasGov's price panel</li>
       </ul>
-    </section>
+    </details>
 
-    <section class="tools-panel">
-      <div class="tools-head">
-        <span class="card-icon"><i class="fa-solid fa-link"></i></span>
-        <h2 class="tools-title">No install: /llm as a connector</h2>
-      </div>
-      <p class="tools-desc">You can use the mirror without installing the MCP. For any agent with web/HTTP access (Claude, ChatGPT, another LLM), just ask it to read <a href="https://db.rodado.xyz/llm">db.rodado.xyz/llm</a>, the public guide that explains the HTTP routes (<code>/exemplos</code>, <code>/tabelas</code>, <code>/colunas</code>, <code>/contexto</code>, <code>POST /confere</code>, <code>POST /query</code> and <code>POST /q</code>, which makes a citable link). The same measured pitfalls and refusals as the MCP apply there.</p>
-      <div class="connect-cmd"><pre><code>Use the public-data mirror at https://db.rodado.xyz/llm as a connector: read the guide and follow its flow (examples → tables → context → confere → query) to answer: &lt;your question&gt;. Cite the /q link for every number.</code></pre><button type="button" class="tools-copy" aria-label="Copy">copy</button></div>
-      <p class="tools-desc">According to the guide, since 26/10/2026 every route beyond the guide itself requires a credential (username and password, or a token), which whoever asks the question must give the agent.</p>
-    </section>
 
     <div class="filters-bar" role="search" aria-label="Filter themes">
       <div class="filters">
