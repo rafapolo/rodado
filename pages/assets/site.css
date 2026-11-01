@@ -403,6 +403,78 @@ tr:last-child td { border-bottom: 1px solid var(--rule); }
 .teaser-tile:hover span { color: var(--ink); }
 .teaser-tile:hover img { opacity: 0.88; }
 
+/* ── home: análises recentes, vitrine de plataformas ──
+   blocos preenchidos por scripts/gera_home.py */
+
+.noticias {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+  margin: 1.2rem 0 0.8rem;
+}
+
+.noticia {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 1.1rem 1.2rem 1.2rem;
+  border: 1px solid var(--rule);
+  border-top: 3px solid var(--accent);
+  border-radius: 4px;
+  background: var(--bg);
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.noticia:hover { background: var(--bg-raised); }
+.noticia:hover .noticia-titulo { color: var(--accent); }
+
+.noticia-data,
+.noticia-fonte {
+  font-family: var(--sans);
+  font-size: 0.74rem;
+  color: var(--ink-faint);
+}
+
+.noticia-data { letter-spacing: 0.04em; }
+
+.noticia-titulo {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 1.02rem;
+  line-height: 1.3;
+}
+
+.noticia-dek {
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: var(--ink-soft);
+  flex: 1;
+}
+
+.noticia-fonte {
+  border-top: 1px solid var(--rule);
+  padding-top: 0.5rem;
+}
+
+.secao-dek {
+  font-family: var(--sans);
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  margin: 0.2rem 0 1rem;
+}
+
+.secao-mais {
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  margin: 0.6rem 0 2.8rem;
+}
+
+.secao-mais a { text-decoration: none; }
+
+.teaser.vitrine { margin-bottom: 0.6rem; }
+.teaser.vitrine .teaser-tile span { font-size: 0.86rem; color: var(--ink-soft); font-weight: 600; }
+
 /* ── pager tema anterior/próximo ── */
 
 .pager {

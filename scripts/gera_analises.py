@@ -10,7 +10,8 @@ viewer continua montando o corpo depois, pro leitor.
 O ?doc=<slug> segue funcionando (links assim já circulam); a URL limpa é a
 canônica.
 
-Ordem: este script escreve os shells, gera os cartões e chama o gera_seo.py, que
+Ordem: este script escreve os shells, refaz os blocos da home (gera_home.py),
+gera os cartões e chama o gera_seo.py, que
 injeta o bloco de SEO/head e refaz o sitemap.
 """
 
@@ -46,9 +47,8 @@ MODELO = """<!doctype html>
     <a class="brand" href="/">rodado</a>
     <div class="nav-right">
       <div class="links">
-        <a href="/#temas">Temas</a>
+        <a href="/temas/">Temas</a>
         <a href="/analises/">Análises</a>
-        <a href="/plataformas/">Plataformas</a>
         <a href="/atlas/">Atlas</a>
         <a class="mcp-link" href="/mcp.html">MCP</a>
         <a href="https://xn--2dk.xyz/">DataViz</a>
@@ -71,7 +71,7 @@ MODELO = """<!doctype html>
 
 <footer>
   <div class="footer-inner">
-    <a href="/">Índice temático</a>
+    <a href="/temas/">Índice temático</a>
     <span>Dados: fontes públicas oficiais / DuckDB</span>
     <span class="footer-by">por <a href="https://extrapolo.com" target="_blank" rel="noopener">extrapolo.com</a></span>
   </div>
@@ -146,7 +146,7 @@ def main() -> None:
                       "(gerado antes?) — remova à mão se for o caso")
 
     print(f"{len(slugs)} análises")
-    for script in ("gera_og_image.py", "gera_seo.py"):
+    for script in ("gera_home.py", "gera_og_image.py", "gera_seo.py"):
         print(f"\n$ {script}")
         subprocess.run([sys.executable, str(RAIZ / "scripts" / script)], check=True)
 
