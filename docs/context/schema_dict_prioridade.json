@@ -3,13 +3,13 @@
   "generated_by": "scripts/prioriza_schema_dict_status.py",
   "fonte": "docs/context/schema_dict_status.json (label nao_verificado)",
   "sinais": {
-   "consultas_sql_lidas": 4853,
+   "consultas_sql_lidas": 4873,
    "harness_consultar": 2260,
-   "claude_run_sql_ou_bash_duckdb": 2593,
+   "claude_run_sql_ou_bash_duckdb": 2613,
    "describe_table_lidos": 1219,
    "docs_versionados_lidos": 157
   },
-  "nao_verificado_total": 14881,
+  "nao_verificado_total": 14880,
   "com_uso_observado_sql_ou_docs": 382,
   "com_uso_em_sql": 295,
   "formula": "10*sql + 5*docs + 1*desc + 0.5*perg + 0.5*log10(linhas+1)",
@@ -28,13 +28,13 @@
   },
   {
    "coluna": "br_ms_sih.aihs_reduzidas.id_aih",
-   "score": 276.15,
-   "sql": 25,
+   "score": 296.16,
+   "sql": 27,
    "docs": 0,
    "desc": 22,
    "perg": 0,
-   "linhas": 200147614,
-   "reason": "tabela grande (~200.147.614 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+   "linhas": 208076913,
+   "reason": "tabela grande (~208.076.913 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_anatel_banda_larga_fixa.microdados.porte_empresa",
@@ -178,12 +178,12 @@
   },
   {
    "coluna": "br_mgi_pncp.contratacao.json",
-   "score": 143.31,
+   "score": 143.32,
    "sql": 14,
    "docs": 0,
    "desc": 0,
    "perg": 0,
-   "linhas": 4242787,
+   "linhas": 4362602,
    "reason": "candidato real: ~0 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
@@ -878,13 +878,13 @@
   },
   {
    "coluna": "br_ms_sih.aihs_reduzidas.idade_paciente",
-   "score": 41.15,
+   "score": 41.16,
    "sql": 1,
    "docs": 1,
    "desc": 22,
    "perg": 0,
-   "linhas": 200147614,
-   "reason": "tabela grande (~200.147.614 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+   "linhas": 208076913,
+   "reason": "tabela grande (~208.076.913 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_me_cnpj.estabelecimentos.situacao_especial",
@@ -898,13 +898,13 @@
   },
   {
    "coluna": "br_ms_sih.aihs_reduzidas.tipo_gestor",
-   "score": 36.15,
+   "score": 36.16,
    "sql": 1,
    "docs": 0,
    "desc": 22,
    "perg": 0,
-   "linhas": 200147614,
-   "reason": "tabela grande (~200.147.614 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+   "linhas": 208076913,
+   "reason": "tabela grande (~208.076.913 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_cvm_cia_aberta.itr_dre_con.ORDEM_EXERC",
@@ -1288,223 +1288,223 @@
   },
   {
    "coluna": "br_ms_sih.aihs_reduzidas.cep_paciente",
-   "score": 26.15,
+   "score": 26.16,
    "sql": 0,
    "docs": 0,
    "desc": 22,
    "perg": 0,
-   "linhas": 200147614,
-   "reason": "tabela grande (~200.147.614 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+   "linhas": 208076913,
+   "reason": "tabela grande (~208.076.913 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_ms_sih.aihs_reduzidas.codigo_nacionalidade_paciente",
-   "score": 26.15,
+   "score": 26.16,
    "sql": 0,
    "docs": 0,
    "desc": 22,
    "perg": 0,
-   "linhas": 200147614,
-   "reason": "tabela grande (~200.147.614 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+   "linhas": 208076913,
+   "reason": "tabela grande (~208.076.913 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_ms_sih.aihs_reduzidas.id_acidente_trabalho",
-   "score": 26.15,
+   "score": 26.16,
    "sql": 0,
    "docs": 0,
    "desc": 22,
    "perg": 0,
-   "linhas": 200147614,
-   "reason": "tabela grande (~200.147.614 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+   "linhas": 208076913,
+   "reason": "tabela grande (~208.076.913 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_ms_sih.aihs_reduzidas.id_gestante_pre_natal",
-   "score": 26.15,
+   "score": 26.16,
    "sql": 0,
    "docs": 0,
    "desc": 22,
    "perg": 0,
-   "linhas": 200147614,
-   "reason": "tabela grande (~200.147.614 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+   "linhas": 208076913,
+   "reason": "tabela grande (~208.076.913 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_ms_sih.aihs_reduzidas.justificativa_auditor",
-   "score": 26.15,
+   "score": 26.16,
    "sql": 0,
    "docs": 0,
    "desc": 22,
    "perg": 0,
-   "linhas": 200147614,
-   "reason": "tabela grande (~200.147.614 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+   "linhas": 208076913,
+   "reason": "tabela grande (~208.076.913 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_ms_sih.aihs_reduzidas.justificativa_estabelecimento",
-   "score": 26.15,
+   "score": 26.16,
    "sql": 0,
    "docs": 0,
    "desc": 22,
    "perg": 0,
-   "linhas": 200147614,
-   "reason": "tabela grande (~200.147.614 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+   "linhas": 208076913,
+   "reason": "tabela grande (~208.076.913 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_ms_sih.aihs_reduzidas.regra_contratual",
-   "score": 26.15,
+   "score": 26.16,
    "sql": 0,
    "docs": 0,
    "desc": 22,
    "perg": 0,
-   "linhas": 200147614,
-   "reason": "tabela grande (~200.147.614 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+   "linhas": 208076913,
+   "reason": "tabela grande (~208.076.913 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_ms_sih.aihs_reduzidas.remessa",
-   "score": 26.15,
+   "score": 26.16,
    "sql": 0,
    "docs": 0,
    "desc": 22,
    "perg": 0,
-   "linhas": 200147614,
-   "reason": "tabela grande (~200.147.614 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+   "linhas": 208076913,
+   "reason": "tabela grande (~208.076.913 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_ms_sih.aihs_reduzidas.sequencial_aih",
-   "score": 26.15,
+   "score": 26.16,
    "sql": 0,
    "docs": 0,
    "desc": 22,
    "perg": 0,
-   "linhas": 200147614,
-   "reason": "tabela grande (~200.147.614 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+   "linhas": 208076913,
+   "reason": "tabela grande (~208.076.913 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_ms_sih.aihs_reduzidas.sequencial_longa_permanencia",
-   "score": 26.15,
+   "score": 26.16,
    "sql": 0,
    "docs": 0,
    "desc": 22,
    "perg": 0,
-   "linhas": 200147614,
-   "reason": "tabela grande (~200.147.614 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+   "linhas": 208076913,
+   "reason": "tabela grande (~208.076.913 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_ms_sih.aihs_reduzidas.subtipo_financiamento",
-   "score": 26.15,
+   "score": 26.16,
    "sql": 0,
    "docs": 0,
    "desc": 22,
    "perg": 0,
-   "linhas": 200147614,
-   "reason": "tabela grande (~200.147.614 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+   "linhas": 208076913,
+   "reason": "tabela grande (~208.076.913 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_ms_sih.aihs_reduzidas.tipo_diagnostico_secundario_1",
-   "score": 26.15,
+   "score": 26.16,
    "sql": 0,
    "docs": 0,
    "desc": 22,
    "perg": 0,
-   "linhas": 200147614,
-   "reason": "tabela grande (~200.147.614 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+   "linhas": 208076913,
+   "reason": "tabela grande (~208.076.913 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_ms_sih.aihs_reduzidas.tipo_diagnostico_secundario_2",
-   "score": 26.15,
+   "score": 26.16,
    "sql": 0,
    "docs": 0,
    "desc": 22,
    "perg": 0,
-   "linhas": 200147614,
-   "reason": "tabela grande (~200.147.614 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+   "linhas": 208076913,
+   "reason": "tabela grande (~208.076.913 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_ms_sih.aihs_reduzidas.tipo_diagnostico_secundario_3",
-   "score": 26.15,
+   "score": 26.16,
    "sql": 0,
    "docs": 0,
    "desc": 22,
    "perg": 0,
-   "linhas": 200147614,
-   "reason": "tabela grande (~200.147.614 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+   "linhas": 208076913,
+   "reason": "tabela grande (~208.076.913 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_ms_sih.aihs_reduzidas.tipo_diagnostico_secundario_4",
-   "score": 26.15,
+   "score": 26.16,
    "sql": 0,
    "docs": 0,
    "desc": 22,
    "perg": 0,
-   "linhas": 200147614,
-   "reason": "tabela grande (~200.147.614 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+   "linhas": 208076913,
+   "reason": "tabela grande (~208.076.913 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_ms_sih.aihs_reduzidas.tipo_diagnostico_secundario_5",
-   "score": 26.15,
+   "score": 26.16,
    "sql": 0,
    "docs": 0,
    "desc": 22,
    "perg": 0,
-   "linhas": 200147614,
-   "reason": "tabela grande (~200.147.614 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+   "linhas": 208076913,
+   "reason": "tabela grande (~208.076.913 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_ms_sih.aihs_reduzidas.tipo_diagnostico_secundario_6",
-   "score": 26.15,
+   "score": 26.16,
    "sql": 0,
    "docs": 0,
    "desc": 22,
    "perg": 0,
-   "linhas": 200147614,
-   "reason": "tabela grande (~200.147.614 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+   "linhas": 208076913,
+   "reason": "tabela grande (~208.076.913 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_ms_sih.aihs_reduzidas.tipo_diagnostico_secundario_7",
-   "score": 26.15,
+   "score": 26.16,
    "sql": 0,
    "docs": 0,
    "desc": 22,
    "perg": 0,
-   "linhas": 200147614,
-   "reason": "tabela grande (~200.147.614 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+   "linhas": 208076913,
+   "reason": "tabela grande (~208.076.913 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_ms_sih.aihs_reduzidas.tipo_diagnostico_secundario_8",
-   "score": 26.15,
+   "score": 26.16,
    "sql": 0,
    "docs": 0,
    "desc": 22,
    "perg": 0,
-   "linhas": 200147614,
-   "reason": "tabela grande (~200.147.614 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+   "linhas": 208076913,
+   "reason": "tabela grande (~208.076.913 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_ms_sih.aihs_reduzidas.tipo_diagnostico_secundario_9",
-   "score": 26.15,
+   "score": 26.16,
    "sql": 0,
    "docs": 0,
    "desc": 22,
    "perg": 0,
-   "linhas": 200147614,
-   "reason": "tabela grande (~200.147.614 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+   "linhas": 208076913,
+   "reason": "tabela grande (~208.076.913 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_ms_sih.aihs_reduzidas.tipo_financiamento",
-   "score": 26.15,
+   "score": 26.16,
    "sql": 0,
    "docs": 0,
    "desc": 22,
    "perg": 0,
-   "linhas": 200147614,
-   "reason": "tabela grande (~200.147.614 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+   "linhas": 208076913,
+   "reason": "tabela grande (~208.076.913 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_ms_sih.aihs_reduzidas.unidade_medida_idade_paciente",
-   "score": 26.15,
+   "score": 26.16,
    "sql": 0,
    "docs": 0,
    "desc": 22,
    "perg": 0,
-   "linhas": 200147614,
-   "reason": "tabela grande (~200.147.614 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+   "linhas": 208076913,
+   "reason": "tabela grande (~208.076.913 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_prf_acidentes.pessoa.estado_fisico",
@@ -1718,12 +1718,12 @@
   },
   {
    "coluna": "br_mgi_pncp.contratacao.modalidadeNome",
-   "score": 23.31,
+   "score": 23.32,
    "sql": 2,
    "docs": 0,
    "desc": 0,
    "perg": 0,
-   "linhas": 4242787,
+   "linhas": 4362602,
    "reason": "candidato real: ~16 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
@@ -1828,12 +1828,12 @@
   },
   {
    "coluna": "br_ms_sinasc.microdados.id_pais_residencia",
-   "score": 22.97,
+   "score": 22.99,
    "sql": 1,
    "docs": 0,
    "desc": 9,
    "perg": 0,
-   "linhas": 85559034,
+   "linhas": 93344171,
    "reason": "column_codes.yaml (pendente): CODPAISRES. Em todo ano preenchido vale só '1' (presumivelmente Brasil; código não achado na estrutura). 100% NULL em 2014, 2015 e 2017 — antes de 2010 não existe. Não serve para separar residentes no exterior."
   },
   {
@@ -3008,12 +3008,12 @@
   },
   {
    "coluna": "world_wb_mides.pagamento.fonte",
-   "score": 15.3,
+   "score": 15.31,
    "sql": 0,
    "docs": 2,
    "desc": 0,
    "perg": 2,
-   "linhas": 392731053,
+   "linhas": 426351549,
    "reason": "column_codes.yaml (pendente): Código de fonte de recurso e de órgão do orçamento LOCAL de cada município (fonte: '1', '00', '100', '99'…; orgao: '54900'…). Não há tabela nacional: o mesmo código significa coisas diferentes em entes diferentes. Não agrupar entre municípios."
   }
  ]
