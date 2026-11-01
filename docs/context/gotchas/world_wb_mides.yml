@@ -1,0 +1,22 @@
+dataset: world_wb_mides
+gotchas:
+  - id: anos_antigos_nao_atualizados
+    resumo: "Em empenho, liquidacao, pagamento e licitacao_item, anos antigos seguem a versão anterior da fonte: diferenças menores que 1% não foram trazidas."
+    detalhe: >
+      A fonte reprocessa anos inteiros com mudanças mínimas ou encolhendo; reler
+      cada ano custaria ~220 GB. Só entraram anos novos e anos que cresceram mais
+      de 1%. Total de um ano antigo pode divergir pouco de consulta feita na fonte.
+    tabelas: [empenho, liquidacao, pagamento, licitacao_item]
+    colunas: [ano]
+    severidade: aviso
+    verificado: "empenho 2014: 23.231.744 no disco, 23.231.746 na fonte; liquidacao 2009: 14.165.896 no disco, 14.112.482 na fonte — medido 2026-11-01"
+  - id: quantidades_com_dois_tipos
+    resumo: "licitacao_item tem quantidade fracionada em 2022 a 2026 (DOUBLE) e inteira nos arquivos antigos: não trate como contagem."
+    detalhe: >
+      A fonte traz valores como 37,5. Os arquivos antigos ficaram em BIGINT e a view
+      une os dois com union_by_name; se a fonte já vinha fracionada antes, a parte
+      decimal dos anos antigos pode ter sido perdida.
+    tabelas: [licitacao_item]
+    colunas: [quantidade, quantidade_cotada, quantidade_proposta]
+    severidade: aviso
+    verificado: "conversão para BIGINT recusada em 37,5 nos anos novos; decimal dos anos antigos não conferido — medido 2026-11-01"

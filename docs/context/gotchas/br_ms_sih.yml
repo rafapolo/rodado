@@ -56,3 +56,13 @@ gotchas:
       outros anos; id_municipio_estabelecimento, cid_* ou mes leem o ano inteiro. CNES vai como
       texto de 7 dígitos com zero à esquerda ('0013846'), não número.
     verificado: "86 arquivos, 1.647 row groups, zero sobrepostos em id_estabelecimento_cnes dentro do ano, 200.147.614 linhas e soma de hash iguais no beelink e no S3 — medido 2026-10-26; no db.rodado.xyz, busca por CNES (era 55 s fria antes da ordenação): 0013846 com ano = 2022 em 7,6 s na primeira consulta e 0,9 s depois, sem ano (17 anos) em 0,8-1,6 s; ano = 2022 com id_municipio_estabelecimento, sem o CNES, em 27 s"
+  - id: razao_social_preenchida_pelo_cnes
+    resumo: "Em 2025 e 2026 razao_social_estabelecimento não vem da fonte, que tirou a coluna: foi preenchida pelo nome que o próprio espelho já tinha para o CNES."
+    detalhe: >
+      Um hospital que mudou de nome depois da última carga antiga aparece com o
+      nome anterior, e CNES novo fica NULL. Essas partições também ainda não foram
+      reordenadas: o salto por id_estabelecimento_cnes dentro do ano vale só até 2024.
+    tabelas: [aihs_reduzidas]
+    colunas: [razao_social_estabelecimento, id_estabelecimento_cnes]
+    severidade: aviso
+    verificado: "12.266.824 de 14.530.237 linhas de 2025-2026 com razão social (84,4%), mapa de 3.565 CNES — medido 2026-11-01"

@@ -19,3 +19,14 @@ gotchas:
     colunas: [id_responsavel, nome_responsavel]
     severidade: silencioso
     verificado: "extração 2025-07-28: 1.981.742 de 3.006.410 linhas com id_responsavel = 'nan', 1.024.668 com 14 dígitos, 0 NULL — medido 2026-09-25"
+  - id: retratos_com_buraco_desde_2025_07
+    resumo: "Desde 2025-07 o espelho só tem o retrato mais novo do CNO: não calcule evolução por data_extracao nesse trecho."
+    detalhe: >
+      Cada data_extracao repete a base inteira. Em 2026-11-01 a coleta trouxe só o
+      retrato mais novo com linhas, 2026-01-28, e pulou os ~120 intermediários
+      (148 GB de leitura). O metadado da fonte lista datas até 2026-10 que estão
+      vazias na contagem exata. Para o estado atual, filtre max(data_extracao).
+    tabelas: [microdados]
+    colunas: [data_extracao]
+    severidade: silencioso
+    verificado: "max(data_extracao) = 2026-01-28, 192 retratos no disco — medido 2026-11-01"

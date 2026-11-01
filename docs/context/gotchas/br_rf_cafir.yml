@@ -18,3 +18,13 @@ gotchas:
     colunas: [area]
     severidade: silencioso
     verificado: "2025-09-02, situacao_imovel '02': 8,8 M imóveis, soma de area 9,0 bi — medido 2026-10-22 (bragro)"
+  - id: retratos_com_buraco_desde_2025_10
+    resumo: "Entre 2025-10 e 2026-03 o espelho só tem o retrato de 2026-03-31: não calcule evolução mensal nesse trecho."
+    detalhe: >
+      Cada data_referencia repete a base inteira, de ~10 M de imóveis. A coleta de
+      2026-11-01 pulou os retratos intermediários, e o metadado da fonte lista
+      datas mais novas que estão vazias na contagem exata.
+    tabelas: [imoveis_rurais]
+    colunas: [data_referencia]
+    severidade: silencioso
+    verificado: "max(data_referencia) = 2026-03-31, 19 retratos no disco — medido 2026-11-01"

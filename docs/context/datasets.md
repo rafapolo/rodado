@@ -33,14 +33,14 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_ba_feiradesantana_camara_leis` | 1 | 6.033 | 2026-07-05 |
 | `br_bcb_agencia` | 2 | 4.113.511 | 2026-10-29 |
 | `br_bcb_desenrola` | 1 | 13.638 | 2026-10-21 |
-| `br_bcb_estban` | 3 | 699.984.822 | 2026-07-05 |
+| `br_bcb_estban` | 3 | 779.013.036 | 2026-11-01 |
 | `br_bcb_ifdata` | 5 | 55.700.812 | 2026-09-25 |
 | `br_bcb_penalidades` | 1 | 16.989 | 2026-10-30 |
 | `br_bcb_pix_municipio` | 1 | 401.019 | 2026-10-30 |
 | `br_bcb_ptax` | 3 | 805.814 | 2026-10-30 |
 | `br_bcb_scrdata` | 1 | 43.061.984 | 2026-10-21 |
 | `br_bcb_sgs` | 1 | 25.228 | 2026-10-30 |
-| `br_bcb_sicor` | 20 | 783.900.132 | 2026-10-30 |
+| `br_bcb_sicor` | 20 | 787.181.262 | 2026-11-01 |
 | `br_bd_diretorios_brasil` | 23 | 2.033.171 | 2026-10-30 |
 | `br_bd_diretorios_data_tempo` | 11 | 1.922.812 | 2026-07-05 |
 | `br_bd_diretorios_mundo` | 4 | 20.648 | 2026-08-23 |
@@ -74,7 +74,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_cgu_receitas_publicas` | 1 | 1.529.345 | 2026-07-05 |
 | `br_cgu_sancoes` | 6 | 45.506 | 2026-10-30 |
 | `br_cgu_seguro_defeso` | 3 | 47.779.027 | 2026-10-31 |
-| `br_cgu_servidores_executivo_federal` | 7 | 426.454.972 | 2026-10-26 |
+| `br_cgu_servidores_executivo_federal` | 7 | 432.489.430 | 2026-11-01 |
 | `br_cgu_transferencias` | 1 | 23.060.808 | 2026-10-31 |
 | `br_cgu_viagens` | 4 | 53.192.569 | 2026-10-30 |
 | `br_clp_ranking_competitividade` | 2 | 9.431 | 2026-07-09 |
@@ -176,7 +176,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_mf_divida_ativa` | 2 | 143.151.652 | 2026-10-15 |
 | `br_mg_belohorizonte_smfa_iptu` | 2 | 21.463.825 | 2026-07-06 |
 | `br_mgi_compras_publicas` | 21 | 100.278.894 | 2026-10-31 |
-| `br_mgi_pncp` | 4 | 5.730.937 | 2026-10-30 |
+| `br_mgi_pncp` | 4 | 5.850.752 | 2026-11-01 |
 | `br_minc_salic` | 18 | 4.370.266 | 2026-10-25 |
 | `br_mj_consumidorgovbr` | 1 | 15.392.507 | 2026-10-21 |
 | `br_mj_sinesp` | 3 | 9.097.924 | 2026-10-07 |
@@ -193,12 +193,12 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_mp_pep` | 1 | 1.799.733 | 2026-10-09 |
 | `br_mps_beneficios` | 3 | 81.063.055 | 2026-10-07 |
 | `br_ms_atencao_basica` | 1 | 901.944 | 2026-07-09 |
-| `br_ms_cnes` | 14 | 1.282.570.965 | 2026-10-30 |
+| `br_ms_cnes` | 14 | 1.327.769.452 | 2026-11-01 |
 | `br_ms_imunizacoes` | 1 | 149.124 | 2026-07-09 |
 | `br_ms_pns` | 3 | 521.059 | 2026-07-06 |
 | `br_ms_populacao` | 1 | 4.919.222 | 2026-07-06 |
 | `br_ms_sia` | 3 | 6.298.035.211 | 2026-10-29 |
-| `br_ms_sih` | 3 | 2.619.388.412 | 2026-10-26 |
+| `br_ms_sih` | 3 | 2.627.317.711 | 2026-11-01 |
 | `br_ms_sim` | 6 | 107.245.069 | 2026-10-30 |
 | `br_ms_sinan` | 3 | 38.468.299 | 2026-07-07 |
 | `br_ms_sinan_chikungunya` | 1 | 2.514.085 | 2026-10-30 |
@@ -207,7 +207,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_ms_sinan_malaria` | 1 | 71.159 | 2026-10-30 |
 | `br_ms_sinan_violencia` | 1 | 5.384.473 | 2026-10-31 |
 | `br_ms_sinan_zika` | 1 | 607.893 | 2026-10-30 |
-| `br_ms_sinasc` | 2 | 85.559.448 | 2026-07-07 |
+| `br_ms_sinasc` | 2 | 93.344.585 | 2026-11-01 |
 | `br_ms_siops` | 2 | 144.405 | 2026-10-31 |
 | `br_ms_sipni_dicionarios` | 4 | 224 | 2026-07-26 |
 | `br_ms_sipni_doses_historicas` | 1 | 93.785.056 | 2026-07-26 |
@@ -227,8 +227,8 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_prf_acidentes` | 3 | 11.879.282 | 2026-10-07 |
 | `br_prf_infracoes` | 1 | 63.217.947 | 2026-10-25 |
 | `br_rf_arrecadacao` | 5 | 535.465 | 2026-07-07 |
-| `br_rf_cafir` | 2 | 169.935.565 | 2026-07-07 |
-| `br_rf_cno` | 5 | 1.922.151.722 | 2026-10-09 |
+| `br_rf_cafir` | 2 | 179.992.711 | 2026-11-01 |
+| `br_rf_cno` | 5 | 1.933.885.975 | 2026-11-01 |
 | `br_rf_dirpf` | 2 | 35.356 | 2026-10-21 |
 | `br_rf_simples_estatisticas` | 2 | 4.287.160 | 2026-10-25 |
 | `br_rj_isp_estatisticas_seguranca` | 14 | 168.346 | 2026-10-31 |
@@ -269,7 +269,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_transferegov` | 3 | 30.346 | 2026-10-21 |
 | `br_transferegov_siconv` | 62 | 69.060.758 | 2026-10-21 |
 | `br_trase_supply_chain` | 7 | 1.824.843 | 2026-07-18 |
-| `br_tse_eleicoes` | 31 | 1.715.962.036 | 2026-10-28 |
+| `br_tse_eleicoes` | 31 | 1.715.973.281 | 2026-11-01 |
 | `br_tse_filiacao_partidaria` | 2 | 42.201.443 | 2026-10-09 |
 | `br_ufmg_censo_demografico_1872` | 58 | 1.251.630 | 2026-10-07 |
 | `eu_sanctions` | 1 | 44.043 | 2026-10-30 |
@@ -290,5 +290,5 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `world_oecd_public_finance` | 1 | 2.646 | 2026-07-09 |
 | `world_olympedia_olympics` | 6 | 482.195 | 2026-07-09 |
 | `world_sofascore_competicoes_futebol` | 2 | 11.324 | 2026-07-09 |
-| `world_wb_mides` | 9 | 1.133.202.850 | 2026-10-09 |
+| `world_wb_mides` | 9 | 1.283.413.820 | 2026-11-01 |
 | `world_wwf_hydrosheds` | 3 | 15.119.487 | 2026-07-09 |
