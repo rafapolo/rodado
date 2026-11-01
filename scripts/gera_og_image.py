@@ -6,6 +6,7 @@ Reproduz a identidade do site: papel creme, tipografia Charter, régua cor ferru
 Saída:
   pages/assets/og.png, og-en.png          o cartão do site
   pages/assets/og-db.png                  o cartão do terminal db.rodado.xyz (escuro, logo ASCII)
+  pages/assets/og-llm.png                 o cartão do guia para agentes db.rodado.xyz/llm, na mesma moldura
   pages/analises/img/og-<slug>.png        um cartão por análise, do manifest.json
 
 As figuras das análises não servem como cartão: são gráficos de 1:1 a 1,5:1 que o
@@ -223,7 +224,7 @@ def gera_analises(raiz: Path) -> int:
 # Repete a abertura do terminal.py: o logo ASCII em degradê mauve -> pêssego sobre o
 # fundo radial do index.html (--fundo-terminal), com a moldura lavanda da página.
 
-DB_RESUMO = [("1.726", "tabelas"), ("276", "datasets"), ("580 GB", "de dados"), ("103", "fontes")]
+DB_RESUMO = [("1.726", "tabelas"), ("284", "datasets"), ("580 GB", "de dados"), ("130", "fontes")]
 JETBRAINS = str(Path.home() / "Library/Fonts/JetBrainsMono-Regular.ttf")
 JETBRAINS_BOLD = str(Path.home() / "Library/Fonts/JetBrainsMono-Bold.ttf")
 DB_CENTRO, DB_BORDA = (33, 33, 52), (24, 24, 37)        # #222237ab sobre o --base #1e1e2e -> #181825
@@ -252,7 +253,9 @@ def fundo_radial(w: int, h: int, centro, borda) -> Image.Image:
     return pequeno.resize((w, h), Image.BICUBIC)
 
 
-def build_db() -> Image.Image:
+def build_db(lema="espelho de dados públicos brasileiros",
+             prompt=("rodado> ", "SELECT * FROM br_me_cnpj.empresas LIMIT 5;"),
+             rod="db.rodado.xyz", nota="SQL no navegador · DuckDB · só leitura") -> Image.Image:
     img = fundo_radial(W, H, DB_CENTRO, DB_BORDA)
     d = ImageDraw.Draw(img)
     d.rectangle([0, 0, W - 1, H - 1], outline=DB_MOLDURA, width=6)
@@ -271,7 +274,7 @@ def build_db() -> Image.Image:
             x += d.textlength(texto, font=fonte)
 
     y += 34
-    segmentos(x0, y, [("= ", DB_CINZA, f), ("espelho de dados públicos brasileiros", DB_TEXTO, f), (" =", DB_CINZA, f)])
+    segmentos(x0, y, [("= ", DB_CINZA, f), (lema, DB_TEXTO, f), (" =", DB_CINZA, f)])
     y += 46
     partes = []
     for i, (n, rotulo) in enumerate(DB_RESUMO):
@@ -281,15 +284,21 @@ def build_db() -> Image.Image:
     segmentos(x0, y, partes)
 
     y += 74
-    segmentos(x0, y, [("rodado> ", DB_MAUVE, f_b), ("SELECT * FROM br_me_cnpj.empresas LIMIT 5;", DB_TEXTO, f)])
+    segmentos(x0, y, [(prompt[0], DB_MAUVE, f_b), (prompt[1], DB_TEXTO, f)])
     d.rectangle([x0, y + 50, x0 + 15, y + 82], fill="#f5e0dc")   # cursor
 
     # rodapé: endereço à direita, como no cartão do site
-    rod = "db.rodado.xyz"
     f_url = load(JETBRAINS_BOLD, 30)
     d.text((W - 84 - d.textlength(rod, font=f_url), H - 84), rod, font=f_url, fill=DB_PESSEGO)
-    d.text((x0, H - 80), "SQL no navegador · DuckDB · só leitura", font=load(JETBRAINS, 24), fill=DB_CINZA)
+    d.text((x0, H - 80), nota, font=load(JETBRAINS, 24), fill=DB_CINZA)
     return img
+
+
+def build_llm() -> Image.Image:
+    """o cartão do guia para agentes (db.rodado.xyz/llm), na mesma moldura do terminal"""
+    return build_db(lema="conecte seu agente para pesquisas",
+                    prompt=("$ ", "curl https://db.rodado.xyz/llm"),
+                    rod="db.rodado.xyz/llm", nota="guia aberto · HTTP · SQL só leitura")
 
 
 def main() -> None:
@@ -300,9 +309,10 @@ def main() -> None:
         path = out_dir / name
         build(spec).save(path, "PNG", optimize=True)
         print(f"{path}  {path.stat().st_size // 1024} KB")
-    path = out_dir / "og-db.png"
-    build_db().save(path, "PNG", optimize=True)
-    print(f"{path}  {path.stat().st_size // 1024} KB")
+    for nome, img in (("og-db.png", build_db()), ("og-llm.png", build_llm())):
+        path = out_dir / nome
+        img.save(path, "PNG", optimize=True)
+        print(f"{path}  {path.stat().st_size // 1024} KB")
     n = gera_analises(raiz)
     print(f"{len(VARIANTS)} cartões do site · {n} cartões de análise")
 
