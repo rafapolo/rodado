@@ -59,6 +59,14 @@ body { background: var(--bg); }
 .tools-panel { margin-bottom: 44px; padding: 24px; background: var(--card-bg); border: 1px solid var(--rule); border-radius: 14px; }
 .tools-head { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
 .tools-title { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; margin: 0; }
+/* painel de ferramentas recolhido: o summary é o cabeçalho, com seta */
+details.tools-panel > summary.tools-head { cursor: pointer; list-style: none; margin-bottom: 0; }
+details.tools-panel > summary.tools-head::-webkit-details-marker { display: none; }
+details.tools-panel > summary.tools-head .tools-title { border-top: 0; padding-top: 0; }
+details.tools-panel > summary.tools-head::after { content: "▸"; margin-left: auto; font-size: 15px; color: var(--ink-soft); transition: transform .15s; }
+details.tools-panel[open] > summary.tools-head { margin-bottom: 6px; }
+details.tools-panel[open] > summary.tools-head::after { transform: rotate(90deg); }
+details.tools-panel > summary.tools-head:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
 .tools-desc { font-size: 13px; line-height: 1.6; color: var(--ink-soft); margin: 0 0 18px; max-width: 80ch; }
 .tools-list { list-style: none; margin: 0; padding: 0; font-size: 12.5px; line-height: 1.6; color: var(--ink-soft); columns: 2 320px; column-gap: 32px; }
 .tools-list li { padding: 3px 0; break-inside: avoid; }
