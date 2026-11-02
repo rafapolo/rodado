@@ -39,6 +39,7 @@
 <link rel="stylesheet" href="../assets/mcp-theme.css">
 <script defer src="https://cloud.umami.is/script.js" data-website-id="d2597bf7-73e0-4e7e-b353-1202d9f72b7d"></script>
 <!-- head:end -->
+<link rel="stylesheet" href="../assets/server-card.css">
 </head>
 <body>
 
@@ -49,6 +50,7 @@
       <div class="links">
         <a href="/temas-en/">Topics</a>
         <a href="/analises/">Analyses</a>
+        <a href="/plataformas/en.html">Platforms</a>
         <a href="/atlas/">Atlas</a>
         <a class="mcp-link" href="/mcp-en.html">MCP</a>
         <a href="https://xn--2dk.xyz/dataviz/">DataViz</a>
@@ -65,7 +67,7 @@
   </div>
 </nav>
 
-<main>
+<main class="com-card">
 
   <svg class="tema-icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 4v2M12 18v2M4 12h2M18 12h2M6.3 6.3l1.4 1.4M16.3 16.3l1.4 1.4M6.3 17.7l1.4-1.4M16.3 7.7l1.4-1.4"/></svg>
   <p class="eyebrow">Theme 23 of 43</p>
@@ -263,6 +265,25 @@
     <a class="prev" href="22-clima-queimadas.html"><span class="dir">&larr; previous</span>Climate, Wildfires &amp; Temperature Variation</a>
     <a class="next" href="24-assistencia-saude.html"><span class="dir">next &rarr;</span>Outpatient, Hospital &amp; SUS Procedure Data</a>
   </div>
+<!-- mcp-card:start (gerado por scripts/gera_card_temas.py — não editar à mão) -->
+<aside class="tema-mcp" aria-label="Topic card in the MCP catalog">
+<section class="server-card" data-category="Health" data-search="epidemiology, infectious diseases &amp; health surveillance health br_ms_sim.microdados ano sigla_uf id_municipio_ocorrencia id_municipio_residencia causa_basica idade sexo raca_cor escolaridade ocupacao br_ms_sim.microdados ano sigla_uf id_municipio_nascimento peso raca_cor_mae escolaridade_mae semana_gestacao tipo_parto idade_mae br_ms_cnes.estabelecimento ano mes sigla_uf id_municipio id_estabelecimento_cnes tipo_unidade id_natureza_juridica covid x race: mixed-race (pardo) people died more due to occupational exposure chronic diseases x region: the north/northeast have higher mortality infrastructure x mortality: health deserts = higher mortality tropical diseases x north: tuberculosis at 35/100k vs. 22/100k in the southeast infant x preventability: 60% of infant deaths are preventable life expectancy x race: indigenous people = 65 years vs. white people = 76 years exams x capital cities: 80% of specialized exams take place in state capitals cancer x region: cervical cancer 2x more frequent in the north due to lack of prevention">
+          <div class="card-head">
+            <div class="card-title-wrap">
+              <span class="card-icon"><i class="fa-solid fa-heart-pulse"></i></span>
+              <h2 class="card-title"><a class="card-title-link" href="../mcp-en.html"><span class="card-num">23</span>Epidemiology, Infectious Diseases &amp; Health Surveillance</a></h2>
+            </div>
+            <span class="card-badge">2 tables</span>
+          </div>
+          <div class="card-category">Health</div>
+          <div class="card-id-row"><code class="card-id">br_ms_sim.microdados, br_ms_cnes.estabelecimento</code></div>
+          <p class="card-desc">SIM data in <code>br_ms_sim.microdados</code> with <code>causa_basica</code> (ICD-10), <code>raca_cor</code>, <code>sexo</code>, <code>idade</code>, <code>id_municipio_ocorrencia</code> allows mapping mortality by disease. SINASC in <code>br_ms_sinasc.microdados</code> with <code>peso</code>, <code>raca_cor_mae</code>, <code>escolaridade_mae</code>, <code>semana_gestacao</code> details births and infant health.</p>          <div class="card-cruz-block">
+            <div class="card-cruz-heading">Cross-dataset interactions</div>
+            <ul class="card-cruz-list"><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>COVID × Race:</strong> mixed-race (pardo) people died more due to occupational exposure</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Chronic Diseases × Region:</strong> the North/Northeast have higher mortality</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Infrastructure × Mortality:</strong> health deserts = higher mortality</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Tropical Diseases × North:</strong> tuberculosis at 35/100k vs. 22/100k in the Southeast</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Infant × Preventability:</strong> 60% of infant deaths are preventable</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Life Expectancy × Race:</strong> Indigenous people = 65 years vs. White people = 76 years</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Exams × Capital Cities:</strong> 80% of specialized exams take place in state capitals</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Cancer × Region:</strong> cervical cancer 2x more frequent in the North due to lack of prevention</span></li></ul>
+          </div>
+        </section>
+</aside>
+<!-- mcp-card:end -->
 </main>
 
 <footer>

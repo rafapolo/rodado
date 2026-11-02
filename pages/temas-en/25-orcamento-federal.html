@@ -39,6 +39,7 @@
 <link rel="stylesheet" href="../assets/mcp-theme.css">
 <script defer src="https://cloud.umami.is/script.js" data-website-id="d2597bf7-73e0-4e7e-b353-1202d9f72b7d"></script>
 <!-- head:end -->
+<link rel="stylesheet" href="../assets/server-card.css">
 </head>
 <body>
 
@@ -49,6 +50,7 @@
       <div class="links">
         <a href="/temas-en/">Topics</a>
         <a href="/analises/">Analyses</a>
+        <a href="/plataformas/en.html">Platforms</a>
         <a href="/atlas/">Atlas</a>
         <a class="mcp-link" href="/mcp-en.html">MCP</a>
         <a href="https://xn--2dk.xyz/dataviz/">DataViz</a>
@@ -65,7 +67,7 @@
   </div>
 </nav>
 
-<main>
+<main class="com-card">
 
   <svg class="tema-icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h9l3 3v15H6Z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>
   <p class="eyebrow">Theme 25 of 43</p>
@@ -264,6 +266,25 @@
     <a class="prev" href="24-assistencia-saude.html"><span class="dir">&larr; previous</span>Outpatient, Hospital &amp; SUS Procedure Data</a>
     <a class="next" href="26-servidores-publicos.html"><span class="dir">next &rarr;</span>Public Servants, Personnel Management &amp; State Elites</a>
   </div>
+<!-- mcp-card:start (gerado por scripts/gera_card_temas.py — não editar à mão) -->
+<aside class="tema-mcp" aria-label="Topic card in the MCP catalog">
+<section class="server-card" data-category="State &amp; Public Policy" data-search="federal budget, parliamentary amendments &amp; budget execution state &amp; public policy br_stn_tesouro_orcamento.despesa_ug ano sigla_uf id_acao id_elemento_despesa valor_empenhado valor_liquidado valor_pago valor_restos_pagar_inscritos cgu_emendas_parlamentares ano_emenda id_emenda tipo_emenda nome_autor_emenda sigla_uf_gasto id_municipio_gasto nome_funcao nome_acao valor_empenhado valor_liquidado valor_pago br_rf_arrecadacao.uf ano mes sigla_uf irpf irpj_entidades_financeiras irpj_demais_empresas cofins pis_pasep br_bcb_sicor.operacao ano sigla_uf id_municipio id_programa valor_parcela_credito execution x amendments: 50% of the budget never becomes real spending rapporteur x concentration: 1 rapporteur controls r$ 8.6 billion taxation x inequality: companies pay 3-5x less than workers carryover spending x cancellation: r$ 12-15 billion cancelled/year = lost money discretionary spending x cuts: science = 65% executed, environment = 55% interest x bf: r$ 700 billion in interest vs. r$ 35 billion in bolsa familia taxation x regressiveness: 55% indirect taxes secret budget x opacity: r$ 40 billion unidentified">
+          <div class="card-head">
+            <div class="card-title-wrap">
+              <span class="card-icon"><i class="fa-solid fa-building-columns"></i></span>
+              <h2 class="card-title"><a class="card-title-link" href="../mcp-en.html"><span class="card-num">25</span>Federal Budget, Parliamentary Amendments &amp; Budget Execution</a></h2>
+            </div>
+            <span class="card-badge">4 tables</span>
+          </div>
+          <div class="card-category">State &amp; Public Policy</div>
+          <div class="card-id-row"><code class="card-id">br_stn_tesouro_orcamento.despesa_ug, cgu_emendas_parlamentares, br_rf_arrecadacao.uf, br_bcb_sicor.operacao</code></div>
+          <p class="card-desc">Treasury data in <code>br_stn_tesouro_orcamento.despesa_ug</code> with budget execution by spending unit offers <code>id_acao</code>, <code>id_elemento_despesa</code>, <code>valor_empenhado</code>, <code>valor_liquidado</code>, <code>valor_pago</code>, <code>valor_restos_pagar_inscritos</code> — allowing analysis of federal execution efficiency. Parliamentary amendments in <code>br_cgu_emendas_parlamentares.microdados</code> with <code>id_emenda</code>, <code>autor</code>, <code>sigla_uf</code>, <code>id_municipio</code>, <code>valor_emenda</code>, <code>modalidade</code>, <code>ano</code>, <code>funcao</code>, <code>subfuncao</code>, <code>programa</code> detail the territorial distribution of the congressional budget.</p>          <div class="card-cruz-block">
+            <div class="card-cruz-heading">Cross-dataset interactions</div>
+            <ul class="card-cruz-list"><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Execution × Amendments:</strong> 50% of the budget never becomes real spending</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Rapporteur × Concentration:</strong> 1 rapporteur controls R$ 8.6 billion</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Taxation × Inequality:</strong> companies pay 3-5x less than workers</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Carryover Spending × Cancellation:</strong> R$ 12-15 billion cancelled/year = lost money</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Discretionary Spending × Cuts:</strong> science = 65% executed, environment = 55%</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Interest × BF:</strong> R$ 700 billion in interest vs. R$ 35 billion in Bolsa Família</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Taxation × Regressiveness:</strong> 55% indirect taxes</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Secret Budget × Opacity:</strong> R$ 40 billion unidentified</span></li></ul>
+          </div>
+        </section>
+</aside>
+<!-- mcp-card:end -->
 </main>
 
 <footer>
