@@ -58,14 +58,34 @@ def por_proxy(url, stream=False):
     return POOLS[host].get(url, timeout=60, stream=stream, tentativas=8)
 
 
+def tri100(hoje):
+    """AAAAMM do último trimestre encerrado há mais de 100 dias: o IF.data publica ~90 d depois."""
+    d = hoje - dt.timedelta(days=100)
+    m = (d.month - 1) // 3 * 3
+    return f"{d.year}{m:02d}" if m else f"{d.year - 1}12"
+
+
 def endereco(c):
     hoje = dt.date.today()
+    ant = (hoje.replace(day=1) - dt.timedelta(days=1))
     return (c["url"].replace("{ano}", str(hoje.year)).replace("{hoje}", hoje.strftime("%Y%m%d"))
-            .replace("{ha3}", (hoje - dt.timedelta(days=3)).strftime("%Y%m%d")))
+            .replace("{ha3}", (hoje - dt.timedelta(days=3)).strftime("%Y%m%d"))
+            .replace("{mes}", hoje.strftime("%Y%m")).replace("{mes_ant}", ant.strftime("%Y%m"))
+            .replace("{tri100}", tri100(hoje)))
 
 
 def baixa(c):
-    return por_proxy(endereco(c)).content if c.get("proxy_br") else curl([endereco(c)])
+    """`bytes: N` pede só os N primeiros (data no cabeçalho de arquivo grande), `cauda: N` os N últimos (o
+    diretório central de um zip lista os nomes); `cabecalhos` vão como `-H`;
+    `ua` troca o User-Agent."""
+    if c.get("proxy_br"):
+        return por_proxy(endereco(c)).content
+    extra = ["-r", f"0-{c['bytes']}"] if c.get("bytes") else ["-r", f"-{c['cauda']}"] if c.get("cauda") else []
+    if c.get("ua"):   # gov.br serve outra página (sem os links) para UA que não é de navegador
+        extra += ["-A", c["ua"]]
+    for h in c.get("cabecalhos", []):
+        extra += ["-H", h]
+    return curl([*extra, endereco(c)])
 
 
 def curl(args, timeout=90):
@@ -75,12 +95,19 @@ def curl(args, timeout=90):
     return r.stdout
 
 
+MESES_PT = {"janeiro": "January", "fevereiro": "February", "marco": "March", "março": "March", "maro": "March",
+            "abril": "April", "maio": "May", "junho": "June", "julho": "July", "agosto": "August",
+            "setembro": "September", "outubro": "October", "novembro": "November", "dezembro": "December"}
+
+
 def le_data(texto, formato):
     if formato == "epoch_ms":
         return dt.datetime.fromtimestamp(int(texto) / 1000, dt.timezone.utc).date()
+    if "%B" in formato:   # mês por extenso em português ("Maro" é o "Março" sem o ç, como o Plone grava)
+        texto = re.sub(r"[A-Za-zçÇ]+", lambda m: MESES_PT.get(m.group(0).lower(), m.group(0)), texto)
     d = dt.datetime.strptime(texto, formato)
     # formato sem ano (o mês de um diretório do ano corrente): assume o ano corrente
-    return (d.replace(year=dt.date.today().year) if "%Y" not in formato else d).date()
+    return (d.replace(year=dt.date.today().year) if "%Y" not in formato and "%y" not in formato else d).date()
 
 
 def http_json(c):
@@ -105,6 +132,11 @@ def http_last_modified(c):
 def regex(c):
     txt = baixa(c).decode(errors="replace")
     achados = {"".join(m) if isinstance(m, tuple) else m for m in re.findall(c["padrao"], txt)}
+    if c.get("confirma_arquivo"):   # diretório de mês vazio (só tmp.txt) não conta: abre cada um e exige o arquivo
+        base = endereco(c)
+        achados = {a for a in achados
+                   if (d := re.search(r'href="(%s%%20-%%20[^"]*)"' % re.escape(a), txt))
+                   and c["confirma_arquivo"] in curl([base + d.group(1)]).decode(errors="replace")}
     if not achados:
         raise RuntimeError("padrão não casou — a página mudou?")
     return max(le_data(a, c["formato"]) for a in achados)
@@ -145,7 +177,8 @@ def promocoes():
 
 
 def data_no_espelho(tabela, expr):
-    """`espelho: <expr>`: max da expressão na tabela, para o que dataset_freshness.yaml não cobre."""
+    """`espelho: <expr>`: max da expressão na tabela, para o que dataset_freshness.yaml não cobre.
+    Entrada curinga (`dataset.*`) diz qual tabela medir com `espelho_tabela`."""
     sql = f"SET enable_progress_bar=false; SELECT CAST(max({expr}) AS DATE) AS d FROM {tabela};"
     r = subprocess.run(["ssh", BEELINK, "~/bin/duckdb -readonly -json ~/rodado/basedosdados.duckdb"],
                        input=sql, capture_output=True, text=True, timeout=120)
@@ -167,6 +200,11 @@ def main():
         if args and not any(tabela.startswith(a) for a in args):
             continue
         meta = cat.get(tabela, {})
+        if tabela.endswith(".*"):
+            # curinga: vale a data mais NOVA entre as tabelas do dataset (a rodada costuma regravá-las juntas)
+            irmas = [t for t in cat if t.startswith(tabela[:-1])]
+            meta = {k: max((cat[t].get(k) or "" for t in irmas), default="") for k in ("last_date", "scrape_date", "updated_at")}
+            promovidas[tabela] = max((promovidas.get(t, "") for t in irmas), default="")
         espelho = (meta.get("last_date") or "")[:10]
         coleta = max((meta.get("scrape_date") or "")[:10], promovidas.get(tabela, ""))
         # updated_at = parquet mais novo da tabela (quando regravamos); scrape_date é a 1ª coleta e não anda
@@ -180,7 +218,7 @@ def main():
                 d = TIPOS[tipo](c)
                 fonte = d.isoformat()
                 if c.get("espelho"):
-                    espelho = data_no_espelho(tabela, c["espelho"])
+                    espelho = data_no_espelho(c.get("espelho_tabela", tabela), c["espelho"])
                 # last_modified fala do arquivo: compara com quando raspamos. Os outros falam do dado.
                 arquivo = tipo == "http_last_modified" or c.get("compara") == "arquivo" or (tipo == "retrato" and not c.get("espelho"))
                 base = coleta if c.get("ref") == "scrape_date" else raspado
