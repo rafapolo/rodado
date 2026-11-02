@@ -146,6 +146,19 @@ O `aws` CLI cortou sempre no mesmo ponto um arquivo de 24 MB
 (`perfil_eleitorado_local_votacao/000000000007.parquet`, `IncompleteRead` na troca do pedaço de
 8 MB); esse veio do beelink por `scp`, com o sha256 conferido.
 
+**`ssd_copia.sh` não está no cron.** Em 2026-11-02, 44 arquivos do SSD estavam mais velhos que o
+bucket: 31 da Câmara, 6 do TSE, 4 do Senado, o `favorecido` do Bolsa Família, o do Seguro-Defeso
+e as emendas. O beelink os reescreveu entre 30/10 e 01/11, e como o catálogo prefere o SSD, as
+consultas leram a versão velha. Depois de uma reescrita no beelink, rode o `ssd_copia.sh` (ele
+só baixa o que mudou); o catálogo não precisa remontar, porque o caminho é o mesmo.
+
+Em 2026-11-02 o SSD ganhou o CAGED inteiro (5,3 GiB, 1.030 arquivos) e as tabelas pequenas que
+entram em quase todo join: `br_bd_diretorios_brasil` (23 tabelas), `br_ibge_populacao` e o ISP-RJ
+(0,2 GiB). A consulta `/q/oX_9-j5_` (CAGED × CNPJ) levava 203 s ou estourava o timeout lendo o
+CAGED do bucket. No SSD, caiu para 10 s, estável em 3 rodadas, e as 6 tabelas do CAGED batem com o
+beelink. O SSD ficou com 4.975 arquivos (28 GiB) e o finland com 5,8 GiB livres: não cabe mais
+nada grande sem tirar algo.
+
 **Não é o CLI do DuckDB, de propósito.** O `-safe` do CLI trava a configuração antes de
 qualquer `-cmd`, então não dá para liberar só os prefixos das tabelas; sem ele, `.shell` é um
 shell no container. O núcleo abre uma instância `read_only` do catálogo por processo, carrega o
