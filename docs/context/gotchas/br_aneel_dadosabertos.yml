@@ -45,3 +45,9 @@ gotchas:
     colunas: [DscBaseTarifaria, DscUnidadeTerciaria, DscDetalhe, VlrTUSD, VlrTE]
     severidade: silencioso
     verificado: "2026-10-31: 166.570 Tarifa de Aplicação e 165.595 Base Econômica; 232.365 MWh e 99.800 kW; Não se aplica 228.189, APE 49.294, SCEE 48.680; desde 2024 na Aplicação, VlrTE médio 0 em kW e 133,47 em MWh"
+  - id: fonte_publica_tarifas_em_dobro
+    resumo: "Em 2026-11 a fonte publicou tarifas_homologadas com quase todas as linhas repetidas (657.709, 2,0x): o gate recusa o salto. Deduplique com SELECT DISTINCT * no staging antes de promover, não use --aceitar-salto."
+    tabelas: [tarifas_homologadas]
+    colunas: []
+    severidade: silencioso
+    verificado: "2026-11-02: espelho 332.165 linhas (332.163 distintas); download 657.709 com 323.662 repetidas; distinct 334.047, DatInicioVigencia até 2026-10-23"

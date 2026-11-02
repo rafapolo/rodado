@@ -12,3 +12,9 @@ gotchas:
     colunas: [sumario, numeroAcordao, anoAcordao, colegiado]
     severidade: erro
     verificado: "regex de CNPJ em sumario+titulo: 2 acórdãos; ponte DELIBERACAO ↔ numero/ano/colegiado casa 4 de 4 inidôneos na janela — medido 2026-09-25"
+  - id: raspador_traz_recorte
+    resumo: "O raspador pagina por offset e para em 25 min: cada rodada traz só os acórdãos recentes e perde a cauda antiga. Atualizar por fusão (novo ∪ espelho fora da chave `key`), nunca promover o staging puro nem com --aceitar-encolher."
+    tabelas: [dados]
+    colunas: [key, dataSessao]
+    severidade: erro
+    verificado: "2026-11-02: staging 36.996 linhas x espelho 37.698; fusão por key (única nos dois) deu 38.630, dataSessao até 2026-10-28"
