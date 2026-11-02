@@ -264,6 +264,20 @@ O que a conferência de 2026-10-26 achou:
   rodar com uma passada em curso, que guarda o manifesto na memória e o regravaria por cima. Em
   2026-10-26 foram assim o SISDEPEN (3.957 colunas, 96%), o Censo 2022 pessoa SP (91%) e o
   Querido Diário 3304557 (66%), com a passada parada pelo PID logo depois de gravar o manifesto.
+  Em 2026-11-02 a fila zerou com os dois últimos, que davam OOM a cada hora desde 23/10: PIRLS
+  `within_country_scoring_reliability` (1.058 colunas, 70%) e CNES `estabelecimento` (2 GB, 85%).
+  O beelink não chega ao finland por SSH: o arquivo vai pelo Mac
+  (`ssh beelink cat … | ssh finland 'cat > …'`, sha256 conferido nas duas pontas).
+- **`--sobe` pode cair no `aws s3 cp` com o arquivo já no bucket.** No CNES de 1,7 GB, o cp
+  saiu com erro, mas o bucket ficou com o tamanho exato do comprimido, e o manifesto ficou sem a
+  entrada. Rodar `--sobe` de novo não resolve, porque ele recusa quando o bucket já não tem o
+  original. O jeito foi refazer o cp e gravar a entrada (`orig`, `z`, `linhas`, `fora: True`) sob
+  a trava, com as funções do próprio `compacta.py`. Sem a entrada, a passada seguinte tenta o
+  arquivo de novo, e o `s3_sync_check.py` o põe em `a_subir`.
+- **Órfão no bucket não entra na consulta.** As views do `views.json` citam cada arquivo em
+  `list_value(...)`, sem glob. Em 2026-11-02 havia 10.214 órfãos (49,8 GiB, quase todos de SIA e
+  ANS depois da ordenação de 29/10), e as 8 tabelas afetadas deram o mesmo `count(*)` aqui e no
+  beelink. Eles custam espaço, não resultado errado.
 
 ```bash
 scp db/compacta.py finland:/root/rodado-db/
