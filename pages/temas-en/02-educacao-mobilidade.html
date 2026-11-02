@@ -39,6 +39,7 @@
 <link rel="stylesheet" href="../assets/mcp-theme.css">
 <script defer src="https://cloud.umami.is/script.js" data-website-id="d2597bf7-73e0-4e7e-b353-1202d9f72b7d"></script>
 <!-- head:end -->
+<link rel="stylesheet" href="../assets/server-card.css">
 </head>
 <body>
 
@@ -49,6 +50,7 @@
       <div class="links">
         <a href="/temas-en/">Topics</a>
         <a href="/analises/">Analyses</a>
+        <a href="/plataformas/en.html">Platforms</a>
         <a href="/atlas/">Atlas</a>
         <a class="mcp-link" href="/mcp-en.html">MCP</a>
         <a href="https://xn--2dk.xyz/dataviz/">DataViz</a>
@@ -65,7 +67,7 @@
   </div>
 </nav>
 
-<main>
+<main class="com-card">
 
   <svg class="tema-icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9l10-5 10 5-10 5-10-5Z"/><path d="M6 11v5c0 1.5 2.5 3 6 3s6-1.5 6-3v-5"/></svg>
   <p class="eyebrow">Theme 02 of 43</p>
@@ -243,6 +245,25 @@
     <a class="prev" href="01-desigualdade-racial.html"><span class="dir">&larr; previous</span>Racial Inequality & Social Stratification</a>
     <a class="next" href="03-saude-determinantes.html"><span class="dir">next &rarr;</span>Health, Service Access & Social Determinants</a>
   </div>
+<!-- mcp-card:start (gerado por scripts/gera_card_temas.py — não editar à mão) -->
+<aside class="tema-mcp" aria-label="Topic card in the MCP catalog">
+<section class="server-card" data-category="Education &amp; Science" data-search="education, social mobility &amp; inequality education &amp; science br_inep_enem.microdados ano id_municipio_residencia id_municipio_escola sigla_uf_residencia cor_raca sexo tipo_escola dependencia_administrativa_escola nota_matematica nota_redacao nota_ciencias_natureza nota_ciencias_humanas indicador_treineiro ideb_escola ano sigla_uf id_municipio id_escola rede ideb nota_matematica nota_portugues school x family: 93.6% of students depend on public schools profession x salary: teachers earn 10x less than bankers performance x school type: 2-year schooling gap between school types ideb x territory: wealthy municipalities score 2.7 points higher than poor ones race x school x performance: black students in public school score 160 points less than white students in private school infrastructure x school: 40% without internet = digital exclusion at school generation x illiteracy: a poor grandmother's granddaughter is still more illiterate than a rich grandmother ideb school municipal state network stage early later primary simpson paradox socioeconomic level inse socioeconomic school correlation origin effect quintile">
+          <div class="card-head">
+            <div class="card-title-wrap">
+              <span class="card-icon"><i class="fa-solid fa-graduation-cap"></i></span>
+              <h2 class="card-title"><a class="card-title-link" href="../mcp-en.html"><span class="card-num">02</span>Education, Social Mobility &amp; Inequality</a></h2>
+            </div>
+            <span class="card-badge">2 tables</span>
+          </div>
+          <div class="card-category">Education &amp; Science</div>
+          <div class="card-id-row"><code class="card-id">br_inep_enem.microdados, ideb_escola, br_inep_ideb.escola, br_inep_indicador_nivel_socioeconomico.escola</code></div>
+          <p class="card-desc">ENEM data in <code>br_inep_enem.microdados</code> (6,3 GB) allows analyzing performance by <code>tipo_escola</code>, <code>dependencia_administrativa_escola</code>, <code>indicador_questionario_socioeconomico</code>. IDEB provides municipal proficiency data.</p>          <div class="card-cruz-block">
+            <div class="card-cruz-heading">Cross-dataset interactions</div>
+            <ul class="card-cruz-list"><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>School × Family:</strong> 93.6% of students depend on public schools</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Profession × Salary:</strong> teachers earn 10x less than bankers</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Performance × School Type:</strong> 2-year schooling gap between school types</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>IDEB × Territory:</strong> wealthy municipalities score 2.7 points higher than poor ones</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Race × School × Performance:</strong> Black students in public school score 160 points less than White students in private school</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Infrastructure × School:</strong> 40% without internet = digital exclusion at school</span></li><li class="card-cruz-item"><i class="fa-solid fa-arrow-right-arrow-left card-cruz-icon"></i><span><strong>Generation × Illiteracy:</strong> a poor grandmother's granddaughter is still more illiterate than a rich grandmother</span></li></ul>
+          </div>
+        </section>
+</aside>
+<!-- mcp-card:end -->
 </main>
 
 <footer>

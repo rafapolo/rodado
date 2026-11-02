@@ -1,0 +1,38 @@
+/* rodado — cartão de tema do MCP (.server-card), compartilhado por mcp.html /
+   mcp-en.html e pelas páginas de tema, onde scripts/gera_card_temas.py copia o
+   cartão de cada tema para a coluna da direita */
+
+:root { --card-bg: oklch(1 0 0); --icon-bg: oklch(0.94 0.02 260); }
+:root[data-theme="dark"] { --card-bg: var(--bg-raised); --icon-bg: oklch(0.3 0.05 260); }
+
+.server-card { background: var(--card-bg); border: 1px solid var(--rule); border-radius: 14px; padding: 24px 24px 8px; display: flex; flex-direction: column; }
+.card-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.card-title-wrap { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.card-icon { flex-shrink: 0; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: var(--icon-bg); color: var(--accent); font-size: 15px; }
+.card-title { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; margin: 0; padding-top: 0; border-top: 0; }  /* é um h2: sem isso herda o filete de seção do site.css */
+.card-title-link { color: inherit; text-decoration: none; }
+.card-title-link:hover { color: var(--accent); text-decoration: underline; }
+.card-num { color: var(--ink-faint); font-weight: 600; margin-right: 6px; }
+.card-badge { flex-shrink: 0; font-size: 12px; font-weight: 600; color: var(--ink-faint); }
+.card-category { font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); margin-top: 8px; }
+.card-id-row { margin-top: 14px; }
+.card-id { display: block; font-family: 'IBM Plex Mono', monospace; font-size: 12px; line-height: 1.6; color: var(--accent); background: var(--bg-raised); border: 1px solid var(--rule); border-radius: 7px; padding: 7px 10px; word-break: break-word; }
+.card-desc { font-size: 12px; line-height: 1.55; color: var(--ink-soft); margin: 14px 0 6px; }
+/* identificador longo (dependencia_administrativa_escola) não tem onde quebrar e vazava do cartão */
+.card-desc code, .card-cruz-item code { word-break: break-word; overflow-wrap: anywhere; }
+.card-cruz-block { margin-top: 4px; padding-top: 12px; border-top: 1px solid var(--rule); }
+.card-cruz-heading { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 8px; }
+.card-cruz-list { list-style: none; margin: 0; padding: 0; }
+.card-cruz-item { font-size: 12px; line-height: 1.55; color: var(--ink-soft); padding: 5px 0; display: flex; gap: 8px; }
+.card-cruz-icon { font-size: 9px; color: var(--accent-soft); margin-top: 5px; flex-shrink: 0; }
+
+/* ── na página de tema: coluna da direita em tela larga, fim do texto no celular ── */
+
+main.com-card { position: relative; }
+main.com-card > .tema-mcp { max-width: none; }
+.tema-mcp { max-width: none; margin: 3rem 0 0; }
+.tema-mcp .server-card { font-family: var(--sans); }
+@media (min-width: 1180px) {
+  /* texto em --measure (700px) à esquerda; o cartão ocupa o resto da largura de 1180px */
+  .tema-mcp { position: absolute; top: 3rem; right: 1.5rem; width: calc(100% - var(--measure) - 3rem - 3rem); margin: 0; }
+}
