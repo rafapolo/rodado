@@ -36,3 +36,14 @@ main.com-card > .tema-mcp { max-width: none; }
   /* texto em --measure (700px) à esquerda; o cartão ocupa o resto da largura de 1180px */
   .tema-mcp { position: absolute; top: 3rem; right: 1.5rem; width: calc(100% - var(--measure) - 3rem - 3rem); margin: 0; }
 }
+
+/* ── na página de tema: sem cabeçalho (a página já tem título), datasets como tags ── */
+.tema-mcp .server-card { padding: 20px 20px 16px; gap: 0; }
+.tema-mcp .card-category { margin-top: 0; }
+.card-tags-block { margin-top: 12px; }
+.card-tags-n { font-weight: 600; color: var(--accent); letter-spacing: 0; margin-left: 4px; }
+.card-tags { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.card-tag { display: inline-block; font: 500 11.5px/1.3 'IBM Plex Mono', monospace; color: var(--ink-soft); background: var(--bg-raised); border: 1px solid var(--rule); border-radius: 999px; padding: 4px 10px; text-decoration: none; overflow-wrap: anywhere; transition: border-color .15s, color .15s; }
+.card-tag:hover, .card-tag:focus-visible { color: var(--accent); border-color: var(--accent); text-decoration: none; }
+.card-mcp-link { align-self: flex-start; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--rule); width: 100%; font-size: 12px; font-weight: 600; color: var(--accent); text-decoration: none; }
+.card-mcp-link:hover { text-decoration: underline; }
