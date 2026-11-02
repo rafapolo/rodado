@@ -18,8 +18,8 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_anac_dadosabertos` | 3 | 814.362 | 2026-10-30 |
 | `br_anatel_banda_larga_fixa` | 4 | 63.650.648 | 2026-10-30 |
 | `br_anatel_indice_brasileiro_conectividade` | 1 | 22.280 | 2026-07-05 |
-| `br_anatel_telefonia_movel` | 6 | 177.559.396 | 2026-10-15 |
-| `br_aneel_dadosabertos` | 8 | 41.046.676 | 2026-10-21 |
+| `br_anatel_telefonia_movel` | 6 | 179.805.272 | 2026-11-02 |
+| `br_aneel_dadosabertos` | 8 | 41.048.559 | 2026-11-02 |
 | `br_anm` | 22 | 8.380.445 | 2026-10-21 |
 | `br_anp_combustiveis` | 1 | 2.205.259 | 2026-10-21 |
 | `br_anp_precos_combustiveis` | 1 | 16.887.683 | 2026-10-09 |
@@ -40,7 +40,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_bcb_ptax` | 3 | 805.814 | 2026-10-30 |
 | `br_bcb_scrdata` | 1 | 43.061.984 | 2026-10-21 |
 | `br_bcb_sgs` | 1 | 25.228 | 2026-10-30 |
-| `br_bcb_sicor` | 20 | 787.181.262 | 2026-11-01 |
+| `br_bcb_sicor` | 20 | 787.221.440 | 2026-11-02 |
 | `br_bd_diretorios_brasil` | 23 | 2.033.171 | 2026-10-30 |
 | `br_bd_diretorios_data_tempo` | 11 | 1.922.812 | 2026-07-05 |
 | `br_bd_diretorios_mundo` | 4 | 20.648 | 2026-08-23 |
@@ -85,7 +85,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_comprasgov_sicaf` | 1 | 962.016 | 2026-10-07 |
 | `br_cvm_administradores_carteira` | 3 | 16.476 | 2026-10-30 |
 | `br_cvm_cia_aberta` | 118 | 70.967.743 | 2026-10-21 |
-| `br_cvm_fundos` | 39 | 440.462.914 | 2026-10-30 |
+| `br_cvm_fundos` | 39 | 440.462.914 | 2026-11-02 |
 | `br_cvm_oferta_publica_distribuicao` | 1 | 27.486 | 2026-10-30 |
 | `br_datahackers_state_data` | 1 | 4.271 | 2026-07-05 |
 | `br_datasus_cid10` | 6 | 15.672 | 2026-07-10 |
@@ -98,7 +98,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_ggb_relatorio_lgbtqi` | 5 | 145 | 2026-07-09 |
 | `br_ibama_autos` | 8 | 3.097.591 | 2026-10-21 |
 | `br_ibama_ctf` | 2 | 1.473.755 | 2026-10-21 |
-| `br_ibama_embargos_novo` | 8 | 978.346 | 2026-10-21 |
+| `br_ibama_embargos_novo` | 8 | 978.599 | 2026-11-02 |
 | `br_ibge_amc` | 1 | 434.070 | 2026-07-09 |
 | `br_ibge_areas_risco` | 4 | 21.499 | 2026-10-25 |
 | `br_ibge_cbo_2002` | 2 | 177.556 | 2026-07-09 |
@@ -146,10 +146,10 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_inep_saeb` | 11 | 201.337.763 | 2026-10-30 |
 | `br_inep_sinopse_estatistica_educacao_basica` | 18 | 121.127.598 | 2026-10-09 |
 | `br_inmet_bdmep` | 2 | 90.064.017 | 2026-10-28 |
-| `br_inpe_deter` | 2 | 1.398.154 | 2026-10-25 |
+| `br_inpe_deter` | 2 | 1.415.408 | 2026-11-02 |
 | `br_inpe_prodes` | 1 | 156.864 | 2026-07-06 |
 | `br_inpe_prodes_acumulado` | 3 | 14.457.350 | 2026-10-25 |
-| `br_inpe_queimadas` | 1 | 23.086.637 | 2026-10-07 |
+| `br_inpe_queimadas` | 1 | 23.902.398 | 2026-11-02 |
 | `br_inpe_sisam` | 1 | 158.705.816 | 2026-07-06 |
 | `br_ipea_acesso_oportunidades` | 1 | 336.427 | 2026-07-09 |
 | `br_ipea_atlasviolencia` | 2 | 3.006 | 2026-08-27 |
@@ -176,7 +176,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_mf_divida_ativa` | 2 | 143.151.652 | 2026-10-15 |
 | `br_mg_belohorizonte_smfa_iptu` | 2 | 21.463.825 | 2026-07-06 |
 | `br_mgi_compras_publicas` | 21 | 100.278.894 | 2026-10-31 |
-| `br_mgi_pncp` | 4 | 5.850.752 | 2026-11-01 |
+| `br_mgi_pncp` | 4 | 5.738.944 | 2026-11-01 |
 | `br_minc_salic` | 18 | 4.370.266 | 2026-10-25 |
 | `br_mj_consumidorgovbr` | 1 | 15.392.507 | 2026-10-21 |
 | `br_mj_sinesp` | 3 | 9.097.924 | 2026-10-07 |
@@ -218,10 +218,10 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_ok_queridodiario` | 1 | 326.052 | 2026-10-30 |
 | `br_ok_queridodiario_texto` | 1 | 320.422 | 2026-10-21 |
 | `br_ons_avaliacao_operacao` | 6 | 89.805.415 | 2026-10-07 |
-| `br_ons_dados_abertos` | 87 | 642.725.055 | 2026-10-25 |
+| `br_ons_dados_abertos` | 87 | 642.861.687 | 2026-11-02 |
 | `br_ons_estimativa_custos` | 5 | 1.407.872 | 2026-10-07 |
 | `br_pgfn_dividaativa` | 2 | 914.557.709 | 2026-10-30 |
-| `br_pncp` | 1 | 5.229.507 | 2026-10-07 |
+| `br_pncp` | 1 | 5.370.608 | 2026-11-02 |
 | `br_poder360_pesquisas` | 1 | 162.075 | 2026-10-31 |
 | `br_presidencia_comunicabr` | 3 | 1.566.488 | 2026-10-13 |
 | `br_prf_acidentes` | 3 | 11.879.282 | 2026-10-07 |
@@ -256,12 +256,12 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_stf_corte_aberta` | 2 | 2.708.896 | 2026-10-09 |
 | `br_stj_dadosabertos` | 1 | 3.604.791 | 2026-10-21 |
 | `br_susep_dados_abertos` | 22 | 11.866.281 | 2026-10-25 |
-| `br_tce_es` | 5 | 12.964 | 2026-10-21 |
+| `br_tce_es` | 5 | 13.065 | 2026-11-02 |
 | `br_tce_pi` | 5 | 405 | 2026-10-21 |
 | `br_tce_rj` | 6 | 225.683 | 2026-10-21 |
 | `br_tce_sp` | 1 | 644 | 2026-10-07 |
 | `br_tce_to` | 1 | 50 | 2026-10-21 |
-| `br_tcu_dadosabertos` | 1 | 37.698 | 2026-10-21 |
+| `br_tcu_dadosabertos` | 1 | 38.630 | 2026-11-02 |
 | `br_tcu_inidoneos` | 4 | 58.562 | 2026-10-30 |
 | `br_tesouro_capag` | 2 | 5.815 | 2026-10-07 |
 | `br_tesouro_cauc` | 3 | 5.674 | 2026-10-30 |
@@ -276,7 +276,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `global_ibge_tabua_mares` | 2 | 1.261.446 | 2026-10-21 |
 | `global_icij_offshoreleaks` | 6 | 5.356.929 | 2026-10-07 |
 | `global_ofac_sanctions` | 1 | 19.484 | 2026-10-30 |
-| `global_opensanctions` | 1 | 1.245.904 | 2026-10-30 |
+| `global_opensanctions` | 1 | 1.246.531 | 2026-11-02 |
 | `mundo_transfermarkt_competicoes` | 2 | 9.054 | 2026-10-09 |
 | `mundo_transfermarkt_competicoes_internacionais` | 1 | 2.617 | 2026-10-31 |
 | `politicos` | 1 | 7.664 | 2026-07-22 |
