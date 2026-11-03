@@ -1,15 +1,26 @@
 dataset: br_ms_sinasc
 gotchas:
-  - id: ano_2023_incompleto
-    resumo: "Em microdados, o ano 2023 acaba em 05/06/2023: 986.591 nascidos, ~1/3 do ano. Não compare com os anos anteriores."
+  - id: ultimo_ano_incompleto
+    resumo: "Em microdados, o último ano (2026) acaba em 29/05/2026: 884.111 nascidos, e maio vem pela metade (97.570 contra 222.992 em maio de 2025). Não compare com anos fechados."
     detalhe: >
-      A última partição não é um ano fechado: janeiro a maio estão completos e
-      junho tem só 295 registros, de 18 UFs. Esta tabela é atualizada pela origem;
-      reconfira max(data_nascimento) antes de usar 2023.
+      A última partição é preliminar e vai crescendo a cada atualização da origem.
+      Até 2026-10-31 o espelho parava em 2023-06-05; a recarga de 2026-11-01
+      fechou 2023 e trouxe 2024, 2025 e parte de 2026. Reconfira
+      max(data_nascimento) antes de usar o último ano.
     tabelas: [microdados]
     colunas: [ano, data_nascimento]
     severidade: silencioso
-    verificado: "2026-10-31: 2022 com 2.560.319; 2023 com 986.591, de 2023-01-01 a 2023-06-05; maio com 133.040 e junho com 295"
+    verificado: "2026-11-03: 2023 com 2.537.576 (01/01 a 31/12); 2024 com 2.389.325; 2025 com 2.456.688; 2026 com 884.111, de 2026-01-01 a 2026-05-29, 27 UFs em todos os meses; maio de 2026 com 97.570"
+  - id: tipo_robson_zero_a_esquerda
+    resumo: "Em microdados, tipo_robson vem com zero à esquerda ('01' a '09'), mas a chave do dicionario é '1' a '9': o join direto só casa os grupos 10 e 11."
+    detalhe: >
+      Junte por ltrim(tipo_robson, '0') = chave (ou CAST para inteiro dos dois
+      lados). Sem isso, 89% dos nascidos de 2024 ficam sem rótulo do grupo de
+      Robson, sem erro.
+    tabelas: [microdados, dicionario]
+    colunas: [tipo_robson]
+    severidade: silencioso
+    verificado: "2026-11-03, ano=2024: valores '01' a '11', nenhum NULL; 2.114.915 de 2.389.325 em '01'-'09'; dicionario (nome_coluna='tipo_robson') com chaves '1' a '11'"
   - id: sigla_uf_e_residencia
     resumo: "Em microdados, sigla_uf é a UF de residência da mãe, não a do nascimento: 1,4% nascem em outra UF."
     detalhe: >

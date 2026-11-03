@@ -17,6 +17,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "4.692.466 linhas = 4.692.466 CodEmpreendimento distintos; soma de MdaPotenciaInstaladaKW 54,38 GW — medido 2026-10-27"
   indicadores_continuidade:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um conjunto de unidades consumidoras × distribuidora × indicador × ano × período (mês) com o valor enviado"
     chave: "IdeConjUndConsumidoras, SigAgente, SigIndicador, AnoIndice, NumPeriodoIndice"
     tempo: {natureza: serie_mensal, coluna: "AnoIndice, NumPeriodoIndice", cobertura: "2000–2026 (período 1–12; 13 valores distintos no perfil, significado de 13 não documentado)"}
@@ -29,6 +30,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, unidade de DEC e FEC (horas e interrupções não documentadas na tabela dominio), significado do período 13]
     verificado: "16.280.480 linhas = 16.280.480 chaves distintas; DEC mediana 1,02 e máx. 982,75; FEC mediana 0,65 e máx. 701 — medido 2026-10-27"
   indicadores_continuidade_atributos:
+    ultima_data: "2014"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um conjunto × distribuidora × atributo × ano × período (área, tipo de sistema, transformadores etc.)"
     chave: "IdeConjUndConsumidoras, NumCNPJ, SigIndicador, AnoIndice, NumPeriodoIndice"
     tempo: {natureza: serie_de_periodos, coluna: "AnoIndice, NumPeriodoIndice", cobertura: "2008–2014 (AnoIndice em texto, período '1'–'4' trimestral)"}
@@ -41,6 +43,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "776.216 linhas = 776.216 chaves distintas — medido 2026-10-27"
   indicadores_continuidade_compensacao:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um conjunto × distribuidora × indicador de compensação × ano × período"
     chave: "nenhuma: 18.676.419 linhas, 18.669.484 chaves (IdeConjUndConsumidoras, NumCNPJ, SigIndicador, AnoIndice, NumPeriodoIndice); 6.935 repetidas"
     tempo: {natureza: serie_mensal, coluna: "AnoIndice, NumPeriodoIndice", cobertura: "2011–2026"}
@@ -61,6 +64,7 @@ tabelas:
     rascunho: [use_para]
     verificado: "484 linhas = 484 SigIndicador distintos — medido 2026-10-27"
   indicadores_continuidade_limite:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um conjunto × distribuidora × indicador (DEC ou FEC) × ano do limite"
     chave: "IdeConjUndConsumidoras, NumCNPJ, SigIndicador, AnoLimiteQualidade"
     tempo: {natureza: serie_anual, coluna: AnoLimiteQualidade, cobertura: "1990–2032 (texto)"}

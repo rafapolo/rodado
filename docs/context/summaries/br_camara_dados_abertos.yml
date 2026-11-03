@@ -69,6 +69,7 @@ tabelas:
     - nao_use_para
     verificado: 12.607 linhas, 12.607 pares (id_deputado, id_profissao) distintos — medido 2026-10-27
   despesa:
+    ultima_data: "2026-10"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um documento de despesa da cota parlamentar (CEAP) de um deputado
     chave: 'nenhuma: sem chave natural; 4.874.008 linhas, nenhuma duplicata exata, mas 9.796 linhas repetem a combinação (ano, mês, deputado, categoria, fornecedor, documento, data, valores, url)'
     tempo:
@@ -233,6 +234,7 @@ tabelas:
     - nao_use_para
     verificado: 155 linhas, 155 combinações distintas (id = legislatura 51–57) — medido 2026-10-27
   licitacao:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma licitação da Câmara
     chave: 'id_licitacao: 4.718 linhas = 4.718 distintos'
     tempo:
@@ -288,6 +290,7 @@ tabelas:
     - medidas.unidade
     verificado: 2.655 linhas; 2.034 combinações distintas de (id_licitacao, ano_contrato, id_contrato); valor_total nulo em 77% (mesmo valor_original) — medido 2026-10-27
   licitacao_item:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um item (ou subitem) de uma licitação
     chave: 'nenhuma: (id_licitacao, id_item, id_sub_item) repete — 63.921 linhas, 63.898 combinações distintas'
     tempo:

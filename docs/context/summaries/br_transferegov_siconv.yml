@@ -296,6 +296,7 @@ tabelas:
     - nao_use_para
     verificado: 520.479 linhas, 520.474 distintos das 7 colunas — medido 2026-10-27
   siconv_cronograma_desembolso:
+    ultima_data: "2026-11"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma parcela prevista do cronograma de desembolso de uma proposta, por responsável (Concedente, Convenente, Rendimento de Aplicação)
     chave: '(ID_PROPOSTA, NR_PARCELA_CRONO_DESEMBOLSO, TIPO_RESP_CRONO_DESEMBOLSO): 2.732.825 linhas = 2.732.825 distintos, medido'
     tempo:
@@ -441,6 +442,7 @@ tabelas:
     - nao_use_para
     verificado: 18.111 linhas. 18.111 distintos de ID_SOLICITACAO_REND_APLICACAO — medido 2026-10-27
   siconv_programa:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um programa × modalidade × UF habilitada × natureza jurídica do proponente × ação orçamentária (cada programa se repete em dezenas de linhas)
     chave: '(ID_PROGRAMA, MODALIDADE_PROGRAMA, NATUREZA_JURIDICA_PROGRAMA, UF_PROGRAMA): 1.255.214 linhas = 1.255.214 distintos, medido; ID_PROGRAMA sozinho tem só 52.935 distintos'
     tempo:

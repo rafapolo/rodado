@@ -22,6 +22,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "1.801.842 linhas; 1.546.528 distintas; 346.581 sigilosas com data nula; soma sigilo 440.221.810,58 — medido 2026-10-27"
   microdados_defesa_civil:
+    ultima_data: "2025-12"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma transação no cartão de pagamento da Defesa Civil (repasse a convenentes), num extrato mensal"
     chave: "nenhuma: 129.151 linhas contra 101.125 linhas distintas (cópias exatas; algumas podem ser pagamentos idênticos legítimos)"
     tempo: {natureza: serie_mensal, coluna: "ano_extrato, mes_extrato", cobertura: "2013–2025 (data_transacao 2012-11-19–2025-11-26)"}
@@ -37,6 +38,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, "significado de codigo_* = '-1'"]
     verificado: "129.151 linhas; 101.125 distintas; 5.379 negativas — medido 2026-10-27"
   microdados_compras_centralizadas:
+    ultima_data: "2026-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma transação de compra centralizada de passagem aérea no cartão do governo federal, num extrato mensal"
     chave: "nenhuma: 1.282.184 linhas; a combinação (extrato, unidade gestora, favorecido, data, valor, transacao) tem 998.160 distintos"
     tempo: {natureza: serie_mensal, coluna: "ano_extrato, mes_extrato", cobertura: "2014–2026, concentrada em 2015–2018 (data_transacao 2014-08-28–2025-12-04; nula em 2.562 linhas)"}

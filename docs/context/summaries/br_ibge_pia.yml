@@ -3,6 +3,7 @@
 dataset: br_ibge_pia
 tabelas:
   sidra:
+    ultima_data: "2024"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma célula do SIDRA da PIA (Pesquisa Industrial Anual): tabela × localidade × período × variável × categorias"
     chave: "(id_tabela, id_localidade, periodo, id_variavel, id_categoria_1, id_categoria_2) — 1.004.359 linhas = 1.004.359 distintos (medido)"
     tempo: {natureza: serie_anual, coluna: periodo, cobertura: "1996–2024 (VARCHAR; cada id_tabela cobre um subconjunto, ver sidra_tabelas)"}

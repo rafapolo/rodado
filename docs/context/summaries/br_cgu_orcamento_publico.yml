@@ -3,6 +3,7 @@
 dataset: br_cgu_orcamento_publico
 tabelas:
   orcamento:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma linha de dotação orçamentária de um exercício: unidade orçamentária × função/subfunção × programa × ação × grupo de despesa × elemento de despesa"
     chave: "nenhuma: 341.269 linhas para 307.286 combinações distintas dos 11 códigos (ano, órgão superior, subordinado, unidade, função, subfunção, programa, ação, categoria, grupo, elemento); só 86 linhas são cópias exatas, as demais repetidas diferem em valores/nomes"
     tempo: {natureza: serie_anual, coluna: ano_exercicio, cobertura: "2014–2026 (2026 em execução)"}

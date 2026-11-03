@@ -109,6 +109,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "15.852 linhas; 15.822 pares (id, ordem); 15.852 com data e motivo — medido 2026-10-27"
   recurso_publico_complemento_operacao:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "o complemento de uma operação com recurso público: município, agência e cédula; um por operação"
     chave: "(id_referencia_bacen, numero_ordem): em ano_emissao = 2024, 1.883.492 linhas = 1.883.492 pares distintos"
     tempo: {natureza: serie_anual, coluna: ano_emissao, cobertura: "2013–2026"}
@@ -120,6 +121,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "23.034.485 linhas; ano_emissao = 2024: 1.883.492 linhas, pares únicos, 1 sem município; 1.452.638 id_referencia_bacen_efetivo distintos — medido 2026-10-27"
   recurso_publico_mutuario:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um mutuário (tomador) de uma operação com recurso público; dado pessoal (CPF/CNPJ), só consulte agregado"
     chave: "(id_referencia_bacen, cpf, cnpj_basico): em ano_emissao = 2024, 1.456.703 linhas = 1.456.703 combinações; não tem numero_ordem (gotcha mutuario_sem_numero_ordem)"
     tempo: {natureza: serie_anual, coluna: ano_emissao, cobertura: "2013–2026"}
@@ -132,6 +134,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "17.774.614 linhas; ano_emissao = 2024: 1.456.703 linhas, 1.452.643 operações — medido 2026-10-27"
   recurso_publico_propriedade:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma propriedade (CAR, SNCR, CIB) ligada a uma operação com recurso público; uma operação traz vários imóveis"
     chave: "(id_referencia_bacen, numero_ordem, cpf, cnpj_basico, id_sncr, id_cib, id_car): em ano_emissao = 2024, 2.294.087 linhas = 2.294.087 combinações; só 1.882.757 pares (id, ordem), então não é um imóvel por operação"
     tempo: {natureza: serie_anual, coluna: ano_emissao, cobertura: "2013–2026"}
@@ -143,6 +146,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "26.577.798 linhas; ano_emissao = 2024: 2.294.087 linhas, 1.882.757 pares, 1.452.231 id_referencia_bacen — medido 2026-10-27"
   recurso_publico_gleba:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma gleba (polígono financiado) de uma operação com recurso público"
     chave: "(id_referencia_bacen, numero_ordem, indice_gleba): em ano_emissao = 2024, 1.167.979 linhas = 1.167.979 combinações; 751.504 pares (id, ordem)"
     tempo: {natureza: serie_anual, coluna: ano_emissao, cobertura: "2014–2025 (no perfil de amostra)"}
@@ -154,6 +158,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "7.326.833 linhas; ano_emissao = 2024: 1.167.979 linhas, chave única — medido 2026-10-27"
   recurso_publico_cooperado:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um cooperado (pessoa física ou jurídica) que recebeu parcela de operação de cooperativa"
     chave: "(id_referencia_bacen, numero_ordem, cpf, cnpj_basico): 154.179 linhas = 154.179 combinações; só 654 pares (id, ordem), ou seja, muitos cooperados por operação"
     tempo: {natureza: serie_anual, coluna: ano_emissao, cobertura: "2017–2025"}
@@ -181,6 +186,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "1.007.340 linhas, 996.080 pares, 981.291 id_referencia_bacen — medido 2026-10-27"
   proagro_complemento_cop:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "mesmo grão de proagro_cop (uma linha por comunicação), com dados da empresa e do perito"
     chave: "nenhuma: mesmo conjunto de proagro_cop (1.007.340 linhas, 996.080 pares)"
     tempo: {natureza: serie_anual, coluna: ano_emissao, cobertura: "2013–2026"}
@@ -209,6 +215,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, area]
     verificado: "848.652 linhas, pares únicos, 836.521 operações — medido 2026-10-27"
   proagro_complemento_rcp:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "mesmo grão de proagro_rcp, com periciadora e perito"
     chave: "(id_referencia_bacen, numero_ordem): 848.652 linhas = 848.652 pares"
     tempo: {natureza: serie_anual, coluna: ano_emissao, cobertura: "2014–2026"}
@@ -218,6 +225,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "848.652 linhas, pares únicos — medido 2026-10-27"
   proagro_rcp_gleba:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma gleba (polígono) de um relatório de perdas do Proagro"
     chave: "(id_referencia_bacen, numero_ordem, indice_gleba): 1.764.450 linhas = 1.764.450 combinações (também único por (id_referencia_bacen, indice_gleba))"
     tempo: {natureza: serie_anual, coluna: ano_emissao, cobertura: "2015–2026"}

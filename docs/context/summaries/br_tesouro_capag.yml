@@ -3,6 +3,7 @@
 dataset: br_tesouro_capag
 tabelas:
   estados:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um estado × edição do arquivo CAPAG (uma por ano-base, mais 'Capag Estados 2024 - Revisão'); a edição 2019 vem com 29 linhas totalmente nulas"
     chave: "UF + arquivo_origem nas 218 linhas com UF preenchida (218 distintos, medido); as 29 linhas com UF nula (todas do arquivo 'CAPAG Estados 2019') não têm chave"
     tempo: {natureza: serie_anual, coluna: arquivo_origem, cobertura: "Capag Estados 2018–Capag Estados 2025 (texto; o ano está no nome do arquivo, 2024 aparece duas vezes: original e Revisão)"}

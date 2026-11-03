@@ -19,9 +19,8 @@ tabelas:
       - "id_classe numérico (BIGINT) aqui, mas VARCHAR nas tabelas de transição e UF"
       - "some area_ha por município: um município em dois biomas tem duas linhas (gotcha cobertura_repete_por_bioma)"
     use_para: "área de soja, pastagem, floresta etc. por município e ano"
-    nao_use_para: "transições de uso (use as tabelas transicao_*)"
-    rascunho: [use_para, nao_use_para]
-    verificado: "3.173.646 linhas; 3.173.605 distintos de (ano, id_municipio, bioma, id_classe); soma por ano: 850,7 Mha em 1985, 2024 e 2025 — medido 2026-10-27. Gotchas: cobertura_repete_por_bioma, classes_fora_da_legenda."
+    nao_use_para: "transições de uso: por município só existe a decenal (transicao_municipio_de_para_decenal); anual e quinquenal só por UF (transicao_uf_de_para_*)"
+    verificado: "3.173.646 linhas; 3.173.605 distintos de (ano, id_municipio, bioma, id_classe); soma por ano: 850,7 Mha em 1985, 2024 e 2025 — medido 2026-10-27. Gotchas: cobertura_repete_por_bioma, classes_fora_da_legenda. tabelas de transição no espelho: transicao_municipio_de_para_decenal, transicao_uf_de_para_anual, _quinquenal, _decenal — medido 2026-11-03"
   cobertura_uf_classe:
     ultima_data: "2021"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma UF × ano × classe de cobertura"

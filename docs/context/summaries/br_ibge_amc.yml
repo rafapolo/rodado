@@ -3,6 +3,7 @@
 dataset: br_ibge_amc
 tabelas:
   municipio_de_para:
+    ultima_data: "2000"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um município (código atual de 7 dígitos) × par de anos censitários (ano_de, ano_para) com o id da área mínima comparável (AMC) a que pertence nesse par"
     chave: "(ano_de, ano_para, id_municipio) — 434.070 linhas = 434.070 chaves distintas (78 pares × 5.565 municípios)"
     tempo: {natureza: serie_de_periodos, coluna: "ano_de, ano_para", cobertura: "1872–2010 (anos de censo: 1872, 1900, 1911, 1920, 1933, 1940, 1950, 1960, 1970, 1980, 1991, 2000, 2010)"}

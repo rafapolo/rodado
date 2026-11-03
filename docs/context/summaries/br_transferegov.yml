@@ -21,6 +21,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "25.969 linhas, 25.969 distintos de id_plano_acao e de codigo_plano_acao; valor_total = repasse+próprios+outros+rendimentos em 25.849; repasse = emenda+específico+voluntário em 25.969; AUTORIZADO 22.809; todo id_programa existe em programas — medido 2026-10-27"
   programas:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um programa de transferência fundo a fundo × ação orçamentária (um programa com várias ações aparece em mais de uma linha)"
     chave: "nenhuma: 129 linhas para 125 id_programa; id 65, 106 e 132 se repetem com ações orçamentárias diferentes ou iguais (106 e 132 têm linhas idênticas nos campos conferidos); (id_programa, codigo_descricao_orcamentaria_programa) dá 126 distintos"
     tempo: {natureza: serie_anual, coluna: ano_programa, cobertura: "2019–2026"}

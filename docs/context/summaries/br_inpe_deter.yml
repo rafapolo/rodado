@@ -17,10 +17,9 @@ tabelas:
       - "desmatamento: CLASSNAME IN ('DESMATAMENTO_CR','DESMATAMENTO_VEG') ou class_name IN ('supressão com solo exposto','supressão com vegetação'); queimada é CICATRIZ_DE_QUEIMADA / 'cicatriz de queimada'"
       - "bioma_arquivo = 'amazonia' | 'cerrado' | 'nao_floresta_amz' | 'pantanal' (minúsculo)"
       - "contagem de alertas: count(*) (cada linha é única por bioma_arquivo+OGC_FID; ver gotcha municipio_por_centroide para a ressalva sobre FID)"
-    use_para: "alertas de desmatamento e degradação quase em tempo real, por município, bioma e classe."
-    nao_use_para: "estimar desmatamento oficial anual (use PRODES) ou somar área sem filtrar a classe."
-    rascunho: [use_para, nao_use_para]
-    verificado: "699.077 linhas = 699.077 (bioma_arquivo,OGC_FID); count(DISTINCT FID) por bioma = linhas (amazonia 461.074, cerrado 134.165, nao_floresta_amz 79.683, pantanal 24.155); soma AREAMUNKM km²: amazonia 263.614, cerrado 48.904, nao_floresta_amz 60.927, pantanal 38.707; Pantanal: 16.457 de 24.155 são cicatriz de queimada — medido 2026-10-27"
+    use_para: "alertas de desmatamento e degradação quase em tempo real, por município, bioma e classe"
+    nao_use_para: "a taxa oficial anual de desmatamento (é o PRODES, br_inpe_prodes_acumulado.incremento_municipio; o DETER chega perto, mas não é o número oficial) ou somar área sem filtrar a classe (todas as classes dão 3x a área de desmatamento)"
+    verificado: "699.077 linhas = 699.077 (bioma_arquivo,OGC_FID); count(DISTINCT FID) por bioma = linhas (amazonia 461.074, cerrado 134.165, nao_floresta_amz 79.683, pantanal 24.155); soma AREAMUNKM km²: amazonia 263.614, cerrado 48.904, nao_floresta_amz 60.927, pantanal 38.707; Pantanal: 16.457 de 24.155 são cicatriz de queimada — medido 2026-10-27. Amazônia, VIEW_DATE de 2022-08-01 a 2023-07-31: desmatamento (DESMATAMENTO_CR + DESMATAMENTO_VEG) 7.868 km² em 33.803 linhas; todas as classes 25.426 km²; PRODES incremento_municipio ano = 2023, Amazônia: 7.802 km² — medido 2026-11-03"
   avisos_poligono:
     ultima_data: "2026-09-25"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "mesmo grão de avisos, com a geometria do polígono (uma linha por aviso × município)"

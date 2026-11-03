@@ -3,6 +3,7 @@
 dataset: br_cgu_despesas_publicas
 tabelas:
   execucao:
+    ultima_data: "2026-10"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um lançamento mensal da execução orçamentária por unidade gestora × ação × subtítulo/localizador × elemento de despesa × modalidade (valores do mês)"
     chave: "nenhuma: em 2025/12, 92.907 linhas e 91.683 combinações de unidade gestora, gestão, ação, plano, subtítulo, localizador, elemento, modalidade, programa, unidade orçamentária, autor de emenda, programa de governo, subfunção, função e órgão subordinado (cerca de 1.200 linhas repetem). Some sempre; não deduplique."
     tempo: {natureza: serie_mensal, coluna: ano_e_mes_do_lancamento, cobertura: "2014/01–2026/10 (texto 'AAAA/MM'; ordena como texto)"}
@@ -19,6 +20,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, filtros_tipicos]
     verificado: "10.473.104 linhas; mês 2025/12 com 92.907 linhas e chave candidata de 15 colunas com 91.683 distintos (não única); último mês 2026/10 com 45.072 linhas (parcial) — medido 2026-10-27"
   favorecido:
+    ultima_data: "2026-10"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "o total recebido por um favorecido (pessoa ou empresa) de uma unidade gestora num mês, cerca de uma linha por favorecido × unidade gestora × mês"
     chave: "nenhuma: em 12/2025, 843.921 linhas e 832.415 combinações de favorecido × unidade gestora (11,5 mil repetem); com órgão, UF e município ainda 842.846. Some sempre; não deduplique."
     tempo: {natureza: serie_mensal, coluna: ano_e_mes_do_lancamento, cobertura: "01/2014–12/2025 (texto 'MM/AAAA', não ordena como data; ao contrário de execucao)"}

@@ -3,6 +3,7 @@
 dataset: br_cgu_emendas_parlamentares
 tabelas:
   emendas:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma emenda parlamentar × classificação orçamentária (função, subfunção, programa, ação, plano orçamentário) × localidade, com empenho, liquidação, pagamento e restos a pagar"
     chave: "nenhuma: 94.627 linhas (todas distintas) para 76.760 id_emenda; a combinação (id_emenda, função, subfunção, programa, ação, plano, localidade) dá 94.527, ou seja 100 linhas repetem; id_emenda = 'Sem informação' em 17.810 linhas (não identifica emenda)"
     tempo: {natureza: serie_anual, coluna: ano_emenda, cobertura: "2014–2026"}
@@ -19,6 +20,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "94.627 linhas, 76.760 id_emenda distintos; soma empenhado R$ 342,53 bi, liquidado R$ 195,47 bi, pago R$ 193,58 bi; empenhado 2024 R$ 44,81 bi e 2025 R$ 47,08 bi — medido 2026-10-27"
   microdados:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "mesma estrutura da tabela emendas (emenda × classificação orçamentária × local do gasto), versão da Base dos Dados que termina em 2025"
     chave: "nenhuma: 88.993 linhas (todas distintas) para 71.126 id_emenda; a combinação (id_emenda, função, subfunção, programa, ação, plano, município do gasto) dá 88.241"
     tempo: {natureza: serie_anual, coluna: ano_emenda, cobertura: "2014–2025"}
@@ -46,6 +48,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "85.313 linhas, 81.602 numero_convenio distintos, 24.120 id_emenda distintos, soma R$ 121,67 bi — medido 2026-10-27"
   por_favorecido:
+    ultima_data: "2026-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um pagamento mensal de uma emenda a um favorecido (CPF/CNPJ), com mês e município do favorecido"
     chave: "nenhuma: 826.056 linhas (todas distintas), mas só 824.356 combinações (id_emenda, ano_mes, documento_favorecido)"
     tempo: {natureza: serie_mensal, coluna: ano_mes, cobertura: "201406–202609 (texto AAAAMM; ano e mes inteiros coincidem com ano_mes em todas as linhas)"}

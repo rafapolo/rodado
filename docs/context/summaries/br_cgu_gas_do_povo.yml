@@ -3,6 +3,7 @@
 dataset: br_cgu_gas_do_povo
 tabelas:
   gas_do_povo:
+    ultima_data: "2026-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um vale de gás retirado por um beneficiário (CPF) num estabelecimento, numa data de retirada"
     chave: "nenhuma: em ano_mes = '202603' há 7.118.269 linhas para 7.117.429 trincas (cpf_beneficiario, cnpj_estabelecimento, data_retirada_vale), ou seja ~840 linhas repetidas; e o CPF mascarado repete entre pessoas diferentes (gotcha cpf_completado)"
     tempo: {natureza: serie_mensal, coluna: ano_mes, cobertura: "202511–202607 (texto AAAAMM; ano_mes = mes_referencia em 202603)"}

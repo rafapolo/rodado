@@ -85,6 +85,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "2.645.613 linhas, 2.645.613 NR_DEMANDA; gotcha registro_ans_muda_de_nome_e_perde_zero vale para REGISTRO_OPERADORA (nulo em 0,03%) — medido 2026-10-27"
   igr:
+    ultima_data: "2026-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "o Índice Geral de Reclamações de uma operadora × competência (mês) × tipo de cobertura"
     chave: "nenhuma: 129.188 linhas contra 129.169 combinações de (REGISTRO_OPERADORA, COMPETENCIA, COBERTURA); em 2026-09 a chave é única (969 linhas)"
     tempo: {natureza: serie_mensal, coluna: COMPETENCIA, cobertura: "2015-01–2026-09 (texto 'AAAA-MM')"}
@@ -146,6 +147,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "DATA = 2025-10-01: 926.610 linhas, 1.019 operadoras; conta 3 por DATA: 2024-01 R$ 84,9 bi, 2024-04 170,1, 2024-07 261,3, 2024-10 354,5, 2025-01 94,3 (acumulado do ano, zera em janeiro); 2025-10 conta 1 ATIVO R$ 296,3 bi = conta 2 PASSIVO R$ 296,2 bi — medido 2026-10-27"
   painel_precificacao:
+    ultima_data: "2026-06"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "o valor comercial médio e a composição percentual da mensalidade de uma nota técnica de plano × faixa etária × mês"
     chave: "(ID_PLANO, CD_NOTA, CD_FAIXA_ETARIA, ANO_MES): confirmada em ANO_MES = '2025-12' (348.600 linhas = 348.600 combinações, 21.675 planos, 34.860 linhas por faixa)"
     tempo: {natureza: serie_mensal, coluna: ANO_MES, cobertura: "2013-12–2026-06 (texto 'AAAA-MM', mínimo e máximo vistos numa amostra de 6%)"}
@@ -163,6 +165,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "ANO_MES = 2025-12: 348.600 linhas, 21.675 planos, 10 faixas com 34.860 linhas cada; tabela com 32.202.280 linhas — medido 2026-10-27"
   ressarcimento_sus_atendimentos:
+    ultima_data: "2025-06"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um atendimento do SUS a beneficiário de plano privado, cobrado da operadora (lado cobrança)"
     chave: "NUM_ATENDIMENTO: confirmada, 10.507.502 linhas = 10.507.502 distintos"
     tempo: {natureza: serie_mensal, coluna: COMPETENCIA, cobertura: "2001-02–2025-06 (texto 'AAAA-MM'; DATA_ATUALIZACAO_ARQUIVO 2026-09-02)"}
@@ -179,6 +182,7 @@ tabelas:
     rascunho: [use_para]
     verificado: "10.507.502 linhas e distintos; soma VALOR_ATENDIMENTO R$ 17,67 bi, VALOR_COBRADO R$ 12,55 bi — medido 2026-10-27"
   ressarcimento_sus_beneficiarios:
+    ultima_data: "2025-06"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "o mesmo atendimento de ressarcimento_sus_atendimentos, visto pelo perfil do beneficiário e do procedimento (lado paciente)"
     chave: "NUM_ATENDIMENTO: confirmada, 10.507.502 linhas = 10.507.502 distintos"
     tempo: {natureza: serie_mensal, coluna: COMPETENCIA, cobertura: "01/2002–12/2024 numa amostra de 19% (texto 'MM/AAAA', formato diferente de atendimentos)"}
@@ -197,10 +201,12 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "10.507.502 linhas e distintos; soma VL_ATENDIMENTO R$ 17,67 bi (igual à de atendimentos), VL_RESSARC R$ 12,28 bi (7.684.234 linhas não nulas), VL_PAGO_RESSARC R$ 5,82 bi — medido 2026-10-27"
   ressarcimento_sus_cobranca_arrecadacao:
+    ultima_data: "2026-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um retrato acumulado da cobrança e arrecadação do ressarcimento ao SUS (uma linha só, competência 2026/09)"
     use_para: "totais acumulados cobrado, pago, parcelado, suspenso e em dívida ativa do ressarcimento ao SUS"
     verificado: "1 linha: VALOR_COBRADO_ACUMULADO R$ 13,20 bi, VALOR_PAGO_ACUMULADO R$ 6,23 bi, INDICE_ADIMPLENCIA '68,66%' (texto) — medido 2026-10-27"
   ressarcimento_sus_hc:
+    ultima_data: "2026-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma operadora × competência com a porcentagem HC (sigla não documentada no repo)"
     chave: "(CD_OPERADORA, COMPETENCIA): confirmada, 303.834 linhas = 303.834 combinações, 3.031 operadoras"
     tempo: {natureza: serie_mensal, coluna: COMPETENCIA, cobertura: "201801–202609 (texto 'AAAAMM')"}
@@ -212,6 +218,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "303.834 linhas, min 0,0, max 100,0 — medido 2026-10-27"
   ressarcimento_sus_indice_pagamento:
+    ultima_data: "2026-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "o índice de adimplência do ressarcimento ao SUS de uma operadora × competência (valores acumulados)"
     chave: "nenhuma: 230.771 linhas contra 229.176 combinações de (CODIGO_OPERADORA, COMPETENCIA)"
     tempo: {natureza: serie_mensal, coluna: COMPETENCIA, cobertura: "2014/07 a 202601: dois formatos misturados ('AAAA/MM' em 108.079 linhas, 'AAAAMM' nas demais)"}
@@ -226,6 +233,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "230.771 linhas, 229.176 combinações — medido 2026-10-27"
   sip_mapa_assistencial:
+    ultima_data: "2023-10"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "eventos e despesa assistencial de um item assistencial (procedimento/grupo) × trimestre × porte × modalidade × cobertura × contratação"
     chave: "(PORTE_OPERADORA, GR_MODALIDADE, COBERTURA, ID_TRIMESTRE, CONTRATACAO, ID_ITEM_ASST): confirmada, 156.792 linhas = 156.792 combinações"
     tempo: {natureza: serie_de_periodos, coluna: ID_TRIMESTRE, cobertura: "2020T1–2025-10: '202001' até 2023 e '2024-01' depois (gotcha sip_trimestre_dois_formatos); DT_CORTE tem 4 valores (2023-07-02 a 2026-06-08)"}

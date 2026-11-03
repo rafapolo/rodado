@@ -3,6 +3,7 @@
 dataset: br_cgu_beneficios_cidadao
 tabelas:
   novo_bolsa_familia:
+    ultima_data: "2025-07"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um pagamento mensal do Novo Bolsa Família (2023 em diante) a um beneficiário (NIS), numa competência"
     chave: "nenhuma garantida: em AC, competência 2025-01, (nis_favorecido, ano/mes_competencia, ano/mes_referencia) tem 130.971 distintos em 130.973 linhas (2 repetem)"
     tempo: {natureza: serie_mensal, coluna: "ano_competencia, mes_competencia (ano_referencia/mes_referencia = mês a que o pagamento se refere; difere em 401 das 130.973 linhas medidas)", cobertura: "2023-03–2025-07 (medido em AC)"}
@@ -15,6 +16,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, "significado de competência × referência (só a diferença foi medida)"]
     verificado: "588.460.141 linhas (perfil); AC 2025-01: 130.973 linhas, 130.971 chaves distintas, 130.570 NIS distintos, 26.628 sem cpf_favorecido; competências 202303–202507 em AC — medido 2026-10-27"
   bolsa_familia_pagamento:
+    ultima_data: "2021-11"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um pagamento mensal do Bolsa Família antigo (até 2021) a um beneficiário (NIS)"
     chave: "(nis_favorecido, ano/mes_competencia, ano/mes_referencia) único em AC, competência 2020-01: 86.938 linhas = 86.938 distintos (não conferido nas demais partições)"
     tempo: {natureza: serie_mensal, coluna: "ano_competencia, mes_competencia (referencia difere em 145 das 86.938 linhas medidas)", cobertura: "2012-06–2021-11 (medido em AC)"}
@@ -27,6 +29,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "1.495.223.596 linhas (perfil); AC 2020-01: 86.938 linhas, 86.938 chaves distintas, 86.924 NIS distintos — medido 2026-10-27"
   auxilio_brasil:
+    ultima_data: "2023-02"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um pagamento mensal do Auxílio Brasil a um beneficiário (NIS), numa competência"
     chave: "nenhuma garantida: em AC, competência 2022-06, 108.147 linhas contra 108.133 chaves (nis, competência, referência) distintas (14 repetem)"
     tempo: {natureza: serie_mensal, coluna: "ano_competencia, mes_competencia (referencia difere em 21 das 108.147 linhas medidas)", cobertura: "2021-10–2023-02 (medido em AC)"}
@@ -39,6 +42,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "293.954.669 linhas (perfil); AC 2022-06: 108.147 linhas, 108.133 chaves distintas — medido 2026-10-27"
   bpc:
+    ultima_data: "2025-07"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um pagamento mensal de Benefício de Prestação Continuada (BPC) a um benefício, numa competência"
     chave: "(numero_beneficio, ano/mes_competencia, ano/mes_referencia): único em AC, competência 2025-01 (34.725 linhas = 34.725 distintos); nis_favorecido sozinho não serve (7% nulo e repetido)"
     tempo: {natureza: serie_mensal, coluna: "ano_competencia, mes_competencia (igual à referência na amostra medida)", cobertura: "2019-01–2025-07 (medido em AC)"}
@@ -70,6 +74,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, "significado de enquadramento"]
     verificado: "491.136.014 linhas (perfil); AC: 2020 = 2.399.254, 2021 = 644; AC 2020-07: 300.640 linhas, 292.459 por (cpf, mes, parcela), 300.581 com nis e nome — medido 2026-10-27"
   garantia_safra:
+    ultima_data: "2026-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um pagamento do Garantia-Safra a um agricultor (NIS) num mês de referência"
     chave: "(nis_favorecido, ano_referencia, mes_referencia): único em PE, 2020 (137.830 linhas = 137.830 distintos; 75.170 NIS, então o mesmo NIS aparece em vários meses)"
     tempo: {natureza: serie_mensal, coluna: "ano_referencia, mes_referencia", cobertura: "2013-01–2026-01"}

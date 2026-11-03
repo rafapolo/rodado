@@ -3,6 +3,7 @@
 dataset: br_ms_pns
 tabelas:
   microdados_2013:
+    ultima_data: "2013"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um morador de domicílio da PNS 2013 (222.385 linhas; só uma parte foi o adulto selecionado que respondeu ao questionário individual)"
     chave: "(upa_pns, v0006_pns, c00301): 222.385 linhas = 222.385 distintos (c00301 = número de ordem do morador no domicílio; upa_pns + v0006_pns = domicílio)"
     tempo: {natureza: retrato_atual, coluna: v0020, cobertura: "2013–2013"}
@@ -19,6 +20,7 @@ tabelas:
     rascunho: [medidas, use_para, nao_use_para]
     verificado: "222.385 linhas, chave confirmada; v0025 = '1' em 64.308; v00291 preenchido em 60.202 — medido 2026-10-27"
   microdados_2019:
+    ultima_data: "2019"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um morador de domicílio da PNS 2019 (293.726 linhas, 1.087 colunas)"
     chave: "(upa_pns, v0006_pns, c00301): 293.726 linhas = 293.726 distintos"
     tempo: {natureza: retrato_atual, coluna: "v0020 (ano)", cobertura: "2019–2019"}

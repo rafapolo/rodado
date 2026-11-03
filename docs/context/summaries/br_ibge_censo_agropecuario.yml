@@ -3,6 +3,7 @@
 dataset: br_ibge_censo_agropecuario
 tabelas:
   sidra:
+    ultima_data: "2017"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma célula do SIDRA do Censo Agropecuário 2017: tabela × localidade (Brasil, UF ou, em 5 tabelas, município) × variável × combinação de categorias (até 6 classificações)"
     chave: "(id_tabela, id_nivel, id_localidade, id_variavel, id_categoria_1..6 com nulo como 0), confirmada nas tabelas 6753 (100.352 linhas) e na primeira acima de 8000 (105.840); não medida nas outras 445 (211,5 mi de linhas no total)"
     tempo: {natureza: sem_tempo, coluna: periodo, cobertura: "2017–2017"}
@@ -24,6 +25,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "211.521.516 linhas em 447 id_tabela; id_nivel '3' 158.971.005, '6' 46.662.696 (5 tabelas), '1' 5.887.815; 6753: 100.352 linhas = 100.352 chaves distintas (Brasil 3.584, UF 96.768), unidades Unidades/Pessoas/Hectares — medido 2026-10-27. Gotchas: municipio_so_em_recorte, sigilo_x, estabelecimento_nao_e_imovel"
   sidra_municipio:
+    ultima_data: "2017"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma célula município × variável × categorias, num dos 10 recortes (coluna recorte) do SIDRA do Censo Agropecuário 2017"
     chave: "(recorte, id_tabela, id_localidade, id_variavel, id_categoria_1..6 com nulo como 0): 590.526 linhas = 590.526 distintas. SEM recorte não é única (573.813 distintas): as tabelas 6753 e 6846 aparecem em dois recortes cada."
     tempo: {natureza: sem_tempo, coluna: periodo, cobertura: "2017–2017"}
@@ -44,6 +46,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "590.526 linhas, 590.526 chaves distintas com recorte; 573.813 sem; recortes: tipologia (6885: 66.852; 6753: 89.136), agente_financeiro 122.562, condicao_produtor 89.136, orientacao_tecnica 61.281, associacao 38.997, dap 44.568, sexo_produtor 44.568, irrigacao 22.284, agrotoxico 11.142; valor NULL 27.874 'X' + 2.246 '...'; soma 183 Total da 6753 = 5.073.324 — medido 2026-10-27"
   sidra_tabelas:
+    ultima_data: "2017"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma tabela SIDRA do Censo Agropecuário 2017 (catálogo de 736 tabelas, 1 linha cada), com assunto, variáveis, classificações e tamanho"
     chave: "id_tabela: 736 linhas = 736 distintos"
     tempo: {natureza: sem_tempo, coluna: periodo_inicio, cobertura: "2017–2017"}

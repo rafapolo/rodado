@@ -3,6 +3,7 @@
 dataset: br_cgu_garantia_safra
 tabelas:
   pagamento:
+    ultima_data: "2026-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma parcela do Garantia-Safra paga a um favorecido (agricultor) num mês de referência"
     chave: "mes_referencia + favorecido_id + codigo_municipio_siafi + valor_parcela (as 33.555.512 linhas são distintas); (mes_referencia, favorecido_id) também é único"
     tempo: {natureza: serie_mensal, coluna: mes_referencia, cobertura: "201301–202609 (texto AAAAMM; 162 meses)"}
@@ -26,6 +27,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "2.655.471 linhas = 2.655.471 favorecido_id distintos = 2.655.471 pares (NIS, nome) distintos — medido 2026-10-27"
   garantia_safra:
+    ultima_data: "2026-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma parcela paga a um agricultor num mês (view: pagamento JOIN favorecido, com NIS e nome)"
     chave: "mesma de pagamento"
     tempo: {natureza: serie_mensal, coluna: mes_referencia, cobertura: "201301–202609"}

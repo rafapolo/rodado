@@ -1,0 +1,23 @@
+dataset: br_me_rais_identificada
+gotchas:
+  - id: cnpj_repetido_no_ano
+    resumo: "Em estabelecimentos, o mesmo CNPJ aparece em mais de uma linha no ano: count(*) conta ~13% a mais de estabelecimentos. Use count(DISTINCT cnpj_completo)."
+    detalhe: >
+      As linhas repetidas do mesmo CNPJ trazem quantidade_vinculos_ativos
+      diferente; o que as separa não foi apurado. Para estabelecimentos, conte
+      distintos; para vínculos, a soma por CNPJ é a soma das linhas.
+    tabelas: [estabelecimentos]
+    colunas: [cnpj_completo, quantidade_vinculos_ativos]
+    severidade: silencioso
+    verificado: "2026-11-03: 2010 com 2.639.090 linhas e 2.353.975 CNPJs; 2015 com 3.141.795 e 2.800.939; 2021 com 3.157.096 e 2.778.942"
+  - id: situacao_cadastral_e_atual
+    resumo: "Em estabelecimentos, situacao_cadastral_codigo é a situação de hoje na Receita, não a do ano da RAIS: em 2021, 205.351 linhas aparecem como baixadas ('8') com baixa depois de 2021."
+    detalhe: >
+      Filtrar situacao_cadastral_codigo = '2' (ativa) para saber quem operava no
+      ano corta quem fechou depois. Para atividade no ano, use
+      quantidade_vinculos_ativos > 0; os baixados ainda somam 1,24 mi de vínculos
+      ativos em 2021.
+    tabelas: [estabelecimentos]
+    colunas: [situacao_cadastral_codigo, data_situacao_cadastral, quantidade_vinculos_ativos]
+    severidade: silencioso
+    verificado: "2026-11-03, ano=2021: 209.134 linhas com '8', 205.351 delas com data_situacao_cadastral > 2021-12-31 (até 2025-09-13); 1.243.143 vínculos ativos nas baixadas"

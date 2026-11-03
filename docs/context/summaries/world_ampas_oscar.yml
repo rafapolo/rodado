@@ -3,6 +3,7 @@
 dataset: world_ampas_oscar
 tabelas:
   winner_demographics:
+    ultima_data: "2014"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um vencedor do Oscar × edição × categoria (as 5 categorias de atuação e direção)"
     chave: "(name, year_edition, category) (415 linhas = 415 distintos); (year_edition, category) NÃO é única: há anos com 2 vencedores na mesma categoria (ex. 1938 Melhor Ator Coadjuvante, 1961 Melhor Diretor, 1969 Melhor Atriz)"
     tempo: {natureza: serie_anual, coluna: year_edition, cobertura: "1927–2014"}

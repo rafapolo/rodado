@@ -3,9 +3,10 @@
 dataset: br_pgfn_dividaativa
 tabelas:
   divida:
-    grao: "uma inscrição em dívida ativa × um devedor (CPF/CNPJ), no estoque do trimestre mais recente (2026 T2)"
+    ultima_data: "2026-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
+    grao: "uma inscrição em dívida ativa × um devedor (CPF/CNPJ), no estoque do trimestre mais recente (2026 T3 em 2026-11-03)"
     chave: "(NUMERO_INSCRICAO, CPF_CNPJ): não é única por 10 linhas em 49.702.198 (49.702.188 distintos). NUMERO_INSCRICAO sozinho NÃO é chave: 34.993.563 distintos, 12.747.823 inscrições têm mais de um devedor"
-    tempo: {natureza: retrato_atual, coluna: trimestre, cobertura: "2026_trimestre_02–2026_trimestre_02 (um só valor; DATA_INSCRICAO é texto dd/mm/aaaa, de 01/01/1000 a 31/12/2024 no perfil)"}
+    tempo: {natureza: retrato_atual, coluna: trimestre, cobertura: "2026_trimestre_03 (um só valor, medido 2026-11-03; DATA_INSCRICAO é texto dd/mm/aaaa, de 01/01/1000 a 31/12/2024 no perfil)"}
     territorio: {nivel: uf, colunas: {UF_DEVEDOR: "UF do endereço do devedor", UNIDADE_RESPONSAVEL: "região/unidade da PGFN que cobra (não é território do devedor)"}}
     medidas:
       - {coluna: VALOR_CONSOLIDADO, o_que: "valor consolidado da inscrição (DOUBLE, ponto decimal)", unidade: "R$", soma: "sim por linha, mas o valor se repete em cada devedor da mesma inscrição: SUM por linha = R$ 7,385 tri; somando uma vez por NUMERO_INSCRICAO (max) dá R$ 3,513 tri. Em inscrições com mais de um devedor o valor nunca diverge entre as linhas (0 casos). Para 'dívida total da União' use a soma por inscrição (gotcha divida_repetida_por_devedor); para 'dívida de um devedor' a soma por linha serve"}
@@ -15,12 +16,12 @@ tabelas:
       - "TIPO_PESSOA = 'Pessoa jurídica' / 'Pessoa física'; cnpj_basico só existe para PJ (ver gotcha filtrar_por_cnpj_basico)"
       - "categoria IN ('nao_previdenciario' 45.553.971, 'previdenciario' 3.606.529, 'fgts' 541.698)"
       - "INDICADOR_AJUIZADO = 'SIM' (11.052.587) ou 'NAO' (38.649.611)"
-    use_para: "Consultar a dívida ativa de um devedor/empresa (por cnpj_basico) ou o estoque por UF, situação, categoria e receita"
-    nao_use_para: "Série temporal ou fluxo (use divida_trimestres); total nacional somando VALOR_CONSOLIDADO por linha sem tratar devedores repetidos"
-    rascunho: [use_para, nao_use_para]
-    verificado: "49.702.198 linhas; 49.702.188 distintos de (NUMERO_INSCRICAO, CPF_CNPJ); 34.993.563 inscrições distintas; soma por linha 7.385.472.245.199; soma por inscrição 3.512.786.565.271; DATA_INSCRICAO = '01/01/1000' em 3.458 linhas (data inválida) — medido 2026-10-27. Gotchas: valor_consolidado_double, filtrar_por_cnpj_basico, trimestre_e_retrato_do_estoque"
+    use_para: "consultar a dívida ativa de um devedor ou empresa (por cnpj_basico) ou o estoque por UF, situação, categoria e receita no trimestre mais recente"
+    nao_use_para: "série temporal ou fluxo (use divida_trimestres, 27 trimestres de 2020 T1 a 2026 T3); total nacional somando VALOR_CONSOLIDADO por linha sem tratar devedores repetidos"
+    verificado: "49.702.198 linhas; 49.702.188 distintos de (NUMERO_INSCRICAO, CPF_CNPJ); 34.993.563 inscrições distintas; soma por linha 7.385.472.245.199; soma por inscrição 3.512.786.565.271; DATA_INSCRICAO = '01/01/1000' em 3.458 linhas (data inválida) — medido 2026-10-27. Gotchas: valor_consolidado_double, filtrar_por_cnpj_basico, trimestre_e_retrato_do_estoque. o retrato passou a 2026_trimestre_03: 53.566.733 linhas (as contagens acima são do T2); divida_trimestres com 27 trimestres, 2020_trimestre_01 a 2026_trimestre_03 — medido 2026-11-03"
   divida_trimestres:
-    grao: "uma inscrição × um devedor no estoque de um trimestre (2020 T1 a 2026 T2); cada trimestre é um retrato completo"
+    ultima_data: "2026-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
+    grao: "uma inscrição × um devedor no estoque de um trimestre (2020 T1 a 2026 T3); cada trimestre é um retrato completo"
     chave: "(trimestre, NUMERO_INSCRICAO, CPF_CNPJ): medido no trimestre 2024_trimestre_04, 37.183.467 linhas e 37.183.462 distintos (5 repetidas); nos demais trimestres, não medido"
     tempo: {natureza: soma_de_retratos, coluna: trimestre, cobertura: "2020_trimestre_01–2026_trimestre_02 (26 trimestres, texto aaaa_trimestre_nn)"}
     territorio: {nivel: uf, colunas: {UF_DEVEDOR: "UF do devedor (nula em ~34% da amostra)", UNIDADE_RESPONSAVEL: "unidade da PGFN que cobra"}}

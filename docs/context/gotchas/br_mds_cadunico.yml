@@ -20,3 +20,14 @@ gotchas:
     colunas: [id_indicador, indicador, referencia]
     severidade: silencioso
     verificado: "2026-10-31: 139 indicadores, 5.571 municípios, 350.069.210 linhas; distintos por ano: 73 (2012), 96 (2022), 132 (2023), 115 (2026); 24 sem dado em 2026, ao menos 8 com fim em 2023-02-01"
+  - id: ultimo_mes_sem_todos_indicadores
+    resumo: "Em indicadores_municipio, os últimos meses chegam sem parte dos indicadores: 2026-09 tem 109, contra 115 em 2026-07. Para o 'mais recente', pegue o max(referencia) de cada indicador, não o mês global."
+    detalhe: >
+      Faltam em 2026-09, entre outros, as faixas de renda após o PBF (famílias e
+      pessoas inscritas param em 2026-07) e trabalho infantil (para em 2026-08).
+      Filtrar referencia = max(referencia) da tabela devolve vazio para esses
+      indicadores, sem erro, e uma comparação entre indicadores mistura meses.
+    tabelas: [indicadores_municipio]
+    colunas: [id_indicador, referencia]
+    severidade: silencioso
+    verificado: "2026-11-03: indicadores distintos por mês 113 (2026-05), 115 (06 e 07), 113 (08), 109 (09), sempre 5.571 municípios; dc30866959a9 e cfbbb3a75881 com último mês 2026-07, 38867ce26ad1 e 9fec08d62b19 com 2026-08"

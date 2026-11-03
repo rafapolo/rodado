@@ -3,6 +3,7 @@
 dataset: br_fnde_fundeb
 tabelas:
   indicador_estadual:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um indicador do FUNDEB × UF × ano × período (formato longo: uma linha por indicador)"
     chave: "ano, periodo, id_uf, id_indicador (67.448 linhas = 67.448 distintos)"
     tempo: {natureza: serie_de_periodos, coluna: "ano, periodo", cobertura: "2008–2026 (periodo 1 a 6, bimestres do relatório; 2026 só até 4; significado não documentado)"}
@@ -15,6 +16,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "67.448 linhas; chave de 4 colunas única; id_grupo = '3' em todas — medido 2026-10-27"
   indicador_municipal:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um indicador do FUNDEB × município × ano × período (formato longo)"
     chave: "ano, periodo, id_municipio, id_indicador (única em ano = 2026: 666.656 linhas = 666.656; e em 2025: 849.533 = 849.533)"
     tempo: {natureza: serie_de_periodos, coluna: "ano, periodo", cobertura: "2008–2026 (19 anos; periodo 1 a 4 em 2026; 2025: 46 indicadores, 2026: 49)"}

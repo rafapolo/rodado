@@ -76,3 +76,22 @@ gotchas:
     colunas: [id_municipio_residencia, id_municipio_6_residencia]
     severidade: silencioso
     verificado: "2022: id_municipio_residencia 0 de 416.945; id_municipio_6_residencia 416.859 — medido 2026-10-05"
+  - id: dengue_2025_2026_do_ftp
+    resumo: "Em microdados_dengue, 2025 e 2026 vêm do FTP do DATASUS (FINAIS/DENGBR25, PRELIM/DENGBR26) pela SQL da BD, não da BD: o 2025 da BD tinha 1,55 mi de linhas repetidas e 2026 parava em janeiro."
+    detalhe: >
+      Desde 2026-11-03 os 10 arquivos com ano 2025-2026 saem de
+      scripts/scrap/sinan_dengue.py: o .dbc vira o staging da BD e passa pela
+      SQL do modelo dbt dela (versão de 2026-07-07). Comparado com o 2025 da BD
+      (3.435.753 linhas, só 1.883.700 distintas), 1.545.250 notificações casam
+      pela chave e, nelas, 140 das 151 colunas batem em mais de 97%. As
+      diferenças vêm da fonte, não da conversão: no arquivo FINAIS,
+      resultado_ns1 e resultado_sorologia_dengue ficam vazios onde
+      resultado_sorologia1_chikungunya vem preenchido (629 mil linhas com '4'),
+      ~33 mil linhas trazem '0' nos campos de sinais de alarme/gravidade (eram
+      NULL) e pais_infeccao traz '0' em 470 mil linhas. 2026 é preliminar
+      (regravado toda semana no FTP). A fonte tem 963 linhas idênticas repetidas
+      nos dois anos, mantidas.
+    tabelas: [microdados_dengue]
+    colunas: [ano, resultado_ns1, resultado_sorologia_dengue, resultado_sorologia1_chikungunya, pais_infeccao]
+    severidade: silencioso
+    verificado: "2025 = 1.643.215 linhas (FINAIS de 2026-07-21), 2026 = 483.823 (PRELIM de 2026-10-27, notificação até 2026-10-25); BD 2025 = 3.435.753 linhas / 1.883.700 distintas — medido 2026-11-03"

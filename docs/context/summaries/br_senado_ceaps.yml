@@ -14,6 +14,5 @@ tabelas:
       - "ano = 2025 e mes (1–12) para o período; use ano/mes e não data: 52 linhas têm data com ano impossível (ex. 0023, 5201) e 0,79% de data nula"
       - "tipo_despesa = 'Passagens aéreas, aquáticas e terrestres nacionais' (79.889 linhas) ou 'Locomoção, hospedagem, alimentação, combustíveis e lubrificantes' (167.244): valor literal por extenso, 6 categorias mais nulo (334 linhas)"
     use_para: "gasto da cota parlamentar por senador, categoria de despesa, fornecedor e período"
-    nao_use_para: "identificar o gasto por UF ou partido sem juntar com a tabela de senadores (ligação por cod_senador não conferida)"
-    rascunho: [nao_use_para]
-    verificado: "396.755 linhas, 396.755 id_documento distintos; soma de valor_reembolsado em R$: 2024 32,2 mi, 2025 37,4 mi, 2026 23,5 mi (parcial); por tipo_despesa: locomoção 106,8 mi, passagens 91,2 mi, aluguel 78,6 mi, consultorias 85,3 mi, divulgação 63,1 mi, material 17,1 mi, segurança 3,1 mi, nulo 0,9 mi — medido 2026-10-27"
+    nao_use_para: "UF ou partido do senador direto daqui (não há a coluna): junte cod_senador com br_senado_dados_abertos.senador.id_senador (comparando como texto), que casa todas as linhas"
+    verificado: "396.755 linhas, 396.755 id_documento distintos; soma de valor_reembolsado em R$: 2024 32,2 mi, 2025 37,4 mi, 2026 23,5 mi (parcial); por tipo_despesa: locomoção 106,8 mi, passagens 91,2 mi, aluguel 78,6 mi, consultorias 85,3 mi, divulgação 63,1 mi, material 17,1 mi, segurança 3,1 mi, nulo 0,9 mi — medido 2026-10-27. ano = 2025: 23.850 linhas, todas casadas com br_senado_dados_abertos.senador por cod_senador = id_senador; 83 senadores, os 83 encontrados — medido 2026-11-03"
