@@ -1,0 +1,14 @@
+dataset: br_ms_atencao_basica
+gotchas:
+  - id: estoque_mensal_nao_soma_meses
+    resumo: "municipio é uma foto por mês (12 por município e ano; 2007 só tem 6): populacao e populacao_coberta_* se repetem a cada mês. SUM sem filtrar mes soma ~12 vezes a população (2019: 2,50 bi contra ~210 mi). Filtre um mes (o último do ano) ou tire a média."
+    tabelas: [municipio]
+    colunas: [populacao, populacao_coberta_estrategia_saude_familia, populacao_coberta_total_atencao_basica, mes]
+    severidade: silencioso
+    verificado: "SUM(populacao) de 2019 em todos os meses = 2.501.938.800; no último mês de 2020 = 210.147.125 (= br_ibge_populacao 2020); 2007 tem 6 meses (33.384 linhas), 2012 12 meses (66.780) — medido 2026-11-03"
+  - id: serie_termina_em_2020
+    resumo: "A série vai de 2007 a 2020: não há cobertura da atenção básica de 2021 em diante. 901.944 linhas, 5.570 municípios."
+    tabelas: [municipio]
+    colunas: [ano]
+    severidade: erro
+    verificado: "MIN(ano) 2007, MAX(ano) 2020, 901.944 linhas, 5.570 id_municipio distintos — medido 2026-11-03"

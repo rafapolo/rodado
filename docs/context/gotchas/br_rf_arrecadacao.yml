@@ -1,0 +1,14 @@
+dataset: br_rf_arrecadacao
+gotchas:
+  - id: grao_misto_no_dataset
+    resumo: "Só itr tem id_municipio e sigla_uf (2017–2024, 5.570 municípios); ir_ipi é nacional: 204 linhas de IR e 204 de IPI por mês/decêndio, 2019–2024, sem UF nem município. Não dá para fazer IR ou IPI por município aqui."
+    tabelas: [ir_ipi, itr]
+    colunas: [id_municipio, sigla_uf, tributo]
+    severidade: erro
+    verificado: "itr: 516.429 linhas, 2017–2024, 5.570 id_municipio distintos, 0 nulos; ir_ipi: 408 linhas (IPI 204, IR 204), 2019–2024, sem coluna de UF ou município — medido 2026-11-03"
+  - id: itr_ordem_de_grandeza
+    resumo: "itr soma R$ 1,2 bi (2017) a R$ 2,9 bi (2023) e R$ 2,4 bi em 2024 por ano: valor_arrecadado em reais inteiros, o ITR nacional é pequeno. Total acima de dezenas de bilhões é erro de unidade ou de join."
+    tabelas: [itr]
+    colunas: [valor_arrecadado]
+    severidade: custo
+    verificado: "SUM(valor_arrecadado)/1e9 por ano: 1,24 / 1,35 / 1,42 / 1,58 / 1,95 / 2,41 / 2,87 / 2,41 (2017–2024) — medido 2026-11-03"
