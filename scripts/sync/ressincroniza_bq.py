@@ -291,6 +291,13 @@ def main():
                   if l.strip() and not l.startswith("#")]
     if not alvos:
         sys.exit("nada a fazer: passe tabelas ou --lista")
+    from fonte_propria import recusa
+    for t in list(alvos):
+        if (m := recusa(t)):
+            print(f"  {t:52} recusada: {m}")
+            alvos.remove(t)
+    if not alvos:
+        sys.exit("nada a fazer depois da trava de fonte própria")
     if not shutil.which("rsync"):
         sys.exit("rsync não encontrado")
 

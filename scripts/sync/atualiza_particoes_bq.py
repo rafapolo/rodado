@@ -251,7 +251,11 @@ def main():
     prontos = {}
     if a.plano:
         prontos = {p["tabela"]: p for p in json.loads(Path(a.plano).read_text()) if not p.get("erro")}
+    from fonte_propria import recusa
     for alvo in alvos:
+        if (m := recusa(alvo)):
+            print(f"  {alvo:55} recusada: {m}", flush=True)
+            continue
         try:
             p = prontos.get(alvo) or planeja(client, bq, alvo)
         except Exception as exc:                                  # noqa: BLE001

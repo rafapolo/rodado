@@ -20,6 +20,8 @@ gotchas:
       e tri 2 da BD: soma de hash coluna a coluna idêntica nas 15 colunas. Uma
       ressincronização da BD que traga tri 3 duplica o trimestre: apagar o
       pgfn_2026_trimestre_03.parquet no mesmo passo.
+      Desde 2026-11-03 os syncs da BD recusam a tabela enquanto ela estiver em
+      docs/context/fonte_propria.yaml.
     tabelas: [previdenciario]
     colunas: [ano, trimestre, sigla_uf, data_inscricao]
     severidade: silencioso

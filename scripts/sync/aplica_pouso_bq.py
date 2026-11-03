@@ -40,6 +40,12 @@ def duck(sql):
 
 def aplica(chave, ok, estado):
     prefixo = f"{POUSO}/{chave}"
+    sys.path.insert(0, str(REPO / "scripts/sync"))
+    from fonte_propria import recusa
+    ds_tb = ".".join(chave.split("/")[:2])
+    if (m := recusa(ds_tb)):
+        log("  recusada:", chave, m)
+        return False
     dest = RAIZ / chave.rsplit("/", 1)[0]
     p, col, n = ok["p"], ok["col"], ok["bq"]
     novo = dest / f".novo_{p}"

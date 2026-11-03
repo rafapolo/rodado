@@ -155,6 +155,11 @@ def fetch_and_append(dataset, table, column, column_type, local_max):
 def sync_one(dataset, table, meta):
     full_name = f"{dataset}.{table}"
     column, column_type = meta["column"], meta["column_type"]
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from fonte_propria import recusa
+    if (m := recusa(full_name)):
+        write_progress("error", full_name, m)
+        return "error"
 
     local_max = get_local_max(dataset, table, column)
     if local_max is None:

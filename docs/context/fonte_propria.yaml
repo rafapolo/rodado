@@ -1,0 +1,12 @@
+# Tabelas espelhadas da Base dos Dados que têm arquivo de outra fonte no meio.
+# Lido por scripts/sync/fonte_propria.py: ressincroniza_bq, atualiza_particoes_bq,
+# sync_drifted_incremental e aplica_pouso_bq recusam escrever nessas tabelas.
+# Um sync da BD apagaria o arquivo (ressincronização inteira) ou duplicaria as linhas
+# (quando a BD publicar o mesmo período). Antes de liberar: conferir se a BD já tem o
+# período, tirar o arquivo daqui de baixo e só então sincronizar.
+tabelas:
+  br_mf_divida_ativa.previdenciario:
+    arquivos: [pgfn_2026_trimestre_03.parquet]
+    periodo: "ano = 2026 AND trimestre = 3"
+    origem: "br_pgfn_dividaativa.divida_trimestres, convertido com as regras da BD (2026-11-03)"
+    gotcha: previdenciario_2026_t3_da_pgfn
