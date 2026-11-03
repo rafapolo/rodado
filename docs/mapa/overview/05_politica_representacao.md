@@ -66,7 +66,7 @@ Os dados do TSE em `br_tse_eleicoes.candidatos` com 149 MB permitem analisar per
 | Masculino | 7.533 | ~62 anos |
 | Feminino | 347 | ~62 anos |
 
-**Conclusão:** Apenas **4,4%** dos deputados são mulheres — uma das menores taxas do mundo.
+**Conclusão (corrigida 2026-11):** a contagem acima soma todos os registros históricos da base da Câmara, não uma legislatura. Pelo TSE, a Câmara eleita em 2022 tinha 91 mulheres (17,7%) e a de 2026 tem 109 (21,2%).
 
 ## Dados Reais — Eleições Presidenciais
 
@@ -136,7 +136,7 @@ Os dados do TSE em `br_tse_eleicoes.candidatos` com 149 MB permitem analisar per
 - **Senado x Genero:** 18,5% das cadeiras; a maior bancada nao elegeu nenhuma mulher.
 
 - **Raça × Candidatura:** negros = 25% dos candidatos vs. 56% da população
-- **Gênero × Cargo:** mulheres = 4,4% deputadas vs. 52% da população
+- **Gênero × Cargo:** mulheres = 21,2% da Câmara eleita em 2026 (17,7% em 2022) vs. 51,5% da população
 - **Escolaridade × Elite:** candidatos = elite educacional (65% superior vs. 20%)
 - **Ocupação × Classe:** 33% advogado/empresário vs. 5% trabalhadores
 - **Partido × Poder:** 10 partidos = 45% dos filiados — oligopólio
@@ -149,3 +149,7 @@ A sub-representação feminina pode ser explicada pela hipótese do teto de vidr
 ## Implicações para Políticas Públicas
 
 Cotas de gênero funcionam pouco sem financiamento igualitário. Limites a doações empresariais podem democratizar. Candidaturas coletivas podem reduzir custo. Transporte gratuito para candidatas pode aumentar participação feminina. Financiamento público de campanhas pode reduzir papel do dinheiro.
+
+## Revisão 2026-11 — dados novos e correções
+
+- `br_tse_eleicoes.candidatos` (2026: `situacao` toda nula; `genero` 'feminino'/'masculino') × `resultados_candidato` (`resultado LIKE 'eleito%'`), join por `ano, sigla_uf, id_eleicao, sequencial(_candidato), cargo`. Mulheres candidatas/eleitas: dep. federal 2022 34,9%/91 de 513; 2026 36,8%/109 de 513; dep. estadual 2022 33,5%/186 de 1.035; 2026 34,8%/213 de 1.035; senador 2022 23,8%/4 de 27; 2026 21,9%/12 de 54. Governador ficou de fora: o join só achou 15 eleitos em 2022 (o 2º turno não casa).

@@ -155,3 +155,7 @@ A vulnerabilidade reflete subdesenvolvimento cumulativo. Raça determina destino
 ## Implicações para Políticas Públicas
 
 Focalização nos 25% mais vulneráveis pode ter maior impacto. Políticas educacionais quebram ciclo de pobreza. Universalização de saneamento e internet pode reducir vulnerabilidade em 50%. Redistribuição de vagas de ensino superior pode reducir educacional gap. Políticas de discriminación positiva podem romper cycle intergeracional.
+
+## Dados novos (revisão de 2026-11)
+
+- `br_mds_cadunico.indicadores_municipio` — indicadores mensais do Cadastro Único por município (formato longo: filtrar `id_indicador` E `variavel`; `referencia` é DATE do 1º dia do mês, 2012-08 a 2026-09). Pessoas por faixa de renda: `id_indicador='f29f08a0bfde'` (desde mar/2023); total de pessoas: `c2fe1194f018`; rural/urbano: `48c81f037200`/`ffa2bc6dbd9c`. Set/2026: 98,0 mi cadastrados, 46,6 mi na faixa de pobreza do PBF (61,4 mi em mar/2023); 25% em domicílios rurais; MA 42,1% da população, SC 6,3% (população de `br_ibge_populacao.municipio`, ano 2025).

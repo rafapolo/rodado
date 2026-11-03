@@ -154,3 +154,8 @@ Armadilha da renda média: Brasil não investiu em educação massiva. Violênci
 ## Implicações para Políticas Públicas
 
 Revolução na formação de professores pode melhorar PISA. Desarmamento e programas sociais podem reduzir violência. Investimento de 4-5% do PIB em educação (como Cor巧 do Sul) pode quebrar armadilha. Redução da violência (de 30 para 10 por 100 mil) pode save 30.000 vidas/ano. Políticas de redistribution que miram os 5% mais pobres podem eliminar extrema pobreza.
+
+## Dados novos (revisão de 2026-11)
+
+- `world_oecd_pisa.student` — microdados do PISA 2015, 2018, 2022 e 2025 (`year`, `country_id_iso_3`, `oecd`, `final_student_weight`, 80 pesos replicados, 10 valores plausíveis por domínio: `plausible_value_N_mathematics/reading/science`). Média = média dos 10 PVs ponderada por `final_student_weight`; nível 2 de matemática começa em 420,07. Brasil em matemática: 377 (2015), 384 (2018), 379 (2022), 377 (2025) — 2015–2022 batem com os relatórios da OCDE.
+- `world_iea_timss.student_achievement_grade_8` (e `_grade_4`) — TIMSS 2023, 44 países com `country_m49` (excluir nulos = entidades subnacionais), peso `totwgt`, PVs `bsmmat01..05` (matemática) e `bsssci01..05` (ciências). Brasil (m49 76): 378 em matemática, 42º de 44; 62% abaixo de 400; Singapura 605.

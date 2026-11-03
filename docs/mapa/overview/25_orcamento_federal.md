@@ -41,15 +41,26 @@ erDiagram
         string id_programa
         float valor_parcela_credito
     }
+    cgu_emendas_parlamentares_emendas {
+        int ano_emenda
+        string tipo_de_emenda
+        string nome_autor_emenda
+        string id_municipio
+        string nome_funcao
+        double valor_empenhado
+        double valor_pago
+        double valor_restos_a_pagar_pagos
+    }
     tesouro_despesa_ug ||--o{ cgu_emendas_parlamentares : "sigla_uf + ano"
     tesouro_despesa_ug ||--|| rf_arrecadacao_uf : "sigla_uf + ano"
     tesouro_despesa_ug ||--o{ bcb_sicor_operacao : "sigla_uf + ano"
+    cgu_emendas_parlamentares_emendas }o--o{ rf_arrecadacao_uf : "ano"
 ```
 
 
 ## Contexto e Síntese dos Dados
 
-Os dados do Tesouro em `br_stn_tesouro_orcamento.despesa_ug` com execução orçamentária por UG oferecem `id_acao`, `id_elemento_despesa`, `valor_empenhado`, `valor_liquidado`, `valor_pago`, `valor_restos_pagar_inscritos` — permitindo analisar eficiência da execução federal. Emendas parlamentares em `br_cgu_emendas_parlamentares.microdados` com `id_emenda`, `autor`, `sigla_uf`, `id_municipio`, `valor_emenda`, `modalidade`, `ano`, `funcao`, `subfuncao`, `programa` detalham a distribuição territorial do orçamento congressual. Arrecadação federal em `br_rf_arrecadacao.uf` com 44 variáveis (IRPF, IRPJ, COFINS, PIS/PASEP, CSLL, IPI, IOF, etc.) permite analisar estrutura tributária. Crédito rural em `br_bcb_sicor.operacao` com `valor_parcela_credito`, `id_programa`, `sigla_uf` detalha políticas agrícolas no orçamento.
+Os dados do Tesouro em `br_stn_tesouro_orcamento.despesa_ug` com execução orçamentária por UG oferecem `id_acao`, `id_elemento_despesa`, `valor_empenhado`, `valor_liquidado`, `valor_pago`, `valor_restos_pagar_inscritos` — permitindo analisar eficiência da execução federal. Emendas parlamentares em `br_cgu_emendas_parlamentares.microdados` com `id_emenda`, `autor`, `sigla_uf`, `id_municipio`, `valor_emenda`, `modalidade`, `ano`, `funcao`, `subfuncao`, `programa` detalham a distribuição territorial do orçamento congressual. Arrecadação federal em `br_rf_arrecadacao.uf` com 44 variáveis (IRPF, IRPJ, COFINS, PIS/PASEP, CSLL, IPI, IOF, etc.) permite analisar estrutura tributária. Crédito rural em `br_bcb_sicor.operacao` com `valor_parcela_credito`, `id_programa`, `sigla_uf` detalha políticas agrícolas no orçamento. A tabela `br_cgu_emendas_parlamentares.emendas` (Portal da Transparência, 2014–2026) é a mesma de `microdados` mas vai até 2026 — preferi-la; `tipo_de_emenda` separa individual com finalidade, transferência especial ("Pix"), bancada, comissão e relator.
 
 ## Revelações Importantes — Orçamento Federal
 
@@ -61,7 +72,7 @@ Os dados do Tesouro em `br_stn_tesouro_orcamento.despesa_ug` com execução orç
 | Valor total | R$ 152,7 bilhões |
 | Valor médio por emenda | R$ 5,98 milhões |
 
-**Conclusão:** R$ 152 bi em emendas — quase o dobro do Bolsa Família anual.
+**Conclusão:** R$ 152,7 bi empenhados em 2022-2025 (conferido em `emendas` e `microdados`) — quase um ano de Bolsa Família (R$ 163,5 bi pagos em 2024, `br_cgu_novo_bolsa_familia.pagamento`). Corrigido em 2026-11-03: antes dizia "quase o dobro".
 
 ### 2. Execução orçamentária: quanto vira despesa real?
 
@@ -88,7 +99,7 @@ Os dados do Tesouro em `br_stn_tesouro_orcamento.despesa_ug` com execução orç
 | Educação | R$ 0,21 bi |
 | Desporto | R$ 0,19 bi |
 
-**Conclusão:** Uma pessoa (relator) controla R$ 8,6 bi em emendas.
+**Conclusão:** R$ 8,6 bi é o relator em 2022 (último ano); 2020-2022 somam R$ 46,6 bi.
 
 ### 4. Concentração setorial das emendas
 
@@ -169,16 +180,30 @@ Os dados do Tesouro em `br_stn_tesouro_orcamento.despesa_ug` com execução orç
 
 **Conclusão:** R$ 40 bi em emendas sem identificação de destinatários — opacidade total.
 
+### 11. Depois do orçamento secreto, as emendas de comissão (empenhado, R$ bi)
+
+| Ano | Indiv. finalidade | Pix | Bancada | Comissão | Relator | Total |
+|---|---|---|---|---|---|---|
+| 2020 | 8,6 | 0,6 | 6,5 | 0,6 | 21,2 | 37,5 |
+| 2022 | 7,4 | 3,3 | 5,8 | 0,3 | 8,6 | 25,5 |
+| 2023 | 13,8 | 7,1 | 7,6 | 6,9 | — | 35,4 |
+| 2024 | 17,0 | 7,7 | 8,4 | 11,7 | — | 44,8 |
+| 2025 | 17,3 | 7,0 | 11,6 | 11,2 | — | 47,1 |
+| 2026 (até set) | 16,8 | 6,1 | 7,5 | 9,7 | — | 40,1 |
+
+Medido 2026-11-03.
+
 ## Cruzamentos Poderosos
 
 - **Execução × Emendas:** 50% do orçamento não vira despesa real
-- **Relator × Concentração:** 1 relator = R$ 8,6 bi
+- **Relator × Concentração:** R$ 46,6 bi em 2020-2022, R$ 8,6 bi só em 2022
 - **Tributação × Desigualdade:** empresas pagam 3-5x menos que trabalhadores
 - **Restos a pagar × Cancelamento:** R$ 12-15 bi cancelados/ano = dinheiro perdido
 - **Discricionária × Corte:** ciência = 65% executado, meio ambiente = 55%
 - **Juros × BF:** R$ 700 bi em juros vs. R$ 35 bi em BF
 - **Tributação × Regressividade:** 55% impostos indiretos
 - **Orçamento secreto × Opacidade:** R$ 40 bi sem identificação
+- **STF × Comissões:** sem relator desde 2023; comissão R$ 11,7 bi em 2024; total recorde R$ 47,1 bi em 2025
 
 ## Hipóteses Explicativas
 

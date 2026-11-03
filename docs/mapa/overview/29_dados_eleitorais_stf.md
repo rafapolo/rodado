@@ -167,3 +167,7 @@ A impunidade electoral sugere que eleitorado tolera corrupção. A concentraçã
 ## Implicações para Políticas Públicas
 
 Divulgação de processos de improbidade pode informar voto. Transparência ativa pode reduzir impunidade. Voto em listas partidárias pode reduzir concentração pessoal. Aumento de vagas no STF pode reduzir tempo de julgamento.plistим. Vinculação de elegibilidade a certidão de probidade pode filtrar candidatos.
+
+## Dados novos (revisão de 2026-11)
+
+- `br_tse_eleicoes.candidatos` + `br_tse_eleicoes.resultados_candidato` agora com a eleição de 2026 (carga de 2026-10-27). Join por `ano + sequencial = sequencial_candidato + sigla_uf + id_eleicao` (gotcha `sequencial_nao_unico`); filtrar `cargo` dos dois lados. Eleitos: `resultado LIKE 'eleito%'` (eleito por qp / por media). Deputado federal: 513 eleitos em 2018, 2022 e 2026; mulheres 77 → 91 → 109; pretos e pardos 123 → 135 → 135.

@@ -91,7 +91,7 @@ Os dados da RAIS em `br_me_rais.microdados_vinculos` com 51,1 GB permitem analis
 | Indústria | 2,0 mi | 1,8 mi | +200 mil |
 | Agricultura | 1,0 mi | 0,9 mi | +100 mil |
 
-**Conclusão:** Construção civil é o único setor com saldo negativo — informalidade e rotatividade.
+**Conclusão (corrigida 2026-11):** a tabela acima não tinha base. Novo CAGED 2025: todos os grandes setores positivos, construção +92.321 (ver revisão abaixo).
 
 ### 6. Informalidade: 40% da força de trabalho
 
@@ -133,7 +133,7 @@ Os dados da RAIS em `br_me_rais.microdados_vinculos` com 51,1 GB permitem analis
 - **Setor × Raça:** construção civil 67% negra, finanças 24% negra
 - **Gênero × Teto:** homens dominam 52% mais no topo
 - **CBO × Raça × Salário:** 23% de penalidade racial 控制ando ocupação
-- **CAGED × Setor:** construção civil é o único setor com saldo negativo
+- **CAGED × Setor:** em 2025 todos os grandes setores tiveram saldo positivo; 21 admissões por vaga líquida
 - **Informalidade × Direitos:** 38% sem CLT, sem férias, sem 13º
 - **Gênero × Gerência:** mulheres = 35% das gerências despite 45% dos vínculos
 - **Remuneração × CBO × Raça:** estrato mais alto = 25% negra; mais baixo = 55% negra
@@ -145,3 +145,8 @@ A disparidade entre banqueiros e professores pode ser explicada pela hipótese d
 ## Implicações para Políticas Públicas
 
 A regulação de salários no setor financeiro pode reduzir desigualdades. Programas de valorização docente (Plano Nacional de Educação) devem ser enforced. O monitoramento de vínculos Faixa 99 + menores de 18 anos pode identificar fraudes. Licença-maternidade estendida e creches públicas podem aumentar participação feminina. Políticas de diversidade em gerências devem ser mandatory.
+
+## Revisão 2026-11 — dados novos e correções
+
+- `br_me_caged.microdados_movimentacao` 2025 (12 meses; admissão = `saldo_movimentacao = 1`, ver gotcha do código 97): 26.321.557 admissões, 25.064.560 desligamentos, saldo 1.256.997 (2024: 1.676.514). Por grande setor (`cnae_2_secao`): Serviços H–U +750.251; Comércio G +233.799; Indústria B–E +144.490; Construção F +92.321; Agropecuária A +36.136 (soma confere).
+- `br_mte_listasuja.empregadores` (coleta 2026-10-30): 507 linhas (497 `cpf_cnpj` distintos), 3.969 `trabalhadores_envolvidos`, ações de 2020 a 2026; 341 CPF. Por CNAE: agro (01–03) 267 / 2.310 trab.; construção (41–43) 42 / 330; mineração (05–09) 34 / 289; doméstico (97) 61 / 71; outros 103 / 969. MG 106 / 1.076.

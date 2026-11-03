@@ -27,13 +27,21 @@ erDiagram
         float salario_mensal
         string grau_instrucao
     }
+    censo2022_raca_fecundidade_idade {
+        string id_municipio
+        string cor_raca
+        string categoria_principal
+        string id_variavel
+        int valor
+    }
     sinasc_microdados ||--o{ caged_microdados_movimentacao : "sigla_uf / id_municipio"
+    censo2022_raca_fecundidade_idade ||--o{ sinasc_microdados : "id_municipio"
 ```
 
 
 ## Contexto e Síntese dos Dados
 
-Os dados do SINASC em `br_ms_sinasc.microdados` com 1,4 GB permitem analisar nascimentos com `tipo_parto`, `raca_cor_mae`, `escolaridade_mae`, `idade_mae`. O CAGED detalha mercado por gênero.
+Os dados do SINASC em `br_ms_sinasc.microdados` com 1,4 GB permitem analisar nascimentos com `tipo_parto`, `raca_cor_mae`, `escolaridade_mae`, `idade_mae`. O CAGED detalha mercado por gênero. **Códigos de `raca_cor_mae` (dicionário oficial): 1 branca, 2 preta, 3 amarela, 4 parda, 5 indígena** — versões anteriores desta nota trocavam 1 e 4. Microdados de 2023 vão só até 05/06/2023: o último ano completo é 2022. Fecundidade do Censo 2022 em `br_ibge_censo2022_raca.fecundidade_idade` (`id_variavel` 13316 = filhos nascidos vivos, 13315 = mulheres de 12+; somar municípios de 7 dígitos).
 
 ## Revelações Importantes — Gênero e Família
 
@@ -57,26 +65,38 @@ O Brasil tem uma das maiores taxas de gravidez na adolescência do mundo.
 
 **Conclusão:** 143.583 crianças tiveram filhos em 2022 — quase 400 por dia.
 
-### 2. Mães adolescentes por raça
+### 2. Mães adolescentes por raça (2022, mãe < 18)
 
-| Raça da Mãe | Nascimentos |
-|-------------|-------------|
-| Raça 4 (branca) | 23.955 |
-| Raça 1 (parda) | 4.336 |
-| Raça 5 (indígena) | 3.811 |
+| Raça da mãe | Nascimentos | % dos nascimentos do grupo |
+|---|---|---|
+| Parda (4) | 98.082 | 6,9% |
+| Branca (1) | 28.087 | 3,3% |
+| Preta (2) | 8.537 | 4,7% |
+| Indígena (5) | 4.267 | **16,1%** |
+| Amarela (3) | 503 | 4,3% |
+| Total (com sem informação) | 143.583 | 5,6% de 2.560.273 |
 
-**Conclusão:** Mães brancas têm mais filhos adolescentes — contradizendo narrativas.
+**Conclusão:** pardas são 68% das mães adolescentes; a proporção é maior entre indígenas (1 em 6).
 
-### 3. Cesarianas por raça: pardas no topo
+### 3. Cesarianas por raça (2022, tipo_parto 1/2)
 
-| Raça | Taxa Cesariana |
-|------|----------------|
-| Raça 1 (parda) | **66,1%** |
-| Raça 3 | 58,6% |
-| Raça 4 (branca) | 54,9% |
-| Raça 5 (indígena) | **25,8%** |
+| Raça | Taxa cesariana |
+|---|---|
+| Branca (1) | **66,1%** |
+| Amarela (3) | 58,6% |
+| Parda (4) | 54,9% |
+| Preta (2) | 51,4% |
+| Indígena (5) | **25,8%** |
 
-**Conclusão:** Mães pardas têm a maior taxa de cesarianas do Brasil.
+### 3b. Censo 2022: filhos nascidos vivos por mulher
+
+| Cor/raça | 15–19 | 45–49 | 12+ |
+|---|---|---|---|
+| Branca | 0,09 | 1,78 | 1,56 |
+| Parda | 0,15 | 2,20 | 1,80 |
+| Preta | 0,15 | 2,13 | 1,84 |
+| Indígena | 0,35 | 3,61 | 2,44 |
+| Total | 0,13 | 2,01 | 1,70 |
 
 ### 4. PNADC: participação feminina no mercado de trabalho
 
@@ -125,7 +145,9 @@ O Brasil tem uma das maiores taxas de gravidez na adolescência do mundo.
 
 ## Cruzamentos Poderosos
 
-- **Gravidez × Raça:** pardas têm mais cesarianas mas menos adolescentes grávidas
+- **Gravidez × Raça:** 16,1% dos partos de indígenas e 6,9% dos de pardas são de mães < 18, contra 3,3% entre brancas
+- **Cesariana × Raça:** brancas 66,1%, indígenas 25,8%
+- **Fecundidade × Raça (Censo 2022):** 3,61 filhos por indígena de 45–49 vs 1,78 por branca
 - **Parto × Classe:** médicas fazem mais cesarianas em pacientes de classe média
 - **Trabalho × Gênero:** 20 pontos de diferença na participação — 55% vs. 75%
 - **Informalidade × Gênero:** mulheres = 42% informal vs. homens 35%

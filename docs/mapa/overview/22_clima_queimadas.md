@@ -35,15 +35,28 @@ erDiagram
         string tipo
         string condicao
     }
+    queimadas_microdados {
+        int ano
+        int mes
+        string data_hora
+        string bioma
+        string sigla_uf
+        string id_municipio
+        string satelite
+        float dias_sem_chuva
+        float risco_fogo
+        float potencia_radiativa_fogo
+    }
     prodes_municipio_bioma ||--o{ seeg_emissoes_municipio : "id_municipio + bioma + ano"
     prodes_municipio_bioma ||--o{ sicar_area_imovel : "id_municipio"
     seeg_emissoes_municipio ||--o{ sicar_area_imovel : "id_municipio"
+    queimadas_microdados }o--|| prodes_municipio_bioma : "id_municipio + bioma + ano"
 ```
 
 
 ## Contexto e Síntese dos Dados
 
-Os dados do PRODES em `br_inpe_prodes.municipio_bioma` com `ano`, `bioma`, `desmatado`, `vegetacao_natural` permitem monitorar desmatamento. Emissões em `br_seeg_emissoes.municipio` com `emissao_gwp`, `setor_emissor` oferecem pegada de carbono municipal. O SICAR em `br_sfb_sicar.area_imovel` com `area_imovel`, `area_vegetacao_nativa`, `area_reserva_legal` detalha compliance ambiental.
+Os dados do PRODES em `br_inpe_prodes.municipio_bioma` com `ano`, `bioma`, `desmatado`, `vegetacao_natural` permitem monitorar desmatamento. Emissões em `br_seeg_emissoes.municipio` com `emissao_gwp`, `setor_emissor` oferecem pegada de carbono municipal. O SICAR em `br_sfb_sicar.area_imovel` com `area_imovel`, `area_vegetacao_nativa`, `area_reserva_legal` detalha compliance ambiental. Os focos de queimada do INPE em `br_inpe_queimadas.microdados` (2003 até a véspera, `ano`, `bioma`, `id_municipio`, `satelite`) medem o fogo por satélite; para série comparável use só o satélite de referência (`satelite IS NULL` até 2022, `= 'AQUA_M-T'` de 2023 em diante — ver gotcha).
 
 ## Revelações Importantes — Clima e Meio Ambiente
 
@@ -140,6 +153,20 @@ Os dados do PRODES em `br_inpe_prodes.municipio_bioma` com `ano`, `bioma`, `desm
 
 **Conclusão:** Apenas energia caiu — agropecuária e resíduos continuam subindo.
 
+### 9. Focos de queimada: recorde de 2024 e queda de 2025 (INPE, satélite de referência)
+
+| Bioma | 2023 | 2024 | 2025 |
+|-------|------|------|------|
+| Amazônia | 98.639 | 140.346 | 43.131 |
+| Cerrado | 50.713 | 81.482 | 56.058 |
+| Mata Atlântica | 11.702 | 21.351 | 12.352 |
+| Caatinga | 21.550 | 20.238 | 23.424 |
+| Pantanal | 6.580 | 14.498 | 724 |
+| Pampa | 717 | 426 | 704 |
+| **Brasil** | **189.901** | **278.341** | **136.393** |
+
+2024 foi o maior total desde 2010 (319.383); a Amazônia de 2025 é a menor da série iniciada em 2003. 2026 até 02/11: 104.058. Soma por bioma = total nacional (conferido 2026-11-02).
+
 ## Cruzamentos Poderosos
 
 - **Desmatamento × Emissões:** mudança de uso da terra é o maior emissor brasileiro
@@ -150,6 +177,7 @@ Os dados do PRODES em `br_inpe_prodes.municipio_bioma` com `ano`, `bioma`, `desm
 - **Metas × Realidade:** -43% prometido, -35% realizado — não cumpre
 - **Agropecuária × Tendência:** único setor com tendência de aumento
 - **Resíduos × Aumento:** +20% em 22 anos — crescimento sem controle
+- **Queimadas × Ciclo:** 278 mil focos em 2024 (maior desde 2010), 136 mil em 2025 — Amazônia no menor nível da série
 
 ## Hipóteses Explicativas
 

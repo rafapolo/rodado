@@ -151,3 +151,7 @@ A disparidade pode ser explicada pela hipótese do apartheid educacional: o Bras
 ## Implicações para Políticas Públicas
 
 O financiamento per capita equalizado pode reduzir disparidades. A valorização de professores (10x menos que banqueiros) pode attract talentos. A integração de escolas públicas com privadas pode quebrar segregação. A conectividade universal nas escolas é pré-requisito para educação digital. Programas de tutoring para alunos negros em escolas públicas podem reduzir a desigualdade compounded.
+
+## Revisão 2026-11 — dados novos e correções
+
+- `br_cgu_pe_de_meia.pagamento` (sem nome/CPF: somar direto, sem a view; `mes_referencia` VARCHAR 'AAAAMM', 202403–202606): R$ 22,63 bi em 86,1 mi parcelas. Por ano: 2024 R$ 5,59 bi (matrícula 4.008.269 parcelas); 2025 R$ 10,63 bi (matrícula 4.139.713; conclusão R$ 3,40 bi, média R$ 977); 2026 até jun. R$ 6,42 bi (matrícula 3.979.302). Parcelas de matrícula ≈ alunos/ano (uma por aluno).

@@ -36,35 +36,55 @@ erDiagram
     }
     prodes_municipio_bioma ||--o{ seeg_emissoes_municipio : "id_municipio + bioma"
     prodes_municipio_bioma ||--o{ sicar_area_imovel : "id_municipio"
+    prodes_acumulado_incremento_municipio {
+        int ano
+        string id_municipio
+        string sigla_uf
+        string bioma
+        float area_km2
+        int poligonos
+    }
+    seeg_emissoes_uf {
+        int ano
+        string sigla_uf
+        string gas
+        string tipo
+        string setor
+        float emissao
+    }
+    queimadas_microdados {
+        int ano
+        int mes
+        string bioma
+        string sigla_uf
+        string id_municipio
+        string satelite
+    }
     seeg_emissoes_municipio ||--o{ sicar_area_imovel : "id_municipio"
+    prodes_acumulado_incremento_municipio ||--o{ queimadas_microdados : "id_municipio + bioma"
 ```
 
 
 ## Contexto e Síntese dos Dados
 
-O PRODES em `br_inpe_prodes.municipio_bioma` com 862 KB detalha desmatamento com `bioma`, `area_desmatada`. O SEEG em `br_seeg_emissoes` mede emissões de GEE. O CAR em `br_sfb_sicar.area_imovel` detalha propriedades rurais.
+O PRODES em `br_inpe_prodes.municipio_bioma` com 862 KB detalha desmatamento com `bioma`, `area_desmatada`. O SEEG em `br_seeg_emissoes` mede emissões de GEE. O CAR em `br_sfb_sicar.area_imovel` detalha propriedades rurais. Série nova do PRODES em `br_inpe_prodes_acumulado.incremento_municipio` (incremento anual por município e bioma desde 2017, até 2025; o Cerrado já tem 2026 em `desmatamento_poligono`). Para totais nacionais do SEEG use `br_seeg_emissoes.uf` com `gas='14'` (GWP-AR5) e `tipo='2'`: a tabela `municipio` não aloca parte de energia e indústria. Focos em `br_inpe_queimadas.microdados`: série comparável com `satelite IS NULL OR satelite='AQUA_M-T'`.
 
 ## Revelações Importantes — Meio Ambiente
 
-### 1. Desmatamento: quem destrói mais?
+### 1. Desmatamento mapeado pelo PRODES (km², `incremento_municipio`)
 
-| Bioma | % do Desmatamento |
-|-------|-------------------|
-| Amazônia | **80%+** |
-| Cerrado | ~15% |
-| Demais | <5% |
+| Bioma | 2021 | 2022 | 2023 | 2024 | 2025 |
+|---|---|---|---|---|---|
+| Amazônia | 12.175 | 12.467 | 7.802 | 6.069 | 5.108 |
+| Cerrado | 8.517 | 10.691 | **11.002** | 8.167 | **7.235** |
+| Caatinga | 2.088 | 2.593 | 3.172 | 3.444 | 2.285 |
+| Total (6 biomas) | 26.042 | 28.306 | 24.108 | 19.518 | 15.626 |
 
-**Conclusão:** A Amazônia é o bioma mais devastado do mundo.
+Desde 2023 o Cerrado desmata mais que a Amazônia (46% × 33% em 2025). Conferido pela soma de `desmatamento_poligono` (Amazônia 2025: 5.111; Cerrado: 7.234). A soma de polígonos difere da taxa oficial da Amazônia (corrigida por nuvens).
 
-### 2. Emissões: agropecuária é o problema
+### 2. Emissões brutas por setor, 2024 (SEEG, Mt CO₂e GWP-AR5)
 
-| Setor | % das Emissões |
-|-------|---------------|
-| Agropecuária | **70%+** |
-| Energia | ~20% |
-| Indústria | ~10% |
-
-**Conclusão:** O Brasil é **agroexportador de carbono**.
+MUT 906 (43%) · Agropecuária 626 (30%) · Energia 391 (19%) · Resíduos 96 (5%) · Processos industriais 66 (3%) · **Total 2.084**. A versão anterior desta nota dizia "agropecuária 70%+"; o número certo é MUT + agro = 73%.
 
 ### 3. Soja e carne: a cadeia da destruição
 
@@ -105,17 +125,13 @@ O PRODES em `br_inpe_prodes.municipio_bioma` com 862 KB detalha desmatamento com
 
 **Conclusão:** Queimadas no Cerrado superam Amazônia — e Pantanal queima em anos de seca extrema.
 
-### 7. SEEG: emissões por setor e trajetória
+### 7. SEEG: emissões brutas 2019–2024 (Mt CO₂e)
 
-| Setor | Emissões 2022 (Gt CO₂e) | Trajetória |
-|-------|------------------------|-----------|
-| Agropecuária | 600 | Estável |
-| Energia | 180 | Em queda |
-| Mudança uso terra | 450 | Oscilante |
-| Indústria | 120 | Estável |
-| Resíduos | 80 | Crescente |
+2019 2.440 · 2020 2.418 · 2021 2.614 · 2022 2.675 · 2023 2.515 · 2024 **2.084** (−17,1%; SEEG publicou −16,7%). MUT: 1.522 (2022) → 906 (2024); agropecuária estável em ~620.
 
-**Conclusão:** Agropecuária + mudança de uso da terra = 75% das emissões — Brasil é farming country.
+### 7b. Focos de queimada (satélite de referência)
+
+Total: 2020 222.797 · 2022 200.763 · **2024 278.341** · 2025 136.393. Amazônia 140.346 → 43.131 (−69%); em 2025 o Cerrado (56.058) passa a Amazônia. Pantanal 14.498 → 724.
 
 ### 8. Bacia Amazônica: hidrologia alterada
 
@@ -140,11 +156,12 @@ O PRODES em `br_inpe_prodes.municipio_bioma` com 862 KB detalha desmatamento com
 ## Cruzamentos Poderosos
 
 - **Soja × Desmatamento:** commodities financiam devastação
-- **Emissões × Agropecuária:** 70% das emissões vêm do campo
+- **Emissões × Agropecuária:** MUT 43% + agropecuária 30% = 73% das emissões brutas (2024)
+- **Amazônia × Cerrado:** Cerrado desmata mais desde 2023
 - **CAR × Compliance:** registro ≠ proteção real
 - **Queimadas × Sazonalidade:** pico em ago-set = comando-e-controle possível
 - **Desmatamento × Chuva:** áreas desmatadas = 20% menos chuva em SP
-- **Agropecuária × SEEG:** 75% das emissões = campo
+- **Desmatamento × Emissões:** MUT caiu 616 Mt entre 2022 e 2024, mais que a queda total (591 Mt)
 - **Quilombolas × Terra:** <5% com título = invasão permanente
 - **Bacia × Hidrologia:** 50+ usinas alteram vazão = efeito em cascata
 

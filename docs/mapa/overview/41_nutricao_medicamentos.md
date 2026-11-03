@@ -10,9 +10,9 @@ erDiagram
         string pmc_0_pct
     }
     br_ms_sisvan_microdados { int ano string id_municipio double peso double altura }
-    br_saude_farmaciapopular_medicamentos { string medicamento double valor }
+    br_saude_farmaciapopular_estabelecimentos { bigint codigo_cnes string numero_cnpj bigint codigo_uf bigint codigo_municipio string codigo_motivo_desabilitacao_estabelecimento date data_atualizacao }
     br_ibge_pof_dieta { string id_domicilio string sigla_uf }
-    br_anvisa_cmed_precos ||--o{ br_saude_farmaciapopular_medicamentos : "substancia"
+    br_saude_farmaciapopular_estabelecimentos }o--|| br_ibge_censo_2022_municipio : "codigo_municipio = left(id_municipio,6)"
 ```
 
 ## Contexto e Sintese dos Dados
@@ -45,6 +45,19 @@ erDiagram
 ### 3. Controle x preco
 
 **Conclusao:** a tarja preta (controle maximo) custa menos que a vermelha comum — o preco segue a patente, nao o risco sanitario.
+
+### 4. Farmacia Popular — rede credenciada (cadastro ate out/2026)
+
+| Regiao | Farmacias ativas | Por 100 mil hab. | Municipios sem nenhuma |
+|---|---|---|---|
+| Sul | 8.513 | 28,4 | 27,4% |
+| Centro-Oeste | 2.862 | 17,6 | 21,8% |
+| Sudeste | 11.864 | 14,0 | 16,1% |
+| Norte | 2.004 | 11,5 | 42,7% |
+| Nordeste | 5.424 | 9,9 | 37,3% |
+| Brasil | 30.667 | 15,1 | 28,0% (1.557) |
+
+`br_saude_farmaciapopular.estabelecimentos` tem 32.592 linhas (uma por CNES, sem repeticao); 1.925 com `codigo_motivo_desabilitacao_estabelecimento` preenchido ficaram fora. `codigo_municipio` tem 6 digitos (sem o verificador). A tabela de medicamentos do programa nao existe no espelho (o diagrama antigo a citava). Populacao: censo 2022 por UF sem as faixas sobrepostas 15-17 e 18-19.
 
 ## Cruzamentos Poderosos
 

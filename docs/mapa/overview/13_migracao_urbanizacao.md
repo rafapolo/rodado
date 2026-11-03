@@ -22,7 +22,14 @@ erDiagram
         float ibc
         float cobertura_pop_4g5g
     }
+    ibge_populacao_municipio {
+        int ano
+        string id_municipio
+        string sigla_uf
+        int populacao
+    }
     caged_microdados_movimentacao ||--o{ anatel_ibc_municipio : "id_municipio"
+    ibge_populacao_municipio ||--o{ caged_microdados_movimentacao : "id_municipio"
 ```
 
 
@@ -32,26 +39,9 @@ O CAGED em `br_me_caged.microdados_movimentacao` com 1,5 GB detalha `saldo_movim
 
 ## Revelações Importantes — Migração
 
-### 1. SP drena todo mundo
+### 1. Censo 2010 → 2022 por UF (`br_ibge_populacao.municipio`, ano 2010 e 2022)
 
-| UF | Saldo Migratório | % do Total |
-|----|------------------|-----------|
-| SP | +574.022 | **57%** |
-| RJ | +184.092 | 18% |
-| MG | +181.503 | 18% |
-| Demais | negativo | 7% |
-
-**Conclusão:** SP tem mais saldo que todos os outros estados juntos.
-
-### 2. Norte e Nordeste: perdedores líquidos
-
-| UF | Saldo |
-|----|-------|
-| MA | +38.824 |
-| PA | +31.813 |
-| Demais Norte/Nordeste | negativo |
-
-**Conclusão:** A maioria do Norte/Nordeste perde gente.
+Brasil 190.755.799 → 203.080.756 (+6,5%). RR +41,3% · SC +21,8% · MT +20,5% · GO +17,5% · SP +7,6% · BA +0,9% · RJ +0,4% · AL +0,2%. **Atenção**: as seções antigas "SP drena todo mundo" e "Norte e Nordeste perdedores" usavam o saldo de emprego do CAGED como se fosse saldo migratório — não é; foram retiradas.
 
 ### 3. Migração de retorno: ficção?
 
@@ -66,28 +56,22 @@ Os dados mostram fluxo contínuo para SP, sem sinais claros de retorno.
 
 **Conclusão:** Regiões pobres perdem os mais qualificados.
 
-### 5. Censo: perfil dos municípios que crescem vs. encolhem
+### 5. Municípios que perderam população 2010 → 2022, por porte em 2010
 
-| Tipo | Crescimento Pop. | Característica |
-|------|-----------------|----------------|
-| Capitais | +5% | Imigração +2%a |
-| RIDE/Metro | +15% | Concentração urbana |
-| Agrícolas | -20% | Exodo rural |
-| Mineradoras | +30% | Boom econômico |
-| Degradação | -30% | Desertificação |
+| Porte | Municípios | Perderam | % | Crescimento do grupo |
+|---|---|---|---|---|
+| < 5 mil | 1.301 | 697 | 53,6% | +0,4% |
+| 5–20 mil | 2.613 | 1.220 | 46,7% | +3,0% |
+| 20–100 mil | 1.368 | 433 | 31,7% | +7,9% |
+| 100–500 mil | 245 | 31 | 12,7% | +11,9% |
+| 500 mil+ | 38 | 12 | 31,6% | +2,5% |
+| Total | 5.565 | 2.393 | 43,0% | +6,4% |
 
-**Conclusão:** Cidades crescem ou encolhem de forma acelerada — dois brasis distintos.
+IBGE divulgou 2.399 municípios com perda; a diferença vem dos 5 municípios criados depois de 2010.
 
-### 6. Concentrações urbanas: metrópoles vs. interior
+### 6. Capitais 2010 → 2022 (capital_uf=1 em `br_bd_diretorios_brasil.municipio`)
 
-| Tipo | População (mi) | Crescimento |
-|------|---------------|------------|
-| SP + RJ + BH | 50 | +2%/ano |
-| Outras capitais | 30 | +1,5%/ano |
-| Interior | 90 | +0,5%/ano |
-| Rural | 28 | -1%/ano |
-
-**Conclusão:** 80% da população já é urbana — mas o interior encolhe e o rural se esvazia.
+Nove encolheram: Salvador −9,6%, Belém −6,5%, Natal −6,5%, Porto Alegre −5,4%, Recife −3,2%, BH −2,5%, Rio −1,7%, Vitória −1,5%, Fortaleza −1,0%. Maiores altas: Boa Vista +45,4%, Palmas +32,6%, Florianópolis +27,5%. As estimativas municipais de 2025 não foram usadas (método de projeção, não contagem).
 
 ### 7. Migração internacional: brain drain para afuera
 
@@ -113,14 +97,14 @@ Os dados mostram fluxo contínuo para SP, sem sinais claros de retorno.
 
 ## Cruzamentos Poderosos
 
-- **Migração × PIB:** SP concentra oportunidades
+- **Migração × Fronteira:** SC +21,8%, MT +20,5%, RR +41% vs SP +7,6% e RJ +0,4% (2010→2022)
 - **Seleção × Desenvolvimento:** pobres perdem talentos
 - **Gênero × Migração:** mulheres migram mais para serviços
-- **Metrópole × Interior:** SP+Rj+BH = 50 mi, interior encolhe -1%/ano
+- **Metrópole × Periferia:** nove capitais perderam população entre os Censos
 - **Rural × Exodo:** 28 mi no rural, população decreasing
 - **Internacional × Brain drain:** 3,4 milhões fora do país
 - **Perfil × Seleção:** migrante = mais jovem, mais educado, mais formal
-- **Boom × Degradação:** cidades mineradoras crescem 30%, agrícolas encolhem 20%
+- **Município pequeno × Esvaziamento:** 53,6% dos municípios < 5 mil hab. encolheram
 
 ## Hipóteses Explicativas
 

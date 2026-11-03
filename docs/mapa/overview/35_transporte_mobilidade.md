@@ -199,3 +199,8 @@ A ausência de transporte estruturado de qualidade em boa parte do país empurra
 ## Implicações para Políticas Públicas
 
 Expansão de TMA fora do eixo Rio-São Paulo pode reduzir dependência de motorização individual. Política tarifária diferenciada por renda pode aliviar o comprometimento de renda observado no Norte/Sul. Investimento em segurança viária focado em periferias de alta concentração negra pode reverter a tendência de duas décadas nas mortes por acidente. Preencher a lacuna de dados de transporte terrestre regulado (ANTT ainda bloqueado) permitiria monitorar rodovias e transporte intermunicipal, hoje um ponto cego neste tema.
+
+## Dados novos (revisão de 2026-11)
+
+- `br_senatran_frota.municipio_tipo` — frota registrada por município e `tipo_veiculo`, mensal desde 2013 (até 2026-08). É estoque: um mês por ano; há linha `tipo_veiculo='total'` (não somar com os tipos). Dez/2013 → ago/2026: total 81,6 → 132,8 mi; automóvel 45,4 → 65,7 mi; motocicleta+motoneta 21,4 → 38,1 mi. Confere com `br_senatran_estatisticas.uf_tipo` (jul/2026: 132.323.836 nas duas).
+- `br_prf_acidentes.pessoa` — uma linha por pessoa envolvida em acidente nas rodovias federais, com `tipo_veiculo`, `indicador_morto` ('1'/'0', texto), `estado_fisico`, `idade`, `sexo`. Mortos em motos: 1.478 de 5.274 (2018) → 2.012 de 6.043 (2025); total bate com `ocorrencia.quantidade_mortos`. Só malha federal (~16% dos óbitos de transporte do SIM).

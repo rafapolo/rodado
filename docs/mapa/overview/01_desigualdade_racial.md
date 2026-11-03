@@ -63,20 +63,24 @@ A RAIS tem teto de 99 SM para proteção de privacidade. **16.686 trabalhadores 
 
 | Raça | Óbitos Maternos |
 |------|-----------------|
-| Raça 1 (parda) | 16 |
-| Raça 4 (branca) | 12 |
-| Raça 2 (branca) | **1** |
+| Raça | Óbitos maternos (2022) | Nascidos vivos | Por 100 mil NV |
+|------|-----|-----|-----|
+| Preta | 188 | 183.180 | **102,6** |
+| Indígena | 20 | 26.554 | 75,3 |
+| Parda | 738 | 1.422.023 | 51,9 |
+| Branca | 397 | 848.500 | 46,8 |
 
-**Conclusão:** Mães pardas morrem 16x mais que brancas na hora do parto.
+**Conclusão (corrigida 2026-11):** a tabela antiga (16/12/1 óbitos) não tinha base. Mães pretas morrem 2,2x mais que brancas (causa básica O00–O95, O98–O99; SINASC por `raca_cor_mae`).
 
 ### 4. COVID-19 por raça (2020)
 
 | Raça | Óbitos | Idade Média |
 |------|---------|-------------|
-| Raça 1 (parda) | **103.525** | 71,3 anos |
-| Raça 4 (branca) | 81.572 | 67,7 anos |
+| Branca (código 1) | **103.525** | 71,3 anos |
+| Parda (código 4) | 81.572 | 67,7 anos |
+| Preta (código 2) | 18.604 | 67,5 anos |
 
-**Conclusão:** Pardos morreram mais, porém mais velhos — indicando subnotificação de pardos jovens.
+**Conclusão (corrigida 2026-11):** os rótulos estavam trocados (dicionário do SIM: 1=Branca, 2=Preta, 3=Amarela, 4=Parda, 5=Indígena). Brancos somam mais mortes, mas pretos e pardos morreram 3,6–3,8 anos mais jovens (2020).
 
 ### 5. RAIS: negros concentrados em ocupações de risco (CBO)
 
@@ -121,7 +125,7 @@ Analisando CBO idêntico e mesmo setor, negros ganham em média 23% menos que br
 ## Cruzamentos Poderosos
 
 - **Raça × Setor × Salário:** pardos concentram-se em setores de baixo prestígio
-- **Raça × Mortalidade:** morte materna é 16x mais frequente para pardas
+- **Raça × Mortalidade:** razão de morte materna de mães pretas (103/100 mil NV) é 2,2x a das brancas (47), 2022
 - **Faixa 99 × Menor de 18:** 16.686 vínculos fraudados ou impossíveis
 - **Raça × CBO:** trabalho doméstico (racializado) = 1,5 SM; finanças = 8,5 SM
 - **Raça × COVID:** pardos 27% mais mortes — exposição ocupacional e acesso a saúde
@@ -136,3 +140,11 @@ A disparidade pode ser explicada pela hipótese da discriminação statistics: e
 ## Implicações para Políticas Públicas
 
 O monitoramento de vínculos Faixa 99 + menores de 18 anos pode identificar fraudes. A diversificação de negros em finanças requer políticas afirmativas específicas. A redução de morte materna parda passa por obstetrizes negras. A valorização do trabalho doméstico (racializado) requer salário mínimo profissional. Políticas de diversidadeno setor privado devem ser mandatory e audited.
+
+## Revisão 2026-11 — dados novos e correções
+
+Novas tabelas usadas na página:
+
+- `br_ibge_censo2022_raca.instrucao` — `cor_raca`, `categoria_principal` (nível de instrução), `valor`; pessoas de 18+ por município (5.571 linhas por categoria × cor). Superior completo: branca 23,8%, parda 11,1%, preta 10,7%, indígena 7,1%, amarela 41,1% (Brasil 16,8% de 154,3 mi). Soma das 4 categorias bate com o Total (diferença de 24 pessoas em brancos).
+- `br_ipea_atlasviolencia.series` + `valores_nacional` — séries do Atlas da Violência; `serie_id` 53 (taxa negros), 158 (taxa não negros), 41/42 (contagens). Taxa negros 36,8 → 29,7 (2013→2022); não negros 15,5 → 10,8; razão 2,4 → 2,7.
+- SIM por raça e causa: 2023 negros × brancos — todas as causas 690.485 × 737.590; diabetes E10–E14 34.191 × 34.445; externas V01–Y98 93.268 × 57.492; homicídios X85–Y09 2024 30.726 × 8.380 (3,67x). Desde 2022 `raca_cor` vem decodificada ('parda'); até 2021, código ('4.0').

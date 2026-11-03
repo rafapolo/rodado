@@ -39,15 +39,35 @@ erDiagram
         float valor_remuneracao_media_sm
         string cbo_2002
     }
+    cgu_servidores_remuneracao {
+        int ano
+        int mes
+        string id_servidor
+        string cpf
+        string origem
+        double remuneracao_bruta_brl
+        double abate_teto_brl
+        double irrf_brl
+    }
+    cgu_servidores_cadastro_servidores {
+        int ano
+        int mes
+        string id_servidor
+        string descricao_cargo
+        string situacao_vinculo
+        string org_exercicio
+        string sigla_uf
+    }
     servidores_executivo_federal ||--o{ cnj_improbidade_microdados : "orgao"
     servidores_executivo_federal ||--o{ rais_microdados_vinculos : "natureza_juridica"
     stf_corte_aberta ||--o{ cnj_improbidade_microdados : "tipo_poder"
+    cgu_servidores_cadastro_servidores ||--o{ cgu_servidores_remuneracao : "id_servidor + ano + mes"
 ```
 
 
 ## Contexto e Síntese dos Dados
 
-Os dados de servidores federais em `br_cgu_servidores_executivo_federal.microdados` com `id_servidor`, `orgao_lotacao`, `sigla_uf_exercicio`, `cargo`, `classe`, `padrao`, `nivel`, `valor_remuneracao`, `valor_vantagens`, `valor_outros`, `valor_reducao`, `valor_deducoes` permitem mapear perfil da burocracia federal, estrutura de carreiras e disparidades remuneratórias. Decisões do STF em `br_stf_corte_aberta.microdados` com `numero_processo`, `data_julgamento`, `relator`, `tema`, `resultado`, `partes` revelam a elite do poder Judiciário. A RAIS em `br_me_rais.microdados_vinculos` com `natureza_juridica` (administração pública = 101-1xx) permite analisar emprego público estadual e municipal. Improbidade em `br_cnj_improbidade.microdados` com `tipo_poder`, `orgao` detalha controle sobre gestores.
+Os dados de servidores federais em `br_cgu_servidores_executivo_federal.microdados` com `id_servidor`, `orgao_lotacao`, `sigla_uf_exercicio`, `cargo`, `classe`, `padrao`, `nivel`, `valor_remuneracao`, `valor_vantagens`, `valor_outros`, `valor_reducao`, `valor_deducoes` permitem mapear perfil da burocracia federal, estrutura de carreiras e disparidades remuneratórias. Decisões do STF em `br_stf_corte_aberta.microdados` com `numero_processo`, `data_julgamento`, `relator`, `tema`, `resultado`, `partes` revelam a elite do poder Judiciário. A RAIS em `br_me_rais.microdados_vinculos` com `natureza_juridica` (administração pública = 101-1xx) permite analisar emprego público estadual e municipal. Improbidade em `br_cnj_improbidade.microdados` com `tipo_poder`, `orgao` detalha controle sobre gestores. Cadastro e remuneração mensais do Executivo federal estão em `br_cgu_servidores_executivo_federal` (`cadastro_servidores` e `remuneracao`, até fev/2026; ordenadas por `cpf` — filtrar a coluna crua; CPF mistura completo e mascarado).
 
 ## Revelações Importantes — Servidores Públicos
 
@@ -88,18 +108,24 @@ Os dados de servidores federais em `br_cgu_servidores_executivo_federal.microdad
 
 **Conclusão:** 4 atores controlam R$ 30 bi em emendas.
 
-### 4. SIAPE: remuneração de servidores federais por carreira
+### 4. Remuneração bruta mediana por cargo, civis ativos do Executivo federal (fev/2026)
 
-| Carreira | Remuneração Média (R$) | Vagas/ano |
-|---------|------------------------|----------|
-| Diplomatas | 25.000 | 50 |
-| Magistrados | 30.000+ | 200 |
-| Auditores | 22.000 | 300 |
-| Analistas | 12.000 | 2.000 |
-| Técnicos | 8.000 | 3.000 |
-| Professores | 5.500 | 5.000 |
+Fonte: `br_cgu_servidores_executivo_federal.cadastro_servidores` (origem SIAPE, `situacao_vinculo='ATIVO PERMANENTE'`) × `remuneracao` (origem 'Servidores SIAPE'), por `id_servidor`, `remuneracao_bruta_brl > 0`. Substitui a tabela antiga (valores redondos sem procedência; magistrados não estão no Executivo).
 
-**Conclusão:** Carreira de Estado paga 5x mais que professores — desigualdade interna no serviço público.
+| Cargo | Servidores | Mediana (R$) |
+|---|---|---|
+| Auditor-fiscal da Receita Federal | 6.014 | 41.261 |
+| Auditor-fiscal do Trabalho | 2.492 | 41.261 |
+| Procurador federal | 3.449 | 32.440 |
+| Professor do magistério superior | 79.309 | 19.759 |
+| Professor EBTT | 44.108 | 16.872 |
+| Assistente em administração | 28.654 | 7.094 |
+| Agente administrativo | 8.240 | 5.895 |
+| **Todos** | **402.389** | **13.615** (P10 5.830, P90 26.072) |
+
+Conferido pelo casamento alternativo cpf+nome: auditor RFB 41.261, magistério superior 19.759, agente adm. 6.022. Medido 2026-11-03.
+
+**Conclusão:** auditor da Receita = 7x agente administrativo (mediana) — desigualdade interna no serviço público.
 
 ### 5. STF: concentração de decisões por relator
 
@@ -149,7 +175,7 @@ Os dados de servidores federais em `br_cgu_servidores_executivo_federal.microdad
 - **Emendas × Região:** Sudeste domina em valor absoluto
 - **Relator × Pandemia:** aumento de 100x em 2020
 - **Concentração × OPINIÃO:** 4 pessoas controlam orçamento
-- **SIAPE × Desigualdade:** diplomata = 5x professor — serviço público também é estratificado
+- **SIAPE × Desigualdade:** mediana R$ 41.261 (auditor RFB) vs R$ 5.895 (agente administrativo), fev/2026
 - **STF × Concentração:** 3 ministros = 40% das decisões
 - **Emprego × Esfera:** municipal = 55% do emprego público
 - **Condenações × Prefeira:** 2.000+ condenations vs. <5 presidents

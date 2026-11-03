@@ -41,7 +41,9 @@ erDiagram
     }
     br_ibge_censo_2022_cadastro_enderecos ||--o{ br_me_cnpj_estabelecimentos : "id_municipio + cep"
     br_ibge_censo2022_religiao_populacao_religiao ||--o{ br_me_rais_microdados_vinculos : "id_localidade = id_municipio"
+    br_ibge_censo2022_religiao_instrucao { string id_municipio string religiao string categoria_principal int valor }
     br_ibge_censo2022_religiao_populacao_religiao ||--o{ br_ibge_censo2022_religiao_cor_raca : "id_municipio + religiao"
+    br_ibge_censo2022_religiao_populacao_religiao ||--o{ br_ibge_censo2022_religiao_instrucao : "id_municipio + religiao"
 ```
 
 ## Contexto e Síntese dos Dados
@@ -114,6 +116,19 @@ Duas famílias de fonte, cruzadas: **autodeclaração** (`br_ibge_censo2022_reli
 | Indígena | 42,73% | 32,23% | 10,95% | — | 0,64% |
 
 **Conclusão:** por UF o RS lidera em umbanda (3,19%) apesar de 21,2% de população negra, mas por pessoa pretos declaram 2,9x mais que pardos — falácia ecológica. Só 7,65% dos indígenas declaram tradições indígenas contra 75% de religiões cristãs.
+
+### 7. Religião × nível de instrução (25 anos ou mais, Censo 2022)
+
+| Religião | Pessoas 25+ | Superior completo | Sem instrução/fund. incompleto |
+|---|---|---|---|
+| Espírita | 2.773.155 | 48,0% | 11,3% |
+| Umbanda e Candomblé | 1.374.068 | 25,5% | 19,9% |
+| Sem religião | 10.980.276 | 20,4% | 30,1% |
+| Católica | 77.698.966 | 18,4% | 38,0% |
+| Evangélicas | 34.690.212 | 14,4% | 34,9% |
+| Brasil | 133.108.023 | 18,4% | 35,2% |
+
+Fonte: `br_ibge_censo2022_religiao.instrucao` (municipal, `categoria_principal` = nível; somar os municípios por religião, `religiao = 'Total'` é a linha de controle). Conferido: soma das 4 categorias = linha Total (diferença de arredondamento < 50); Brasil 18,4% bate com o publicado pelo IBGE.
 
 ## Cruzamentos Poderosos
 

@@ -71,9 +71,9 @@ O SIM em `br_ms_sim.microdados` com 1,4 GB oferece mortalidade por `causa_basica
 | Causa | Óbitos |
 |-------|--------|
 | COVID-19 (B342) | **424.461** |
-| Causas externas (R99) | 61.098 |
+| Causas externas (V01–Y98) | 149.322 |
 
-**Conclusão:** COVID matou **7x mais** que todas as causas externas combinadas em 2021.
+**Conclusão (corrigida 2026-11):** R99 é causa mal definida, não causa externa. COVID matou **2,8x** todas as causas externas em 2021.
 
 ### 4. Mortes por armas de fogo por idade (X954, 2021)
 
@@ -82,7 +82,7 @@ O SIM em `br_ms_sim.microdados` com 1,4 GB oferece mortalidade por `causa_basica
 | 15-29 anos | 9.240 |
 | Total todas idades | 11.536 |
 
-**Conclusão:** 80% das mortes por armas de fogo atingem jovens.
+**Conclusão (corrigida 2026-11):** em 2024, 52,6% dos homicídios por arma de fogo (X93–X95) tinham vítima de 15 a 29 anos (14.426 de 27.423).
 
 ### 5. SINAN: notificações de violência por tipo
 
@@ -104,7 +104,7 @@ O SIM em `br_ms_sim.microdados` com 1,4 GB oferece mortalidade por `causa_basica
 | Homem branco, 15-29 anos | 0,8 |
 | Geral | 1,2 |
 
-**Conclusão:** Homem negro tem **8x mais** chance de morrer por intervenção policial.
+**Conclusão (corrigida 2026-11):** a tabela acima não tinha fonte. Verificado: intervenção legal (Y35) 592 em 2013 → 2.644 em 2024 (Atlas e SIM batem); 79% das vítimas de 2024 são negras.
 
 ### 7. Criminalidade no RJ: ISP expõe padrão territorial
 
@@ -125,7 +125,7 @@ O SIM em `br_ms_sim.microdados` com 1,4 GB oferece mortalidade por `causa_basica
 | Sexual | 40.000+ |
 | Tortura | 10.000+ |
 
-**Conclusão:** 320.000 notificações/ano — maioria feminina, maioria dentro de casa.
+**Conclusão (corrigida 2026-11):** SINAN 2024 = 616.548 notificações (por `ano_sinan` e por `DT_NOTIFIC`, iguais); 71,0% mulheres, 67,7% na residência.
 
 ### 9. O sistema prisional cresceu 37% em 10 anos, mesmo com o homicídio caindo 26%
 
@@ -247,3 +247,11 @@ A violência por armas pode ser explicada pela teoria do easy access: o Brasil t
 ## Implicações para Políticas Públicas
 
 O desarmamento efetivo pode reduzir violência. O controle de armas no Mercosul pode reduzir fluxo. A prevenção de COVID em pobres requer políticas específicas. Delegacias 24h de atendimento à mulher devem ser expandidas. Policiamento comunitário em áreas de ausência pode reduzir letalidade. Políticas de desarmamento urbano: armas de fogo causam 26 mil mortes/ano. A política prisional precisa de foco territorial, não nacional uniforme — Alagoas, Pernambuco, Paraná e DF concentram a superlotação. Com ~25% da população carcerária presa sem condenação em todos os ciclos observados (2016-2025), agilizar julgamentos teria efeito direto sobre a superlotação sem exigir mais vagas. Dado que o nível de encarceramento não prevê queda de homicídio entre estados, políticas de segurança que miram só o volume de prisões devem ser avaliadas com ceticismo — o retorno parece depender mais de como se pune (agilidade, foco territorial) do que de quanto se prende.
+
+## Revisão 2026-11 — dados novos e correções
+
+- Homicídios por arma de fogo 2024 (SIM, X93–X95): 27.423 — parda 19.258, branca 5.216, preta 2.494; 52,6% de 15–29 anos. Homicídios X85–Y09 2024: 39.946; +Y35 (2.644) = 42.590 = "homicídios registrados" do Atlas (bate exato; idem 2022: 44.367 + 2.041 ≈ 46.409).
+- Taxa de homicídio por UF de residência 2024 (métrica `taxa_homicidio`): PE 36,1, AL 35,6, CE 34,1, BA 32,7 … DF 9,8, SC 7,5, SP 6,1; Brasil 18,6 (39.506 com residência identificada).
+- `br_ipea_atlasviolencia` (`series`, `valores_nacional`): registrados 57.396 (2013) → 42.590 (2024); taxa 28,8 → 20,0; ocultos 2023 3.755, estimados 49.502; intervenção legal (série 77) 592 → 2.644, taxa (114) 0,3 → 1,24.
+- `br_rj_isp_estatisticas_seguranca.evolucao_mensal_uf` (= soma de `evolucao_mensal_municipio`): letalidade violenta 7.699 (2007) → 3.892 (2025); morte por intervenção de agente do Estado 416 (2013), 1.814 (2019, 30,3% da letalidade), 800 (2025, 20,6%).
+- `br_ms_sinan_violencia.microdados_violencia` (caminho real; não há `microdados/`): `ano_sinan`, `CS_SEXO`, `LOCAL_OCOR`, `VIOL_*` ('1' = sim), `LES_AUTOP`, `ORIENT_SEX` (2 homo, 3 bi), `IDENT_GEN` (1 travesti, 2 mulher trans, 3 homem trans). 2024: física 290.228, autoprovocada 189.926, psicológica 112.302, sexual 83.163, negligência 74.768; trans/travesti 9.295; homo/bi 18.478. 2014: 198.113.
