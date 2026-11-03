@@ -229,7 +229,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_prf_infracoes` | 1 | 63.217.947 | 2026-10-25 |
 | `br_rf_arrecadacao` | 5 | 535.465 | 2026-07-07 |
 | `br_rf_cafir` | 2 | 179.992.711 | 2026-11-01 |
-| `br_rf_cno` | 9 | 1.961.124.235 | 2026-11-03 |
+| `br_rf_cno` | 9 | 39.403.764 | 2026-11-03 |
 | `br_rf_dirpf` | 2 | 35.356 | 2026-10-21 |
 | `br_rf_simples_estatisticas` | 2 | 4.287.160 | 2026-10-25 |
 | `br_rj_isp_estatisticas_seguranca` | 14 | 168.346 | 2026-10-31 |

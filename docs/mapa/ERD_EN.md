@@ -1279,14 +1279,14 @@ erDiagram
         mun_uf_cep imoveis_rurais "180M rows"
     }
     br_rf_cno {
-        cid areas "683.6M rows"
+        cid areas "4.5M rows"
         cid areas_historico "12.2M rows"
-        cnae cnaes "583M rows"
+        cnae cnaes "3.9M rows"
         cnae cnaes_historico "4M rows"
         no_key dicionario "40 rows"
-        mun_uf_cep_pais microdados "537.3M rows"
+        mun_uf_cep_pais microdados "3.3M rows"
         mun_uf_cep_pais microdados_historico "6.8M rows"
-        no_key vinculos "130M rows"
+        no_key vinculos "431.2k rows"
         no_key vinculos_historico "4.3M rows"
     }
     br_rf_dirpf {

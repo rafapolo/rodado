@@ -2,7 +2,7 @@
 
 > This is the engineering documentation for **rodado**. For the public-facing project — a sociological reading of Brazilian public data, in Portuguese — see [README.md](../../README.md) and [rafapolo.github.io/rodado](https://rafapolo.github.io/rodado).
 
-**1,734 tables · ~580 GB Parquet+zstd · DuckDB · LLM NL→SQL · Single-engineer end-to-end**
+**1,734 tables · ~545 GB Parquet+zstd · DuckDB · LLM NL→SQL · Single-engineer end-to-end**
 
 ---
 
@@ -190,7 +190,7 @@ flowchart TD
         Q["ssh beelink '~/bin/duckdb -readonly -json ...' — single-stmt<br/>No local DuckDB connection, no persistent server process"]
     end
     subgraph STORAGE["STORAGE LAYER"]
-        ST["Local disk on beelink<br/>Partitioned Parquet + zstd · 1,734 tables · ~580 GB<br/>DuckDB reads local files directly — no network, no import"]
+        ST["Local disk on beelink<br/>Partitioned Parquet + zstd · 1,734 tables · ~545 GB<br/>DuckDB reads local files directly — no network, no import"]
     end
 
     USERS --> AGENT --> SEMANTIC --> QUERY --> STORAGE

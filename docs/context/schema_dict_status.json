@@ -9,8 +9,8 @@
     },
     "counts_by_label": {
       "documentado_em_outro_lugar": 10733,
-      "nao_e_codigo": 32713,
-      "nao_verificado": 14907,
+      "nao_e_codigo": 32716,
+      "nao_verificado": 14904,
       "padrao_externo": 2168
     },
     "generated_by": "scripts/gera_schema_dict_status.py",
@@ -227771,23 +227771,23 @@
     },
     "br_rf_cno.microdados.caixa_postal": {
       "label": "nao_verificado",
-      "reason": "tabela grande (~537.316.586 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_rf_cno.microdados.cep": {
       "label": "nao_e_codigo",
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_rf_cno.microdados.complemento": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~537.316.586 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~886773 valores distintos (> 100) — não parece código"
     },
     "br_rf_cno.microdados.id_cno": {
       "label": "padrao_externo",
       "reason": "bridges.yaml concepts.id_cno -> br_rf_cno.cnos"
     },
     "br_rf_cno.microdados.id_cno_vinculado": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~537.316.586 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~389 valores distintos (> 100) — não parece código"
     },
     "br_rf_cno.microdados.id_municipio": {
       "label": "padrao_externo",
@@ -227814,7 +227814,7 @@
     },
     "br_rf_cno.microdados.nome_pais": {
       "label": "nao_verificado",
-      "reason": "tabela grande (~537.316.586 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_rf_cno.microdados.nome_responsavel": {
       "column_codes": true,
@@ -227831,11 +227831,11 @@
     },
     "br_rf_cno.microdados.tipo_logradouro": {
       "label": "nao_verificado",
-      "reason": "tabela grande (~537.316.586 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "reason": "candidato real: ~37 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_rf_cno.microdados.unidade_medida": {
       "label": "nao_verificado",
-      "reason": "tabela grande (~537.316.586 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_rf_cno.microdados_historico.bairro": {
       "label": "nao_e_codigo",
@@ -227918,8 +227918,8 @@
       "reason": "bridges.yaml concepts.id_cno -> br_rf_cno.cnos"
     },
     "br_rf_cno.vinculos.id_responsavel": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~129.951.372 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~55020 valores distintos (> 100) — não parece código"
     },
     "br_rf_cno.vinculos_historico.id_cno": {
       "label": "padrao_externo",

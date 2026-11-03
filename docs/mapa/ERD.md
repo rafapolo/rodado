@@ -1279,14 +1279,14 @@ erDiagram
         mun_uf_cep imoveis_rurais "180M linhas"
     }
     br_rf_cno {
-        cid areas "683.6M linhas"
+        cid areas "4.5M linhas"
         cid areas_historico "12.2M linhas"
-        cnae cnaes "583M linhas"
+        cnae cnaes "3.9M linhas"
         cnae cnaes_historico "4M linhas"
         sem_chave dicionario "40 linhas"
-        mun_uf_cep_pais microdados "537.3M linhas"
+        mun_uf_cep_pais microdados "3.3M linhas"
         mun_uf_cep_pais microdados_historico "6.8M linhas"
-        sem_chave vinculos "130M linhas"
+        sem_chave vinculos "431.2k linhas"
         sem_chave vinculos_historico "4.3M linhas"
     }
     br_rf_dirpf {
