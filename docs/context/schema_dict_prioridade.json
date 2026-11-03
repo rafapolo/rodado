@@ -3,23 +3,23 @@
   "generated_by": "scripts/prioriza_schema_dict_status.py",
   "fonte": "docs/context/schema_dict_status.json (label nao_verificado)",
   "sinais": {
-   "consultas_sql_lidas": 4873,
+   "consultas_sql_lidas": 4981,
    "harness_consultar": 2260,
-   "claude_run_sql_ou_bash_duckdb": 2613,
-   "describe_table_lidos": 1219,
+   "claude_run_sql_ou_bash_duckdb": 2721,
+   "describe_table_lidos": 1220,
    "docs_versionados_lidos": 157
   },
-  "nao_verificado_total": 14880,
-  "com_uso_observado_sql_ou_docs": 382,
-  "com_uso_em_sql": 295,
+  "nao_verificado_total": 14907,
+  "com_uso_observado_sql_ou_docs": 387,
+  "com_uso_em_sql": 298,
   "formula": "10*sql + 5*docs + 1*desc + 0.5*perg + 0.5*log10(linhas+1)",
   "top": 300
  },
  "ranking": [
   {
    "coluna": "br_cgu_novo_bolsa_familia.novo_bolsa_familia.ano_mes",
-   "score": 341.0,
-   "sql": 34,
+   "score": 351.0,
+   "sql": 35,
    "docs": 0,
    "desc": 1,
    "perg": 0,
@@ -58,12 +58,12 @@
   },
   {
    "coluna": "br_inpe_deter.avisos.CLASSNAME",
-   "score": 225.92,
+   "score": 225.93,
    "sql": 21,
    "docs": 1,
    "desc": 8,
    "perg": 0,
-   "linhas": 699077,
+   "linhas": 716331,
    "reason": "candidato real: ~9 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
@@ -157,6 +157,16 @@
    "reason": "tabela grande (~80.610.946 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
+   "coluna": "br_mgi_pncp.contratacao.json",
+   "score": 153.31,
+   "sql": 15,
+   "docs": 0,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 4250794,
+   "reason": "candidato real: ~0 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
    "coluna": "br_siop_orcamento.localizadores.Esfera",
    "score": 152.95,
    "sql": 14,
@@ -175,16 +185,6 @@
    "perg": 0,
    "linhas": 73809379,
    "reason": "tabela grande (~73.809.379 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_mgi_pncp.contratacao.json",
-   "score": 143.32,
-   "sql": 14,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 4362602,
-   "reason": "candidato real: ~0 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_me_cnpj.estabelecimentos.ddd_1",
@@ -298,22 +298,22 @@
   },
   {
    "coluna": "br_inpe_queimadas.microdados.bioma",
-   "score": 93.68,
+   "score": 93.69,
    "sql": 9,
    "docs": 0,
    "desc": 0,
    "perg": 0,
-   "linhas": 23086637,
+   "linhas": 23902398,
    "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_inpe_deter.avisos.bioma_arquivo",
-   "score": 90.92,
+   "score": 90.93,
    "sql": 8,
    "docs": 0,
    "desc": 8,
    "perg": 0,
-   "linhas": 699077,
+   "linhas": 716331,
    "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
@@ -517,6 +517,16 @@
    "reason": "consulta de cardinalidade falhou no beelink: \u001b[90m-- Loading resources from /home/polo/.duckdbrc\n\u001b[00mIO Error: No files found that match the pattern \"~/rodado/br_cgu_seguro_defeso/seguro_defeso/**/*.parquet\"\n\nLINE 1: ...ount_distinct(\"nome_favorecido\") AS \"nome_favorecido\" FROM read_parquet('~/rodado/br_cgu_seguro_defeso/seguro_defeso...\n                                                                      ^"
   },
   {
+   "coluna": "br_cgu_novo_bolsa_familia.pagamento.ano_mes",
+   "score": 64.47,
+   "sql": 6,
+   "docs": 0,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 858851845,
+   "reason": "tabela grande (~858.851.845 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
    "coluna": "br_pgfn_dividaativa.divida_trimestres.NOME_DEVEDOR",
    "score": 64.47,
    "sql": 6,
@@ -568,12 +578,12 @@
   },
   {
    "coluna": "br_inpe_deter.avisos.class_name",
-   "score": 60.92,
+   "score": 60.93,
    "sql": 5,
    "docs": 0,
    "desc": 8,
    "perg": 0,
-   "linhas": 699077,
+   "linhas": 716331,
    "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
@@ -605,6 +615,16 @@
    "perg": 0,
    "linhas": 6159969884,
    "reason": "tabela grande (~6.159.969.884 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
+   "coluna": "br_cgu_pe_de_meia.pagamento.mes_referencia",
+   "score": 53.97,
+   "sql": 5,
+   "docs": 0,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 86125204,
+   "reason": "tabela grande (~86.125.204 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_me_cnpj.socios_historico.n_retratos",
@@ -727,6 +747,16 @@
    "reason": "tabela grande (~197.930.433 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
+   "coluna": "br_cgu_novo_bolsa_familia.pagamento.mes_referencia",
+   "score": 44.47,
+   "sql": 4,
+   "docs": 0,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 858851845,
+   "reason": "tabela grande (~858.851.845 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+  },
+  {
    "coluna": "br_bndes_operacoes_contratadas.operacoes_indiretas_automaticas.situacao_operacao",
    "score": 44.19,
    "sql": 4,
@@ -738,12 +768,12 @@
   },
   {
    "coluna": "br_inpe_queimadas.microdados.satelite",
-   "score": 43.68,
+   "score": 43.69,
    "sql": 4,
    "docs": 0,
    "desc": 0,
    "perg": 0,
-   "linhas": 23086637,
+   "linhas": 23902398,
    "reason": "candidato real: ~20 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
@@ -857,6 +887,16 @@
    "reason": "candidato real: ~30 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
+   "coluna": "br_inep_ideb.uf.ensino",
+   "score": 41.76,
+   "sql": 4,
+   "docs": 0,
+   "desc": 0,
+   "perg": 0,
+   "linhas": 3267,
+   "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
    "coluna": "br_rodado_eleicoes.secoes_local_mudou_2026_2t.local_1t",
    "score": 41.5,
    "sql": 4,
@@ -947,27 +987,7 @@
    "reason": "tabela grande (~53.566.733 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
-   "coluna": "br_cgu_novo_bolsa_familia.pagamento.ano_mes",
-   "score": 34.47,
-   "sql": 3,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 858851845,
-   "reason": "tabela grande (~858.851.845 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
    "coluna": "br_cgu_novo_bolsa_familia.pagamento.mes_competencia",
-   "score": 34.47,
-   "sql": 3,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 858851845,
-   "reason": "tabela grande (~858.851.845 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_cgu_novo_bolsa_familia.pagamento.mes_referencia",
    "score": 34.47,
    "sql": 3,
    "docs": 0,
@@ -988,23 +1008,23 @@
   },
   {
    "coluna": "br_pncp.contratos.anoContrato",
-   "score": 34.36,
+   "score": 34.37,
    "sql": 2,
    "docs": 0,
    "desc": 11,
    "perg": 0,
-   "linhas": 5229507,
-   "reason": "candidato real: ~52 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+   "linhas": 5370608,
+   "reason": "candidato real: ~59 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_anatel_telefonia_movel.microdados.ddd_chip",
-   "score": 34.12,
+   "score": 34.13,
    "sql": 3,
    "docs": 0,
    "desc": 0,
    "perg": 0,
-   "linhas": 176986031,
-   "reason": "tabela grande (~176.986.031 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+   "linhas": 179231907,
+   "reason": "tabela grande (~179.231.907 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_bcb_estban.dicionario.nome_coluna",
@@ -1025,16 +1045,6 @@
    "perg": 0,
    "linhas": 111102875,
    "reason": "tabela grande (~111.102.875 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
-  },
-  {
-   "coluna": "br_cgu_pe_de_meia.pagamento.mes_referencia",
-   "score": 33.97,
-   "sql": 3,
-   "docs": 0,
-   "desc": 0,
-   "perg": 0,
-   "linhas": 86125204,
-   "reason": "tabela grande (~86.125.204 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
   },
   {
    "coluna": "br_ons_avaliacao_operacao.geracao_usina.tipo_usina",
@@ -1713,17 +1723,17 @@
    "docs": 2,
    "desc": 0,
    "perg": 0,
-   "linhas": 20101202,
+   "linhas": 20223786,
    "reason": "candidato real: ~23 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_mgi_pncp.contratacao.modalidadeNome",
-   "score": 23.32,
+   "score": 23.31,
    "sql": 2,
    "docs": 0,
    "desc": 0,
    "perg": 0,
-   "linhas": 4362602,
+   "linhas": 4250794,
    "reason": "candidato real: ~16 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
@@ -1953,7 +1963,7 @@
    "docs": 0,
    "desc": 0,
    "perg": 0,
-   "linhas": 25045,
+   "linhas": 25046,
    "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
@@ -2438,12 +2448,12 @@
   },
   {
    "coluna": "br_pncp.contratos.tipoPessoa",
-   "score": 19.36,
+   "score": 19.37,
    "sql": 0,
    "docs": 1,
    "desc": 11,
    "perg": 0,
-   "linhas": 5229507,
+   "linhas": 5370608,
    "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
@@ -2533,458 +2543,458 @@
    "docs": 1,
    "desc": 0,
    "perg": 0,
-   "linhas": 37698,
+   "linhas": 38630,
    "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.alarme_dor_abdominal",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
-   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+   "linhas": 33429379,
+   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.alarme_hematocrito",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
-   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+   "linhas": 33429379,
+   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.alarme_hepatomegalia",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
-   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+   "linhas": 33429379,
+   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.alarme_hipotensao",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
-   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+   "linhas": 33429379,
+   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.alarme_letargia",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
-   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+   "linhas": 33429379,
+   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.alarme_liquidos",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
-   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+   "linhas": 33429379,
+   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.alarme_plaqueta",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
-   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+   "linhas": 33429379,
+   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.alarme_sangramento",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
-   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+   "linhas": 33429379,
+   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.alarme_vomito",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
-   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+   "linhas": 33429379,
+   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.amostra_outra",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
+   "linhas": 33429379,
    "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.amostra_pcr",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
+   "linhas": 33429379,
    "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.apresenta_febre",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
+   "linhas": 33429379,
    "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.apresenta_gengivorragia",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
+   "linhas": 33429379,
    "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.apresentacao_clinica",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
-   "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+   "linhas": 33429379,
+   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.caso_autoctone",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
-   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+   "linhas": 33429379,
+   "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.caso_fhd",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
+   "linhas": 33429379,
    "reason": "candidato real: ~9 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.doenca_trabalho",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
-   "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+   "linhas": 33429379,
+   "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.grave_ast_alt",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
-   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+   "linhas": 33429379,
+   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.grave_consciencia",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
-   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+   "linhas": 33429379,
+   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.grave_convulsao",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
-   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+   "linhas": 33429379,
+   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.grave_enchimento_capilar",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
-   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+   "linhas": 33429379,
+   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.grave_extremidade_fria",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
-   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+   "linhas": 33429379,
+   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.grave_hematemese",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
-   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+   "linhas": 33429379,
+   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.grave_hipotensao",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
-   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+   "linhas": 33429379,
+   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.grave_insuficiencia_respiratoria",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
-   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+   "linhas": 33429379,
+   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.grave_melena",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
-   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+   "linhas": 33429379,
+   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.grave_metrorragia",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
-   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+   "linhas": 33429379,
+   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.grave_miocardite",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
-   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+   "linhas": 33429379,
+   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.grave_orgaos",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
-   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+   "linhas": 33429379,
+   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.grave_pulso",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
-   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+   "linhas": 33429379,
+   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.grave_sangramento",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
-   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+   "linhas": 33429379,
+   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.grave_taquicardia",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
-   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+   "linhas": 33429379,
+   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.id_agravo",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
+   "linhas": 33429379,
    "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.manifestacao_hemorragica",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
-   "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "br_ms_sinan.microdados_dengue.prova_laco",
-   "score": 16.77,
-   "sql": 0,
-   "docs": 0,
-   "desc": 13,
-   "perg": 0,
-   "linhas": 34743268,
+   "linhas": 33429379,
    "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
-   "coluna": "br_ms_sinan.microdados_dengue.resultado_amostra_outra",
-   "score": 16.77,
+   "coluna": "br_ms_sinan.microdados_dengue.prova_laco",
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
+   "linhas": 33429379,
+   "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+  },
+  {
+   "coluna": "br_ms_sinan.microdados_dengue.resultado_amostra_outra",
+   "score": 16.76,
+   "sql": 0,
+   "docs": 0,
+   "desc": 13,
+   "perg": 0,
+   "linhas": 33429379,
    "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.sigla_uf_infeccao",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
+   "linhas": 33429379,
    "reason": "candidato real: ~28 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.sigla_uf_internacao",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
+   "linhas": 33429379,
    "reason": "candidato real: ~28 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.sigla_uf_notificacao",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
+   "linhas": 33429379,
    "reason": "candidato real: ~28 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.sigla_uf_residencia",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
+   "linhas": 33429379,
    "reason": "candidato real: ~28 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.sorologia1_igg",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
+   "linhas": 33429379,
    "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.sorologia1_igm",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
+   "linhas": 33429379,
    "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.sorologia2_igg",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
+   "linhas": 33429379,
    "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.sorologia2_igm",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
+   "linhas": 33429379,
    "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ms_sinan.microdados_dengue.tipo_sistema",
-   "score": 16.77,
+   "score": 16.76,
    "sql": 0,
    "docs": 0,
    "desc": 13,
    "perg": 0,
-   "linhas": 34743268,
-   "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+   "linhas": 33429379,
+   "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
   },
   {
    "coluna": "br_ibge_censo_2022.alfabetizacao_grupo_idade_sexo_raca.grupo_idade",
@@ -3005,16 +3015,6 @@
    "perg": 0,
    "linhas": 7598548,
    "reason": "candidato real: ~23 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
-  },
-  {
-   "coluna": "world_wb_mides.pagamento.fonte",
-   "score": 15.31,
-   "sql": 0,
-   "docs": 2,
-   "desc": 0,
-   "perg": 2,
-   "linhas": 426351549,
-   "reason": "column_codes.yaml (pendente): Código de fonte de recurso e de órgão do orçamento LOCAL de cada município (fonte: '1', '00', '100', '99'…; orgao: '54900'…). Não há tabela nacional: o mesmo código significa coisas diferentes em entes diferentes. Não agrupar entre municípios."
   }
  ]
 }

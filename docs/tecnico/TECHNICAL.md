@@ -2,7 +2,7 @@
 
 > This is the engineering documentation for **rodado**. For the public-facing project — a sociological reading of Brazilian public data, in Portuguese — see [README.md](../../README.md) and [rafapolo.github.io/rodado](https://rafapolo.github.io/rodado).
 
-**1,728 tables · ~580 GB Parquet+zstd · DuckDB · LLM NL→SQL · Single-engineer end-to-end**
+**1,734 tables · ~580 GB Parquet+zstd · DuckDB · LLM NL→SQL · Single-engineer end-to-end**
 
 ---
 
@@ -11,7 +11,7 @@
 | Competency | How this project demonstrates it |
 |-----------|----------------------------------|
 | End-to-end delivery, prototype → production | Ingestion pipeline + semantic layer + 18-tool MCP interface, in daily use |
-| Data engineering & modeling | 1,728 tables normalized to a typed ontology with join-key graph |
+| Data engineering & modeling | 1,734 tables normalized to a typed ontology with join-key graph |
 | Ontology design | 8 business object types with explicit relationships and canonical keys |
 | Application development | `mcp/mcp_server.py` — 17 MCP tools over stdio (see `mcp/MCP.md`); an earlier browser SQL shell + HTTP API is retired |
 | AI/ML enablement | Table discovery by dataset catalog in the prompt (88% dataset hit rate in the local harness) |
@@ -149,7 +149,7 @@ flowchart TD
     CO -->|1:N| EA
 ```
 
-Full map in [`docs/mapa/ERD.md`](../mapa/ERD.md) — pt-BR, English in [`docs/mapa/ERD_EN.md`](../mapa/ERD_EN.md) — one mermaid diagram per domain covering all 1,728 tables; join recipes in [`docs/context/join_keys.md`](../context/join_keys.md).
+Full map in [`docs/mapa/ERD.md`](../mapa/ERD.md) — pt-BR, English in [`docs/mapa/ERD_EN.md`](../mapa/ERD_EN.md) — one mermaid diagram per domain covering all 1,734 tables; join recipes in [`docs/context/join_keys.md`](../context/join_keys.md).
 
 **Canonical join keys**:
 
@@ -190,7 +190,7 @@ flowchart TD
         Q["ssh beelink '~/bin/duckdb -readonly -json ...' — single-stmt<br/>No local DuckDB connection, no persistent server process"]
     end
     subgraph STORAGE["STORAGE LAYER"]
-        ST["Local disk on beelink<br/>Partitioned Parquet + zstd · 1,728 tables · ~580 GB<br/>DuckDB reads local files directly — no network, no import"]
+        ST["Local disk on beelink<br/>Partitioned Parquet + zstd · 1,734 tables · ~580 GB<br/>DuckDB reads local files directly — no network, no import"]
     end
 
     USERS --> AGENT --> SEMANTIC --> QUERY --> STORAGE
@@ -276,7 +276,7 @@ Not a Foundry deployment. rodado is an open-source system built around the same 
 | Foundry layer | Foundry primitive | rodado counterpart | Notes |
 |---|---|---|---|
 | Data integration | Data Connection sources and syncs | Base dos Dados mirror sync + independent scrapers (309 tables), resumable and checkpointed | Each scraped source records its URL and scrape date |
-| | Datasets (versioned Parquet) | One Parquet+zstd directory per table on beelink, 1,728 tables | No transactions or dataset versions; the COLD backup is add-only, not a history |
+| | Datasets (versioned Parquet) | One Parquet+zstd directory per table on beelink, 1,734 tables | No transactions or dataset versions; the COLD backup is add-only, not a history |
 | | Data Lineage, dataset metadata | `_rodado_metadata` catalog: rows, files, bytes, `source_url`, `scrape_date`, `status`, provenance | Rebuilt after every sync by `build_metadata_catalog.py` |
 | | Pipeline schedules | The ordered regeneration chain (`gera_schemas.py` → `sync_mcp_schema.py` → … → `build_atlas.py`) | Run by hand. Foundry would schedule it and track staleness |
 | Ontology | Object types + properties | Hub concepts in `bridges.yaml` (61): municipality, state, company, person, station, country… | Objects stay virtual: rows in tables, not an indexed object store |
