@@ -746,6 +746,14 @@ inventário local de `tasks/espelho_subutilizado.md`, Parte I.
 4. Os empregadores da lista tomaram crédito rural com recurso público, algum depois da inclusão, e quantos têm também embargo ambiental do IBAMA ou sanção da CGU? *(n=4: mte_listasuja, bcb_sicor\*, ibama_embargos_novo\*, cgu_sancoes\*)*
 5. Empregadores pessoa física da lista foram candidatos, eleitos, filiados ou doadores de campanha mais que os demais produtores rurais? *(n=4: mte_listasuja, tse_eleicoes\*, tse_filiacao_partidaria\*, bcb_sicor\*)*
 
+## 92 · Benefícios e Gasto Social que Nenhuma Pergunta Usava (MPS, SIOPS, Pé-de-Meia, Seguro-Defeso)
+
+1. Em quantos municípios o valor anual dos benefícios previdenciários mantidos supera o FPM, e a relação muda com o porte do município? *(n=3: mps_beneficios\*, tesouro_transferencias\*, ibge_populacao)*
+2. Quantos municípios aplicam menos que os 15% mínimos da receita própria em saúde, e o gasto por habitante cai com o porte? *(n=1: ms_siops\*)*
+3. Quanto o Pé-de-Meia já pagou, por tipo de incentivo e ano, e quantos estudantes distintos recebem? *(n=1: cgu_pe_de_meia\*)*
+4. O seguro-defeso pago por município acompanha a cobertura do Bolsa Família ou só a pesca artesanal? *(n=3: cgu_seguro_defeso\*, cgu_novo_bolsa_familia, ibge_populacao)*
+5. O Pé-de-Meia por município acompanha a evasão ou a matrícula do ensino médio no Censo Escolar? *(n=3: cgu_pe_de_meia\*, inep_censo_escolar, ibge_populacao)*
+
 ---
 
 # Perguntas multi-dataset simultâneos
