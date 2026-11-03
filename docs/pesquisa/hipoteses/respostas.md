@@ -352,6 +352,7 @@ o item 4 é respondível por **tempo de serviço** em vez de idade.
 - **T36-1 ✅ 🟠** Templos/100k × PIB pc: **r = −0,11 (n=5.570) — praticamente nenhuma relação**; Piauí (mais pobre) lidera densidade de templos, SC (rica) é 2ª. *(A16)*
 - **T36-2 ✅ 🟡** Fiéis por religião (Censo 2022) × templos no CNPJ (CNAE 9491-0/00): **r = +0,47 com % evangélicos e −0,58 com % católicos (n=1.687 municípios)** — o registro empresarial de templos captura o evangelicalismo; católico tem paróquia, não empresa.
 - **T36-3 ✅ 🟠 (2026-09-05) — o templo do município pobre não tem carteira assinada.** Vínculos formais em organizações religiosas (RAIS 2022, CNAE 9491): **112.366 vínculos em 4.449 municípios**. Contra a densidade física de templos do CNEFE (T65-2): **r = −0,09 — nenhuma relação**. Contra a renda: **+0,30 com PIB per capita, +0,31 com formalização, −0,41 com cobertura do Bolsa Família**. Ou seja: o **prédio** religioso é mais denso onde há pobreza (T65-2, r_parcial +0,22) e o **emprego** religioso formal é mais denso onde há riqueza. A rede de fé do município pobre existe fisicamente e é invisível na RAIS — é trabalho voluntário, informal ou pastor sem vínculo. A série 2010→2022 de composição religiosa segue indisponível (Censo 2010 por religião não está no espelho).
+  **Atualização 2026-11-03: a série 2010→2022 saiu.** O Censo 2010 por religião está no espelho em `br_ibge_censo_demografico.microdados_pessoa_2010.v6121` (sem entrada no `dicionario`; a faixa 200–499 = evangélicas foi conferida contra o total oficial: 42.276.320 pelos pesos, contra 42,28 mi publicados pelo IBGE em 2010). Pessoas de 10 anos ou mais: evangélicos de **21,6% para 26,9%** (2010 → 2022), católicos (código 110) de 64,8% para 56,7%; 2022 bate com o total do Brasil de `br_ibge_censo2022_religiao` (47.418.024 de 176.600.150 = 26,9%). Maiores saltos evangélicos por UF: AC +11,8 p.p. (32,6% → 44,4%), AP +9,2, PA +9,0, AM +8,8, MA +8,3; menores: ES, DF +3,1, RS +3,4, RJ +3,5. Vínculos ativos em 31/12 na CNAE 9491 (RAIS) **caíram 19,2%** no período (139.102 em 2010 → 112.366 em 2022, 27 UFs) enquanto a fatia evangélica subiu: entre as UFs, variação dos vínculos × variação da fatia evangélica **r = +0,05 (Spearman +0,10, n = 27)** — nulo. AM (−52,8%) e BA (−49,9%) tiveram quedas de vínculo com saltos evangélicos de +8,8 e +6,3 p.p.; RN (+53,2%) e SE (+35,1%) subiram. Ressalva: 2010 é amostra do Censo (peso_amostral), n=27 UFs, vínculos de CNAE 9491 de 2010 e 2022 podem diferir na classificação da subclasse.
 - **T36-4 ◐ 🟡** Coberto por T36-2: onde há muitos evangélicos há mais templos-CNPJ (+0,47); perfil socioeconômico fino fica para cruzamento com instrução do próprio censo religioso.
 - **T36-5 ✅ ⚪ (proxy)** Templos × rendimento médio RAIS: +0,06 — idem, nada.
 
@@ -1290,6 +1291,8 @@ numa sessão, não a reconstrução de coorte/causal completa).
 
 ## Bloqueios mapeados (dado ausente, corrompido ou sem chave — não é falta de query)
 
+> **Reconferido em 2026-11-03 contra o espelho atual (283 datasets).** Já não valem como bloqueio: T05-2 (o Senado tem `br_senado_dados_abertos.processo`; falta classificar a ementa), T06-1/T06-4 (SISDEPEN respondido em 2026-09-05, ver as respostas), T08-5/T25-5 (respondidos sem o SIOP; `br_cgu_orcamento_publico` cobre o realizado), T17-3 (respondido sem o TRASE) e T36-3 (Censo 2010 por religião está em `microdados_pessoa_2010.v6121`, respondido em 2026-11-03). Seguem valendo: T09-5/T12-4 (nenhuma tabela do Censo 2022 espelhado traz o sexo do responsável; `setor_censitario_renda_responsavel` só tem rendimento), T33-2…5 (só há PISA, TIMSS/PIRLS e OCDE finanças públicas, nada de CVLI ou PIB comparável), T44-4/T45-5.
+
 Catálogo dos itens `⏳` cujo bloqueio já está identificado como estrutural, não como
 análise pendente. Cada um precisaria de trabalho de dado (re-scraping, campo novo,
 chave nova) antes de qualquer query fazer sentido — tentar responder sem isso
@@ -1318,9 +1321,9 @@ produziria um número que parece verificado mas não é.
   existem no espelho via `world_oecd_pisa`; não há CVLI, PIB ou outro indicador
   internacional comparável além do PISA. Precisaria trazer uma fonte nova (ex.:
   World Bank, UNODC) para os comparativos pedidos.
-- **T36-3** — precisaria de Censo 2010 por religião, que não está no espelho (só
+- **T36-3** — **[destravado em 2026-11-03: ver a resposta de T36-3; o Censo 2010 por religião está em `microdados_pessoa_2010.v6121`]** ~~precisaria de Censo 2010 por religião, que não está no espelho (só
   Censo 2022 tem os microdados de religião, `br_ibge_censo2022_religiao`); sem o
-  ponto de 2010 não dá pra medir mudança de composição religiosa 2010→2022.
+  ponto de 2010 não dá pra medir mudança de composição religiosa 2010→2022.~~
 - **T44-3** — `br_rf_cafir.imoveis_rurais`: 61-64% de todas as linhas, em todo
   snapshot mensal, têm `id_imovel_receita_federal = NULL` (169,9M linhas, só
   3,89M ids distintos). Precisa re-scraping ou entender a causa na fonte.
