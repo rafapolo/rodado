@@ -4,7 +4,7 @@ This file provides guidance to coding agents (Claude Code, Pi, and others) when 
 
 ## Project Overview
 
-**baseldosdados** mirrors public Brazilian government tables from [Base dos Dados](https://basedosdados.org) — stored as Parquet+zstd in `~/rodado` on beelink — and extends that mirror with independently-scraped sources that fill the remaining gaps (sanctions lists, SICAF, SINAN microdata, consumer complaints and more — see `tasks/done/datasets_to_scrap_done.md` for the provenance of every scraped source and `tasks/plans/datasets_to_scrap.md` for the queue). 1.726 tabelas · 284 datasets · 130 fontes · 580 GB (35,65 bilhões de linhas) as of 2026-11-01. DuckDB queries the data on-demand without local imports.
+**baseldosdados** mirrors public Brazilian government tables from [Base dos Dados](https://basedosdados.org) — stored as Parquet+zstd in `~/rodado` on beelink — and extends that mirror with independently-scraped sources that fill the remaining gaps (sanctions lists, SICAF, SINAN microdata, consumer complaints and more — see `tasks/done/datasets_to_scrap_done.md` for the provenance of every scraped source and `tasks/plans/datasets_to_scrap.md` for the queue). 1.728 tabelas · 285 datasets · 130 fontes · 580 GB (35,65 bilhões de linhas) as of 2026-11-01. DuckDB queries the data on-demand without local imports.
 
 ## Commands
 
@@ -38,7 +38,7 @@ O harness TS de apuração (pi + Gemma 4 local) vive no branch `harness-gemma`, 
 
 ## Onde fica cada coisa
 
-- `docs/mapa/ERD.md` / `ERD_EN.md` — diagrama mermaid de join por domínio, as 1.726 tabelas (pt-BR / inglês, mesma fonte).
+- `docs/mapa/ERD.md` / `ERD_EN.md` — diagrama mermaid de join por domínio, as 1.728 tabelas (pt-BR / inglês, mesma fonte).
 - `docs/context/` — a camada semântica do espelho: joins (`bridges.yaml`), métricas nomeadas (`metrics.yaml`), hierarquias (`hierarchies.yaml`), armadilhas por dataset (`gotchas/<dataset>.yml`), decode de código (`column_codes.yaml`, `dicionario_coverage.json`). **Leia `docs/context/README.md` antes de escrever join ou métrica à mão** — `resolve_join()`/`get_metric()`/`explain_column()` existem porque isso já saiu errado em produção (ver as 3 regras lá).
 - `docs/pesquisa/hipoteses/` — perguntas e respostas de pesquisa sobre o espelho, incluindo o espaço de trincas de família e o grafo de identificadores CNPJ/CPF. Ver `docs/pesquisa/hipoteses/README.md`.
 - `_rodado_metadata/catalog.parquet` — o catálogo de tabelas (linhas, status, procedência). Colunas e armadilhas conhecidas: `docs/mapa/metadata_catalog.md`.
