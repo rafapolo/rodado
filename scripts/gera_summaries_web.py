@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Gera os cartões das tabelas que o painel do atlas mostra ao abrir uma tabela.
 
-`pages/assets/summaries.json` é o índice (data e nº de tabelas por dataset); os cartões ficam em
-`pages/assets/summaries/<dataset>.json`, buscados só quando o dataset abre.
+Os cartões ficam em `pages/assets/summaries/<dataset>.json`, buscados só quando o dataset abre.
+O índice `pages/assets/summaries.json` deixou de ser gerado: ninguém o lia desde que a lista
+"Todos os datasets" saiu da página do MCP (`471f1c1`).
 
     python3 scripts/gera_summaries_web.py
 
@@ -26,7 +27,6 @@ from gera_schema_graph import sem_bdd
 
 RAIZ = Path(__file__).resolve().parent.parent
 PASTA = RAIZ / "docs" / "context" / "summaries"
-SAIDA = RAIZ / "pages" / "assets" / "summaries.json"
 POR_DATASET = RAIZ / "pages" / "assets" / "summaries"
 CAMPOS = ("grao", "chave", "tempo", "territorio", "medidas", "filtros_tipicos", "use_para", "nao_use_para")
 MESES = {"pt": "jan fev mar abr mai jun jul ago set out nov dez".split(),
@@ -137,18 +137,15 @@ def carregar():
 
 def main():
     dados = carregar()
-    # um JSON por dataset (o inteiro passa de 1,5 MB); o índice só diz a data e quantas tabelas
+    # um JSON por dataset (o inteiro passa de 1,5 MB)
     POR_DATASET.mkdir(exist_ok=True)
     for antigo in POR_DATASET.glob("*.json"):
         if antigo.stem not in dados:
             antigo.unlink()
     for ds, d in dados.items():
         (POR_DATASET / f"{ds}.json").write_text(json.dumps(sem_bdd(d), ensure_ascii=False, separators=(",", ":")))
-    indice = {ds: {"d": d["d"], "n": len(d["t"])} for ds, d in dados.items()}
-    SAIDA.write_text(json.dumps(sem_bdd(indice), ensure_ascii=False, separators=(",", ":")))
     tamanhos = [f.stat().st_size for f in POR_DATASET.glob("*.json")]
-    print(f"{SAIDA.relative_to(RAIZ)}: {len(dados)} datasets, {SAIDA.stat().st_size / 1e3:.0f} kB; "
-          f"{POR_DATASET.relative_to(RAIZ)}/: {sum(tamanhos) / 1e6:.2f} MB, maior {max(tamanhos) / 1e3:.0f} kB")
+    print(f"{len(dados)} datasets; {POR_DATASET.relative_to(RAIZ)}/: {sum(tamanhos) / 1e6:.2f} MB, maior {max(tamanhos) / 1e3:.0f} kB")
 
 
 if __name__ == "__main__":
