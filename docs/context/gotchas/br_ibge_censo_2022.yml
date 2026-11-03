@@ -49,15 +49,19 @@ gotchas:
     verificado: "458.772 setores em cada uma das quatro, todos presentes em setor_censitario; v03196 (pessoas quilombolas) soma 1.317.569 por setor, igual à soma de agregados_municipio — medido 2026-10-11"
 
   - id: agregados_municipio_difere_do_sidra_exato
-    resumo: "Os totais de `agregados_municipio` (e a soma dos setores) não batem exatamente com as tabelas municipais do SIDRA: em Nova Friburgo, domicílios com lixo coletado por serviço de limpeza são 63.837 nos agregados e 63.875 no SIDRA 6892 (caçamba 12.164 contra 12.288; queimado 207 contra 278; total 76.295 contra 76.597)."
+    resumo: "Os totais de `agregados_municipio` ficam abaixo dos do SIDRA nas contagens municipais: em 4 municípios e 6 categorias de destino do lixo (24 comparações), os agregados deram menos em todas (de -0,01% a -100%). Nova Friburgo, lixo coletado por serviço de limpeza: 63.837 contra 63.875 no SIDRA 6892; queimado 207 contra 278; enterrado 0 contra 5."
     detalhe: >
-      A diferença é de 0,1% a 30% por categoria pequena, e vai nos dois sentidos. Para a leitura oficial de um
-      município (tabelas 4712, 4714, 6326, 6803 a 6806, 6892, 9515, 9543 e 9756) o SIDRA é a referência; os agregados
-      servem para o recorte fino (setor, bairro, distrito) e para cruzar com outras colunas do mesmo conjunto.
-      A causa não foi medida. Essas 11 tabelas do SIDRA não estão no espelho (das 32 tabelas do Base dos Dados checadas,
-      21 estão em `sidra_recortes`, no nível Brasil e UF). Para baixar o nível de município falta o id das
-      classificações, que vem dos metadados do IBGE, e esses respondem só por IP brasileiro.
+      Medido em Nova Friburgo (3303401), São Paulo (3550308), Porto Velho (1100015) e Porto Alegre (4314902),
+      colunas v00397 a v00402 contra a tabela 6892 do SIDRA (ano 2022, nível município). Exemplos: São Paulo,
+      coletado por serviço 3.947.893 contra 3.948.357 e queimado 493 contra 840; Porto Alegre, coletado por serviço
+      454.160 contra 454.207. A diferença é pequena nas categorias grandes e proporcionalmente enorme nas pequenas
+      (enterrado: 9 contra 81 em São Paulo). A causa não foi medida; quatro municípios não provam a regra para os 5.570.
+      Para a leitura oficial de um município (tabelas 4712, 4714, 6326, 6803 a 6806, 6892, 9515, 9543 e 9756) o SIDRA é
+      a referência; os agregados servem para o recorte fino (setor, bairro, distrito) e para cruzar com outras colunas do
+      mesmo conjunto, sabendo que categorias raras saem subestimadas. Essas 11 tabelas do SIDRA não estão no espelho (das
+      32 tabelas do Base dos Dados checadas, 21 estão em `sidra_recortes`, no nível Brasil e UF). Para baixar o nível de
+      município falta o id das classificações, que vem dos metadados do IBGE, e esses respondem só por IP brasileiro.
     tabelas: [agregados_municipio, agregados_distrito, agregados_bairro]
-    colunas: [v00397, v00398, v00399]
+    colunas: [v00397, v00398, v00399, v00400, v00401, v00402]
     severidade: aviso
-    verificado: "2026-11-03: Nova Friburgo (3303401), SIDRA 6892 n6 ano 2022 contra agregados_municipio v00397 a v00402"
+    verificado: "2026-11-03: SIDRA 6892 n6 ano 2022 contra agregados_municipio em 3303401, 3550308, 1100015 e 4314902"
