@@ -317,6 +317,13 @@ canvas.drag { cursor: grabbing; }
   margin: 0; font-family: "IBM Plex Mono", monospace;
   font-size: 14px; font-weight: 600; line-height: 1.35; word-break: break-word;
 }
+.insp-head > div { min-width: 0; }
+.insp-head .desc {
+  margin: 5px 0 0; font-size: 12px; line-height: 1.45; color: var(--ink-2);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer;
+}
+.insp-head .desc.full { white-space: normal; cursor: auto; }
+.insp-head .desc:empty { display: none; }
 .close { background: none; border: 0; cursor: pointer; font-size: 17px; line-height: 1; color: var(--ink-3); padding: 2px 3px; margin-left: auto; }
 .close:hover { color: var(--ink); }
 .insp-body { flex: 1; overflow-y: auto; padding: 14px 16px 28px; }
@@ -490,6 +497,7 @@ canvas.drag { cursor: grabbing; }
       <div>
         <span class="kind" id="i-kind"></span>
         <h2 id="i-name"></h2>
+        <p class="desc" id="i-desc"></p>
       </div>
       <button class="close" id="i-close" aria-label="Fechar">✕</button>
     </div>
@@ -1268,6 +1276,14 @@ const insp = document.getElementById("insp");
 const iKind = document.getElementById("i-kind");
 const iName = document.getElementById("i-name");
 const iBody = document.getElementById("i-body");
+const iDesc = document.getElementById("i-desc");
+iDesc.addEventListener("click", () => iDesc.classList.add("full"));
+/* uma linha de descrição sob o nome; o clique mostra o texto inteiro */
+function setDesc(t) {
+  iDesc.textContent = t || "";
+  iDesc.title = t || "";
+  iDesc.classList.remove("full");
+}
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
 function select(h) {
@@ -1397,6 +1413,7 @@ function renderTheme(th) {
   const ts = themeTables[th];
   iKind.textContent = "Tema";
   iName.textContent = G.domains[th] || th;
+  setDesc("");
   const ks = [...themeKeys[th]].sort((a, b) => KS[a].t - KS[b].t);
   const dss = [...new Set(ts.map(ti => TB[ti].ds))].sort((a, b) => DS[b].r - DS[a].r);
   const orphans = ts.filter(ti => !TB[ti].k.length).length;
@@ -1420,6 +1437,7 @@ function renderKey(ki) {
   const K = KS[ki];
   iKind.textContent = "Chave de junção · " + (G.cats[K.cat] || K.cat);
   iName.textContent = K.n;
+  setDesc("");
   const tabs = keyTables[ki].slice().sort((a, b) => TB[b].r - TB[a].r);
   let h = `<div class="facts">
       ${fact(fmt(K.t), "tabelas")}
@@ -1441,6 +1459,7 @@ function renderDs(d) {
   const D = DS[d];
   iKind.textContent = "Dataset · " + (THEME_SHORT[D.dom] || D.dom);
   iName.textContent = D.n;
+  setDesc(D.de);
   const ks = [...dsKeys[d]].sort((a, b) => KS[a].t - KS[b].t);
   iBody.innerHTML = `<div class="facts">
       ${fact(fmt(D.t), "tabelas")}
@@ -1449,7 +1468,6 @@ function renderDs(d) {
       ${fact(bytes(dsTables[d].reduce((s, i) => s + TB[i].b, 0)), "em disco")}
     </div>
     ${fonteDs(D)}
-    ${D.de ? `<p class="note">${esc(D.de)}</p>` : ""}
     <div id="i-det"></div>
     <p class="sec">Chaves deste dataset</p>
     <div class="chips">${ks.length ? ks.map(ki =>
@@ -1472,6 +1490,7 @@ function renderTbl(ti) {
   const T = TB[ti], keys = new Set(T.k.map(x => KS[x].n.toLowerCase()));
   iKind.textContent = (THEME_SHORT[DS[T.ds].dom] || "Tabela") + " · " + DS[T.ds].n;
   iName.textContent = T.n;
+  setDesc(DS[T.ds].de);
   const kbyname = {};
   T.k.forEach(x => kbyname[KS[x].n.toLowerCase()] = x);
   let h = `<div class="facts">
