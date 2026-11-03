@@ -83,15 +83,34 @@ const manifests: [string, { slug: string; url?: string }[]][] = [
   ["analises", JSON.parse(readFileSync(join(PAGES, "analises/results/manifest.json"), "utf8"))],
   ["plataformas", JSON.parse(readFileSync(join(PAGES, "plataformas/plataformas.json"), "utf8"))],
 ];
+const foraDosHosts: [string, string][] = [];
 for (const [secao, itens] of manifests) {
   for (const it of itens) {
     const url = norm(it.url ?? `https://rodado.xyz/${secao}/${it.slug}/`);
     const host = HOSTS.find((h) => url.startsWith(h + "/"));
-    if (!host) continue; // github.io e afins: fora do nosso sitemap
+    if (!host) {
+      // github.io e afins: fora do nosso sitemap, mas o cartão ao compartilhar vale igual
+      foraDosHosts.push([`${secao}/${it.slug}`, url]);
+      continue;
+    }
     // no ar o host do dataviz pode vir escrito em unicode (ミ.xyz)
     if (!noSitemap.get(host)?.has(url)) falha(`${secao}/${it.slug}: ${url} fora do sitemap de ${host}`);
   }
 }
+
+// plataformas hospedadas fora (rafapolo.github.io/viso etc.): só o cartão og
+await emLotes(foraDosHosts, 8, async ([nome, url]) => {
+  const r = await get(url);
+  if (r.status !== 200) return falha(`${nome}: ${url} HTTP ${r.status}`);
+  const faltam = ["og:title", "og:image", "twitter:card"].filter((p) => !meta(r.body, p));
+  if (faltam.length) return falha(`${nome}: ${url} sem ${faltam.join(", ")}`);
+  const img = meta(r.body, "og:image")!;
+  const ri = await fetch(img, { method: "GET", headers: UA, signal: AbortSignal.timeout(30_000) })
+    .then((x) => x.status).catch(() => 0);
+  imagensVistas.set(img, ri);
+  if (ri !== 200) falha(`og:image ${img}: HTTP ${ri}`);
+});
+console.log(`${foraDosHosts.length} plataformas fora dos dois hosts conferidas`);
 
 console.log(`${imagensVistas.size} imagens og conferidas`);
 if (falhas.length) {
