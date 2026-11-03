@@ -330,6 +330,17 @@ Três lições gerais:
   `~/s3sync_work/rejeitados.txt`. Mudança de propósito (tabela que encolheu de verdade)
   se libera por glob em `~/scripts/valida_parquet_libera.txt`; leitura quebrada nunca.
 
+- **Órfãos do S3 e a trava do `s3_sync_check.py`.** A remoção só roda com `REMOVE_OK`: listagem
+  local acima de 55.000 arquivos, nada estável a subir, no máximo 25.000 órfãos e 130 GiB. O piso
+  de 55.000 envelheceu duas vezes (ordenação de SIA/ANS e compactação do TSE deixaram o local em
+  52.703) e a remoção deixou de rodar; em 2026-11-02 e 2026-11-03 ela foi feita à mão, com o mesmo
+  comando do script (`mc rm --force --stdin < ~/s3sync_work/orfaos.txt`), depois de conferir que
+  cada órfão tem cópia byte a byte no COLD (o rsync do COLD não usa `--delete`, então o COLD guarda
+  as versões velhas: SIA com 7.159 arquivos contra 495 no beelink, `despesas_candidato` com 258
+  contra 67; leitura direta do COLD por glob conta linhas em dobro). Antes de apagar, salvar
+  chave, tamanho e etag (`mc ls -r --json`) em `~/.backups/` e conferir que o que a substituiu
+  está no beelink, no S3 e no COLD com os mesmos nomes e tamanhos.
+
 Antes de consertar um parquet no lugar, guardar o original fora de `~/rodado` (o COLD
 recebe a versão nova na rodada seguinte e não guarda a anterior).
 
