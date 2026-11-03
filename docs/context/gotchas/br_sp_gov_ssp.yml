@@ -1,0 +1,48 @@
+dataset: br_sp_gov_ssp
+gotchas:
+  - id: endereco_e_coordenada_ocultos_em_18_por_cento
+    resumo: "Em 990.012 de 5.607.730 linhas (17,7%) o logradouro é 'VEDAÇÃO DA DIVULGAÇÃO DOS DADOS RELATIVOS' e a coordenada é 0,0. Mapa ou densidade por bairro/rua sem filtrar isso empilha esses casos num ponto fora do estado."
+    detalhe: >
+      A SSP oculta o endereço de naturezas sensíveis (entre elas 380 mil de lesão corporal dolosa,
+      52,5 mil de estupro de vulnerável, mas também 375 mil de furto). Latitude = 0 aparece em 1.030.894 linhas;
+      destas, 990.012 têm o logradouro ocultado e 40.882 não têm geocodificação. Mais 488.071 têm latitude nula.
+      Das 4.088.765 com coordenada diferente de zero, 25.760 caem fora do retângulo de SP
+      (latitude -25,4 a -19,7; longitude -53,2 a -44,1): há lixo como -2,36e16 e latitude positiva.
+      Para mapa, filtre o retângulo; para contagem por município use `id_municipio`, que não é afetado.
+    tabelas: [spdados_criminais]
+    colunas: [logradouro, latitude, longitude, bairro]
+    severidade: silencioso
+    verificado: "2026-11-03: 5.607.730 linhas de 2022 a 2026-09; contagens acima calculadas no parquet local antes da publicação"
+  - id: num_bo_nao_identifica_o_boletim
+    resumo: "`num_bo` sozinho repete entre delegacias e anos (3.732.915 valores para 5.607.730 linhas). O boletim é (num_bo, ano_bo, nome_delegacia): 5.557.631 combinações, uma linha por rubrica, então contar linhas não é contar boletins."
+    detalhe: >
+      A tabela tem uma linha por rubrica do boletim (a diferença para as combinações são ~50 mil
+      boletins com mais de uma rubrica) e 38 linhas idênticas na origem, mantidas. Para contar
+      ocorrências use count(DISTINCT num_bo, ano_bo, nome_delegacia); para contar crimes por tipo
+      use a linha (rubrica / natureza_apurada).
+    tabelas: [spdados_criminais]
+    colunas: [num_bo, ano_bo, nome_delegacia, rubrica, natureza_apurada]
+    severidade: aviso
+    verificado: "2026-11-03: 5.557.631 combinações distintas; 38 linhas duplicadas na tabela inteira"
+  - id: ano_estatistica_nao_e_ano_do_fato
+    resumo: "O arquivo anual é o do ano em que o boletim entrou na estatística (`ano_estatistica`, mês do registro). Fato antigo registrado agora cai no arquivo novo: `data_ocorrencia_bo` vai a 2013 e 9.447 linhas são anteriores a 2020."
+    detalhe: >
+      Para série por data do fato use `data_ocorrencia_bo`, sabendo que os meses recentes estão
+      incompletos (registro tardio) e que 2026 só vai até 2026-09. O ano corrente é regravado inteiro
+      pela SSP todo mês, e o parquet do ano troca inteiro na recoleta. Datas digitadas errado na
+      origem (11 linhas de 2022, ex. '1202/04/06') ficam nulas com o texto em `data_ocorrencia_bo_texto`;
+      em 2022, 262 `data_registro` e 12 `data_ocorrencia_bo` vinham como número de série do Excel e foram convertidos.
+    tabelas: [spdados_criminais]
+    colunas: [ano_estatistica, mes_estatistica, data_ocorrencia_bo, data_registro]
+    severidade: aviso
+    verificado: "2026-11-03: 2026 tem 9 meses (jan a set); data_registro de 2013-10-07 a 2026-09-30"
+  - id: colunas_que_mudam_por_ano
+    resumo: "O cabeçalho da SSP mudou em 2023 e em 2025/2026: aqui tudo foi renomeado para os nomes novos (CIDADE -> nome_municipio, DATA_COMUNICACAO_BO -> data_registro, CD_IBGE -> id_municipio). `descr_tipolocal` só existe de 2025 em diante; antes é nulo."
+    detalhe: >
+      Filtrar por tipo de local só vale para 2025+. `id_municipio` (código IBGE de 7 dígitos, texto)
+      está em 100% das linhas; `nome_municipio` é o município da delegacia de registro e
+      `nome_municipio_circunscricao` o do fato.
+    tabelas: [spdados_criminais]
+    colunas: [descr_tipolocal, nome_municipio, nome_municipio_circunscricao, id_municipio]
+    severidade: aviso
+    verificado: "2026-11-03: cabeçalhos comparados nos 5 xlsx; descr_tipolocal nula em 3.631.700 linhas (2022 a 2024 inteiros: 3.631.698)"
