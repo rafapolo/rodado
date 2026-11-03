@@ -1,0 +1,43 @@
+name: Confere sitemap e cartões OG
+
+# Toda segunda às 09:00 (Brasília), roda scripts/checa_seo.ts contra
+# rodado.xyz e ミ.xyz no ar: sitemap, robots, cartão OG de cada URL e as
+# imagens dos cartões. Se algo falhar, avisa no Telegram (bot do linkme).
+# A rotina manual equivalente: tasks/routine/seo_sitemaps.md (local).
+on:
+  schedule:
+    - cron: "0 12 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  checa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - name: Confere
+        id: checa
+        run: |
+          set -o pipefail
+          bun scripts/checa_seo.ts | tee saida.txt
+      - name: Avisa no Telegram
+        if: failure() && steps.checa.outcome == 'failure'
+        env:
+          TELEGRAM_BOT: ${{ secrets.TELEGRAM_BOT }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          [ -z "$TELEGRAM_BOT" ] && { echo "::warning::sem TELEGRAM_BOT"; exit 0; }
+          falhas=$(grep '✗' saida.txt | head -15 | sed -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g')
+          texto=$(printf '<b>checa_seo: %s falhas</b>\n%s\n\n<a href="%s">ver o run</a>' \
+            "$(grep -c '✗' saida.txt)" "$falhas" "$RUN_URL")
+          curl -fsS -o /dev/null "https://api.telegram.org/bot${TELEGRAM_BOT}/sendMessage" \
+            --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
+            --data-urlencode "text=${texto}" \
+            --data-urlencode "parse_mode=HTML" \
+            --data-urlencode "disable_web_page_preview=true"
