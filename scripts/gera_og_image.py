@@ -46,6 +46,12 @@ VARIANTS = {
         "head": ["Brazil by the numbers,", "portraits from official data"],
         "dek": "Employment records, deaths, public contracts, election results —\ncross-referenced by race, class, gender and territory.",
     },
+    # o cartão de /atlas/ (scripts/build_atlas.py aponta para ele)
+    "og-atlas.png": {
+        "eyebrow": "ATLAS · 1.726 TABELAS · 284 DATASETS",
+        "head": ["O mapa das tabelas", "e das chaves que as ligam"],
+        "dek": "Cada tabela do espelho é um nó; cada coluna de join, uma aresta.\nBusque um dataset e veja com o que ele cruza.",
+    },
 }
 
 

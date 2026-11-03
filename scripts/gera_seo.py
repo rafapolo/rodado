@@ -457,6 +457,27 @@ def alvos_head() -> list[Path]:
     )
 
 
+def urls_externas() -> list[str]:
+    """URLs de rodado.xyz que não saem de um HTML de pages/ na hora deste
+    script, mas existem no ar e precisam ser achadas por busca.
+
+    - /atlas/: o index.html é gerado por build_atlas.py, com as próprias
+      metatags (fora de alvos() de propósito, ver alvos_head);
+    - as plataformas hospedadas em /plataformas/<pasta>/: vêm de outros
+      repositórios, montadas pelo .github/workflows/pages.yml só no deploy
+      (o cartão OG delas é injetado ali, por scripts/og_plataformas.py).
+    A lista de plataformas sai do plataformas.json — plataforma nova entra
+    sozinha. As hospedadas fora (xn--2dk.xyz, github.io) ficam de fora: o
+    sitemap só pode listar URLs do próprio host."""
+    urls = [f"{BASE}/atlas/"]
+    prefixo = f"{BASE}/plataformas/"
+    for item in manifest_da_secao("plataformas"):
+        url = item.get("url", "").split("?")[0].split("#")[0]
+        if url.startswith(prefixo) and url not in urls:
+            urls.append(url)
+    return urls
+
+
 def gera_sitemap(arquivos: list[Path]) -> None:
     hoje = date.today().isoformat()
     linhas = [
@@ -482,6 +503,17 @@ def gera_sitemap(arquivos: list[Path]) -> None:
         linhas.append(f"    <lastmod>{hoje}</lastmod>")
         linhas.append(f"    <priority>{prioridade}</priority>")
         linhas.append("  </url>")
+    ja = {BASE + rel_url(p) for p in arquivos}
+    for url in urls_externas():
+        if url in ja:
+            continue
+        linhas += [
+            "  <url>",
+            f"    <loc>{html.escape(url)}</loc>",
+            f"    <lastmod>{hoje}</lastmod>",
+            "    <priority>0.6</priority>",
+            "  </url>",
+        ]
     linhas.append("</urlset>")
     (PAGES / "sitemap.xml").write_text("\n".join(linhas) + "\n", encoding="utf-8")
 
@@ -504,7 +536,7 @@ def main() -> None:
     gera_robots()
     print(f"{n} páginas com metadados")
     print(f"{c} páginas com head comum")
-    print(f"sitemap.xml com {len(arquivos)} URLs")
+    print(f"sitemap.xml com {len(arquivos) + len(urls_externas())} URLs")
     print("robots.txt")
 
 
