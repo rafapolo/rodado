@@ -78,6 +78,19 @@ CREATE TABLE uf AS FROM rodado('FROM br_bd_diretorios_brasil.uf');  -- e junta c
 
 A consulta roda no finland, lendo do bucket; só o resultado atravessa (agregue lá, não traga tabela bruta).
 
+### CPF sai mascarado
+
+Desde 2026-11-03, todo resultado sai com o CPF no padrão da CGU (`***.456.789-**`): o
+terminal, o `/query` em qualquer formato (e com ele o CSV do botão e o MCP) e as mensagens de
+erro, que podem citar um valor. A consulta continua vendo o CPF inteiro: filtrar, juntar e
+contar por ele funcionam como antes. A máscara (`mascara_cpf` em `rodado_sql.py`) olha o
+valor, não o nome da coluna, então pega `cpf AS x`, concatenação e o CPF no nome do MEI:
+11 dígitos soltos ou `000.000.000-00`, com dígito verificador válido. CNPJ passa inteiro. Um
+código público de 11 dígitos só é mascarado quando o verificador bate por acaso (~1 em 100).
+Não segura quem disfarça de propósito (`reverse(cpf)`, `substr` em pedaços, `cpf::BIGINT + 1`
+com outro nome): é proteção da saída comum, não controle de acesso. Teste:
+`python3 db/testes/mascara_cpf.py`.
+
 ## Como funciona
 
 ```mermaid

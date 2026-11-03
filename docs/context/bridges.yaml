@@ -1503,8 +1503,8 @@ bridges:
     column: cpf_cnpj
     description: '**a coluna mistura CPF e CNPJ e só `tipo_pessoa` separa os dois.**
       Com `tipo_pessoa=''3''` são 14 dígitos de CNPJ; com `tipo_pessoa=''1''` são
-      11 dígitos de CPF alinhados à direita num campo de 14 (`00087978997120` é o
-      CPF 87978997120). Juntar sem filtrar `tipo_pessoa` joga 22,8M linhas de
+      11 dígitos de CPF alinhados à direita num campo de 14 (`00012345678909` é o
+      CPF 12345678909). Juntar sem filtrar `tipo_pessoa` joga 22,8M linhas de
       pessoa física contra a base de CNPJ. Um terço das linhas de PJ traz
       `cpf_cnpj` vazio e identifica o estabelecimento só por `cnpj_mantenedora`'
     expr: CASE WHEN tipo_pessoa = '3' AND length(cpf_cnpj) = 14 THEN cpf_cnpj END = e.cnpj
@@ -1614,7 +1614,7 @@ bridges:
     description: 'as duas tabelas de pessoa física do dataset **não** têm
       `CPF_CNPJ` — a coluna se chama `CPF`, e um join escrito com o nome do
       wildcard antigo quebra com erro de coluna inexistente. O CPF vem
-      completo e pontuado (`078.099.802-20`), sem máscara: o TCU é uma das
+      completo e pontuado (`123.456.789-09`), sem máscara: o TCU é uma das
       poucas fontes públicas que publica o CPF inteiro. Normalize com
       `regexp_replace(x, ''[^0-9]'', '''', ''g'')` para 11 dígitos.'
     concept: cpf

@@ -18,6 +18,7 @@ import re
 import threading
 
 import duckdb
+from duckdb import sqltypes
 
 BANCO = os.environ.get("RODADO_DB", "/dados/catalogo.duckdb")
 RAIZ = os.environ.get("RODADO_RAIZ", "s3://baseldosdados/")   # onde as views do catálogo leem
@@ -148,6 +149,8 @@ def _abre() -> duckdb.DuckDBPyConnection:
         con.execute("SET parquet_metadata_cache=true")
         con.execute("SET enable_http_metadata_cache=true")
         con.execute(segredo_s3("rodado_s3"))
+        con.create_function("_mascara_cpf", mascara_texto, [sqltypes.VARCHAR], sqltypes.VARCHAR,
+                            side_effects=False)
         con.execute("SET allowed_directories=?", [_diretorios_das_views(con)])
         con.execute("SET enable_external_access=false")
         con.execute("SET lock_configuration=true")
@@ -239,6 +242,77 @@ def _confere_arvore(con, sql: str) -> None:
         if no.get("type") == "BASE_TABLE" and re.search(r"[/\\.:]", str(no.get("table_name") or "")):
             raise ConsultaRecusada("ler arquivo pelo caminho não é permitido; consulte as views (dataset.tabela)")
         pilha.extend(no.values())
+
+
+# CPF nunca sai inteiro: a consulta pode filtrar e juntar pelo CPF completo, mas todo
+# resultado (terminal, /query em json/csv/tsv/parquet, o MCP que passa por ele, e as
+# mensagens de erro, que podem citar um valor) sai no padrão da CGU, ***.456.789-**.
+# A máscara olha o valor e não o nome da coluna, para pegar também `cpf AS x`,
+# concatenações e o CPF que a Receita põe no nome do MEI. Casa 11 dígitos, com ou sem
+# pontuação, soltos (sem dígito colado nem casa decimal: "140.12558008151" e
+# "45097157000.0" passam) e só com dígito verificador de CPF válido. Código público de
+# 11 dígitos (id_subdistrito do IBGE, por exemplo) só é mascarado quando o verificador
+# bate por acaso, ~1 em 100. CNPJ (14 dígitos ou com barra) nunca casa.
+# Duas formas só: 11 dígitos seguidos ou 000.000.000-00 completo (pontuação mista como
+# "105794.52000" é número decimal, não CPF). Casa decimal fica de fora: ponto e dígito de
+# qualquer lado, ou vírgula e 1-2 dígitos depois ("13203808433,50"); vírgula seguida de 3+
+# dígitos é lista ("cpf,cpf") e mascara.
+_CPF = re.compile(r"(?<![0-9])(?<![0-9]\.)(?:([0-9]{3})(\.)([0-9]{3})(\.)([0-9]{3})(-)([0-9]{2})"
+                  r"|([0-9]{3})()([0-9]{3})()([0-9]{3})()([0-9]{2}))"
+                  r"(?![0-9])(?!\.[0-9])(?!,[0-9]{1,2}(?![0-9]))")
+_INTEIROS = {"TINYINT", "SMALLINT", "INTEGER", "BIGINT", "HUGEINT", "UTINYINT", "USMALLINT",
+             "UINTEGER", "UBIGINT", "UHUGEINT", "DECIMAL"}
+
+
+def _cpf_valido(d: str) -> bool:
+    if len(set(d)) == 1:
+        return False
+    for n in (9, 10):
+        if (sum(int(d[i]) * (n + 1 - i) for i in range(n)) * 10) % 11 % 10 != int(d[n]):
+            return False
+    return True
+
+
+def _troca(m) -> str:
+    g = m.groups()
+    g = g[:7] if g[0] is not None else g[7:]   # formatado ou 11 dígitos seguidos
+    if not _cpf_valido(g[0] + g[2] + g[4] + g[6]):
+        return m.group(0)
+    return f"***{g[1]}{g[2]}{g[3]}{g[4]}{g[5]}**"
+
+
+def mascara_texto(s):
+    """O texto com todo CPF mascarado (também usado nas mensagens de erro)."""
+    if not isinstance(s, str) or not any(c.isdigit() for c in s):
+        return s
+    return _CPF.sub(_troca, s)
+
+
+def mascara_cpf(rel):
+    """A mesma relação com todo CPF mascarado pela função _mascara_cpf (registrada em
+    _abre). Coluna de texto passa por ela; lista de texto, item a item; STRUCT/MAP/UNION
+    com texto dentro vira texto (o tipo muda, mas o CPF não escapa por dentro de um
+    {'x': cpf}); número em coluna com 'cpf' no nome volta a ter 11 dígitos e é mascarado.
+    Referência por posição (#n), porque o resultado pode ter dois nomes iguais."""
+    if rel is None:
+        return rel
+    exprs, mudou = [], False
+    for i, (nome, tipo) in enumerate(zip(rel.columns, rel.types), 1):
+        t, ref, alias = str(tipo).upper(), f"#{i}", '"' + nome.replace('"', '""') + '"'
+        if t in ("VARCHAR", "JSON"):
+            e = f"_mascara_cpf({ref})"
+        elif t in ("VARCHAR[]", "JSON[]"):
+            e = f"list_transform({ref}, x -> _mascara_cpf(x))"
+        elif "VARCHAR" in t or "JSON" in t:
+            e = f"_mascara_cpf(CAST({ref} AS VARCHAR))"
+        elif "cpf" in nome.lower() and t.split("(")[0] in _INTEIROS:
+            e = f"_mascara_cpf(lpad(CAST({ref} AS VARCHAR), 11, '0'))"
+        else:
+            exprs.append(f"{ref} AS {alias}")
+            continue
+        exprs.append(f"{e} AS {alias}")
+        mudou = True
+    return rel.project(", ".join(exprs)) if mudou else rel
 
 
 class Cronometro:
