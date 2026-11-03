@@ -4,7 +4,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 `last_update` é a data do parquet mais recente do dataset no beelink (para tabela nativa do
 `.duckdb`, sem parquet, o `scrape_date` do catálogo).
 
-285 datasets, 1728 tabelas.
+286 datasets, 1734 tabelas.
 
 | dataset | tabelas | linhas | last_update |
 |---|---:|---:|---|
@@ -32,13 +32,13 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_b3_cotacoes` | 1 | 24.760.472 | 2026-10-31 |
 | `br_ba_feiradesantana_camara_leis` | 1 | 6.033 | 2026-07-05 |
 | `br_bcb_agencia` | 2 | 4.113.511 | 2026-10-29 |
-| `br_bcb_desenrola` | 1 | 13.638 | 2026-10-21 |
+| `br_bcb_desenrola` | 1 | 14.122 | 2026-11-03 |
 | `br_bcb_estban` | 3 | 779.013.036 | 2026-11-01 |
 | `br_bcb_ifdata` | 5 | 55.700.812 | 2026-09-25 |
 | `br_bcb_penalidades` | 1 | 16.989 | 2026-10-30 |
 | `br_bcb_pix_municipio` | 1 | 401.019 | 2026-10-30 |
 | `br_bcb_ptax` | 3 | 805.814 | 2026-10-30 |
-| `br_bcb_scrdata` | 1 | 43.061.984 | 2026-10-21 |
+| `br_bcb_scrdata` | 1 | 43.376.247 | 2026-11-03 |
 | `br_bcb_sgs` | 1 | 25.228 | 2026-10-30 |
 | `br_bcb_sicor` | 20 | 787.221.440 | 2026-11-02 |
 | `br_bd_diretorios_brasil` | 23 | 2.033.171 | 2026-10-30 |
@@ -173,7 +173,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_me_siorg` | 1 | 258 | 2026-07-09 |
 | `br_mec_prouni` | 1 | 20 | 2026-07-06 |
 | `br_mec_sisu` | 1 | 34.700.256 | 2026-07-06 |
-| `br_mf_divida_ativa` | 2 | 143.151.652 | 2026-10-15 |
+| `br_mf_divida_ativa` | 2 | 146.548.734 | 2026-11-03 |
 | `br_mg_belohorizonte_smfa_iptu` | 2 | 21.463.825 | 2026-07-06 |
 | `br_mgi_compras_publicas` | 21 | 100.278.894 | 2026-10-31 |
 | `br_mgi_pncp` | 4 | 5.738.944 | 2026-11-01 |
@@ -200,7 +200,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_ms_sia` | 3 | 6.298.035.211 | 2026-10-29 |
 | `br_ms_sih` | 3 | 2.627.317.711 | 2026-11-01 |
 | `br_ms_sim` | 6 | 107.245.069 | 2026-10-30 |
-| `br_ms_sinan` | 3 | 38.468.299 | 2026-07-07 |
+| `br_ms_sinan` | 3 | 37.154.410 | 2026-11-03 |
 | `br_ms_sinan_chikungunya` | 1 | 2.514.085 | 2026-10-30 |
 | `br_ms_sinan_esquistossomose` | 1 | 169.721 | 2026-10-21 |
 | `br_ms_sinan_febre_amarela` | 1 | 82.844 | 2026-10-30 |
@@ -209,8 +209,9 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_ms_sinan_zika` | 1 | 607.893 | 2026-10-30 |
 | `br_ms_sinasc` | 2 | 93.344.585 | 2026-11-01 |
 | `br_ms_siops` | 2 | 144.405 | 2026-10-31 |
-| `br_ms_sipni_dicionarios` | 4 | 224 | 2026-07-26 |
-| `br_ms_sipni_doses_historicas` | 1 | 93.785.056 | 2026-07-26 |
+| `br_ms_sipni_cobertura_historica` | 1 | 2.762.327 | 2026-02-27 |
+| `br_ms_sipni_dicionarios` | 4 | 224 | 2026-03-03 |
+| `br_ms_sipni_doses_historicas` | 1 | 93.785.056 | 2026-03-02 |
 | `br_ms_sipni_microdados` | 1 | 102.423.524 | 2026-07-26 |
 | `br_ms_sisvan` | 2 | 406.253.847 | 2026-07-07 |
 | `br_ms_vacinacao_covid19` | 2 | 805.917 | 2026-07-09 |
@@ -228,7 +229,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_prf_infracoes` | 1 | 63.217.947 | 2026-10-25 |
 | `br_rf_arrecadacao` | 5 | 535.465 | 2026-07-07 |
 | `br_rf_cafir` | 2 | 179.992.711 | 2026-11-01 |
-| `br_rf_cno` | 5 | 1.933.885.975 | 2026-11-01 |
+| `br_rf_cno` | 9 | 1.961.124.235 | 2026-11-03 |
 | `br_rf_dirpf` | 2 | 35.356 | 2026-10-21 |
 | `br_rf_simples_estatisticas` | 2 | 4.287.160 | 2026-10-25 |
 | `br_rj_isp_estatisticas_seguranca` | 14 | 168.346 | 2026-10-31 |
@@ -245,7 +246,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_senado_dados_abertos_administrativos` | 40 | 641.617 | 2026-10-09 |
 | `br_senado_dadosabertos` | 4 | 166.837 | 2026-10-21 |
 | `br_senatran_estatisticas` | 1 | 159.327 | 2026-10-07 |
-| `br_senatran_frota` | 1 | 20.101.202 | 2026-10-07 |
+| `br_senatran_frota` | 1 | 20.223.786 | 2026-11-03 |
 | `br_sfb_cnfp` | 1 | 12.874 | 2026-10-25 |
 | `br_sfb_sicar` | 10 | 132.944.211 | 2026-10-09 |
 | `br_sgb_setorizacao_risco` | 1 | 17.838 | 2026-10-25 |
@@ -270,7 +271,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_transferegov` | 3 | 30.346 | 2026-10-21 |
 | `br_transferegov_siconv` | 62 | 69.060.758 | 2026-10-21 |
 | `br_trase_supply_chain` | 7 | 1.824.843 | 2026-07-18 |
-| `br_tse_eleicoes` | 31 | 1.715.995.425 | 2026-11-03 |
+| `br_tse_eleicoes` | 32 | 1.719.517.202 | 2026-11-03 |
 | `br_tse_filiacao_partidaria` | 2 | 42.201.443 | 2026-10-09 |
 | `br_ufmg_censo_demografico_1872` | 58 | 1.251.630 | 2026-10-07 |
 | `eu_sanctions` | 1 | 44.043 | 2026-10-30 |
