@@ -470,6 +470,10 @@ def urls_externas() -> list[str]:
     sozinha. As hospedadas fora (xn--2dk.xyz, github.io) ficam de fora: o
     sitemap só pode listar URLs do próprio host."""
     urls = [f"{BASE}/atlas/"]
+    # análises que saíram do manifest.json (viraram plataforma em 706da4f3)
+    # mas seguem no ar e recebem link: bens-dos-candidatos é o texto para o
+    # qual o painel /plataformas/patrimonio/ manda o leitor de volta
+    urls += [f"{BASE}/analises/bens-dos-candidatos/"]
     prefixo = f"{BASE}/plataformas/"
     for item in manifest_da_secao("plataformas"):
         url = item.get("url", "").split("?")[0].split("#")[0]
