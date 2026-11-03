@@ -14,7 +14,7 @@ Por que existe: `br_me_cnpj` guarda o cadastro inteiro da Receita uma vez por m�
 um retrato e outro: a Receita não publica data de saída de sócio, e
 `data_situacao_cadastral` guarda só a última mudança. Estas tabelas guardam esse
 histórico em pouco espaço, para que os retratos antigos possam sair.
-Plano e conferências em `tasks/cnpj_historico.md`.
+Plano e conferências em `tasks/done/cnpj_historico.md`.
 
 - `socios_historico`: uma linha por (cnpj_basico, tipo, documento, nome,
   qualificacao), com primeiro e último retrato em que apareceu, quantos retratos e

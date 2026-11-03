@@ -73,14 +73,19 @@ def endereco(c):
     ant = (hoje.replace(day=1) - dt.timedelta(days=1))
     return (c["url"].replace("{ano}", str(hoje.year)).replace("{hoje}", hoje.strftime("%Y%m%d"))
             .replace("{ha3}", (hoje - dt.timedelta(days=3)).strftime("%Y%m%d"))
+            .replace("{ha30}", (hoje - dt.timedelta(days=30)).isoformat())
             .replace("{mes}", hoje.strftime("%Y%m")).replace("{mes_ant}", ant.strftime("%Y%m"))
             .replace("{tri100}", tri100(hoje)))
 
 
-def baixa(c):
+CACHE = {}
+
+
+def baixa(c, de_novo=False):
     """`bytes: N` pede só os N primeiros (data no cabeçalho de arquivo grande), `cauda: N` os N últimos (o
     diretório central de um zip lista os nomes); `cabecalhos` vão como `-H`;
-    `ua` troca o User-Agent."""
+    `ua` troca o User-Agent; `timeout` (s) sobe o teto do curl. Respostas iguais (mesma URL e
+    cabeçalhos) ficam em cache na rodada: as 6 entradas do SINAN leem uma só listagem do FTP."""
     if c.get("proxy_br"):
         return por_proxy(endereco(c)).content
     extra = ["-r", f"0-{c['bytes']}"] if c.get("bytes") else ["-r", f"-{c['cauda']}"] if c.get("cauda") else []
@@ -88,7 +93,10 @@ def baixa(c):
         extra += ["-A", c["ua"]]
     for h in c.get("cabecalhos", []):
         extra += ["-H", h]
-    return curl([*extra, endereco(c)])
+    chave = (endereco(c), tuple(extra))
+    if de_novo or chave not in CACHE:
+        CACHE[chave] = curl([*extra, endereco(c)], timeout=c.get("timeout", 90))
+    return CACHE[chave]
 
 
 def curl(args, timeout=90):
@@ -133,8 +141,21 @@ def http_last_modified(c):
 
 
 def regex(c):
-    txt = baixa(c).decode(errors="replace")
-    achados = {"".join(m) if isinstance(m, tuple) else m for m in re.findall(c["padrao"], txt)}
+    """`tentativas: N` repete quando o padrão não casa ou o curl falha (o WAF do consumidor.gov.br
+    devolve uma página de erro 504 com status 200 de vez em quando)."""
+    import time
+    for i in range(c.get("tentativas", 1)):
+        try:
+            txt = baixa(c, de_novo=i > 0).decode(errors="replace")
+        except RuntimeError:
+            if i + 1 == c.get("tentativas", 1):
+                raise
+            time.sleep(20)
+            continue
+        achados = {"".join(m) if isinstance(m, tuple) else m for m in re.findall(c["padrao"], txt)}
+        if achados or i + 1 == c.get("tentativas", 1):
+            break
+        time.sleep(20)
     if c.get("confirma_arquivo"):   # diretório de mês vazio (só tmp.txt) não conta: abre cada um e exige o arquivo
         base = endereco(c)
         achados = {a for a in achados

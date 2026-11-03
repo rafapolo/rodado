@@ -20,12 +20,19 @@ import tempfile
 BEELINK_HOST = "beelink"
 DB = "~/rodado/basedosdados.duckdb"
 
+# Since 2026-11-03 the dicionarios and the agregados (doses/cobertura 1994-2019) are mirrored
+# on beelink's disk (rclone copy of the public bucket); these views read the local copy.
+# Only the microdados (and, if ever recreated, covid/sih) stay remote. br_ms_sinasc is NOT
+# taken from healthbr: the mirror's own br_ms_sinasc.microdados goes to 2026 (healthbr stops in 2022).
+L = "/home/polo/rodado"
 views = [
-    # (schema, table, remote_path — third-party healthbr-data bucket, not ours, hive_partitioning)
-    ("br_ms_sipni_dicionarios", "vacinas", "s3://healthbr-data/sipni/dicionarios/imuno.parquet", False),
-    ("br_ms_sipni_dicionarios", "cobertura_indicadores", "s3://healthbr-data/sipni/dicionarios/imunocob.parquet", False),
-    ("br_ms_sipni_dicionarios", "doses_tipo", "s3://healthbr-data/sipni/dicionarios/dose.parquet", False),
-    ("br_ms_sipni_dicionarios", "faixa_etaria", "s3://healthbr-data/sipni/dicionarios/fxet.parquet", False),
+    # (schema, table, path, hive_partitioning)
+    ("br_ms_sipni_dicionarios", "vacinas", f"{L}/br_ms_sipni_dicionarios/vacinas/*.parquet", False),
+    ("br_ms_sipni_dicionarios", "cobertura_indicadores", f"{L}/br_ms_sipni_dicionarios/cobertura_indicadores/*.parquet", False),
+    ("br_ms_sipni_dicionarios", "doses_tipo", f"{L}/br_ms_sipni_dicionarios/doses_tipo/*.parquet", False),
+    ("br_ms_sipni_dicionarios", "faixa_etaria", f"{L}/br_ms_sipni_dicionarios/faixa_etaria/*.parquet", False),
+    ("br_ms_sipni_doses_historicas", "doses_agregadas", f"{L}/br_ms_sipni_doses_historicas/doses_agregadas/**/*.parquet", True),
+    ("br_ms_sipni_cobertura_historica", "cobertura_agregada", f"{L}/br_ms_sipni_cobertura_historica/cobertura_agregada/**/*.parquet", True),
 ]
 
 # Per-year views for large partitioned datasets
@@ -36,15 +43,6 @@ for year in range(2020, 2027):
 for year in range(2021, 2027):
     year_views.append(("br_ms_vacinacao_covid19", f"microdados_{year}",
                        f"s3://healthbr-data/sipni/covid/microdados/ano={year}/*/*/*.parquet", True))
-for year in range(1994, 2020):
-    year_views.append(("br_ms_sipni_doses_historicas", f"doses_{year}",
-                       f"s3://healthbr-data/sipni/agregados/doses/ano={year}/*/*.parquet", True))
-for year in range(1994, 2020):
-    year_views.append(("br_ms_sipni_cobertura_historica", f"cobertura_{year}",
-                       f"s3://healthbr-data/sipni/agregados/cobertura/ano={year}/*/*.parquet", True))
-for year in [2020, 2021, 2022]:
-    year_views.append(("br_ms_sinasc", f"nascidos_vivos_{year}",
-                       f"s3://healthbr-data/sinasc/ano={year}/*/*.parquet", True))
 for year in range(2020, 2027):
     year_views.append(("br_ms_sih", f"internacoes_{year}",
                        f"s3://healthbr-data/sih/ano={year}/*/*/*.parquet", True))
@@ -84,10 +82,10 @@ def main():
         if schema not in schemas_created:
             result = run_sql(f'CREATE SCHEMA IF NOT EXISTS "{schema}";', timeout=10)
             if result == "LOCKED":
-                print(f"  DB LOCKED — killing stale processes and retrying...", file=sys.stderr)
+                print(f"  DB LOCKED — waiting 30 s and retrying...", file=sys.stderr)
                 subprocess.run(["ssh", BEELINK_HOST,
-                    "ps aux | grep 'duckdb.*basedosdados' | grep -v grep | awk '{print $2}' | xargs -r kill"],
-                    capture_output=True, timeout=10)
+                    "sleep 30"],  # never kill: the lock belongs to another session's real work
+                    capture_output=True, timeout=45)
                 subprocess.run(["sleep", "3"], capture_output=True)
                 result = run_sql(f'CREATE SCHEMA IF NOT EXISTS "{schema}";', timeout=10)
             if result is True:
@@ -99,10 +97,10 @@ def main():
 
         result = run_sql(sql, timeout=60)
         if result == "LOCKED":
-            print(f"LOCKED — killing...", file=sys.stderr)
+            print(f"LOCKED — waiting 30 s...", file=sys.stderr)
             subprocess.run(["ssh", BEELINK_HOST,
-                "ps aux | grep 'duckdb.*basedosdados' | grep -v grep | awk '{print $2}' | xargs -r kill"],
-                capture_output=True, timeout=10)
+                "sleep 30"],  # never kill: the lock belongs to another session's real work
+                capture_output=True, timeout=45)
             subprocess.run(["sleep", "3"], capture_output=True)
             result = run_sql(sql, timeout=60)
 
@@ -122,8 +120,8 @@ def main():
         result = run_sql(sql, timeout=60)
         if result == "LOCKED":
             subprocess.run(["ssh", BEELINK_HOST,
-                "ps aux | grep 'duckdb.*basedosdados' | grep -v grep | awk '{print $2}' | xargs -r kill"],
-                capture_output=True, timeout=10)
+                "sleep 30"],  # never kill: the lock belongs to another session's real work
+                capture_output=True, timeout=45)
             subprocess.run(["sleep", "3"], capture_output=True)
             result = run_sql(sql, timeout=60)
         if result is True:
