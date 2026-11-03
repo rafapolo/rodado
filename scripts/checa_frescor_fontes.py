@@ -5,6 +5,7 @@ Compara o dado mais recente da FONTE com o que o espelho tem. Só reporta.
     python3 scripts/checa_frescor_fontes.py            # todas as entradas
     python3 scripts/checa_frescor_fontes.py br_cgu_    # só as que começam assim
     python3 scripts/checa_frescor_fontes.py --md       # tabela em markdown
+    python3 scripts/checa_frescor_fontes.py --sem-proxy  # pula as fontes que só abrem por IP brasileiro
 
 Lê docs/context/privado/source_freshness_checks.yaml (como perguntar à fonte) e, do
 catálogo no beelink (`_rodado_metadata`), o `last_date` de cada tabela — a
@@ -48,6 +49,8 @@ POOLS = {}
 
 
 def por_proxy(url, stream=False):
+    if "--sem-proxy" in sys.argv:
+        raise RuntimeError("pulada (--sem-proxy): a fonte só abre por IP brasileiro")
     """Fonte que filtra por país (`proxy_br: true`). O pool vive em scripts/scrap/, fora do git:
     sem ele a checagem dá ERRO e as outras seguem. Um pool por host, como no raspador."""
     sys.path.insert(0, str(RAIZ / "scripts/scrap"))
