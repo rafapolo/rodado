@@ -3,6 +3,7 @@
 dataset: br_mgi_compras_publicas
 tabelas:
   ata_registro_preco:
+    ultima_data: "2026-10-21"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma ata de registro de preços (cabeçalho) do PNCP/Compras.gov.br, com órgão gerenciador, compra de origem, vigência e valor total"
     chave: "nenhuma: 402.724 linhas, todas distintas por inteiro, mas numero_controle_pncp_ata é nulo em 2.517 e tem 400.141 distintos entre 400.207 não nulos (63 chaves repetem, 129 linhas); (numero_ata_registro_preco, codigo_unidade_gerenciadora, numero_controle_pncp_compra) tem 402.664 distintos."
     tempo: {natureza: serie_de_periodos, coluna: "data_assinatura, ano_compra", cobertura: "ano_compra 2022–2027 (56 linhas com 2027)"}
@@ -16,6 +17,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "402.724 linhas, todas com numero_ata_registro_preco; 63 chaves numero_controle_pncp_ata repetidas (129 linhas); sem coluna de cabeçalho colado — medido 2026-10-28"
   ata_registro_preco_item:
+    ultima_data: "2026-10-21"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um item de uma ata de registro de preços × fornecedor vencedor (uma linha por cod_arp_item)"
     chave: "cod_arp_item (2.327.820 linhas = 2.327.820 distintos)"
     tempo: {natureza: serie_de_periodos, coluna: "data_assinatura, ano_compra", cobertura: "ano_compra 2022–2027"}
@@ -30,6 +32,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, filtros_tipicos]
     verificado: "2.327.820 linhas; cod_arp_item único (2.327.820 distintos); (numero_controle_pncp_ata, numero_item, ni_fornecedor) tem só 2.202.791 distintos — medido 2026-10-28"
   contratacao:
+    ultima_data: "2026-09-29"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma contratação (compra) publicada no PNCP pelos órgãos federais, com modalidade, valores estimado e homologado e órgão"
     chave: "cod_compra e numero_controle_pncp: 1.001.583 linhas = 1.001.583 distintos (nenhum nulo); id_compra tem 998.900 (não use). Todas têm ind_atual = 'True'."
     tempo: {natureza: serie_mensal, coluna: data_publicacao_pncp, cobertura: "2021-08-10–2026-09-29 (um arquivo por mês); ano_compra_pncp todos anos válidos"}
@@ -43,6 +46,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "1.001.583 linhas, 1.001.583 cod_compra e numero_controle_pncp distintos, 59 colunas, nenhuma linha com campo deslocado em situacao_compra_id_pncp, srp, contratacao_excluida ou ano_compra_pncp — medido 2026-10-28"
   contratacao_item:
+    ultima_data: "2026-09-29"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um item de uma contratação do PNCP já com o resultado (fornecedor, valor homologado) junto; um item com vários resultados aparece em mais de uma linha"
     chave: "(srk_pncp_item_compra, cod_resultado_item): 9.190.387 linhas = 9.190.387 distintos, nenhum nulo; srk_pncp_item_compra sozinho tem 8.991.164 distintos (item com mais de um resultado repete)."
     tempo: {natureza: serie_mensal, coluna: data_inclusao_pncp, cobertura: "2021-08-10–2026-09-29 (VARCHAR, mas converte em timestamp em todas as linhas); ano_compra 2021–2027"}
@@ -57,6 +61,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "9.190.387 linhas, todas com ano_compra 20xx (2021–2027), situacao_compra_item 1–5, srk e cod_resultado_item não nulos; chave (srk_pncp_item_compra, cod_resultado_item) única; srk sozinho 8.991.164 distintos — medido 2026-10-28"
   contratacao_item_resultado:
+    ultima_data: "2026-09-29"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "o resultado de um item de contratação: um fornecedor vencedor por item (valores homologados)"
     chave: "srk_item_resultado e cod_resultado_item: 6.564.756 linhas = 6.564.756 distintos cada, nenhum nulo."
     tempo: {natureza: serie_mensal, coluna: data_resultado_pncp, cobertura: "2021-08-16–2026-09-29 (um arquivo por mês); ano_compra 2021–2027"}

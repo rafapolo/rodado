@@ -41,3 +41,16 @@ gotchas:
     colunas: [sexo, indicador_treineiro]
     severidade: silencioso
     verificado: "2026-10-31: 2012 com '1' em 3.416.410 e '0' em 2.374.655, nenhum 'M' ou 'F'; demais anos M/F; indicador_treineiro 2022 com 512.732 true e 2023 com 3.933.955 NULL"
+  - id: presenca_redacao_e_situacao_com_codigo_por_ano
+    resumo: "presenca_redacao não é só presença: é a situação da redação, e o código muda de sentido por ano (letras F/P/B/N até 2012; '6' = Ausente em 2013-2014 e Fuga ao tema de 2015 em diante). Decodifique pelo dicionario com chave E cobertura_temporal."
+    detalhe: >
+      De 2015 em diante, '1' é 'Sem problemas' e 2-9 são redações com problema,
+      todas com nota_redacao = 0; o ausente fica NULL. Em resultados (2024-2025)
+      os 165.245 zeros de 2024 são todos de códigos 2-9, nenhum de '1'. Para
+      'presente na redação' use presenca_redacao IS NOT NULL de 2016 em diante, e
+      o código do ano antes disso. O dicionario tem várias linhas por chave
+      (ex.: '1' = 'Em Branco' em 2013-2014): juntar só por chave duplica.
+    tabelas: [microdados, resultados, dicionario]
+    colunas: [presenca_redacao, nota_redacao]
+    severidade: silencioso
+    verificado: "2026-11-03: microdados 2008 com F 1.097.463 e P 2.854.394; 2023 com '1' 2.704.814, 2-9 117.829 e NULL 1.111.312; resultados 2024 com '1' 3.002.710 (0 zeros), 2-9 165.245 (todos 0), NULL 1.164.989; dicionario com '6' = 'Ausente' (2013-2014) e 'Fuga ao tema' (2015+)"

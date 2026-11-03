@@ -3,6 +3,7 @@
 dataset: br_rf_dirpf
 tabelas:
   fundos_habilitados:
+    ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um fundo (FDCA, da criança e do adolescente, ou FDI, do idoso) habilitado a receber doação de IRPF na declaração de 2025, com a conta bancária"
     chave: "cnpj_fundo: 6.471 linhas e 6.471 distintos. 'numero' NÃO é chave (4.286 distintos: a numeração recomeça em cada anexo, (numero, anexo) dá 4.287)"
     tempo: {natureza: sem_tempo, coluna: ano_dirpf, cobertura: "2025–2025 (ano_dirpf, único valor)"}
@@ -16,6 +17,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, tipo_fundo]
     verificado: "6.471 linhas; 6.471 cnpj_fundo distintos; 4.286 FDCA e 2.185 FDI — medido 2026-10-27"
   repasses:
+    ultima_data: "2023"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma linha de uma planilha de repasse (FDCA ou FDI) publicada pela Receita; cada arquivo de origem tem layout próprio, então a mesma coluna tem sentido diferente por arquivo"
     chave: "nenhuma: staging de 23 arquivos com colunas heterogêneas (todas texto), 28.885 linhas incluindo linhas de cabeçalho/TOTAL (17 com 'TOTAL' em Nº ou UF)"
     tempo: {natureza: serie_de_periodos, coluna: ano_pagina, cobertura: "2022–2023 (ano da página da Receita onde o arquivo foi publicado; DIRPF/Ano, Ano e Doações são texto por arquivo)"}

@@ -3,6 +3,7 @@
 dataset: br_cgu_receitas_publicas
 tabelas:
   receitas:
+    ultima_data: "2024"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma linha de receita federal por unidade gestora × classificação (categoria, origem, espécie, detalhamento) × data de lançamento, com valores previsto, lançado e realizado"
     chave: "nenhuma: 1.529.345 linhas distintas entre si, mas só 1.529.163 combinações de (ano_exercicio, codigo_unidade_gestora, categoria_economica, origem, especie, detalhamento, data_lancamento), ou seja 182 repetidas"
     tempo: {natureza: serie_anual, coluna: ano_exercicio, cobertura: "2013–2024 (data_lancamento 2013-12-31 a 2024-12-07; 2013–2015 só têm lançamento em 31/12, a partir de 2016 há datas ao longo do ano)"}

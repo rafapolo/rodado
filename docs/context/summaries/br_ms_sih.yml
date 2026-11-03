@@ -6,7 +6,7 @@ tabelas:
     ultima_data: "2025-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma AIH (autorização de internação hospitalar) reduzida, por competência de cobrança"
     chave: "nenhuma: id_aih repete (ano = 2025: 6.600.938 linhas, 6.546.425 id_aih distintos); (id_aih, sequencial_aih) quase único mas ainda repete (6.600.345)"
-    tempo: {natureza: serie_mensal, coluna: "ano, mes (competência de cobrança); data_internacao e data_saida são a data real", cobertura: "2008–2025 (2025 só mes 1 a 6)"}
+    tempo: {natureza: serie_mensal, coluna: "ano, mes (competência de cobrança); data_internacao e data_saida são a data real", cobertura: "2008–2026 (2025 completo; 2026 só mes 1, medido 2026-11-03)"}
     territorio: {nivel: municipio, colunas: {id_municipio_paciente: "residência do paciente, IBGE 6 dígitos", id_municipio_estabelecimento: "município do hospital, 6 dígitos", id_municipio_gestor: "gestor, 6 dígitos, nulo em ~48% (gestão estadual)", sigla_uf: "vem 100% nula (ver gotcha sigla_uf_nula)"}}
     medidas:
       - {coluna: valor_aih, o_que: "valor total pago da AIH", unidade: "R$", soma: sim}
@@ -21,10 +21,9 @@ tabelas:
       - "tipo_aih = '1' (normal, 6.536.263 em 2025) e '5' (longa permanência, 64.675), texto"
       - "coalesce(cid_principal_categoria, substr(cid_principal_subcategoria,1,3)) = 'A91' (gotcha cid_categoria_ou_subcategoria; nenhuma linha tem os dois)"
       - "carater_internacao = '2' urgência (1.452.622 na amostra), '1' eletivo; sexo_paciente = 'Feminino'/'Masculino' (capitalizado)"
-    use_para: "contar internações e gastos do SUS por doença (CID), município, hospital, sexo e idade, por competência."
-    nao_use_para: "incidência de doença (conta internações, não casos) ou contar pessoas (a mesma pessoa tem várias AIH); a UF não sai de sigla_uf."
-    rascunho: [use_para, nao_use_para]
-    verificado: "ano = 2025: 6.600.938 linhas, 6.546.425 id_aih distintos, 6.600.345 de (id_aih, sequencial_aih); valor_aih somado 11,73 bi (tipo_aih 1: 11,62 bi; tipo 5: 0,11 bi); óbitos 291.521; cid categoria e subcategoria nunca juntas (0) nem ausentes juntas (0) — medido 2026-10-27"
+    use_para: "contar internações e gastos do SUS por doença (CID), município, hospital, sexo e idade, por competência"
+    nao_use_para: "incidência de doença (conta internações, não casos) ou contar pessoas (a mesma pessoa tem várias AIH e a versão pública não tem identificador do paciente); agrupar por sigla_uf, que é nula em todas as linhas (UF pelos 2 primeiros dígitos do município, gotcha sigla_uf_nula)"
+    verificado: "ano = 2025: 6.600.938 linhas, 6.546.425 id_aih distintos, 6.600.345 de (id_aih, sequencial_aih); valor_aih somado 11,73 bi (tipo_aih 1: 11,62 bi; tipo 5: 0,11 bi); óbitos 291.521; cid categoria e subcategoria nunca juntas (0) nem ausentes juntas (0) — medido 2026-10-27. ano = 2025 agora com os 12 meses: 13.430.854 linhas, sigla_uf não nula em 0; ano = 2026: 1.099.383 linhas, 1 mês (os números de 2025 acima são de quando só havia jan–jun) — medido 2026-11-03"
   servicos_profissionais:
     ultima_data: "2025-07-31"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um valor (de serviço hospitalar, profissional ou complemento) de um procedimento/profissional dentro de uma AIH, por competência"

@@ -107,3 +107,21 @@ gotchas:
     colunas: [aptos, comparecimento]
     severidade: silencioso
     verificado: "ano=2026, presidente, detalhes_votacao_municipio: aptos diferem entre turnos em 3.726 municípios (soma das diferenças absolutas 19.012, máximo 845), total 158.745.502 nos dois; soma das seções do 2º turno = município (Lula 64.256.232, Flávio 59.826.041, válidos 124.082.273, comparecimento 128.236.074) — medido 2026-10-28"
+  - id: local_secao_wkt_ate_2022
+    resumo: "local_secao traz a geocodificação das seções de 2008 a 2022 (sem 2024 nem 2026) e as 12 colunas de ponto são texto WKT 'POINT(lon lat)'. Para usar como geometria: ST_GeomFromText; para lat/lon: ST_Y/ST_X."
+    detalhe: >
+      Espelho da Base dos Dados (TABLE desde 2026-10-23). Cada coluna é um método de
+      geocodificação (tse_recente, escolas_inep, ibge_cnefe_*, google*, ...);
+      melhor_urbano e melhor_rural são a escolha da BD. id_municipio é o código IBGE de
+      7 dígitos (não o do TSE). Para 2024 e 2026 o ponto do local de votação está em
+      perfil_eleitorado_local_votacao (latitude/longitude do TSE).
+    tabelas: [local_secao]
+    colunas: [melhor_urbano, melhor_rural, tse_recente, ano, id_municipio]
+    severidade: silencioso
+    verificado: "3.521.777 linhas, ano 2008 a 2022 (8 anos pares), id_municipio sempre com 7 dígitos, 33.623 seções de 2022 sem melhor_urbano nem melhor_rural; valores como 'POINT(-67.0487751 -10.0730376)' — medido 2026-11-03"
+  - id: local_secao_chave_repetida
+    resumo: "Em local_secao, 1.474 chaves (ano, id_municipio, zona, secao) aparecem em mais de uma linha (1.789 excedentes, 721 idênticas); um join por seção duplica essas linhas."
+    tabelas: [local_secao]
+    colunas: [ano, id_municipio, zona, secao]
+    severidade: silencioso
+    verificado: "3.521.777 linhas, 3.519.988 chaves distintas, 721 linhas excedentes idênticas (SELECT DISTINCT *) — medido 2026-11-03, igual à origem da BD"

@@ -3,6 +3,7 @@
 dataset: br_tce_pi
 tabelas:
   despesas_total:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "o total de despesa do Estado do Piauí em um exercício"
     chave: "exercicio (17 linhas, 17 distintos)"
     tempo: {natureza: serie_anual, coluna: exercicio, cobertura: "2010–2026 (2026 em andamento)"}
@@ -17,6 +18,7 @@ tabelas:
     rascunho: [use_para, nao_use_para, "que o total é só do Estado, não dos municípios"]
     verificado: "17 linhas, 17 exercícios distintos; 2025 e 2026 lidos — medido 2026-10-27"
   receitas_total:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "o total de receita do Estado do Piauí em um exercício"
     chave: "exercicio (17 linhas, 17 distintos)"
     tempo: {natureza: serie_anual, coluna: exercicio, cobertura: "2010–2026 (2026 em andamento)"}

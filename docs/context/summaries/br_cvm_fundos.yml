@@ -3,6 +3,7 @@
 dataset: br_cvm_fundos
 tabelas:
   balancete:
+    ultima_data: "2026-09-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: o saldo de uma conta contábil (cd_conta_balcte) de um fundo/classe num mês
     chave: 'cnpj_fundo_classe_norm + plano_conta_balcte + cd_conta_balcte (+ dt_comptc): count(*) = count(DISTINCT) = 1.123.574 em dt_comptc = ''2026-09-30'' (partição; 316,6 mi de linhas no total)'
     tempo:
@@ -31,6 +32,7 @@ tabelas:
     - hierarquia do plano de contas
     verificado: 316.620.509 linhas no total; 1.123.574 linhas, 1.123.574 combinações da chave e 13.358 cnpj_fundo_classe_norm em 2026-09-30 — medido 2026-10-27
   cadastro_historico_admin:
+    ultima_data: "2026-10-14"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um período de vigência de administrador do fundo de um fundo (um fundo tem várias linhas ao longo do tempo)
     chave: 'nenhuma: (cnpj_fundo, dt_reg, dt_ini_admin) repete em 10 linhas (85.810 linhas, 85.800 combinações distintas; 6 linhas são duplicata exata)'
     tempo:
@@ -53,6 +55,7 @@ tabelas:
     - tempo.cobertura (do perfil)
     verificado: 85.810 linhas; 85.800 combinações (cnpj_fundo, dt_reg, dt_ini_admin); 85.804 linhas distintas — medido 2026-10-27
   cadastro_historico_auditor:
+    ultima_data: "2026-04-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um período de vigência de auditor independente do fundo de um fundo (um fundo tem várias linhas ao longo do tempo)
     chave: 'nenhuma: (cnpj_fundo, dt_reg, dt_ini_auditor) repete em 44 linhas (104.236 linhas, 104.192 combinações distintas; 20 linhas são duplicata exata)'
     tempo:
@@ -75,6 +78,7 @@ tabelas:
     - tempo.cobertura (do perfil)
     verificado: 104.236 linhas; 104.192 combinações (cnpj_fundo, dt_reg, dt_ini_auditor); 104.216 linhas distintas — medido 2026-10-27
   cadastro_historico_classe:
+    ultima_data: "2026-03-13"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'um período de vigência de classe do fundo (campo classe: Multimercado, Renda Fixa, Ações, Referenciado, Curto Prazo, Cambial, FMP-FGTS, Dívida Externa) de um fundo (um fundo tem várias linhas ao longo do tempo)'
     chave: 'cnpj_fundo + dt_ini_classe (e também cnpj_fundo + dt_reg + dt_ini_classe): count(*) = count(DISTINCT) = 62.070'
     tempo:
@@ -97,6 +101,7 @@ tabelas:
     - tempo.cobertura (do perfil)
     verificado: 62.070 linhas; 62.070 combinações (cnpj_fundo, dt_reg, dt_ini_classe); 62.070 linhas distintas — medido 2026-10-27
   cadastro_historico_condom:
+    ultima_data: "2025-12-10"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um período de vigência de forma de condomínio (condom = 'Aberto' ou 'Fechado') de um fundo (um fundo tem várias linhas ao longo do tempo)
     chave: 'cnpj_fundo + dt_reg + dt_ini_condom: count(*) = count(DISTINCT) = 63.707'
     tempo:
@@ -119,6 +124,7 @@ tabelas:
     - tempo.cobertura (do perfil)
     verificado: 63.707 linhas; 63.707 combinações (cnpj_fundo, dt_reg, dt_ini_condom); 63.707 linhas distintas — medido 2026-10-27
   cadastro_historico_controlador:
+    ultima_data: "2025-12-10"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um período de vigência de controlador do fundo de um fundo (um fundo tem várias linhas ao longo do tempo)
     chave: 'nenhuma: (cnpj_fundo, dt_reg, dt_ini_controlador) repete em 13 linhas (72.184 linhas, 72.171 combinações distintas; 9 linhas são duplicata exata)'
     tempo:
@@ -141,6 +147,7 @@ tabelas:
     - tempo.cobertura (do perfil)
     verificado: 72.184 linhas; 72.171 combinações (cnpj_fundo, dt_reg, dt_ini_controlador); 72.175 linhas distintas — medido 2026-10-27
   cadastro_historico_custodiante:
+    ultima_data: "2025-12-10"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um período de vigência de custodiante do fundo de um fundo (um fundo tem várias linhas ao longo do tempo)
     chave: 'nenhuma: (cnpj_fundo, dt_reg, dt_ini_custodiante) repete em 23 linhas (73.005 linhas, 72.982 combinações distintas; 16 linhas são duplicata exata)'
     tempo:
@@ -163,6 +170,7 @@ tabelas:
     - tempo.cobertura (do perfil)
     verificado: 73.005 linhas; 72.982 combinações (cnpj_fundo, dt_reg, dt_ini_custodiante); 72.989 linhas distintas — medido 2026-10-27
   cadastro_historico_denom_comerc:
+    ultima_data: "2022-01-20"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um período de vigência de denominação comercial do fundo de um fundo (um fundo tem várias linhas ao longo do tempo)
     chave: 'nenhuma: (cnpj_fundo, dt_reg, dt_ini_denom_comerc) repete em 4 linhas (81.132 linhas, 81.128 combinações distintas; 0 linhas são duplicata exata)'
     tempo:
@@ -185,6 +193,7 @@ tabelas:
     - tempo.cobertura (do perfil)
     verificado: 81.132 linhas; 81.128 combinações (cnpj_fundo, dt_reg, dt_ini_denom_comerc); 81.132 linhas distintas — medido 2026-10-27
   cadastro_historico_denom_social:
+    ultima_data: "2026-10-14"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um período de vigência de denominação social (nome) do fundo de um fundo (um fundo tem várias linhas ao longo do tempo)
     chave: 'nenhuma: (cnpj_fundo, dt_reg, dt_ini_denom_social) repete em 5.404 linhas (152.374 linhas, 146.970 combinações distintas; 316 linhas são duplicata exata)'
     tempo:
@@ -207,6 +216,7 @@ tabelas:
     - tempo.cobertura (do perfil)
     verificado: 152.374 linhas; 146.970 combinações (cnpj_fundo, dt_reg, dt_ini_denom_social); 152.058 linhas distintas — medido 2026-10-27
   cadastro_historico_diretor_resp:
+    ultima_data: "2026-10-14"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'um período de vigência de diretor responsável pelo fundo (nome de pessoa: dado pessoal, só contagem) de um fundo (um fundo tem várias linhas ao longo do tempo)'
     chave: 'nenhuma: (cnpj_fundo, dt_reg, dt_ini_diretor) repete em 90 linhas (179.010 linhas, 178.920 combinações distintas; 12 linhas são duplicata exata)'
     tempo:
@@ -229,6 +239,7 @@ tabelas:
     - tempo.cobertura (do perfil)
     verificado: 179.010 linhas; 178.920 combinações (cnpj_fundo, dt_reg, dt_ini_diretor); 178.998 linhas distintas — medido 2026-10-27
   cadastro_historico_exclusivo:
+    ultima_data: "2026-03-13"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um período de vigência de condição de fundo exclusivo (fundo_exclusivo = 'S' ou 'N') de um fundo (um fundo tem várias linhas ao longo do tempo)
     chave: 'cnpj_fundo + dt_reg + dt_ini_st_exclusivo: count(*) = count(DISTINCT) = 65.384'
     tempo:
@@ -251,6 +262,7 @@ tabelas:
     - tempo.cobertura (do perfil)
     verificado: 65.384 linhas; 65.384 combinações (cnpj_fundo, dt_reg, dt_ini_st_exclusivo); 65.384 linhas distintas — medido 2026-10-27
   cadastro_historico_exerc_social:
+    ultima_data: "2026-10-13"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um exercício social (início e fim) de um fundo; um fundo tem uma linha por exercício
     chave: 'cnpj_fundo + dt_reg + dt_ini_exerc: count(*) = count(DISTINCT) = 507.417'
     tempo:
@@ -269,6 +281,7 @@ tabelas:
     - nao_use_para
     verificado: 507.417 linhas; 507.417 combinações (cnpj_fundo, dt_reg, dt_ini_exerc); 507.417 linhas distintas; ao contrário das irmãs não tem coluna de fim nula — medido 2026-10-27
   cadastro_historico_fic:
+    ultima_data: "2026-03-13"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um período de vigência de condição de fundo de cotas (fundo_cotas = 'S' ou 'N') de um fundo (um fundo tem várias linhas ao longo do tempo)
     chave: 'cnpj_fundo + dt_reg + dt_ini_st_cotas: count(*) = count(DISTINCT) = 64.451'
     tempo:
@@ -291,6 +304,7 @@ tabelas:
     - tempo.cobertura (do perfil)
     verificado: 64.451 linhas; 64.451 combinações (cnpj_fundo, dt_reg, dt_ini_st_cotas); 64.451 linhas distintas — medido 2026-10-27
   cadastro_historico_gestor:
+    ultima_data: "2026-10-14"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um período de vigência de gestor do fundo (pf_pj_gestor, cpf_cnpj_gestor, gestor) de um fundo (um fundo tem várias linhas ao longo do tempo)
     chave: 'nenhuma: (cnpj_fundo, dt_reg, dt_ini_gestor) repete em 1.396 linhas (99.812 linhas, 98.416 combinações distintas; 7 linhas são duplicata exata)'
     tempo:
@@ -313,6 +327,7 @@ tabelas:
     - tempo.cobertura (do perfil)
     verificado: 99.812 linhas; 98.416 combinações (cnpj_fundo, dt_reg, dt_ini_gestor); 99.805 linhas distintas — medido 2026-10-27
   cadastro_historico_publico_alvo:
+    ultima_data: "2026-09-29"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'um período de vigência de público-alvo do fundo (publico_alvo: ''Público Geral'', ''Qualificado'', ''Profissional'') de um fundo (um fundo tem várias linhas ao longo do tempo)'
     chave: 'cnpj_fundo + dt_ini_publico_alvo (e também cnpj_fundo + dt_reg + dt_ini_publico_alvo): count(*) = count(DISTINCT) = 42.985'
     tempo:
@@ -335,6 +350,7 @@ tabelas:
     - tempo.cobertura (do perfil)
     verificado: 42.985 linhas; 42.985 combinações (cnpj_fundo, dt_reg, dt_ini_publico_alvo); 42.985 linhas distintas — medido 2026-10-27
   cadastro_historico_rentab:
+    ultima_data: "2025-09-15"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um período de vigência de tipo de rentabilidade/indicador de desempenho do fundo (rentab_fundo, texto livre com 33 valores) de um fundo (um fundo tem várias linhas ao longo do tempo)
     chave: 'cnpj_fundo + dt_reg + dt_ini_rentab: count(*) = count(DISTINCT) = 60.178'
     tempo:
@@ -357,6 +373,7 @@ tabelas:
     - tempo.cobertura (do perfil)
     verificado: 60.178 linhas; 60.178 combinações (cnpj_fundo, dt_reg, dt_ini_rentab); 60.178 linhas distintas — medido 2026-10-27
   cadastro_historico_sit:
+    ultima_data: "2026-10-14"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'um período de vigência de situação do fundo (sit: EM FUNCIONAMENTO NORMAL, CANCELADA, FASE PRÉ-OPERACIONAL, LIQUIDAÇÃO, EM ANÁLISE, EM SITUAÇÃO ESPECIAL, EM LIQUIDAÇÃO ORDINÁRIA) de um fundo (um fundo tem várias linhas ao longo do tempo)'
     chave: 'nenhuma: (cnpj_fundo, dt_reg, dt_ini_sit) repete em 9 linhas (145.722 linhas, 145.713 combinações distintas; 0 linhas são duplicata exata)'
     tempo:
@@ -380,6 +397,7 @@ tabelas:
     - tempo.cobertura (do perfil)
     verificado: 145.722 linhas; 145.713 combinações (cnpj_fundo, dt_reg, dt_ini_sit); 145.722 linhas distintas — medido 2026-10-27
   cadastro_historico_taxa_adm:
+    ultima_data: "2025-07-02"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um período de vigência de taxa de administração (taxa_adm, inf_taxa_adm em texto livre) de um fundo (um fundo tem várias linhas ao longo do tempo)
     chave: 'cnpj_fundo + dt_ini_taxa_adm (e também cnpj_fundo + dt_reg + dt_ini_taxa_adm): count(*) = count(DISTINCT) = 87.757'
     tempo:
@@ -408,6 +426,7 @@ tabelas:
     - medidas.unidade
     verificado: 87.757 linhas; 87.757 combinações (cnpj_fundo, dt_reg, dt_ini_taxa_adm); 87.757 linhas distintas — medido 2026-10-27
   cadastro_historico_taxa_perfm:
+    ultima_data: "2025-07-04"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um período de vigência de taxa de performance (vl_taxa_perfm, ds_taxa_perfm em texto livre) de um fundo (um fundo tem várias linhas ao longo do tempo)
     chave: 'cnpj_fundo + dt_ini_taxa_perfm (e também cnpj_fundo + dt_reg + dt_ini_taxa_perfm): count(*) = count(DISTINCT) = 43.639'
     tempo:
@@ -436,6 +455,7 @@ tabelas:
     - medidas.unidade
     verificado: 43.639 linhas; 43.639 combinações (cnpj_fundo, dt_reg, dt_ini_taxa_perfm); 43.639 linhas distintas — medido 2026-10-27
   cadastro_historico_trib_lprazo:
+    ultima_data: "2025-12-11"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um período de vigência de tributação de longo prazo (trib_lprazo = 'S', 'N' ou 'N/A') de um fundo (um fundo tem várias linhas ao longo do tempo)
     chave: 'cnpj_fundo + dt_reg + dt_ini_st_trib_lprazo: count(*) = count(DISTINCT) = 56.545'
     tempo:
@@ -458,6 +478,7 @@ tabelas:
     - tempo.cobertura (do perfil)
     verificado: 56.545 linhas; 56.545 combinações (cnpj_fundo, dt_reg, dt_ini_st_trib_lprazo); 56.545 linhas distintas — medido 2026-10-27
   carteira_blc_1:
+    ultima_data: "2026-09-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma posição de um fundo/classe em título público federal (inclui compromissadas) num mês
     chave: 'cnpj_fundo_classe_norm + tp_aplic + tp_ativo + tp_negoc + cd_isin + cd_selic + dt_venc + dt_emissao (+ dt_comptc): único dentro de dt_comptc = ''2026-09-30'''
     tempo:
@@ -494,6 +515,7 @@ tabelas:
     - medidas.o_que
     verificado: 22.367 linhas em dt_comptc = '2026-09-30'; 22.367 combinações distintas da chave = 22.367 linhas = 22.367 linhas distintas — medido 2026-10-27
   carteira_blc_2:
+    ultima_data: "2026-09-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma posição de um fundo/classe em cotas de outro fundo num mês (colunas cnpj_fundo_classe_cota e nm_fundo_classe_subclasse_cota identificam o fundo investido)
     chave: 'cnpj_fundo_classe_norm + tp_aplic + tp_ativo + tp_negoc + cnpj_fundo_classe_cota + id_subclasse + cnpj_fundo_cota (+ dt_comptc): único dentro de dt_comptc = ''2026-09-30'''
     tempo:
@@ -531,6 +553,7 @@ tabelas:
     - medidas.o_que
     verificado: 64.327 linhas em dt_comptc = '2026-09-30'; 64.327 combinações distintas da chave = 64.327 linhas = 64.327 linhas distintas — medido 2026-10-27
   carteira_blc_3:
+    ultima_data: "2026-09-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma posição de swap (diferencial a pagar ou a receber) de um fundo/classe num mês
     chave: 'cnpj_fundo_classe_norm + tp_aplic + cd_swap (+ dt_comptc): único dentro de dt_comptc = ''2026-09-30'''
     tempo:
@@ -561,6 +584,7 @@ tabelas:
     - medidas.o_que
     verificado: 57 linhas em dt_comptc = '2026-09-30'; 57 combinações distintas da chave = 57 linhas = 57 linhas distintas (tabela pequena) — medido 2026-10-27
   carteira_blc_4:
+    ultima_data: "2026-09-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma posição de um fundo/classe em ação, debênture, BDR, opção, futuro, termo ou empréstimo de valores mobiliários num mês
     chave: 'cnpj_fundo_classe_norm + tp_aplic + tp_ativo + tp_negoc + cd_ativo + cd_isin (+ dt_comptc): único dentro de dt_comptc = ''2026-09-30'''
     tempo:
@@ -599,6 +623,7 @@ tabelas:
     - medidas.o_que
     verificado: 125.485 linhas em dt_comptc = '2026-09-30'; 125.485 combinações distintas da chave = 125.485 linhas = 125.485 linhas distintas — medido 2026-10-27
   carteira_blc_5:
+    ultima_data: "2026-09-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma posição de um fundo/classe em depósito a prazo ou título de instituição financeira (CDB, LF, DPGE, LCI/LCA/LH) num mês
     chave: 'nenhuma: (cnpj_fundo_classe_norm, tp_aplic, tp_ativo, tp_negoc, cnpj_emissor, dt_venc, cd_indexador_posfx) repete (28.182 linhas, 22.394 combinações) e mesmo com qt/vl da posição ficam 26.254; as 28.182 linhas são todas distintas'
     tempo:
@@ -637,6 +662,7 @@ tabelas:
     - medidas.o_que
     verificado: 28.182 linhas em dt_comptc = '2026-09-30'; 28.182 linhas, 28.182 linhas distintas, sem chave natural encontrada — medido 2026-10-27
   carteira_blc_6:
+    ultima_data: "2026-09-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma posição de um fundo/classe em crédito privado (debêntures, títulos ligados ao agronegócio, títulos de crédito privado) num mês, com emissor pessoa física ou jurídica
     chave: 'nenhuma: (cnpj_fundo_classe_norm, tp_aplic, tp_ativo, tp_negoc, cpf_cnpj_emissor, dt_venc, cd_indexador_posfx) repete (1.444 linhas, 1.265 combinações) e com qt/vl da posição ficam 1.427; as 1.444 linhas são todas distintas'
     tempo:
@@ -675,6 +701,7 @@ tabelas:
     - medidas.o_que
     verificado: 1.444 linhas em dt_comptc = '2026-09-30'; 1.444 linhas, 1.444 linhas distintas, sem chave natural encontrada — medido 2026-10-27
   carteira_blc_7:
+    ultima_data: "2026-09-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma posição de um fundo/classe em ativo no exterior num mês
     chave: 'cnpj_fundo_classe_norm + tp_aplic + tp_ativo + tp_negoc + cd_ativo_bv_merc + cd_pais + dt_venc + emissor (+ dt_comptc): único dentro de dt_comptc = ''2026-09-30'''
     tempo:
@@ -715,6 +742,7 @@ tabelas:
     - filtros_tipicos
     verificado: 57.121 linhas em dt_comptc = '2026-09-30'; 57.121 combinações distintas da chave = 57.121 linhas = 57.121 linhas distintas — medido 2026-10-27
   carteira_blc_8:
+    ultima_data: "2026-09-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma posição de um fundo/classe nas demais aplicações (valores a pagar/receber, disponibilidades, derivativos, outras) num mês
     chave: 'cnpj_fundo_classe_norm + tp_aplic + tp_ativo + tp_negoc + ds_ativo + cpf_cnpj_emissor (+ dt_comptc): único dentro de dt_comptc = ''2026-09-30'''
     tempo:
@@ -753,6 +781,7 @@ tabelas:
     - medidas.o_que
     verificado: 68.171 linhas em dt_comptc = '2026-09-30'; 68.171 combinações distintas da chave = 68.171 linhas = 68.171 linhas distintas — medido 2026-10-27
   carteira_confid:
+    ultima_data: "2026-09-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma posição de aplicação com divulgação sigilosa (confidencial) de um fundo/classe num mês, por tipo de aplicação
     chave: 'cnpj_fundo_classe_norm + dt_comptc + tp_aplic: count(*) = count(DISTINCT) = 187.163'
     tempo:
@@ -781,6 +810,7 @@ tabelas:
     - medidas.o_que
     verificado: 187.163 linhas; 187.163 combinações (cnpj_fundo_classe_norm, dt_comptc, tp_aplic); dt_confid_aplic é sempre posterior a dt_comptc (2026-10-27–2027-03-29), significado não documentado — medido 2026-10-27
   carteira_fie:
+    ultima_data: "2026-09-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma posição de um fundo/classe de investimento especial (FIDC, FIIM, FIAGRO) num documento (id_doc) mensal
     chave: 'nenhuma: id_doc + tp_aplic + tp_ativo + cd_ativo + ds_ativo + emissor + dt_venc repete em 2.142 combinações (447.690 linhas, 447.643 linhas distintas, 47 duplicatas exatas)'
     tempo:
@@ -813,6 +843,7 @@ tabelas:
     - tipo de fundo cobre só FIDC/FIIM/FIAGRO (visto no top do perfil)
     verificado: 447.690 linhas; 19.840 id_doc distintos; 19.838 pares (cnpj_fundo_classe_norm, dt_comptc); 447.643 linhas distintas — medido 2026-10-27
   carteira_fie_confid:
+    ultima_data: "2026-09-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma posição sigilosa de um fundo/classe especial (FIDC, FIIM) num documento mensal, por tipo de aplicação
     chave: 'id_doc + tp_aplic + dt_confid_aplic: count(*) = count(DISTINCT) = 1.777'
     tempo:
@@ -839,6 +870,7 @@ tabelas:
     - medidas.o_que
     verificado: 1.777 linhas; 1.777 combinações (id_doc, tp_aplic, dt_confid_aplic); 186 fundos/classes — medido 2026-10-27
   carteira_pl:
+    ultima_data: "2026-09-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: o patrimônio líquido de um fundo/classe num fim de mês
     chave: 'nenhuma: (cnpj_fundo_classe_norm, dt_comptc) repete em 161 pares (1.156.670 linhas, 1.156.509 pares distintos; todas as linhas são distintas)'
     tempo:
@@ -866,6 +898,7 @@ tabelas:
     - medidas.o_que
     verificado: 1.156.670 linhas; 1.156.509 pares (cnpj_fundo_classe_norm, dt_comptc); 1.156.670 linhas distintas — medido 2026-10-27
   extrato:
+    ultima_data: "2026-10-14"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'um extrato de informações do fundo/classe (regulamento: condomínio, prazo, público, taxas, limites de composição da carteira) numa data dt_comptc'
     chave: 'nenhuma: (cnpj_fundo_classe_norm, dt_comptc) repete em 38.804 pares (149.489 linhas, 110.685 pares distintos; 119.158 linhas distintas, 30.331 duplicatas exatas)'
     tempo:
@@ -931,6 +964,7 @@ tabelas:
     - medidas.unidade
     verificado: 46.806 linhas; 41.103 CNPJ_FUNDO distintos; 34.201 CD_CVM distintos; sem linhas totalmente duplicadas; SIT normal = 22 (gotcha) — medido 2026-10-27
   informe_diario:
+    ultima_data: "2026-10-14"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: 'o informe diário de um fundo/classe (ou subclasse) num dia útil: PL, cota, captação e resgate'
     chave: 'cnpj_fundo_classe_norm + id_subclasse (nulo conta como vazio) + dt_comptc: count(*) = count(DISTINCT) = 25.458 em dt_comptc = ''2026-09-30'' (partição; 81,5 mi de linhas no total)'
     tempo:
@@ -975,6 +1009,7 @@ tabelas:
     - medidas.unidade
     verificado: 81.549.118 linhas no total; 25.458 linhas, 25.458 combinações da chave e 25.074 cnpj_fundo_classe_norm distintos em 2026-09-30; 597 classes com subclasse, nenhuma tem também linha sem subclasse — medido 2026-10-27
   perfil_mensal:
+    ultima_data: "2026-09-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: o perfil mensal de um fundo/classe (cotistas por tipo, risco, estresse, derivativos, concentração de emissores) num mês
     chave: 'nenhuma: (cnpj_fundo_classe_norm, dt_comptc) repete (2.000.051 linhas, 1.999.706 pares); com versao ainda repetem (1.999.854); em dt_comptc = ''2026-09-30'' a chave (cnpj_fundo_classe_norm, dt_comptc) é única (5.304 linhas); linhas todas distintas'
     tempo:

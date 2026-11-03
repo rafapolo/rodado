@@ -12,6 +12,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "3.982.685 linhas, 3.982.685 favorecido_id distintos — medido 2026-10-27"
   pagamento:
+    ultima_data: "2026-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma parcela de seguro-defeso paga a um favorecido_id num mês de referência e município"
     chave: "nenhuma: (mes_referencia, favorecido_id, codigo_municipio_siafi) tem 25.144.850 distintos em 43.418.500 linhas; há repetição (em 202401, 58.641 grupos com mês, favorecido, município e valor idênticos)"
     tempo: {natureza: serie_mensal, coluna: mes_referencia, cobertura: "201301–202608"}
@@ -26,6 +27,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "43.418.500 linhas; chave composta 25.144.850 distintos (não única); 124.868 valores negativos; 121 linhas sem UF/município — medido 2026-10-27. Ver gotchas contar_por_nis e agregue_pela_pagamento"
   seguro_defeso:
+    ultima_data: "2026-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "view pagamento JOIN favorecido: uma parcela paga × (CPF, NIS, RGP, nome) do beneficiário; mesmo grão da pagamento"
     chave: "nenhuma: mesmas 43.418.500 linhas da pagamento, que não tem chave única"
     tempo: {natureza: serie_mensal, coluna: mes_referencia, cobertura: "201301–202608"}

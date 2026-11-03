@@ -48,7 +48,6 @@ tabelas:
     medidas:
       - {coluna: acessos, o_que: "número de acessos de banda larga fixa", unidade: "acessos", soma: sim}
     filtros_tipicos: ["ano = 2026 (partição; a tabela tem 62,6 mi de linhas)", "tecnologia = 'FTTH' (795.346 no perfil)", "velocidade = '> 34Mbps' (texto literal)", "produto = 'internet' (1.191.666; há 'linha dedicada', 'outros', 'm2m')", "porte_empresa = 'Pequeno Porte' ou 'Grande Porte'"]
-    use_para: "acessos por empresa, tecnologia e faixa de velocidade por município"
-    nao_use_para: "contar linhas como acessos; somar meses diferentes (cada mês é um retrato do estoque); empresa não é normalizada (ver column_codes)"
-    rascunho: [use_para, nao_use_para]
-    verificado: "ano = 2026: 1.397.962 linhas, 1.101.272 distintas, soma de acessos 112.302.051 (jan 55.845.849; fev 56.456.202) — medido 2026-10-27"
+    use_para: "acessos por empresa (agrupe por cnpj), tecnologia e faixa de velocidade por município, num mês"
+    nao_use_para: "contar linhas como acessos; somar meses diferentes (cada mês é o estoque: 52,9 a 55,0 mi por mês em 2025, a soma do ano daria 650 mi); agrupar pelo nome da empresa (8.707 nomes para 9.208 CNPJs em jan/2025)"
+    verificado: "ano = 2026: 1.397.962 linhas, 1.101.272 distintas, soma de acessos 112.302.051 (jan 55.845.849; fev 56.456.202) — medido 2026-10-27. ano = 2025, soma de acessos por mês: jan 52.861.764, jun 54.180.163, out 54.957.261, dez 53.883.546; empresa × cnpj distintos de 8.707/9.208 (jan) a 7.846/8.291 (dez) — medido 2026-11-03"

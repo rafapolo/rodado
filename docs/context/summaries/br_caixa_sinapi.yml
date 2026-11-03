@@ -3,6 +3,7 @@
 dataset: br_caixa_sinapi
 tabelas:
   insumos:
+    ultima_data: "2026-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "o preço mediano de um insumo da construção civil (codigo_insumo) numa UF num mês de referência"
     chave: "mes_referencia, codigo_insumo, uf (2.159.399 linhas = 2.159.399 distintos, medido)"
     tempo: {natureza: serie_mensal, coluna: mes_referencia, cobertura: "2024-10–2026-08 (23 meses; texto 'AAAA-MM')"}

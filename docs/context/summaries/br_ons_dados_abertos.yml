@@ -1552,6 +1552,7 @@ tabelas:
     - significado dos cod_indicador
     verificado: 37740 linhas, 37740 distintos da chave; tabela inteira — medido 2026-10-27
   ind_disponibilidade_fgeracao_uge_an:
+    ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma unidade geradora × ano, indicadores de disponibilidade de fonte de geração
     chave: cod_equipamento, din_ano (16060 linhas = 16060 distintos)
     tempo:
@@ -2116,6 +2117,7 @@ tabelas:
     - significado de tip_terminal
     verificado: 1442112 linhas, 1442112 distintos da chave; tabela inteira — medido 2026-10-27
   programacao_x_previsao:
+    ultima_data: "2026-10-25"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma usina (PDP) × patamar × dia, previsão e programação
     chave: dat_programacao, num_patamar, cod_usinapdp (86352 linhas = 86352 distintos em 2026-09-01 a 2026-09-03; não medido na tabela inteira)
     tempo:
@@ -2456,6 +2458,7 @@ tabelas:
     rascunho: *id001
     verificado: 29853 linhas; 29841 distintos da chave com versão — medido 2026-10-27
   taxa_teif_teip_parametro:
+    ultima_data: "2026-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma unidade geradora × período × tipo de insumo × versão (insumos do cálculo de TEIF/TEIP)
     chave: 'nenhuma: (nom_unidadegeradora, dat_periodo, nom_tpinsumo, num_versao) tem 673907 distintos em 674347 linhas (440 repetem)'
     tempo:

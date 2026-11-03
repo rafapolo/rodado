@@ -2785,16 +2785,9 @@ tabelas:
     - 'ESCALA_MOEDA: ''MIL'' ou ''UNIDADE'' (multiplicar por 1000 quando ''MIL''; gotcha escala_moeda)'
     - ST_CONTA_FIXA = 'S' para as contas padrão CVM (comparáveis entre empresas); 'N' são subcontas específicas da empresa (significado de S/N não documentado, deduzido do perfil)
     - CNPJ_CIA vem pontuado (00.000.000/0001-91); CD_CVM é texto com zeros à esquerda (gotcha cnpj_pontuado)
-    use_para: série de demonstração do resultado por empresa e conta, trimestral (ITR, três primeiros trimestres do exercício).
-    nao_use_para: somar contas diferentes entre si, somar sem filtrar ORDEM_EXERC, ou comparar empresas sem converter ESCALA_MOEDA.
-    rascunho:
-    - use_para
-    - nao_use_para
-    - ST_CONTA_FIXA
-    - hierarquia das contas fora das contas citadas
-    - natureza do ITR (trimestres)
-    - 'ITR: PENÚLTIMO = comparativo (bate com o visto na Petrobras)'
-    verificado: '2.078.009 linhas; chave CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC: 2.074.869 distintos; mesma estrutura de dfp_dre_con — medido 2026-10-27; Petrobras (CD_CVM 009512), DT_REFER 2025-09-30, conta 3.01, ÚLTIMO: 127.906.000 (trimestre, 2025-07-01 a 2025-09-30) e 370.178.000 (acumulado, 2025-01-01 a 2025-09-30), ESCALA_MOEDA ''MIL'''
+    use_para: "série de demonstração do resultado por empresa e conta, trimestral (ITR, os três primeiros trimestres do exercício; o 4º vem na DFP)"
+    nao_use_para: "somar contas diferentes entre si (a pai já soma as filhas), somar sem filtrar ORDEM_EXERC, ou comparar empresas sem converter ESCALA_MOEDA"
+    verificado: "2.078.009 linhas; chave CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC: 2.074.869 distintos; mesma estrutura de dfp_dre_con — medido 2026-10-27; Petrobras (CD_CVM 009512), DT_REFER 2025-09-30, conta 3.01, ÚLTIMO: 127.906.000 (trimestre, 2025-07-01 a 2025-09-30) e 370.178.000 (acumulado, 2025-01-01 a 2025-09-30), ESCALA_MOEDA 'MIL'. DT_REFER cai em março, junho e setembro em 99,9% das linhas (424.750, 841.287, 792.420; ~19,6 mil em nov/dez/mai/ago, exercício fora do ano civil); ST_CONTA_FIXA = 'S' são 87 códigos usados por até 726 companhias (3.01 com 6 grafias de DS_CONTA), 'N' 220 códigos; Petrobras 2025-09-30 trimestre: soma das filhas 3.04.xx = conta 3.04 (diferença 0); PENÚLTIMO de 2025-09-30 = ÚLTIMO de 2024-09-30 (369.561.000 acumulado, 129.582.000 trimestre): é o comparativo — medido 2026-11-03"
   itr_dre_ind:
     ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta contábil (CD_CONTA) da Demonstração do Resultado (individual (só a controladora, sem as controladas)) × companhia × data de referência (DT_REFER) × exercício (ORDEM_EXERC) × período (DT_INI_EXERC)

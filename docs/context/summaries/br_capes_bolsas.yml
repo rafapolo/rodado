@@ -3,6 +3,7 @@
 dataset: br_capes_bolsas
 tabelas:
   mobilidade_internacional:
+    ultima_data: "2019-12"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um pagamento de bolsa de mobilidade internacional da CAPES (processo de concessão × moeda; um processo aparece em várias linhas, uma por componente/moeda)"
     chave: "nenhuma: id_processo_concessao tem 98.219 distintos em 146.036 linhas (38.613 processos repetem); (id_processo_concessao, sigla_moeda) tem 131.477 distintos; só 64 linhas são cópias exatas"
     tempo: {natureza: serie_de_periodos, coluna: "ano_inicial/mes_inicial até ano_final/mes_final (período da bolsa)", cobertura: "2005–2023"}

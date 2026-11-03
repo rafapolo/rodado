@@ -3,6 +3,7 @@
 dataset: br_minc_salic
 tabelas:
   projetos:
+    ultima_data: "2026-01-01"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um projeto cultural da Lei Rouanet/SALIC (legado dump_2017 até 2016 + cópia api_salic de 2026-08)"
     chave: "id (214.030 linhas = 214.030 distintos); numero (PRONAC) NÃO é único: 110 pares (ver gotcha numero_repetido)"
     tempo: {natureza: retrato_atual, coluna: "numero/PRONAC (ano embutido); created_at e updated_at são datas de carga", cobertura: "legado 2000–2016; origem api_salic 2019–2026"}

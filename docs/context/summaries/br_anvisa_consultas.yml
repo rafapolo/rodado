@@ -3,6 +3,7 @@
 dataset: br_anvisa_consultas
 tabelas:
   agrotoxicos:
+    ultima_data: "2026-09-04"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um limite máximo de resíduo (LMR) de uma substância numa cultura, por ato legal e início de vigência"
     chave: "NO_SUBSTANCIA, NO_CULTURA, NU_LMR, DS_ATO_LEGAL, DT_INICIO_VIGENCIA (9.676 linhas = 9.676 distintos); só (NO_SUBSTANCIA, NO_CULTURA) tem 8.336 distintos"
     tempo: {natureza: serie_de_periodos, coluna: "DT_INICIO_VIGENCIA / DT_FIM_VIGENCIA (VARCHAR 'MM/DD/AAAA 00:00:00')", cobertura: "datas são texto: menor início 01/02/2015; DT_ATUALIZACAO = 08/31/2026 em todas as linhas"}

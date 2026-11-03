@@ -69,6 +69,7 @@ tabelas:
     nao_use_para: 'dados de 2022 em diante (param em 2021: use a tabela mensal).'
     verificado: 78 linhas, 78 anos distintos; 1944–2021 — medido 2026-10-27
   igp_di_mes:
+    ultima_data: "2023"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um mês do IGP-DI (colunas ano e mes trocadas na carga)
     chave: 'ano + mes: count(*) = count(DISTINCT (ano, mes)) = 954'
     tempo:
@@ -134,6 +135,7 @@ tabelas:
     nao_use_para: 'dados de 2022 em diante (param em 2021: use a tabela mensal).'
     verificado: 33 linhas, 33 anos distintos; 1989–2021 — medido 2026-10-27
   igp_m_mes:
+    ultima_data: "2023"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um mês do IGP-M (colunas ano e mes trocadas na carga)
     chave: 'ano + mes: count(*) = count(DISTINCT (ano, mes)) = 407'
     tempo:
@@ -207,6 +209,7 @@ tabelas:
     nao_use_para: 'dados de 2022 em diante (param em 2021: use a tabela mensal).'
     verificado: 53 linhas, 53 anos distintos; 1969–2021 — medido 2026-10-27; variacao_anual tem 1 valor infinito (inf) e 10 anos com índice 0.0 — filtre isinf/zero antes de agregar
   igp_og_mes:
+    ultima_data: "2023"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um mês do IGP-OG (colunas ano e mes trocadas na carga)
     chave: 'ano + mes: count(*) = count(DISTINCT (ano, mes)) = 652'
     tempo:

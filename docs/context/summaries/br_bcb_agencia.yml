@@ -3,6 +3,7 @@
 dataset: br_bcb_agencia
 tabelas:
   agencia:
+    ultima_data: "2024-11"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma agência bancária × mês (retrato mensal do cadastro de agências)"
     chave: "cnpj, sequencial_do_cnpj, dv_do_cnpj, ano, mes (única de 2009 a 2024: 3.801.182 linhas = 3.801.182 distintos). Em 2007-2008 a chave com cod_compe_ag repete cerca de 35 linhas por mês; id_instalacao é nulo antes de 2020 (só preenchido em 2020 parcial e 2021 em diante), onde com ano, mes também é única."
     tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2007-09 a 2024-11 (2007 só set-dez; 2024 só meses 1, 5 e 11; demais anos 12 meses)"}
@@ -15,6 +16,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "4.100.044 linhas; chave (cnpj, sequencial_do_cnpj, dv_do_cnpj, ano, mes) única em 3.801.182 linhas de 2009+; 2024: 51.129 linhas, 3 meses; colunas nome_da_instituicao, cod_compe_bco, segmentos, estado, coluna, coluna_2 nulas ou pessoais em 2024 (use nome_instituicao e segmento) — medido 2026-10-27"
   agencia_olinda:
+    ultima_data: "2026-10-13"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma agência bancária no retrato atual (posição 2026-10-13, coleta 2026-10-15) vinda da API Olinda do BCB"
     chave: "cnpjbase, cnpjsequencial, cnpjdv (13.664 linhas = 13.664 distintos)"
     tempo: {natureza: retrato_atual, coluna: posicao, cobertura: "2026-10-13–2026-10-13"}
