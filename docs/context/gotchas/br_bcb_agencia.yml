@@ -9,13 +9,16 @@ gotchas:
       FINANCEIRAS..." como linha (197). Corrigido no lugar nessa data: inteiros
       sem '.0', cnpj/sequencial/dv/cep completados com zeros, rodapé apagado
       (originais em ~/backups/bcb_agencia_20261029 no beelink). O cep segue em
-      três formatos da fonte: 8 dígitos, '69.005-300' e 9 dígitos (sem explicação
-      conhecida, não mexido); data_inicio é um número (2936, 3105...),
-      provavelmente o serial de data do Excel, não conferido.
+      quatro formatos da fonte, não mexidos: 8 dígitos, '69.005-300', '69005-300'
+      (9 caracteres, o formato 5-3 normal, não é dígito a mais) e restos de
+      máscara vazia ('-', '.   -', '0 .   -'). data_inicio muda de formato na
+      série: até 2019-09 é o serial de data do Excel (39933 = 2009-04-30;
+      1908-01-14 a 2019-04-29 ao converter com 1899-12-30), depois vem texto
+      '2009-04-30 00:00:00' ou '30/04/2009'. Converta pelos três antes de usar.
     tabelas: [agencia]
     colunas: [cnpj, sequencial_do_cnpj, dv_do_cnpj, cep, data_inicio]
     severidade: silencioso
-    verificado: "depois do conserto: cnpj com 8 caracteres em 2.760.063 linhas, 10 (pontuado, 2010-04 a 2024-11) em 1.339.784; 0 linhas de rodapé; 0 valores com '.0'; cep 8 dígitos 1.500.074, 9 dígitos 1.572.922, '69.005-300' 1.017.426; 617 de 636 raízes de 2024-11 achadas em br_me_cnpj.empresas — medido 2026-10-29"
+    verificado: "depois do conserto: cnpj com 8 caracteres em 2.760.063 linhas, 10 (pontuado, 2010-04 a 2024-11) em 1.339.784; 0 linhas de rodapé; 0 valores com '.0'; cep 8 dígitos 1.500.074, 9 caracteres 1.572.922 (1.551.522 no formato 5-3), '69.005-300' 1.017.426; 617 de 636 raízes de 2024-11 achadas em br_me_cnpj.empresas — medido 2026-10-29; data_inicio: 2.395.814 seriais (1908-01-14 a 2019-04-29), 802.273 em texto datetime, 311.081 dd/mm/aaaa, medido 2026-11-03"
   - id: cabecalho_muda_ao_longo_da_serie
     resumo: "A planilha mudou de cabeçalho em 17 anos, e cada nome virou uma coluna: o mesmo dado está em colunas diferentes conforme o mês (nome_da_agencia até 2019-08, nome_agencia depois; nome_da_instituicao só em 2007-09 e 2007-10, nome_instituicao depois; estado de 2007-11 a 2014-04, uf em toda a série). Use coalesce entre os pares."
     detalhe: >
