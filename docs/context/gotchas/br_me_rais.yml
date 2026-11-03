@@ -61,3 +61,15 @@ gotchas:
     colunas: [cbo_1994, cbo_2002, cnae_1, cnae_2, cnae_2_subclasse, raca_cor, grau_instrucao_1985_2005, grau_instrucao_apos_2005, idade]
     severidade: silencioso
     verificado: "2026-10-31, sigla_uf='SC': 2000 com cbo_1994 cheio e cbo_2002 vazio; 2005 com cbo_2002 cheio; cnae_2 e grau_instrucao_apos_2005 vazios em 2005 e cheios em 2006; raca_cor com 2.207.505 de 2.473.349 em 2006"
+  - id: cbo_2002_sem_zero_a_esquerda_2024
+    resumo: "Em microdados_vinculos de 2024 e 2025, cbo_2002 dos códigos que começam com 0 vem sem o zero ('10310' em vez de '010310'). Junte com a CBO por lpad(cbo_2002, 6, '0')."
+    detalhe: >
+      Afeta o grande grupo 0 (forças armadas, policiais e bombeiros militares). Sem o
+      lpad, o join com br_bd_diretorios_brasil.cbo_2002 perde esses vínculos e as
+      séries por ocupação mostram as categorias zerando em 2024. Com o lpad, os códigos
+      sem par na CBO caem de 35 para 7.
+    tabelas: [microdados_vinculos]
+    colunas: [cbo_2002]
+    severidade: silencioso
+    verificado: "2025, vínculos ativos em 31/12: 1.027.791 em 35 códigos sem par na CBO sem lpad; 4.731 em 7 códigos com lpad; 2010 tem os códigos com 6 dígitos — medido 2026-11-03"
+
