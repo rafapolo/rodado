@@ -165,6 +165,12 @@ jobs:
           mkdir -p "$GITHUB_WORKSPACE/pages/plataformas/datative"
           cp -r dist/. "$GITHUB_WORKSPACE/pages/plataformas/datative/"
           rm -rf "$GITHUB_WORKSPACE/_datative"
+      # Plataformas montadas acima sem cartão de compartilhamento ganham um,
+      # do plataformas.json (título, dek, img/og-<slug>.png). Página que já
+      # tem og:title fica como veio. O sitemap.xml já lista estas URLs
+      # (scripts/gera_seo.py, urls_externas).
+      - name: Cartão OG das plataformas
+        run: bun scripts/og_plataformas.ts
       - name: Setup Pages
         uses: actions/configure-pages@v6
       - name: Upload artifact
