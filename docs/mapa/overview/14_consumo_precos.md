@@ -35,7 +35,16 @@ erDiagram
         double preco_revenda
         string data_coleta
     }
+    consumidorgovbr_reclamacoes {
+        date data_abertura
+        string uf
+        string segmento_de_mercado
+        string problema
+        string respondida
+        string nota_do_consumidor
+    }
     ipca_mes_categoria_municipio ||--o{ anp_precos_combustiveis : "id_municipio + mes"
+    consumidorgovbr_reclamacoes }o--|| ipca_mes_categoria_municipio : "uf"
 ```
 
 
@@ -73,14 +82,9 @@ absoluta; a escolha depende da pergunta.
 
 **Conclusão:** Pobre gasta 45% com comida, rico 20%.
 
-### 2. Gasolina: ICMS varia 30%
+### 2. Gasolina por UF (ANP, `br_anp_combustiveis.precos`, set/2026, gasolina comum, preço entre R$ 3 e 12)
 
-| Região | Preço |
-|--------|-------|
-| Sudeste | menor |
-| Norte/Nordeste | **maior** |
-
-**Conclusão:** ICMS mais alto no Norte penaliza pobres.
+RR 7,57 · AM 7,41 · AC 7,38 · RO 7,37 … SP 6,38 · MG 6,32 · RS 6,30; média dos postos 6,56. Conferido em `br_anp_precos_combustiveis.microdados` (ago/2026: média 6,58; RR 7,57). Série: 6,18 (set/2025) → 6,76 (abr/2026) → 6,56 (set/2026). Desde 2023 o ICMS da gasolina é ad rem e uniforme entre UFs (LC 192/2022) — a nota antiga "ICMS varia 30%" está superada.
 
 ### 3. A cesta básica: quanto come o pobre?
 
@@ -135,15 +139,13 @@ absoluta; a escolha depende da pergunta.
 
 **Conclusão:** Pobre gasta 45% com comida, não poupa nada; rico poupa 20%.
 
-### 8. Combustíveis: ICMS = imposto regressivo
+### 8. Preço médio por produto (ANP, set/2026)
 
-| Combustível | Preço Médio | ICMS | Impacto Relativo |
-|------------|------------|------|-----------------|
-| Gasolina | R$ 5,80/L | 25-30% | Pobre (carro) |
-| Diesel | R$ 4,50/L | 12-15% | Pobre (ônibus) |
-| Gás de cozinha | R$ 100/botijão | 0-12% | Pobre (cozinha) |
+Etanol 4,32 · GNV 4,88 · gasolina comum 6,56 · aditivada 6,76 · diesel S500 6,79 · diesel S10 7,17 · GLP 13 kg 115,83.
 
-**Conclusão:** Gás de cozinha (basic need) tem ICMS variável — famílias pobres gastam 8% do salário só com gás.
+### 8b. Consumidor.gov.br (2024, `br_mj_consumidorgovbr.reclamacoes`, por `year("Data Abertura")`)
+
+1.431.961 reclamações. "Bancos, Financeiras e Administradoras de Cartão" 495.892 (34,6%, nota 2,55); telecom 177.013 (12,4%); aéreo 84.427 (5,9%). `LIKE 'Bancos%'` pega também outro segmento (36,7%) — filtrar pelo nome exato.
 
 ### INPC (1-5 salarios) vs IPCA-15 (1-40)
 
@@ -171,12 +173,12 @@ absoluta; a escolha depende da pergunta.
 - **IGP-M x IPCA-15:** 21,1% contra 3,45% em 2020 — 6x.
 
 - **Inflação × Classe:** alimentação pesa mais para pobre
-- **Combustível × ICMS:** Norte paga mais
+- **Combustível × Região:** gasolina R$ 7,57 em RR vs R$ 6,30 no RS (set/2026)
+- **Consumo × Crédito:** bancos e financeiras = 34,6% das reclamações do Consumidor.gov.br (2024)
 - **Transporte × Pobreza:** sem carro, depende de ônibus caro
 - **Inflação × Região:** Nordeste = 6,8% vs. Sul = 5,0% — região pobre mais afetada
 - **Cesta × Salário:** 40% do salário vai para cesta básica
 - **POF × Classe:** rico = 20% poupança; pobre = 2% — mobilidade impossível
-- **Gás × Pobreza:** 8% do salário em gás de cozinha = escolha entre comer e cozinhar
 - **IPCA × Alimentação:** item alimentação sobe mais rápido que IPC geral
 
 ## Hipóteses Explicativas

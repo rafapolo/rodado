@@ -199,3 +199,8 @@ The lack of quality structured transit across most of the country pushes individ
 ## Public Policy Implications
 
 Expanding TMA beyond the Rio–São Paulo axis could reduce reliance on individual motorization. Income-differentiated fare policy could ease the fare burden observed in the North/South. Road-safety investment targeted at high-Black-population peripheries could reverse the two-decade trend in accident deaths. Filling the regulated ground-transport data gap (ANTT still blocked) would allow monitoring of highways and intercity transport — currently a blind spot in this theme.
+
+## New data (November 2026 review)
+
+- `br_senatran_frota.municipio_tipo` — registered fleet by municipality and `tipo_veiculo`, monthly since 2013 (through 2026-08). It is a stock: one month per year; there is a `tipo_veiculo='total'` row (do not add it to the types). Dez/2013 → ago/2026: total 81,6 → 132,8 mi; automóvel 45,4 → 65,7 mi; motocicleta+motoneta 21,4 → 38,1 mi. Matches `br_senatran_estatisticas.uf_tipo` (jul/2026: 132.323.836 in both).
+- `br_prf_acidentes.pessoa` — one row per person involved in an accident on federal highways, with `tipo_veiculo`, `indicador_morto` ('1'/'0', texto), `estado_fisico`, `idade`, `sexo`. Deaths on motorcycles: 1.478 of 5.274 (2018) → 2.012 of 6.043 (2025); total matches `ocorrencia.quantidade_mortos`. Só malha federal (~16% dos óbitos of transporte do SIM).

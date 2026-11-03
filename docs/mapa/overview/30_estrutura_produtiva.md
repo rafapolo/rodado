@@ -160,3 +160,8 @@ Barreiras à entrada limitam competition. Acesso diferenciado a crédito perpet�
 ## Implicações para Políticas Públicas
 
 Políticas de concorrência podem atuar em setores concentrados. Apoio a MPEs pode reduzir mortalidade. Crédito direcionado para microempresa pode melhorar produtividade. Breaking up de conglomerados pode aumentar competição. Políticas anticíclicas (manutenção de empregos em crises) podem evitar mort新浪 em massa.
+
+## Dados novos (revisão de 2026-11)
+
+- `br_rf_simples_estatisticas.optantes_municipio` — estoque mensal de optantes por município e `regime` (simples, simei_total, simei_portal, simei_inicio_exercicio), 2007-07 a 2026-09. É estoque: filtrar uma `data` e um regime (gotcha `estoque_nao_fluxo`). Dez/2010 → set/2026: MEI 0,77 → 17,63 mi; Simples 4,34 → 26,01 mi.
+- `br_me_cnpj.simples` — opção atual por empresa (`opcao_mei`/`opcao_simples` são 0/1 inteiros, com datas de opção e exclusão). Out/2026: 17,17 mi com `opcao_mei=1` e sem `data_exclusao_mei` (confere com a estatística da Receita).

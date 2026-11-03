@@ -11,6 +11,8 @@ erDiagram
     br_inep_avaliacao_alfabetizacao_meta { int ano string rede double taxa_alfabetizacao }
     br_inep_educacao_especial_rendimento { int ano string etapa_ensino double taxa_reprovacao double taxa_abandono }
     world_iea_timss_school_context_grade_4 { int year string country }
+    world_iea_timss_student_achievement_grade_4 { int country_m49 double totwgt double asmmat01_05 double asssci01_05 }
+    world_iea_timss_student_achievement_grade_8 { int country_m49 double totwgt double bsmmat01_05 double bsssci01_05 }
     world_oecd_pisa_student ||--o{ world_iea_timss_school_context_grade_4 : "country"
 ```
 
@@ -29,6 +31,17 @@ erDiagram
 | Media OCDE | 465 |
 
 **Conclusao:** nem o topo brasileiro alcanca a media da OCDE.
+
+### 1b. TIMSS 2023 (Brasil estreia)
+
+| Pais | 4o mat | 4o cie | 8o mat | 8o cie |
+|---|---|---|---|---|
+| Singapura | 615 | 607 | 605 | 606 |
+| EUA | 517 | 532 | 488 | 513 |
+| Chile | 444 | 479 | 416 | 455 |
+| Brasil | 400 | 425 | 378 | 420 |
+
+Media ponderada por `totwgt` da media dos 5 valores plausiveis; `country_m49` nulo (subnacionais) fora. Brasil 56o de 59 no 4o ano (mediana 514) e 42o de 44 no 8o (mediana 488); no nivel elementar (>= 400) ou acima: 48,5% (4o) e 37,6% (8o). Medias batem com o relatorio oficial da IEA (400/425 e 378/420). Amostra brasileira grande (22 mil por serie) — oversample.
 
 ### 2. Alfabetizacao na rede publica
 

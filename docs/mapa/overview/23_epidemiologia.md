@@ -33,15 +33,26 @@ erDiagram
         string tipo_unidade
         string id_natureza_juridica
     }
+    sinan_microdados_dengue {
+        int ano
+        date data_notificacao
+        string sigla_uf_residencia
+        string id_municipio_residencia
+        string classificacao_final
+        string evolucao_caso
+        string idade_paciente
+        date data_obito
+    }
     sim_microdados ||--o{ cnes_estabelecimento : "id_municipio_ocorrencia"
     sinasc_microdados ||--o{ cnes_estabelecimento : "id_municipio_nascimento"
     sim_microdados ||--o{ sinasc_microdados : "id_municipio / ano"
+    sinan_microdados_dengue }o--o{ sim_microdados : "id_municipio + ano"
 ```
 
 
 ## Contexto e Síntese dos Dados
 
-Os dados do SIM em `br_ms_sim.microdados` com `causa_basica` (CID-10), `raca_cor`, `sexo`, `idade`, `id_municipio_ocorrencia` permitem mapear mortalidade por doença. O SINASC em `br_ms_sinasc.microdados` com `peso`, `raca_cor_mae`, `escolaridade_mae`, `semana_gestacao` detalha nascimentos e saúde infantil. O CNES em `br_ms_cnes.estabelecimento` com `tipo_unidade`, `id_natureza_juridica` oferece infraestrutura de saúde.
+Os dados do SIM em `br_ms_sim.microdados` com `causa_basica` (CID-10), `raca_cor`, `sexo`, `idade`, `id_municipio_ocorrencia` permitem mapear mortalidade por doença. O SINASC em `br_ms_sinasc.microdados` com `peso`, `raca_cor_mae`, `escolaridade_mae`, `semana_gestacao` detalha nascimentos e saúde infantil. O CNES em `br_ms_cnes.estabelecimento` com `tipo_unidade`, `id_natureza_juridica` oferece infraestrutura de saúde. A dengue está em `br_ms_sinan.microdados_dengue` (`classificacao_final` com espaço à direita desde 2014 — usar `trim()`; caso provável = tudo que não é `'5'`; desde 2022 o arquivo já vem sem descartados). No SIM, dengue é `A90`/`A91` até 2024 e `A97*` desde 2025.
 
 ## Revelações Importantes — Epidemiologia
 
@@ -160,6 +171,18 @@ Os dados do SIM em `br_ms_sim.microdados` com `causa_basica` (CID-10), `raca_cor
 
 **Conclusão:** Câncer de colo de útero mata 2x mais no Norte/Nordeste por falta de papanicolau.
 
+### 11. Dengue 2024: a maior epidemia da história
+
+| Ano | Casos prováveis (SINAN) | Óbitos (SIM, causa básica) |
+|-----|------|------|
+| 2015 | 1.700.546 | 930 |
+| 2019 | 1.554.126 | 902 |
+| 2022 | 1.393.877 | 1.279 |
+| 2023 | 1.508.653 | 1.322 |
+| **2024** | **6.434.137** | **6.741** |
+
+SINAN `evolucao_caso='2'` dá 6.270 óbitos em 2024 (conferência independente do SIM). ES ausente 2021-2024 (sistema próprio). 2025 preliminar: SIM 2.024 óbitos (A97*); o total de prováveis 2025 do SINAN (3,4 mi) não foi publicado por falta de conferência externa. Medido 2026-11-02.
+
 ## Cruzamentos Poderosos
 
 - **COVID × Raça:** pardos morreram mais por exposição ocupacional
@@ -170,6 +193,7 @@ Os dados do SIM em `br_ms_sim.microdados` com `causa_basica` (CID-10), `raca_cor
 - **Esperança vida × Raça:** indígenas = 65 anos vs. brancos = 76 anos
 - **Exames × Capital:** 80% dos exames especializados em capitais
 - **Cancer × Região:** colo útero 2x mais no Norte por falta de prevenção
+- **Dengue × 2024:** 6,43 mi casos prováveis e 6.741 mortes — mais que 2020-2023 somados
 
 ## Hipóteses Explicativas
 

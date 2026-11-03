@@ -176,3 +176,7 @@ Pressão internacional criou áreas formais não efetivamente protegidas. Land g
 ## Implicações para Políticas Públicas
 
 Fortalecimento da fiscalização pode reduzir desmatamento. Regularização fundiária pode garantir direitos territoriais. Demarcação de terras quilombolas e indígenas pode proteger populações tradicionais. Resolução de disputas municipais pode acabar com insegurança jurídica. Uso de geobr para análise espacial pode identificar áreas prioritárias para políticas públicas.
+
+## Dados novos (revisão de 2026-11)
+
+- `br_sgb_setorizacao_risco.setores` — setorização de risco geológico alto/muito alto do SGB: um polígono (centroide em `latitude`/`longitude`) por setor, com `tipolo_g1..g5` (processo), `grau_risco`, `num_domicilios`, `num_pessoas`, `ano_setorizacao`. Filtrar `setorizacao_mais_recente` (senão conta a mesma gente várias vezes). Retrato atual: 7.808 setores, 1.587 municípios, 2.032.865 pessoas (672.393 em risco muito alto); inundação 1,30 mi pessoas. Anomalia: Xapuri/AC soma 36.241 pessoas em 22 setores, acima da população do município — não usar ranking municipal sem conferir.

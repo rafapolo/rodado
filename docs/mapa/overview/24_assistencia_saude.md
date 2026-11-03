@@ -33,14 +33,27 @@ erDiagram
         string quantidade_equipamentos_ativos
         int indicador_equipamento_disponivel_sus
     }
+    ans_beneficiario_informacao_consolidada {
+        int ano
+        int mes
+        string sigla_uf
+        string id_municipio
+        string cnpj
+        string modalidade_operadora
+        string cobertura_assistencia_beneficiario
+        string contratacao_beneficiario
+        bigint quantidade_beneficiario_ativo
+        date data_carga
+    }
     cnes_estabelecimento ||--o{ cnes_profissional : "id_estabelecimento_cnes"
     cnes_estabelecimento ||--o{ cnes_equipamento : "id_estabelecimento_cnes"
+    ans_beneficiario_informacao_consolidada }o--o{ cnes_estabelecimento : "id_municipio"
 ```
 
 
 ## Contexto e Síntese dos Dados
 
-Os dados do CNES em `br_ms_cnes.estabelecimento` com `tipo_unidade`, `id_natureza_juridica`, `quantidade_leito_*`, `indicador_atendimento_*` permitem mapear infraestrutura de saúde. Profissionais em `br_ms_cnes.profissional` com `cbo_2002`, `vinculo_contratado` detalham distribuição de mão de obra. Equipamentos em `br_ms_cnes.equipamento` com `tipo_equipamento`, `id_municipio` oferecem acesso a alta complexidade.
+Os dados do CNES em `br_ms_cnes.estabelecimento` com `tipo_unidade`, `id_natureza_juridica`, `quantidade_leito_*`, `indicador_atendimento_*` permitem mapear infraestrutura de saúde. Profissionais em `br_ms_cnes.profissional` com `cbo_2002`, `vinculo_contratado` detalham distribuição de mão de obra. Equipamentos em `br_ms_cnes.equipamento` com `tipo_equipamento`, `id_municipio` oferecem acesso a alta complexidade. Os beneficiários de planos estão em `br_ans_beneficiario.informacao_consolidada` (2,3 bi linhas; filtrar `ano`+`mes` e a `MAX(data_carga)` do mês — cargas convivem; texto de `cobertura_assistencia_beneficiario` vem com acento quebrado, usar `LIKE 'M%dico-Hospitalar'`).
 
 ## Revelações Importantes — Assistência à Saúde
 
@@ -187,6 +200,19 @@ Os dados do CNES em `br_ms_cnes.estabelecimento` com `tipo_unidade`, `id_naturez
 
 **Conclusao:** razao branca/preta de 1,61x sobre 1,51 bi de procedimentos. Restrito a 2023+ porque o preenchimento de raca sobe de 18,9% (2008) para 90,5% (2025). Fonte: `br_ms_sia.producao_ambulatorial`.
 
+### Plano de saúde por UF (ANS out/2025 × IBGE 2025)
+
+| UF | Beneficiários méd.-hosp. | População | Cobertura |
+|----|------|------|------|
+| SP | 18.702.331 | 46.081.801 | 40,6% |
+| DF | 1.027.454 | 2.996.899 | 34,3% |
+| RJ | 5.614.774 | 17.223.547 | 32,6% |
+| MA | 539.786 | 7.018.211 | 7,7% |
+| RR | 32.775 | 738.772 | 4,4% |
+| **Brasil** | **53.277.390** | **213.421.037** | **25,0%** |
+
+Série de dezembro: 2014 50,2 mi → 2017-2019 ~47,0 mi → 2024 52,2 mi → out/2025 53,3 mi (recorde). Conferido contra a taxa de cobertura publicada pela ANS (~25%). Medido 2026-11-02.
+
 ## Cruzamentos Poderosos
 - **Internacao x Urgencia:** 72,1% entram pela urgencia.
 - **Alcance x Entrega:** ESF sobe 5 pontos, polio cai 16.
@@ -200,6 +226,7 @@ Os dados do CNES em `br_ms_cnes.estabelecimento` com `tipo_unidade`, `id_naturez
 - **Alta complexidade × Capital:** 85% da quimio em SP, RJ, MG
 - **Medicamentos × Acesso:** 60% da pop. sem acesso gratuito a remédios
 - **ISAB × Atenção básica:** 30-40% das internações seriam evitáveis
+- **Plano de saúde × Território:** 40,6% de cobertura em SP, 4,4% em RR; Brasil 25%
 
 ## Hipóteses Explicativas
 

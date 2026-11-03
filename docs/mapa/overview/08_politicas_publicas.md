@@ -22,83 +22,65 @@ erDiagram
         string conta
         string funcao
     }
+    novo_bolsa_familia_pagamento {
+        string mes_competencia
+        string uf
+        string codigo_municipio_siafi
+        float valor_parcela
+        int favorecido_id
+    }
+    beneficio_mantido_municipio_mes {
+        int ano
+        int mes
+        string sigla_uf
+        string id_municipio
+        string especie_beneficio_rotulo
+        string categoria_beneficio
+        int quantidade
+        float valor_total
+    }
+    emendas {
+        int ano_emenda
+        string nome_autor_emenda
+        string id_municipio
+        float valor_empenhado
+        float valor_pago
+    }
     bolsa_familia_pagamento ||--o{ siconfi_orcamento : "id_municipio / sigla_uf"
+    beneficio_mantido_municipio_mes ||--o{ siconfi_orcamento : "id_municipio"
 ```
 
 
 ## Contexto e Síntese dos Dados
 
-O Bolsa Família em `br_cgu_beneficios_cidadao.bolsa_familia_pagamento` com 25,8 GB detalha transferências com `valor_parcela`, `id_municipio`. O SICONFI em `br_me_siconfi` revela execução orçamentária.
+O Bolsa Família em `br_cgu_beneficios_cidadao.bolsa_familia_pagamento` com 25,8 GB detalha transferências com `valor_parcela`, `id_municipio`. O SICONFI em `br_me_siconfi` revela execução orçamentária. Desde 2023 o programa está em `br_cgu_novo_bolsa_familia.pagamento` (mês a mês até 2026-09; agregar pela `pagamento`, não pela view). O BPC e os demais benefícios do INSS estão em `br_mps_beneficios.beneficio_mantido_municipio_mes` (filtrar `categoria_beneficio='bpc_loas'`; o rótulo da espécie vem truncado). Emendas em `br_cgu_emendas_parlamentares.emendas` (vai até 2026).
 
 ## Revelações Importantes — Transferências Sociais
 
-### 1. Bolsa Família: quanto chega nos pobres?
+### 1. Novo Bolsa Família: 18,7 milhões de famílias, R$ 677/mês
 
-| Indicador | Valor |
-|-----------|-------|
-| Total transferido (2021) | **R$ 30,4 bilhões** |
-| Pagamentos | 160 milhões |
-| Valor médio por pagamento | R$ 190 |
-| Valor máximo | R$ 2.226 |
-| Municípios cobertos | **5.570 (100%)** |
+`br_cgu_novo_bolsa_familia.pagamento`, `mes_competencia='202609'`: 18.695.578 pagamentos (18.652.576 `favorecido_id` distintos), R$ 12,66 bi, média R$ 677, 5.571 municípios SIAFI. Jan/2025: 20.500.422 famílias. Soma de 2025: **R$ 157,1 bi** (2021, Bolsa Família antigo: R$ 30,4 bi, R$ 190 por pagamento).
 
-**Conclusão:** R$ 190 por pagamento é **muito abaixo** da linha de pobreza.
+### 2. Cobertura por UF (famílias por mil habitantes, população IBGE 2025)
 
-### 2. Onde vai o Bolsa Família?
+| UF | Famílias | Por mil hab. | Valor médio |
+|----|----------|--------------|-------------|
+| MA | 1.144.350 | 163,1 | R$ 695 |
+| PI | 537.549 | 158,8 | R$ 673 |
+| BA | 2.341.654 | 157,5 | R$ 665 |
+| SP | 2.182.844 | 47,4 | R$ 671 |
+| SC | 200.352 | 24,5 | R$ 676 |
+| Brasil | 18.695.578 | 87,6 | R$ 677 |
 
-| UF | Valor Médio | Observação |
-|----|-------------|------------|
-| AC | R$ 273 | Norte recebe mais |
-| AP | R$ 231 | — |
-| MA | R$ 213 | — |
-| SP | R$ 176 | Sudeste recebe menos |
-| SC | R$ 179 | Sul recebe menos |
+### 3. Emendas parlamentares (empenhado, `emendas`)
 
-**Conclusão:** Norte e Nordeste recebem valores médios **36% maiores** que Sudeste.
+2022 R$ 25,5 bi · 2023 R$ 35,4 bi · 2024 R$ 44,8 bi · 2025 **R$ 47,1 bi** (30% do Novo Bolsa Família de 2025) · 2026 até out. R$ 40,1 bi. 54% do empenhado sem parlamentar individual (relator, comissão, bancada).
 
-### 3. O programa de R$ 30 bi é suficiente?
+### 4. BPC (INSS, benefícios mantidos)
 
-| Cálculo | Valor |
-|---------|-------|
-| R$ 30,4 bilhões | Total BF |
-| 160 milhões pagamentos | — |
-| 50 milhões famílias | Estimativa |
-| R$ 608 | Por família/ano |
-| R$ 50 | Por família/mês |
+Jan/2026: 6.416.346 BPCs, R$ 9,74 bi/mês. Pessoa com deficiência 3.748.742 (jan/2023: 2.801.682, **+34%**); idoso 2.667.604 (jan/2023: 2.365.081, +13%).
 
-**Conclusão:** O valor por família é **insuficiente** para tirar da pobreza.
-
-### 4. Emendas parlamentares: R$ 25 bi para quem?
-
-| Indicador | Valor |
-|-----------|-------|
-| Total emendas (2022) | **R$ 25,4 bilhões** |
-| Número de emendas | 6.108 |
-
-**Conclusão:** R$ 25 bi em emendas compete com R$ 30 bi do Bolsa Família.
-
-### 5. Auxílio Brasil: quanto chega vs. necessidade
-
-| Indicador | Valor |
-|-----------|-------|
-| Valor médio BF | R$ 190 |
-| Linha pobreza (Banco Mundial) | R$ 450 |
-| Linha extrema pobreza | R$ 210 |
-| Valor mínimo CF | R$ 600 (proposto) |
-
-**Conclusão:** Valor atual está entre pobreza e extrema pobreza — não tira ninguém da miséria.
-
-### 6. BPC: pessoas com deficiência e idosos
-
-| Benefício | Valor | Cobertura |
-|-----------|-------|-----------|
-| BPC Idoso (65+) | R$ 1.212 | 2,5 milhões |
-| BPC Deficiente | R$ 1.212 | 2,1 milhões |
-| Pedidos negados | 40% | — |
-
-**Conclusão:** 40% dos pedidos são negados — bureaucracy as barrier.
-
-### 7. Garantia Safra: agricultores familiares no semiárido
+### 5. Garantia Safra: agricultores familiares no semiárido
 
 | Indicador | Valor |
 |-----------|-------|
@@ -108,7 +90,7 @@ O Bolsa Família em `br_cgu_beneficios_cidadao.bolsa_familia_pagamento` com 25,8
 
 **Conclusão:** Apenas 15% dos agricultores do semiárido recebem — coverage muy baixa.
 
-### 8. Temporalidade das transferências: quanto dura a pobreza
+### 6. Temporalidade das transferências: quanto dura a pobreza
 
 | Programa | Duração Média |
 |----------|--------------|
@@ -133,13 +115,12 @@ O Bolsa Família em `br_cgu_beneficios_cidadao.bolsa_familia_pagamento` com 25,8
 ## Cruzamentos Poderosos
 - **Genero x Pasta:** 69,7% da gestao de educacao e 12,1% das prefeituras.
 
-- **BF × Região:** Norte/Nordeste recebe mais, mas tem piores indicadores
-- **Emendas × BF:** emendas (políticos) quase = BF (pobres)
-- **Valor × Pobreza:** R$ 190/mês não tira ninguém da pobreza
-- **BPC × Negações:** 40% dos pedidos negados = barreira burocrática
+- **BF × Região:** 163 famílias/mil hab. no MA vs 24,5 em SC (set/2026)
+- **Emendas × BF:** emendas 2025 (R$ 47,1 bi) = 30% do Novo Bolsa Família (R$ 157,1 bi)
+- **Valor × Tempo:** R$ 190 por pagamento (2021) → R$ 677 por família (2026)
+- **BPC × Deficiência:** +34% BPC-PcD vs +13% BPC-idoso, jan/2023→jan/2026
 - **Garantia Safra × Cobertura:** apenas 15% do semiárido = proteção parcial
 - **Transferências × Temporalidade:** bridge not solution — maioria volta à pobreza
-- **Auxílio × Linha Pobreza:** R$ 190 vs. R$ 450 necessários = gap de 60%
 
 ## Hipóteses Explicativas
 

@@ -48,22 +48,22 @@ O Brasil tem uma das maiores taxas de cesariana do mundo, muito acima dos 15% re
 
 | Raça da Mãe | Cesarianas | Normais | Taxa Cesariana |
 |-------------|------------|---------|----------------|
-| Raça 1 (parda) | 560.835 | 287.283 | **66,1%** |
-| Raça 3 | 6.853 | 4.833 | 58,6% |
-| Raça 4 (branca) | 779.855 | 641.243 | 54,9% |
-| Raça 2 (branca) | 94.128 | 88.932 | 51,4% |
-| Raça 5 (indígena) | 6.851 | 19.686 | **25,8%** |
+| Branca (1) | 560.835 | 287.283 | **66,1%** |
+| Amarela (3) | 6.853 | 4.833 | 58,6% |
+| Parda (4) | 779.855 | 641.243 | 54,9% |
+| Preta (2) | 94.128 | 88.932 | 51,4% |
+| Indígena (5) | 6.851 | 19.686 | **25,8%** |
 
-**Conclusão:** Mães pardas têm taxa de cesariana de 66% — quase 3x o recomendado. Mães indígenas têm 26% — mais próximo do ideal.
+**Conclusão (corrigida 2026-11, SINASC 2022):** rótulos estavam trocados. Mães **brancas** têm 66% de cesarianas; pardas 55%, pretas 51%, indígenas 26%.
 
 ### 2. Por que brancos morrem mais de armas de fogo?
 
 | Raça | Óbitos (arma fogo) | Idade Média |
 |------|---------------------|-------------|
-| Raça 4 (branca) | **11.536** | 28,8 anos |
-| Raça 1 (parda) | 2.602 | 31,2 anos |
+| Parda (4) | **11.536** | 28,8 anos |
+| Branca (1) | 2.602 | 31,2 anos |
 
-**Conclusão:** Contrariando a narrativa usual, **brancos morrem mais** de armas de fogo que pardos. Isso pode indicar subnotificação de pardos ou diferentes contextos de violência.
+**Conclusão (corrigida 2026-11):** rótulos trocados — pardos, não brancos, morrem mais. Em 2024 (X93–X95): parda 19.258, branca 5.216, preta 2.494 de 27.423; 79% negros.
 
 ### 3. Bolsa Família: quanto chega nos pobres?
 
@@ -80,7 +80,7 @@ O Brasil tem uma das maiores taxas de cesariana do mundo, muito acima dos 15% re
 
 | Região | Mortalidade Infantil (por 1.000 nascidos) |
 |--------|----------------------------------------|
-| Norte | **18,2** |
+| Norte | **18,2** (sem base; 2022 medido: 14,1 — ver revisão abaixo) |
 | Nordeste | 14,5 |
 | Sudeste | 10,1 |
 | Sul | 9,8 |
@@ -149,3 +149,8 @@ A alta taxa de cesarianas pode ser explicada pela hipótese da convenience: méd
 ## Implicações para Políticas Públicas
 
 A regulamentação de cesarianas eletivas pode reduzir taxas. O acompanha doula pode humanizar partos. A expansão do valor do BF pode tirar famílias da extrema pobreza. A interiorização de médicos (mais vagas em faculdades de medicina no Norte/Nordeste) pode reduzir desertos de saúde. O pré-natal universal pode reduzir baixo peso ao nascer em 50%.
+
+## Revisão 2026-11 — dados novos e correções
+
+- Mortalidade infantil 2022 (métrica `mortalidade_infantil`, residência): Norte 14,1‰ (4.054/288.435), Nordeste 12,9, Centro-Oeste 11,4, Sudeste 10,7, Sul 9,5, Brasil 11,6 (29.644/2.560.251). Substitui a tabela antiga (18,2/14,5/10,1/9,8/12,3), que não tinha base.
+- `br_ans_beneficiario.informacao_consolidada` — `ano`, `mes`, `sigla_uf`, `cobertura_assistencia_beneficiario` (texto com mojibake: filtrar `LIKE 'M%'` para médico-hospitalar), `quantidade_beneficiario_ativo`, `data_carga` (usar a máxima). Out/2025: 53.277.390 beneficiários médico-hospitalares = 25,0% da população; SP 40,6%, DF 34,3%, RJ 32,6% … AC 5,3%, RR 4,4%; 46.673 sem UF.

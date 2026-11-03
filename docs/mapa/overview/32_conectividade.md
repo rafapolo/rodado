@@ -158,3 +158,8 @@ Provedores não investem em áreas de baixa rentabilidade. Telefonia móvel não
 ## Implicações para Políticas Públicas
 
 Investimento público em fibra pode corrigir disparidade. Obrigatoriedade de expansão em licenças pode forçar investimento. Subsídio para internet de baixa renda pode democratizar acesso. Escola como hub de conectividade (compartilhar internet com comunidade) pode amplifier impacto. Regulação de preços pode reduzir custo de 3,5% para 1% do salário.
+
+## Dados novos (revisão de 2026-11)
+
+- `br_anatel_telefonia_movel.microdados` — acessos móveis por município, empresa, `tecnologia` (NR = 5G, LTE = 4G), `produto` (VOZ+DADOS, DADOS, M2M, PONTO_DE_SERVICO) e `modalidade`, mês a mês até 2026-08. Para linhas de pessoas, filtrar `produto IN ('VOZ+DADOS','DADOS')`. Ago/2026: 69,7 mi de linhas 5G = 31,6% (1,6% em ago/2022); 2.830 municípios com 5G; capitais 41,7%, interior 27,6%; Nordeste 21,1%.
+- `br_anatel_banda_larga_fixa.microdados` — acessos fixos por município, empresa, `porte_empresa`, `tecnologia` (FTTH/FTTB = fibra), `velocidade` (faixa), `produto`; acessos é estoque mensal — usar dezembro e `produto='internet'` (ver gotcha). Dez/2025: 52,7 mi acessos, 77% fibra, 63,4% de pequenos provedores (83% no Nordeste, 51% no Sudeste).

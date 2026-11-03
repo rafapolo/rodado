@@ -141,3 +141,8 @@ A concentração do crédito pode ser explicada pela exigência de garantias rea
 ## Implicações para Políticas Públicas
 
 O PRONAF expansion pode beneficiar agricultura familiar. Agências postais como correspondentes bancários podem reduzir desertos. A regulação antitruste em telecom pode melhorar competição. Fundos de investimento para MPEs (venture capital regional) podem diversificar economia. Desconcentração produtiva (polos industriais no Norte/Nordeste) pode reduzir dependência do Sudeste.
+
+## Revisão 2026-11 — dados novos e correções
+
+- `br_bcb_agencia.agencia` (retrato mensal; usar `uf`, `union_by_name`): 23.051 agências em 2014-11, 16.550 em 2024-11 (−28%). Por 100 mil hab. (pop. `br_ibge_populacao.uf`): Norte 6,5 → 5,5; Nordeste 6,5 → 5,0; Centro-Oeste 12,1 → 8,0; Sudeste 14,2 → 9,1; Sul 15,0 → 10,3; Brasil 11,4 → 7,8. A tabela antiga da página (45/38/12/15) não tinha base.
+- `br_bcb_pix_municipio.transacoes` — `AnoMes`, `Municipio_Ibge`, `Regiao`, `VL_/QT_` Pagador/Recebedor PF/PJ. 2025, Pix pagos por PF por habitante: Norte 349, Nordeste 305, Centro-Oeste 304, Sudeste 285, Sul 237, Brasil 290 (61,97 bi transações). Valor pago por PF+PJ: R$ 29,4 tri.
