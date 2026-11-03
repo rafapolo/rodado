@@ -342,7 +342,7 @@ Três lições gerais:
   as versões velhas: SIA com 7.159 arquivos contra 495 no beelink, `despesas_candidato` com 258
   contra 67; leitura direta do COLD por glob conta linhas em dobro). Essas versões velhas
   (6.664 + 191 arquivos, 42,6 GiB) foram apagadas do COLD em 2026-11-03, sob a trava do backup,
-  depois de conferir nome e tamanho do que ficou; a lista está em `~/.backups/` do Mac. Antes de apagar, salvar
+  depois de conferir nome e tamanho do que ficou (a lista foi descartada a pedido). Antes de apagar, salvar
   chave, tamanho e etag (`mc ls -r --json`) em `~/.backups/` e conferir que o que a substituiu
   está no beelink, no S3 e no COLD com os mesmos nomes e tamanhos.
 
