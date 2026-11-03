@@ -1,0 +1,20 @@
+dataset: br_anp_precos_combustiveis
+gotchas:
+  - id: media_mistura_unidades
+    resumo: "preco_venda mistura R$/litro, R$/13kg (Glp) e R$/m3 (Gnv): a média sem filtrar produto não significa nada (2024: 20,42; Glp sozinho 103,65, Gasolina 5,93). Sempre filtre ou agrupe por produto."
+    tabelas: [microdados]
+    colunas: [preco_venda, produto, unidade_medida]
+    severidade: silencioso
+    verificado: "2024: AVG(preco_venda) geral 20,42; por produto Gasolina 5,93, Etanol 4,07, Diesel S10 6,03, Glp 103,65 (R$/13kg), Gnv 4,77 (R$/m3) — medido 2026-11-03"
+  - id: cobertura_de_umas_450_cidades
+    resumo: "Só 424–470 municípios por ano desde 2020 (677 em 2004), não os 5.570: a pesquisa da ANP cobre cidades escolhidas. Município ausente é sem coleta, não preço zero; ranking ou mapa por município cobre uma fração do país."
+    tabelas: [microdados]
+    colunas: [id_municipio]
+    severidade: silencioso
+    verificado: "COUNT(DISTINCT id_municipio) por ano: 2004 677, 2010 678, 2015 625, 2020 473, 2022 469, 2023 468, 2024 468, 2025 424; 498 em 2020–2026; 1 linha com id_municipio nulo em 16.887.683 — medido 2026-11-03"
+  - id: preco_compra_vazio_desde_2021
+    resumo: "preco_compra vem preenchido em 62% das linhas de 2004 e em 22% de 2020, e em 0% de 2021 em diante: margem (venda menos compra) só existe até 2020, e a média de compra de um período longo é de poucos anos."
+    tabelas: [microdados]
+    colunas: [preco_compra]
+    severidade: silencioso
+    verificado: "% de linhas com preco_compra não nulo: 2004 62,1; 2010 41,9; 2015 34,7; 2020 21,8; 2021, 2022, 2023, 2024 e 2025 0,0 — medido 2026-11-03"

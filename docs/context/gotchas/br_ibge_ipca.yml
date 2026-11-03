@@ -12,3 +12,9 @@ gotchas:
     colunas: [id_categoria, peso_mensal]
     severidade: silencioso
     verificado: "mes_categoria_brasil 2025-12: grupos 9 (peso 100,0), subgrupos 19 (100,0), itens 51 (100,0), subitens 377 (100,0), geral 1 linha com id_categoria nulo; soma de peso_mensal das 456 linhas com id_categoria 400,0 — medido 2026-10-28"
+  - id: municipio_so_9_cidades
+    resumo: "mes_categoria_municipio cobre só 9 municípios (2020–2026, 34.275 linhas cada): as cidades onde o IBGE coleta preço, não todo município. Município fora da lista não tem IPCA próprio: use a RM ou o Brasil."
+    tabelas: [mes_categoria_municipio]
+    colunas: [id_municipio]
+    severidade: silencioso
+    verificado: "COUNT(DISTINCT id_municipio) = 9 (1200401, 2111300, 2401305, 2701506, 2800308, 5002704, 5107206, 5208707, 5300108), 34.275 linhas cada, ano de 2020 a 2026 — medido 2026-11-03"

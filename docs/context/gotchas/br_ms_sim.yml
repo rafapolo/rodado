@@ -1,7 +1,7 @@
 dataset: br_ms_sim
 gotchas:
   - id: causa_vs_circunstancia
-    resumo: "Para causa de morte use causa_basica (CID-10), nunca circunstancia_obito."
+    resumo: "Para causa de morte use causa_basica (CID-10), nunca circunstancia_obito, que subconta (RJ 2020: 749 contra 789). Suicídio = substr(causa_basica,1,3) BETWEEN 'X60' AND 'X84'."
     detalhe: >
       circunstancia_obito é campo auxiliar, decodifica limpo pelo dicionario
       ("Suicídio" = '2') e mesmo assim subconta: é preenchido só em parte dos
