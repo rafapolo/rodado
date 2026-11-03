@@ -1,0 +1,25 @@
+dataset: br_rodado_eleicoes
+gotchas:
+  - id: secao_setor_2026_local_do_1_turno
+    resumo: "Em secao_setor, 2026 tem o local de votação e o setor censitário do 1º turno: 983 seções votaram em outro local no 2º turno e o setor delas não acompanha."
+    detalhe: >
+      secao_setor tem uma linha por (ano, id_municipio_tse, zona, secao) e, em
+      2026, o local é o do 1º turno. Quem cruza voto do 2º turno com o Censo
+      por essa tabela põe, nas seções que mudaram de local, o voto num setor
+      onde o eleitor não votou. Para excluir ou tratar essas seções use
+      secoes_local_mudou_2026_2t (983 seções em 177 municípios, todas com
+      local_1t diferente de local_2t) ou o recorte estrito
+      mudanca_local_2turno_2026 (383 seções em 96 municípios; os dois recortes
+      não são o mesmo). As duas tabelas trazem zona e secao como INTEGER e
+      secao_setor, como VARCHAR: junte com CAST(s.zona AS INT) e
+      CAST(s.secao AS INT). Das 983, 830 estão em secao_setor 2026 e 817 têm
+      setor; das 383, todas têm setor. Não existe ainda o setor do 2º turno
+      (as tabelas de mudança têm lat_2t e lon_2t, mas ninguém as cruzou com
+      os setores). São ~0,1 a 0,2% das 517.179 seções de 2026; só pesa em
+      análise por seção ou setor do 2º turno. Plano:
+      tasks/plans/secao_setor_2turno_2026.md (opção C, colunas _2t, se alguma
+      análise pedir).
+    tabelas: [secao_setor, secoes_local_mudou_2026_2t, mudanca_local_2turno_2026]
+    colunas: [id_setor_censitario, zona, secao]
+    severidade: silencioso
+    verificado: "ano=2026: secao_setor 517.179 linhas; mudanca_local_2turno_2026 383 seções (96 municípios), 383 com setor; secoes_local_mudou_2026_2t 983 (177 municípios), 830 achadas em secao_setor e 817 com setor, 738 com distancia_m > 0 — medido 2026-11-03"
