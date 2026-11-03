@@ -4,7 +4,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 `last_update` é a data do parquet mais recente do dataset no beelink (para tabela nativa do
 `.duckdb`, sem parquet, o `scrape_date` do catálogo).
 
-284 datasets, 1726 tabelas.
+285 datasets, 1728 tabelas.
 
 | dataset | tabelas | linhas | last_update |
 |---|---:|---:|---|
@@ -122,7 +122,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_ibge_pas` | 2 | 812.172 | 2026-10-25 |
 | `br_ibge_pevs` | 2 | 558.451 | 2026-07-05 |
 | `br_ibge_pia` | 2 | 1.004.426 | 2026-10-25 |
-| `br_ibge_pib` | 7 | 201.871 | 2026-10-09 |
+| `br_ibge_pib` | 8 | 225.905 | 2026-11-03 |
 | `br_ibge_pnad` | 3 | 9.587.801 | 2026-07-05 |
 | `br_ibge_pnad_covid` | 2 | 2.651.013 | 2026-09-25 |
 | `br_ibge_pnadc` | 14 | 31.529.302 | 2026-07-09 |
@@ -252,6 +252,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_simet_educacao_conectada` | 1 | 137.914 | 2026-07-09 |
 | `br_siop_orcamento` | 4 | 37.247 | 2026-10-21 |
 | `br_sp_alesp` | 3 | 686.545 | 2026-10-31 |
+| `br_sp_gov_ssp` | 1 | 5.607.730 | 2026-11-03 |
 | `br_sp_saopaulo_geosampa_iptu` | 1 | 93.430.758 | 2026-07-09 |
 | `br_stf_corte_aberta` | 2 | 2.708.896 | 2026-10-09 |
 | `br_stj_dadosabertos` | 1 | 3.604.791 | 2026-10-21 |
@@ -269,7 +270,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_transferegov` | 3 | 30.346 | 2026-10-21 |
 | `br_transferegov_siconv` | 62 | 69.060.758 | 2026-10-21 |
 | `br_trase_supply_chain` | 7 | 1.824.843 | 2026-07-18 |
-| `br_tse_eleicoes` | 31 | 1.715.973.281 | 2026-11-01 |
+| `br_tse_eleicoes` | 31 | 1.715.995.425 | 2026-11-03 |
 | `br_tse_filiacao_partidaria` | 2 | 42.201.443 | 2026-10-09 |
 | `br_ufmg_censo_demografico_1872` | 58 | 1.251.630 | 2026-10-07 |
 | `eu_sanctions` | 1 | 44.043 | 2026-10-30 |

@@ -2,7 +2,7 @@
 
 **Gerado por `scripts/gera_catalog_md.py`, a partir de `_rodado_metadata/catalog.parquet` — não editar à mão.** Descrições vêm de `docs/context/dataset_descriptions.yaml`; a coluna Dado até vem de `docs/context/dataset_freshness.yaml` (curado, só ~6 datasets por enquanto — vazio não significa "sem gap", significa "não conferido ainda"). Editar os YAML e regenerar (`build_metadata_catalog.py` → `gera_catalog_md.py`), nunca este arquivo.
 
-**284 datasets, 1.726 tabelas, 35.657.534.098 linhas.** 22 dataset(s) sem descrição. 4 com data de frescor conferida (de 284).
+**285 datasets, 1.728 tabelas, 35.663.188.006 linhas.** 23 dataset(s) sem descrição. 4 com data de frescor conferida (de 285).
 
 | Dataset | Descrição | Tabelas | Linhas | Dado até | Fonte |
 |---|---|---:|---:|---|---|
@@ -120,7 +120,7 @@
 | `br_ibge_pas` | _(sem descrição)_ | 2 | 812.172 | — | Base dos Dados |
 | `br_ibge_pevs` | IBGE — Produção da Extração Vegetal e da Silvicultura | 2 | 558.451 | — | Base dos Dados |
 | `br_ibge_pia` | _(sem descrição)_ | 2 | 1.004.426 | — | Base dos Dados |
-| `br_ibge_pib` | IBGE — PIB municipal e estadual | 7 | 201.871 | — | Base dos Dados |
+| `br_ibge_pib` | IBGE — PIB municipal e estadual | 8 | 225.905 | — | IBGE — Contas Nacionais Trimestrais (PIB e valor adicionado por setor), série completa |
 | `br_ibge_pnad` | IBGE — PNAD, microdados compatibilizados históricos | 3 | 9.587.801 | — | Base dos Dados |
 | `br_ibge_pnad_covid` | IBGE — PNAD-COVID19, microdados mensais de mai a nov/2020 (2,65 mi pessoas, pesar por v1032) e o dicionário | 2 | 2.651.013 | — | IBGE — PNAD COVID19, microdados mensais mai–nov/2020 |
 | `br_ibge_pnadc` | IBGE — PNAD Contínua, mercado de trabalho e rendimento | 14 | 31.529.302 | — | Base dos Dados |
@@ -250,6 +250,7 @@
 | `br_simet_educacao_conectada` | Programa Educação Conectada — conectividade de internet em escolas | 1 | 137.914 | — | Base dos Dados |
 | `br_siop_orcamento` | SIOP — Sistema Integrado de Planejamento e Orçamento federal | 4 | 37.247 | — | SIOP |
 | `br_sp_alesp` | _(sem descrição)_ | 3 | 686.545 | — | ALESP — deputados, despesas de gabinete e lotação de funcionários |
+| `br_sp_gov_ssp` | _(sem descrição)_ | 1 | 5.607.730 | — | SSP-SP — SPDados criminais, um registro por rubrica de boletim de ocorrência |
 | `br_sp_saopaulo_geosampa_iptu` | Prefeitura de São Paulo — cadastro de IPTU (GeoSampa) | 1 | 93.430.758 | — | Base dos Dados |
 | `br_stf_corte_aberta` | STF — decisões do projeto Corte Aberta | 2 | 2.708.896 | — | Base dos Dados |
 | `br_stj_dadosabertos` | STJ — decisões monocráticas e acórdãos publicados em 2021 (só este ano) | 1 | 3.604.791 | — | STJ dados abertos |
@@ -267,7 +268,7 @@
 | `br_transferegov` | TransfereGov — planos de ação, programas e transferências (API normalizada) | 3 | 30.346 | — | TransfereGov |
 | `br_transferegov_siconv` | TransfereGov/SICONV — convênios, contratos de repasse e execução física/financeira completa | 62 | 69.060.758 | — | Transferegov/SICONV completo |
 | `br_trase_supply_chain` | Trase — cadeia de suprimentos de soja e carne bovina, do frigorífico/esmagadora à origem | 7 | 1.824.843 | — | Base dos Dados |
-| `br_tse_eleicoes` | TSE — eleições 2026 (candidatos, votação, resultados, bens, receitas) | 31 | 1.715.973.281 | — | Base dos Dados |
+| `br_tse_eleicoes` | TSE — eleições 2026 (candidatos, votação, resultados, bens, receitas) | 31 | 1.715.995.425 | — | Base dos Dados |
 | `br_tse_filiacao_partidaria` | TSE — filiação partidária | 2 | 42.201.443 | — | Base dos Dados |
 | `br_ufmg_censo_demografico_1872` | Recenseamento Geral do Império do Brasil de 1872 (UFMG) por província, município e paróquia, nos dados originais e corrigidos | 58 | 1.251.630 | — | Base dos Dados |
 | `eu_sanctions` | União Europeia — lista de sanções | 1 | 44.043 | — | EU Sanctions |
