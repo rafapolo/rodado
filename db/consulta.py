@@ -876,7 +876,7 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(dados)
 
     def _erro(self, status, msg, **extra):
-        self._responde(status, json.dumps({"erro": msg, **{k: v for k, v in extra.items() if v}},
+        self._responde(status, json.dumps({"erro": rodado_sql.mascara_texto(msg), **{k: v for k, v in extra.items() if v}},
                                           ensure_ascii=False) + "\n",
                        "application/json; charset=utf-8")
 
@@ -1190,7 +1190,7 @@ class Handler(BaseHTTPRequestHandler):
                     pass
                 with rodado_sql.Cronometro(con) as crono:
                     try:
-                        rel = con.sql(comandos[0].query)
+                        rel = rodado_sql.mascara_cpf(con.sql(comandos[0].query))
                         colunas = rel.columns
                         if formato == "parquet":
                             # Gravado pelo servidor (não pela SQL do usuário) dentro do

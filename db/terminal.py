@@ -219,7 +219,7 @@ def mostra(sql: str, linhas: int):
             inicio = time.monotonic()
             with rodado_sql.Cronometro(con) as crono, Girando():
                 try:
-                    rel = con.sql(comando.query)
+                    rel = rodado_sql.mascara_cpf(con.sql(comando.query))
                     largura = shutil.get_terminal_size((120, 40)).columns
                     # show() imprime pelo sys.stdout: captura para colorir; o indicador
                     # segue girando até a tabela pronta ser escrita
@@ -257,7 +257,7 @@ def _roda(sql: str, linhas: int):
     except KeyboardInterrupt:
         avisa(PESSEGO, "interrompido")
     except duckdb.Error as e:
-        avisa(VERMELHO, str(e))
+        avisa(VERMELHO, rodado_sql.mascara_texto(str(e)))
     finally:
         _sinal(ultimo)
 

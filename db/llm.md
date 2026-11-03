@@ -150,6 +150,11 @@ o corpo traz a armadilha e a `dica`; repita com `?ciente=1` depois de tratar del
 
 ## 4. Exportar
 
+**CPF sai mascarado** (`***.456.789-**`) em todo resultado e mensagem de erro, também quando
+renomeado ou dentro de outro texto. A consulta vê o CPF inteiro: filtre e junte por ele
+normalmente (`WHERE cpf = '...'`, `JOIN ... USING (cpf)`), só não espere recebê-lo de volta.
+CNPJ vem inteiro.
+
 Cada requisição devolve no máximo {limite_maximo} linhas. Para mais que isso, agregue no servidor
 ou fatie (uma requisição por `ano`, `sigla_uf`… ou com `ORDER BY` + `OFFSET`), sempre uma por vez.
 
