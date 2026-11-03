@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Preenche os blocos gerados da home (pages/index.html e pages/en.html).
 
-A home é uma apresentação curta: a vitrine inteira de plataformas, o teaser do
+A home é uma apresentação curta: oito plataformas escolhidas (HOME_PLATAFORMAS), o teaser do
 DataViz (estático) e as análises mais recentes em cartões de notícia — no EN,
 só as escritas em inglês. Os 43 temas saíram dela para
 pages/temas/index.html (e temas-en/index.html) — leitores relataram que a
@@ -27,7 +27,10 @@ PAGES = RAIZ / "pages"
 MANIFEST = PAGES / "analises" / "results" / "manifest.json"
 PLATAFORMAS = PAGES / "plataformas" / "plataformas.json"
 
-N_ANALISES = 4
+N_ANALISES = 8
+# a vitrine da home mostra só estas, nesta ordem; /plataformas/ continua com todas
+HOME_PLATAFORMAS = ["eleicoes", "brasilume", "templos-religiosos", "os-rios-estao-secando",
+                    "datative", "viso", "fincrime", "religioes"]
 LIMITE_DEK = 230
 
 TEXTO = {
@@ -126,7 +129,11 @@ def bloco_plataformas(itens: list[dict], lang: str) -> str:
     linhas = [f'  <h2 id="plataformas">{t["plataformas_h2"]}</h2>',
               f'  <p class="secao-dek">{t["plataformas_dek"]}</p>',
               '  <div class="teaser vitrine">']
-    for it in itens:
+    por_slug = {it["slug"]: it for it in itens}
+    faltam = [s for s in HOME_PLATAFORMAS if s not in por_slug]
+    if faltam:
+        sys.exit(f"HOME_PLATAFORMAS: {faltam} não estão em plataformas.json")
+    for it in (por_slug[s] for s in HOME_PLATAFORMAS):
         href = href_relativo(it.get("url") or f"/plataformas/{it['slug']}/")
         titulo = campo(it, "title")
         alt = campo(it, "caption") or titulo
