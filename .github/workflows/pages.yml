@@ -108,8 +108,22 @@ jobs:
             rm -rf pages/plataformas/brasilume
             exit 0
           fi
-          aws s3 sync s3://brasilumen/data/ pages/plataformas/brasilume/data/ --endpoint-url https://hel1.your-objectstorage.com --no-progress
-          test -s pages/plataformas/brasilume/data/meta.json
+          # O Hetzner às vezes derruba o canal (THROUGHPUT_FAILURE) ou limita
+          # (SLOW_DOWN). O sync é incremental, então cada tentativa só baixa o
+          # que faltou; a espera cresce para o limite passar. Se nem assim
+          # vier tudo, o brasilume sai deste deploy e o resto do site publica
+          # (antes um erro passageiro do bucket derrubava o site inteiro).
+          export AWS_MAX_ATTEMPTS=10 AWS_RETRY_MODE=adaptive
+          for t in 1 2 3 4; do
+            if aws s3 sync s3://brasilumen/data/ pages/plataformas/brasilume/data/ \
+                 --endpoint-url https://hel1.your-objectstorage.com --no-progress; then
+              test -s pages/plataformas/brasilume/data/meta.json && exit 0
+            fi
+            echo "::warning::sync do brasilume falhou (tentativa $t); esperando $((t * 30)) s"
+            sleep $((t * 30))
+          done
+          echo "::warning::bucket do brasilume não respondeu; /plataformas/brasilume fica fora deste deploy."
+          rm -rf pages/plataformas/brasilume
       # pet16704 vive em git.rodado.xyz (Gitea próprio, não GitHub), então
       # actions/checkout não serve — é um clone raso comum, sem credencial
       # porque o repo aceita clone anônimo.
