@@ -1,14 +1,17 @@
 dataset: br_rf_cno
 gotchas:
   - id: snapshot_por_extracao
-    resumo: "Cada data_extracao é o cadastro inteiro. Fixe uma extração antes de contar obras."
+    resumo: "microdados, areas, cnaes e vinculos têm só o último retrato (uma data_extracao). O passado está em *_historico: filtrar uma data antiga nas tabelas atuais devolve zero linhas."
     detalhe: >
-      microdados empilha 191 extrações completas. Contar sem filtrar
-      data_extracao multiplica cada obra por quantas extrações a viram.
-    tabelas: [microdados]
+      Desde 2026-11-03 as 4 tabelas guardam só o retrato mais novo de cada uma
+      (microdados 2026-01-28; areas, cnaes e vinculos 2026-09-12: as tabelas não andam
+      juntas). Os 192/312 retratos de 2024-08-05 em diante estão em microdados_historico,
+      areas_historico, cnaes_historico e vinculos_historico (ver historico_como_ler).
+      Evolução ou estado numa data passada sai do histórico, nunca das tabelas atuais.
+    tabelas: [microdados, areas, cnaes, vinculos]
     colunas: [data_extracao]
     severidade: silencioso
-    verificado: "191 data_extracao distintas; a última (2025-07-28) tem 3.006.410 linhas — medido 2026-09-25"
+    verificado: "1 data_extracao por tabela: microdados 3.259.913 linhas = 3.259.913 id_cno (2026-01-28), areas 4.531.627, cnaes 3.942.713, vinculos 431.211 (2026-09-12); contagens iguais às do mesmo retrato antes da troca — medido 2026-11-03"
   - id: id_responsavel_nan
     resumo: "id_responsavel é a string 'nan' para todo responsável pessoa física: não junte por CPF."
     detalhe: >
@@ -20,21 +23,21 @@ gotchas:
     severidade: silencioso
     verificado: "extração 2025-07-28: 1.981.742 de 3.006.410 linhas com id_responsavel = 'nan', 1.024.668 com 14 dígitos, 0 NULL — medido 2026-09-25"
   - id: retratos_com_buraco_desde_2025_07
-    resumo: "Desde 2025-07 o espelho só tem o retrato mais novo do CNO: não calcule evolução por data_extracao nesse trecho."
+    resumo: "No histórico de microdados não há retrato entre 2025-07-28 e 2026-01-28: não calcule evolução nesse trecho."
     detalhe: >
       Cada data_extracao repete a base inteira. Em 2026-11-01 a coleta trouxe só o
       retrato mais novo com linhas, 2026-01-28, e pulou os ~120 intermediários
       (148 GB de leitura). O metadado da fonte lista datas até 2026-10 que estão
-      vazias na contagem exata. Para o estado atual, filtre max(data_extracao).
-    tabelas: [microdados]
-    colunas: [data_extracao]
+      vazias na contagem exata. Em microdados_historico o período 2025-07-28 → 2026-01-28 é um salto, não uma série.
+    tabelas: [microdados_historico]
+    colunas: [inicio, fim]
     severidade: silencioso
     verificado: "max(data_extracao) = 2026-01-28, 192 retratos no disco — medido 2026-11-01"
   - id: historico_como_ler
     resumo: "Nas tabelas *_historico cada linha vale de inicio a fim (datas de data_extracao, inclusive). Retrato de uma data D: WHERE D BETWEEN inicio AND fim. Estado atual: fim = max(fim)."
     detalhe: >
       microdados_historico, areas_historico, cnaes_historico e vinculos_historico
-      guardam os mesmos retratos das tabelas originais em forma compacta: uma linha
+      guardam todos os retratos (as tabelas atuais só têm o último) em forma compacta: uma linha
       por período em que a linha inteira (todas as colunas menos data_extracao) se
       repetiu em retratos consecutivos. Não há data_extracao: a coluna virou inicio e
       fim. Uma obra que muda qualquer campo abre um período novo, então contar linhas
@@ -48,18 +51,18 @@ gotchas:
     severidade: silencioso
     verificado: "reconstrução por inicio <= data <= fim igual à tabela original em todos os retratos (contagem e soma do hash da linha): microdados 192, areas 192, cnaes 192, vinculos 312; 2025-03-09 dá 2.816.370 obras nos dois lados — medido 2026-11-03"
   - id: retratos_duplicados_no_espelho
-    resumo: "microdados, areas e cnaes contam em dobro algumas extrações (arquivo copiado duas vezes no sync): 2025-05-26 e 2025-05-28 em microdados têm 5,8 mi linhas para 2,9 mi obras."
+    resumo: "Consultas antigas sobre as tabelas de antes de 2026-11-03 contavam em dobro algumas extrações (arquivo copiado duas vezes no sync); o histórico não tem a duplicação."
     detalhe: >
-      Os pares de arquivo são idênticos byte a byte (md5): microdados 115/116 e
-      134/135, 13 pares em areas e 6 em cnaes. As tabelas *_historico foram geradas
-      sem a segunda cópia e não têm a duplicação. Nas originais, deduplique por
-      retrato ou use o histórico.
-    tabelas: [microdados, areas, cnaes]
-    colunas: [data_extracao]
+      Os pares de arquivo eram idênticos byte a byte (md5): microdados 115/116 e
+      134/135, 13 pares em areas e 6 em cnaes (2025-05-26 em microdados: 5,8 mi linhas
+      para 2,9 mi obras). As tabelas *_historico foram geradas sem a segunda cópia.
+      Número tirado das tabelas antigas nessas datas está dobrado.
+    tabelas: [microdados_historico, areas_historico, cnaes_historico]
+    colunas: [inicio, fim]
     severidade: silencioso
     verificado: "md5 igual em 2 pares de microdados, 13 de areas, 6 de cnaes; 2025-05-26: 5.831.496 linhas, 2.915.748 id_cno — medido 2026-11-03"
   - id: retrato_2026_01_nulo_no_lugar_de_nan
-    resumo: "No retrato 2026-01-28 de microdados os vazios são NULL; nos anteriores são a string 'nan'. Filtre os dois (IS NULL OR = 'nan')."
+    resumo: "Em microdados (retrato 2026-01-28) os vazios são NULL; nos retratos anteriores do histórico são a string 'nan'. Filtre os dois (IS NULL OR = 'nan')."
     detalhe: >
       O coletor novo grava NULL em id_responsavel, id_cno_vinculado, nome_empresarial,
       caixa_postal e afins. Por isso toda obra que existia em 2025-07-28 abre um período
