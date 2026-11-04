@@ -3,6 +3,10 @@
 # O Caddy fica em primeiro plano: se ele cair, o container cai e o haloy o refaz.
 set -u
 cd "$(dirname "$0")"
+# DuckDB 2.0 mantém mais arquivos abertos entre consultas: com o limite padrão de 1.024,
+# CAGED (702 parquet) depois do PIB falhou 3 de 6 vezes com "Too many open files";
+# com 65.536, 0 de 8 (medido no beelink em 2026-11-04)
+ulimit -n 65536 2>/dev/null || ulimit -n "$(ulimit -Hn)"
 
 laco() {  # nome, comando...
   local nome=$1; shift

@@ -6,7 +6,7 @@ FROM caddy:2.10.2-alpine AS caddy
 FROM python:3.12-slim
 ADD --chmod=755 https://github.com/tsl0922/ttyd/releases/download/1.7.7/ttyd.x86_64 /usr/local/bin/ttyd
 COPY --from=caddy /usr/bin/caddy /usr/local/bin/caddy
-RUN pip install --no-cache-dir duckdb==1.5.5 prompt_toolkit==3.0.51 pygments==2.19.2 wcwidth==0.2.13 numpy==2.3.4 \
+RUN pip install --no-cache-dir duckdb==2.0.0 prompt_toolkit==3.0.51 pygments==2.19.2 wcwidth==0.2.13 numpy==2.3.4 \
     "mcp==1.28.1" "pyyaml>=6.0" "uvicorn>=0.30" \
  && useradd -m rodado && mkdir -p /dados && chown rodado /dados
 USER rodado
