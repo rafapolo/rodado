@@ -91,6 +91,7 @@ def href_relativo(url: str) -> str:
 
 
 def bloco_analises(itens: list[dict], lang: str) -> str:
+    # tradução ("par" + "lang": "en") não conta como análise a mais no total
     """PT: as mais recentes em português. EN: só as escritas em inglês — sem
     nenhuma, o bloco sai vazio e a home EN fica só com plataformas e DataViz."""
     en = lang == "en"
@@ -115,7 +116,7 @@ def bloco_analises(itens: list[dict], lang: str) -> str:
         )
     linhas.append("  </div>")
     linhas.append(f'  <p class="secao-mais"><a href="/analises/">'
-                  f'{t["analises_todas"].format(n=len(itens))}</a></p>')
+                  f'{t["analises_todas"].format(n=sum(1 for i in itens if not (i.get("par") and i.get("lang") == "en")))}</a></p>')
     return "\n".join(linhas)
 
 

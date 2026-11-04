@@ -60,12 +60,12 @@ MARCAS_COMUNS = (
 # leitor encontra na página.
 DESCRICOES = {
     "index.html": (
-        "1.726 tabelas de dados oficiais brasileiros cruzadas em 43 investigações "
+        "1.734 tabelas de dados oficiais brasileiros cruzadas em 43 investigações "
         "sobre desigualdade, poder, economia, saúde e violência — o retrato que o "
         "Estado já tem de si mesmo."
     ),
     "en.html": (
-        "1,726 tables of official Brazilian data, cross-referenced into 43 "
+        "1,734 tables of official Brazilian data, cross-referenced into 43 "
         "investigations on inequality, power, economy, health and violence — the "
         "portrait the State already has of itself."
     ),
@@ -140,9 +140,21 @@ def contraparte(path: Path) -> Path | None:
         alvo = PAGES / rel.replace("temas/", "temas-en/", 1)
     elif rel.startswith("temas-en/"):
         alvo = PAGES / rel.replace("temas-en/", "temas/", 1)
+    elif rel in _pares_analises():
+        alvo = PAGES / _pares_analises()[rel]
     else:
         return None
     return alvo if alvo.exists() else None
+
+
+def _pares_analises() -> dict[str, str]:
+    """análise com "par" no manifest (slug da versão no outro idioma)"""
+    manifest = PAGES / "analises" / "results" / "manifest.json"
+    if not manifest.exists():
+        return {}
+    return {f"analises/{i['slug']}/index.html": f"analises/{i['par']}/index.html"
+            for i in json.loads(manifest.read_text(encoding="utf-8"))
+            if i.get("par")}
 
 
 def _analises_en() -> set[str]:

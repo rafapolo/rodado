@@ -3,11 +3,11 @@
 As informações deste artigo vêm do mapeamento sistemático de todo o espaço de cruzamentos e
 perguntas possíveis entre os mais de 200 datasets públicos, divididos em 43 temas, priorizando o
 que nunca tinha sido perguntado. Cada uma das mais de 2 mil
-[hipóteses](https://github.com/rafapolo/rodado/blob/main/docs/hipoteses/perguntas.md) nasceu ao
+[hipóteses](https://github.com/rafapolo/rodado/blob/main/docs/pesquisa/hipoteses/perguntas.md) nasceu ao
 aplicar padrões de achados de pesquisas anteriores, e as
-[respostas](https://github.com/rafapolo/rodado/blob/main/docs/hipoteses/respostas.md) foram
+[respostas](https://github.com/rafapolo/rodado/blob/main/docs/pesquisa/hipoteses/respostas.md) foram
 validadas estatisticamente para encontrar os 83
-[achados inéditos](https://github.com/rafapolo/rodado/blob/main/docs/hipoteses/achados_fortes.md)
+[achados inéditos](https://github.com/rafapolo/rodado/blob/main/docs/pesquisa/hipoteses/achados_fortes.md)
 aqui reunidos — nenhum deles publicado em relatório oficial.
 
 ---

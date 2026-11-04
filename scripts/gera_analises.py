@@ -100,6 +100,20 @@ IDIOMA = {
 }
 
 
+def idioma(item: dict) -> dict:
+    """rótulos do idioma da análise; com "par" (slug da versão no outro idioma)
+    no manifest, o seletor PT/EN aponta para essa versão em vez da home"""
+    lang = item.get("lang", "pt-br")
+    rot = dict(IDIOMA[lang])
+    par = item.get("par")
+    if par:
+        alvo = f'<a href="/analises/{escapa(par)}/" class="lang-link" hreflang="{"pt-br" if lang == "en" else "en"}">'
+        rot["lang_switch"] = (rot["lang_switch"]
+                              .replace('<a href="/en.html" class="lang-link">', alvo)
+                              .replace('<a href="/analises/" class="lang-link">', alvo))
+    return rot
+
+
 def escapa(texto: str) -> str:
     return (texto.replace("&", "&amp;").replace("<", "&lt;")
             .replace(">", "&gt;").replace('"', "&quot;"))
@@ -131,7 +145,7 @@ def main() -> None:
                 slug=escapa(slug),
                 rodado_em=escapa(item.get("rodado_em", "")),
                 lang=item.get("lang", "pt-br"),
-                **IDIOMA[item.get("lang", "pt-br")],
+                **idioma(item),
             ),
             encoding="utf-8",
         )
