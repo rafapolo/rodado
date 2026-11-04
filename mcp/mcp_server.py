@@ -208,7 +208,7 @@ with open(DICIONARIO_COVERAGE_PATH, encoding="utf-8") as f:
 # código (baixa cardinalidade) mas não têm fonte de significado conhecida em
 # nenhum mecanismo acima — nem dicionario, nem bridges.yaml, nem
 # hierarchies.yaml. Generaliza o alerta manual que
-# tasks/harness_tasks.md B9 escreveu à mão pra
+# tasks/plans/harness_tasks.md B9 escreveu à mão pra
 # br_ms_sim.circunstancia_obito (subcontava suicídio, 749 contra 789 reais,
 # sem nenhum mecanismo avisando) num aviso que soa pra qualquer tabela.
 _NAO_VERIFICADO_BY_TABLE: dict = {}

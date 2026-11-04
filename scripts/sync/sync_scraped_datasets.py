@@ -5,7 +5,7 @@ Sync missing (or stale) scraped-source datasets to beelink.
 Companion to sync_missing_tables.py / sync_drifted_incremental.py, but for the
 external-source pipelines under scripts/scrap/ (Portal da Transparencia-adjacent
 sanctions lists, jurisprudencia APIs, Querido Diario, TCEs, etc — see
-tasks/datasets_to_scrap.md's Status Board for the full catalog and per-source
+tasks/routine/datasets_to_scrap.md for the full catalog and per-source
 status). Those BQ-focused scripts diff BigQuery's live table list against
 beelink; this script instead diffs scripts/scrap/*.py against what's actually
 on beelink, since there's no single upstream catalog to diff against here —

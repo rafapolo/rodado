@@ -349,6 +349,88 @@ Três lições gerais:
 Antes de consertar um parquet no lugar, guardar o original fora de `~/rodado` (o COLD
 recebe a versão nova na rodada seguinte e não guarda a anterior).
 
+## 14. Dataset novo → medir as armadilhas antes de publicar
+
+Dataset sem `docs/context/gotchas/<dataset>.yml` não está livre de armadilha:
+só ninguém mediu. A varredura de 2026-10-20 (`scripts/varre_anomalias.py`)
+achou problema grave em 18 datasets que ninguém tinha olhado (IGP com ano e mês
+trocados, ONS em MWmed × 10^8, PE/2009 com R$ 15 quatrilhões). Todo dataset
+novo ou recoletado passa por esta lista antes do regen, as baratas primeiro, no
+beelink, `-readonly` e com filtro de partição nas tabelas grandes:
+
+1. **Pistas da varredura:** `python3 scripts/varre_anomalias.py --so-analisa`
+   (ou sem a flag, para remedir). Cada pista é candidata, não fato.
+2. **Grão:** o que é uma linha? `count(*)` contra `count(DISTINCT <chave>)`.
+   Linha repetida (STJ, CVM fundos), retrato empilhado (CNO, CAFIR, Lista Suja),
+   total junto das partes (Senatran, ComunicaBR, ONS/SIN, verbetes do ESTBAN).
+3. **Série:** `GROUP BY ano` (e `mes`). Procurar ano faltando, salto de volume
+   (SINAN 2022, PNADC na pandemia), mudança de definição e último período quebrado.
+4. **Unidade e escala:** somar a métrica principal de um recorte conhecido e
+   comparar com o número oficial (mil reais × reais, MWmed × 10^8, m³/h × m³/s).
+5. **Duas vias:** o mesmo total por outra tabela do dataset ou por outro dataset
+   do espelho. Divergência é gotcha.
+6. **Códigos:** valores distintos das colunas de código. Procurar espaço, `.0`,
+   sentinela (`-999`, `99`, `999999999`), mojibake e código que muda entre anos.
+7. **Colunas vazias:** `count(col)` por ano nas colunas que uma pergunta comum usaria.
+
+Registre só o que foi medido, com `verificado` (número e data). Severidade:
+`erro` só quando a coluna listada dá resultado errado em qualquer uso. Liste só
+essas colunas, nunca a que o gotcha recomenda, porque o `/query` recusa a SQL que
+a cita. Use `silencioso` para o resto e `aviso` quando o erro é barulhento. Depois
+do lote: carregar pelo `mcp_server.py` (recusa entrada malformada),
+`python3 scripts/gera_contexto_db.py` e o deploy do `db/README.md` ("Operação").
+Se não achar nada, crie mesmo assim o `.yml` com a lista vazia e um comentário
+com o que foi medido e a data, para que o dataset não volte para a fila de
+lacunas. A mesma armadilha também vai para o harness (item 11).
+
+## 15. Tabela com CPF mascarado → completar antes de publicar
+
+Toda tabela nova ou recoletada com coluna de CPF mascarado (`***.XXX.XXX-**`,
+`***XXXXXX**`) passa pelo `scripts/completa_cpf.py`. A regra está no
+cabeçalho do script e vale para qualquer tabela, não só candidatos. A troca só
+acontece com:
+
+- nome normalizado idêntico;
+- todo dígito visível batendo;
+- um único CPF candidato;
+- pelo menos 6 dígitos visíveis;
+- até 10 homônimos no índice.
+
+Precisão medida em 2026-10-07 em 1,7 mi de CPFs do TSE: 0,003% de erro.
+Fora disso a máscara fica como veio. Nunca se grava CPF "provável".
+
+```bash
+python3 scripts/completa_cpf.py <ds>.<tabela> --perfil   # formatos de máscara da coluna
+python3 scripts/completa_cpf.py <ds>.<tabela> --simula   # quantas trocaria
+python3 scripts/completa_cpf.py <ds>.<tabela>            # regrava (original em ~/scrap_tmp/cpf_backup/)
+```
+
+- **Tabela nova:** acrescente em `ALVOS` cada coluna de CPF junto com a
+  coluna de nome **da mesma pessoa** (`cpf_portador` com `nome_portador`,
+  nunca com `nome_favorecido`). Coluna sem nome da pessoa não é completável.
+  A ANEEL de geração distribuída é um exemplo.
+- **Máscara de outro formato** (`XXX.***.***-XX` da ANTT e do Senado CEAPS,
+  `***.XXX.XX*-**` do TCE-ES) precisa de chave própria: o índice só tem os 6
+  dígitos do meio. Fica como veio.
+- **Mês novo:** completar **antes** do `--anexa`/acréscimo (ver
+  `docs/tecnico/mes_novo_cnpj.md` e `scripts/sync/normaliza_pessoas.py`).
+- **Reexportar ou reconverter da fonte apaga a correção.** O `minc_salic`
+  reexportado do SQLite perdeu 65.925 CPFs completados, e eles voltaram do COLD.
+  Antes de trocar o parquet de uma tabela que já foi completada, compare
+  com a cópia anterior e leve as colunas corrigidas por id, ou rode o script de novo.
+- O índice (`~/scrap_tmp/cpf_index/`) fica fora de `~/rodado` de propósito,
+  porque o `run_sql` lê tudo que está lá. Não copie, não exporte e não cite
+  linha dele.
+- Depois de regravar: itens 2, 10 e 13, mais a linha no `done/datasets_to_scrap_done.md`
+  com a contagem mascarado → completado.
+
+Cobertura em 2026-10-07: CNPJ sócios 82,5%, Novo Bolsa Família 66,4%,
+auxílio emergencial, Pé-de-Meia, seguro-defeso, Gás do Povo, pensionistas,
+viagens, cartão, terceirizados, emendas, Salic, SICAF, CAPES, ANA, BCB,
+ANM e BPC. A varredura parou em `br_mjsp*`: de `br_ms_*` em diante
+(`br_pgfn*`, `br_senado*`, `br_stj*`, `br_tce*`, `br_tse*`, `politicos`,
+`world_wb_mides`) as colunas de CPF ainda não foram medidas.
+
 ## Ordem completa, resumida
 
 ```
@@ -365,4 +447,6 @@ scrape novo/retomado
   -> 10. mexeu em parquet que já tinha view? duckdb_columns() contra DESCRIBE; divergiu, recria a view
   -> 11. armadilha achada vai para gotchas/<dataset>.yml E harness/dados/notas.json (branch harness-gemma), com verificado
   -> 13. parquet novo/regravado passa em scripts/sync/valida_parquet.py (lê tudo); S3 e COLD só copiam o que passa
+  -> 14. armadilhas medidas pelos 7 passos (grão, série, escala, duas vias, códigos, vazias) -> gotchas/<dataset>.yml
+  -> 15. coluna de CPF mascarado? scripts/completa_cpf.py --simula e depois regrava (antes do --anexa num mês novo)
 ```

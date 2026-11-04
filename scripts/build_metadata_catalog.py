@@ -533,12 +533,14 @@ def build_catalog():
     # _rodado_metadata for exactly this reason. Active file wins on a key
     # collision (shouldn't happen — a dataset lives in one file at a time).
     scraped_info = parse_markdown_table(REPO_ROOT / "tasks" / "done" / "datasets_to_scrap_done.md")
-    # The open queue lives in tasks/plans/ since 2026-09-24 and uses pt-BR
-    # headers that this parser skips; tasks/ is gitignored, so a fresh clone
-    # has neither file.
-    queue = REPO_ROOT / "tasks" / "plans" / "datasets_to_scrap.md"
-    if queue.exists():
-        scraped_info.update(parse_markdown_table(queue))
+    # The open queue lives in tasks/routine/ since 2026-11-04 (tasks/plans/
+    # before) and uses pt-BR headers that this parser skips; tasks/ is
+    # gitignored, so a fresh clone has neither file.
+    for queue in (REPO_ROOT / "tasks" / "routine" / "datasets_to_scrap.md",
+                  REPO_ROOT / "tasks" / "plans" / "datasets_to_scrap.md"):
+        if queue.exists():
+            scraped_info.update(parse_markdown_table(queue))
+            break
     ddl_tables = parse_ddl_tables(REPO_ROOT / "docs" / "context" / "schema_ddl.sql")
     fontes = load_fontes()
     beelink_tables = get_tables_from_beelink()
