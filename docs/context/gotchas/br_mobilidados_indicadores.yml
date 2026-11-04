@@ -1,0 +1,30 @@
+dataset: br_mobilidados_indicadores
+gotchas:
+  - id: tabelas_com_grao_e_cobertura_diferentes
+    resumo: "As 10 tabelas não têm o mesmo grão nem cobertura: tempo_deslocamento_casa_trabalho é uma onda só (2010, 229 municípios); taxa_motorizacao cobre 27 municípios (as capitais) em 2001-2018; divisao_modal é por UF/região metropolitana em 10 anos soltos (1996-2018); proporcao_mortes_negras_acidente_transporte cobre 5.570 municípios em 2000-2019. Juntar duas tabelas por id_municipio perde quase tudo, e não há série contínua em todas."
+    tabelas: [tempo_deslocamento_casa_trabalho, taxa_motorizacao, divisao_modal, proporcao_mortes_negras_acidente_transporte]
+    colunas: [ano, id_municipio]
+    severidade: silencioso
+    verificado: "tempo_deslocamento: ano único; taxa_motorizacao: 27 municípios, 486 linhas, 2001-2018; divisao_modal: anos 1996, 1997, 2002, 2003, 2007, 2009, 2010, 2012, 2017, 2018 — medido 2026-11-04"
+  - id: mortes_negras_extremos_por_numero_pequeno
+    resumo: "prop_mortes_negras_acidente_transporte é percentual (0 a 100) por município e modo, e 70% das linhas do indicador Total são 0 ou 100 (78.147 de 111.400): município com 1 ou 2 mortes dá 0% ou 100%. Média simples entre municípios engana; pondere pelo número de mortes (outra tabela) ou agregue por UF."
+    detalhe: >
+      indicador tem 6 valores (Ciclistas, Motociclistas, Ocupantes de automóvel, Pedestres,
+      Outros e Total). Total e as partes estão na mesma coluna: não some os indicadores. Média
+      simples do Total em 2000 é 19,5 e 2001 é 19,6, puxada pelos municípios pequenos.
+    tabelas: [proporcao_mortes_negras_acidente_transporte]
+    colunas: [prop_mortes_negras_acidente_transporte, indicador]
+    severidade: silencioso
+    verificado: "indicador Total: 111.400 linhas, 78.147 com valor 0 ou 100; média 2000 = 19,48 — medido 2026-11-04"
+  - id: divisao_modal_quase_toda_nula
+    resumo: "divisao_modal é nula na maioria das linhas: 1996 e 2010 têm 32 linhas e 0 valores; 2002, 2003, 2007, 2009 e 2018 têm 4 valores; só 1997 e 2012 têm 12. A coluna coluna traz o modo ('Percentual de viagens a pé', 'em bicicleta', 'em transporte coletivo', 'em transporte individual motorizado'); o valor é um percentual, não uma contagem."
+    tabelas: [divisao_modal]
+    colunas: [divisao_modal, coluna]
+    severidade: silencioso
+    verificado: "linhas por ano = 32; count(divisao_modal): 1996 = 0, 1997 = 12, 2002 = 4, 2010 = 0, 2012 = 12, 2017 = 8 — medido 2026-11-04"
+  - id: taxa_motorizacao_por_mil
+    resumo: "taxa_motorizacao varia de 91,6 a 797,2 (média nacional 217,6 em 2001 e 495,9 em 2018 entre as 27 capitais): ordem de grandeza de veículos por 1.000 habitantes (a unidade não está nos dados; confirmar na fonte), não percentual. Só as capitais entram."
+    tabelas: [taxa_motorizacao]
+    colunas: [taxa_motorizacao]
+    severidade: aviso
+    verificado: "média das 27 linhas: 2001 = 217,58, 2010 = 377,77, 2018 = 495,90; máximo 2018 = 797,2 — medido 2026-11-04"

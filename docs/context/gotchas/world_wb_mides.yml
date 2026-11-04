@@ -20,3 +20,27 @@ gotchas:
     colunas: [quantidade, quantidade_cotada, quantidade_proposta]
     severidade: aviso
     verificado: "conversão para BIGINT recusada em 37,5 nos anos novos; decimal dos anos antigos não conferido — medido 2026-11-01"
+  - id: cobertura_uf_por_ano
+    resumo: "pagamento cobre 1 a 9 UFs por ano: 2014–2021 têm 9 UFs, 2022 só CE/DF/PR/RJ/SC, 2023 DF e SC, 2024 só 9.857 linhas de SC (mês 1), 2025–26 DF/MG/PR. Série municipal contínua só em 2014–2021."
+    detalhe: >
+      SC 2022–2024 tem `data` 100% nula (2.472.322 + 2.731.684 + 9.857 linhas): só serve
+      para agregado anual, nunca para janela de datas. 802 linhas têm ano NULL. DF vem
+      com um único id_municipio (5300108) e valor fora da ordem de grandeza esperada
+      para um governo local (R$ 55,8 bi em 2021, 137,7 bi em 2022, 101,6 bi em 2025 em
+      valor_final); causa não medida, trate DF como não comparável com município.
+    tabelas: [pagamento]
+    colunas: [ano, sigla_uf, id_municipio, data]
+    severidade: silencioso
+    verificado: "UFs por ano, linhas e soma de DF/SC 2021–2025 medidas em 2026-11-04"
+  - id: documento_credor_nulo_pe_rj
+    resumo: "documento_credor é 100% NULL em PE (184 municípios, 2018–2021, ~3 mi de linhas por ano) e ~74–82% NULL em RJ (só a capital, 3304557, tem documento): análise por credor (CNPJ, sanção, PGFN, HHI) não enxerga PE nem o interior do RJ."
+    tabelas: [pagamento]
+    colunas: [documento_credor]
+    severidade: silencioso
+    verificado: "RJ 2022: 195.354 de 1.054.980 linhas com documento, todas do município 3304557; RJ 2021 266.726 de 1.001.570; PE 2018–2021 0 de 2.840.593–3.060.122 — medido 2026-11-04"
+  - id: documento_credor_placeholder
+    resumo: "documento_credor tem placeholder de 1 dígito além dos sentinelas 999…/000…: 686.845 linhas (6,2%) de MG 2025. Exclua length<11 antes de rankear credor."
+    tabelas: [pagamento]
+    colunas: [documento_credor]
+    severidade: aviso
+    verificado: "MG 2025: 686.845 com 1 dígito, 2.342.637 com 11, 7.988.640 com 14 — medido 2026-11-04"

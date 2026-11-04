@@ -1,0 +1,26 @@
+dataset: br_mjsp_sinesp
+gotchas:
+  - id: ocorrencias_so_acre
+    resumo: "ocorrencias (823 linhas) cobre só o Acre: 21 municípios, sigla_uf = AC e regiao = NORTE em todas as linhas, 2018-01 a 2022-12; a tabela 'vítimas' por município não existe para o resto do país."
+    detalhe: >
+      O nome do dataset sugere o Brasil inteiro, mas a granularidade municipal
+      é só do Acre. Para o país use ocorrencias_uf (UF x tipo de crime x mês).
+      Os nomes de coluna têm acento e barra ('município', 'vítimas', 'mes/ano', 'cód_ibge') e
+      exigem aspas duplas.
+    tabelas: [ocorrencias]
+    colunas: [sigla_uf, regiao, vítimas]
+    severidade: silencioso
+    verificado: "823 linhas, sigla_uf d=1 (AC), regiao d=1 (NORTE), 21 municípios, mes/ano 2018-01 a 2022-12 — medido 2026-11-04"
+  - id: ocorrencias_uf_2015_2022_uf_por_extenso_mes_em_texto
+    resumo: "ocorrencias_uf vai de 2015 a 2022 (nada de 2023 em diante), uf vem por extenso ('Rio Grande do Norte', não 'RN') e mes em português ('janeiro'); join com sigla_uf devolve zero linhas."
+    detalhe: >
+      Cada ano tem 27 UFs e 12 meses, mas as linhas variam (2.777 em 2022 contra
+      2.893 em 2017): combinação UF x crime x mês ausente significa não informado, não
+      zero. São 9 tipos de crime. Homicídio doloso nacional: 49.628 (2015), 53.381
+      (2017), 46.321 (2018), 37.847 (2019), 40.470 (2020), 37.439 (2022): a queda
+      2017-2019 é real, mas parte vem de mudança de critério de notificação dos
+      estados.
+    tabelas: [ocorrencias_uf]
+    colunas: [uf, mes, ocorrencias, tipo_crime]
+    severidade: silencioso
+    verificado: "uf d=27 por extenso; mes 12 nomes em português; HD por ano 2015..2022 = 49.628, 51.645, 53.381, 46.321, 37.847, 40.470, 38.137, 37.439; 23.020 linhas = chaves (uf, crime, ano, mês) — medido 2026-11-04"

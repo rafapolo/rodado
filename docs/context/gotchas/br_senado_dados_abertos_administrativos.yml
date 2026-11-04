@@ -1,0 +1,26 @@
+dataset: br_senado_dados_abertos_administrativos
+gotchas:
+  - id: janela_2025_a_2026
+    resumo: "As tabelas mensais cobrem só de janeiro/2025 a agosto/2026 (remuneração, hora extra) e a CEAPS vai até setembro/2026 incompleta: agosto tem 756 despesas e setembro 39, contra ~2.000 nos meses cheios. Não compare 2026 com 2025 sem cortar os mesmos meses."
+    tabelas: [despesa_ceaps, servidor_remuneracao, servidor_hora_extra]
+    colunas: [ano, mes]
+    severidade: silencioso
+    verificado: "despesa_ceaps 2025: 23.799 linhas, R$ 37,36 mi; 2026: 13.662 linhas, R$ 21,81 mi; 2026-08 1,16 mi com 756 linhas, 2026-09 0,14 mi com 39; servidor_remuneracao 2025 12 meses, 2026 meses 1 a 8 — medido 2026-11-04"
+  - id: estorno_e_valor_alto_ceaps
+    resumo: "valor_reembolsado em despesa_ceaps tem estornos negativos (65 em 2025, 6 em 2026, mínimo -3.132) e despesas muito acima do típico: 175.000 em divulgação (2025-05), 110.000 e 100.200 em uma gráfica. A soma líquida inclui os estornos; para total gasto bruto filtre valor_reembolsado > 0."
+    tabelas: [despesa_ceaps]
+    colunas: [valor_reembolsado]
+    severidade: silencioso
+    verificado: "2025: mín -3.132,11, máx 175.000; 2026: mín -1.970,59, máx 74.500; id_despesa único (23.799 e 13.662 distintos) — medido 2026-11-04"
+  - id: remuneracao_grao_e_folha_suplementar
+    resumo: "servidor_remuneracao tem uma linha por pessoa × mês × tipo_folha (Normal ou Suplementar), e id_remuneracao é o identificador da pessoa, repetido todo mês (11.178 ids para 150.996 linhas em 2025). Folha Suplementar traz valores extremos e negativos (líquido de -237.381 a +342.349) e soma R$ 297 mi em 2025 contra 2.533 mi da Normal; contar servidor por linha duplica quem tem as duas folhas."
+    tabelas: [servidor_remuneracao]
+    colunas: [id_remuneracao, remuneracao_liquida, tipo_folha]
+    severidade: silencioso
+    verificado: "2025: Normal 119.883 linhas, líquido R$ 2.532,9 mi; Suplementar 31.113 linhas, R$ 296,9 mi, mín -237.381,78, máx 342.349,26; chave (id, ano, mes, tipo_folha) única nas 150.996 linhas — medido 2026-11-04"
+  - id: liquida_nao_fecha_com_componentes
+    resumo: "remuneracao_liquida não é soma simples das colunas de componentes: em 133.500 das 150.996 linhas de 2025 difere em mais de R$ 1 de (básica + vantagens + função + natalina + hora extra + auxílios + diárias + indenizatórias + eventuais + abono - faltas - previdência - IR - reversão). Use a coluna líquida como está, sem recompor."
+    tabelas: [servidor_remuneracao]
+    colunas: [remuneracao_liquida]
+    severidade: silencioso
+    verificado: "2025: 133.500 de 150.996 linhas com diferença > R$ 1 — medido 2026-11-04"

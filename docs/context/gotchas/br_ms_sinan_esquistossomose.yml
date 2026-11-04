@@ -1,0 +1,26 @@
+dataset: br_ms_sinan_esquistossomose
+gotchas:
+  - id: idade_codificada
+    resumo: "NU_IDADE_N não é a idade: o primeiro dígito é a unidade (1 hora, 2 dia, 3 mês, 4 ano) e os três seguintes o valor. '4045' = 45 anos. 168.174 dos 169.721 casos têm unidade 4 (anos); 954 estão em dias e 585 em meses. Média de NU_IDADE_N cru não faz sentido."
+    tabelas: [microdados_esquistossomose]
+    colunas: [NU_IDADE_N]
+    severidade: silencioso
+    verificado: "primeiro dígito de NU_IDADE_N: 4 → 168.174; 2 → 954; 3 → 585; 1 → 6; 9 → 1 (de 169.721) — medido 2026-11-04"
+  - id: municipio_seis_digitos
+    resumo: "ID_MUNICIP e ID_MN_RESI têm 6 dígitos (sem o dígito verificador do IBGE), não os 7 de id_municipio: junte com substr(id_municipio, 1, 6). ID_MN_RESI é vazio em 7 linhas."
+    tabelas: [microdados_esquistossomose]
+    colunas: [ID_MUNICIP, ID_MN_RESI]
+    severidade: silencioso
+    verificado: "length(ID_MUNICIP) = 6 em todas as 169.721 linhas; length(ID_MN_RESI) = 6 em 169.714 e vazio em 7 — medido 2026-11-04"
+  - id: campos_vazios_por_ano
+    resumo: "Campos clínicos têm preenchimento irregular: TPAUTOCTO (autóctone) vazio em 41% das fichas de 2007 (13.660 de 33.279) e em 2008 e 2009 (23% e 22%), mas quase completo de 2011 em diante; FORMA vazia em 55% de 2007; EVOLUCAO vazia em 29% a 43% em todos os anos. Proporção 'sim' sobre o total subestima: use o denominador de campo preenchido."
+    tabelas: [microdados_esquistossomose]
+    colunas: [TPAUTOCTO, FORMA, EVOLUCAO, AN_QUALI]
+    severidade: silencioso
+    verificado: "vazio por ano: TPAUTOCTO 2007 13.660/33.279, 2008 3.134/13.386, 2009 4.139/18.549, 2010 410/26.999, 2011 9; EVOLUCAO 2007 14.248, 2023 1.179/3.316; FORMA 2007 18.216 — medido 2026-11-04"
+  - id: serie_cai_e_2026_parcial
+    resumo: "A série de notificações cai de 33.279 (2007) para 1.873 (2020) e volta a 3.316 (2023); 2026 vai só até maio (881 casos). A queda reflete notificação e cobertura do SINAN (inclui a pandemia em 2020), não só incidência: não leia como fim da doença. ano_sinan = NU_ANO (zero divergências)."
+    tabelas: [microdados_esquistossomose]
+    colunas: [ano_sinan, NU_ANO, DT_NOTIFIC]
+    severidade: silencioso
+    verificado: "casos por ano: 2007 33.279; 2010 26.999; 2013 6.434; 2016 5.140; 2020 1.873; 2023 3.316; 2025 3.155; 2026 881; DT_NOTIFIC de 2007-01-01 a 2026-05-25 — medido 2026-11-04"

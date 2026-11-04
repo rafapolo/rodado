@@ -1,0 +1,40 @@
+dataset: br_cgu_sancoes
+gotchas:
+  - id: retratos_empilhados
+    resumo: "ceis, cnep e acordos_leniencia guardam 2 retratos (data_extracao 2026-10-03 e 2026-10-24) com todas as linhas de novo; contar ou somar sem filtrar data_extracao dobra tudo."
+    detalhe: >
+      Cada carga acrescenta o cadastro inteiro. Para o estado atual use
+      data_extracao = (SELECT max(data_extracao) ...). Dentro de um retrato
+      codigo_sancao é único (19.151 linhas, 19.151 códigos no CEIS em 2026-10-24).
+      Os 2 retratos juntos dão 38.282 linhas no CEIS e 3.222 no CNEP, o dobro de
+      sancionados reais (14.268 CPF/CNPJ distintos no retrato atual). A soma de
+      valor_multa do CNEP fecha R$ 5,45 bi nos dois retratos contra R$ 2,74 bi no
+      atual. O cepim tem um único retrato (2026-08-27), mais antigo que os outros.
+    tabelas: [ceis, cnep, acordos_leniencia, acordos_leniencia_efeitos]
+    colunas: [data_extracao]
+    severidade: silencioso
+    verificado: "ceis 19.131 (2026-10-03) + 19.151 (2026-10-24) = 38.282; cnep 1.592 + 1.630 = 3.222, soma valor_multa 5.445.305.969 contra 2.735.834.110; acordos_leniencia 146 + 146 — medido 2026-11-04"
+  - id: vigencia_da_sancao
+    resumo: "data_final_sancao é nula em 1.960 das 19.151 sanções do CEIS (todas as 'sem prazo determinado' e 'Demissão') e chega a 2099-12-31 em 29 linhas; filtrar data_final_sancao >= hoje perde as sanções sem prazo."
+    detalhe: >
+      Sanção sem prazo (Declaração de Inidoneidade sem prazo, Impedimento sem
+      prazo, Demissão) tem data_final_sancao nula: só 341 de 1.383 inidoneidades
+      sem prazo trazem data. No CNEP só 80 de 3.222 linhas têm data_final_sancao.
+      Vigente = data_inicio_sancao <= hoje E (data_final_sancao IS NULL OR
+      data_final_sancao >= hoje), depois de fixar o retrato.
+    tabelas: [ceis, cnep]
+    colunas: [data_final_sancao, data_transito_julgado]
+    severidade: silencioso
+    verificado: "CEIS 2026-10-24: 1.960 nulas, 29 com fim > 2040 (máx 2099-12-31), 16.446 com fim >= hoje; data_transito_julgado no futuro em 57 linhas (máx 2033-03-09); CNEP 80 de 3.222 com data_final — medido 2026-11-04"
+  - id: documento_do_sancionado
+    resumo: "cpf_cnpj_sancionado tem 11 dígitos para pessoa física e 14 para jurídica, mas 11 linhas do CEIS têm tipo_pessoa nulo e comprimentos 7, 9, 11 ou 14; o mesmo CNPJ aparece em várias sanções (14.268 documentos para 19.151 sanções)."
+    detalhe: >
+      O documento vem sem máscara, mas sem validação: contar sanções por
+      CNPJ não é contar empresas (use COUNT(DISTINCT cpf_cnpj_sancionado)). Em
+      acordos_leniencia, cnpj_sancionado tem texto que não é CNPJ ('EXVIKENSHUTTLE')
+      e data_informacao é 100% nula; id_acordo é único só a cada 2-3 linhas
+      (146 linhas para 52 acordos: uma por empresa envolvida).
+    tabelas: [ceis, acordos_leniencia]
+    colunas: [cpf_cnpj_sancionado, cnpj_sancionado, tipo_pessoa, data_informacao]
+    severidade: silencioso
+    verificado: "CEIS 2026-10-24: tipo_pessoa J 10.378 (14 díg.), F 8.762 (11 díg.), NULL 11; acordos_leniencia 292 linhas = 2 retratos x 146, 52 id_acordo distintos, data_informacao nn=0 — medido 2026-11-04"

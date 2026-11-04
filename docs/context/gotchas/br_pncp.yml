@@ -18,3 +18,9 @@ gotchas:
     colunas: [numeroControlePNCP, valorGlobal, valorInicial, dataAtualizacao]
     severidade: silencioso
     verificado: "5.229.507 linhas, 4.249.999 numeroControlePNCP distintos, 4.252.624 linhas distintas, 19 chaves com valorGlobal divergente; assinados em 2025: valorGlobal R$ 15.590 bi por linha, 14.233 bi com max por contrato e 14.235 bi com distinct *; 2024: 3.979 bi x 3.961 bi — medido 2026-10-28"
+  - id: tipo_pessoa_nao_confere_com_digitos
+    resumo: "tipoPessoa='PJ' tem fornecedor de 11 dígitos (1.726 em 2025) e 'PF' de 14 (642). Classifique CPF/CNPJ por length(niFornecedor)."
+    tabelas: [contratos]
+    colunas: [tipoPessoa, niFornecedor]
+    severidade: aviso
+    verificado: "ano_publicacao=2025: PJ 14 dígitos 2.105.929, PJ 11 dígitos 1.726, PF 11 dígitos 74.928, PF 14 dígitos 642 — medido 2026-11-04"

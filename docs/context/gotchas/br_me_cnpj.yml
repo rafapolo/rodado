@@ -88,3 +88,9 @@ gotchas:
     colunas: [cnpj_basico, documento, nome, qualificacao]
     severidade: silencioso
     verificado: "socios 2026-10: 28.495.961 linhas, 28.495.638 vínculos distintos; empresas 70.517.438 linhas, 70.517.437 cnpj_basico distintos; estabelecimentos 73.809.379 linhas = cnpj distintos — medido 2026-10-29"
+  - id: situacao_cadastral_sem_zero
+    resumo: "situacao_cadastral vem sem zero à esquerda: '1' nula, '2' ativa, '3' suspensa, '4' inapta, '8' baixada. Filtrar '02' devolve zero linhas."
+    tabelas: [estabelecimentos]
+    colunas: [situacao_cadastral]
+    severidade: silencioso
+    verificado: "retrato 2026-10, sigla_uf = 'AC': '8' 79.303, '2' 54.887, '4' 34.056, '3' 337, '1' 120; nenhuma linha com '02' — medido 2026-11-04"

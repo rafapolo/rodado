@@ -1,0 +1,26 @@
+dataset: br_bd_diretorios_data_tempo
+gotchas:
+  - id: bissexto_errado_em_seculos
+    resumo: "ano.bissexto marca como bissexto os anos de século que não são divisíveis por 400 (1900, 2100, 2200, 2300...): 38 anos errados entre 100 e 5000. A tabela data não tem 29 de fevereiro nesses anos (calendário gregoriano correto: 1.826.212 dias em 5.000 anos), então as duas tabelas se contradizem. Use a tabela data ou a regra gregoriana, não ano.bissexto."
+    tabelas: [ano, data]
+    colunas: [bissexto]
+    severidade: erro
+    verificado: "38 anos entre 100 e 5000 com bissexto = '1' fora da regra gregoriana; 1900 e 2100 = '1'; 1900-02-29 e 2100-02-29 não existem em data — medido 2026-11-04"
+  - id: tudo_em_texto
+    resumo: "data.data, data.ano, dia, mes e dia_semana são TEXTO; ordenar ou pegar min/max de ano dá ordem alfabética (min(ano) = '1', max = '999' em data; ano.ano vai de '-1' a '999' como texto, de -5000 a 5000 como número). Use CAST(data AS DATE) e try_cast(ano AS INTEGER) antes de juntar com tabelas que têm DATE/INTEGER."
+    tabelas: [data, ano, mes]
+    colunas: [data, ano, mes, dia]
+    severidade: silencioso
+    verificado: "typeof(ano) = VARCHAR; min(ano) como texto = '1' e max = '999'; data vai de 0001-01-01 a 5000-12-31 (1.826.212 dias, todos castáveis para DATE) — medido 2026-11-04"
+  - id: dia_semana_domingo_e_1
+    resumo: "dia_semana usa 1 = domingo ... 7 = sábado (2024-03-03 domingo = 1; 2024-03-04 segunda = 2; 2024-03-09 sábado = 7), diferente do ISO (1 = segunda) e do dayofweek do DuckDB (0 = domingo). Comparar com extract(isodow ...) desloca um dia."
+    tabelas: [data]
+    colunas: [dia_semana]
+    severidade: silencioso
+    verificado: "2024-03-03 = 1, 2024-03-04 = 2, 2024-03-09 = 7, 2024-02-29 = 5 (quinta) — medido 2026-11-04"
+  - id: intervalo_absurdo
+    resumo: "data cobre 0001-01-01 a 5000-12-31 (não só o período histórico): contar dias, gerar calendário ou fazer LEFT JOIN sem filtrar o intervalo de interesse devolve 1,8 milhão de linhas. tempo tem 86.400 linhas (segundos do dia), sem data."
+    tabelas: [data, tempo]
+    colunas: [data]
+    severidade: aviso
+    verificado: "data: 1.826.212 linhas; tempo: 86.400 — medido 2026-11-04"

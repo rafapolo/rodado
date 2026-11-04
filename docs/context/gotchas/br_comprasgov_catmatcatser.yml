@@ -1,0 +1,20 @@
+dataset: br_comprasgov_catmatcatser
+gotchas:
+  - id: so_itens_ativos
+    resumo: "Os catálogos trazem apenas itens ativos: statusItem é verdadeiro nos 249.804 materiais e statusServico nos 3.021 serviços. Item de CATMAT descontinuado que aparece em compras antigas não casa com esta tabela; junção de contratos históricos perde esses códigos."
+    tabelas: [materiais, servicos]
+    colunas: [statusItem, statusServico, codigoItem]
+    severidade: silencioso
+    verificado: "materiais: 249.804 linhas = 249.804 codigoItem distintos, todos ativos; servicos: 3.021 todos ativos — medido 2026-11-04"
+  - id: ncm_quase_vazio_e_descricao_ncm_inutil
+    resumo: "codigo_ncm só existe em 80.738 dos 249.804 materiais (32%) e descricao_ncm é INTEGER nulo em todas as linhas (0 preenchidas), apesar do nome. Classificação por NCM cobre um terço do catálogo; use grupo/classe/PDM."
+    tabelas: [materiais]
+    colunas: [descricao_ncm]
+    severidade: erro
+    verificado: "count(codigo_ncm) = 80.738; count(descricao_ncm) = 0 de 249.804 — medido 2026-11-04"
+  - id: hierarquia_grupo_classe_pdm
+    resumo: "Cada material carrega a hierarquia grupo (78) > classe > PDM (15.022) > item em colunas desnormalizadas; contar por nomeGrupo ou nomePdm conta itens, não produtos. O catálogo é um retrato (dataHoraAtualizacao de 2021-10-16 a 2026-10-06), sem histórico de mudança de classificação."
+    tabelas: [materiais, servicos]
+    colunas: [codigoGrupo, codigoClasse, codigoPdm, dataHoraAtualizacao]
+    severidade: aviso
+    verificado: "78 grupos, 15.022 PDM; dataHoraAtualizacao entre 2021-10-16 e 2026-10-06 — medido 2026-11-04"

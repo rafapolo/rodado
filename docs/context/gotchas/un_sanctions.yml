@@ -1,0 +1,20 @@
+dataset: un_sanctions
+gotchas:
+  - id: dois_arquivos_esquemas_diferentes
+    resumo: "A tabela sanctions são dois parquets de esquemas diferentes: individuals.parquet (733 pessoas) e entities.parquet (274 entidades). Sem union_by_name, a leitura enxerga só as colunas do primeiro arquivo e perde as outras: second_name, gender, nationality, individual_alias, individual_date_of_birth e individual_document não aparecem (entities não as tem), ou entity_alias e entity_address somem. Leia com read_parquet('.../sanctions/*.parquet', union_by_name=true)."
+    tabelas: [sanctions]
+    colunas: [second_name, gender, nationality, individual_alias, individual_date_of_birth, entity_alias]
+    severidade: aviso
+    verificado: "individuals 733 linhas (733 dataid), entities 274 (274 dataid), total 1.007; a consulta em coluna de pessoa (second_name, individual_alias) dá 'column not found' na leitura padrão — medido 2026-11-04"
+  - id: campos_json_em_texto
+    resumo: "nationality, individual_date_of_birth, list_type e outros vêm como JSON em texto ({\"VALUE\": \"Democratic Republic of the Congo\"}, {\"TYPE_OF_DATE\": \"EXACT\", \"YEAR\": \"1971\"}). A data de nascimento tem formato variável (só ano, EXACT, APPROXIMATELY, nulo) e precisa de json_extract_string. first_name carrega o nome inteiro da entidade quando é empresa."
+    tabelas: [sanctions]
+    colunas: [nationality, individual_date_of_birth, list_type]
+    severidade: silencioso
+    verificado: "individual_date_of_birth preenchido em 731 de 733 pessoas, ex. {\"TYPE_OF_DATE\": \"EXACT\", \"YEAR\": \"1971\"} e {\"TYPE_OF_DATE\": null}; nationality em 631 de 733; gender em 59 de 733; individual_document em 300 — medido 2026-11-04"
+  - id: lista_vigente_por_regime
+    resumo: "É o snapshot vigente (date_generated 2026-10-29) das listas do CSNU, por regime em un_list_type (Al-Qaida 333, DPRK 155, Taliban 140, Iran 121, Iraq 74, DRC 61, Libya 31, Somalia 24...). listed_on vai de 2000-04-12 a 2026-07-22; quem saiu da lista não está. Não serve de histórico nem de contagem de sancionados por ano."
+    tabelas: [sanctions]
+    colunas: [un_list_type, listed_on, date_generated]
+    severidade: silencioso
+    verificado: "date_generated 2026-10-29; listed_on pessoas 2000-04-12 a 2026-07-14, entidades 2001-10-06 a 2026-07-22; un_list_type contagens acima — medido 2026-11-04"

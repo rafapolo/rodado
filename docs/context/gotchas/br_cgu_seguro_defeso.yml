@@ -33,3 +33,9 @@ gotchas:
     colunas: [favorecido_id, valor_parcela]
     severidade: aviso
     verificado: "total por mês (161 meses, R$ 48,98 bi nos dois caminhos): 0,93 s pela view, 0,10 s na pagamento; 3.982.685 combinações (2.182.852 NIS distintos) para 43.418.500 pagamentos — medido 2026-10-26"
+  - id: pescador_acima_de_10pct_da_populacao
+    resumo: "140 municípios têm mais pescadores com seguro-defeso em 2024 que 10% da população, o máximo em Mocajuba/PA (14.730 para 28.821 habitantes, 51%). O espelho não tem o RGP ativo para dizer se é cadastro inflado ou pesca de fato: trate como outlier antes de tirar média."
+    tabelas: [seguro_defeso, pagamento]
+    colunas: [nis_favorecido, codigo_municipio_siafi]
+    severidade: aviso
+    verificado: "2024: 1.112.240 pescadores (nis_favorecido) em 3.240 municípios; população 2024 do IBGE; MA 4,9% e PA 3,3% da população do estado — medido 2026-11-04"

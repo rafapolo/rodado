@@ -425,6 +425,9 @@ Três deles já foram testados nesta rodada (E1, E2, E3 acima).
   Família, Gás do Povo, Seguro-Defeso, Pé-de-Meia, Garantia-Safra) usam
   `codigo_municipio_siafi`, não `id_municipio`. O join por nome normalizado + UF
   contra `br_bd_diretorios_brasil.municipio` recupera **5.556 dos 5.571** códigos.
+  Em 2026-11-04 achou-se o elo exato: `codigo_municipio_siafi` é o `id_municipio_rf` do
+  diretório (junção como inteiro, `try_cast(... AS INTEGER)`), **5.570 de 5.570** no Bolsa
+  Família sem passar por nome (ver `bridges.yaml`).
 - **Variável extensiva não é absorvida por resíduo em rank de log-escala** —
   vale para os dois lados da armadilha. Par **extensivo × extensivo** precisa
   de log-área no controle além de log-população (foi o que derrubou o D1). E

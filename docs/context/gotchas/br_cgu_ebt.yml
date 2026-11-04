@@ -1,0 +1,20 @@
+dataset: br_cgu_ebt
+gotchas:
+  - id: amostra_de_665_municipios
+    resumo: "A Escala Brasil Transparente avaliou só 665 municípios por edição (os mesmos 665 em 2020 e 2021), não os 5.570: 12% dos municípios, escolhidos pela CGU. Tirar média por UF ou 'ranking do Brasil' com esses dados representa a amostra, não o país. As duas edições são só 2020 e 2021 (1.330 linhas)."
+    tabelas: [municipio]
+    colunas: [id_municipio, ano]
+    severidade: silencioso
+    verificado: "municipio: 1.330 linhas, 665 id_municipio distintos, todos em 2020 e 2021; todos casam com br_bd_diretorios_brasil.municipio — medido 2026-11-04"
+  - id: ranking_com_empates
+    resumo: "ranking vai de 1 a 665 mas com empates: só 416 posições distintas em 2020 e 389 em 2021 (empate de nota). nota é de 0 a 10 (2020: 0,59 a 9,95, média 6,54; 2021: 2,1 a 10,0, média 6,86). Não use ranking como posição única nem como inteiro sem lacunas."
+    tabelas: [municipio, uf]
+    colunas: [ranking, nota]
+    severidade: silencioso
+    verificado: "count(DISTINCT ranking) 2020 = 416 e 2021 = 389 para 665 linhas; uf: 27 UFs por ano, nota 5,99 a 9,64 (2020) e 4,91 a 10,0 (2021) — medido 2026-11-04"
+  - id: edicao_2020_e_2021_nao_comparavel
+    resumo: "A nota mínima sobe de 0,59 (2020) para 2,1 (2021) e a média de 6,54 para 6,86: a metodologia da escala mudou entre as edições (a CGU revisou os quesitos), então diferença de nota 2020-2021 mede método e adesão ao programa, não só transparência. A medição aqui é só a distribuição das notas; o motivo da mudança não está nos dados."
+    tabelas: [municipio, uf]
+    colunas: [nota]
+    severidade: aviso
+    verificado: "nota média municipal 2020 = 6,54 e 2021 = 6,86; mínima 0,59 e 2,1 — medido 2026-11-04"

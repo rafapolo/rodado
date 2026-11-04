@@ -1,0 +1,36 @@
+dataset: br_ms_sisvan
+gotchas:
+  - id: serie_termina_em_2023
+    resumo: "microdados cobre 2008 a 2023 (12 meses em cada ano) e nada depois; o volume salta de 29,9 milhões de linhas em 2021 para 45,9 milhões em 2022 e 50,5 milhões em 2023. Comparar 2022-2023 com anos anteriores mede a expansão da cobertura (e-SUS AB e Auxílio Brasil entrando), não só mudança no estado nutricional."
+    detalhe: >
+      sistema_origem tem 3 valores (1 Sisvan web, 2 Auxílio Brasil, 4 e-SUS AB). Em RR, junho/2022:
+      955 linhas do Auxílio Brasil e 9.358 do e-SUS AB. Linhas por ano: 2008 = 12,1 mi,
+      2019 = 30,2 mi, 2020 = 22,7 mi (pandemia), 2021 = 29,9 mi, 2022 = 45,9 mi, 2023 = 50,5 mi.
+    tabelas: [microdados]
+    colunas: [ano, sistema_origem]
+    severidade: silencioso
+    verificado: "linhas por ano 2021 = 29.853.216, 2022 = 45.862.104, 2023 = 50.544.072; max(ano) = 2023 — medido 2026-11-04"
+  - id: uma_linha_por_acompanhamento
+    resumo: "Uma linha é um acompanhamento (acompanhamento é um hash único por linha), não uma pessoa. id_individuo é único dentro de um ano (RR 2022: 161.842 linhas, 161.842 ids), mas se repete entre anos (RR 2020-2023: 569.597 linhas, 342.623 ids). Pessoas distintas só se contam dentro de um ano."
+    tabelas: [microdados]
+    colunas: [acompanhamento, id_individuo]
+    severidade: silencioso
+    verificado: "2022 nacional, mês 6: 2.913.612 linhas = 2.913.612 id_individuo; RR 2020-2023: 569.597 linhas para 342.623 ids — medido 2026-11-04"
+  - id: medidas_impossiveis
+    resumo: "peso, altura e imc têm valores impossíveis que não são nulos: em junho/2022 (2.913.612 linhas) há 199 pesos acima de 300 kg (máximo 480 em RR), 896 alturas abaixo de 30 cm, 1.166 imc = 0, 130 imc acima de 100 e 14 idades acima de 110. Médias e máximos sem filtro saem distorcidos."
+    detalhe: >
+      imc e peso nunca vêm nulos de 2008 a 2017 (count(imc) = count(*)), mas de 2018 a 2021
+      count(imc) é menor que o total (2018: 31.354.273 de 31.479.413). Colunas de grupo
+      específico têm cobertura parcial por desenho: estado_nutricional_adulto preenchido em
+      ~45% das linhas (2023: 23,3 de 50,5 milhões) e povo_comunidade em menos de 1%
+      (2023: 163.543).
+    tabelas: [microdados]
+    colunas: [peso, altura, imc, idade]
+    severidade: silencioso
+    verificado: "junho/2022 nacional: peso > 300 = 199, altura < 30 = 896, imc = 0 = 1.166, imc > 100 = 130, idade > 110 = 14 — medido 2026-11-04"
+  - id: fase_da_vida_por_codigo
+    resumo: "fase_vida é código 1 a 8 (1 menor de 6 meses, 2 de 6 meses a 2 anos, 3 de 2 a 5, 4 de 5 a 7, 5 de 7 a 10, 6 adolescente, 7 adulto, 8 idoso), decodificado em dicionario. As faixas de idade se sobrepõem nas bordas e usam a classificação do sistema, não a idade em anos: para recortes etários use idade."
+    tabelas: [microdados, dicionario]
+    colunas: [fase_vida]
+    severidade: aviso
+    verificado: "junho/2022: fase 7 = 1.372.588 (idade 19-59), fase 8 = 378.723 (idade 59-122), fase 6 = 464.841 (idade 9-19) — medido 2026-11-04"

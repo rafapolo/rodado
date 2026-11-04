@@ -12,3 +12,15 @@ gotchas:
     colunas: [id_subsistema]
     severidade: silencioso
     verificado: "28.416 linhas de 2026-01-01 a 2026-10-23 com id_subsistema <> trim(id_subsistema) (7.104 por N, NE, S, SE); id_subsistema = 'N' tem 0 linhas em 2026 — medido 2026-10-28"
+  - id: restricao_coff_meia_hora_e_ceg_vazio
+    resumo: "restricao_coff_eolica_tm e restricao_coff_fotovoltaica_tm são de meia hora, em MWmed (para MWh, some e divida por 2), e ceg vem como '-' para usina de conjunto: a UF é id_estado. A taxa de corte é val_geracaolimitada / (val_geracao + val_geracaolimitada); val_geracaoreferenciafinal quase não é preenchida."
+    tabelas: [restricao_coff_eolica_tm, restricao_coff_fotovoltaica_tm]
+    colunas: [val_geracao, val_geracaolimitada, val_geracaoreferenciafinal, val_geracaonaorealizadaapurada, ceg, id_estado]
+    severidade: silencioso
+    verificado: "eólica 2025: 2.712.912 linhas, geração 111,07 TWh (soma ÷ 2) e limitada 43,93 TWh (28,3%); a apurada não realizada dá 26,22 TWh (19,1%); referência final 3,98 TWh; a solar começa em 2024 (2025: 31,72 TWh gerados, 19,12 limitados, 37,6%) — medido 2026-11-04"
+  - id: capacidade_geracao_ceg_com_zero
+    resumo: "capacidade_geracao liga ao SIGA da ANEEL pela CEG, mas o último segmento vem com dois dígitos ('.01') e o SIGA com um ('.1'): normalize antes de juntar. Itaipu tem 14.000 MW aqui e 7.000 MW na ANEEL (parte brasileira)."
+    tabelas: [capacidade_geracao]
+    colunas: [ceg, val_potenciaefetiva, dat_desativacao]
+    severidade: silencioso
+    verificado: "1.972 CEG sem desativação, 1.946 casam (98,7%) com br_aneel_dadosabertos.siga_empreendimentos_geracao.CodCEG; hidrelétrica 109,15 GW contra 102,15 GW, 95,15 contra 95,15 sem Itaipu — medido 2026-11-04"

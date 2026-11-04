@@ -1,0 +1,20 @@
+dataset: br_rf_dirpf
+gotchas:
+  - id: repasses_empilha_anexos_diferentes
+    resumo: "repasses empilha 25 planilhas (coluna arquivo) de natureza diferente: apuração, valores efetivamente repassados, repasses pendentes, fundos que não receberam e fundos habilitados. O mesmo fundo aparece em vários anexos, então somar o valor da tabela inteira mistura repassado com pendente e conta duas vezes (fdca 2022: R$ 611 mi, fdi 2022: R$ 326 mi nessa soma). Filtre arquivo pelo anexo que a pergunta pede."
+    tabelas: [repasses]
+    colunas: [arquivo, fundo, ano_pagina]
+    severidade: silencioso
+    verificado: "25 arquivos; linhas por (fundo, ano_pagina): fdca 2022 13.573, fdca 2023 6.913, fdi 2022 6.479, fdi 2023 1.920; arquivos como anexo-i-...valores-repassados (1.055), anexo-ii-...repasses-pendentes (1.000), anexo-iii-...nao-receberam (789) — medido 2026-11-04"
+  - id: valor_em_cinco_colunas_texto
+    resumo: "O valor vem em texto 'R$ 9.446,05' e espalhado em cinco colunas conforme a planilha (Valor, Valores, Valor Doado, Doação, Doações); nenhuma sozinha cobre a tabela (Valor tem 9.924 de 13.573 linhas de fdca 2022). Use coalesce das cinco e converta tirando 'R$ ' e o ponto de milhar. 3.649 linhas de fdca 2022 e 4.225 de fdca 2023 não têm valor em nenhuma: são planilhas de habilitação sem valor."
+    tabelas: [repasses]
+    colunas: [Valor, Valores, "Valor Doado", Doação, Doações]
+    severidade: silencioso
+    verificado: "linhas com valor em alguma das cinco colunas: fdca 2022 9.924 de 13.573; fdca 2023 2.688 de 6.913; fdi 2022 2.824 de 6.479; fdi 2023 327 de 1.920; planilhas habilitados e dados-corretos sem valor — medido 2026-11-04"
+  - id: cnpj_do_fundo_com_nomes_de_coluna_variaveis
+    resumo: "O CNPJ do fundo está em CNPJ (texto) e, em algumas planilhas, em CNPJ_1; UF, município e conta também mudam de nome entre arquivos (Município/Estado, Município / Estado, Estado/Município). Há 240 linhas sem CNPJ (182 em fdi 2022). Para cadastro de fundos use fundos_habilitados, que tem cnpj_fundo inteiro e uma linha por fundo."
+    tabelas: [repasses, fundos_habilitados]
+    colunas: [CNPJ, CNPJ_1, cnpj_fundo]
+    severidade: silencioso
+    verificado: "fundos_habilitados: 6.471 linhas = 6.471 cnpj_fundo distintos, tipo_fundo M 6.419, E 50, N 2, ano_dirpf 2025; repasses sem CNPJ: fdca 2022 7, fdca 2023 48, fdi 2022 182, fdi 2023 3 — medido 2026-11-04"

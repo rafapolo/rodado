@@ -1,0 +1,26 @@
+dataset: br_rj_isp_estatisticas_seguranca
+gotchas:
+  - id: 2026_parcial_e_cisp_atrasa
+    resumo: "2026 tem só 9 meses (até 2026-09), e os últimos 3 (2026-07 a 09) estão como 'Consolidado sem errata'; evolucao_mensal_cisp está atrasada: homicídio doloso 2026 soma 1.336 contra 1.977 na tabela de UF e de município."
+    detalhe: >
+      evolucao_mensal_uf, _municipio e _cisp fecham exatamente entre si de 2014 a
+      2025 (homicídio doloso 2023 = 3.293 nas três; 2024 = 2.908; 2025 = 2.844),
+      mas a CISP não tem os meses finais de 2026. Para comparar 2026 com ano fechado
+      anualize ou use os mesmos 9 meses. A tabela de município cobre 92 municípios
+      (todos do estado) só a partir de 2014; a de UF vai de 1991.
+    tabelas: [evolucao_mensal_uf, evolucao_mensal_municipio, evolucao_mensal_cisp]
+    colunas: [ano, mes, tipo_fase, quantidade_homicidio_doloso]
+    severidade: silencioso
+    verificado: "homicidio_doloso por ano (uf = municipio = cisp): 2025 2.844, 2024 2.908, 2023 3.293, 2022 3.059, 2019 4.004; 2026: uf 1.977, cisp 1.336, 9 meses; tipo_fase 'sem errata' = 276 linhas de 202607 a 202609 — medido 2026-11-04"
+  - id: colunas_vazias_antes_de_2003_e_nomes_diferentes
+    resumo: "Na série de UF (1991-2026, 429 meses) várias colunas só existem de 2003 em diante (estupro, extorsão, estelionato, roubo de celular: 285 de 429 meses; bicicleta, 153) e os nomes mudam entre tabelas (quantidade_pessoas_desaparecida no município, quantidade_pessoa_desaparecida na UF; outros_roubos x outros_roubo; apreensao_drogas x apreensao_droga)."
+    detalhe: >
+      Colunas nulas não são zero: somar com COALESCE e comparar com 1991-2002
+      subestima. letalidade_violenta = homicídio doloso + latrocínio + lesão
+      corporal seguida de morte + morte por intervenção policial (4.270 = em 2023
+      na UF). taxa_letalidade (383 linhas) vai só até 2022 e usa população do
+      ISP; taxa_cem_mil_habitantes já vem calculada.
+    tabelas: [evolucao_mensal_uf, evolucao_mensal_municipio, taxa_letalidade]
+    colunas: [quantidade_estupro, quantidade_roubo_celular, quantidade_estelionato, quantidade_pessoa_desaparecida, quantidade_pessoas_desaparecida]
+    severidade: silencioso
+    verificado: "evolucao_mensal_uf: nn quantidade_estupro 285 de 429, roubo_bicicleta 153, homicidio_doloso 429; taxa_letalidade ano máx 2022; letalidade_violenta 2023 = 4.270 — medido 2026-11-04"

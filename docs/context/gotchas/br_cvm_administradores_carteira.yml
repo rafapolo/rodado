@@ -1,0 +1,22 @@
+dataset: br_cvm_administradores_carteira
+gotchas:
+  - id: cadastro_inclui_cancelados
+    resumo: "pessoa_fisica (6.695) e pessoa_juridica (3.015) trazem o histórico de registros: 42% (2.837) e 49% (1.484) estão com situacao = CANCELADA. Contar linhas não é contar gestores ativos; ativos = 'EM FUNCIONAMENTO NORMAL' (3.798 PF, 1.527 PJ)."
+    detalhe: >
+      data_cancelamento só vem preenchida nas CANCELADA (2.837 e 1.484), nunca nas
+      outras. Em pessoa_juridica o cnpj repete: 3.015 linhas para 2.907 CNPJs
+      (mais de um registro por categoria). Em pessoa_fisica não há CPF: o nome repete
+      (6.695 linhas, 6.384 nomes distintos), então não use nome como chave.
+    tabelas: [pessoa_fisica, pessoa_juridica]
+    colunas: [situacao, data_cancelamento, cnpj, nome]
+    severidade: silencioso
+    verificado: "pessoa_fisica CANCELADA 2.837, EM FUNCIONAMENTO NORMAL 3.798; pessoa_juridica CANCELADA 1.484, NORMAL 1.527, 2.907 CNPJ distintos em 3.015; datas até 2026-04-17 — medido 2026-11-04"
+  - id: valor_patrimonial_texto_e_responsavel_repetido
+    resumo: "valor_patrimonial_liquido é VARCHAR (preenchido em 535 de 3.015 PJ, valores de -R$ 6,27 bi a R$ 228 bi, ponto decimal) e data_patrimonio_liquido é de 1990 a 2025: é patrimônio de anos diferentes, não comparável. responsavel repete linhas (6.766 para 6.612 chaves)."
+    detalhe: >
+      Converta com TRY_CAST. responsavel liga cnpj ao diretor responsável (18 tipos
+      de função); nome é nulo em 3. A mesma pessoa pode ocupar várias funções.
+    tabelas: [pessoa_juridica, responsavel]
+    colunas: [valor_patrimonial_liquido, data_patrimonio_liquido, nome, tipo]
+    severidade: silencioso
+    verificado: "TRY_CAST min -6.274.486.000 max 228.137.123.000; nn=535; responsavel 6.766 linhas, 6.612 chaves (cnpj, nome, tipo) — medido 2026-11-04"

@@ -1,0 +1,15 @@
+dataset: br_firjan_ifgf
+gotchas:
+  - id: municipio_sem_indice_e_ranking_so_dos_ranqueados
+    resumo: "ranking tem 5.568 municípios por ano (2013-2022) mas o índice falta em 4% a 6% (5.288 de 5.568 em 2013, 5.240 em 2022); ranking_nacional vai de 1 até o número de municípios com índice (5.240 em 2022), não até 5.568."
+    detalhe: >
+      Município sem índice (sem dado fiscal entregue) fica com indice,
+      ranking_estadual e ranking_nacional nulos, não zero (só 2 linhas com
+      indice = 0, em 2017). Contar municípios por faixa exige filtrar o índice não
+      nulo. A mediana nacional sobe de 0,41 (2017) para 0,63 (2022) em média simples;
+      o conjunto de municípios com índice muda a cada ano, então comparar a posição
+      do ranking entre anos mistura conjuntos diferentes.
+    tabelas: [ranking]
+    colunas: [indice_firjan_gestao_fiscal, ranking_nacional, ranking_estadual]
+    severidade: silencioso
+    verificado: "count(indice) por ano: 5.288 (2013), 5.244, 5.343, 5.259, 5.428 (2017), 5.337, 5.428, 5.239, 5.426, 5.240 (2022) de 5.568; avg índice 0,461 (2013), 0,407 (2017), 0,625 (2022); max ranking_nacional 2022 = 5.240 — medido 2026-11-04"

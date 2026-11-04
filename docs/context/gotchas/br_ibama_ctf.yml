@@ -1,0 +1,26 @@
+dataset: br_ibama_ctf
+gotchas:
+  - id: grao_cnpj_atividade
+    resumo: "Em app, uma linha é CNPJ × atividade (× UF), não empresa: 1.448.256 linhas para 774.853 CNPJ. count(*) conta atividade, count(DISTINCT cnpj) conta empresa. Inclui cadastros encerrados e suspensos."
+    tabelas: [app, aida]
+    colunas: [cnpj]
+    severidade: silencioso
+    verificado: "app: 1.448.256 linhas, 774.853 CNPJ distintos; situacao_cadastral Ativa 901.152, Encerrado 402.563, Suspenso 127.679, Cadastramento indevido 16.862; 235 cnpj com tamanho diferente de 14 — medido 2026-11-04"
+  - id: datas_texto_com_sentinela
+    resumo: "Em app, data_de_inicio_da_atividade e data_de_termino_da_atividade são texto dd/mm/aaaa (não ordenam como data) e trazem sentinelas e datas de carga: início mínimo 01/01/0001, máximo 31/12/9999; 155.631 inícios são 29/06/2018 e 114.788 são 01/01/2001. Cadastro 'Ativa' com data de término preenchida existe (260.980, 29% das Ativas): a data de término não indica empresa encerrada, use situacao_cadastral."
+    tabelas: [app]
+    colunas: [data_de_inicio_da_atividade, data_de_termino_da_atividade]
+    severidade: silencioso
+    verificado: "app: início 29/06/2018 = 155.631, 01/01/2001 = 114.788; término 29/06/2018 = 206.567; Ativa com término 260.980 de 901.152 — medido 2026-11-04"
+  - id: coordenadas_zero_e_fora_do_brasil
+    resumo: "Em app, latitude/longitude vêm preenchidas em 1.197.207 linhas, mas 30.167 são (0, 0) e 31.902 caem fora da caixa do Brasil (lat -86 a 70, lon -97 a 62). Filtre latitude entre -34 e 6 e longitude entre -75 e -33 antes de mapear."
+    tabelas: [app]
+    colunas: [latitude, longitude]
+    severidade: silencioso
+    verificado: "app: 31.902 linhas fora de lat -34..6 / lon -75..-33, das quais 30.167 em (0,0) — medido 2026-11-04"
+  - id: potencial_poluicao_ausente
+    resumo: "potenc_de_pol_da_atividade usa '...' (41% das linhas) como marcador de ausência, não é uma quarta categoria nem 'baixo'."
+    tabelas: [app]
+    colunas: [potenc_de_pol_da_atividade]
+    severidade: silencioso
+    verificado: "'...' 594.900, Médio 451.588, Alto 374.080, Pequeno 27.688 (column_codes.yaml) — medido 2026-09-25, reconferido na contagem total 1.448.256 em 2026-11-04"

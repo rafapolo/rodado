@@ -1,0 +1,27 @@
+dataset: br_fbsp_absp
+gotchas:
+  - id: zero_onde_a_coluna_nao_existia
+    resumo: "Na tabela uf, colunas que a fonte não coletava vêm como 0, não nulo: quantidade_morte_violenta_intencional = 0 nas 27 UFs de 2007 a 2010 e quantidade_vitima_homicidio_doloso = 0 até 2011; quantidade_estupro = 0 em 2007-2008. Somar ou comparar séries cria queda falsa."
+    detalhe: >
+      MVI nacional (R$ não, vítimas): 47.215 (2011), 54.694 (2012), 61.597 (2016),
+      64.078 (2017), 57.592 (2018), 47.742 (2019), 50.448 (2020), 47.503 (2021),
+      igual aos números publicados no Anuário. Antes de 2011 use quantidade_cvli
+      (44.625 em 2007). quantidade_feminicidio é nula em 14 linhas (13 UFs em 2015, 4
+      em 2016). Os dados vão de 2007 a 2021, 27 UFs por ano. despesa_empenhada_seguranca_publica
+      está em reais.
+    tabelas: [uf]
+    colunas: [quantidade_morte_violenta_intencional, quantidade_vitima_homicidio_doloso, quantidade_estupro, quantidade_feminicidio]
+    severidade: silencioso
+    verificado: "sum(quantidade_morte_violenta_intencional) por ano: 2007-2010 = 0, 2011 = 47.215, 2019 = 47.742, 2021 = 47.503; vitima_homicidio_doloso = 0 até 2011; estupro 0 em 2007-2008 e 33.912 em 2009 — medido 2026-11-04"
+  - id: municipio_so_capitais_e_violencia_escola_so_2021
+    resumo: "municipio tem 162 linhas: as 27 capitais por ano (2016-2021), com o 'grupo' nulo em 2018 e 2019 e várias colunas com menos de 60% de preenchimento. violencia_escola é só 2021 e mistura contagem de escolas com proporção na mesma coluna."
+    detalhe: >
+      Em violencia_escola a linha tema = 'Proporção de escolas com projeto no
+      tema' (162 linhas) não é contagem, mas está em quantidade_escola; some
+      quantidade_escola só depois de filtrar esse tema. 57 linhas têm
+      quantidade_escola nula (1.860 de 1.917). Nomes de coluna têm erro de grafia
+      (proporcao_mortes_intenvencao_policial...).
+    tabelas: [municipio, violencia_escola]
+    colunas: [grupo, quantidade_escola, tema, quantidade_morte_policiais_civis_fora_de_servico]
+    severidade: silencioso
+    verificado: "municipio: 27 capitais x 6 anos = 162, grupo nn=108; violencia_escola 1.917 linhas, ano 2021, 19 temas — medido 2026-11-04"

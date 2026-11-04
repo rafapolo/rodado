@@ -1,0 +1,26 @@
+dataset: br_me_siape
+gotchas:
+  - id: retrato_de_2022_sem_remuneracao_nem_identificador
+    resumo: "servidores_executivo_federal é um único retrato (último ingresso 2022-06-20) de 358.869 vínculos, sem nome, CPF, matrícula, cargo nem remuneração: não serve para folha de pagamento nem para cruzar com pessoa."
+    detalhe: >
+      Só 9 colunas: atividade, data_admissao, funcao, nivel_funcao, orgao_exercicio,
+      orgao_vinculacao, raca_cor, sexo, situacao_vinculo. A linha é um vínculo, sem
+      chave, e não há coluna de data de referência. 215.639 (60%) são do Ministério da
+      Educação (universidades e institutos), o que domina qualquer média federal;
+      militares não aparecem (Defesa tem 7.919 vínculos). Para quantidade atual
+      de servidores use outra fonte: este retrato tem mais de 4 anos.
+    tabelas: [servidores_executivo_federal]
+    colunas: [data_admissao, orgao_vinculacao]
+    severidade: silencioso
+    verificado: "358.869 linhas; max(data_admissao) = 2022-06-20; MEC 215.639, Economia 46.338, Saúde 25.109, Defesa 7.919 — medido 2026-11-04"
+  - id: situacao_vinculo_e_raca_cor_e_funcao_vazia
+    resumo: "situacao_vinculo mistura ativos e cedidos (40 valores: ATIVO PERMANENTE 302.066, CONT.PROF.SUBSTITUTO 8.544, CEDIDO/REQUISITADO 7.122...): contar servidores exige filtrar. raca_cor 'NÃO INFORMADO' é 5,3% e funcao/nivel_funcao só existem em 23% das linhas (82.060)."
+    detalhe: >
+      data_admissao é VARCHAR 'aaaa-mm-dd' (sem inválidos). Composição racial
+      com 'NÃO INFORMADO' no denominador: Branca 195.573, Parda 107.583, Preta
+      25.539, Amarela 9.864, Indígena 1.277, Não informado 18.849, nulo 184. Função
+      de confiança (funcao, nivel_funcao) existe só para quem a ocupa.
+    tabelas: [servidores_executivo_federal]
+    colunas: [situacao_vinculo, raca_cor, funcao, nivel_funcao, atividade]
+    severidade: silencioso
+    verificado: "situacao_vinculo 40 valores; raca_cor: BRANCA 195.573, PARDA 107.583, PRETA 25.539, NÃO INFORMADO 18.849, nulo 184; count(funcao) = 82.060 de 358.869 — medido 2026-11-04"

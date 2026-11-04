@@ -1,0 +1,26 @@
+dataset: br_cgu_dados_abertos
+gotchas:
+  - id: catalogo_de_todos_os_orgaos
+    resumo: "Apesar do prefixo cgu, é o catálogo do portal de dados abertos de todos os órgãos: 12.731 conjuntos de 254 organizações, onde o maior publicador é o Banco Central (3.088 conjuntos mais 934 sob o slug 'banco-central-do-brasil-bcb'), seguido do INPI (1.386). Não use como lista de dados da CGU."
+    tabelas: [conjunto, organizacao]
+    colunas: [organizacao_responsavel, id_organizacao_responsavel]
+    severidade: silencioso
+    verificado: "conjunto: 12.731 linhas; organizacao: 254; Banco Central 3.088 + 934 pelo slug; INPI 1.386 — medido 2026-11-04"
+  - id: organizacao_em_duas_grafias
+    resumo: "organizacao_responsavel mistura o nome ('Banco Central do Brasil - BCB') e o slug ('banco-central-do-brasil-bcb') para a mesma organização, então GROUP BY por nome divide o mesmo órgão em duas linhas. Agrupe por id_organizacao_responsavel."
+    tabelas: [conjunto]
+    colunas: [organizacao_responsavel]
+    severidade: silencioso
+    verificado: "Banco Central aparece com 3.088 conjuntos pelo nome e 934 pelo slug — medido 2026-11-04"
+  - id: recurso_com_id_repetido_e_tamanho_nulo
+    resumo: "recurso tem 76.786 linhas para 76.763 id distintos (23 repetidas) e tamanho_bytes nulo em 57.477 (75%). quantidade_recursos do conjunto diverge da contagem em recurso em ao menos 1 conjunto. Os downloads somados (1,03 milhão nos conjuntos, 1,02 milhão nos recursos) são do portal, não do tamanho dos dados."
+    tabelas: [recurso, conjunto]
+    colunas: [id, tamanho_bytes, quantidade_recursos, quantidade_downloads]
+    severidade: aviso
+    verificado: "recurso: count(*) = 76.786, count(DISTINCT id) = 76.763, tamanho_bytes nulo 57.477; downloads recurso 1.016.362, conjunto 1.026.386 — medido 2026-11-04"
+  - id: retrato_ate_2024_02
+    resumo: "data_atualizacao dos conjuntos vai de 2015-06-03 a 2024-02-18: o catálogo foi coletado em torno de fev/2024 e não reflete conjuntos publicados depois."
+    tabelas: [conjunto]
+    colunas: [data_atualizacao]
+    severidade: aviso
+    verificado: "max(data_atualizacao) = 2024-02-18 — medido 2026-11-04"

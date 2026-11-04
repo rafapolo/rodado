@@ -1,0 +1,20 @@
+dataset: br_ibge_ipca15
+gotchas:
+  - id: indice_geral_com_id_nulo_e_pesos_aninhados
+    resumo: "Em mes_categoria_* a hierarquia vem toda na mesma tabela, em cinco níveis (id_categoria com 1, 2, 4 e 7 dígitos), e o Índice geral tem id_categoria NULL (peso 100). Por isso a soma de peso_mensal de um mês dá 500, não 100 (5 níveis), e agrupar ou somar variacao_mensal entre categorias conta tudo várias vezes. Filtre length(id_categoria) para um nível só (9 grupos, 19 subgrupos, 51 itens, 367 subitens)."
+    tabelas: [mes_categoria_brasil, mes_categoria_municipio, mes_categoria_rm]
+    colunas: [id_categoria, peso_mensal]
+    severidade: silencioso
+    verificado: "mes_categoria_brasil 2024-12: 447 linhas, 446 id_categoria distintos; níveis 1 dígito 9, 2 dígitos 19, 4 dígitos 51, 7 dígitos 367, NULL 1; soma de peso_mensal 500,0 em 2020-06 e 2026-03 — medido 2026-11-04"
+  - id: cobertura_diferente_entre_tabelas
+    resumo: "mes_brasil vai de 2000-05 a 2026-03; as tabelas por categoria só de 2020-02 a 2026-03. mes_categoria_municipio tem apenas dois municípios (Brasília 5300108 e Goiânia 5208707) e mes_categoria_rm nove regiões metropolitanas (Belém, Belo Horizonte, Curitiba, Fortaleza, Porto Alegre, Recife, Rio de Janeiro, Salvador, São Paulo). Não use como cobertura nacional por município."
+    tabelas: [mes_brasil, mes_categoria_municipio, mes_categoria_rm]
+    colunas: [ano, mes, id_municipio, regiao_metropolitana]
+    severidade: silencioso
+    verificado: "mes_brasil 311 meses, 200005 a 202603; mes_categoria_municipio 202002 a 202603 com 2 id_municipio; mes_categoria_rm 202002 a 202603 com 9 regiões — medido 2026-11-04"
+  - id: valores_conferidos_com_oficial
+    resumo: "mes_brasil bate com o IBGE: variacao_doze_meses de dez/2024 é 4,71% e de dez/2022 5,90%; recompor pelo indice (indice / indice 12 meses antes) reproduz variacao_doze_meses e variacao_mensal em todos os 299 meses com defasagem. IPCA-15 é a prévia (coleta do dia 15 ao dia 15) e difere do IPCA do mês, que está em outra tabela do espelho. Última leitura: 2026-03."
+    tabelas: [mes_brasil]
+    colunas: [indice, variacao_mensal, variacao_doze_meses]
+    severidade: aviso
+    verificado: "2024-12 indice 6958,73 mensal 0,34 12 meses 4,71; 2025-12 4,41; recomposição pelo índice: 0 divergências acima de 0,1 p.p. em 299 meses — medido 2026-11-04"

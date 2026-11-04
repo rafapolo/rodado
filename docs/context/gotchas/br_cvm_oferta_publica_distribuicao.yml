@@ -1,0 +1,20 @@
+dataset: br_cvm_oferta_publica_distribuicao
+gotchas:
+  - id: colunas_de_processo_e_datas_vazias
+    resumo: "numero_processo, numero_registro_oferta, data_abertura_processo, data_protocolo, data_registro_oferta e data_emissao estão vazias nas 27.486 linhas. Só data_inicio_oferta e data_encerramento_oferta vêm preenchidas. Agrupar por ano de registro ou protocolo devolve um único grupo NULL; use data_inicio_oferta. Sem numero_processo, não há chave para ligar a oferta a um processo da CVM."
+    tabelas: [dia]
+    colunas: [numero_processo, numero_registro_oferta, data_protocolo, data_registro_oferta]
+    severidade: erro
+    verificado: "count() das 6 colunas = 0 de 27.486; count(data_inicio_oferta) = count(data_encerramento_oferta) = 27.486 — medido 2026-11-04"
+  - id: serie_termina_em_2022
+    resumo: "As ofertas vão de 2008 a 2022 por data_inicio_oferta (2021: 6.117 ofertas, R$ 667,5 bi; 2022: 5.833, R$ 614,1 bi) e não há 2023 em diante. O volume cresce 20x entre 2014 e 2019 pela entrada das cotas de fundos fechados, não só por mercado maior."
+    tabelas: [dia]
+    colunas: [data_inicio_oferta]
+    severidade: silencioso
+    verificado: "ofertas por ano: 2014 = 178, 2016 = 1.485, 2019 = 3.839, 2022 = 5.833; sem linhas depois de 2022 — medido 2026-11-04"
+  - id: valores_em_texto_e_linha_por_serie
+    resumo: "valor_total, quantidade_total e preco_unitario são TEXTO ('820030.00'): some com try_cast(... AS DOUBLE). A soma total é R$ 2.985,6 bi, com máximo de R$ 10,2 bi numa linha. Cada linha é uma oferta-série-ativo, não uma oferta: cotas de fundos fechados são 18.166 das 27.486 linhas, debêntures simples 3.283, CRI 3.263. Contar linhas conta séries."
+    tabelas: [dia]
+    colunas: [valor_total, quantidade_total, preco_unitario, tipo_ativo]
+    severidade: silencioso
+    verificado: "sum(try_cast(valor_total AS DOUBLE)) = 2.985,6 bi; tipo_ativo: cotas de fundos fechados 18.166, debêntures simples 3.283, CRI 3.263 — medido 2026-11-04"

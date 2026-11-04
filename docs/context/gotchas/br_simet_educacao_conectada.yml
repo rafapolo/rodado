@@ -1,0 +1,30 @@
+dataset: br_simet_educacao_conectada
+gotchas:
+  - id: um_retrato_so
+    resumo: "escola é um retrato único: ano_censo = 2023 em todas as 137.914 escolas, com medições do SIMET atualizadas em 2024-12-12. Não há série nem comparação entre anos; qualquer 'evolução' precisa de outra fonte."
+    tabelas: [escola]
+    colunas: [ano_censo, data_ultima_atualizacao]
+    severidade: silencioso
+    verificado: "ano_censo distinto = 2023; data_ultima_atualizacao = 2024-12-12 em todas as linhas — medido 2026-11-04"
+  - id: medicao_so_para_56_por_cento
+    resumo: "media_tcp_download e as demais médias de rede estão preenchidas em só 77.935 das 137.914 escolas (56,5%). faixa_velocidade = 'Sem Medidor Instalado' (45.768) e NULL (9.964) são escolas sem medida, não escolas lentas; 'Sem Internet' (15.792) é outra coisa. Tirar a média de velocidade sobre a tabela inteira trata ausente como zero se coalescer."
+    detalhe: >
+      faixa_velocidade: Com Mais De 50 Mbits/S 49.326, Sem Medidor Instalado 45.768, Com 20 A 50
+      Mbits/S 17.064, Sem Internet 15.792, NULL 9.964. indicador_internet é verdadeiro em 122.122
+      escolas, número maior que as 49.326 + 17.064 que têm faixa de velocidade medida.
+    tabelas: [escola]
+    colunas: [media_tcp_download, faixa_velocidade, indicador_internet]
+    severidade: silencioso
+    verificado: "count(media_tcp_download) = 77.935 de 137.914; faixa_velocidade NULL = 9.964, Sem Medidor Instalado = 45.768 — medido 2026-11-04"
+  - id: razoes_com_sentinela_88888
+    resumo: "razao_desktop_aluno, razao_comp_portatil_aluno e razao_tablet_aluno trazem o sentinela 88888 (máximo de razao_comp_portatil_aluno = 88.888; 49 linhas em razao_desktop_aluno) e valores como 10, 15 e 20 que se repetem aos milhares (29.131 escolas com razao_desktop_aluno >= 10). Média sem tirar o sentinela fica na casa de dezenas."
+    tabelas: [escola]
+    colunas: [razao_desktop_aluno, razao_comp_portatil_aluno, razao_tablet_aluno]
+    severidade: silencioso
+    verificado: "razao_desktop_aluno = 88888 em 49 linhas; >= 10 em 29.131; razao_comp_portatil_aluno máximo 88.888 — medido 2026-11-04"
+  - id: medidas_extremas
+    resumo: "media_tcp_download chega a 2.380,6 Mbit/s (1 escola acima de 1.000), media_latencia a 8.234,7 ms e media_perda_pacote a 99,5%; 993 escolas têm quantidade_matricula = 0. Mediana, não média, para velocidade escolar."
+    tabelas: [escola]
+    colunas: [media_tcp_download, media_latencia, media_perda_pacote, quantidade_matricula]
+    severidade: aviso
+    verificado: "max(media_tcp_download) = 2.380,6; max(media_latencia) = 8.234,7; max(media_perda_pacote) = 99,5; quantidade_matricula = 0 em 993 — medido 2026-11-04"

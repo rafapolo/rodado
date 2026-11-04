@@ -18,3 +18,9 @@ gotchas:
     colunas: [tipo, geometria]
     severidade: silencioso
     verificado: "tipo B × CAR não cancelado (foto 2025-10-15): 230.839 pares; soma das interseções 42,8 Mha; limitada a 1 por feição 36,1 Mha (AM 24,2, PA 6,3) de 48,8 Mha — medido 2026-10-25 (chao)"
+  - id: geocodigo_composto
+    resumo: "geocodigo traz mais de um município separado por '/' em feições que cruzam divisas ('2111532/2112852'); municipio idem, em maiúsculas. Para ligar ao resto do espelho abra o geocodigo (string_split + unnest) e lembre que a área da feição vale para todos eles, sem repartir."
+    tabelas: [florestas_publicas]
+    colunas: [geocodigo, municipio, area_ha]
+    severidade: silencioso
+    verificado: "tipo B: 1.742 feições e 859 geocodigos distintos (de feições compostas ou únicas), 527 municípios depois de abrir; 389 deles no bioma Amazônia do PRODES — medido 2026-11-04"

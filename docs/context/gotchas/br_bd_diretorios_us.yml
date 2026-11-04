@@ -1,0 +1,23 @@
+dataset: br_bd_diretorios_us
+gotchas:
+  - id: county_inclui_territorios_e_equivalentes
+    resumo: "county tem 3.236 linhas únicas (id_county), mais do que os 3.143 condados dos EUA: inclui 92 de territórios (id_state > 56: PR, GU, VI...), e types 'municipio', 'parish', 'borough', 'census area', 'city'. 14 não têm centroide e só 1.915 estão em um CBSA."
+    detalhe: >
+      id_county (FIPS de 5 dígitos, texto com zero à esquerda) é a chave; o campo name
+      repete entre estados (1.749 nomes para 3.236 linhas). Não use COUNT(*) como número
+      de condados. id_cbsa nulo em 1.321 (condados fora de áreas metropolitanas).
+    tabelas: [county]
+    colunas: [id_county, type, id_state, id_cbsa, centroid]
+    severidade: silencioso
+    verificado: "3.236 linhas = 3.236 id_county; id_state > '56' em 92; centroid nulo em 14; id_cbsa nn=1.915 — medido 2026-11-04"
+  - id: school_fechadas_e_county_vazio
+    resumo: "school (102.274 escolas, id_school único) inclui 1.029 'Closed', 450 'Inactive' e 337 'Future'; id_county é 100% nulo, então não liga a county (use id_school_district ou as coordenadas). congress_member tem 12.770 parlamentares de toda a história (nascidos desde 1721), id_bioguide único; só 1.140 têm name_official_full."
+    detalhe: >
+      Para escolas em funcionamento filtre operational_status in ('Open','New','Reopened').
+      census_tract_2020 (85.396, único por id_census_tract) e cbsa_2023 (937) são
+      únicas. Chaves externas de congress_member são esparsas: id_fec em 1.532,
+      id_opensecrets em 1.442, id_lis em 328.
+    tabelas: [school, congress_member]
+    colunas: [operational_status, id_county, name_official_full, id_fec]
+    severidade: silencioso
+    verificado: "school: Open 99.596, Closed 1.029, Inactive 450, Future 337; id_county nn=0; congress_member 12.770 = 12.770 id_bioguide, birthday mín 1721-04-19 — medido 2026-11-04"

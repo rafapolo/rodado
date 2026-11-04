@@ -1,0 +1,32 @@
+dataset: br_ibge_censo2022_raca
+gotchas:
+  - id: total_junto_das_partes
+    resumo: "Em instrucao e fecundidade_idade, as colunas de dimensão trazem a linha 'Total' junto das partes, nas duas dimensões: cor_raca = 'Total' e categoria_principal = 'Total'. Somar valor sem fixar as duas dá 2x a população (instrucao: 308,6 milhões de pessoas com 18 anos ou mais contra 154,3 milhões reais)."
+    detalhe: >
+      instrucao (pessoas de 18 anos ou mais, soma dos 5.571 municípios): cor_raca = 'Total' e
+      categoria_principal = 'Total' dá 154.309.509. As quatro categorias de instrução somam 308.588.606
+      porque entram as 6 linhas de cor (inclusive o Total). Cores: Branca 67.708.208, Parda
+      67.991.352, Preta 17.086.808, Indígena 762.510, Amarela 730.219 (somam 154.279.097; a
+      diferença de 30.412 para o Total não aparece como 'Sem declaração' nesta tabela).
+    tabelas: [instrucao, fecundidade_idade]
+    colunas: [valor, cor_raca, categoria_principal]
+    severidade: silencioso
+    verificado: "instrucao: Total x Total = 154.309.509; soma sem filtro de cor = 308.588.606; Branca 67.708.208, Parda 67.991.352 — medido 2026-11-04"
+  - id: faixas_de_idade_sobrepostas
+    resumo: "Em fecundidade_idade, categoria_principal mistura faixas que se sobrepõem: '15 a 17 anos', '18 ou 19 anos' e '15 a 19 anos' (esta última é a soma das duas anteriores). Somar as faixas conta de 15 a 19 anos duas vezes. Escolha um conjunto que não se cruze."
+    tabelas: [fecundidade_idade]
+    colunas: [categoria_principal]
+    severidade: silencioso
+    verificado: "variavel 'Filhos tidos nascidos vivos': 15 a 17 = 681.112 e 18 ou 19 = 1.096.985 (soma 1.778.097) contra 15 a 19 = 1.778.141; Total 301.961.378 — medido 2026-11-04"
+  - id: valor_nulo_em_celula_sem_dado
+    resumo: "valor é nulo em 31.882 das 167.130 linhas de instrucao (19%) e em boa parte de fecundidade_idade (ex.: 5.189 não nulos de 38.997 na faixa de 12 a 14 anos): célula sem dado ou de zero omitido na origem. Soma ignora nulo, média por município sem tratar nulo superestima."
+    tabelas: [instrucao, fecundidade_idade]
+    colunas: [valor]
+    severidade: silencioso
+    verificado: "instrucao: 31.882 valor nulo de 167.130; fecundidade 12 a 14 anos: count(valor) = 5.189 de 38.997 — medido 2026-11-04"
+  - id: fecundidade_tem_sem_declaracao
+    resumo: "fecundidade_idade tem a cor 'Sem declaração' (34.380 em 'Total' de categoria), que instrucao não tem: as duas tabelas não cobrem as mesmas categorias. Total de fecundidade 239.893.302 é de filhos tidos, não de mulheres."
+    tabelas: [fecundidade_idade, instrucao]
+    colunas: [cor_raca, variavel]
+    severidade: aviso
+    verificado: "fecundidade_idade categoria Total, cor Sem declaração = 34.380; cor Total = 239.893.302 — medido 2026-11-04"

@@ -1,0 +1,38 @@
+dataset: br_mdr_snis
+gotchas:
+  - id: tipo_servico_com_espacos_no_fim
+    resumo: "tipo_servico vem preenchido com espaços até 13 caracteres ('Agua         ', 'Agua e Esgoto', 'Esgotos      ', 'Esgoto       '): WHERE tipo_servico = 'Agua' devolve zero linhas. Use trim()."
+    detalhe: >
+      Há 4 rótulos, e 'Esgoto' e 'Esgotos' são grafias diferentes do mesmo serviço.
+      Em 2022: Agua 3.469, Agua e Esgoto 2.362, Esgotos 609 linhas. O grão de
+      prestador_agua_esgoto é (ano, município, prestador, tipo_servico), único em
+      125.845 linhas, e um município pode ter vários prestadores (6.440 linhas para
+      5.424 municípios em 2022).
+    tabelas: [prestador_agua_esgoto]
+    colunas: [tipo_servico]
+    severidade: silencioso
+    verificado: "length(tipo_servico) = 13 nos 4 valores; 2022: Agua 3.469, Agua e Esgoto 2.362, Esgotos 609; 125.845 linhas = 125.845 chaves — medido 2026-11-04"
+  - id: populacao_urbana_nula_em_2022
+    resumo: "populacao_urbana é nula em todas as 6.440 linhas de 2022 (e a atendida urbana também), enquanto 2018-2021 tem 5.6 mil a 6 mil; índices de atendimento urbano de 2022 não podem ser recalculados."
+    detalhe: >
+      populacao_atendida_agua continua (5.831 de 6.440). O total de população
+      atendida com água fecha com o SNIS publicado nas duas tabelas: 171,0 milhões em
+      2022 (prestador e município), 170,8 milhões em 2019. A coluna é grafada
+      populacao_atentida_esgoto (sem o 'd'). A série começa em 1995 com 54 municípios
+      e só passa de 4.000 em 2000; 2022 cobre 5.424 municípios.
+    tabelas: [prestador_agua_esgoto, municipio_agua_esgoto]
+    colunas: [populacao_urbana, populacao_urbana_atendida_agua, populacao_atentida_esgoto]
+    severidade: silencioso
+    verificado: "count(populacao_urbana) por ano: 2021 = 5.978, 2022 = 0; sum(populacao_atendida_agua) 2022 = 171,0 mi (prestador) e 171,0 mi (município); 2019 = 170,8 mi nos dois; 1995 = 54 municípios — medido 2026-11-04"
+  - id: indices_fora_de_faixa_e_sentinelas
+    resumo: "Os indice_* trazem valores impossíveis: indice_tratamento_esgoto até 162.555,6; indice_consumo_agua_per_capita até 1,59 milhão L/hab/dia e mínimo -623,9; indice_perda_faturamento de -5.375 a 38.788 (309 linhas de 2021 fora de 0-100). ano_vencimento_delegacao_* usa 9999 (267 linhas) e 1900/1 como sentinela."
+    detalhe: >
+      Não tire média de índice entre prestadores: recalcule a razão pelos
+      volumes (volume_agua_faturado / volume_agua_produzido etc.) ou filtre 0-100.
+      Em 2021, nenhum índice de atendimento passa de 100, o problema está nos de
+      perda, macromedição, tratamento e consumo. volume_agua_micromedido_economia_ativa
+      tem mínimo negativo.
+    tabelas: [prestador_agua_esgoto]
+    colunas: [indice_tratamento_esgoto, indice_consumo_agua_per_capita, indice_perda_faturamento, indice_macromedicao, ano_vencimento_delegacao_agua]
+    severidade: silencioso
+    verificado: "min/max: indice_tratamento_esgoto 0 / 162.555,6; indice_perda_faturamento -5.375 / 38.788,45; indice_consumo_agua_per_capita -623,9 / 1.586.082,2; 2021: 309 perdas fora de 0-100, 1 consumo > 1.000; ano_vencimento 9999 = 267 — medido 2026-11-04"

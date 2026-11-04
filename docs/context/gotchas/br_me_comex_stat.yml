@@ -1,0 +1,48 @@
+dataset: br_me_comex_stat
+gotchas:
+  - id: uf_ncm_diferente_de_uf_do_municipio
+    resumo: "O total por UF diverge entre as tabelas: em 2024 SP exporta US$ 67,1 bi por ncm_exportacao.sigla_uf_ncm (UF de produção) e US$ 78,3 bi por municipio_exportacao.sigla_uf (UF do exportador); RJ 35,8 contra 52,7."
+    detalhe: >
+      Os totais nacionais fecham iguais nas quatro tabelas (US$ 339,7 bi de
+      exportação em 2024), mas a UF significa coisas diferentes. sigla_uf_ncm é
+      a UF de origem da mercadoria e é nula em 6.985 linhas de 2024 que somam
+      US$ 30,3 bi (8,9% do total: reexportação, petróleo e outros sem UF
+      declarada), então a soma por UF dessa tabela fica US$ 30 bi abaixo do total.
+      Ranking de estado exportador tem de dizer qual das duas definições usa.
+    tabelas: [ncm_exportacao, ncm_importacao, municipio_exportacao, municipio_importacao]
+    colunas: [sigla_uf_ncm, sigla_uf]
+    severidade: silencioso
+    verificado: "2024 exportação: SP 67,12 (ncm) x 78,28 (município); RJ 35,77 x 52,70; MG 40,55 x 37,94; sigla_uf_ncm nula = US$ 30,33 bi em 6.985 linhas — medido 2026-11-04"
+  - id: escala_e_fechamento_com_o_mdic
+    resumo: "valor_fob_dolar está em dólares inteiros (não mil nem milhão): soma 2023 = US$ 339,7 bi de exportação e US$ 240,8 bi de importação, igual ao oficial; as quatro tabelas fecham entre si em todos os anos."
+    detalhe: >
+      Referência conferida: 2022 exportou US$ 334,1 bi e importou US$ 272,6 bi;
+      2023 US$ 339,7 bi / US$ 240,8 bi; 2024 US$ 339,7 bi / US$ 262,4 bi. Sem
+      fator de escala. As tabelas de município trazem sh4 (4 dígitos), as de ncm
+      trazem NCM de 8 dígitos; só a de ncm tem id_unidade e quantidade_estatistica.
+    tabelas: [ncm_exportacao, ncm_importacao, municipio_exportacao, municipio_importacao]
+    colunas: [valor_fob_dolar, peso_liquido_kg]
+    severidade: silencioso
+    verificado: "sum(valor_fob_dolar) por ano nas 4 tabelas: iguais de 1997 a 2026 (ex. 2023 339,7/240,8; 2025 381,4/304,2) — medido 2026-11-04"
+  - id: ultimo_ano_incompleto_e_zeros
+    resumo: "2026 tem só janeiro a março (397.281 linhas de exportação, US$ 83,1 bi); comparar 2026 com ano fechado engana. Há linhas com valor, peso ou quantidade zero."
+    detalhe: >
+      Em 2024 (1.604.101 linhas de exportação) 3.592 têm valor_fob_dolar = 0,
+      122.334 têm peso_liquido_kg = 0 (serviços, energia, bunker) e 87.825
+      quantidade_estatistica = 0. Preço médio por kg = valor / peso precisa
+      excluir peso zero. quantidade_estatistica está em unidade que muda por NCM
+      (id_unidade: 10 kg, 11 unidade, 13 pares...): nunca some entre NCMs.
+    tabelas: [ncm_exportacao, ncm_importacao]
+    colunas: [peso_liquido_kg, quantidade_estatistica, ano, mes]
+    severidade: silencioso
+    verificado: "2026: meses 1,2,3 em ncm_exportacao; 2024: 3.592 fob=0, 122.334 peso=0, 87.825 quantidade=0 de 1.604.101 — medido 2026-11-04"
+  - id: codigos_de_pais_e_via
+    resumo: "sigla_pais_iso3 vem como texto vazio para alguns id_pais (489, 393, 698: 145 linhas em 2024) e id_pais não é ISO; id_via tem 0 (não declarada) com 12.423 linhas e id_urf 0 = 'Nao Informado'. Decodifique por tabela dicionario."
+    detalhe: >
+      O dicionario traz id_urf, id_via e id_pais; junte por id_tabela, nome_coluna
+      e chave. sigla_uf_ncm contém siglas que não são UF além das 27 (a amostra
+      tem 30 valores distintos, p.ex. ZN, EX).
+    tabelas: [ncm_exportacao, ncm_importacao, dicionario]
+    colunas: [id_pais, sigla_pais_iso3, id_via, id_urf]
+    severidade: silencioso
+    verificado: "2024 exportação: sigla_pais_iso3 vazia em 145 linhas; id_via 0 = 12.423, 1 = 855.204, 4 = 448.712, 7 = 267.369; municipio sigla_uf 'EX' em 32 linhas — medido 2026-11-04"

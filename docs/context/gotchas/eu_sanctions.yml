@@ -1,0 +1,26 @@
+dataset: eu_sanctions
+gotchas:
+  - id: grao_explodido_por_atributo
+    resumo: "A tabela é o XML da lista consolidada da UE achatado: uma linha por combinação de alias × endereço × nascimento × documento da mesma entidade. count(*) conta combinações, não alvos: 44.043 linhas para 6.269 entidades (Entity_LogicalId), e uma única entidade chega a 146 linhas. Conte alvos com count(DISTINCT Entity_LogicalId)."
+    tabelas: [sanctions]
+    colunas: [Entity_LogicalId, NameAlias_LogicalId]
+    severidade: silencioso
+    verificado: "44.043 linhas; 6.269 Entity_LogicalId (= 6.269 Entity_EU_ReferenceNumber); 31.135 NameAlias_LogicalId; Entity_LogicalId 7133 com 146 linhas, 201 com 112; Entity_SubjectType P (pessoa) 4.490 entidades, E (empresa) 1.779 — medido 2026-11-04"
+  - id: nome_nulo_em_linhas_de_outros_atributos
+    resumo: "NameAlias_WholeName é nulo em 12.908 linhas (29%): são linhas que só carregam endereço, nascimento ou documento. Para o nome, filtre NameAlias_WholeName IS NOT NULL ou agrupe por Entity_LogicalId. Cada atributo (nascimento, endereço) fica em linhas próprias, então cruzar nome com data de nascimento exige agregar por entidade."
+    tabelas: [sanctions]
+    colunas: [NameAlias_WholeName]
+    severidade: silencioso
+    verificado: "NameAlias_WholeName nulo em 12.908 de 44.043 linhas; Address_CountryDescription preenchido em 2.667 — medido 2026-11-04"
+  - id: colunas_vazias
+    resumo: "Colunas existem no esquema mas estão 100% vazias: Identification_CountryDescription, Citizenship_CountryDescription, BirthDate_ZipCode e Identification_LatinNumber (tipo INT, zero valores). Use os campos *_CountryIso2Code para país."
+    tabelas: [sanctions]
+    colunas: [Identification_CountryDescription, Citizenship_CountryDescription, BirthDate_ZipCode, Identification_LatinNumber]
+    severidade: silencioso
+    verificado: "count() = 0 em 44.043 linhas nas quatro colunas — medido 2026-11-04"
+  - id: lista_de_sancoes_nao_tem_brasil_e_datas
+    resumo: "É lista de sanções da UE (34 programas), data de geração 2026-10-23 e designações de 2000-04-12 a 2026-07-30; nenhuma entidade com endereço no Brasil. Entidade removida da lista não aparece (só a lista vigente), logo não serve de histórico."
+    tabelas: [sanctions]
+    colunas: [fileGenerationDate, Entity_DesignationDate]
+    severidade: silencioso
+    verificado: "fileGenerationDate 2026-10-23; Entity_DesignationDate 2000-04-12 a 2026-07-30; 34 Entity_Regulation_Programme distintos; entidades com Address_CountryIso2Code = BR: 0 — medido 2026-11-04"

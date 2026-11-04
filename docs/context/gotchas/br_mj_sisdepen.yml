@@ -1,0 +1,26 @@
+dataset: br_mj_sisdepen
+gotchas:
+  - id: quantidade_nula_por_esquema
+    resumo: "Em populacao_prisional a grade de categorias (situação × regime × esfera × sexo) vem completa em todas as unidades, mas quantidade é nula em 44% das linhas em 2016 e em cerca de 70% em 2018-2022; só a partir de 2023 cai para 25%, e para 7% em 2025. Nulo é categoria não informada, não zero, e o esquema do questionário muda (geracao_esquema A, B, C, D)."
+    detalhe: >
+      Contar unidades ou comparar a composição (provisório × sentenciado,
+      regime, sexo) entre 2022 e 2023 compara questionários diferentes: o
+      preenchimento por categoria dobra com o esquema D. O total por UF não
+      sofre, porque sum(quantidade) bate com uf_semestre.populacao_total em
+      todos os semestres medidos.
+    tabelas: [populacao_prisional, populacao_caracteristica]
+    colunas: [quantidade, geracao_esquema]
+    severidade: silencioso
+    verificado: "populacao_prisional quantidade não nula: 2016-2 29.607 de 53.316; 2020-2 16.776 de 55.008; 2022-2 16.282 de 55.188; 2023-1 41.995 de 55.440; 2025-2 51.522 de 55.152; sum(quantidade) = populacao_total de uf_semestre em 2016-2, 2020 e 2025 — medido 2026-11-04"
+  - id: semestre_unico_por_linha
+    resumo: "A tabela é por semestre (ano, semestre; 2016-2 a 2025-2, 19 levantamentos, 27 UFs cada). É estoque no fim do período, não fluxo: não some dois semestres do mesmo ano."
+    tabelas: [uf_semestre, populacao_prisional, cobertura]
+    colunas: [populacao_total, quantidade]
+    severidade: silencioso
+    verificado: "uf_semestre: 27 UFs em cada um dos 19 semestres, populacao_total 702.385 (2016-2) a 960.976 (2025-2); 2025-1 = 938.072 e 2025-2 = 960.976, somá-los daria 1,9 milhão — medido 2026-11-04"
+  - id: taxa_ocupacao_e_razao
+    resumo: "taxa_ocupacao é razão (1,4 = 140% da capacidade), não percentual; no nacional é populacao_total / capacidade_total (960.976 / 679.763 = 1,41 em 2025-2)."
+    tabelas: [uf_semestre]
+    colunas: [taxa_ocupacao]
+    severidade: silencioso
+    verificado: "média das UFs 1,4 em 2025-2, máximo 2,24; capacidade_total 679.763 vs populacao_total 960.976 — medido 2026-11-04"

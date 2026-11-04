@@ -1,0 +1,20 @@
+dataset: br_brasilapi
+gotchas:
+  - id: taxas_referencia_e_foto_velha
+    resumo: "taxas_referencia tem 3 linhas (Selic 13,75; CDI 13,65; IPCA 4,22) sem data: é a consulta do dia da coleta e já está desatualizada (Selic de 13,75% é do segundo semestre de 2023). Não use como taxa vigente nem como série; para taxas históricas use o dataset do BCB."
+    tabelas: [taxas_referencia]
+    colunas: [nome, valor]
+    severidade: silencioso
+    verificado: "taxas_referencia: 3 linhas, Selic 13,75, CDI 13,65, IPCA 4,22, sem coluna de data — medido 2026-11-04"
+  - id: feriados_so_nacionais
+    resumo: "feriados tem 108 linhas, todas type = 'national', de 2020 a 2027 (13 ou 14 por ano): nenhum feriado estadual ou municipal, então dia útil em UF/cidade (por exemplo, 20 de novembro em municípios com feriado) sai errado. Anos futuros (2026, 2027) são calculados, não observados."
+    tabelas: [feriados]
+    colunas: [date, type]
+    severidade: silencioso
+    verificado: "type = national em 108 de 108; anos 2020 a 2027, 13 por ano até 2023 e 14 de 2024 em diante — medido 2026-11-04"
+  - id: bancos_e_ddd_sem_chave_ibge
+    resumo: "bancos tem 473 instituições com ispb único mas code (compensação) nulo em 8 e repetido em 10 casos (463 códigos distintos): a chave é ispb. ddd_cidades tem 5.565 linhas por (state, city) em texto, sem id_municipio, com 3 pares cidade/UF repetidos: junte ao diretório por nome normalizado e UF, e cuidado com homônimos."
+    tabelas: [bancos, ddd_cidades]
+    colunas: [ispb, code, city, state]
+    severidade: aviso
+    verificado: "bancos: 473 ispb distintos, 463 code distintos, 8 code nulos; ddd_cidades: 5.565 linhas, 5.562 pares (state, city) distintos — medido 2026-11-04"

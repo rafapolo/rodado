@@ -1,0 +1,13 @@
+# Medido em 2026-11-04: br_tce_sp tem uma tabela (municipios, 644 linhas, colunas municipio e municipio_extenso), so a lista de nomes de municipio, sem dado de fiscalizacao, multa ou despesa. Sem armadilha de valor a registrar alem da cobertura abaixo.
+dataset: br_tce_sp
+gotchas:
+  - id: so_lista_de_nomes_644_de_645
+    resumo: "br_tce_sp.municipios são só 2 colunas de nome (municipio em minúsculas sem acento, municipio_extenso com acento): nenhum dado do TCE, nenhum código IBGE. Não serve para análise de fiscalização, só para casar nome."
+    detalhe: >
+      644 linhas, 644 valores nas duas colunas. Para juntar com o IBGE é preciso
+      normalizar o nome (minúsculas, sem acento) e tratar homônimos; não há
+      id_municipio. A pergunta sobre multas e penalidades do TCE-SP não tem dado aqui.
+    tabelas: [municipios]
+    colunas: [municipio, municipio_extenso]
+    severidade: aviso
+    verificado: "644 linhas, nn=644 nas duas colunas, nenhuma coluna numérica ou de código — medido 2026-11-04"

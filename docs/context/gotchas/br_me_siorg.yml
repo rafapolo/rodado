@@ -1,0 +1,18 @@
+dataset: br_me_siorg
+gotchas:
+  - id: tabela_de_valores_de_referencia_nao_folha
+    resumo: "remuneracao é a tabela de valores de referência dos cargos e funções comissionadas (CCE, FCE, DAS, FG...), 258 linhas: o valor mensal fixado para cada nível, não o que servidores recebem nem a despesa. Não tem quantidade de ocupantes, data de vigência nem órgão, então não dá para somar, tirar média de salário do Executivo ou calcular custo de cargos."
+    detalhe: >
+      Siglas mais frequentes: FCE 63, CCE 51, FCPE 21, DAS 17, FCT 15. Valores vão de R$ 62
+      (FG) a R$ 30.935 (PR, VPR e MEST, o teto de ministros e presidência). O mesmo valor de
+      teto aparece em mais de uma linha, então max() não identifica um cargo.
+    tabelas: [remuneracao]
+    colunas: [remuneracao, sigla_cargo_funcao]
+    severidade: silencioso
+    verificado: "258 linhas; FCE 63, CCE 51; mínimo R$ 62 (FG), máximo R$ 30.935 (PR, VPR, MEST) — medido 2026-11-04"
+  - id: cce_unitario_e_fator_do_valor
+    resumo: "cce_unitario é o fator em 'CCE unitário' do nível (ex.: CCE 1 18 = 6,41) e remuneracao é aproximadamente cce_unitario x R$ 2.701,5 (28 níveis com a razão 2.701,5). Não some os dois; cce_unitario é um fator, não reais. Há uma linha com remuneracao = 0 (FDT) e 258 linhas para 256 nivel_cargo_funcao distintos (2 níveis repetidos)."
+    tabelas: [remuneracao]
+    colunas: [cce_unitario, remuneracao, nivel_cargo_funcao]
+    severidade: aviso
+    verificado: "remuneracao / cce_unitario = 2.701,5 em 28 linhas, 2.706,1 e 2.701,4 em 8 cada; FDT com remuneracao = 0; 256 nivel_cargo_funcao distintos em 258 linhas — medido 2026-11-04"

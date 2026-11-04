@@ -1,0 +1,26 @@
+dataset: br_bd_metadados
+gotchas:
+  - id: bigquery_tables_e_o_catalogo_da_fonte_nao_do_espelho
+    resumo: "bigquery_tables descreve as 1.908 tabelas do projeto da Base dos Dados no BigQuery (1.654 tables + 254 views, 8,64 TB, 39,3 bilhões de linhas), com foto de 2026-06: não é o que está no espelho local. row_count e size_bytes são 0 em todas as views."
+    detalhe: >
+      Para tamanho e contagem do espelho use o catálogo (_rodado_metadata/catalog.parquet),
+      não esta tabela. A maior é br_ms_sia.producao_ambulatorial (6,75 bilhões de
+      linhas, 2,31 TB). dataset_id e table_id são únicos como par (1.908 linhas, 1.908
+      pares). project_id é sempre 'basedosdados'. Não some row_count entre type =
+      'table' e 'view' (a view é 0, mas o conceito de duplicação existe quando se
+      conta tabela e view da mesma origem).
+    tabelas: [bigquery_tables, tables]
+    colunas: [row_count, size_bytes, type, creation_date, last_modified_date]
+    severidade: silencioso
+    verificado: "type: table 1.654 (8,64 TB, 39,3 bi linhas), view 254 (row_count 0 em todas); last_modified máx 2026-06-15; maior tabela br_ms_sia.producao_ambulatorial 6.752.603.639 linhas — medido 2026-11-04"
+  - id: prefect_flow_runs_so_ate_2026_04_e_inclui_staging
+    resumo: "prefect_flow_runs (117.130 execuções, 2024-02-05 a 2026-04-02) mistura produção e staging (2.965 em 'staging'), tem 8,4% de falhas (108.485 Success) e task_runs/error_logs como texto em formato Python (aspas simples), não JSON."
+    detalhe: >
+      Filtre flow_project_name = 'main' e flow_archived = false para o estado
+      real. start_time é nulo em 616 execuções (as que nunca começaram).
+      dataset_id é nulo em 921 e table_id em 1.340. O texto de table_id às vezes
+      tem espaço no começo (' producao_ambulatorial'): use trim() ao juntar.
+    tabelas: [prefect_flow_runs]
+    colunas: [flow_project_name, state, start_time, table_id, task_runs, error_logs]
+    severidade: silencioso
+    verificado: "117.130 linhas = 117.130 id; staging 2.965; state Success 108.485; start_time nn=116.514; table_id nn=115.790 com ' producao_ambulatorial' — medido 2026-11-04"

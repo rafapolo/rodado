@@ -1,7 +1,7 @@
 {
   "_meta": {
     "source": "docs/context/metrics.yaml",
-    "count": 15
+    "count": 16
   },
   "metrics": [
     {
@@ -275,6 +275,27 @@
         "meta selic"
       ],
       "caveat": "ler o valor bruto como \"Selic = X% a.a.\" é um erro de ~10x. Para anualizar de verdade, compor os 12 meses do ano com `(EXP(SUM(LN(1+TRY_CAST(value AS DOUBLE)/100)))-1)*100`, nunca somar nem usar o valor de um mês isolado como se fosse a taxa anual. As colunas reais da tabela são `value` (VARCHAR, precisa `TRY_CAST` — não `valor`) e `date` (DATE desde 2026-10-21 — era string `dd/mm/aaaa`; não há `ano`/`mes` separados, filtre com `year(date)`).",
+      "needs_join": null
+    },
+    {
+      "name": "taxa_chefia_feminina",
+      "description": "percentual dos domicílios particulares permanentes ocupados cuja pessoa responsável é mulher (Censo 2022)",
+      "unit": "percentual (0-100)",
+      "grain": [
+        "id_municipio"
+      ],
+      "source_table": "br_ibge_censo_2022.agregados_municipio",
+      "expression": "100.0 * (v01338+v01340+v01342+v01344+v01346) / NULLIF(v01337+v01339+v01341+v01343+v01345+v01338+v01340+v01342+v01344+v01346, 0)",
+      "required_filters": [
+        "sem partição (5.570 linhas, uma por município, só Censo 2022): filtrar id_municipio ou id_uf para o recorte"
+      ],
+      "synonyms": [
+        "chefia feminina",
+        "mulheres chefes de família",
+        "domicílios chefiados por mulheres",
+        "responsável mulher"
+      ],
+      "caveat": "o denominador soma só os domicílios com sexo e cor/raça do responsável (99,3% do v00001 = 72.438.953); a média simples dos municípios (44,9%) é menor que a nacional porque município pequeno tem menos responsáveis mulheres.",
       "needs_join": null
     },
     {

@@ -1,0 +1,20 @@
+dataset: br_datahackers_state_data
+gotchas:
+  - id: pesquisa_de_autosselecao_nao_amostra
+    resumo: "É um questionário online respondido por 4.271 profissionais de dados que quiseram participar, não uma amostra: 74,8% Masculino (3.194), 24,7% Feminino (1.056), 2.744 se declaram Brancos. Não generalize para a força de trabalho brasileira nem calcule participação por UF sem ponderar."
+    tabelas: [microdados]
+    colunas: [p1_b, p1_c]
+    severidade: silencioso
+    verificado: "4.271 linhas; p1_b: Masculino 3.194, Feminino 1.056, Prefiro não informar 12, NULL 9; p1_c Branca 2.744, Parda 1.054, Preta 291 — medido 2026-11-04"
+  - id: colunas_codificadas_sem_dicionario
+    resumo: "As 312 colunas se chamam p0, p1_a, p1_b, p2_l_1... (número da pergunta e subitem do questionário) e a tabela não traz o enunciado: p1_a é um inteiro de 18 a 54 (idade em faixas, não em anos exatos, nenhum valor fora de 18-54), as colunas p2_l_1 a p2_l_7, p3_b_1 a p3_b_9 são INTEIROS por subitem de pergunta de múltipla resposta. Sem o questionário original não é seguro interpretar as colunas; não chute o significado."
+    tabelas: [microdados]
+    colunas: [p0, p1_a, p2_l_1, p3_b_1]
+    severidade: silencioso
+    verificado: "312 colunas; p1_a: mín 18, máx 54, 4.197 de 4.271 preenchidas — medido 2026-11-04"
+  - id: p0_e_identificador_aleatorio_repetido
+    resumo: "p0 é um hash do respondente (32 caracteres) e se repete em 1 caso (2 linhas com o mesmo valor); não há coluna de ano da edição nem de UF identificável por nome. Conte respondentes por count(DISTINCT p0)."
+    tabelas: [microdados]
+    colunas: [p0]
+    severidade: aviso
+    verificado: "p0 'x4w2z...' em 2 linhas, os demais em 1 — medido 2026-11-04"

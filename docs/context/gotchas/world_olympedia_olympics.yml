@@ -1,0 +1,26 @@
+dataset: world_olympedia_olympics
+gotchas:
+  - id: medalha_por_atleta_em_esporte_coletivo
+    resumo: "Em athlete_event_result a linha é atleta × evento: esporte coletivo gera uma linha de medalha por atleta. Contar linhas com medal não nulo infla o quadro de medalhas (Brasil 2016: 42 linhas de ouro para 7 ouros). Para o quadro use game_medal_tally ou conte distinct (edition, sport, event, country_noc, medal)."
+    tabelas: [athlete_event_result]
+    colunas: [medal, is_team_sport]
+    severidade: silencioso
+    verificado: "Brasil 2016: 42 linhas Gold em 7 eventos, 8 Silver em 6, 6 Bronze em 6; game_medal_tally Brasil 2016 7/6/6 = 19, 2020 7/6/8 = 21; total geral de 2016 306/307/359 = 972, igual ao oficial; linhas com medalha em team sport 29.388 de 44.687 — medido 2026-11-04"
+  - id: medal_nulo_e_participacao
+    resumo: "medal nulo (272.147 de 316.834 linhas, 86%) é participação sem medalha, não dado faltante: a tabela traz todos os resultados, não só pódio. Contar atletas por linha conta participantes."
+    tabelas: [athlete_event_result]
+    colunas: [medal]
+    severidade: silencioso
+    verificado: "medal: Gold 15.072, Silver 14.676, Bronze 14.939, NULL 272.147; 155.867 atletas distintos em 55 edições (1896 Verão a 2022 Inverno) — medido 2026-11-04"
+  - id: game_tem_edicao_futura_e_nao_realizada
+    resumo: "game lista 64 edições, incluindo as futuras (2024, 2026, 2028, 2032) e 5 canceladas por guerra (is_held = 'Not held due to war'); game_medal_tally e os resultados só vão até Pequim 2022 (inverno). Edição sem linha em tally não é zero medalhas. Existe uma '1906 Intercalated' no tally (18 países) que o COI não conta como Olimpíada."
+    tabelas: [game, game_medal_tally, athlete_event_result]
+    colunas: [edition, is_held]
+    severidade: silencioso
+    verificado: "game: 64 linhas, máx year 2032; max(year) de game_medal_tally = 2022 (1.807 linhas); 1906 Intercalated 18 linhas — medido 2026-11-04"
+  - id: bio_altura_peso_so_parte
+    resumo: "athlete_bio tem altura em 67% (105.112 de 155.861) e peso em 67% (104.151), nascimento (birth_year) em 97%. Médias por país ou esporte são de quem tem medida. Não use peso/altura para toda a população."
+    tabelas: [athlete_bio]
+    colunas: [height, weight, birth_date, birth_year]
+    severidade: silencioso
+    verificado: "155.861 atletas únicos; height 105.112 não nulos (127-226 cm), weight 104.151 (25-198 kg), birth_date 149.211, birth_year 151.694 (1828-2009) — medido 2026-11-04"

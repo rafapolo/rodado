@@ -1,0 +1,15 @@
+dataset: br_ibge_ipp
+gotchas:
+  - id: serie_termina_em_2022_02
+    resumo: "As seis tabelas mes_* terminam em fevereiro de 2022 (geral: 2013-12 a 2022-02, 99 meses; por atividade: 2009-12 a 2022-02): nada de 2022 em diante. Variação de 12 meses é nula nos primeiros 12 meses de cada série."
+    detalhe: >
+      numero_indice vai de 76,8 a 164,2 na indústria geral (média 77,1 em 2013 e
+      163,7 em 2022): é número-índice, não valor. variacao_doze_meses tem 87 de
+      99 valores na geral e 3.105 de 3.381 por atividade. Por atividade são 23
+      divisões da indústria (27 códigos distintos no campo divisao, que mistura
+      códigos com e sem zero), 276 linhas por ano (23 x 12), único por (ano,
+      mês, divisão). Para ano completo use 2014 a 2021.
+    tabelas: [mes_industria_geral, mes_industria_atividade, mes_industria_extrativa, mes_industria_transformacao, mes_grupo_industrial, mes_categoria_economica]
+    colunas: [ano, mes, numero_indice, variacao_doze_meses, divisao]
+    severidade: silencioso
+    verificado: "mes_industria_geral: 99 linhas, 2013 só mês 12, 2022 só meses 1-2; mes_industria_atividade: 3.381 linhas = 3.381 (ano, mês, divisão), 276 por ano de 2010 a 2021; variacao_doze_meses nn 87/99 — medido 2026-11-04"

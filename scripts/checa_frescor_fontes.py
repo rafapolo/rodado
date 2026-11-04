@@ -84,13 +84,15 @@ CACHE = {}
 def baixa(c, de_novo=False):
     """`bytes: N` pede só os N primeiros (data no cabeçalho de arquivo grande), `cauda: N` os N últimos (o
     diretório central de um zip lista os nomes); `cabecalhos` vão como `-H`;
-    `ua` troca o User-Agent; `timeout` (s) sobe o teto do curl. Respostas iguais (mesma URL e
+    `ua` troca o User-Agent; `timeout` (s) sobe o teto do curl; `ipv: 6` força IPv6. Respostas iguais (mesma URL e
     cabeçalhos) ficam em cache na rodada: as 6 entradas do SINAN leem uma só listagem do FTP."""
     if c.get("proxy_br"):
         return por_proxy(endereco(c)).content
     extra = ["-r", f"0-{c['bytes']}"] if c.get("bytes") else ["-r", f"-{c['cauda']}"] if c.get("cauda") else []
     if c.get("ua"):   # gov.br serve outra página (sem os links) para UA que não é de navegador
         extra += ["-A", c["ua"]]
+    if c.get("ipv"):   # o IPv4 do TCU (dados-abertos.apps) fica pendurado a partir do Mac; o IPv6 responde
+        extra += [f"-{c['ipv']}"]
     for h in c.get("cabecalhos", []):
         extra += ["-H", h]
     chave = (endereco(c), tuple(extra))

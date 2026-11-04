@@ -1,0 +1,25 @@
+dataset: br_mjsp_sisdepen
+gotchas:
+  - id: uf_em_duas_grafias
+    resumo: "populacao_carceraria.uf mistura a sigla ('MG', 31.690 linhas) com o nome por extenso e sigla entre parênteses ('Acre (AC)', 1.413 linhas) e é NULL em 5.252: agrupar por uf cru gera 59 categorias para 27 UFs. Extraia a sigla com regexp_extract(uf, '\\(([A-Z]{2})\\)', 1) quando houver parênteses."
+    tabelas: [populacao_carceraria]
+    colunas: [uf]
+    severidade: silencioso
+    verificado: "count(DISTINCT uf) = 59; sigla de 2 letras em 31.690, 'Nome (UF)' em 1.413, NULL em 5.252 de 38.364 — medido 2026-11-04"
+  - id: tabela_larga_quase_toda_nula
+    resumo: "É um formulário largo de 52 colunas, e a maioria das 38.364 linhas está vazia: nome_da_unidade_prisional só em 4.216 (3.052 nomes distintos), status em 4.249 (Completo 2.836, Complete 1.281, Incomplete 98, Incompleto 9, Não iniciado 21), capacidade de vagas por regime em cerca de 1.369. Não tem coluna de ano nem de período. Total de presos e de vagas não saem daqui sem tratar nulo e escolher uma onda."
+    detalhe: >
+      As colunas de vagas são texto. Regime fechado masculino: 1.369 linhas preenchidas, soma
+      151.741 vagas (parcial; o sistema prisional tem muito mais vagas), 2 valores não numéricos.
+      Datas de inauguração são dd/mm/aaaa em texto, com a data-sentinela 01/01/0001 em 127 linhas.
+      Linhas com cidade preenchida são só 1.424.
+    tabelas: [populacao_carceraria]
+    colunas: [nome_da_unidade_prisional, status, "1_6_data_de_inauguracao_do_estabelecimento"]
+    severidade: silencioso
+    verificado: "nome preenchido em 4.216 de 38.364; vagas regime fechado masculino em 1.369 linhas com soma 151.741; data 01/01/0001 em 127 linhas — medido 2026-11-04"
+  - id: status_com_rotulos_misturados
+    resumo: "status mistura português e inglês para a mesma situação ('Completo' 2.836 e 'Complete' 1.281; 'Incompleto' 9 e 'Incomplete' 98) e tem 34.115 NULL. Filtrar status = 'Completo' perde a metade em inglês."
+    tabelas: [populacao_carceraria]
+    colunas: [status]
+    severidade: silencioso
+    verificado: "status: NULL 34.115, Completo 2.836, Complete 1.281, Incomplete 98, Incompleto 9, Não iniciado 21, Indisponível 4 — medido 2026-11-04"

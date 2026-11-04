@@ -1,0 +1,25 @@
+dataset: br_tce_es
+gotchas:
+  - id: julgamento_contas_uma_linha_por_vereador
+    resumo: "julgamento_contas tem 1 linha por vereador por julgamento (11.791 linhas para 1.292 prestações de contas); COUNT(*) conta votos. Para contar julgamentos use COUNT(DISTINCT) de município, Ano, NumeroParecerPrevio e AnoParecerPrevio. 2024 está incompleto (207 linhas contra ~800)."
+    detalhe: >
+      Resultado da câmara: Aprovação 10.660 linhas, Rejeição 970, '-' 161 (sem
+      julgamento). Ano, NumeroParecerPrevio e AnoParecerPrevio são VARCHAR. As
+      colunas de contagem de voto (QuantidadeRejeicao nn=3.288 de 11.791) são nulas
+      quando zero, não ausentes. nome é o município (67 de 78). NomeVereador é nulo em 303 linhas.
+    tabelas: [julgamento_contas]
+    colunas: [Ano, NomeVereador, Resultado julgamento câmara, QuantidadeRejeicao, QuantidadeAprovacao]
+    severidade: silencioso
+    verificado: "11.791 linhas, 1.292 contas distintas, 1.210 (município, Ano); linhas por Ano 2009..2024: 622, 712, ..., 619, 207; Aprovação 10.660 / Rejeição 970 / '-' 161 — medido 2026-11-04"
+  - id: cpf_mascarado_e_cnpj_em_notacao_cientifica
+    resumo: "lista_responsaveis traz o CPF mascarado ('***.000.47*-**') nas 651 linhas de pessoa física: não dá para cruzar com CPF. Em obras_publicas EmpresaCNPJ está em notação científica ('1,02843E+13') em 246 das 250 linhas, perdendo os dígitos: o CNPJ é irrecuperável."
+    detalhe: >
+      Só os 83 CNPJs de lista_responsaveis são completos. lista_responsaveis
+      (734 linhas, 4 categorias: contas_irregulares 727) tem DataTermino futura
+      (2026-10 a 2034): é o fim da inabilitação. obras_publicas tem 250 linhas,
+      DataInicioObra e NecessidadeDeAtencaoEspecial 100% nulas, DiasAtrasada,
+      ValorAcrescido e ValorMaterial sempre 0.
+    tabelas: [lista_responsaveis, obras_publicas]
+    colunas: [NumeroDocumentoResponsavel, EmpresaCNPJ, DataInicioObra, DiasAtrasada]
+    severidade: silencioso
+    verificado: "lista_responsaveis CPF 651 de 651 mascarados, CNPJ 83 sem máscara; obras_publicas EmpresaCNPJ com 'E+' em 246 de 250; DataInicioObra nn=0 — medido 2026-11-04"

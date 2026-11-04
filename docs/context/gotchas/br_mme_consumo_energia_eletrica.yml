@@ -1,0 +1,15 @@
+dataset: br_mme_consumo_energia_eletrica
+gotchas:
+  - id: tipo_consumo_mistura_total_classes_e_mercado
+    resumo: "tipo_consumo tem 'Total' (531,0 TWh em 2023), 4 classes que somam o total (Residencial 164,3 + Comercial 97,7 + Industrial 188,3 + Outros 80,7 = 530,9) e 'Cativo' (317,0), que é um recorte de mercado sobreposto às classes. Somar tudo conta o consumo duas ou três vezes."
+    detalhe: >
+      Para total use só tipo_consumo = 'Total'; para composição use as 4 classes;
+      'Cativo' (consumidores do mercado regulado) é sub-conjunto e não entra na
+      soma. consumo está em MWh (soma de 'Total' 2023 = 531.0 milhões de MWh = 531
+      TWh, o consumo nacional publicado). numero_consumidores é nulo para 'Cativo'
+      e 'Total' (os 2 tipos x 6.480 linhas). Grão: ano, mês, UF, tipo (38.880 linhas
+      únicas); não há tabela municipal.
+    tabelas: [uf]
+    colunas: [consumo, numero_consumidores, tipo_consumo]
+    severidade: silencioso
+    verificado: "2023 em milhões de MWh: Total 531,0; Residencial 164,3; Comercial 97,7; Industrial 188,3; Outros 80,7; Cativo 317,0; 2004 Total 331,9; numero_consumidores nn=0 para Cativo e Total; 38.880 linhas = chaves — medido 2026-11-04"

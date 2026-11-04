@@ -754,6 +754,30 @@ inventário local de `tasks/espelho_subutilizado.md`, Parte I.
 4. O seguro-defeso pago por município acompanha a cobertura do Bolsa Família ou só a pesca artesanal? *(n=3: cgu_seguro_defeso\*, cgu_novo_bolsa_familia, ibge_populacao)*
 5. O Pé-de-Meia por município acompanha a evasão ou a matrícula do ensino médio no Censo Escolar? *(n=3: cgu_pe_de_meia\*, inep_censo_escolar, ibge_populacao)*
 
+## 93 · Energia e Mercado de Capitais: Corte de Renováveis, Custo da Energia, Dólar e Bolsa (ONS, ANEEL, B3, BCB, CVM)
+
+1. Que fração da geração eólica e solar centralizada o ONS mandou cortar por restrição, ano a ano e por UF, e o corte cresce mais que a capacidade instalada? *(n=3: ons_dados_abertos\*, ons_avaliacao_operacao\*, aneel_dadosabertos)*
+2. O custo marginal de operação semanal do Sudeste cai quando a energia armazenada nos reservatórios sobe, e a relação vale dentro de cada ano? *(n=2: ons_dados_abertos\*, ons_estimativa_custos\*)*
+3. Os retornos mensais da Petrobras e da Vale, exportadoras, sobem com o dólar PTAX, mais do que os de bancos, varejo e bebidas? *(n=2: b3_cotacoes\*, bcb_ptax\*)*
+4. Das ações negociadas à vista na B3 em 2024, que fração do volume tem a companhia identificada no cadastro da CVM, e o volume acompanha a receita do balanço? *(n=2: b3_cotacoes\*, cvm_cia_aberta\*)*
+5. As usinas que o ONS despacha são as mesmas do cadastro de geração da ANEEL, e a potência fecha por fonte? *(n=2: ons_dados_abertos\*, aneel_dadosabertos)*
+
+## 94 · Compras do PNCP, Seguros e Risco Geológico (MGI, SUSEP, SGB, IBGE, SFB)
+
+1. As contratações do PNCP são as mesmas do cadastro de compras do governo federal, com o mesmo valor, e que parte do valor homologado de 2024 vem de registros com valor impossível? *(n=2: mgi_pncp\*, mgi_compras_publicas)*
+2. Quanto os municípios homologaram por habitante no PNCP em 2024, descontados os valores impossíveis, e o valor cai com o porte? *(n=2: mgi_pncp\*, ibge_populacao)*
+3. Quanto de prêmio de seguro as seguradoras da SUSEP somaram em 2024, quão concentrado é, e quantas das que emitiram prêmio estão baixadas no cadastro de CNPJ? *(n=2: susep_dados_abertos\*, me_cnpj)*
+4. Os municípios com setores de risco alto do SGB são os mesmos que o IBGE mapeou como áreas de risco, e as populações em risco batem? *(n=2: sgb_setorizacao_risco\*, ibge_areas_risco\*)*
+5. Os municípios amazônicos com floresta pública não destinada (tipo B) perderam mais floresta entre 2021 e 2023 que os demais, descontado o tamanho? *(n=2: sfb_cnfp\*, inpe_prodes)*
+
+## 95 · Dívida Ativa, Rouanet, Senado, Fundeb e Simples: Gasto e Cobrança que Ninguém Cruzava
+
+1. Quanto vale a dívida ativa previdenciária e a do FGTS em 2026, quanto está ajuizado, e que fração fica nos 100 maiores devedores? *(n=2: mf_divida_ativa\*, pgfn_dividaativa)*
+2. Que parte da captação da Lei Rouanet em 2025 fica em SP e RJ, e a captação por habitante acompanha o PIB per capita das UFs? *(n=3: minc_salic\*, ibge_populacao, ibge_pib)*
+3. Quanto dos reembolsos da cota parlamentar do Senado de 2022 a 2025 foi para fornecedores que a Receita já tinha baixado antes da despesa, ou que só abriram depois dela? *(n=2: senado_ceaps\*, me_cnpj)*
+4. Quantos municípios aplicaram em 2024 menos que o mínimo de 70% do Fundeb em remuneração e de 25% da receita em educação, e o descumprimento cai com o porte? *(n=2: fnde_fundeb\*, ibge_populacao)*
+5. Que fração das empresas ativas de cada município está no Simples ou é MEI, e o MEI pesa mais nos municípios mais pobres? *(n=4: rf_simples_estatisticas\*, me_cnpj, ibge_pib, ibge_populacao)*
+
 ---
 
 # Perguntas multi-dataset simultâneos

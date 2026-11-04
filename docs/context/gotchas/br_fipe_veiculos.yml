@@ -1,0 +1,12 @@
+dataset: br_fipe_veiculos
+gotchas:
+  - id: catalogo_sem_preco
+    resumo: "A tabela se chama precos mas só tem 5 colunas (vehicle_type, brand_code, brand_name, model_code, model_name): é um catálogo de 11.425 modelos, sem valor, ano-modelo, combustível nem mês de referência. Qualquer pergunta sobre preço FIPE (média, depreciação, comparação com PIB) não tem dado aqui."
+    detalhe: >
+      Modelos por tipo: cars 7.386 (108 marcas), motorcycles 2.038 (103), trucks 2.001 (29).
+      O grão é um modelo por linha (11.425 linhas = 11.425 combinações tipo/marca/modelo), sem
+      repetição. Não há versão por ano-modelo.
+    tabelas: [precos]
+    colunas: [vehicle_type, brand_code, model_code, model_name]
+    severidade: silencioso
+    verificado: "5 colunas; 11.425 linhas = 11.425 (vehicle_type, brand_code, model_code); cars 7.386, motorcycles 2.038, trucks 2.001 — medido 2026-11-04"

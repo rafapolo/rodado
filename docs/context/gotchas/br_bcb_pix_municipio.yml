@@ -1,0 +1,20 @@
+dataset: br_bcb_pix_municipio
+gotchas:
+  - id: linha_sem_municipio
+    resumo: "Cada mês tem uma linha extra com Municipio_Ibge nulo e Municipio = 'N/D' (Estado 'NAO INFORMADO'): transações sem município identificado. Em dez/2024 ela soma R$ 1,6 bilhão pagos por PF e PJ e 2,8 milhões de transações. Somas por município ou por UF a perdem; o total nacional a inclui."
+    tabelas: [transacoes]
+    colunas: [Municipio_Ibge, Municipio, Estado_Ibge]
+    severidade: silencioso
+    verificado: "5.569 linhas e 5.568 municípios por mês em 2020-11 a 2025-03, 5.571/5.570 em 2025-04 a 2025-09, 5.572/5.571 de 2025-10 em diante; linha N/D em 202412 com VL_PagadorPF 1.146.507.363,63 e QT_PagadorPF 2.536.990 — medido 2026-11-04"
+  - id: valores_em_reais_pagador_igual_recebedor
+    resumo: "Valores VL_* estão em reais (não mil reais): São Paulo, dez/2024, VL_PagadorPF = R$ 79,3 bilhões. A soma nacional de pagador é praticamente igual à de recebedor em todo mês (diferença máxima R$ 7,5 milhões, em 2021-11), então somar pagador + recebedor conta cada transação duas vezes."
+    tabelas: [transacoes]
+    colunas: [VL_PagadorPF, VL_PagadorPJ, VL_RecebedorPF, VL_RecebedorPJ]
+    severidade: silencioso
+    verificado: "pagador menos recebedor: |diferença| < R$ 1 em 63 dos 68 meses e no máximo R$ 7,49 milhões (202111); 202412 R$ 2.329,1 bi; 2024 inteiro R$ 22,12 tri e 56,3 bilhões de transações — medido 2026-11-04"
+  - id: qt_pes_nao_soma_no_tempo
+    resumo: "QT_PES_* é número de pessoas distintas no mês (pessoas únicas, não transações). Não some entre meses nem entre municípios sem cuidado: a mesma pessoa conta de novo em cada mês. Pix por município começa em 2020-11 (primeiro mês, 25 bilhões, parcial) e a série cresce 100x até 2026-06."
+    tabelas: [transacoes]
+    colunas: [QT_PES_PagadorPF, QT_PES_PagadorPJ, QT_PES_RecebedorPF, QT_PES_RecebedorPJ, AnoMes]
+    severidade: silencioso
+    verificado: "São Paulo 202412: 297.675.564 transações de PF pagadora para 9.131.657 pessoas; total pagador 202011 R$ 25,1 bi, 202012 R$ 107,2 bi, 202606 R$ 3.044,1 bi — medido 2026-11-04"

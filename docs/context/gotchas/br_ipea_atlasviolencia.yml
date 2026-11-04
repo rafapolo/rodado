@@ -1,0 +1,20 @@
+dataset: br_ipea_atlasviolencia
+gotchas:
+  - id: ano_repetido_com_valor_diferente
+    resumo: "valores_nacional repete o par (serie_id, ano) com dois valores diferentes em 203 casos de 40 séries: 2.854 linhas para 2.651 pares. O segundo valor parece a versão arredondada (série 114, 1991: 0,0 e 0,00136; 1999: 0,02 e 0,0201). Ao somar ou fazer média por ano, deduplique (ex.: max(valor) por serie_id e ano) senão o ano conta dobrado."
+    tabelas: [valores_nacional]
+    colunas: [serie_id, ano, valor]
+    severidade: silencioso
+    verificado: "2.854 linhas, 136 séries, 2.651 pares (serie_id, ano) distintos; 203 pares com valores distintos (40 séries, entre elas a 114 de 1989 a 1999) — medido 2026-11-04"
+  - id: unidade_nome_so_pessoa_ou_proporcao
+    resumo: "unidade_nome só tem 'Pessoa' ou 'Proporção' e não diz a escala. Taxas por 100 mil aparecem como 'Pessoa' (série 20, taxa de homicídios registrados: 16,7 a 32,0), proporções em % (0 a 100) também (série 194: 5,1 a 41,5) e outras em fração de 0 a 1 (série 123: 0,44 a 1,0). A série 95 (proporção ao total de homicídios) chega a 120,2, acima de 100. Leia titulo e a faixa de valor antes de usar."
+    tabelas: [series, valores_nacional]
+    colunas: [unidade_nome, valor]
+    severidade: silencioso
+    verificado: "series: 152, unidade 'Pessoa' ou 'Proporção', periodicidade só Anual; série 20 mín 16,66 máx 31,97; 194 mín 5,13 máx 41,54; 123 mín 0,44 máx 1,0; 95 máx 120,24 — medido 2026-11-04"
+  - id: series_sem_valor_e_fim_irregular
+    resumo: "Das 152 séries do catálogo, 136 estão ativas e têm valor; 16 não têm nenhum valor em valores_nacional (ex.: 157 óbitos em rodovias federais, 370 sinistros, 324 e 327 taxas de óbitos PAF, 2000 tabela auxiliar). A última data muda por série: 2017 (causa indeterminada), 2021 (jovens), 2022, 2023 ou 2024 (homicídios registrados, suicídio). Comparar séries exige cortar no mesmo ano. É série nacional (sem UF nem município)."
+    tabelas: [series, valores_nacional]
+    colunas: [id, ano, ativo]
+    severidade: silencioso
+    verificado: "16 séries sem valor; anos finais: 98 e 95 até 2017; 195 até 2021; 31 e 35 até 2023 e 2022; 328 e 83 até 2024; 328 homicídios registrados 28.555 a 65.602 — medido 2026-11-04"

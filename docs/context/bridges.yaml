@@ -392,7 +392,7 @@ concepts:
       \      FROM br_bd_diretorios_brasil.municipio\n             WHERE id_municipio_rf IS NOT NULL)\n\
       SELECT m.nome, m.sigla_uf, count(*) AS estabelecimentos\nFROM br_me_cnpj.estabelecimentos e\nJOIN\
       \ mun m ON e.id_municipio_rf = m.id_municipio_rf\nWHERE e.ano = 2025 AND e.mes = 9      -- one snapshot,\
-      \ see the cnpj section\n  AND e.situacao_cadastral = '02'\nGROUP BY 1, 2\nORDER BY 3 DESC\nLIMIT\
+      \ see the cnpj section\n  AND e.situacao_cadastral = '2'\nGROUP BY 1, 2\nORDER BY 3 DESC\nLIMIT\
       \ 20"
   id_municipio_bcb:
     category: municipio
@@ -403,20 +403,31 @@ concepts:
     - No table in the mirror currently keys on it; it is a crosswalk column, not a join surface.
   codigo_municipio_siafi:
     category: municipio
-    description: SIAFI municipality code (4 digits), used by the CGU social-benefit extracts (Garantia-Safra,
-      Pé-de-Meia, Seguro Defeso).
-    canonical_table: — none in the mirror
+    description: SIAFI municipality code (4 digits, text with leading zero), used by the CGU social-benefit
+      extracts (Garantia-Safra, Pé-de-Meia, Seguro Defeso, Novo Bolsa Família, Transferências). It is the **same code**
+      as the Receita Federal one, so it joins the directory through `id_municipio_rf` — no name matching.
+    canonical_table: br_bd_diretorios_brasil.municipio.id_municipio_rf
     notes:
-    - '**There is no SIAFI column in the directory.** Join those datasets by name + UF instead; the CGU
-      files carry `nome_municipio` and `uf` next to the SIAFI code.'
-    - 'Verified: `upper(strip_accents(nome_municipio))` + `uf` against the directory matches 2.642 name/UF
-      pairs of Garantia-Safra.'
-    example_sql: "-- br_cgu_garantia_safra has no view: read the parquet directly (gotcha 5),\nWITH mun\
-      \ AS (SELECT DISTINCT id_municipio, nome, sigla_uf\n             FROM br_bd_diretorios_brasil.municipio)\n\
-      -- and its valor_parcela is VARCHAR with a comma decimal separator ('135,00')\nSELECT m.id_municipio,\
-      \ m.nome,\n       sum(CAST(replace(g.valor_parcela, ',', '.') AS DOUBLE)) AS total\nFROM read_parquet('~/rodado/br_cgu_garantia_safra/garantia_safra/*.parquet')\
-      \ g\nJOIN mun m ON upper(strip_accents(g.nome_municipio)) = upper(strip_accents(m.nome))\n     \
-      \     AND g.uf = m.sigla_uf\nGROUP BY 1, 2"
+    - 'Join as an integer: `try_cast(codigo_municipio_siafi AS INTEGER) = m.id_municipio_rf`. The SIAFI
+      side carries a leading zero (`0512`) and the directory side does not, so a text join silently loses
+      about 17% of the municipalities (Garantia-Safra: 1.106 of 1.327 as text, 1.327 as integer).'
+    - 'Verified 2026-11-04 (earlier versions of this entry said there was no crosswalk; that was wrong):
+      Seguro Defeso 2024, 3.240 of 3.240 codes match, UF equal in 3.240, name equal in 3.229; Pé-de-Meia
+      (pagamento in 2025), 5.562 of 5.562 codes, UF 5.562, name 5.547; Novo Bolsa Família (mes_competencia
+      202403), 5.570 of 5.570 codes, UF 5.570, name 5.554. CGU Transferências (jun/2024), 5.569 of 5.569 codes as integer, 4.571 as text. In all three the matched total equals the
+      table total (Seguro Defeso R$ 5,89 bi, Pé-de-Meia R$ 10,63 bi, Bolsa Família R$ 13,40 bi). The
+      name mismatches are spelling (accents, apostrophes), exactly what a name + UF join would lose.'
+    - 'Garantia-Safra: 1.327 of 1.327 codes as integer (2026-10-21, see gotchas/br_cgu_garantia_safra.yml).'
+    - Filter one month (or one year) before aggregating Bolsa Família and Pé-de-Meia — hundreds of millions
+      of rows — and aggregate on `pagamento`, not on the view.
+    example_sql: "WITH mun AS (SELECT DISTINCT id_municipio_rf, id_municipio, nome, sigla_uf
+             \      FROM br_bd_diretorios_brasil.municipio
+             WHERE id_municipio_rf IS NOT NULL)
+      SELECT m.id_municipio, m.nome, sum(p.valor_parcela) AS total
+FROM br_cgu_seguro_defeso.pagamento      \ p
+JOIN mun m ON try_cast(p.codigo_municipio_siafi AS INTEGER) = m.id_municipio_rf
+WHERE p.mes_referencia      \ LIKE '2024%'
+GROUP BY 1, 2"
   municipio:
     category: municipio
     description: Municipality *name* (not a code), under the shortest possible name. Six datasets use
@@ -551,7 +562,7 @@ concepts:
       ''[^0-9]'', '''', ''g'')`.'
     example_sql: "SELECT c.nome_municipio, c.sigla_uf, count(*) AS empresas\nFROM br_me_cnpj.estabelecimentos\
       \ e\nJOIN br_bd_diretorios_brasil.cep c ON e.cep = c.cep\nWHERE e.ano = 2025 AND e.mes = 9     \
-      \ -- one snapshot, see the cnpj section\n  AND e.situacao_cadastral = '02'\nGROUP BY 1, 2\nORDER\
+      \ -- one snapshot, see the cnpj section\n  AND e.situacao_cadastral = '2'\nGROUP BY 1, 2\nORDER\
       \ BY 3 DESC\nLIMIT 20"
   id_pais:
     category: geo
@@ -842,6 +853,28 @@ concepts:
       empresa inidônea ao texto do acórdão. Nenhuma das duas pontas tem CNPJ em comum com a outra além
       do próprio inidôneo — o texto do TCU quase nunca cita CNPJ (2 de 36.499 sumários).
     canonical_table: br_tcu_dadosabertos.dados
+  ceg:
+    category: governo
+    description: CEG, o código do empreendimento de geração de energia na ANEEL (`UHE.PH.SE.027053-9.1`).
+      Liga o cadastro de usinas da ANEEL (`CodCEG`) às usinas que o ONS despacha (`ceg`).
+    canonical_table: br_aneel_dadosabertos.siga_empreendimentos_geracao
+    notes:
+    - 'O ONS grava o último segmento com dois dígitos (`.01`) e a ANEEL com um (`.1`): tire o zero à esquerda
+      antes de juntar. Nas tabelas de restrição e geração horária do ONS o `ceg` vem como `-` para conjunto
+      de usinas e para MMGD; ali só existe `id_estado`.'
+  numero_controle_pncp:
+    category: governo
+    description: Número de controle da contratação no PNCP (`00394502000144-1-000001/2021`). Liga o espelho
+      federal de compras (MGI) ao espelho completo do PNCP.
+    canonical_table: br_mgi_pncp.contratacao
+  ticker:
+    category: empresa
+    description: Código de negociação na B3 (`PETR4`). A B3 não traz CNPJ; o elo com a empresa é o formulário
+      de referência da CVM, que lista o ticker de cada valor mobiliário da companhia.
+    canonical_table: br_cvm_cia_aberta.fca_valor_mobiliario
+    notes:
+    - 'Use `upper(trim(Codigo_Negociacao))`: há tickers em minúsculas e, em 281 de 7.025 linhas de ações e units,
+      códigos que não são ticker (`000000`, `4030`, `25585`). Ficam sem par BPAC11, CSNA3 e CMIN3.'
   sigla_partido:
     category: politica
     description: Party abbreviation. The join between electoral results, party affiliation and Câmara
@@ -1052,11 +1085,14 @@ bridges:
     expr: "upper(strip_accents(regexp_extract(municipio, '^(.*) \\(', 1))) = upper(strip_accents(m.nome))\n\
       \  AND regexp_extract(municipio, '\\(([A-Z]{2})\\)$', 1) = m.sigla_uf"
     verified: 11.096 of 11.142 directory rows
-  - table: br_cgu_garantia_safra / pe_de_meia / seguro_defeso
-    column: nome_municipio + uf (SIAFI code has no crosswalk)
-    format: upper-case name, unaccented
-    expr: upper(strip_accents(nome_municipio)) = upper(strip_accents(m.nome)) AND uf = m.sigla_uf
-    verified: 2.642 name/UF pairs
+  - table: br_cgu_garantia_safra / pe_de_meia / seguro_defeso / novo_bolsa_familia / transferencias
+    column: codigo_municipio_siafi (the SIAFI code is the Receita Federal code)
+    format: 4-digit text with leading zero ('0512'); the directory has it as a number
+    expr: try_cast(codigo_municipio_siafi AS INTEGER) = m.id_municipio_rf
+    verified: 'seguro_defeso 2024 3.240/3.240, pe_de_meia 2025 5.562/5.562, novo_bolsa_familia 202403
+      5.570/5.570, garantia_safra 1.327/1.327 (2026-11-04)'
+    concept: id_municipio_rf
+    join_expr: try_cast({s}.codigo_municipio_siafi AS INTEGER) = {d}.id_municipio_rf
   - table: br_comprasgov_sicaf.fornecedores
     column: nomeMunicipio + ufSigla
     format: mixed-case accented name
@@ -1560,7 +1596,7 @@ bridges:
       for individual suppliers.
     concept: cnpj
     join_expr: '{s}.cnpj = {d}.cnpj'
-    verified: 57 of 93 br_tcu_inidoneos.empresas CNPJs found registered in SICAF,
+    verified: 57 of 93 br_tcu_inidoneos.empresas CNPJs (snapshot de 2026-08; hoje 115) found registered in SICAF,
       12 still habilitadoLicitar=true — found answering
       tasks/respostas_pendentes.md T45-1, 2026-08-25
   - table: br_bcb_penalidades.penalidades
@@ -1632,7 +1668,7 @@ bridges:
     description: 'stored as BIGINT, leading zeros lost: `lpad(CAST(cnpj AS VARCHAR), 14, ''0'')`.'
     concept: cnpj
     join_expr: lpad(CAST({s}.cnpj AS VARCHAR), 14, '0') = {d}.cnpj
-    verified: only 1 of 84 br_tcu_inidoneos CNPJs appears as a corporate
+    verified: only 1 of 84 br_tcu_inidoneos CNPJs (snapshot de 2026-08; hoje 115) appears as a corporate
       shareholder here (C R Almeida S/A, sócia consorciada em 13 consórcios de
       obras) — found answering tasks/respostas_pendentes.md T45-4, 2026-08-25
   - table: br_cvm_administradores_carteira.pessoa_juridica
@@ -1653,7 +1689,7 @@ bridges:
       every "nan" row false-matches nothing (harmless) but wastes the scan.
     concept: cnpj
     join_expr: '{s}.id_responsavel = {d}.cnpj'
-    verified: 8 of 84 br_tcu_inidoneos CNPJs (14-digit format) are
+    verified: 8 of 84 br_tcu_inidoneos CNPJs (snapshot de 2026-08; hoje 115) (14-digit format) are
       responsável for a combined 8.535 obra registrations, 7.633 still
       `situacao = 'Ativa'` — includes C R Almeida S/A, the same company
       found in the br_brasilio_holdings entry above — found answering
@@ -1760,6 +1796,46 @@ bridges:
     verified: 554 dos 647 deputados da legislatura 57 casam um candidato de 2022 (565 pares — homônimos existem, desempate por UF via `proposicao_autor.sigla_uf_autor`) — 2026-09-27
     concept: nome_urna
     join_expr: upper(strip_accents(trim({s}.nome))) = upper(strip_accents(trim({d}.nome_urna)))
+  - table: br_ons_dados_abertos.capacidade_geracao / usina_conjunto / geracao_usina_2_ho
+    column: ceg
+    description: 'CEG das usinas do ONS contra `CodCEG` do SIGA da ANEEL, depois de tirar o zero à esquerda do último segmento (`.01` vira `.1`). Itaipu aparece com 14.000 MW no ONS e 7.000 MW na ANEEL (a parte brasileira): é a única diferença material de potência hidrelétrica'
+    expr: regexp_replace(s.ceg, '\.0*([0-9]+)$', '.\1') = a.CodCEG
+    verified: '1.946 de 1.972 CEG do ONS (98,7%) em br_aneel_dadosabertos.siga_empreendimentos_geracao; eólica 1.052/1.052 (33,62 × 33,63 GW), solar 553/553 (21,59 × 21,59), PCH 24/24, nuclear 2/2, hidrelétrica 156/156 (109,15 × 102,15 GW; 95,15 × 95,15 sem Itaipu) — 2026-11-04'
+    concept: ceg
+    join_expr: regexp_replace({s}.ceg, '\.0*([0-9]+)$', '.\1') = {d}.CodCEG
+  - table: br_mgi_compras_publicas.contratacao
+    column: numero_controle_pncp
+    description: 'igual a `br_mgi_pncp.contratacao.numeroControlePNCP`. O MGI é o subconjunto federal (SISG) em 1.001.583 linhas; o PNCP tem 4.250.794. O valor homologado vem igual nas duas e é impossível em ambas (registros de trilhões)'
+    expr: s.numero_controle_pncp = p.numeroControlePNCP
+    verified: '998.538 de 1.001.583 (99,7%) casam; valor homologado igual em 851.032 de 852.713 com valor nos dois lados (99,8%) — 2026-11-04'
+    concept: numero_controle_pncp
+    join_expr: '{s}.numero_controle_pncp = {d}.numeroControlePNCP'
+  - table: br_b3_cotacoes.cotacoes
+    column: ticker
+    description: 'ticker da B3 contra o código de negociação do formulário de referência da CVM; a ponte vale para ação à vista (BDI 02, mercado 010). O BDI 02 também traz ETF (IBOV11, R$ 133 bi em 2024), que não tem companhia'
+    expr: s.ticker = upper(trim(f.Codigo_Negociacao))
+    verified: '2024: 411 de 444 tickers (92,6%), 94,7% do volume, 309 CNPJs; 295 deles com DFP 2024 — 2026-11-04'
+    concept: ticker
+    join_expr: '{s}.ticker = upper(trim({d}.Codigo_Negociacao))'
+  - table: world_wb_mides.pagamento
+    column: documento_credor
+    description: >-
+      CNPJ/CPF do credor sem zeros à esquerda (CNPJs de 13 dígitos aparecem; CPF tem 11). Placeholders além dos três sentinelas de column_codes - um dígito (`0`, `1`…) em 6,2% das linhas de MG 2025 (686.845 de 11,0 mi). Junta com a lpad - `lpad(documento_credor,14,'0')` - mas dá igualdade só entre CNPJs; um CPF com lpad nunca casa com CNPJ.
+    expr: lpad(documento_credor, 14, '0') = e.cnpj
+    concept: cnpj
+    join_expr: lpad({s}.documento_credor, 14, '0') = {d}.cnpj
+    verified: >-
+      18 dos 115 CNPJs de br_tcu_inidoneos.empresas têm pagamento no MIDES 2018–2024 (89 municípios, R$ 194 mi); 3 dentro da janela de vigência em MG/PR 2025–26 (17 pagamentos, R$ 4,07 mi) — found answering H29, 2026-11-04
+
+  - table: br_pncp.contratos
+    column: niFornecedor
+    description: >-
+      CNPJ do fornecedor, com 14 dígitos quando tipoPessoa='PJ' (2.105.929 de 2.107.655 em 2025), mas `tipoPessoa` NÃO é confiável - 1.726 PJ têm 11 dígitos (CPF) e 642 PF têm 14. Classifique por `length(niFornecedor)`, não por tipoPessoa. Deduplicar por numeroControlePNCP antes de contar (gotcha contrato_repetido).
+    expr: lpad(niFornecedor, 14, '0') = e.cnpj
+    concept: cnpj
+    join_expr: lpad({s}.niFornecedor, 14, '0') = {d}.cnpj
+    verified: >-
+      21 dos 115 CNPJs inidôneos do TCU têm algum contrato no PNCP, 7 com contrato municipal assinado dentro da vigência da sanção (10 contratos, R$ 4,52 mi) — found answering H29, 2026-11-04
   estacao:
   - table: br_inmet_bdmep.microdados
     column: id_estacao

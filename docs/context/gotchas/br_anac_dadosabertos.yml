@@ -1,0 +1,38 @@
+dataset: br_anac_dadosabertos
+gotchas:
+  - id: voos_so_2026_e_cancelados_sem_horario_real
+    resumo: "voos cobre só 2026-01 a 2026-09 (765.248 voos; 5 de 2025-12 e 52 de 2026-10 pela hora real). Os 23.936 CANCELADO têm Partida Real, Chegada Real e Justificativa nulas; 21.717 REALIZADO não têm horário previsto."
+    detalhe: >
+      Para atraso use só REALIZADO com Partida Prevista presente (719.595 de 741.312).
+      Um voo tem Chegada Real em 2027-07-15 (erro de digitação da fonte; 1 linha
+      com chegada mais de 48 h depois da partida). 'Código Tipo Linha': N 605.156,
+      I 132.661, G 17.003, C 10.428. Código Justificativa é 100% nulo. A chave
+      (empresa, número, partida prevista, origem) repete: 765.248 linhas para
+      751.570 chaves.
+    tabelas: [voos]
+    colunas: [Chegada Real, Partida Real, Partida Prevista, Situação Voo, Código Justificativa]
+    severidade: silencioso
+    verificado: "Situação: CANCELADO 23.936 (Partida Real nn=0), REALIZADO 741.312 (Partida Prevista nn=719.595); meses de Partida Real 2026-01 a 2026-09 (77 a 89 mil por mês); Chegada Real máx 2027-07-15; chaves 751.570 de 765.248 — medido 2026-11-04"
+  - id: rab_cadastro_com_cancelados_e_texto_em_campos_de_data
+    resumo: "rab é o cadastro de aeronaves inclusive as canceladas (8.204 de 35.101 têm DT_CANC, 1.151 com data de cancelamento no futuro até 2099): contar linhas não é contar frota ativa. MARCAS repete (35.101 linhas, 34.479 marcas)."
+    detalhe: >
+      DT_VALIDADE_CVA e DT_VALIDADE_CA são VARCHAR com lixo ('ABORDO' 6.121,
+      'ISENTA' 289, '010101' 494, vazio 4.760): não converta para data direto.
+      NR_ANO_FABRICACAO vai de 0 a 2029 (5 zeros, 1 futuro) e é nulo em 8.635;
+      DT_MATRICULA tem ano 0021 em 3 linhas. PROPRIETARIOS e OPERADORES são texto
+      JSON com lista de {NOME, DOCUMENTO}: extrair com json_extract, e a
+      aeronave pode ter vários.
+    tabelas: [rab]
+    colunas: [DT_CANC, DT_VALIDADE_CVA, DT_VALIDADE_CA, NR_ANO_FABRICACAO, DT_MATRICULA, PROPRIETARIOS, OPERADORES]
+    severidade: silencioso
+    verificado: "rab: 35.101 linhas, 34.990 'MARCAS' em distinct exato 34.990 (aprox 34.479); DT_CANC nn 8.204, > hoje em 1.151; NR_ANO_FABRICACAO = 0 em 5; DT_VALIDADE_CVA 'ABORDO' 6.121 — medido 2026-11-04"
+  - id: pontualidade_sem_periodo
+    resumo: "pontualidade (14.013 linhas) é um resumo por voo (empresa, número, origem, destino) com percentuais de cancelamento e de atraso > 30/60 min, e não tem coluna de data nem período: não dá para ligar a mês ou ano."
+    detalhe: >
+      Percentuais_* são 0 a 100 (não 0 a 1) e Etapas_Previstas é o denominador
+      (soma 208.412). Média simples entre voos dá 9,55% de atrasos > 30 min, mas o
+      correto é ponderar por Etapas_Previstas.
+    tabelas: [pontualidade]
+    colunas: [Percentuais_de_Cancelamentos, Percentuais_de_Atrasos_superiores_a_30_minutos, Etapas_Previstas]
+    severidade: silencioso
+    verificado: "colunas: 10, nenhuma de data; média simples de atraso > 30 min = 9,55; sum(Etapas_Previstas) = 208.412 — medido 2026-11-04"

@@ -1,0 +1,36 @@
+dataset: br_anp_combustiveis
+gotchas:
+  - id: buracos_na_serie_e_meses_parciais
+    resumo: "precos (coleta 2024-03-11 a 2026-10-02) não tem 2025-10 e 2025-11; 2025-09 (10 dias) e 2025-12 (9 dias) são parciais, 2026-10 tem 2 dias. Média mensal sem olhar os dias coletados mistura períodos."
+    detalhe: >
+      Os dias com coleta por mês vão de 9 a 26. Linhas por mês: 69.588 em
+      2024-03, 30.093 em 2025-09, 34.354 em 2025-12, 2.666 em 2026-10. Para
+      variação mensal use só meses com dias suficientes. Esta tabela (preços
+      de revenda de postos, 2,2 milhões de linhas) não é a mesma de
+      br_anp_precos_combustiveis (série semanal por município).
+    tabelas: [precos]
+    colunas: [data_coleta]
+    severidade: silencioso
+    verificado: "meses presentes 2024-03..2025-09, 2025-12..2026-10 (sem 2025-10 e 2025-11); dias distintos: 2025-09 = 10, 2025-12 = 9, 2026-10 = 2 — medido 2026-11-04"
+  - id: amostra_de_postos_e_municipios_nao_censo
+    resumo: "Só 451 municípios e 17.732 CNPJs aparecem (de ~5.570 municípios); a cobertura cai de 465 municípios (2024-04) para 355 (2024-07) e 295 (2025-08). Média nacional é média dos postos coletados, não do Brasil."
+    detalhe: >
+      São Paulo concentra 597.677 das 2.205.259 linhas (27%) em 110 municípios;
+      o DF tem 1 município e Roraima 1. estado vem por extenso e sem acento
+      ('SAO PAULO'), sem sigla. O cnpj perde zeros à esquerda (10 a 14
+      caracteres: 973.147 com 14, 1.126.618 com 13): lpad(cnpj,14,'0') antes de
+      juntar com br_me_cnpj. A chave (cnpj, produto, data_coleta) repete 20 vezes.
+    tabelas: [precos]
+    colunas: [municipio, estado, cnpj]
+    severidade: silencioso
+    verificado: "municipios por mês: 464 (2024-03), 355 (2024-07), 295 (2025-08), 415 (2026-09); length(cnpj): 14 -> 973.147, 13 -> 1.126.618, 12 -> 96.663, 11 -> 6.961, 10 -> 1.870 — medido 2026-11-04"
+  - id: unidade_por_produto
+    resumo: "preco_revenda não é sempre R$/litro: GLP é R$ por botijão de 13 kg (mediana 110, máx 170), GNV R$/m³ (mediana 4,69) e os demais R$/litro (diesel e gasolina 4,5 a 10). Média entre produtos não faz sentido."
+    detalhe: >
+      Use unidade_medida para separar. Em R$/litro: DIESEL S10 mediana 6,28,
+      DIESEL S500 6,18, ETANOL 4,39, GASOLINA COMUM 6,25, ADITIVADA 6,45.
+      Não há outlier de erro de digitação (mín e máx por produto são plausíveis).
+    tabelas: [precos]
+    colunas: [preco_revenda, unidade_medida, produto]
+    severidade: silencioso
+    verificado: "GLP R$/13 kg: 69,99 a 170,00; GNV R$/m³: 3,19 a 6,89; ETANOL R$/litro: 2,69 a 7,35 — medido 2026-11-04"

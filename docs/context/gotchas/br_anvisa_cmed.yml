@@ -1,0 +1,26 @@
+dataset: br_anvisa_cmed
+gotchas:
+  - id: cada_apresentacao_em_duas_listas
+    resumo: "precos repete todo medicamento em duas listas: lista = 'pmc' (preço ao consumidor, 26.408 linhas) e lista = 'pmvg' (preço de venda ao governo, 26.408 linhas, com todas as colunas pmc_* vazias). Contar linhas ou medir preço sem filtrar lista dobra a contagem: 52.816 linhas são 26.408 apresentações. Para preço de farmácia use lista = 'pmc'; para compra pública, 'pmvg' e as colunas pf_*."
+    tabelas: [precos]
+    colunas: [lista, pmc_sem_impostos]
+    severidade: silencioso
+    verificado: "lista pmc = 26.408 e pmvg = 26.408 linhas; count(pmc_sem_impostos) pmc = 22.468 e pmvg = 0 — medido 2026-11-04"
+  - id: precos_por_aliquota_como_texto_com_virgula
+    resumo: "pf_sem_impostos, pf_0pct, pmc_sem_impostos e pmc_0_pct são DOUBLE, mas as 40 colunas pf_12_pct a pf_23_pct e pmc_12_pct a pmc_23_pct (e as _alc) são TEXTO com vírgula decimal ('34,92', '2413,27'). Somar ou comparar sem replace(',', '.') e try_cast dá erro ou ordem alfabética. Cada coluna é o preço com o ICMS daquela alíquota: escolha UMA, não some."
+    tabelas: [precos]
+    colunas: [pf_12_pct, pf_17_pct, pf_18_pct, pf_20_pct, pmc_12_pct, pmc_18_pct]
+    severidade: silencioso
+    verificado: "typeof pf_12_pct = VARCHAR; exemplos '34,92' e '2413,27'; pf_sem_impostos mín 0,48 e máx 7.821.324 (ZOLGENSMA) — medido 2026-11-04"
+  - id: retrato_unico_2025
+    resumo: "É uma lista de preços de um momento (há coluna comercializacao_2025: Sim 26.002, Não 26.814), sem data de vigência nem série. Não serve para evolução de preço nem para comparar com o ano de uma compra; o preço de venda efetivo pode ser menor que o teto."
+    detalhe: >
+      regime_de_preco: Regulado 47.680, Liberado 5.136 (2.568 por lista). Em regime Liberado o
+      preço é livre e os valores da tabela não são teto. tipo_de_produto_status_do_produto:
+      Genérico 19.434, Similar 17.750, Novo 7.474, Específico 4.134, Biológico 3.190,
+      Fitoterápico 642. Os 261 CNPJ distintos de laboratório têm 26.267 EAN distintos para 26.407
+      registros.
+    tabelas: [precos]
+    colunas: [comercializacao_2025, regime_de_preco]
+    severidade: aviso
+    verificado: "comercializacao_2025 Sim = 26.002, Não = 26.814; regime Regulado = 47.680, Liberado = 5.136 — medido 2026-11-04"

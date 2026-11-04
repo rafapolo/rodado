@@ -1,0 +1,27 @@
+dataset: br_ms_pns
+gotchas:
+  - id: linha_e_morador_nao_entrevistado
+    resumo: "Cada linha é um morador do domicílio, mas só o morador selecionado respondeu ao questionário individual: 2019 tem 293.726 linhas e 90.846 entrevistas; 2013 tem 222.385 e 60.202. Contar linhas ou fazer média sem filtrar o selecionado e sem peso dá resultado errado."
+    detalhe: >
+      Filtre pelo morador selecionado (v0029, o peso do morador selecionado, não
+      nulo em 2019; n001 não nulo) antes de qualquer estatística individual de
+      saúde. As ~203 mil linhas restantes de 2019 só têm as variáveis do
+      domicílio. Taxas precisam do peso (v0029), não de COUNT(*). v0029 é DOUBLE
+      em 2019 e VARCHAR com ' ' (branco) em 2013: cast só depois de
+      NULLIF(trim(v0029),'').
+    tabelas: [microdados_2019, microdados_2013]
+    colunas: [v0029, n001]
+    severidade: silencioso
+    verificado: "2019: count(*) 293.726, count(n001) 90.846, count(v0029) 90.846, v0030 6.730; 2013: 222.385 linhas, n001 60.202, v0029 preenchido 60.202 — medido 2026-11-04 (iguais às entrevistas oficiais da PNS)"
+  - id: sigla_uf_e_codigo_ibge_e_tipos_mudam_entre_anos
+    resumo: "sigla_uf traz o CÓDIGO IBGE da UF ('11'..'53', 27 valores), não a sigla; as duas tabelas têm 1.087 (2019) e 1.000 (2013) colunas com nomes de variável do questionário (c008 idade, n001 autoavaliação) e tipos que mudam entre os anos."
+    detalhe: >
+      Junte com a tabela de UF pelo código, não pela sigla. Uma mesma variável
+      pode ser BIGINT num ano e VARCHAR em outro (c008: BIGINT em 2019, texto em
+      2013; 13 linhas de 2013 têm idade '99'). Os códigos de resposta só significam
+      algo via dicionario (id_tabela, nome_coluna, chave): 9 linhas do dicionario têm id_tabela 'nan'.
+      Em 2019 a idade (c008) vai de 0 a 112.
+    tabelas: [microdados_2019, microdados_2013, dicionario]
+    colunas: [sigla_uf, c008, id_tabela]
+    severidade: silencioso
+    verificado: "sigla_uf 2019: 27 códigos 11..53; colunas 1.087 / 1.000; dicionario: 2.744 linhas (2019), 2.195 (2013), 9 com id_tabela 'nan'; typeof(c008) 2019 = BIGINT — medido 2026-11-04"

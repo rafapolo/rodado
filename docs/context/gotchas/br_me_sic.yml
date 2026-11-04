@@ -1,0 +1,26 @@
+dataset: br_me_sic
+gotchas:
+  - id: custo_de_transferencia_nao_e_total_transferido
+    resumo: "valor_custo_transferencia soma R$ 16,8 bi (2015) a R$ 56,2 bi (2020) por ano: é o CUSTO de transferências registrado no Sistema de Informações de Custos, muito abaixo do total transferido pela União (Bolsa Família sozinho passa de R$ 100 bi). Não use como total de transferências nem como despesa com benefícios."
+    detalhe: >
+      Totais por ano (R$ bi): 2015 = 16,8; 2018 = 29,1; 2020 = 56,2 (pico); 2021 = 24,1;
+      2023 = 41,0. Em 2023, R$ 28,1 bi vêm de ORCAMENTO DE SEGURIDADE SOCIAL x ADMINISTRACAO
+      DIRETA. Resultado primário: PRIMARIO DISCRICIONARIO 20.685 linhas, emendas individuais
+      4.387. A relação exata com os valores pagos não foi conferida contra outra tabela do
+      espelho nesta rodada.
+    tabelas: [transferencia]
+    colunas: [valor_custo_transferencia]
+    severidade: silencioso
+    verificado: "soma por ano: 2015 = 16,8 bi, 2020 = 56,2 bi, 2023 = 41,0 bi — medido 2026-11-04"
+  - id: ultimo_ano_com_6_meses
+    resumo: "2024 tem só 6 meses (1.337 linhas, R$ 24,3 bi) contra 12 meses nos outros anos (2.715 a 3.661 linhas): a série termina em meados de 2024. Comparar 2024 com anos cheios mede o corte."
+    tabelas: [transferencia]
+    colunas: [ano, mes]
+    severidade: silencioso
+    verificado: "2024: count(DISTINCT mes) = 6, 1.337 linhas; 2023: 12 meses, 3.620 linhas — medido 2026-11-04"
+  - id: estornos_negativos
+    resumo: "valor_custo_transferencia tem estornos negativos todo ano (8 a 56 linhas; mínimo de -R$ 628,5 milhões em 2015). Somar mês a mês mistura custo e estorno; não filtre valor > 0 para 'tirar erro'."
+    tabelas: [transferencia]
+    colunas: [valor_custo_transferencia]
+    severidade: aviso
+    verificado: "linhas negativas: 2015 = 42, 2023 = 56, 2024 = 8; mínimo 2015 = -628,5 mi — medido 2026-11-04"

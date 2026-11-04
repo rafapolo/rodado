@@ -1,0 +1,56 @@
+dataset: br_cgu_orcamento_publico
+gotchas:
+  - id: total_inclui_refinanciamento_da_divida
+    resumo: "SUM(orcamento_realizado) de um ano é ~R$ 4 trilhões porque inclui a rolagem da dívida: o grupo 6 (Amortização/Refinanciamento) é 40% do total (R$ 1.646 bi de R$ 4.141 bi em 2023)."
+    detalhe: >
+      A tabela cobre o orçamento fiscal e da seguridade inteiro, por ação e
+      elemento de despesa. Para gasto 'de verdade' (políticas, pessoal,
+      investimento) exclua id_grupo_despesa = '6' (amortização e
+      refinanciamento da dívida) e, conforme a pergunta, o '2' (juros e
+      encargos, R$ 241 bi em 2023). Uma única ação de refinanciamento da dívida
+      mobiliária (2017, id_acao 0365) tem orcamento_inicial de R$ 775 bi. Somar
+      tudo e comparar com gasto primário ou com o PIB superestima em 1,7x.
+    tabelas: [orcamento]
+    colunas: [orcamento_realizado, orcamento_empenhado, orcamento_atualizado, orcamento_inicial]
+    severidade: silencioso
+    verificado: "realizado por ano em R$ bi (2014..2025): 2105, 2193, 2488, 2394, 2523, 2607, 3421, 3744, 3927, 4141, 4491, 4589; grupo 6 em 2023 = 1.646 bi, grupo 2 = 241 bi, grupo 1 = 286 bi — medido 2026-11-04"
+  - id: ano_2026_parcial
+    resumo: "2026 está em andamento: 25.045 linhas e R$ 4.376 bi realizados até a última carga; pessoal (R$ 242 bi) está abaixo dos R$ 293 bi de 2025 inteiro. Não compare 2026 com ano fechado."
+    detalhe: >
+      A série vai de 2014 a 2026, mas 2026 só tem o executado até a carga. O
+      mesmo vale para empenhado e realizado. Para variação anual use 2014-2025.
+    tabelas: [orcamento]
+    colunas: [ano_exercicio]
+    severidade: silencioso
+    verificado: "pessoal e encargos (grupo 1): 2025 = R$ 293 bi, 2026 = R$ 242 bi; 247 linhas de 2026 com realizado > empenhado contra 0 em 2023 — medido 2026-11-04"
+  - id: valores_negativos_e_realizado_maior_que_empenhado
+    resumo: "Há orcamento_inicial/atualizado negativos (ajustes, até -R$ 104 bi em 2017) e linhas com realizado > empenhado (118 em 2024, 247 em 2026); porcentagem_realizado_orcamento chega a 606.559."
+    detalhe: >
+      O 'orcamento_inicial' negativo são lançamentos de remanejamento por ação
+      (ex.: 'SERVICOS DA DIVIDA PUBLICA FEDERAL INTERNA' 2017 com -R$ 104,5 bi).
+      Não use porcentagem_realizado_orcamento nem média dela: min -23.657 e max
+      606.559, calcule SUM(realizado)/SUM(atualizado) no recorte. Uma linha tem
+      id_categoria_economica = 'I' ('Inválido').
+    tabelas: [orcamento]
+    colunas: [porcentagem_realizado_orcamento, orcamento_inicial]
+    severidade: silencioso
+    verificado: "porcentagem_realizado_orcamento min -23.657, max 606.559; orcamento_inicial min -R$ 839,9 bi; realizado > empenhado: 50 (2019), 118 (2024), 68 (2025), 247 (2026), 0 nos demais — medido 2026-11-04"
+  - id: rotulo_da_categoria_muda_em_2014
+    resumo: "nome_categoria_economica tem 2 grafias para o mesmo código (3): 'DESPESA CORRENTE' só em 2014, 'DESPESAS CORRENTES' de 2015 em diante; idem capital. Filtrar pelo nome perde um dos anos."
+    detalhe: >
+      Use id_categoria_economica ('3' corrente, '4' capital, '9' reserva de
+      contingência). Os nomes de ação, subfunção e programa também mudam de
+      caixa/grafia (sem acento, em caixa alta) entre anos: agrupar por id_*.
+    tabelas: [orcamento]
+    colunas: [nome_categoria_economica, nome_grupo_despesa]
+    severidade: silencioso
+    verificado: "nome_categoria_economica: 6 rótulos para 3 códigos (22.730 linhas 'DESPESA CORRENTE' em 2014, 256.762 'DESPESAS CORRENTES') — medido 2026-11-04"
+  - id: grao_nao_e_unico_pelos_ids_de_acao
+    resumo: "A linha é uma (órgão, unidade, ação, elemento); a chave ano+unidade+ação+programa+função+subfunção+categoria+grupo+elemento repete: 341.269 linhas para 307.286 chaves."
+    detalhe: >
+      Somar é seguro; contar 'ações' ou 'programas' por COUNT(*) não é. Use
+      COUNT(DISTINCT id_acao).
+    tabelas: [orcamento]
+    colunas: [id_acao, id_unidade_orcamentaria]
+    severidade: silencioso
+    verificado: "341.269 linhas, 307.286 chaves distintas — medido 2026-11-04"

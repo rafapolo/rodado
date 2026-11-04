@@ -1,0 +1,11 @@
+# Medido em 2026-11-04: o dataset tem só a tabela dicionario (3 linhas, parquet de 1 KB em
+# ~/rodado/br_me_exportadoras_importadoras/dicionario). A tabela de dados
+# empresas_exportadoras_importadoras descrita nela (cobertura 1997 a 2021) não está no espelho.
+dataset: br_me_exportadoras_importadoras
+gotchas:
+  - id: so_o_dicionario_sem_a_tabela_de_dados
+    resumo: "O dataset tem apenas o dicionário (3 linhas: id_exportacao_importacao 0 = exportou, 1 = importou, 2 = exportou e importou, cobertura 1997 a 2021) da tabela empresas_exportadoras_importadoras, que não existe no espelho. Não há linha de empresa aqui: para comércio exterior use br_me_comex_stat."
+    tabelas: [dicionario]
+    colunas: [nome_coluna, valor]
+    severidade: aviso
+    verificado: "diretório do dataset com um único arquivo, br_me_exportadoras_importadoras_dicionario.parquet, 3 linhas; nenhuma outra tabela em disco — medido 2026-11-04"

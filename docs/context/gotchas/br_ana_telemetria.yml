@@ -1,0 +1,25 @@
+dataset: br_ana_telemetria
+gotchas:
+  - id: vazao_bruta_com_valor_impossivel
+    resumo: "Em series_vazao_diaria, nivel_consistencia = 1 é dado bruto (sem consistência) e traz vazões impossíveis: na bacia 64, 28 dias passam de 100.000 m³/s (máximo 233.224 m³/s em 02/06/1992, estação 64685002, maior que o Amazonas em cheia) contra máximo 45.984 no nível 2 (consistido). Use nivel_consistencia = 2, ou filtre valor, antes de somar, tirar máximo ou média."
+    tabelas: [series_vazao_diaria, series_vazao_mensal, series_vazao_mensal_completa]
+    colunas: [valor, media, maxima]
+    severidade: silencioso
+    verificado: "bacia 64, vazão diária: nível 1 443.527 linhas, 171 acima de 20.000 e 28 acima de 100.000 m³/s; nível 2 1.393.229 linhas, nenhuma acima de 100.000 (máx 45.984); mensal nível 1 máx 79.119 contra 33.024 no nível 2 — medido 2026-11-04"
+  - id: zero_e_status
+    resumo: "Há vazão exatamente 0 em 4.089 linhas do nível 1 e 3.010 do nível 2 (bacia 64); com status = 4 todos os valores são 0 (estimado/preenchido), não vazão medida. Média com esses dias subestima."
+    tabelas: [series_vazao_diaria, series_chuva_diaria]
+    colunas: [valor, status]
+    severidade: silencioso
+    verificado: "bacia 64: status 4 tem 62 linhas nível 1 e 1.724 nível 2, todas com valor 0 (min = max = 0); valor = 0 em 7.099 linhas — medido 2026-11-04"
+  - id: tres_mensais_se_sobrepoem
+    resumo: "series_vazao_mensal, series_vazao_mensal_completa e series_vazoes_mensal são três cargas da mesma grandeza e se sobrepõem: não faça UNION nem some. mensal_completa tem a coluna fonte (zip, soap), cobre até 2026 e não é superconjunto de mensal."
+    tabelas: [series_vazao_mensal, series_vazao_mensal_completa, series_vazoes_mensal]
+    severidade: silencioso
+    verificado: "bacia 64: mensal 70.683 linhas (291 estações), completa 76.748 (299); das chaves (codigo, data, nivel) de mensal, 65.711 estão na completa e 4.972 não — medido 2026-11-04"
+  - id: particionado_por_bacia_sem_view
+    resumo: "As séries são particionadas por bacia (bacia=1 a 8x) e lidas por read_parquet('.../series_*/bacia=N/**/*.parquet'); nesta tabela volume é grande (165 milhões de linhas), sempre filtre bacia ou codigo. Chave: (codigo, data) é única por nível dentro da bacia."
+    tabelas: [series_vazao_diaria, series_cota_diaria, series_chuva_diaria]
+    colunas: [bacia]
+    severidade: aviso
+    verificado: "bacia 64: 1.836.756 linhas e 1.836.756 chaves (codigo, data) distintas, 274 estações — medido 2026-11-04"

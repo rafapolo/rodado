@@ -1,0 +1,16 @@
+dataset: world_ampas_oscar
+gotchas:
+  - id: so_atores_e_diretor_ate_2014
+    resumo: "winner_demographics tem 415 vencedores de 5 categorias (Best Actor 86, Actress 87, Supporting Actor 78, Supporting Actress 78, Director 86) das edições de 1927 a 2014: não inclui filme, roteiro nem nada depois de 2014."
+    detalhe: >
+      Uma linha por (vencedor, edição, categoria): 415 linhas, 415 chaves
+      distintas, 342 nomes (quem ganhou mais de um aparece várias vezes). Empates
+      geram mais de um vencedor na edição (1969 tem 7 linhas). Best Director vai
+      até 2013 e as de atuação até 2014. race_ethnicity: White 386 de 415 (93%),
+      Black 14, Hispanic 8, Asian 4; religion só em 159 linhas e
+      sexual_orientation tem 'Na' (10) e 'Matter of Dispute' (3): classificações
+      de terceiros, não autodeclaradas. birth_date nulo em 1.
+    tabelas: [winner_demographics]
+    colunas: [year_edition, category, race_ethnicity, religion, sexual_orientation]
+    severidade: silencioso
+    verificado: "415 linhas, 342 nomes distintos; year_edition 1927-2014; race_ethnicity White 386, Black 14; religion nn=159; Best Director max edição 2013 — medido 2026-11-04"

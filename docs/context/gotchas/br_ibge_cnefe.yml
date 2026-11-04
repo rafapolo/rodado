@@ -1,0 +1,37 @@
+dataset: br_ibge_cnefe
+gotchas:
+  - id: endereco_nao_e_domicilio
+    resumo: "enderecos tem uma linha por endereço-ESPÉCIE: 111,1 milhões de linhas misturam domicílios, estabelecimentos agropecuários, de ensino, de saúde, religiosos, obras e outras finalidades. Para domicílios use COD_ESPECIE = '1' (particular) e '2' (coletivo)."
+    detalhe: >
+      Em Roraima (14_RR): 260.515 linhas; COD_ESPECIE 1 (domicílio particular) 211.576, 2 coletivo
+      389, 3 agropecuário 7.101, 4 ensino 1.055, 5 saúde 839, 6 outras finalidades 28.134, 7 em
+      construção 9.271, 8 religioso 2.150. Contar linhas como 'domicílios' infla em ~19% em RR.
+    tabelas: [enderecos]
+    colunas: [COD_ESPECIE]
+    severidade: silencioso
+    verificado: "RR: 260.515 linhas, 211.576 com COD_ESPECIE = '1' (81,2%) — medido 2026-11-04"
+  - id: cod_unico_endereco_repete
+    resumo: "COD_UNICO_ENDERECO não é chave única: o mesmo endereço aparece em 2 ou 3 linhas quando tem mais de uma espécie (casa + comércio, por exemplo). Contar COD_UNICO_ENDERECO distintos dá menos que linhas."
+    detalhe: >
+      RR: 260.515 linhas para 249.268 códigos; 11.182 códigos aparecem em 2 ou 3 linhas (22.429
+      linhas), e todos têm COD_ESPECIE diferente entre as linhas, com a mesma coordenada.
+    tabelas: [enderecos]
+    colunas: [COD_UNICO_ENDERECO]
+    severidade: silencioso
+    verificado: "RR: count(*) = 260.515, count(DISTINCT COD_UNICO_ENDERECO) = 249.268; 11.182 ids repetidos, todos com COD_ESPECIE distinta — medido 2026-11-04"
+  - id: numero_zero_e_sem_numero
+    resumo: "NUM_ENDERECO = '0' significa 'sem número' (S/N), não o número zero: 32,9% das linhas de RR. A coluna é texto. Junção por número de porta ignora um terço dos endereços."
+    tabelas: [enderecos]
+    colunas: [NUM_ENDERECO]
+    severidade: silencioso
+    verificado: "RR: 85.657 de 260.515 linhas com NUM_ENDERECO = '0' — medido 2026-11-04"
+  - id: qualidade_da_coordenada
+    resumo: "LATITUDE/LONGITUDE nunca são nulas nem zero, mas nem todas são o ponto do endereço: NV_GEO_COORD = '1' é a coordenada de maior precisão (93,6% das linhas de RR); os níveis 2 a 6 são aproximações (face de quadra, setor...)."
+    detalhe: >
+      Níveis em RR: 1 = 243.822, 2 = 15.781, 3 = 295, 4 = 94, 5 = 92, 6 = 431. O significado
+      exato dos níveis vem da documentação do IBGE, não conferida aqui; a medição é só a
+      distribuição. Filtrar NV_GEO_COORD = '1' para geocodificação fina.
+    tabelas: [enderecos]
+    colunas: [NV_GEO_COORD]
+    severidade: aviso
+    verificado: "RR: NV_GEO_COORD 1 = 243.822 de 260.515; latitude de -1,41 a 5,15, sem nulos — medido 2026-11-04"

@@ -1,0 +1,25 @@
+dataset: br_ibge_ppm
+gotchas:
+  - id: rebanho_totais_e_subconjuntos
+    resumo: "efetivo_rebanhos tem totais e subconjuntos na mesma coluna tipo_rebanho: 'Galináceos - total' (1.568,5 milhões em 2022) contém 'Galináceos - galinhas' (257,2 milhões); 'Suíno - total' (44,4 milhões) contém 'Suíno - matrizes de suínos' (5,0 milhões). Somar todos os tipos conta aves e porcos duas vezes e mistura espécies."
+    tabelas: [efetivo_rebanhos]
+    colunas: [tipo_rebanho, quantidade]
+    severidade: silencioso
+    verificado: "2022 Brasil: Galináceos total 1.568,5 mi, galinhas 257,2 mi, Bovino 234,9 mi, Suíno total 44,4 mi, matrizes 5,0 mi — medido 2026-11-04"
+  - id: unidade_por_produto_e_valor_em_mil_reais
+    resumo: "Em producao_origem_animal e producao_aquicultura, quantidade tem unidade diferente por produto (Leite em mil litros, ovos em mil dúzias, mel/lã/casulo em kg) e valor está em MIL REAIS. Nunca some quantidade entre produtos."
+    detalhe: >
+      2022 Brasil, producao_origem_animal: Leite quantidade 34.554.191 mil litros (34,6 bilhões de
+      litros) e valor 79.919.957 mil reais (R$ 79,9 bi); Ovos de galinha 4.852.281 mil dúzias e
+      R$ 25,9 bi; Mel 62.494.156 kg e R$ 982 milhões. Somar a coluna valor sem multiplicar por
+      1.000 subestima 1.000x o valor em reais.
+    tabelas: [producao_origem_animal, producao_aquicultura]
+    colunas: [quantidade, valor, unidade]
+    severidade: silencioso
+    verificado: "2022: Leite 34.554.191 mil litros e 79.919.957 (mil R$); Ovos de galinha 4.852.281 mil dúzias e 25.947.344 — medido 2026-11-04"
+  - id: serie_e_grao
+    resumo: "efetivo_rebanhos vai de 1974 a 2025; os municípios com dado passam de 3.944 (1974) a 5.539 (2022), porque municípios novos entram e linhas zero não existem. O número de linhas salta de 41.182 (2011) para 46.552 (2013) por entrada de tipos de rebanho/municípios, então contagem de linhas ou de municípios não mede crescimento."
+    tabelas: [efetivo_rebanhos, producao_pecuaria]
+    colunas: [ano, id_municipio]
+    severidade: aviso
+    verificado: "municípios distintos 3.944 (1974), 5.482 (2000), 5.539 (2022); linhas 41.180 (2012) e 46.552 (2013); Bovino 234,9 mi (2022), 238,6 mi (2023), 234,3 mi (2025) — medido 2026-11-04"

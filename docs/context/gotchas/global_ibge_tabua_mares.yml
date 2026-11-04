@@ -1,0 +1,20 @@
+dataset: global_ibge_tabua_mares
+gotchas:
+  - id: previsao_nao_e_medicao
+    resumo: "previsao é a previsão harmônica da tábua de marés (2026-01-01 a 2027-12-31), não nível medido; só vale para 6 marégrafos (EMARC Arraial do Cabo, EMBEL Belém, EMFOR Fortaleza, EMIMB Imbituba, EMSAL Salvador, EMSAN Santana). Não serve para tempestade, ressaca nem evento extremo, e a série não tem passado nem futuro além dos dois anos."
+    tabelas: [previsao, estacoes]
+    colunas: [previsao, siglaMaregrafo]
+    severidade: silencioso
+    verificado: "1.261.440 linhas = 6 marégrafos × 210.240 instantes (passo de 5 minutos, 2026-01-01-00-00 a 2027-12-31-23-55), nenhum nulo — medido 2026-11-04"
+  - id: altura_acima_do_zero_da_regua
+    resumo: "previsao está em metros acima do zero hidrográfico da régua de cada marégrafo, não em relação ao nível médio do mar: Fortaleza varia de 4,70 a 8,02 m, Salvador de 5,77 a 8,68 m, Imbituba de 1,04 a 2,11 m. Valores de marégrafos diferentes não são comparáveis; a amplitude (máximo menos mínimo) sim."
+    tabelas: [previsao]
+    colunas: [previsao]
+    severidade: silencioso
+    verificado: "mínimo e máximo por marégrafo: EMFOR 4,70-8,02; EMSAL 5,77-8,68; EMBEL 1,71-5,79; EMSAN 1,31-4,86; EMARC 0,99-2,47; EMIMB 1,04-2,11 — medido 2026-11-04"
+  - id: data_hora_texto_com_hifens
+    resumo: "dtHrPrevisao é texto 'AAAA-MM-DD-HH-MM' (16 caracteres, hífen também entre dia e hora): não faz CAST direto para TIMESTAMP, use strptime(dtHrPrevisao, '%Y-%m-%d-%H-%M'). O fuso não é informado na tabela."
+    tabelas: [previsao]
+    colunas: [dtHrPrevisao]
+    severidade: silencioso
+    verificado: "length(dtHrPrevisao) = 16 nas 1.261.440 linhas, ex. 2027-12-22-21-20 — medido 2026-11-04"

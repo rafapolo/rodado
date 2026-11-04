@@ -1,0 +1,34 @@
+dataset: br_inep_indicador_nivel_socioeconomico
+gotchas:
+  - id: escola_2013_igual_a_2015
+    resumo: "Na tabela escola, 2013 e 2015 são cópias uma da outra: as 73.572 escolas têm exatamente o mesmo inse e quantidade_alunos_inse nos dois anos (mínimo 1,44, máximo 7,66, média 4,86 em ambos). Série por escola que cruze 2013 a 2015 vê variação zero."
+    tabelas: [escola]
+    colunas: [inse, quantidade_alunos_inse, ano]
+    severidade: silencioso
+    verificado: "junção 2013 x 2015 por id_escola: 73.572 pares, 73.572 com inse e quantidade_alunos_inse iguais — medido 2026-11-04"
+  - id: escala_muda_em_2019
+    resumo: "O indicador não é comparável entre 2013-2015 e 2019-2023: a escala mudou (2013/2015: inse de 1,44 a 7,66, classificação por 8 níveis em palavras, de 'Muito Baixo' a 'Muito Alto'; 2019 em diante: 2,21 a 6,85, níveis 'Nível I' a 'Nível VII' e percentual_nivel_8 passa a somar com os outros em 100). Não calcule variação de INSE atravessando 2015-2019."
+    detalhe: >
+      classificacao tem 14 rótulos misturados na tabela escola: os 7 em palavras (Muito Baixo,
+      Baixo, Médio Baixo, Médio, Médio Alto, Alto, Muito Alto) e os 7 em algarismos romanos
+      (Nível I a VII). percentual_nivel_1..8 é nulo em 2013 e 2015 (a soma é 100,0 em 2019, 2021 e
+      2023). Escolas por ano: 2019 = 68.868, 2021 = 69.820, 2023 = 69.756.
+    tabelas: [escola]
+    colunas: [inse, classificacao, percentual_nivel_1]
+    severidade: silencioso
+    verificado: "inse mín/máx: 2013 = 1,44/7,66; 2019 = 2,47/6,59; 2023 = 2,21/6,65; 14 rótulos distintos em classificacao — medido 2026-11-04"
+  - id: totais_junto_das_partes_e_codigos
+    resumo: "Em brasil, uf e municipio, rede, area e tipo_localizacao são códigos numéricos em texto com o total na mesma coluna: rede 0 = Total, 1 Federal, 2 Estadual, 3 Municipal, 4 Privada, 5 = Total (Estadual e Municipal), 6 = Total (Federal, Estadual e Municipal); area 0 = Total, 1 Capital, 2 Interior; tipo_localizacao 0 = Total, 1 Urbana, 2 Rural. Somar quantidade_alunos_inse sem fixar o nível conta o mesmo aluno várias vezes. O decode está em dicionario."
+    detalhe: >
+      Brasil 2021: rede 0, area 0, tipo 0 = 5.006.256 alunos; area 1 (Capital) 954.020 + area 2
+      (Interior) 4.052.236 = 5.006.256. Fixe os três campos para o total e use um só eixo de cada.
+    tabelas: [brasil, uf, municipio]
+    colunas: [rede, area, tipo_localizacao, quantidade_alunos_inse]
+    severidade: silencioso
+    verificado: "brasil 2021, rede 0: area 0 = 5.006.256, area 1 = 954.020, area 2 = 4.052.236 — medido 2026-11-04"
+  - id: municipio_so_2019_e_2021
+    resumo: "A tabela municipio tem só 2019 (69.906 linhas) e 2021 (99.396), enquanto escola vai até 2023. INSE municipal de 2023 não existe aqui; calcule a partir de escola ponderando por quantidade_alunos_inse."
+    tabelas: [municipio, escola]
+    colunas: [ano]
+    severidade: aviso
+    verificado: "municipio: anos 2019 e 2021; escola: 2013, 2015, 2019, 2021, 2023 — medido 2026-11-04"

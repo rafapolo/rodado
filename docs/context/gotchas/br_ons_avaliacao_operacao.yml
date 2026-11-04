@@ -17,3 +17,9 @@ gotchas:
     colunas: [geracao, geracao_programada_total, geracao_verificada, geracao_limitada, energia_armazenada_subsistema, energia_natural_afluente_bruta]
     severidade: silencioso
     verificado: "2023: geracao_usina avg(geracao) 1,14e10 (114 MW depois de /1e8; máximo 1,39e12); geracao_termica_motivo_despacho avg(geracao_verificada) 4,97e9 e máximo 1,37e11 (1.366 MW depois de /1e8); restricao_operacao_usinas_eolicas avg(geracao) 66,9 e máximo 772; energia_armazenada_subsistema média 3.070; energia_natural_afluente_bruta média 477; reservatorio volume_maximo média 3.798 — medido 2026-10-28"
+  - id: restricao_eolica_para_em_2024_03
+    resumo: "restricao_operacao_usinas_eolicas vai de 2021-10-01 a 2024-03-01 e não é atualizada: para o corte de eólica de 2024 em diante use br_ons_dados_abertos.restricao_coff_eolica_tm."
+    tabelas: [restricao_operacao_usinas_eolicas]
+    colunas: [data, geracao_limitada]
+    severidade: silencioso
+    verificado: "max(data) = 2024-03-01; corte 1,29% em 2022 e 8,38% em 2023, contra 1,29% e 8,34% da tabela dados_abertos — medido 2026-11-04"

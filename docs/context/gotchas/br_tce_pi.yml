@@ -1,0 +1,26 @@
+dataset: br_tce_pi
+gotchas:
+  - id: totais_do_estado_nao_dos_municipios
+    resumo: "despesas_total e receitas_total têm uma linha por exercício (17 linhas, 2010-2026) com o total do ESTADO do Piauí: despesa paga de R$ 3,28 bi (2010) a R$ 20,98 bi (2025). Não há despesa nem receita por município nem por órgão; prefeituras (224 linhas) é só cadastro (id, nome, codIBGE, URLs). Comparação de gasto entre municípios do Piauí não sai deste dataset."
+    tabelas: [despesas_total, receitas_total, prefeituras, orgaos]
+    colunas: [empenhada, liquidada, paga, arrecadada, prevista]
+    severidade: silencioso
+    verificado: "despesas_total: 17 exercícios, paga 2010 = 3,28 bi, 2025 = 20,98 bi; prefeituras: 224 códigos IBGE distintos de 7 dígitos — medido 2026-11-04"
+  - id: estagios_da_despesa_nao_se_somam
+    resumo: "empenhada, liquidada e paga são o mesmo gasto em fases sucessivas (2025: R$ 21,61 bi empenhados, 21,27 liquidados, 20,98 pagos): somar as três conta o gasto 3 vezes. Para o gasto efetivo use paga; para compromisso, empenhada."
+    tabelas: [despesas_total]
+    colunas: [empenhada, liquidada, paga]
+    severidade: silencioso
+    verificado: "2025: empenhada 21,61 bi, liquidada 21,27 bi, paga 20,98 bi — medido 2026-11-04"
+  - id: exercicio_2026_em_andamento
+    resumo: "O exercício 2026 está em curso: despesa paga R$ 15,09 bi (contra 20,98 bi de 2025 inteiro) e receita arrecadada R$ 16,72 bi para uma previsão de R$ 26,3 bi. Comparar 2026 com anos fechados mede o calendário. Em receitas_total, a previsão fica acima da arrecadação em todos os anos (2014: 8,32 prevista para 6,55 arrecadada)."
+    tabelas: [despesas_total, receitas_total]
+    colunas: [exercicio, arrecadada, prevista]
+    severidade: silencioso
+    verificado: "2026: paga 15,09 bi, arrecadada 16,72 bi, prevista 26,3 bi; 2025: paga 20,98 bi, arrecadada 22,74 bi — medido 2026-11-04"
+  - id: licitacoes_so_futuras
+    resumo: "licitacoes_estado tem 17 linhas, todas com data entre 2026-10-07 e 2026-11-24 (licitações abertas, valor previsto total R$ 0,31 bi, de R$ 0,07 mi a R$ 209 mi): é a agenda do momento da coleta, não histórico de licitações."
+    tabelas: [licitacoes_estado]
+    colunas: [data, previsto]
+    severidade: aviso
+    verificado: "17 linhas, min(data) = 2026-10-07, max(data) = 2026-11-24, soma previsto = 0,31 bi — medido 2026-11-04"

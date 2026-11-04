@@ -1,0 +1,14 @@
+dataset: br_tce_to
+gotchas:
+  - id: so_pautas_de_sessao
+    resumo: "pautas tem 50 linhas, apenas o calendário de sessões do TCE do Tocantins (data, hora, tipo, câmara de origem e link), sem processos, julgamentos, multas, despesas ou municípios. Não responde pergunta de fiscalização nem de gasto municipal."
+    tabelas: [pautas]
+    colunas: [data, tipo, origem, url]
+    severidade: silencioso
+    verificado: "br_tce_to tem uma tabela de 6 colunas e 50 linhas, de 2026-06-08 a 2026-10-19 (só 4 meses de sessões) — medido 2026-11-04"
+  - id: hora_em_texto_com_milissegundos
+    resumo: "hora é TEXTO no formato '12:00:00:000' (quatro blocos, com os milissegundos separados por dois-pontos), que não converte com CAST para TIME. origem é a câmara (PRIMEIRA CÂMARA, SEGUNDA CÂMARA, PLENO) e codigo_origem 1, 2 e 3."
+    tabelas: [pautas]
+    colunas: [hora, origem, codigo_origem]
+    severidade: aviso
+    verificado: "exemplo '12:00:00:000' em 2026-10-19; origem com 3 valores — medido 2026-11-04"

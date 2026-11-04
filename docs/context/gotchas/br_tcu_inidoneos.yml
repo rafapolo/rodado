@@ -18,3 +18,16 @@ gotchas:
     colunas: ["DATA TRANSITO JULGADO", "DATA FINAL"]
     severidade: silencioso
     verificado: "Nova Friburgo: min/max textual 02/04/2010–30/12/2010; com strptime 2001-03-09–2016-09-16 — medido 2026-10-15; tipos medidos 2026-10-21: VARCHAR em resp_contas_julgadas_irregulares (min textual 01/01/1997), DATE em empresas (2021-10-19 a 2026-08-25) e inabilitados (2018-01-27 a 2026-09-29)"
+  - id: so_sancao_vigente
+    resumo: "empresas é retrato das sanções vigentes hoje (DATA FINAL mínima 2026-10-19, trânsito mínimo 2021-10-19): sanção vencida some, então não há janela anterior a 2021 e o número de CNPJs muda a cada carga (84 em 2026-08, 115 hoje)."
+    detalhe: >
+      Para testar "empresa recebeu durante a sanção" use DATA TRANSITO JULGADO a DATA FINAL
+      como janela por CNPJ e só dados de 2021-10 em diante; antes disso a tabela não
+      diz nada. O CEIS (órgão sancionador TRIBUNAL DE CONTAS DA UNIÃO) repete a lista, mas
+      com 89 CNPJs, dos quais 78 casam com os 115 (Novo Horizonte e Ricardo F. dos Santos
+      Neto estão aqui e não no CEIS). Uma empresa com várias linhas (várias
+      sanções do mesmo CNPJ) duplica o pagamento num join; deduplique com EXISTS.
+    tabelas: [empresas]
+    colunas: ["DATA TRANSITO JULGADO", "DATA FINAL", CPF_CNPJ]
+    severidade: silencioso
+    verificado: "115 CNPJs distintos em 127 linhas (1 CPF, 1 vazio); 78 em CEIS-TCU, 81 em qualquer linha do CEIS; join com MIDES sem EXISTS dá 30 linhas contra 15 — medido 2026-11-04"

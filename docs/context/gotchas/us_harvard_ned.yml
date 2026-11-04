@@ -1,0 +1,17 @@
+dataset: us_harvard_ned
+gotchas:
+  - id: formato_largo_candidato_1_a_n
+    resumo: "As duas tabelas são largas: uma linha por eleição com party_1..party_N / seats_1..seats_N (parlamentar) e candidate_1..N / votes1_1.. (presidencial). Não há linha por partido ou candidato: ranquear ou somar exige despivotar, e os nulos crescem com o número (party_5 em 41% das eleições)."
+    detalhe: >
+      parliamentary_elections: 4.900 eleições (1789-2023), 262 países; date é nula em 303,
+      total_seats em 882, source em 876 e party_1 em 876: 18% das eleições não têm
+      resultado por partido. Em 4 linhas a soma de seats_1..3 passa de total_seats.
+      presidential_elections: 1.409 eleições; 134 sem candidato (candidate_1 nulo),
+      144 sem votos nem proporção; 133 antes de 1900. votes1_N é o 1º turno e votes2_N o
+      2º (só 245 eleições com 2º turno); e_votes_* (colégio eleitoral) só existe em 59
+      (EUA). country_id é código de 3 letras (BRA: 57 eleições parlamentares,
+      uma presidencial por ciclo desde 1989).
+    tabelas: [parliamentary_elections, presidential_elections]
+    colunas: [party_1, seats_1, candidate_1, votes1_1, votes2_1, total_seats, date]
+    severidade: silencioso
+    verificado: "parliamentary: 4.900 linhas = 4.900 chaves, date nula 303, party_1 nn=4.024, total_seats nn=4.018; presidential: 1.409 linhas, candidate_1 nulo 134, votes2_1 nn=245, e_votes_1 nn=59; BRA presidencial 2010/2014/2018/2022 — medido 2026-11-04"

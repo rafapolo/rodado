@@ -1,0 +1,26 @@
+dataset: br_ms_imunizacoes
+gotchas:
+  - id: cobertura_em_porcentagem_passa_de_100
+    resumo: "cobertura_* é porcentagem (0 a 100+), não fração, e passa de 100% em 20% a 50% dos municípios (cobertura_bcg > 100 em 2.088 de 5.564 em 2010; máximo 13.050; cobertura_total máx 51.175). Média simples entre municípios não é cobertura nacional."
+    detalhe: >
+      O denominador é a população-alvo estimada do município, que erra para
+      cima em municípios pequenos e por migração (cobertura 'ignorada' chega a
+      94.450). Para cobertura de uma UF ou do país, some doses_* e divida pela
+      população-alvo de outra fonte; avg(cobertura_bcg) dá 87,4 em 2019 e 65,0
+      em 2021. Valores acima de 200% existem em 11 a 117 municípios por ano.
+    tabelas: [municipio]
+    colunas: [cobertura_bcg, cobertura_total, cobertura_ignorado, cobertura_dtp]
+    severidade: silencioso
+    verificado: "cobertura_bcg>100: 2.088 em 2010, 1.592 em 2019, 571 em 2021; máx cobertura_bcg 13.050, cobertura_total 51.175; doses_bcg 2019 = 2.532.844 — medido 2026-11-04"
+  - id: serie_termina_em_2021_e_vacinas_trocam
+    resumo: "municipio vai de 1994 a 2021 (nada depois; 2022+ está nas tabelas do SIPNI). A cobertura da DTP existe só até 2016, a penta de 2012 em diante, a tetravalente é intermediária, a tríplice viral D1 desde 1999: série longa de uma vacina é só dessas janelas."
+    detalhe: >
+      1994 tem 2.142 municípios, 1995 3.951, 1997 5.503 e 2017 em diante 5.570.
+      doses_ignorado (dose sem tipo identificado) é enorme até 2016, por exemplo
+      43,3 milhões de 67,0 milhões em 2000, e nula de 2020 em diante: doses_total
+      em 2000-2010 inclui doses sem vacina identificada. Isso explica a queda de
+      doses_total de 73,2 milhões (2010) para 44,6 milhões (2011).
+    tabelas: [municipio]
+    colunas: [doses_total, doses_ignorado, cobertura_dtp, cobertura_penta, cobertura_triplice_viral_d1]
+    severidade: silencioso
+    verificado: "count por ano: cobertura_dtp 5.564 (2010) e 0 (2017); cobertura_penta 0 até 2011, 5.565 em 2012; doses_total 73.202.221 (2010) e 44.640.471 (2011); doses_ignorado 2000 = 43.259.142 de 67.025.327; 149.124 linhas = 149.124 (ano, município) — medido 2026-11-04"
