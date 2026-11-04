@@ -115,7 +115,17 @@ a:hover { color: var(--accent-soft); }
 .site-nav {
   border-bottom: 1px solid var(--rule);
   padding: 1.1rem 1.5rem;
+  /* menu fixo no topo; a altura real vai para --nav-h (theme-toggle.js) */
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: color-mix(in oklch, var(--bg) 88%, transparent);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
 }
+
+/* âncora (#secao) não para escondida debaixo do menu fixo */
+html { scroll-padding-top: calc(var(--nav-h, 64px) + 0.75rem); }
 
 .site-nav .nav-inner {
   max-width: 1180px;

@@ -45,7 +45,7 @@ body { background: var(--bg); }
 }
 
 /* busca e categoria filtram os cards de tema: ficam colados neles, presos no topo ao rolar */
-.filters-bar { position: sticky; top: 0; z-index: 5; margin: 0 -32px 24px; padding: 12px 32px; background: color-mix(in oklch, var(--bg) 92%, transparent); backdrop-filter: blur(6px); border-bottom: 1px solid var(--rule); }
+.filters-bar { position: sticky; top: var(--nav-h, 0px); z-index: 5; margin: 0 -32px 24px; padding: 12px 32px; background: color-mix(in oklch, var(--bg) 92%, transparent); backdrop-filter: blur(6px); border-bottom: 1px solid var(--rule); }
 .filters { display: flex; flex-wrap: wrap; gap: 10px; }
 .search-input, .category-select { font-family: 'Public Sans', system-ui, sans-serif; font-size: 15px; color: var(--ink); background: var(--card-bg); border: 1px solid var(--rule); border-radius: 10px; padding: 11px 16px; }
 .search-input { flex: 1 1 260px; min-width: 0; }

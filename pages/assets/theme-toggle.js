@@ -68,3 +68,13 @@
     });
   }
 })();
+
+// menu fixo: publica a altura em --nav-h (barra de filtros sticky e âncoras)
+(function () {
+  var nav = document.querySelector('.site-nav');
+  if (!nav) return;
+  var set = function () { document.documentElement.style.setProperty('--nav-h', nav.offsetHeight + 'px'); };
+  set();
+  if (window.ResizeObserver) new ResizeObserver(set).observe(nav);
+  else window.addEventListener('resize', set);
+})();
