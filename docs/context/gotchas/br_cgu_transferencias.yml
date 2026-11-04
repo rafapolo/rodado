@@ -23,15 +23,15 @@ gotchas:
     severidade: silencioso
     verificado: "4.818.399 linhas sem órgão em favorecido municipal; 00UV com os dois órgãos em 2026-09 — medido 2026-10-31"
   - id: municipio_siafi
-    resumo: "codigo_municipio_siafi é código SIAFI, não IBGE: cruzar com o resto do espelho exige o diretório de municípios. ~1,15 M de linhas não têm município."
+    resumo: "codigo_municipio_siafi é código SIAFI, não IBGE, e é o id_municipio_rf do diretório: junte como inteiro (try_cast(codigo_municipio_siafi AS INTEGER) = id_municipio_rf; como texto perde 20% dos municípios). ~1,15 M de linhas não têm município."
     detalhe: >
       Repasse a estado e parte das entidades vêm sem município. Para mapear por
-      município, junte pelo diretório que traduz SIAFI em IBGE, e diga que o
+      município, junte pelo id_municipio_rf do diretório (ponte em bridges.yaml), e diga que o
       total municipal fica abaixo do total da tabela.
     tabelas: [transferencias]
     colunas: [codigo_municipio_siafi, nome_municipio]
     severidade: silencioso
-    verificado: "1.152.116 linhas sem município nos seis maiores tipos de favorecido — medido 2026-10-31"
+    verificado: "1.152.116 linhas sem município nos seis maiores tipos de favorecido — medido 2026-10-31; jun/2024: 5.569 de 5.569 códigos casam com id_municipio_rf como inteiro (R$ 40,02 bi dos dois lados), 4.571 como texto — medido 2026-11-04"
   - id: paulo_gustavo_so_audiovisual
     resumo: "A Lei Paulo Gustavo (00UR) aqui é quase só o audiovisual: R$ 2,82 bi dos R$ 3,862 bi da LC 195/2022. Faltam R$ 1,04 bi das demais áreas da cultura; não some isto como o total da lei."
     detalhe: >
