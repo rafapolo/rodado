@@ -4,7 +4,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 `last_update` é a data do parquet mais recente do dataset no beelink (para tabela nativa do
 `.duckdb`, sem parquet, o `scrape_date` do catálogo).
 
-286 datasets, 1734 tabelas.
+294 datasets, 1752 tabelas.
 
 | dataset | tabelas | linhas | last_update |
 |---|---:|---:|---|
@@ -94,11 +94,13 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_fipe_veiculos` | 1 | 11.425 | 2026-10-07 |
 | `br_firjan_ifgf` | 1 | 55.680 | 2026-07-09 |
 | `br_fnde_fundeb` | 2 | 15.063.256 | 2026-10-21 |
+| `br_fnde_pnae` | 1 | 703.271 | 2026-11-04 |
+| `br_fnde_pnate` | 1 | 5.531 | 2026-11-04 |
 | `br_geobr_mapas` | 25 | 984.345 | 2026-07-05 |
 | `br_ggb_relatorio_lgbtqi` | 5 | 145 | 2026-07-09 |
 | `br_ibama_autos` | 8 | 3.097.591 | 2026-10-21 |
 | `br_ibama_ctf` | 2 | 1.473.755 | 2026-10-21 |
-| `br_ibama_embargos_novo` | 8 | 978.599 | 2026-11-02 |
+| `br_ibama_embargos_novo` | 8 | 978.607 | 2026-11-04 |
 | `br_ibge_amc` | 1 | 434.070 | 2026-07-09 |
 | `br_ibge_areas_risco` | 4 | 21.499 | 2026-10-25 |
 | `br_ibge_cbo_2002` | 2 | 177.556 | 2026-07-09 |
@@ -156,6 +158,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_ipea_avs` | 1 | 319.681 | 2026-07-06 |
 | `br_mapbiomas_estatisticas` | 7 | 4.393.055 | 2026-10-07 |
 | `br_mc_indicadores` | 1 | 1.118.855 | 2026-07-09 |
+| `br_mcid_mcmv` | 2 | 821.795 | 2026-11-04 |
 | `br_mdr_snis` | 2 | 245.101 | 2026-07-06 |
 | `br_mds_cadunico` | 2 | 350.069.349 | 2026-09-24 |
 | `br_me_caged` | 6 | 766.354.473 | 2026-10-31 |
@@ -185,18 +188,22 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_mjsp_procurados` | 1 | 188 | 2026-10-21 |
 | `br_mjsp_sinesp` | 2 | 23.843 | 2026-07-10 |
 | `br_mjsp_sisdepen` | 1 | 38.364 | 2026-10-21 |
+| `br_mma_bolsa_verde` | 1 | 658.600 | 2026-11-04 |
 | `br_mma_cnuc` | 1 | 44.508 | 2026-10-25 |
 | `br_mma_extincao` | 2 | 7.676 | 2026-07-09 |
 | `br_mma_sinpatinhas` | 1 | 930.442 | 2026-10-07 |
 | `br_mme_consumo_energia_eletrica` | 1 | 38.880 | 2026-07-06 |
+| `br_mme_luz_para_todos` | 2 | 619.959 | 2026-11-04 |
 | `br_mobilidados_indicadores` | 10 | 671.362 | 2026-07-09 |
 | `br_mp_pep` | 1 | 1.799.733 | 2026-10-09 |
 | `br_mps_beneficios` | 3 | 81.063.055 | 2026-10-07 |
 | `br_ms_atencao_basica` | 1 | 901.944 | 2026-07-09 |
 | `br_ms_cnes` | 14 | 1.327.769.452 | 2026-11-01 |
 | `br_ms_imunizacoes` | 1 | 149.124 | 2026-07-09 |
+| `br_ms_mais_medicos` | 4 | 856.984 | 2026-11-04 |
 | `br_ms_pns` | 3 | 521.059 | 2026-07-06 |
 | `br_ms_populacao` | 1 | 4.919.222 | 2026-07-06 |
+| `br_ms_pro_residencia` | 3 | 11.849 | 2026-11-04 |
 | `br_ms_sia` | 3 | 6.298.035.211 | 2026-10-29 |
 | `br_ms_sih` | 3 | 2.627.317.711 | 2026-11-01 |
 | `br_ms_sim` | 6 | 107.245.069 | 2026-10-30 |
@@ -236,7 +243,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_rodado_eleicoes` | 5 | 2.207.335 | 2026-10-26 |
 | `br_rodado_indicadores_municipais` | 1 | 12.382.056 | 2026-10-13 |
 | `br_saude_bps` | 1 | 372.701 | 2026-10-31 |
-| `br_saude_farmaciapopular` | 1 | 32.592 | 2026-10-21 |
+| `br_saude_farmaciapopular` | 3 | 522.807 | 2026-11-04 |
 | `br_sedec_desastres` | 1 | 20.380 | 2026-10-09 |
 | `br_seeg_emissoes` | 3 | 183.668.150 | 2026-07-08 |
 | `br_sema_mt_embargos` | 2 | 27.093 | 2026-10-25 |
@@ -248,6 +255,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_senatran_estatisticas` | 1 | 159.327 | 2026-10-07 |
 | `br_senatran_frota` | 1 | 20.223.786 | 2026-11-03 |
 | `br_sfb_cnfp` | 1 | 12.874 | 2026-10-25 |
+| `br_sfb_concessoes` | 2 | 75 | 2026-11-04 |
 | `br_sfb_sicar` | 10 | 132.944.211 | 2026-10-09 |
 | `br_sgb_setorizacao_risco` | 1 | 17.838 | 2026-10-25 |
 | `br_simet_educacao_conectada` | 1 | 137.914 | 2026-07-09 |
@@ -271,7 +279,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_transferegov` | 3 | 30.346 | 2026-10-21 |
 | `br_transferegov_siconv` | 62 | 69.060.758 | 2026-10-21 |
 | `br_trase_supply_chain` | 7 | 1.824.843 | 2026-07-18 |
-| `br_tse_eleicoes` | 32 | 1.719.517.202 | 2026-11-03 |
+| `br_tse_eleicoes` | 32 | 1.719.534.484 | 2026-11-04 |
 | `br_tse_filiacao_partidaria` | 2 | 42.201.443 | 2026-10-09 |
 | `br_ufmg_censo_demografico_1872` | 58 | 1.251.630 | 2026-10-07 |
 | `eu_sanctions` | 1 | 44.043 | 2026-10-30 |

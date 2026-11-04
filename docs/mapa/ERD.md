@@ -2,13 +2,13 @@
 
 🇬🇧 [English version](ERD_EN.md)
 
-Mapa de entidades e relações das 1733 tabelas (285 datasets) do espelho. Gerado por `scripts/gera_erd.py` a partir de `schemas.json` em 2026-11-03 — não edite à mão, regenere.
+Mapa de entidades e relações das 1751 tabelas (293 datasets) do espelho. Gerado por `scripts/gera_erd.py` a partir de `schemas.json` em 2026-11-04 — não edite à mão, regenere.
 
 As expressões de join, o formato de cada chave e as pegadinhas estão em [`docs/context/join_keys.md`](docs/context/join_keys.md). Este arquivo é o mapa; aquele é o manual.
 
 ## Como ler
 
-Um único `erDiagram` com 1733 tabelas seria ilegível, então o modelo sobe um nível:
+Um único `erDiagram` com 1751 tabelas seria ilegível, então o modelo sobe um nível:
 
 - **entidade = dataset**; **atributo = uma das tabelas** dele;
 - o *tipo* do atributo lista as chaves que aquela tabela carrega (`mun`, `uf`, `cnpj`, `cnes`, `escola`, `setor`, `cep`, `cpf`, `cnae`, `cbo`, `cid`, `ncm`, `pais`, `partido`, `orgao`, `ug`, `funcprog`, `ano`, `mes`), ou `sem_chave` quando não há nenhuma;
@@ -75,19 +75,19 @@ erDiagram
 | domínio | datasets | tabelas | conectados |
 |---|---|---|---|
 | Diretórios e tabelas de referência | 11 | 90 | 10 |
-| Saúde | 31 | 87 | 30 |
+| Saúde | 33 | 96 | 32 |
 | Educação e ciência | 20 | 144 | 17 |
-| Trabalho, empresas e economia | 50 | 315 | 41 |
+| Trabalho, empresas e economia | 51 | 317 | 42 |
 | Governo, orçamento e compras | 41 | 187 | 36 |
 | Política e eleições | 9 | 132 | 9 |
 | Justiça, segurança e sanções | 23 | 63 | 14 |
-| Território, ambiente e infraestrutura | 31 | 128 | 27 |
+| Território, ambiente e infraestrutura | 33 | 131 | 28 |
 | Demografia e indicadores sociais | 27 | 258 | 26 |
 | Internacional, cultura e esporte | 9 | 25 | 3 |
-| Outros | 33 | 304 | 28 |
-| **total** | **285** | **1733** | **241** |
+| Outros | 36 | 308 | 31 |
+| **total** | **293** | **1751** | **248** |
 
-44 datasets não têm chave documentada alguma; 436 tabelas individuais não carregam chave nenhuma (ambas as listas no fim).
+45 datasets não têm chave documentada alguma; 437 tabelas individuais não carregam chave nenhuma (ambas as listas no fim).
 
 ---
 
@@ -249,7 +249,7 @@ erDiagram
 
 ## Saúde
 
-31 datasets · 87 tabelas
+33 datasets · 96 tabelas
 
 **1/2**
 
@@ -279,20 +279,18 @@ erDiagram
     UF ||--o{ br_ms_cnes : "sigla_uf"
     MUNICIPIO ||--o{ br_ms_imunizacoes : "id_municipio"
     UF ||--o{ br_ms_imunizacoes : "sigla_uf"
+    CNES ||--o{ br_ms_mais_medicos : "id_estabelecimento_cnes"
+    MUNICIPIO ||--o{ br_ms_mais_medicos : "id_municipio"
+    UF ||..o{ br_ms_mais_medicos : "uf"
     UF ||--o{ br_ms_pns : "sigla_uf"
     MUNICIPIO ||--o{ br_ms_populacao : "id_municipio"
+    EMPRESA_CNPJ ||..o{ br_ms_pro_residencia : "nu_cnpj"
+    MUNICIPIO ||--o{ br_ms_pro_residencia : "id_municipio"
+    UF ||--o{ br_ms_pro_residencia : "sigla_uf"
     CID10 ||--o{ br_ms_sia : "cid_principal_categoria +5"
     CNES ||--o{ br_ms_sia : "id_estabelecimento_cnes +1"
     MUNICIPIO ||--o{ br_ms_sia : "id_municipio +1"
     UF ||--o{ br_ms_sia : "sigla_uf"
-    CBO ||--o{ br_ms_sih : "cbo_2002_paciente +1"
-    CID10 ||--o{ br_ms_sih : "cid_principal_categoria +27"
-    CNES ||--o{ br_ms_sih : "id_estabelecimento_cnes"
-    EMPRESA_CNPJ ||--o{ br_ms_sih : "cnpj_mantenedora +1"
-    IES ||..o{ br_ms_sih : "cnpj_mantenedora"
-    MUNICIPIO ||--o{ br_ms_sih : "id_municipio_gestor +3"
-    PESSOA_CPF ||--o{ br_ms_sih : "cpf_gestor"
-    UF ||--o{ br_ms_sih : "sigla_uf"
     br_ans_beneficiario {
         mun_uf_cnpj_ano_mes informacao_consolidada "2.3B linhas"
     }
@@ -356,6 +354,12 @@ erDiagram
     br_ms_imunizacoes {
         mun_uf_ano municipio "149.1k linhas"
     }
+    br_ms_mais_medicos {
+        mun_uf consolidado "5.6k linhas"
+        mun_uf_cnes especialistas_consolidado "1.3k linhas"
+        mun_uf_cnes especialistas_serie_historica "9.9k linhas"
+        mun_uf serie_historica "840.2k linhas"
+    }
     br_ms_pns {
         sem_chave dicionario "4.9k linhas"
         uf microdados_2013 "222.4k linhas"
@@ -364,15 +368,15 @@ erDiagram
     br_ms_populacao {
         mun_ano municipio "4.9M linhas"
     }
+    br_ms_pro_residencia {
+        uf_ano indicadores_uf "4.6k linhas"
+        mun_uf_cnpj_ano residencia_area_profissional "1.5k linhas"
+        mun_uf_cnpj_ano residencia_medica "5.8k linhas"
+    }
     br_ms_sia {
         sem_chave dicionario "5.9k linhas"
         mun_uf_cnes_cid_ano_mes producao_ambulatorial "6.2B linhas"
         mun_uf_cnes_cid_ano_mes psicossocial "138.1M linhas"
-    }
-    br_ms_sih {
-        mun_uf_cnpj_cpf_ies_cnes_cbo_cid_ano_mes aihs_reduzidas "208.1M linhas"
-        sem_chave dicionario "34.4k linhas"
-        mun_uf_cnes_cbo_ano_mes servicos_profissionais "2.4B linhas"
     }
 ```
 
@@ -380,6 +384,14 @@ erDiagram
 
 ```mermaid
 erDiagram
+    CBO ||--o{ br_ms_sih : "cbo_2002_paciente +1"
+    CID10 ||--o{ br_ms_sih : "cid_principal_categoria +27"
+    CNES ||--o{ br_ms_sih : "id_estabelecimento_cnes"
+    EMPRESA_CNPJ ||--o{ br_ms_sih : "cnpj_mantenedora +1"
+    IES ||..o{ br_ms_sih : "cnpj_mantenedora"
+    MUNICIPIO ||--o{ br_ms_sih : "id_municipio_gestor +3"
+    PESSOA_CPF ||--o{ br_ms_sih : "cpf_gestor"
+    UF ||--o{ br_ms_sih : "sigla_uf"
     CNES ||..o{ br_ms_sim : "codigo_estabelecimento"
     MUNICIPIO ||--o{ br_ms_sim : "id_municipio +5"
     UF ||--o{ br_ms_sim : "sigla_uf"
@@ -417,8 +429,13 @@ erDiagram
     EMPRESA_CNPJ ||--o{ br_saude_bps : "cnpj_do_fabricante +2"
     MUNICIPIO ||..o{ br_saude_bps : "nome_do_munica­pio_da_instituicao"
     EMPRESA_CNPJ ||..o{ br_saude_farmaciapopular : "numero_cnpj +1"
-    MUNICIPIO ||..o{ br_saude_farmaciapopular : "codigo_municipio"
-    UF ||..o{ br_saude_farmaciapopular : "codigo_uf"
+    MUNICIPIO ||--o{ br_saude_farmaciapopular : "id_municipio"
+    UF ||--o{ br_saude_farmaciapopular : "sigla_uf"
+    br_ms_sih {
+        mun_uf_cnpj_cpf_ies_cnes_cbo_cid_ano_mes aihs_reduzidas "208.1M linhas"
+        sem_chave dicionario "34.4k linhas"
+        mun_uf_cnes_cbo_ano_mes servicos_profissionais "2.4B linhas"
+    }
     br_ms_sim {
         sem_chave dicionario "569 linhas"
         mun_uf_cnes_ano microdados "36.7M linhas"
@@ -486,6 +503,8 @@ erDiagram
     }
     br_saude_farmaciapopular {
         mun_uf_cnpj estabelecimentos "32.6k linhas"
+        sem_chave pessoas_atendidas_catalogo "14 linhas"
+        mun_uf_ano pessoas_atendidas_municipio "490.2k linhas"
     }
 ```
 
@@ -743,7 +762,7 @@ erDiagram
 
 ## Trabalho, empresas e economia
 
-50 datasets · 315 tabelas
+51 datasets · 317 tabelas
 
 **1/5**
 
@@ -1149,6 +1168,8 @@ erDiagram
     MUNICIPIO ||--o{ br_me_rais_identificada : "id_municipio"
     UF ||--o{ br_me_rais_identificada : "sigla_uf"
     UF ||--o{ br_mme_consumo_energia_eletrica : "sigla_uf"
+    MUNICIPIO ||--o{ br_mme_luz_para_todos : "id_municipio"
+    UF ||--o{ br_mme_luz_para_todos : "sigla_uf"
     br_ibge_ipca15 {
         ano_mes mes_brasil "311 linhas"
         cid_ano_mes mes_categoria_brasil "33.1k linhas"
@@ -1240,6 +1261,10 @@ erDiagram
     }
     br_mme_consumo_energia_eletrica {
         uf_ano_mes uf "38.9k linhas"
+    }
+    br_mme_luz_para_todos {
+        mun_uf_ano_mes domicilios_atendidos "619.5k linhas"
+        uf_ano_mes recursos_aplicados "424 linhas"
     }
 ```
 
@@ -1876,7 +1901,7 @@ erDiagram
         sem_chave carga_2026 "50 linhas"
         mun_uf_cnpj_cpf_cnae_partido_ano despesas_candidato "33.4M linhas"
         mun_uf_cnpj_cpf_cnae_partido_ano despesas_contratadas_orgao_partidario "1.1M linhas"
-        uf_ano despesas_pagas_orgao_partidario "871.2k linhas"
+        uf_ano despesas_pagas_orgao_partidario "878k linhas"
         mun_uf_ano detalhes_votacao_municipio "371.3k linhas"
         mun_uf_ano detalhes_votacao_municipio_zona "413.2k linhas"
         mun_uf_ano detalhes_votacao_secao "27M linhas"
@@ -1890,11 +1915,11 @@ erDiagram
         uf_cnpj_cpf_ano pesquisa_eleitoral_contratante "56.5k linhas"
         uf_cnpj_cpf_ano pesquisa_eleitoral_pagante "46.5k linhas"
         mun_uf_cnpj_cpf_cnae_partido_ano receitas_candidato "15.5M linhas"
-        uf_cnpj_cpf_cnae_ano receitas_candidato_doador_originario "842k linhas"
+        uf_cnpj_cpf_cnae_ano receitas_candidato_doador_originario "843k linhas"
         mun_uf_cnpj_cpf_cnae_partido_ano receitas_comite "341.7k linhas"
-        mun_uf_cnpj_cpf_cnae_partido_ano receitas_orgao_partidario "266.7k linhas"
-        uf_cnpj_cpf_cnae_ano receitas_orgao_partidario_doador_originario "264.2k linhas"
-        uf_ano rede_social_candidato "851.9k linhas"
+        mun_uf_cnpj_cpf_cnae_partido_ano receitas_orgao_partidario "267.1k linhas"
+        uf_cnpj_cpf_cnae_ano receitas_orgao_partidario_doador_originario "264.5k linhas"
+        uf_ano rede_social_candidato "852k linhas"
         mun_uf_partido_ano resultados_candidato "3.1M linhas"
         mun_uf_partido_ano resultados_candidato_municipio "37.7M linhas"
         mun_uf_partido_ano resultados_candidato_municipio_zona "46.8M linhas"
@@ -2067,7 +2092,7 @@ erDiagram
 
 ## Território, ambiente e infraestrutura
 
-31 datasets · 128 tabelas
+33 datasets · 131 tabelas
 
 **1/3**
 
@@ -2202,6 +2227,7 @@ erDiagram
     UF ||--o{ br_mapbiomas_estatisticas : "sigla_uf"
     MUNICIPIO ||--o{ br_mdr_snis : "id_municipio"
     UF ||--o{ br_mdr_snis : "sigla_uf"
+    PESSOA_CPF ||--o{ br_mma_bolsa_verde : "cpf_mascarado"
     MUNICIPIO ||..o{ br_mma_cnuc : "municipio_costeiro +2"
     UF ||..o{ br_mma_cnuc : "uf"
     CID10 ||..o{ br_mma_extincao : "categoria"
@@ -2276,6 +2302,9 @@ erDiagram
         mun_uf_ano municipio_agua_esgoto "119.3k linhas"
         mun_uf_ano prestador_agua_esgoto "125.8k linhas"
     }
+    br_mma_bolsa_verde {
+        cpf_ano pagamentos "658.6k linhas"
+    }
     br_mma_cnuc {
         mun_uf_ano unidades_conservacao "44.5k linhas"
     }
@@ -2305,6 +2334,10 @@ erDiagram
     }
     br_sfb_cnfp {
         mun_uf_cid_ano florestas_publicas "12.9k linhas"
+    }
+    br_sfb_concessoes {
+        ano contratos "22 linhas"
+        ano producao "53 linhas"
     }
 ```
 
@@ -2791,7 +2824,7 @@ erDiagram
 
 ## Outros
 
-33 datasets · 304 tabelas
+36 datasets · 308 tabelas
 
 **1/5**
 
@@ -2812,12 +2845,21 @@ erDiagram
     UF ||..o{ br_antt_dadosabertos : "uf"
     MUNICIPIO ||--o{ br_fnde_fundeb : "id_municipio +1"
     UF ||--o{ br_fnde_fundeb : "sigla_uf +1"
+    MUNICIPIO ||--o{ br_fnde_pnae : "id_municipio"
+    UF ||--o{ br_fnde_pnae : "sigla_uf"
+    EMPRESA_CNPJ ||--o{ br_fnde_pnate : "cnpj"
+    MUNICIPIO ||--o{ br_fnde_pnate : "id_municipio"
+    UF ||--o{ br_fnde_pnate : "sigla_uf"
     EMPRESA_CNPJ ||..o{ br_icmbio_embargos : "cpf_cnpj"
     MUNICIPIO ||..o{ br_icmbio_embargos : "municipio"
     PESSOA_CPF ||..o{ br_icmbio_embargos : "cpf_cnpj"
     UF ||..o{ br_icmbio_embargos : "uf"
     MUNICIPIO ||..o{ br_incra_acervo : "municipio +2"
     UF ||--o{ br_incra_acervo : "sigla_uf_arquivo"
+    CEP ||--o{ br_mcid_mcmv : "cep"
+    EMPRESA_CNPJ ||--o{ br_mcid_mcmv : "cnpj_construtora_entidade"
+    MUNICIPIO ||--o{ br_mcid_mcmv : "id_municipio"
+    UF ||--o{ br_mcid_mcmv : "sigla_uf"
     MUNICIPIO ||--o{ br_mds_cadunico : "id_municipio"
     EMPRESA_CNPJ ||..o{ br_mf_divida_ativa : "cpf_cnpj"
     PESSOA_CPF ||..o{ br_mf_divida_ativa : "cpf_cnpj"
@@ -2869,6 +2911,12 @@ erDiagram
         uf_ano indicador_estadual "67.4k linhas"
         mun_uf_ano indicador_municipal "15M linhas"
     }
+    br_fnde_pnae {
+        mun_uf_ano alunos_atendidos "703.3k linhas"
+    }
+    br_fnde_pnate {
+        mun_uf_cnpj alunos_atendidos "5.5k linhas"
+    }
     br_icmbio_embargos {
         mun_uf_cnpj_cpf_ano termo_embargo "14.8k linhas"
     }
@@ -2886,6 +2934,10 @@ erDiagram
         sem_chave empresas "6.9k linhas"
         sem_chave processos "7.2k linhas"
         sem_chave tipos_documento "2.6k linhas"
+    }
+    br_mcid_mcmv {
+        mun_uf_cep_cnpj empreendimentos_subsidiados "26.1k linhas"
+        mun_uf_ano_mes financiamento_fgts "795.7k linhas"
     }
     br_mds_cadunico {
         sem_chave indicadores_catalogo "139 linhas"
@@ -3273,7 +3325,7 @@ erDiagram
 
 ## Sem ligação documentada
 
-### Datasets (44)
+### Datasets (45)
 
 Nenhuma coluna reconhecida como chave de nenhum hub. Alguns são séries nacionais sem recorte geográfico ou de entidade (índices de preço, cotações, agregados nacionais); o resto são fontes raspadas cujo identificador ainda não foi mapeado — esses são os candidatos às próximas pontes no `join_keys.md`.
 
@@ -3303,6 +3355,7 @@ Nenhuma coluna reconhecida como chave de nenhum hub. Alguns são séries naciona
 - `br_ons_dados_abertos` — `acesso_consumidor`, `acesso_distribuidor`, `acesso_gerador`, `acesso_provisorio`, `balanco_dessem_detalhe`, `balanco_dessem_geral`, `balanco_energia_subsistema_ho`, `capacidade_geracao`, `capacidade_transformacao`, `carga_energia_di`, `carga_energia_me`, `cargaglobal_roraima`, `classificacao_evt`, `cmo_se`, `cmo_tm`, `curva_carga_ho`, `cvu_usitermica_se`, `dados_hidrologicos_di`, `dados_hidrologicos_ho`, `demanda_maxima_di`, `disponibilidade_usina_ho`, `ear_bacia_di`, `ear_ree_di`, `ear_reservatorio_di`, `ear_subsistema_di`, `ena_bacia_di`, `ena_ree_di`, `ena_reservatorio_di`, `ena_subsistema_di`, `energia_vertida_turbinavel_ho`, `equipamento_controle_reativo`, `fator_capacidade_2_di`, `fsarh`, `fsarh_tabela`, `geracao_exportacao_internacional_ho`, `geracao_itaipu`, `geracao_termica_despacho_2_ho`, `geracao_usina_2_ho`, `grandezas_fluviometricas_di`, `hist_despacho_energia`, `importacaoenergia_comercial_2_ho`, `ind_confiarb_atls`, `ind_confiarb_ccal`, `ind_confiarb_ccat`, `ind_confiarb_ciper`, `ind_confiarb_dreq_freq`, `ind_confiarb_energianaosuprida`, `ind_confiarb_robustez`, `ind_confiarb_severidade`, `ind_disponibilidade_fgeracao_uge_an`, `ind_disponibilidade_fgeracao_uge_me`, `ind_disponibilidade_ft_conversor_me`, `ind_disponibilidade_ft_reativo_me`, `ind_disponibilidade_ft_trlt_me`, `ind_disponibilidade_geracao_sin`, `ind_providencia_ecpa_pcpa`, `ind_qualid_dfd_evento`, `ind_qualid_dfd_meano`, `ind_qualid_dfp_regime`, `intercambio_internacional_ho`, `intercambio_modalidade_ho`, `intercambio_nacional_ho`, `interrupcao_carga`, `linha_transmissao`, `modalidade_usina`, `oferta_respostademanda`, `ofertapreco_importacao_se`, `precipitacao_estacao_di`, `programacao_diaria`, `programacao_fluxo_controlado`, `programacao_x_previsao`, `res_volumeespera`, `reservatorio`, `restricao_coff_eolica_detail_tm`, `restricao_coff_eolica_intrasemihora`, `restricao_coff_eolica_tm`, `restricao_coff_fotovoltaica_detail_tm`, `restricao_coff_fotovoltaica_intrasemihora`, `restricao_coff_fotovoltaica_tm`, `subestacao`, `taxa_teif_teip`, `taxa_teif_teip_oper`, `taxa_teif_teip_parametro`, `uge_opera_csi`, `usi_servicoancilar_sandbox`, `usina_conjunto`, `usina_pqu`
 - `br_ons_estimativa_custos` — `balanco_energia_subsistemas`, `balanco_energia_subsistemas_dessem`, `custo_marginal_operacao_semanal`, `custo_marginal_operacao_semi_horario`, `custo_variavel_unitario_usinas_termicas`
 - `br_pncp` — `contratos`
+- `br_sfb_concessoes` — `contratos`, `producao`
 - `br_stf_corte_aberta` — `decisoes`, `dicionario`
 - `br_stj_dadosabertos` — `documentos`
 - `br_tce_to` — `pautas`
@@ -3322,8 +3375,8 @@ Nenhuma coluna reconhecida como chave de nenhum hub. Alguns são séries naciona
 - `world_imdb_movies` — `top_movies_per_year`
 - `world_sofascore_competicoes_futebol` — `brasileirao_serie_a`, `uefa_champions_league`
 
-### Tabelas (436)
+### Tabelas (437)
 
 Tabelas que não carregam chave alguma, inclusive dentro de datasets que se conectam pelas outras tabelas (dicionários, agregados nacionais, metadados):
 
-`br_ana_bho.topologia`, `br_ana_reservatorios.sin`, `br_ana_telemetria.series_chuva_diaria`, `br_ana_telemetria.series_chuva_mensal`, `br_ana_telemetria.series_cota_diaria`, `br_ana_telemetria.series_cota_mensal`, `br_ana_telemetria.series_cota_mensal_completa`, `br_ana_telemetria.series_vazao_diaria`, `br_ana_telemetria.series_vazao_mensal`, `br_ana_telemetria.series_vazao_mensal_completa`, `br_anac_dadosabertos.pontualidade`, `br_anac_dadosabertos.rab`, `br_anac_dadosabertos.voos`, `br_aneel_dadosabertos.indicadores_continuidade_dominio`, `br_aneel_dadosabertos.siga_empreendimentos_geracao`, `br_anm.scm_guia_de_utilizacao_autorizada`, `br_ans_operadoras.caracteristicas_produtos`, `br_ans_operadoras.demonstracoes_contabeis`, `br_ans_operadoras.historico_planos`, `br_ans_operadoras.igr`, `br_ans_operadoras.igr_reclamacoes_operadora`, `br_ans_operadoras.ressarcimento_sus_atendimentos`, `br_ans_operadoras.ressarcimento_sus_cobranca_arrecadacao`, `br_ans_operadoras.ressarcimento_sus_hc`, `br_ans_operadoras.ressarcimento_sus_indice_pagamento`, `br_ans_operadoras.sip_mapa_assistencial`, `br_ans_operadoras.tiss_planos`, `br_antt_dadosabertos.acidentes_rodovias`, `br_anvisa_consultas.agrotoxicos`, `br_anvisa_consultas.registros`, `br_bcb_desenrola.dados`, `br_bcb_estban.dicionario`, `br_bcb_ifdata.dicionario`, `br_bcb_ptax.cotacao_dolar_dia`, `br_bcb_ptax.cotacao_moeda_dia`, `br_bcb_ptax.moedas`, `br_bcb_sgs.series`, `br_bcb_sicor.dicionario`, `br_bcb_sicor.empreendimento`, `br_bcb_sicor.fonte_recurso`, `br_bd_diretorios_brasil.area_conhecimento`, `br_bd_diretorios_brasil.curso_superior`, `br_bd_diretorios_brasil.etnia_indigena`, `br_bd_diretorios_brasil.natureza_juridica`, `br_bd_diretorios_brasil.subatividade_ibge`, `br_bd_diretorios_data_tempo.bimestre`, `br_bd_diretorios_data_tempo.dia`, `br_bd_diretorios_data_tempo.hora`, `br_bd_diretorios_data_tempo.minuto`, `br_bd_diretorios_data_tempo.segundo`, `br_bd_diretorios_data_tempo.semestre`, `br_bd_diretorios_data_tempo.tempo`, `br_bd_diretorios_data_tempo.trimestre`, `br_bd_diretorios_mundo.pais`, `br_bd_diretorios_us.cbsa_2023`, `br_bd_diretorios_us.census_tract_2020`, `br_bd_diretorios_us.congress_member`, `br_bd_diretorios_us.congressional_district_119`, `br_bd_diretorios_us.county`, `br_bd_diretorios_us.naics_2022`, `br_bd_diretorios_us.place`, `br_bd_diretorios_us.puma_2020`, `br_bd_diretorios_us.school`, `br_bd_diretorios_us.school_district`, `br_bd_metadados.bigquery_tables`, `br_bd_metadados.external_links`, `br_bd_metadados.information_requests`, `br_bd_metadados.organizations`, `br_bd_metadados.resources`, `br_bd_metadados.tables`, `br_brasilapi.bancos`, `br_brasilapi.feriados`, `br_brasilapi.taxas_referencia`, `br_caixa_sorteios.megasena`, `br_camara_dados_abertos.deputado_profissao`, `br_camara_dados_abertos.evento`, `br_camara_dados_abertos.evento_orgao`, `br_camara_dados_abertos.evento_presenca_deputado`, `br_camara_dados_abertos.evento_requerimento`, `br_camara_dados_abertos.frente`, `br_camara_dados_abertos.frente_deputado`, `br_camara_dados_abertos.funcionario`, `br_camara_dados_abertos.sigla_partido`, `br_camara_dados_abertos.votacao`, `br_camara_dados_abertos.votacao_orientacao_bancada`, `br_cgu_cartao_pagamento.dicionario`, `br_cgu_dados_abertos.conjunto`, `br_cgu_dados_abertos.recurso`, `br_cgu_fef.sorteio`, `br_cgu_garantia_safra.favorecido`, `br_cgu_sancoes.acordos_leniencia_efeitos`, `br_cgu_sancoes.dicionario`, `br_cgu_viagens.pagamento`, `br_cgu_viagens.passagem`, `br_cnpq_bolsas.dicionario`, `br_comprasgov_catmatcatser.servicos`, `br_cvm_administradores_carteira.pessoa_fisica`, `br_cvm_cia_aberta.recompra_acoes_quantidades`, `br_cvm_fundos.registro_subclasse`, `br_datasus_cid10.capitulos`, `br_datasus_cid10.cid_o_grupos`, `br_datasus_cid10.grupos`, `br_datasus_cid10.subcategorias`, `br_fipe_veiculos.precos`, `br_geobr_mapas.amazonia_legal`, `br_geobr_mapas.pais`, `br_geobr_mapas.regiao`, `br_ibama_autos.aie_enquadramento`, `br_ibama_autos.aie_enquadramentocomp`, `br_ibama_autos.bioma`, `br_ibama_autos.coordenada`, `br_ibama_autos.especime`, `br_ibama_embargos_novo.coordenadas`, `br_ibama_embargos_novo.enquadramento`, `br_ibama_embargos_novo.enquadramento_complementar`, `br_ibama_embargos_novo.itens`, `br_ibama_embargos_novo.termo_de_embargo_anexo`, `br_ibge_areas_risco.dicionario`, `br_ibge_censo_2022.dicionario`, `br_ibge_censo_2022.sidra_recortes`, `br_ibge_censo_agropecuario.sidra`, `br_ibge_censo_agropecuario.sidra_municipio`, `br_ibge_censo_demografico.dicionario`, `br_ibge_estadic.dicionario`, `br_ibge_lspa.sidra`, `br_ibge_pac.sidra`, `br_ibge_paic.sidra`, `br_ibge_pas.sidra`, `br_ibge_pia.sidra`, `br_ibge_pnad.dicionario`, `br_ibge_pnad_covid.dicionario`, `br_ibge_pnadc.dicionario`, `br_ibge_pof.cadastro_de_produtos_2017`, `br_ibge_pof.dicionario`, `br_incra_acervo.assentamentos_poligono`, `br_inea_boletim.atos_pdf`, `br_inea_boletim.empresas`, `br_inea_boletim.processos`, `br_inea_boletim.tipos_documento`, `br_inep_ana.dicionario`, `br_inep_avaliacao_alfabetizacao.dicionario`, `br_inep_censo_educacao_superior.dicionario`, `br_inep_censo_escolar.dicionario`, `br_inep_enem.dicionario`, `br_inep_enem.questionario_socioeconomico_1998`, `br_inep_enem.questionario_socioeconomico_1999`, `br_inep_enem.questionario_socioeconomico_2000`, `br_inep_enem.questionario_socioeconomico_2001`, `br_inep_enem.questionario_socioeconomico_2002`, `br_inep_enem.questionario_socioeconomico_2003`, `br_inep_enem.questionario_socioeconomico_2004`, `br_inep_enem.questionario_socioeconomico_2005`, `br_inep_enem.questionario_socioeconomico_2006`, `br_inep_enem.questionario_socioeconomico_2007`, `br_inep_enem.questionario_socioeconomico_2008`, `br_inep_enem.questionario_socioeconomico_2009`, `br_inep_enem.questionario_socioeconomico_2010`, `br_inep_enem.questionario_socioeconomico_2011`, `br_inep_enem.questionario_socioeconomico_2012`, `br_inep_enem.questionario_socioeconomico_2013`, `br_inep_enem.questionario_socioeconomico_2014`, `br_inep_enem.questionario_socioeconomico_2015`, `br_inep_enem.questionario_socioeconomico_2016`, `br_inep_enem.questionario_socioeconomico_2017`, `br_inep_enem.questionario_socioeconomico_2018`, `br_inep_enem.questionario_socioeconomico_2019`, `br_inep_enem.questionario_socioeconomico_2020`, `br_inep_enem.questionario_socioeconomico_2021`, `br_inep_enem.questionario_socioeconomico_2022`, `br_inep_enem.questionario_socioeconomico_2023`, `br_inep_enem.questionario_socioeconomico_2024`, `br_inep_enem.questionario_socioeconomico_2025`, `br_inep_formacao_docente.dicionario`, `br_inep_indicador_nivel_socioeconomico.dicionario`, `br_inep_saeb.dicionario`, `br_inep_sinopse_estatistica_educacao_basica.dicionario`, `br_inpe_deter.avisos_poligono`, `br_ipea_atlasviolencia.series`, `br_mapbiomas_estatisticas.classe`, `br_mds_cadunico.indicadores_catalogo`, `br_me_caged.dicionario`, `br_me_cno.dicionario`, `br_me_cno.microdados_vinculo`, `br_me_cnpj.dicionario`, `br_me_comex_stat.dicionario`, `br_me_exportadoras_importadoras.dicionario`, `br_me_rais.dicionario`, `br_me_siape.servidores_executivo_federal`, `br_me_sic.dicionario`, `br_me_siorg.remuneracao`, `br_mec_prouni.dicionario`, `br_mg_belohorizonte_smfa_iptu.dicionario`, `br_mgi_compras_publicas.catalogo_servico`, `br_mgi_compras_publicas.contrato_item`, `br_mgi_compras_publicas.dicionario`, `br_mgi_pncp.dicionario`, `br_minc_salic.areas`, `br_minc_salic.cidades`, `br_minc_salic.incentivos`, `br_minc_salic.projetos_texto`, `br_minc_salic.recibos`, `br_minc_salic.segmentos`, `br_mj_sinesp.dicionario`, `br_mj_sisdepen.dicionario`, `br_mps_beneficios.dicionario_especie`, `br_ms_cnes.dicionario`, `br_ms_pns.dicionario`, `br_ms_sia.dicionario`, `br_ms_sih.dicionario`, `br_ms_sim.dicionario`, `br_ms_sinan.dicionario`, `br_ms_sinasc.dicionario`, `br_ms_sipni_dicionarios.cobertura_indicadores`, `br_ms_sipni_dicionarios.doses_tipo`, `br_ms_sipni_dicionarios.faixa_etaria`, `br_ms_sipni_dicionarios.vacinas`, `br_ms_sisvan.dicionario`, `br_ms_vacinacao_covid19.dicionario`, `br_ons_avaliacao_operacao.reservatorio`, `br_ons_dados_abertos.acesso_consumidor`, `br_ons_dados_abertos.acesso_distribuidor`, `br_ons_dados_abertos.acesso_gerador`, `br_ons_dados_abertos.acesso_provisorio`, `br_ons_dados_abertos.balanco_dessem_detalhe`, `br_ons_dados_abertos.balanco_dessem_geral`, `br_ons_dados_abertos.balanco_energia_subsistema_ho`, `br_ons_dados_abertos.capacidade_geracao`, `br_ons_dados_abertos.capacidade_transformacao`, `br_ons_dados_abertos.carga_energia_di`, `br_ons_dados_abertos.carga_energia_me`, `br_ons_dados_abertos.cargaglobal_roraima`, `br_ons_dados_abertos.classificacao_evt`, `br_ons_dados_abertos.cmo_se`, `br_ons_dados_abertos.cmo_tm`, `br_ons_dados_abertos.curva_carga_ho`, `br_ons_dados_abertos.dados_hidrologicos_di`, `br_ons_dados_abertos.dados_hidrologicos_ho`, `br_ons_dados_abertos.demanda_maxima_di`, `br_ons_dados_abertos.disponibilidade_usina_ho`, `br_ons_dados_abertos.ear_bacia_di`, `br_ons_dados_abertos.ear_ree_di`, `br_ons_dados_abertos.ear_reservatorio_di`, `br_ons_dados_abertos.ear_subsistema_di`, `br_ons_dados_abertos.ena_bacia_di`, `br_ons_dados_abertos.ena_ree_di`, `br_ons_dados_abertos.ena_reservatorio_di`, `br_ons_dados_abertos.ena_subsistema_di`, `br_ons_dados_abertos.energia_vertida_turbinavel_ho`, `br_ons_dados_abertos.equipamento_controle_reativo`, `br_ons_dados_abertos.fator_capacidade_2_di`, `br_ons_dados_abertos.geracao_exportacao_internacional_ho`, `br_ons_dados_abertos.geracao_itaipu`, `br_ons_dados_abertos.geracao_termica_despacho_2_ho`, `br_ons_dados_abertos.geracao_usina_2_ho`, `br_ons_dados_abertos.grandezas_fluviometricas_di`, `br_ons_dados_abertos.hist_despacho_energia`, `br_ons_dados_abertos.importacaoenergia_comercial_2_ho`, `br_ons_dados_abertos.ind_confiarb_atls`, `br_ons_dados_abertos.ind_confiarb_ccal`, `br_ons_dados_abertos.ind_confiarb_ccat`, `br_ons_dados_abertos.ind_confiarb_ciper`, `br_ons_dados_abertos.ind_confiarb_dreq_freq`, `br_ons_dados_abertos.ind_confiarb_energianaosuprida`, `br_ons_dados_abertos.ind_confiarb_robustez`, `br_ons_dados_abertos.ind_confiarb_severidade`, `br_ons_dados_abertos.ind_disponibilidade_fgeracao_uge_an`, `br_ons_dados_abertos.ind_disponibilidade_fgeracao_uge_me`, `br_ons_dados_abertos.ind_disponibilidade_ft_conversor_me`, `br_ons_dados_abertos.ind_disponibilidade_ft_reativo_me`, `br_ons_dados_abertos.ind_disponibilidade_ft_trlt_me`, `br_ons_dados_abertos.ind_disponibilidade_geracao_sin`, `br_ons_dados_abertos.ind_providencia_ecpa_pcpa`, `br_ons_dados_abertos.ind_qualid_dfd_evento`, `br_ons_dados_abertos.ind_qualid_dfd_meano`, `br_ons_dados_abertos.ind_qualid_dfp_regime`, `br_ons_dados_abertos.intercambio_internacional_ho`, `br_ons_dados_abertos.intercambio_modalidade_ho`, `br_ons_dados_abertos.intercambio_nacional_ho`, `br_ons_dados_abertos.interrupcao_carga`, `br_ons_dados_abertos.linha_transmissao`, `br_ons_dados_abertos.modalidade_usina`, `br_ons_dados_abertos.oferta_respostademanda`, `br_ons_dados_abertos.ofertapreco_importacao_se`, `br_ons_dados_abertos.precipitacao_estacao_di`, `br_ons_dados_abertos.programacao_diaria`, `br_ons_dados_abertos.programacao_fluxo_controlado`, `br_ons_dados_abertos.programacao_x_previsao`, `br_ons_dados_abertos.res_volumeespera`, `br_ons_dados_abertos.reservatorio`, `br_ons_dados_abertos.restricao_coff_eolica_detail_tm`, `br_ons_dados_abertos.restricao_coff_eolica_intrasemihora`, `br_ons_dados_abertos.restricao_coff_eolica_tm`, `br_ons_dados_abertos.restricao_coff_fotovoltaica_detail_tm`, `br_ons_dados_abertos.restricao_coff_fotovoltaica_intrasemihora`, `br_ons_dados_abertos.restricao_coff_fotovoltaica_tm`, `br_ons_dados_abertos.subestacao`, `br_ons_dados_abertos.taxa_teif_teip`, `br_ons_dados_abertos.taxa_teif_teip_oper`, `br_ons_dados_abertos.taxa_teif_teip_parametro`, `br_ons_dados_abertos.uge_opera_csi`, `br_ons_dados_abertos.usi_servicoancilar_sandbox`, `br_ons_dados_abertos.usina_conjunto`, `br_ons_dados_abertos.usina_pqu`, `br_rf_cafir.dicionario`, `br_rf_cno.dicionario`, `br_rf_cno.vinculos`, `br_rf_cno.vinculos_historico`, `br_seeg_emissoes.dicionario`, `br_senado_dados_abertos.bloco`, `br_senado_dados_abertos.lideranca`, `br_senado_dados_abertos.mesa`, `br_senado_dados_abertos.senador_cargo`, `br_senado_dados_abertos.senador_comissao`, `br_senado_dados_abertos_administrativos.ata_acionamento`, `br_senado_dados_abertos_administrativos.contratacao_documento_fiscal`, `br_senado_dados_abertos_administrativos.contratacao_garantia`, `br_senado_dados_abertos_administrativos.contratacao_item`, `br_senado_dados_abertos_administrativos.contratacao_orgao_gestor`, `br_senado_dados_abertos_administrativos.contratacao_pagamento`, `br_senado_dados_abertos_administrativos.contratacao_pagamento_empenho`, `br_senado_dados_abertos_administrativos.contrato_aditivo`, `br_senado_dados_abertos_administrativos.dicionario`, `br_senado_dados_abertos_administrativos.diretor_coordenador`, `br_senado_dados_abertos_administrativos.estagiario`, `br_senado_dados_abertos_administrativos.licitacao`, `br_senado_dados_abertos_administrativos.licitacao_detalhamento`, `br_senado_dados_abertos_administrativos.senador_aposentado_pensionista`, `br_senado_dados_abertos_administrativos.senador_auxilio_moradia`, `br_senado_dados_abertos_administrativos.senador_escritorio_apoio`, `br_senado_dados_abertos_administrativos.senador_gabinete`, `br_senado_dados_abertos_administrativos.servidor_exonerado`, `br_senado_dadosabertos.materias`, `br_senado_dadosabertos.senadores`, `br_sfb_sicar.dicionario`, `br_siop_orcamento.alteracoes_orcamentarias`, `br_siop_orcamento.dados`, `br_siop_orcamento.planos_orcamentarios`, `br_sp_alesp.funcionarios_lotacoes`, `br_stf_corte_aberta.dicionario`, `br_stj_dadosabertos.documentos`, `br_susep_dados_abertos.empresas_mercado`, `br_tce_pi.despesas_total`, `br_tce_pi.licitacoes_estado`, `br_tce_pi.receitas_total`, `br_tce_to.pautas`, `br_tesouro_cauc.legenda_itens`, `br_transferegov_siconv.app_parceriasgov_necessidades_aprovadas`, `br_transferegov_siconv.siconv_acomp_obras_valores_itens_medicao`, `br_transferegov_siconv.siconv_contrato`, `br_transferegov_siconv.siconv_contrato_cipi`, `br_transferegov_siconv.siconv_coordenadas_obra`, `br_transferegov_siconv.siconv_dados_obrasgov_geral`, `br_transferegov_siconv.siconv_desbloqueio_cr`, `br_transferegov_siconv.siconv_dl`, `br_transferegov_siconv.siconv_emenda`, `br_transferegov_siconv.siconv_empenho`, `br_transferegov_siconv.siconv_empenho_cipi`, `br_transferegov_siconv.siconv_empenho_desembolso`, `br_transferegov_siconv.siconv_historico_projeto_basico`, `br_transferegov_siconv.siconv_historico_situacao`, `br_transferegov_siconv.siconv_ingresso_contrapartida`, `br_transferegov_siconv.siconv_inst_cont_contratos_lotes_empresas`, `br_transferegov_siconv.siconv_inst_cont_metas_submetas_po`, `br_transferegov_siconv.siconv_inst_cont_proposta_aio`, `br_transferegov_siconv.siconv_itens_dl`, `br_transferegov_siconv.siconv_itens_licitacao`, `br_transferegov_siconv.siconv_justificativas_proposta`, `br_transferegov_siconv.siconv_licitacao`, `br_transferegov_siconv.siconv_obtv_convenente`, `br_transferegov_siconv.siconv_pagamento`, `br_transferegov_siconv.siconv_pagamento_tributo`, `br_transferegov_siconv.siconv_pergunta_selecao_pac`, `br_transferegov_siconv.siconv_programa_proponentes`, `br_transferegov_siconv.siconv_programa_proposta`, `br_transferegov_siconv.siconv_projeto_basico_acffo`, `br_transferegov_siconv.siconv_projeto_basico_lae`, `br_transferegov_siconv.siconv_projeto_basico_metas`, `br_transferegov_siconv.siconv_projeto_basico_proposta`, `br_transferegov_siconv.siconv_projeto_basico_submetas`, `br_transferegov_siconv.siconv_proposta_formalizacao_pac`, `br_transferegov_siconv.siconv_proposta_selecao_pac`, `br_transferegov_siconv.siconv_prorroga_oficio`, `br_transferegov_siconv.siconv_resposta_selecao_pac`, `br_transferegov_siconv.siconv_resumo_fisico_financeiro`, `br_transferegov_siconv.siconv_solicitacao_ajuste_pt`, `br_transferegov_siconv.siconv_solicitacao_alteracao`, `br_transferegov_siconv.siconv_solicitacao_rendimento_aplicacao`, `br_transferegov_siconv.siconv_termo_aditivo`, `br_transferegov_siconv.siconv_vrpl_lotes_fornecedores_licitacao`, `br_transferegov_siconv.siconv_vrpl_metas_submetas`, `br_transferegov_siconv.siconv_vrpl_proposta_licitacao`, `br_tse_eleicoes.carga_2026`, `br_tse_eleicoes.dicionario`, `br_ufmg_censo_demografico_1872.dicionario`, `eu_sanctions.sanctions`, `global_ibge_tabua_mares.estacoes`, `global_ibge_tabua_mares.previsao`, `global_icij_offshoreleaks.addresses`, `global_icij_offshoreleaks.entities`, `global_icij_offshoreleaks.intermediaries`, `global_icij_offshoreleaks.officers`, `global_icij_offshoreleaks.other`, `global_icij_offshoreleaks.relationships`, `global_ofac_sanctions.sanctions`, `global_opensanctions.entities`, `mundo_transfermarkt_competicoes_internacionais.champions_league`, `un_sanctions.sanctions`, `us_harvard_ned.parliamentary_elections`, `us_harvard_ned.presidential_elections`, `world_ampas_oscar.winner_demographics`, `world_iea_pirls.dictionary`, `world_iea_pirls.home_context`, `world_iea_pirls.school_context`, `world_iea_pirls.student_achievement`, `world_iea_pirls.student_context`, `world_iea_pirls.student_teacher_link`, `world_iea_pirls.teacher_context`, `world_iea_pirls.within_country_scoring_reliability`, `world_iea_timss.dictionary`, `world_iea_timss.home_context_grade_4`, `world_iea_timss.school_context_grade_4`, `world_iea_timss.school_context_grade_8`, `world_iea_timss.student_achievement_grade_4`, `world_iea_timss.student_achievement_grade_8`, `world_iea_timss.student_context_grade_4`, `world_iea_timss.student_context_grade_8`, `world_iea_timss.teacher_context_grade_4`, `world_iea_timss.teacher_mathematics_grade_8`, `world_iea_timss.teacher_science_grade_8`, `world_imdb_movies.top_movies_per_year`, `world_olympedia_olympics.athlete_event_result`, `world_olympedia_olympics.country`, `world_olympedia_olympics.result`, `world_wb_mides.dicionario`, `world_wwf_hydrosheds.basins_atlas`, `world_wwf_hydrosheds.rivers_atlas`
+`br_ana_bho.topologia`, `br_ana_reservatorios.sin`, `br_ana_telemetria.series_chuva_diaria`, `br_ana_telemetria.series_chuva_mensal`, `br_ana_telemetria.series_cota_diaria`, `br_ana_telemetria.series_cota_mensal`, `br_ana_telemetria.series_cota_mensal_completa`, `br_ana_telemetria.series_vazao_diaria`, `br_ana_telemetria.series_vazao_mensal`, `br_ana_telemetria.series_vazao_mensal_completa`, `br_anac_dadosabertos.pontualidade`, `br_anac_dadosabertos.rab`, `br_anac_dadosabertos.voos`, `br_aneel_dadosabertos.indicadores_continuidade_dominio`, `br_aneel_dadosabertos.siga_empreendimentos_geracao`, `br_anm.scm_guia_de_utilizacao_autorizada`, `br_ans_operadoras.caracteristicas_produtos`, `br_ans_operadoras.demonstracoes_contabeis`, `br_ans_operadoras.historico_planos`, `br_ans_operadoras.igr`, `br_ans_operadoras.igr_reclamacoes_operadora`, `br_ans_operadoras.ressarcimento_sus_atendimentos`, `br_ans_operadoras.ressarcimento_sus_cobranca_arrecadacao`, `br_ans_operadoras.ressarcimento_sus_hc`, `br_ans_operadoras.ressarcimento_sus_indice_pagamento`, `br_ans_operadoras.sip_mapa_assistencial`, `br_ans_operadoras.tiss_planos`, `br_antt_dadosabertos.acidentes_rodovias`, `br_anvisa_consultas.agrotoxicos`, `br_anvisa_consultas.registros`, `br_bcb_desenrola.dados`, `br_bcb_estban.dicionario`, `br_bcb_ifdata.dicionario`, `br_bcb_ptax.cotacao_dolar_dia`, `br_bcb_ptax.cotacao_moeda_dia`, `br_bcb_ptax.moedas`, `br_bcb_sgs.series`, `br_bcb_sicor.dicionario`, `br_bcb_sicor.empreendimento`, `br_bcb_sicor.fonte_recurso`, `br_bd_diretorios_brasil.area_conhecimento`, `br_bd_diretorios_brasil.curso_superior`, `br_bd_diretorios_brasil.etnia_indigena`, `br_bd_diretorios_brasil.natureza_juridica`, `br_bd_diretorios_brasil.subatividade_ibge`, `br_bd_diretorios_data_tempo.bimestre`, `br_bd_diretorios_data_tempo.dia`, `br_bd_diretorios_data_tempo.hora`, `br_bd_diretorios_data_tempo.minuto`, `br_bd_diretorios_data_tempo.segundo`, `br_bd_diretorios_data_tempo.semestre`, `br_bd_diretorios_data_tempo.tempo`, `br_bd_diretorios_data_tempo.trimestre`, `br_bd_diretorios_mundo.pais`, `br_bd_diretorios_us.cbsa_2023`, `br_bd_diretorios_us.census_tract_2020`, `br_bd_diretorios_us.congress_member`, `br_bd_diretorios_us.congressional_district_119`, `br_bd_diretorios_us.county`, `br_bd_diretorios_us.naics_2022`, `br_bd_diretorios_us.place`, `br_bd_diretorios_us.puma_2020`, `br_bd_diretorios_us.school`, `br_bd_diretorios_us.school_district`, `br_bd_metadados.bigquery_tables`, `br_bd_metadados.external_links`, `br_bd_metadados.information_requests`, `br_bd_metadados.organizations`, `br_bd_metadados.resources`, `br_bd_metadados.tables`, `br_brasilapi.bancos`, `br_brasilapi.feriados`, `br_brasilapi.taxas_referencia`, `br_caixa_sorteios.megasena`, `br_camara_dados_abertos.deputado_profissao`, `br_camara_dados_abertos.evento`, `br_camara_dados_abertos.evento_orgao`, `br_camara_dados_abertos.evento_presenca_deputado`, `br_camara_dados_abertos.evento_requerimento`, `br_camara_dados_abertos.frente`, `br_camara_dados_abertos.frente_deputado`, `br_camara_dados_abertos.funcionario`, `br_camara_dados_abertos.sigla_partido`, `br_camara_dados_abertos.votacao`, `br_camara_dados_abertos.votacao_orientacao_bancada`, `br_cgu_cartao_pagamento.dicionario`, `br_cgu_dados_abertos.conjunto`, `br_cgu_dados_abertos.recurso`, `br_cgu_fef.sorteio`, `br_cgu_garantia_safra.favorecido`, `br_cgu_sancoes.acordos_leniencia_efeitos`, `br_cgu_sancoes.dicionario`, `br_cgu_viagens.pagamento`, `br_cgu_viagens.passagem`, `br_cnpq_bolsas.dicionario`, `br_comprasgov_catmatcatser.servicos`, `br_cvm_administradores_carteira.pessoa_fisica`, `br_cvm_cia_aberta.recompra_acoes_quantidades`, `br_cvm_fundos.registro_subclasse`, `br_datasus_cid10.capitulos`, `br_datasus_cid10.cid_o_grupos`, `br_datasus_cid10.grupos`, `br_datasus_cid10.subcategorias`, `br_fipe_veiculos.precos`, `br_geobr_mapas.amazonia_legal`, `br_geobr_mapas.pais`, `br_geobr_mapas.regiao`, `br_ibama_autos.aie_enquadramento`, `br_ibama_autos.aie_enquadramentocomp`, `br_ibama_autos.bioma`, `br_ibama_autos.coordenada`, `br_ibama_autos.especime`, `br_ibama_embargos_novo.coordenadas`, `br_ibama_embargos_novo.enquadramento`, `br_ibama_embargos_novo.enquadramento_complementar`, `br_ibama_embargos_novo.itens`, `br_ibama_embargos_novo.termo_de_embargo_anexo`, `br_ibge_areas_risco.dicionario`, `br_ibge_censo_2022.dicionario`, `br_ibge_censo_2022.sidra_recortes`, `br_ibge_censo_agropecuario.sidra`, `br_ibge_censo_agropecuario.sidra_municipio`, `br_ibge_censo_demografico.dicionario`, `br_ibge_estadic.dicionario`, `br_ibge_lspa.sidra`, `br_ibge_pac.sidra`, `br_ibge_paic.sidra`, `br_ibge_pas.sidra`, `br_ibge_pia.sidra`, `br_ibge_pnad.dicionario`, `br_ibge_pnad_covid.dicionario`, `br_ibge_pnadc.dicionario`, `br_ibge_pof.cadastro_de_produtos_2017`, `br_ibge_pof.dicionario`, `br_incra_acervo.assentamentos_poligono`, `br_inea_boletim.atos_pdf`, `br_inea_boletim.empresas`, `br_inea_boletim.processos`, `br_inea_boletim.tipos_documento`, `br_inep_ana.dicionario`, `br_inep_avaliacao_alfabetizacao.dicionario`, `br_inep_censo_educacao_superior.dicionario`, `br_inep_censo_escolar.dicionario`, `br_inep_enem.dicionario`, `br_inep_enem.questionario_socioeconomico_1998`, `br_inep_enem.questionario_socioeconomico_1999`, `br_inep_enem.questionario_socioeconomico_2000`, `br_inep_enem.questionario_socioeconomico_2001`, `br_inep_enem.questionario_socioeconomico_2002`, `br_inep_enem.questionario_socioeconomico_2003`, `br_inep_enem.questionario_socioeconomico_2004`, `br_inep_enem.questionario_socioeconomico_2005`, `br_inep_enem.questionario_socioeconomico_2006`, `br_inep_enem.questionario_socioeconomico_2007`, `br_inep_enem.questionario_socioeconomico_2008`, `br_inep_enem.questionario_socioeconomico_2009`, `br_inep_enem.questionario_socioeconomico_2010`, `br_inep_enem.questionario_socioeconomico_2011`, `br_inep_enem.questionario_socioeconomico_2012`, `br_inep_enem.questionario_socioeconomico_2013`, `br_inep_enem.questionario_socioeconomico_2014`, `br_inep_enem.questionario_socioeconomico_2015`, `br_inep_enem.questionario_socioeconomico_2016`, `br_inep_enem.questionario_socioeconomico_2017`, `br_inep_enem.questionario_socioeconomico_2018`, `br_inep_enem.questionario_socioeconomico_2019`, `br_inep_enem.questionario_socioeconomico_2020`, `br_inep_enem.questionario_socioeconomico_2021`, `br_inep_enem.questionario_socioeconomico_2022`, `br_inep_enem.questionario_socioeconomico_2023`, `br_inep_enem.questionario_socioeconomico_2024`, `br_inep_enem.questionario_socioeconomico_2025`, `br_inep_formacao_docente.dicionario`, `br_inep_indicador_nivel_socioeconomico.dicionario`, `br_inep_saeb.dicionario`, `br_inep_sinopse_estatistica_educacao_basica.dicionario`, `br_inpe_deter.avisos_poligono`, `br_ipea_atlasviolencia.series`, `br_mapbiomas_estatisticas.classe`, `br_mds_cadunico.indicadores_catalogo`, `br_me_caged.dicionario`, `br_me_cno.dicionario`, `br_me_cno.microdados_vinculo`, `br_me_cnpj.dicionario`, `br_me_comex_stat.dicionario`, `br_me_exportadoras_importadoras.dicionario`, `br_me_rais.dicionario`, `br_me_siape.servidores_executivo_federal`, `br_me_sic.dicionario`, `br_me_siorg.remuneracao`, `br_mec_prouni.dicionario`, `br_mg_belohorizonte_smfa_iptu.dicionario`, `br_mgi_compras_publicas.catalogo_servico`, `br_mgi_compras_publicas.contrato_item`, `br_mgi_compras_publicas.dicionario`, `br_mgi_pncp.dicionario`, `br_minc_salic.areas`, `br_minc_salic.cidades`, `br_minc_salic.incentivos`, `br_minc_salic.projetos_texto`, `br_minc_salic.recibos`, `br_minc_salic.segmentos`, `br_mj_sinesp.dicionario`, `br_mj_sisdepen.dicionario`, `br_mps_beneficios.dicionario_especie`, `br_ms_cnes.dicionario`, `br_ms_pns.dicionario`, `br_ms_sia.dicionario`, `br_ms_sih.dicionario`, `br_ms_sim.dicionario`, `br_ms_sinan.dicionario`, `br_ms_sinasc.dicionario`, `br_ms_sipni_dicionarios.cobertura_indicadores`, `br_ms_sipni_dicionarios.doses_tipo`, `br_ms_sipni_dicionarios.faixa_etaria`, `br_ms_sipni_dicionarios.vacinas`, `br_ms_sisvan.dicionario`, `br_ms_vacinacao_covid19.dicionario`, `br_ons_avaliacao_operacao.reservatorio`, `br_ons_dados_abertos.acesso_consumidor`, `br_ons_dados_abertos.acesso_distribuidor`, `br_ons_dados_abertos.acesso_gerador`, `br_ons_dados_abertos.acesso_provisorio`, `br_ons_dados_abertos.balanco_dessem_detalhe`, `br_ons_dados_abertos.balanco_dessem_geral`, `br_ons_dados_abertos.balanco_energia_subsistema_ho`, `br_ons_dados_abertos.capacidade_geracao`, `br_ons_dados_abertos.capacidade_transformacao`, `br_ons_dados_abertos.carga_energia_di`, `br_ons_dados_abertos.carga_energia_me`, `br_ons_dados_abertos.cargaglobal_roraima`, `br_ons_dados_abertos.classificacao_evt`, `br_ons_dados_abertos.cmo_se`, `br_ons_dados_abertos.cmo_tm`, `br_ons_dados_abertos.curva_carga_ho`, `br_ons_dados_abertos.dados_hidrologicos_di`, `br_ons_dados_abertos.dados_hidrologicos_ho`, `br_ons_dados_abertos.demanda_maxima_di`, `br_ons_dados_abertos.disponibilidade_usina_ho`, `br_ons_dados_abertos.ear_bacia_di`, `br_ons_dados_abertos.ear_ree_di`, `br_ons_dados_abertos.ear_reservatorio_di`, `br_ons_dados_abertos.ear_subsistema_di`, `br_ons_dados_abertos.ena_bacia_di`, `br_ons_dados_abertos.ena_ree_di`, `br_ons_dados_abertos.ena_reservatorio_di`, `br_ons_dados_abertos.ena_subsistema_di`, `br_ons_dados_abertos.energia_vertida_turbinavel_ho`, `br_ons_dados_abertos.equipamento_controle_reativo`, `br_ons_dados_abertos.fator_capacidade_2_di`, `br_ons_dados_abertos.geracao_exportacao_internacional_ho`, `br_ons_dados_abertos.geracao_itaipu`, `br_ons_dados_abertos.geracao_termica_despacho_2_ho`, `br_ons_dados_abertos.geracao_usina_2_ho`, `br_ons_dados_abertos.grandezas_fluviometricas_di`, `br_ons_dados_abertos.hist_despacho_energia`, `br_ons_dados_abertos.importacaoenergia_comercial_2_ho`, `br_ons_dados_abertos.ind_confiarb_atls`, `br_ons_dados_abertos.ind_confiarb_ccal`, `br_ons_dados_abertos.ind_confiarb_ccat`, `br_ons_dados_abertos.ind_confiarb_ciper`, `br_ons_dados_abertos.ind_confiarb_dreq_freq`, `br_ons_dados_abertos.ind_confiarb_energianaosuprida`, `br_ons_dados_abertos.ind_confiarb_robustez`, `br_ons_dados_abertos.ind_confiarb_severidade`, `br_ons_dados_abertos.ind_disponibilidade_fgeracao_uge_an`, `br_ons_dados_abertos.ind_disponibilidade_fgeracao_uge_me`, `br_ons_dados_abertos.ind_disponibilidade_ft_conversor_me`, `br_ons_dados_abertos.ind_disponibilidade_ft_reativo_me`, `br_ons_dados_abertos.ind_disponibilidade_ft_trlt_me`, `br_ons_dados_abertos.ind_disponibilidade_geracao_sin`, `br_ons_dados_abertos.ind_providencia_ecpa_pcpa`, `br_ons_dados_abertos.ind_qualid_dfd_evento`, `br_ons_dados_abertos.ind_qualid_dfd_meano`, `br_ons_dados_abertos.ind_qualid_dfp_regime`, `br_ons_dados_abertos.intercambio_internacional_ho`, `br_ons_dados_abertos.intercambio_modalidade_ho`, `br_ons_dados_abertos.intercambio_nacional_ho`, `br_ons_dados_abertos.interrupcao_carga`, `br_ons_dados_abertos.linha_transmissao`, `br_ons_dados_abertos.modalidade_usina`, `br_ons_dados_abertos.oferta_respostademanda`, `br_ons_dados_abertos.ofertapreco_importacao_se`, `br_ons_dados_abertos.precipitacao_estacao_di`, `br_ons_dados_abertos.programacao_diaria`, `br_ons_dados_abertos.programacao_fluxo_controlado`, `br_ons_dados_abertos.programacao_x_previsao`, `br_ons_dados_abertos.res_volumeespera`, `br_ons_dados_abertos.reservatorio`, `br_ons_dados_abertos.restricao_coff_eolica_detail_tm`, `br_ons_dados_abertos.restricao_coff_eolica_intrasemihora`, `br_ons_dados_abertos.restricao_coff_eolica_tm`, `br_ons_dados_abertos.restricao_coff_fotovoltaica_detail_tm`, `br_ons_dados_abertos.restricao_coff_fotovoltaica_intrasemihora`, `br_ons_dados_abertos.restricao_coff_fotovoltaica_tm`, `br_ons_dados_abertos.subestacao`, `br_ons_dados_abertos.taxa_teif_teip`, `br_ons_dados_abertos.taxa_teif_teip_oper`, `br_ons_dados_abertos.taxa_teif_teip_parametro`, `br_ons_dados_abertos.uge_opera_csi`, `br_ons_dados_abertos.usi_servicoancilar_sandbox`, `br_ons_dados_abertos.usina_conjunto`, `br_ons_dados_abertos.usina_pqu`, `br_rf_cafir.dicionario`, `br_rf_cno.dicionario`, `br_rf_cno.vinculos`, `br_rf_cno.vinculos_historico`, `br_saude_farmaciapopular.pessoas_atendidas_catalogo`, `br_seeg_emissoes.dicionario`, `br_senado_dados_abertos.bloco`, `br_senado_dados_abertos.lideranca`, `br_senado_dados_abertos.mesa`, `br_senado_dados_abertos.senador_cargo`, `br_senado_dados_abertos.senador_comissao`, `br_senado_dados_abertos_administrativos.ata_acionamento`, `br_senado_dados_abertos_administrativos.contratacao_documento_fiscal`, `br_senado_dados_abertos_administrativos.contratacao_garantia`, `br_senado_dados_abertos_administrativos.contratacao_item`, `br_senado_dados_abertos_administrativos.contratacao_orgao_gestor`, `br_senado_dados_abertos_administrativos.contratacao_pagamento`, `br_senado_dados_abertos_administrativos.contratacao_pagamento_empenho`, `br_senado_dados_abertos_administrativos.contrato_aditivo`, `br_senado_dados_abertos_administrativos.dicionario`, `br_senado_dados_abertos_administrativos.diretor_coordenador`, `br_senado_dados_abertos_administrativos.estagiario`, `br_senado_dados_abertos_administrativos.licitacao`, `br_senado_dados_abertos_administrativos.licitacao_detalhamento`, `br_senado_dados_abertos_administrativos.senador_aposentado_pensionista`, `br_senado_dados_abertos_administrativos.senador_auxilio_moradia`, `br_senado_dados_abertos_administrativos.senador_escritorio_apoio`, `br_senado_dados_abertos_administrativos.senador_gabinete`, `br_senado_dados_abertos_administrativos.servidor_exonerado`, `br_senado_dadosabertos.materias`, `br_senado_dadosabertos.senadores`, `br_sfb_sicar.dicionario`, `br_siop_orcamento.alteracoes_orcamentarias`, `br_siop_orcamento.dados`, `br_siop_orcamento.planos_orcamentarios`, `br_sp_alesp.funcionarios_lotacoes`, `br_stf_corte_aberta.dicionario`, `br_stj_dadosabertos.documentos`, `br_susep_dados_abertos.empresas_mercado`, `br_tce_pi.despesas_total`, `br_tce_pi.licitacoes_estado`, `br_tce_pi.receitas_total`, `br_tce_to.pautas`, `br_tesouro_cauc.legenda_itens`, `br_transferegov_siconv.app_parceriasgov_necessidades_aprovadas`, `br_transferegov_siconv.siconv_acomp_obras_valores_itens_medicao`, `br_transferegov_siconv.siconv_contrato`, `br_transferegov_siconv.siconv_contrato_cipi`, `br_transferegov_siconv.siconv_coordenadas_obra`, `br_transferegov_siconv.siconv_dados_obrasgov_geral`, `br_transferegov_siconv.siconv_desbloqueio_cr`, `br_transferegov_siconv.siconv_dl`, `br_transferegov_siconv.siconv_emenda`, `br_transferegov_siconv.siconv_empenho`, `br_transferegov_siconv.siconv_empenho_cipi`, `br_transferegov_siconv.siconv_empenho_desembolso`, `br_transferegov_siconv.siconv_historico_projeto_basico`, `br_transferegov_siconv.siconv_historico_situacao`, `br_transferegov_siconv.siconv_ingresso_contrapartida`, `br_transferegov_siconv.siconv_inst_cont_contratos_lotes_empresas`, `br_transferegov_siconv.siconv_inst_cont_metas_submetas_po`, `br_transferegov_siconv.siconv_inst_cont_proposta_aio`, `br_transferegov_siconv.siconv_itens_dl`, `br_transferegov_siconv.siconv_itens_licitacao`, `br_transferegov_siconv.siconv_justificativas_proposta`, `br_transferegov_siconv.siconv_licitacao`, `br_transferegov_siconv.siconv_obtv_convenente`, `br_transferegov_siconv.siconv_pagamento`, `br_transferegov_siconv.siconv_pagamento_tributo`, `br_transferegov_siconv.siconv_pergunta_selecao_pac`, `br_transferegov_siconv.siconv_programa_proponentes`, `br_transferegov_siconv.siconv_programa_proposta`, `br_transferegov_siconv.siconv_projeto_basico_acffo`, `br_transferegov_siconv.siconv_projeto_basico_lae`, `br_transferegov_siconv.siconv_projeto_basico_metas`, `br_transferegov_siconv.siconv_projeto_basico_proposta`, `br_transferegov_siconv.siconv_projeto_basico_submetas`, `br_transferegov_siconv.siconv_proposta_formalizacao_pac`, `br_transferegov_siconv.siconv_proposta_selecao_pac`, `br_transferegov_siconv.siconv_prorroga_oficio`, `br_transferegov_siconv.siconv_resposta_selecao_pac`, `br_transferegov_siconv.siconv_resumo_fisico_financeiro`, `br_transferegov_siconv.siconv_solicitacao_ajuste_pt`, `br_transferegov_siconv.siconv_solicitacao_alteracao`, `br_transferegov_siconv.siconv_solicitacao_rendimento_aplicacao`, `br_transferegov_siconv.siconv_termo_aditivo`, `br_transferegov_siconv.siconv_vrpl_lotes_fornecedores_licitacao`, `br_transferegov_siconv.siconv_vrpl_metas_submetas`, `br_transferegov_siconv.siconv_vrpl_proposta_licitacao`, `br_tse_eleicoes.carga_2026`, `br_tse_eleicoes.dicionario`, `br_ufmg_censo_demografico_1872.dicionario`, `eu_sanctions.sanctions`, `global_ibge_tabua_mares.estacoes`, `global_ibge_tabua_mares.previsao`, `global_icij_offshoreleaks.addresses`, `global_icij_offshoreleaks.entities`, `global_icij_offshoreleaks.intermediaries`, `global_icij_offshoreleaks.officers`, `global_icij_offshoreleaks.other`, `global_icij_offshoreleaks.relationships`, `global_ofac_sanctions.sanctions`, `global_opensanctions.entities`, `mundo_transfermarkt_competicoes_internacionais.champions_league`, `un_sanctions.sanctions`, `us_harvard_ned.parliamentary_elections`, `us_harvard_ned.presidential_elections`, `world_ampas_oscar.winner_demographics`, `world_iea_pirls.dictionary`, `world_iea_pirls.home_context`, `world_iea_pirls.school_context`, `world_iea_pirls.student_achievement`, `world_iea_pirls.student_context`, `world_iea_pirls.student_teacher_link`, `world_iea_pirls.teacher_context`, `world_iea_pirls.within_country_scoring_reliability`, `world_iea_timss.dictionary`, `world_iea_timss.home_context_grade_4`, `world_iea_timss.school_context_grade_4`, `world_iea_timss.school_context_grade_8`, `world_iea_timss.student_achievement_grade_4`, `world_iea_timss.student_achievement_grade_8`, `world_iea_timss.student_context_grade_4`, `world_iea_timss.student_context_grade_8`, `world_iea_timss.teacher_context_grade_4`, `world_iea_timss.teacher_mathematics_grade_8`, `world_iea_timss.teacher_science_grade_8`, `world_imdb_movies.top_movies_per_year`, `world_olympedia_olympics.athlete_event_result`, `world_olympedia_olympics.country`, `world_olympedia_olympics.result`, `world_wb_mides.dicionario`, `world_wwf_hydrosheds.basins_atlas`, `world_wwf_hydrosheds.rivers_atlas`

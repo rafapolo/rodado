@@ -8,10 +8,10 @@
       "source": "docs/context/column_codes.yaml"
     },
     "counts_by_label": {
-      "documentado_em_outro_lugar": 10733,
-      "nao_e_codigo": 32716,
-      "nao_verificado": 14904,
-      "padrao_externo": 2168
+      "documentado_em_outro_lugar": 10738,
+      "nao_e_codigo": 32761,
+      "nao_verificado": 15053,
+      "padrao_externo": 2217
     },
     "generated_by": "scripts/gera_schema_dict_status.py",
     "llm_triage": {
@@ -43,7 +43,7 @@
     },
     "plan": "tasks/done/generate-full-schema-dict.md",
     "scope": "colunas STRING/INTEGER fora de dicionario_coverage.json — FLOAT/BOOLEAN não entram (contínuo/autoexplicativo)",
-    "total_columns_labeled": 60521
+    "total_columns_labeled": 60769
   },
   "columns": {
     "br_abrinq_oca.municipio_primeira_infancia.ano": {
@@ -4782,8 +4782,8 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_b3_cotacoes.cotacoes.ticker": {
-      "label": "nao_e_codigo",
-      "reason": "cardinalidade medida ~867104 valores distintos (> 100) — não parece código"
+      "label": "padrao_externo",
+      "reason": "bridges.yaml concepts.ticker -> br_cvm_cia_aberta.fca_valor_mobiliario"
     },
     "br_b3_cotacoes.cotacoes.tipo_mercado": {
       "label": "nao_verificado",
@@ -12405,7 +12405,7 @@
     },
     "br_cgu_garantia_safra.garantia_safra.codigo_municipio_siafi": {
       "label": "padrao_externo",
-      "reason": "bridges.yaml concepts.codigo_municipio_siafi -> — none in the mirror"
+      "reason": "bridges.yaml concepts.codigo_municipio_siafi -> br_bd_diretorios_brasil.municipio.id_municipio_rf"
     },
     "br_cgu_garantia_safra.garantia_safra.mes_referencia": {
       "label": "nao_verificado",
@@ -12429,7 +12429,7 @@
     },
     "br_cgu_garantia_safra.pagamento.codigo_municipio_siafi": {
       "label": "padrao_externo",
-      "reason": "bridges.yaml concepts.codigo_municipio_siafi -> — none in the mirror"
+      "reason": "bridges.yaml concepts.codigo_municipio_siafi -> br_bd_diretorios_brasil.municipio.id_municipio_rf"
     },
     "br_cgu_garantia_safra.pagamento.favorecido_id": {
       "label": "nao_e_codigo",
@@ -12457,7 +12457,7 @@
     },
     "br_cgu_gas_do_povo.gas_do_povo.codigo_municipio_siafi": {
       "label": "padrao_externo",
-      "reason": "bridges.yaml concepts.codigo_municipio_siafi -> — none in the mirror"
+      "reason": "bridges.yaml concepts.codigo_municipio_siafi -> br_bd_diretorios_brasil.municipio.id_municipio_rf"
     },
     "br_cgu_gas_do_povo.gas_do_povo.cpf_beneficiario": {
       "label": "nao_e_codigo",
@@ -12957,7 +12957,7 @@
     },
     "br_cgu_novo_bolsa_familia.novo_bolsa_familia.codigo_municipio_siafi": {
       "label": "padrao_externo",
-      "reason": "bridges.yaml concepts.codigo_municipio_siafi -> — none in the mirror"
+      "reason": "bridges.yaml concepts.codigo_municipio_siafi -> br_bd_diretorios_brasil.municipio.id_municipio_rf"
     },
     "br_cgu_novo_bolsa_familia.novo_bolsa_familia.cpf_favorecido": {
       "label": "nao_e_codigo",
@@ -12993,7 +12993,7 @@
     },
     "br_cgu_novo_bolsa_familia.pagamento.codigo_municipio_siafi": {
       "label": "padrao_externo",
-      "reason": "bridges.yaml concepts.codigo_municipio_siafi -> — none in the mirror"
+      "reason": "bridges.yaml concepts.codigo_municipio_siafi -> br_bd_diretorios_brasil.municipio.id_municipio_rf"
     },
     "br_cgu_novo_bolsa_familia.pagamento.favorecido_id": {
       "label": "documentado_em_outro_lugar",
@@ -13125,7 +13125,7 @@
     },
     "br_cgu_pe_de_meia.pagamento.codigo_municipio_siafi": {
       "label": "padrao_externo",
-      "reason": "bridges.yaml concepts.codigo_municipio_siafi -> — none in the mirror"
+      "reason": "bridges.yaml concepts.codigo_municipio_siafi -> br_bd_diretorios_brasil.municipio.id_municipio_rf"
     },
     "br_cgu_pe_de_meia.pagamento.codigo_tipo_incentivo": {
       "label": "nao_verificado",
@@ -13169,7 +13169,7 @@
     },
     "br_cgu_pe_de_meia.pe_de_meia.codigo_municipio_siafi": {
       "label": "padrao_externo",
-      "reason": "bridges.yaml concepts.codigo_municipio_siafi -> — none in the mirror"
+      "reason": "bridges.yaml concepts.codigo_municipio_siafi -> br_bd_diretorios_brasil.municipio.id_municipio_rf"
     },
     "br_cgu_pe_de_meia.pe_de_meia.codigo_tipo_incentivo": {
       "label": "nao_verificado",
@@ -13626,7 +13626,7 @@
     },
     "br_cgu_seguro_defeso.pagamento.codigo_municipio_siafi": {
       "label": "padrao_externo",
-      "reason": "bridges.yaml concepts.codigo_municipio_siafi -> — none in the mirror"
+      "reason": "bridges.yaml concepts.codigo_municipio_siafi -> br_bd_diretorios_brasil.municipio.id_municipio_rf"
     },
     "br_cgu_seguro_defeso.pagamento.favorecido_id": {
       "label": "nao_e_codigo",
@@ -13646,7 +13646,7 @@
     },
     "br_cgu_seguro_defeso.seguro_defeso.codigo_municipio_siafi": {
       "label": "padrao_externo",
-      "reason": "bridges.yaml concepts.codigo_municipio_siafi -> — none in the mirror"
+      "reason": "bridges.yaml concepts.codigo_municipio_siafi -> br_bd_diretorios_brasil.municipio.id_municipio_rf"
     },
     "br_cgu_seguro_defeso.seguro_defeso.cpf_favorecido": {
       "label": "nao_e_codigo",
@@ -14263,7 +14263,7 @@
     },
     "br_cgu_transferencias.transferencias.codigo_municipio_siafi": {
       "label": "padrao_externo",
-      "reason": "bridges.yaml concepts.codigo_municipio_siafi -> — none in the mirror"
+      "reason": "bridges.yaml concepts.codigo_municipio_siafi -> br_bd_diretorios_brasil.municipio.id_municipio_rf"
     },
     "br_cgu_transferencias.transferencias.codigo_orgao_siafi": {
       "label": "nao_e_codigo",
@@ -23568,6 +23568,66 @@
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
     },
     "br_fnde_fundeb.indicador_municipal.sigla_uf": {
+      "label": "padrao_externo",
+      "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
+    },
+    "br_fnde_pnae.alunos_atendidos.alunos_atendidos": {
+      "label": "documentado_em_outro_lugar",
+      "reason": "nome da coluna aparece no provenance_notes do dataset (conferir antes de confiar — best-effort)"
+    },
+    "br_fnde_pnae.alunos_atendidos.ano": {
+      "label": "nao_e_codigo",
+      "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
+    },
+    "br_fnde_pnae.alunos_atendidos.esfera": {
+      "label": "documentado_em_outro_lugar",
+      "reason": "nome da coluna aparece no provenance_notes do dataset (conferir antes de confiar — best-effort)"
+    },
+    "br_fnde_pnae.alunos_atendidos.etapa_ensino": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~9 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_fnde_pnae.alunos_atendidos.id_municipio": {
+      "label": "padrao_externo",
+      "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
+    },
+    "br_fnde_pnae.alunos_atendidos.id_registro": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~763800 valores distintos (> 100) — não parece código"
+    },
+    "br_fnde_pnae.alunos_atendidos.nome_municipio_origem": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~5214 valores distintos (> 100) — não parece código"
+    },
+    "br_fnde_pnae.alunos_atendidos.regiao": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_fnde_pnae.alunos_atendidos.sigla_uf": {
+      "label": "padrao_externo",
+      "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
+    },
+    "br_fnde_pnate.alunos_atendidos.alunos_atendidos": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~1940 valores distintos (> 100) — não parece código"
+    },
+    "br_fnde_pnate.alunos_atendidos.cnpj": {
+      "label": "nao_e_codigo",
+      "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
+    },
+    "br_fnde_pnate.alunos_atendidos.entidade_executora": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~5280 valores distintos (> 100) — não parece código"
+    },
+    "br_fnde_pnate.alunos_atendidos.id_municipio": {
+      "label": "padrao_externo",
+      "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
+    },
+    "br_fnde_pnate.alunos_atendidos.nome_municipio_origem": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~5187 valores distintos (> 100) — não parece código"
+    },
+    "br_fnde_pnate.alunos_atendidos.sigla_uf": {
       "label": "padrao_externo",
       "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
     },
@@ -187406,6 +187466,90 @@
       "label": "nao_e_codigo",
       "reason": "cardinalidade medida ~53124 valores distintos (> 100) — não parece código"
     },
+    "br_mcid_mcmv.empreendimentos_subsidiados.agente_financeiro": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~27 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_mcid_mcmv.empreendimentos_subsidiados.cep": {
+      "label": "nao_e_codigo",
+      "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
+    },
+    "br_mcid_mcmv.empreendimentos_subsidiados.cnpj_construtora_entidade": {
+      "label": "nao_e_codigo",
+      "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
+    },
+    "br_mcid_mcmv.empreendimentos_subsidiados.empreendimento": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~21599 valores distintos (> 100) — não parece código"
+    },
+    "br_mcid_mcmv.empreendimentos_subsidiados.endereco": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~3200 valores distintos (> 100) — não parece código"
+    },
+    "br_mcid_mcmv.empreendimentos_subsidiados.id_municipio": {
+      "label": "padrao_externo",
+      "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
+    },
+    "br_mcid_mcmv.empreendimentos_subsidiados.id_operacao": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~12699 valores distintos (> 100) — não parece código"
+    },
+    "br_mcid_mcmv.empreendimentos_subsidiados.modalidade": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_mcid_mcmv.empreendimentos_subsidiados.nome_construtora_entidade": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~3572 valores distintos (> 100) — não parece código"
+    },
+    "br_mcid_mcmv.empreendimentos_subsidiados.sigla_uf": {
+      "label": "padrao_externo",
+      "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
+    },
+    "br_mcid_mcmv.empreendimentos_subsidiados.situacao": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_mcid_mcmv.empreendimentos_subsidiados.uh": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~867 valores distintos (> 100) — não parece código"
+    },
+    "br_mcid_mcmv.empreendimentos_subsidiados.uh_distratadas": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~117 valores distintos (> 100) — não parece código"
+    },
+    "br_mcid_mcmv.empreendimentos_subsidiados.uh_entregues": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~813 valores distintos (> 100) — não parece código"
+    },
+    "br_mcid_mcmv.empreendimentos_subsidiados.uh_vigentes": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~283 valores distintos (> 100) — não parece código"
+    },
+    "br_mcid_mcmv.financiamento_fgts.ano": {
+      "label": "nao_e_codigo",
+      "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
+    },
+    "br_mcid_mcmv.financiamento_fgts.faixa_renda": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_mcid_mcmv.financiamento_fgts.id_municipio": {
+      "label": "padrao_externo",
+      "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
+    },
+    "br_mcid_mcmv.financiamento_fgts.mes": {
+      "label": "nao_e_codigo",
+      "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
+    },
+    "br_mcid_mcmv.financiamento_fgts.sigla_uf": {
+      "label": "padrao_externo",
+      "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
+    },
+    "br_mcid_mcmv.financiamento_fgts.uh_financiadas": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~844 valores distintos (> 100) — não parece código"
+    },
     "br_mdr_snis.municipio_agua_esgoto.ano": {
       "label": "nao_e_codigo",
       "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
@@ -212433,6 +212577,30 @@
       "label": "nao_e_codigo",
       "reason": "LLM: nome da coluna é a pergunta literal do formulário oficial SISDEPEN (levantamento penitenciário do MJSP/Senappen), convertida em slug numerado por seção — o texto já é a explicação. Confirmado por amostra de ~80 das 3.233 colunas, lidas à mão."
     },
+    "br_mma_bolsa_verde.pagamentos.ano_mes": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~33 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_mma_bolsa_verde.pagamentos.arquivo_origem": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_mma_bolsa_verde.pagamentos.codigo_area": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~480 valores distintos (> 100) — não parece código"
+    },
+    "br_mma_bolsa_verde.pagamentos.cpf_mascarado": {
+      "label": "nao_e_codigo",
+      "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
+    },
+    "br_mma_bolsa_verde.pagamentos.nome": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~101406 valores distintos (> 100) — não parece código"
+    },
+    "br_mma_bolsa_verde.pagamentos.nome_area": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~507 valores distintos (> 100) — não parece código"
+    },
     "br_mma_cnuc.unidades_conservacao.alem_da_linha_de_costa": {
       "label": "nao_e_codigo",
       "reason": "cardinalidade medida ~872 valores distintos (> 100) — não parece código"
@@ -212700,6 +212868,58 @@
     "br_mme_consumo_energia_eletrica.uf.tipo_consumo": {
       "label": "nao_verificado",
       "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_mme_luz_para_todos.domicilios_atendidos.ano": {
+      "label": "nao_e_codigo",
+      "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
+    },
+    "br_mme_luz_para_todos.domicilios_atendidos.domicilios": {
+      "label": "documentado_em_outro_lugar",
+      "reason": "nome da coluna aparece no provenance_notes do dataset (conferir antes de confiar — best-effort)"
+    },
+    "br_mme_luz_para_todos.domicilios_atendidos.id_municipio": {
+      "label": "padrao_externo",
+      "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
+    },
+    "br_mme_luz_para_todos.domicilios_atendidos.mes": {
+      "label": "nao_e_codigo",
+      "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
+    },
+    "br_mme_luz_para_todos.domicilios_atendidos.nome_municipio_origem": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~6353 valores distintos (> 100) — não parece código"
+    },
+    "br_mme_luz_para_todos.domicilios_atendidos.programa": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_mme_luz_para_todos.domicilios_atendidos.sigla_uf": {
+      "label": "padrao_externo",
+      "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
+    },
+    "br_mme_luz_para_todos.recursos_aplicados.anopi": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~23 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_mme_luz_para_todos.recursos_aplicados.anoup": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~23 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_mme_luz_para_todos.recursos_aplicados.contrato": {
+      "label": "documentado_em_outro_lugar",
+      "reason": "nome da coluna aparece no provenance_notes do dataset (conferir antes de confiar — best-effort)"
+    },
+    "br_mme_luz_para_todos.recursos_aplicados.mespi": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~13 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_mme_luz_para_todos.recursos_aplicados.mesup": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~13 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_mme_luz_para_todos.recursos_aplicados.sigla_uf": {
+      "label": "padrao_externo",
+      "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
     },
     "br_mobilidados_indicadores.comprometimento_renda_tarifa_transp_publico.ano": {
       "label": "nao_e_codigo",
@@ -214978,6 +215198,438 @@
     "br_ms_imunizacoes.municipio.sigla_uf": {
       "label": "padrao_externo",
       "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
+    },
+    "br_ms_mais_medicos.consolidado.amazonia_legal": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.ampliacao_eapp": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.ampliacao_ecr": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~7 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.ativas_coparticipacao": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~47 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.ativas_ff": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~67 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.ativos_amarela": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~36 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.ativos_bolsistas": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.ativos_branca": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~52 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.ativos_celetista_mfc": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~20 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.ativos_crm_pmm": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~55 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.ativos_eapp": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.ativos_ecr": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.ativos_emsi": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~26 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.ativos_esf": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~78 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.ativos_fem": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~53 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.ativos_indigena": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.ativos_intercambista_pmm": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~47 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.ativos_masc": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~45 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.ativos_preta_parda": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~31 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.ativos_sem_inf_rc": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~11 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.ativos_sem_inf_sx": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.ativos_tutores": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~11 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.categoria_ivs": {
+      "label": "padrao_externo",
+      "reason": "nível CID-10 — hierarchies.yaml cid10"
+    },
+    "br_ms_mais_medicos.consolidado.cir": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~453 valores distintos (> 100) — não parece código"
+    },
+    "br_ms_mais_medicos.consolidado.cobertura": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~147 valores distintos (> 100) — não parece código"
+    },
+    "br_ms_mais_medicos.consolidado.codigo_ibge_origem": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~6667 valores distintos (> 100) — não parece código"
+    },
+    "br_ms_mais_medicos.consolidado.em_processo_ocupacao": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~13 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.equipe_emsi": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~21 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.equipe_esf": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~84 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.faixa_fronteira": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.id_20_24": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.id_25_29": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~27 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.id_30_34": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~35 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.id_35_39": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~34 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.id_40_44": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~26 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.id_45_49": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~22 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.id_50_54": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~18 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.id_55_59": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~10 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.id_60_64": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~9 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.id_65_69": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.id_70_74": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.id_75_79": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.id_80_mais": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.id_municipio": {
+      "label": "padrao_externo",
+      "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
+    },
+    "br_ms_mais_medicos.consolidado.municipio_dsei": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~5429 valores distintos (> 100) — não parece código"
+    },
+    "br_ms_mais_medicos.consolidado.nac_boliviano": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.nac_brasileiro": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.nac_cubano": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.nac_outros": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~81 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.nac_venezuelano": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.nivel": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.regiao": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.consolidado.total_desocupadas": {
+      "label": "nao_e_codigo",
+      "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
+    },
+    "br_ms_mais_medicos.consolidado.total_ocupadas": {
+      "label": "nao_e_codigo",
+      "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
+    },
+    "br_ms_mais_medicos.consolidado.total_vagas_ativas": {
+      "label": "nao_e_codigo",
+      "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
+    },
+    "br_ms_mais_medicos.consolidado.uf": {
+      "label": "padrao_externo",
+      "reason": "bridges.yaml concept_aliases.br_incra_acervo.assentamentos -> concept sigla_uf"
+    },
+    "br_ms_mais_medicos.especialistas_consolidado.amazonia_legal": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.especialistas_consolidado.categoria_ivs": {
+      "label": "padrao_externo",
+      "reason": "nível CID-10 — hierarchies.yaml cid10"
+    },
+    "br_ms_mais_medicos.especialistas_consolidado.curso": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~26 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.especialistas_consolidado.estabelecimento": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~640 valores distintos (> 100) — não parece código"
+    },
+    "br_ms_mais_medicos.especialistas_consolidado.faixa_atracao": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.especialistas_consolidado.id_estabelecimento_cnes": {
+      "label": "padrao_externo",
+      "reason": "bridges.yaml concepts.id_estabelecimento_cnes -> br_ms_cnes.estabelecimento"
+    },
+    "br_ms_mais_medicos.especialistas_consolidado.id_municipio": {
+      "label": "padrao_externo",
+      "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
+    },
+    "br_ms_mais_medicos.especialistas_consolidado.municipio": {
+      "label": "padrao_externo",
+      "reason": "bridges.yaml concepts.municipio -> br_bd_diretorios_brasil.municipio.nome"
+    },
+    "br_ms_mais_medicos.especialistas_consolidado.nivel_vaga": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.especialistas_consolidado.qtd_ativos": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~9 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.especialistas_consolidado.qtd_ciclo_1": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.especialistas_consolidado.qtd_ciclo_2": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~9 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.especialistas_consolidado.qtd_ciclo_3": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~0 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.especialistas_consolidado.qtd_feminino": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~7 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.especialistas_consolidado.qtd_masculino": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~7 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.especialistas_consolidado.qtd_sexo_n_informado": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.especialistas_consolidado.regiao_saude": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~231 valores distintos (> 100) — não parece código"
+    },
+    "br_ms_mais_medicos.especialistas_consolidado.tipo_municipio": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.especialistas_consolidado.tipo_pratica": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.especialistas_consolidado.uf": {
+      "label": "padrao_externo",
+      "reason": "bridges.yaml concept_aliases.br_incra_acervo.assentamentos -> concept sigla_uf"
+    },
+    "br_ms_mais_medicos.especialistas_serie_historica.amazonia_legal": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.especialistas_serie_historica.competencia": {
+      "label": "nao_e_codigo",
+      "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
+    },
+    "br_ms_mais_medicos.especialistas_serie_historica.curso": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~55 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.especialistas_serie_historica.estabelecimento": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~916 valores distintos (> 100) — não parece código"
+    },
+    "br_ms_mais_medicos.especialistas_serie_historica.faixa_atracao": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.especialistas_serie_historica.id_estabelecimento_cnes": {
+      "label": "padrao_externo",
+      "reason": "bridges.yaml concepts.id_estabelecimento_cnes -> br_ms_cnes.estabelecimento"
+    },
+    "br_ms_mais_medicos.especialistas_serie_historica.id_municipio": {
+      "label": "padrao_externo",
+      "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
+    },
+    "br_ms_mais_medicos.especialistas_serie_historica.ivs": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~21 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.especialistas_serie_historica.municipio": {
+      "label": "padrao_externo",
+      "reason": "bridges.yaml concepts.municipio -> br_bd_diretorios_brasil.municipio.nome"
+    },
+    "br_ms_mais_medicos.especialistas_serie_historica.nivel_vaga": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.especialistas_serie_historica.qtd_ativos": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~17 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.especialistas_serie_historica.qtd_feminino": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~10 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.especialistas_serie_historica.qtd_masculino": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~10 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.especialistas_serie_historica.qtd_sexo_nao_informado": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.especialistas_serie_historica.regiao": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.especialistas_serie_historica.regiao_saude": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~376 valores distintos (> 100) — não parece código"
+    },
+    "br_ms_mais_medicos.especialistas_serie_historica.tipo_estabelecimento": {
+      "label": "documentado_em_outro_lugar",
+      "reason": "bridges.yaml coded_differently.tipo_estabelecimento: mesmo conceito, código difere e o SIGNIFICADO muda de fonte — br_me_rais/br_me_caged usam isso pra tipo de vínculo jurídico do estabelecimento (CNPJ/CEI/CAEPF/CNO), br_ibge_censo_2022 usa pra contagem de estabelecimentos no mesmo endereço (único/múltiplo) — não é só código diferente, é conceito diferente por trás do mesmo nome."
+    },
+    "br_ms_mais_medicos.especialistas_serie_historica.tipo_municipio": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.especialistas_serie_historica.uf": {
+      "label": "padrao_externo",
+      "reason": "bridges.yaml concept_aliases.br_incra_acervo.assentamentos -> concept sigla_uf"
+    },
+    "br_ms_mais_medicos.serie_historica.codigo_ibge_origem": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~6667 valores distintos (> 100) — não parece código"
+    },
+    "br_ms_mais_medicos.serie_historica.id_municipio": {
+      "label": "padrao_externo",
+      "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
+    },
+    "br_ms_mais_medicos.serie_historica.municipio_dsei": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~5429 valores distintos (> 100) — não parece código"
+    },
+    "br_ms_mais_medicos.serie_historica.prof_bolsista_vinculados": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~73 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.serie_historica.prof_celetista_vinculados": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~29 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.serie_historica.prof_cooperados_pmmb": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~135 valores distintos (> 100) — não parece código"
+    },
+    "br_ms_mais_medicos.serie_historica.prof_crm_brasil_pmmb": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~181 valores distintos (> 100) — não parece código"
+    },
+    "br_ms_mais_medicos.serie_historica.prof_inter_pmmb": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~205 valores distintos (> 100) — não parece código"
+    },
+    "br_ms_mais_medicos.serie_historica.prof_provab": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~54 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.serie_historica.prof_tutor_vinculados": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~18 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.serie_historica.regiao": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_mais_medicos.serie_historica.total_prof_ativos": {
+      "label": "nao_e_codigo",
+      "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
+    },
+    "br_ms_mais_medicos.serie_historica.uf": {
+      "label": "padrao_externo",
+      "reason": "bridges.yaml concept_aliases.br_incra_acervo.assentamentos -> concept sigla_uf"
     },
     "br_ms_pns.dicionario.chave": {
       "label": "nao_verificado",
@@ -219211,6 +219863,270 @@
     "br_ms_populacao.municipio.sexo": {
       "label": "documentado_em_outro_lugar",
       "reason": "bridges.yaml coded_differently.sexo: mesmo conceito, código numérico difere por fonte e por ano — RAIS usa 1=masculino/2=feminino/9=ignorado; CAGED usa 1=masculino/3=feminino (tabela recente) mas 01/02 (tabela antiga); ENEM já usou 0=masculino/ 1=feminino numérico E, em outros anos, letras M/F. Sempre decodificar via `{dataset}.dicionario WHERE nome_coluna='sexo'` daquela tabela específica antes de filtrar — nunca reusar o código de outra tabela. Só na saúde, em 2022 — br_ms_sih grava por extenso ('Feminino'/'Masculino'), br_ms_sim e br_ms_sinasc usam 1/2 (0 = ignorado), br_ms_sia, br_ms_sinan e br_ms_sisvan usam F/M; em br_ms_sinan.microdados_influenza_srag o campo é nulo em todas as linhas (medido 2026-10-05)."
+    },
+    "br_ms_pro_residencia.indicadores_uf.ano": {
+      "label": "nao_e_codigo",
+      "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
+    },
+    "br_ms_pro_residencia.indicadores_uf.descricao": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~11 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.indicadores_uf.indicador": {
+      "label": "documentado_em_outro_lugar",
+      "reason": "nome da coluna aparece no provenance_notes do dataset (conferir antes de confiar — best-effort)"
+    },
+    "br_ms_pro_residencia.indicadores_uf.modalidade": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.indicadores_uf.sigla_uf": {
+      "label": "padrao_externo",
+      "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
+    },
+    "br_ms_pro_residencia.residencia_area_profissional.ano_referencia": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_area_profissional.bolsas_fin_biolog": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~9 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_area_profissional.bolsas_fin_biomed": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_area_profissional.bolsas_fin_educ_fis": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~11 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_area_profissional.bolsas_fin_enferm": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~36 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_area_profissional.bolsas_fin_farmac": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~20 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_area_profissional.bolsas_fin_fis_med": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~10 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_area_profissional.bolsas_fin_fisio": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~25 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_area_profissional.bolsas_fin_fono": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~11 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_area_profissional.bolsas_fin_med_vet": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~26 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_area_profissional.bolsas_fin_nutric": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~20 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_area_profissional.bolsas_fin_odonto": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~25 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_area_profissional.bolsas_fin_psicol": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~21 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_area_profissional.bolsas_fin_rac_cor_amar": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_area_profissional.bolsas_fin_rac_cor_bran": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~45 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_area_profissional.bolsas_fin_rac_cor_indig": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_area_profissional.bolsas_fin_rac_cor_par": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~37 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_area_profissional.bolsas_fin_rac_cor_pre": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~21 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_area_profissional.bolsas_fin_rac_cor_sem_inf": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_area_profissional.bolsas_fin_saud_colet": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~14 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_area_profissional.bolsas_fin_serv_soc": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~16 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_area_profissional.bolsas_fin_sexo_fem": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~57 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_area_profissional.bolsas_fin_sexo_masc": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~27 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_area_profissional.bolsas_fin_sexo_sem_inf": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_area_profissional.bolsas_fin_ter_ocp": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~11 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_area_profissional.bolsas_financiadas": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~74 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_area_profissional.co_uf": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~21 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_area_profissional.ds_modalidade_programa": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_area_profissional.duracao": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_area_profissional.egresso": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~32 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_area_profissional.id_municipio": {
+      "label": "padrao_externo",
+      "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
+    },
+    "br_ms_pro_residencia.residencia_area_profissional.ingresso": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~63 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_area_profissional.municipio": {
+      "label": "padrao_externo",
+      "reason": "bridges.yaml concepts.municipio -> br_bd_diretorios_brasil.municipio.nome"
+    },
+    "br_ms_pro_residencia.residencia_area_profissional.no_fantasia": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~327 valores distintos (> 100) — não parece código"
+    },
+    "br_ms_pro_residencia.residencia_area_profissional.no_razao_social": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~261 valores distintos (> 100) — não parece código"
+    },
+    "br_ms_pro_residencia.residencia_area_profissional.nu_cnpj": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~345 valores distintos (> 100) — não parece código"
+    },
+    "br_ms_pro_residencia.residencia_area_profissional.programa": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~151 valores distintos (> 100) — não parece código"
+    },
+    "br_ms_pro_residencia.residencia_area_profissional.sg_uf": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~28 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_medica.ano_referencia": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_medica.bolsas_fin_rac_cor_amar": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~9 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_medica.bolsas_fin_rac_cor_bran": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~45 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_medica.bolsas_fin_rac_cor_indig": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_medica.bolsas_fin_rac_cor_par": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~24 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_medica.bolsas_fin_rac_cor_pre": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~12 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_medica.bolsas_fin_rac_cor_sem_inf": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_medica.bolsas_fin_sexo_fem": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~47 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_medica.bolsas_fin_sexo_masc": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~42 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_medica.bolsas_fin_sexo_sem_inf": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_medica.bolsas_financiadas": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~65 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_medica.co_uf": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~21 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_medica.duracao": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_medica.egresso": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~32 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_medica.id_municipio": {
+      "label": "padrao_externo",
+      "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
+    },
+    "br_ms_pro_residencia.residencia_medica.ingresso": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~60 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_medica.municipio": {
+      "label": "padrao_externo",
+      "reason": "bridges.yaml concepts.municipio -> br_bd_diretorios_brasil.municipio.nome"
+    },
+    "br_ms_pro_residencia.residencia_medica.no_fantasia": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~773 valores distintos (> 100) — não parece código"
+    },
+    "br_ms_pro_residencia.residencia_medica.no_razao_social": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~675 valores distintos (> 100) — não parece código"
+    },
+    "br_ms_pro_residencia.residencia_medica.nu_cnpj": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~1236 valores distintos (> 100) — não parece código"
+    },
+    "br_ms_pro_residencia.residencia_medica.programa": {
+      "label": "nao_e_codigo",
+      "reason": "cardinalidade medida ~177 valores distintos (> 100) — não parece código"
+    },
+    "br_ms_pro_residencia.residencia_medica.sg_uf": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~28 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_ms_pro_residencia.residencia_medica.tipo_programa": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_ms_sia.dicionario.chave": {
       "label": "nao_e_codigo",
@@ -224624,8 +225540,8 @@
       "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_ons_dados_abertos.capacidade_geracao.ceg": {
-      "label": "nao_e_codigo",
-      "reason": "cardinalidade medida ~1881 valores distintos (> 100) — não parece código"
+      "label": "padrao_externo",
+      "reason": "bridges.yaml concepts.ceg -> br_aneel_dadosabertos.siga_empreendimentos_geracao"
     },
     "br_ons_dados_abertos.capacidade_geracao.cod_equipamento": {
       "label": "nao_e_codigo",
@@ -224876,8 +225792,8 @@
       "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_ons_dados_abertos.disponibilidade_usina_ho.ceg": {
-      "label": "nao_e_codigo",
-      "reason": "cardinalidade medida ~281 valores distintos (> 100) — não parece código"
+      "label": "padrao_externo",
+      "reason": "bridges.yaml concepts.ceg -> br_aneel_dadosabertos.siga_empreendimentos_geracao"
     },
     "br_ons_dados_abertos.disponibilidade_usina_ho.id_estado": {
       "label": "nao_verificado",
@@ -225068,8 +225984,8 @@
       "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_ons_dados_abertos.fator_capacidade_2_di.ceg": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~16 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "label": "padrao_externo",
+      "reason": "bridges.yaml concepts.ceg -> br_aneel_dadosabertos.siga_empreendimentos_geracao"
     },
     "br_ons_dados_abertos.fator_capacidade_2_di.cod_pontoconexao": {
       "label": "nao_e_codigo",
@@ -225276,8 +226192,8 @@
       "reason": "cardinalidade medida ~542 valores distintos (> 100) — não parece código"
     },
     "br_ons_dados_abertos.geracao_termica_despacho_2_ho.ceg": {
-      "label": "nao_e_codigo",
-      "reason": "cardinalidade medida ~155 valores distintos (> 100) — não parece código"
+      "label": "padrao_externo",
+      "reason": "bridges.yaml concepts.ceg -> br_aneel_dadosabertos.siga_empreendimentos_geracao"
     },
     "br_ons_dados_abertos.geracao_termica_despacho_2_ho.dsc_tpmotivorestricao": {
       "label": "nao_verificado",
@@ -225304,8 +226220,8 @@
       "reason": "cardinalidade medida ~276 valores distintos (> 100) — não parece código"
     },
     "br_ons_dados_abertos.geracao_usina_2_ho.ceg": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~87.506.438 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "label": "padrao_externo",
+      "reason": "bridges.yaml concepts.ceg -> br_aneel_dadosabertos.siga_empreendimentos_geracao"
     },
     "br_ons_dados_abertos.geracao_usina_2_ho.cod_modalidadeoperacao": {
       "label": "nao_verificado",
@@ -225508,8 +226424,8 @@
       "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_ons_dados_abertos.ind_disponibilidade_fgeracao_uge_an.ceg": {
-      "label": "nao_e_codigo",
-      "reason": "cardinalidade medida ~272 valores distintos (> 100) — não parece código"
+      "label": "padrao_externo",
+      "reason": "bridges.yaml concepts.ceg -> br_aneel_dadosabertos.siga_empreendimentos_geracao"
     },
     "br_ons_dados_abertos.ind_disponibilidade_fgeracao_uge_an.cod_equipamento": {
       "label": "nao_e_codigo",
@@ -225564,8 +226480,8 @@
       "reason": "cardinalidade medida ~103 valores distintos (> 100) — não parece código"
     },
     "br_ons_dados_abertos.ind_disponibilidade_fgeracao_uge_me.ceg": {
-      "label": "nao_e_codigo",
-      "reason": "cardinalidade medida ~272 valores distintos (> 100) — não parece código"
+      "label": "padrao_externo",
+      "reason": "bridges.yaml concepts.ceg -> br_aneel_dadosabertos.siga_empreendimentos_geracao"
     },
     "br_ons_dados_abertos.ind_disponibilidade_fgeracao_uge_me.cod_equipamento": {
       "label": "nao_e_codigo",
@@ -225808,8 +226724,8 @@
       "reason": "cardinalidade medida ~822 valores distintos (> 100) — não parece código"
     },
     "br_ons_dados_abertos.modalidade_usina.ceg": {
-      "label": "nao_e_codigo",
-      "reason": "cardinalidade medida ~5317 valores distintos (> 100) — não parece código"
+      "label": "padrao_externo",
+      "reason": "bridges.yaml concepts.ceg -> br_aneel_dadosabertos.siga_empreendimentos_geracao"
     },
     "br_ons_dados_abertos.modalidade_usina.id_estado": {
       "label": "nao_verificado",
@@ -225992,8 +226908,8 @@
       "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_ons_dados_abertos.reservatorio.ceg": {
-      "label": "nao_e_codigo",
-      "reason": "cardinalidade medida ~160 valores distintos (> 100) — não parece código"
+      "label": "padrao_externo",
+      "reason": "bridges.yaml concepts.ceg -> br_aneel_dadosabertos.siga_empreendimentos_geracao"
     },
     "br_ons_dados_abertos.reservatorio.cod_posto": {
       "label": "nao_e_codigo",
@@ -226044,8 +226960,8 @@
       "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_ons_dados_abertos.restricao_coff_eolica_detail_tm.ceg": {
-      "label": "nao_verificado",
-      "reason": "tabela grande (~81.469.830 linhas) — cardinalidade adiada nesta rodada por custo de scan; sem fonte conhecida pelo nome. Priorizar manualmente (estágio 3 do plano) antes de medir."
+      "label": "padrao_externo",
+      "reason": "bridges.yaml concepts.ceg -> br_aneel_dadosabertos.siga_empreendimentos_geracao"
     },
     "br_ons_dados_abertos.restricao_coff_eolica_detail_tm.flg_dadoventoinvalido": {
       "label": "nao_verificado",
@@ -226140,8 +227056,8 @@
       "reason": "candidato real: ~32 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_ons_dados_abertos.restricao_coff_eolica_tm.ceg": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~12 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "label": "padrao_externo",
+      "reason": "bridges.yaml concepts.ceg -> br_aneel_dadosabertos.siga_empreendimentos_geracao"
     },
     "br_ons_dados_abertos.restricao_coff_eolica_tm.cod_origemrestricao": {
       "label": "nao_verificado",
@@ -226208,8 +227124,8 @@
       "reason": "candidato real: ~45 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_ons_dados_abertos.restricao_coff_fotovoltaica_detail_tm.ceg": {
-      "label": "nao_e_codigo",
-      "reason": "cardinalidade medida ~530 valores distintos (> 100) — não parece código"
+      "label": "padrao_externo",
+      "reason": "bridges.yaml concepts.ceg -> br_aneel_dadosabertos.siga_empreendimentos_geracao"
     },
     "br_ons_dados_abertos.restricao_coff_fotovoltaica_detail_tm.flg_dadoirradianciainvalido": {
       "label": "nao_verificado",
@@ -226304,8 +227220,8 @@
       "reason": "candidato real: ~29 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_ons_dados_abertos.restricao_coff_fotovoltaica_tm.ceg": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~5 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "label": "padrao_externo",
+      "reason": "bridges.yaml concepts.ceg -> br_aneel_dadosabertos.siga_empreendimentos_geracao"
     },
     "br_ons_dados_abertos.restricao_coff_fotovoltaica_tm.cod_origemrestricao": {
       "label": "nao_verificado",
@@ -226504,8 +227420,8 @@
       "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_ons_dados_abertos.usi_servicoancilar_sandbox.ceg": {
-      "label": "nao_verificado",
-      "reason": "candidato real: ~18 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+      "label": "padrao_externo",
+      "reason": "bridges.yaml concepts.ceg -> br_aneel_dadosabertos.siga_empreendimentos_geracao"
     },
     "br_ons_dados_abertos.usi_servicoancilar_sandbox.cod_pontoconexao": {
       "label": "nao_verificado",
@@ -226532,8 +227448,8 @@
       "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_ons_dados_abertos.usina_conjunto.ceg": {
-      "label": "nao_e_codigo",
-      "reason": "cardinalidade medida ~1341 valores distintos (> 100) — não parece código"
+      "label": "padrao_externo",
+      "reason": "bridges.yaml concepts.ceg -> br_aneel_dadosabertos.siga_empreendimentos_geracao"
     },
     "br_ons_dados_abertos.usina_conjunto.estad_id": {
       "label": "nao_verificado",
@@ -226580,8 +227496,8 @@
       "reason": "cardinalidade medida ~1975 valores distintos (> 100) — não parece código"
     },
     "br_ons_dados_abertos.usina_pqu.ceg": {
-      "label": "nao_e_codigo",
-      "reason": "cardinalidade medida ~1125 valores distintos (> 100) — não parece código"
+      "label": "padrao_externo",
+      "reason": "bridges.yaml concepts.ceg -> br_aneel_dadosabertos.siga_empreendimentos_geracao"
     },
     "br_ons_dados_abertos.usina_pqu.estad_id": {
       "label": "nao_verificado",
@@ -229743,8 +230659,8 @@
       "reason": "candidato real: ~0 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_saude_farmaciapopular.estabelecimentos.codigo_tipo_unidade": {
-      "label": "documentado_em_outro_lugar",
-      "reason": "nome da coluna aparece no provenance_notes do dataset (conferir antes de confiar — best-effort)"
+      "label": "nao_verificado",
+      "reason": "candidato real: ~1 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_saude_farmaciapopular.estabelecimentos.codigo_uf": {
       "label": "nao_verificado",
@@ -229833,6 +230749,38 @@
     "br_saude_farmaciapopular.estabelecimentos.tipo_gestao": {
       "label": "nao_verificado",
       "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_saude_farmaciapopular.pessoas_atendidas_catalogo.descricao": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~13 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_saude_farmaciapopular.pessoas_atendidas_catalogo.indicador": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~14 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_saude_farmaciapopular.pessoas_atendidas_catalogo.ultima_modificacao": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~2 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_saude_farmaciapopular.pessoas_atendidas_catalogo.url": {
+      "label": "nao_e_codigo",
+      "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
+    },
+    "br_saude_farmaciapopular.pessoas_atendidas_municipio.ano_mes": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~11 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_saude_farmaciapopular.pessoas_atendidas_municipio.id_municipio": {
+      "label": "padrao_externo",
+      "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
+    },
+    "br_saude_farmaciapopular.pessoas_atendidas_municipio.indicador": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~14 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_saude_farmaciapopular.pessoas_atendidas_municipio.sigla_uf": {
+      "label": "padrao_externo",
+      "reason": "hierarchies.yaml geografia -> br_bd_diretorios_brasil.municipio"
     },
     "br_sedec_desastres.reconhecimentos_vigentes.id_cobrade": {
       "label": "nao_verificado",
@@ -232393,6 +233341,50 @@
     "br_sfb_cnfp.florestas_publicas.uf": {
       "label": "padrao_externo",
       "reason": "bridges.yaml concept_aliases.br_incra_acervo.assentamentos -> concept sigla_uf"
+    },
+    "br_sfb_concessoes.contratos.ano_assinatura": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~11 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_sfb_concessoes.contratos.concessionario": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~12 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_sfb_concessoes.contratos.flona_uf": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~7 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_sfb_concessoes.contratos.floresta_nacional": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~9 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_sfb_concessoes.contratos.nome_area": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~20 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_sfb_concessoes.contratos.uf_nome": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~4 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_sfb_concessoes.contratos.unidade_manejo": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~7 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_sfb_concessoes.producao.ano": {
+      "label": "nao_e_codigo",
+      "reason": "nome autoexplicativo (calendário/medida/identificador) — valor bruto já é a informação"
+    },
+    "br_sfb_concessoes.producao.empregos": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~25 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_sfb_concessoes.producao.flona_uf": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~6 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
+    },
+    "br_sfb_concessoes.producao.uf_nome": {
+      "label": "nao_verificado",
+      "reason": "candidato real: ~3 valores distintos, nome não bate com fonte conhecida — trate como circunstancia_obito até prova em contrário"
     },
     "br_sfb_sicar.app.condicao": {
       "label": "nao_verificado",
@@ -238610,7 +239602,7 @@
     },
     "br_tse_eleicoes.despesas_contratadas_orgao_partidario.descricao_despesa": {
       "label": "nao_e_codigo",
-      "reason": "cardinalidade medida ~311671 valores distintos (> 100) — não parece código"
+      "reason": "cardinalidade medida ~324194 valores distintos (> 100) — não parece código"
     },
     "br_tse_eleicoes.despesas_contratadas_orgao_partidario.esfera_partidaria": {
       "judged_by": "llm",
@@ -238640,7 +239632,7 @@
     },
     "br_tse_eleicoes.despesas_contratadas_orgao_partidario.nome_fornecedor_rf": {
       "label": "nao_e_codigo",
-      "reason": "cardinalidade medida ~367418 valores distintos (> 100) — não parece código"
+      "reason": "cardinalidade medida ~389596 valores distintos (> 100) — não parece código"
     },
     "br_tse_eleicoes.despesas_contratadas_orgao_partidario.nome_partido": {
       "judged_by": "llm",
@@ -238674,7 +239666,7 @@
     },
     "br_tse_eleicoes.despesas_contratadas_orgao_partidario.sequencial_despesa": {
       "label": "nao_e_codigo",
-      "reason": "cardinalidade medida ~963654 valores distintos (> 100) — não parece código"
+      "reason": "cardinalidade medida ~954157 valores distintos (> 100) — não parece código"
     },
     "br_tse_eleicoes.despesas_contratadas_orgao_partidario.sequencial_prestador_contas": {
       "label": "nao_e_codigo",
@@ -238752,11 +239744,11 @@
     },
     "br_tse_eleicoes.despesas_pagas_orgao_partidario.sequencial_despesa": {
       "label": "nao_e_codigo",
-      "reason": "cardinalidade medida ~941401 valores distintos (> 100) — não parece código"
+      "reason": "cardinalidade medida ~932335 valores distintos (> 100) — não parece código"
     },
     "br_tse_eleicoes.despesas_pagas_orgao_partidario.sequencial_parcelamento_despesa": {
       "label": "nao_e_codigo",
-      "reason": "cardinalidade medida ~950066 valores distintos (> 100) — não parece código"
+      "reason": "cardinalidade medida ~1044912 valores distintos (> 100) — não parece código"
     },
     "br_tse_eleicoes.despesas_pagas_orgao_partidario.sequencial_prestador_contas": {
       "label": "nao_e_codigo",
@@ -239739,7 +240731,7 @@
     },
     "br_tse_eleicoes.receitas_candidato_doador_originario.descricao_receita": {
       "label": "nao_e_codigo",
-      "reason": "cardinalidade medida ~286 valores distintos (> 100) — não parece código"
+      "reason": "cardinalidade medida ~299 valores distintos (> 100) — não parece código"
     },
     "br_tse_eleicoes.receitas_candidato_doador_originario.id_eleicao": {
       "judged_by": "llm",
@@ -240183,7 +241175,7 @@
     },
     "br_tse_eleicoes.rede_social_candidato.descricao_eleicao": {
       "label": "nao_e_codigo",
-      "reason": "cardinalidade medida ~126 valores distintos (> 100) — não parece código"
+      "reason": "cardinalidade medida ~136 valores distintos (> 100) — não parece código"
     },
     "br_tse_eleicoes.rede_social_candidato.id_eleicao": {
       "label": "nao_e_codigo",
