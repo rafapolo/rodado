@@ -123,7 +123,7 @@ def _mede_q():
                 try:
                     with rodado_sql.Cronometro(con) as crono:
                         try:
-                            con.sql(rodado_sql.separa(con, sql)[0].query).fetchmany(LIMITE_PADRAO)
+                            con.sql(rodado_sql.separa(con, sql)[0].query).limit(LIMITE_PADRAO).fetchall()
                         except duckdb.InterruptException:
                             if not crono.estourou:
                                 raise
@@ -903,7 +903,7 @@ class Handler(BaseHTTPRequestHandler):
             if time.time() - _guia["em"] > 600:
                 con = rodado_sql.conecta()
                 try:
-                    tab, ds, tamanho, fontes = con.sql(SQL_GUIA_RESUMO).fetchone()
+                    tab, ds, tamanho, fontes = con.execute(SQL_GUIA_RESUMO).fetchone()
                     datasets = con.sql(SQL_GUIA_DATASETS).fetchall()
                 finally:
                     con.close()
@@ -1205,7 +1205,7 @@ class Handler(BaseHTTPRequestHandler):
                                     os.remove(arq)
                             linhas = None
                         else:
-                            linhas = rel.fetchmany(limite + 1)
+                            linhas = rel.limit(limite + 1).fetchall()
                     except duckdb.InterruptException:
                         if crono.estourou:
                             try:
