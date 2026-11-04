@@ -308,7 +308,7 @@ O que a conferência de 2026-10-26 achou:
 ```bash
 scp db/compacta.py finland:/root/rodado-db/
 ssh finland 'cd /root/rodado-db && python3 compacta.py --status; tail compacta.log'
-# cron: 0 * * * * cd /root/rodado-db && flock -n compacta.lock nice -n 19 ionice -c3 python3 compacta.py >> compacta.log 2>&1
+# cron: 0 * * * * ulimit -n 65536; cd /root/rodado-db && flock -n compacta.lock nice -n 19 ionice -c3 python3 compacta.py >> compacta.log 2>&1
 ```
 
 **Reiniciar o Docker derruba o proxy.** O `haloyd.service` tem `Requires=docker.service`:

@@ -19,7 +19,7 @@ ter o tamanho original no bucket e é comprimido de novo na rodada seguinte.
 Roda pelo cron do finland, de hora em hora, sob flock: se já está rodando, a nova sai; se
 caiu (reboot, OOM), a próxima retoma do manifesto. Prioridade baixa, 3 threads.
 
-    0 * * * * cd /root/rodado-db && flock -n compacta.lock nice -n 19 ionice -c3 python3 compacta.py >> compacta.log 2>&1
+    0 * * * * ulimit -n 65536; cd /root/rodado-db && flock -n compacta.lock nice -n 19 ionice -c3 python3 compacta.py >> compacta.log 2>&1
 
     python3 compacta.py --status     # quanto falta, sem mexer em nada
     python3 compacta.py --max 3      # só os 3 primeiros da fila (teste)
