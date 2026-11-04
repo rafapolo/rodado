@@ -1,0 +1,26 @@
+dataset: br_mma_bolsa_verde
+gotchas:
+  - id: sem_municipio
+    resumo: "O arquivo do MMA não tem município nem UF, só a área (unidade de conservação, assentamento ou território). Não dá para fazer 'por município' sem cruzar a área com br_mma_cnuc ou o território, e o cruzamento não foi feito aqui."
+    tabelas: [pagamentos]
+    colunas: [codigo_area, nome_area]
+    severidade: erro
+    verificado: "colunas do CSV: CPF, NOME, CÓDIGO DA ÁREA, NOME DA ÁREA e os meses — medido 2026-11-04"
+  - id: falta_out_dez_2025
+    resumo: "Outubro a dezembro de 2025 não foram publicados (o arquivo de 2023–2025 termina em 09/2025 e os de 2026 começam em 01/2026): somar 2025 inteiro subestima o ano. 2026-10 é o mês em curso na coleta e o painel só vai até 09/2026."
+    tabelas: [pagamentos]
+    colunas: [ano_mes]
+    severidade: silencioso
+    verificado: "ano_mes máximo 202509 no primeiro arquivo e mínimo 202601 nos de 2026 — medido 2026-11-04"
+  - id: painel_valor_e_600_por_familia
+    resumo: "O 'Valor Pago' do ComunicaBR é famílias × R$ 600 (um pagamento), não o total pago no ano: 2024 = 49.798 × 600 = R$ 29,9 mi, enquanto a soma de valor em 2024 é R$ 92,4 mi (todo pagamento tem valor 600; há várias parcelas por família). Famílias distintas batem (51.627 contra 49.798 em 2024, 72.935 contra 71.811 em 2025), exceto 2023 (22.902 contra 9.360)."
+    tabelas: [pagamentos]
+    colunas: [valor]
+    severidade: erro
+    verificado: "pagamentos 2024: 153.972 de R$ 600 em 51.627 beneficiários — medido 2026-11-04"
+  - id: cpf_mascarado_nome
+    resumo: "O CPF vem com só seis dígitos visíveis (***.716.982-**): não é chave de pessoa. Identifique o beneficiário por (cpf_mascarado, nome, codigo_area); homônimos com o mesmo miolo de CPF continuariam colapsados."
+    tabelas: [pagamentos]
+    colunas: [cpf_mascarado, nome]
+    severidade: aviso
+    verificado: "0 chaves repetidas em (cpf_mascarado, nome, codigo_area, ano_mes) nos 658.600 pagamentos — medido 2026-11-04"

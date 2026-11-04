@@ -1,0 +1,20 @@
+dataset: br_mme_luz_para_todos
+gotchas:
+  - id: ano_do_painel_e_o_da_homologacao
+    resumo: "O ComunicaBR conta o domicílio no ano da data_homologacao, não no de ano/mes (a ligação). Por município bate exato com year(data_homologacao); por ano/mes diverge (Altamira 2024: 4.751 contra 3.377). Para reproduzir o painel agrupe por ano de data_homologacao. A tabela é fluxo (domicílios do lote), não estoque."
+    tabelas: [domicilios_atendidos]
+    colunas: [ano, mes, data_homologacao, domicilios]
+    severidade: erro
+    verificado: "2023: 62.888 contra 62.888 do painel; 2024: 69.705 contra 69.713; municípios 1501808, 1505304, 1503101, 1504901 exatos — medido 2026-11-04"
+  - id: homologacao_retroativa
+    resumo: "A fonte reescreve a data de homologação: 2025 hoje soma 62.290 domicílios (painel de 02/2026: 69.047) e 2026 já tem 40.414 (painel: 3.232). Total de um ano mudou entre coletas; compare só com a mesma versão do arquivo."
+    tabelas: [domicilios_atendidos]
+    colunas: [data_homologacao]
+    severidade: aviso
+    verificado: "arquivo atualizado em 2026-10-20 contra ComunicaBR ref 02/2026 — medido 2026-11-04"
+  - id: municipio_por_nome
+    resumo: "A fonte não traz código IBGE; id_municipio sai do casamento nome sem acento + UF com o diretório, com 14 grafias antigas resolvidas à mão (Brasópolis, Moji Mirim, Parati, Augusto Severo...). nome_municipio_origem guarda a grafia da fonte."
+    tabelas: [domicilios_atendidos]
+    colunas: [id_municipio, nome_municipio_origem]
+    severidade: aviso
+    verificado: "0 linhas sem id_municipio nas 619.535 — medido 2026-11-04"

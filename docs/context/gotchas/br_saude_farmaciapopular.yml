@@ -1,0 +1,26 @@
+dataset: br_saude_farmaciapopular
+gotchas:
+  - id: indicadores_nao_somam
+    resumo: "Os 14 indicadores de pessoas atendidas são recortes que se sobrepõem (pfpbben = pessoas atendidas no total; sntpbh, sntpbd etc. = por tipo de medicamento; sntpbih = gratuidade; atfpbcop = copagamento). Somar indicadores conta as mesmas pessoas mais de uma vez: use um indicador por vez, e pfpbben para o total."
+    tabelas: [pessoas_atendidas_municipio]
+    colunas: [indicador, valor]
+    severidade: silencioso
+    verificado: "Rio de Janeiro 2024-12: pfpbben 351.234, sntpbih 341.184, sntpbh 128.180 — medido 2026-11-04"
+  - id: retratos_nao_mensais
+    resumo: "Não é série mensal: pfpbben, sntpba, sntpbd, sntpbh e sntpdhc têm 11 retratos (dezembro de 2016 a 2025 mais 2026-08); os demais, 4 (2023-12, 2024-12, 2025-12, 2026-08); atfpbcop só 2023-12, 2024-12 e 2025-02; pfpbdm e pfpbdma, 2024-12 a 2026-08. 2026-08 não é ano fechado: compare dezembro com dezembro."
+    tabelas: [pessoas_atendidas_municipio]
+    colunas: [ano_mes]
+    severidade: aviso
+    verificado: "ano_mes distintos por indicador contados no parquet — medido 2026-11-04"
+  - id: soma_municipios_excede_brasil
+    resumo: "A soma dos municípios passa de valor_brasil (a mesma pessoa atendida em dois municípios): 0,3% a 0,6% em pfpbben e até 4,7% em pfpbdma (absorventes, 2024-12). Para o total nacional use valor_brasil, não SUM(valor)."
+    tabelas: [pessoas_atendidas_municipio]
+    colunas: [valor, valor_brasil]
+    severidade: aviso
+    verificado: "pfpbben 2024-12: soma 10.359.016 contra 10.317.346 no Brasil (0,40%); pfpbdma 2024-12: 4,67% — medido 2026-11-04"
+  - id: beneficiados_do_comunicabr_nao_bate
+    resumo: "A variável 'Beneficiados pelo Farmácia Popular' do ComunicaBR (br_presidencia_comunicabr) é 2,5 a 3 vezes o pfpbben de dezembro e nenhuma combinação dos 14 indicadores a reproduz; a definição do painel não é a do conjunto aberto. Não misture as duas fontes."
+    tabelas: [pessoas_atendidas_municipio]
+    colunas: [valor]
+    severidade: erro
+    verificado: "2024: Rio 1.053.326 contra 351.234 (3,0x), São Paulo 1.187.515 contra 424.756 (2,8x), Nova Friburgo 25.667 contra 10.180 (2,5x); busca por subconjuntos dos 14 indicadores sem acerto — medido 2026-11-04"

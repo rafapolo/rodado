@@ -1,0 +1,26 @@
+dataset: br_mcid_mcmv
+gotchas:
+  - id: duas_bases_nao_se_somam
+    resumo: "financiamento_fgts (faixas de renda financiadas pelo FGTS, por município × mês) e empreendimentos_subsidiados (FAR, Entidades, Rural, FNHIS: um empreendimento por linha) são universos diferentes; o ComunicaBR os separa em 'FGTS - ...' e 'OGU - ...'. Contratadas = uh por data_assinatura; entregues = uh_entregues."
+    tabelas: [financiamento_fgts, empreendimentos_subsidiados]
+    colunas: [uh_financiadas, uh]
+    severidade: erro
+    verificado: "Rio de Janeiro 2024: FGTS 11.449 (painel 10.963), OGU 600 UH (painel 600); 2025: 12.026 (11.929) e 552 (552) — medido 2026-11-04"
+  - id: retrato_com_data
+    resumo: "Cada tabela é um retrato: FGTS de 24/07/2026 e subsidiado de 30/06/2026. O mcmv_financ_analitico (financiamento a financiamento) não foi coletado: responde 403."
+    tabelas: [financiamento_fgts, empreendimentos_subsidiados]
+    colunas: [data_referencia]
+    severidade: aviso
+    verificado: "data_referencia máxima por tabela — medido 2026-11-04"
+  - id: formato_ptbr_e_modalidade
+    resumo: "Na fonte os inteiros do subsidiado têm ponto de milhar ('3.900' UH) e cod_ibge vem como '520.140': já convertidos. modalidade mistura 'Rural' e 'RURAL' (mesma coisa) e 'FAR' com 'FAR - Compra Assistida': agrupe com UPPER e decida se une os dois FAR."
+    tabelas: [empreendimentos_subsidiados]
+    colunas: [modalidade, valor_contratado]
+    severidade: aviso
+    verificado: "modalidades distintas: FNHIS, Entidades, FAR - Compra Assistida, FAR, Oferta Publica, Rural, RURAL — medido 2026-11-04"
+  - id: fgts_sem_municipio
+    resumo: "6 linhas do FGTS vêm sem município na fonte e ficam com id_municipio nulo (somam 6 UH financiadas, 1 por linha)."
+    tabelas: [financiamento_fgts]
+    colunas: [id_municipio]
+    severidade: aviso
+    verificado: "6 de 795.684 linhas — medido 2026-11-04"
