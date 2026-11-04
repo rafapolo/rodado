@@ -1,0 +1,30 @@
+dataset: br_ms_sinan_malaria
+gotchas:
+  - id: so_sinan_fora_da_amazonia
+    resumo: "O SINAN-malária recebe as notificações de fora da região de transmissão (a malária da Amazônia vai para o SIVEP-Malária, que não está aqui): são 71.159 notificações em 2004-2026, 604 casos confirmados em 2022. O número nacional de casos de malária (centenas de milhares por ano) NÃO sai desta tabela."
+    detalhe: >
+      Notificações por ano: 2004 = 3.732, 2013 = 3.344, 2018 = 7.939, 2022 = 3.410, 2025 = 2.082.
+      Moradores de UF da Amazônia Legal respondem por uma fração pequena (2022: 81 das 3.410
+      notificações, olhando SG_UF em sigla ou código). A medição aqui é o volume; a atribuição ao
+      SIVEP-Malária vem do desenho do sistema, não de uma checagem nos dados.
+    tabelas: [microdados_malaria]
+    colunas: [CLASSI_FIN]
+    severidade: silencioso
+    verificado: "2022: 3.410 notificações, CLASSI_FIN = '1' em 604; soma 2004-2026 = 71.159 linhas — medido 2026-11-04"
+  - id: classificacao_em_duas_colunas_e_anos_vazios
+    resumo: "A classificação final está em CON_CLASSI em 2004-2006 (1 confirmado 5.617, 2 descartado 6.089, 8 = 16, vazio 304) e em CLASSI_FIN de 2007 em diante, mas CLASSI_FIN é vazia em 2007, 2008 e 2010 (3.521, 2.539 e 3.041 notificações sem classificação). Contar confirmados por CLASSI_FIN = '1' dá zero nesses anos, que parecem sem malária."
+    detalhe: >
+      Confirmados por CLASSI_FIN = '1': 2009 = 1.003, 2011 = 1.105, 2012 = 1.022, 2013 = 867,
+      2018 = 859, 2020 = 358, 2022 = 604, 2025 = 491. O pico de 2018 (7.939 notificações) é
+      quase tudo descarte (7.013) e não aumento de casos. O significado dos códigos
+      (1 confirmado, 2 descartado, 8 fora do dicionário) está em column_codes.yaml.
+    tabelas: [microdados_malaria]
+    colunas: [CLASSI_FIN, CON_CLASSI]
+    severidade: silencioso
+    verificado: "CLASSI_FIN = '1': 2007/2008/2010 = 0 com 3.521/2.539/3.041 linhas; 2004-2006 CON_CLASSI 1 = 5.617; 2018 descartados 7.013 de 7.939 — medido 2026-11-04"
+  - id: notificacoes_repetidas
+    resumo: "71.159 linhas para 66.960 combinações distintas de ano, data, município, unidade, início de sintomas, idade, sexo, residência e classificação (4.199 linhas sobrando). Em 2004-2006 a coluna NDUPLIC marca duplicata em quase todas as linhas (3.679 de 3.732 em 2004), mas não é usada depois de 2006."
+    tabelas: [microdados_malaria]
+    colunas: [NDUPLIC]
+    severidade: aviso
+    verificado: "count(*) = 71.159; count(DISTINCT 9 campos) = 66.960; NDUPLIC preenchida em 3.679 de 3.732 (2004) e 0 de 2007 em diante — medido 2026-11-04"

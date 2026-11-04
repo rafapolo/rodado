@@ -1,0 +1,20 @@
+dataset: global_ofac_sanctions
+gotchas:
+  - id: sentinela_menos_zero_com_espaco
+    resumo: "O formato legado da OFAC usa '-0- ' (com espaço no fim) como nulo em todas as colunas de texto, não NULL: title 18.300 linhas, call_sign 18.521, vess_flag 17.953, tonnage 19.426, remarks 275. sdn_type = '-0- ' significa entidade (empresa ou organização): 10.045 linhas, mais que as 7.529 pessoas. count(col) e IS NULL não pegam isso; compare com '-0- ' ou use NULLIF(trim(col), '-0-')."
+    tabelas: [sanctions]
+    colunas: [sdn_type, title, call_sign, vess_flag, tonnage, remarks]
+    severidade: silencioso
+    verificado: "19.484 linhas; sdn_type '-0- ' 10.045, individual 7.529, vessel 1.568, aircraft 342; title '-0- ' 18.300; call_sign 18.521; vess_flag 17.953; tonnage 19.426; remarks 275; nenhum NULL verdadeiro — medido 2026-11-04"
+  - id: data_de_nascimento_e_pais_em_remarks
+    resumo: "A tabela não tem colunas de nascimento, nacionalidade ou documento: tudo isso está em texto livre em remarks ('DOB 12 Jan 1960; POB ...; nationality ...; Passport ...'). 7.459 entradas citam DOB. Extraia por regexp; não é estruturado. Entradas que citam Brasil/Brazil em remarks: 20."
+    tabelas: [sanctions]
+    colunas: [remarks]
+    severidade: silencioso
+    verificado: "remarks com 'DOB' em 7.459 de 19.484; remarks citando Brazil/Brasil em 20 — medido 2026-11-04"
+  - id: grao_e_programa_multiplo
+    resumo: "Uma linha por entrada SDN (ent_num único: 19.484 linhas = 19.484 ent_num), mas program junta vários programas num texto só, entre colchetes ('[SDGT] [IRGC]'): 3.029 linhas têm mais de um. Filtre program com LIKE, não =. sdn_name repete em 27 entradas diferentes (19.457 nomes distintos)."
+    tabelas: [sanctions]
+    colunas: [program, ent_num, sdn_name]
+    severidade: silencioso
+    verificado: "count(*) = count(distinct ent_num) = 19.484; nomes distintos 19.457; program com '] [' em 3.029 linhas — medido 2026-11-04"

@@ -1,0 +1,25 @@
+dataset: br_ana_bho
+gotchas:
+  - id: topologia_so_tem_a_rede_sem_geometria
+    resumo: "topologia (462.539 trechos da Base Hidrográfica Ottocodificada) só tem 5 colunas: COTRECHO, NUTRJUS, NUAREAMONT, NUSTRAHLER, COBACIA; não traz geometria, nome de rio, município nem UF, então não dá para filtrar por localidade."
+    detalhe: >
+      COTRECHO é único (462.539) e NUTRJUS é o trecho a jusante (nunca 0; 1.505
+      apontam para um trecho que não está na tabela, as saídas para o mar ou
+      para fora do recorte). COBACIA (código ottobacia) NÃO é único: 462.125
+      valores distintos, com 1 a 12 caracteres; ligue trechos por COTRECHO/NUTRJUS,
+      não por COBACIA. NUAREAMONT é área a montante em km² (máximo 5,92 milhões de
+      km², o Amazonas na foz, ordem Strahler 9).
+    tabelas: [topologia]
+    colunas: [COBACIA, NUTRJUS, NUAREAMONT]
+    severidade: silencioso
+    verificado: "462.539 linhas, 462.539 COTRECHO, 462.125 COBACIA; NUTRJUS fora de COTRECHO em 1.505; NUAREAMONT máx 5.921.835,8 (COTRECHO 8484, Strahler 9) — medido 2026-11-04"
+  - id: strahler_inconsistente_com_area
+    resumo: "NUSTRAHLER não acompanha NUAREAMONT em 136 trechos de ordem 1 com mais de 1.000 km² a montante (o maior com 809.260 km²) e 21 trechos de ordem até 3 com mais de 40.000 km²: não use a ordem como proxy de porte do rio."
+    detalhe: >
+      Mediana de área por ordem: 14,5 km² (ordem 1), 317 (3), 28.767 (6), 817.929
+      km² (9), então a ordem funciona na média; os casos fora da curva são trechos
+      onde a rede foi cortada pelo recorte e a área a montante vem de fora.
+    tabelas: [topologia]
+    colunas: [NUSTRAHLER, NUAREAMONT]
+    severidade: silencioso
+    verificado: "NUSTRAHLER=1 com NUAREAMONT>1000: 136; NUSTRAHLER<=3 com NUAREAMONT>40000: 21; maior ordem 1 = 809.259,9 km2 (COTRECHO 32631) — medido 2026-11-04"

@@ -1,0 +1,25 @@
+dataset: br_ibge_populacao
+gotchas:
+  - id: serie_mistura_censo_contagem_estimativa
+    resumo: "A série municipal mistura Censo, Contagem e estimativas, com saltos que não são crescimento: 2006 = 186,8 mi, 2007 = 184,0 mi (Contagem), 2012 = 193,9 mi para 2013 = 201,0 mi, 2021 = 213,3 mi para 2022 = 203,1 mi (Censo 2022) e 2023 = 203,1 mi (repete o Censo) para 2024 = 212,6 mi (estimativa). Taxa de crescimento ou per capita atravessando essas viradas mede revisão de método."
+    detalhe: >
+      Os totais batem com os números oficiais do Censo: 2010 = 190.755.799 e 2022 = 203.080.756,
+      iguais nas três tabelas (municipio, uf, brasil). 2022 e 2023 trazem praticamente o mesmo
+      total (203.080.756 e 203.078.668) porque 2023 é o Censo reponderado; as estimativas voltam
+      em 2024 (212.583.750) e 2025 (213.421.037).
+    tabelas: [municipio, uf, brasil]
+    colunas: [populacao, ano]
+    severidade: silencioso
+    verificado: "soma municipal: 2006 = 186.770.562, 2007 = 184.014.516, 2021 = 213.317.639, 2022 = 203.080.756, 2024 = 212.583.750 — medido 2026-11-04"
+  - id: malha_cresce_de_4491_a_5570
+    resumo: "O número de municípios por ano cresce: 4.491 (1991), 4.974 (1992-1995), 5.507 (1996-2000), 5.560 (2001-2003), 5.564 (2004-2007), 5.565 (2008-2011), 5.570 (2012 em diante). Município que ainda não existia não tem linha antes da criação, então a série por município tem ano faltando e a soma de 1991 vem de menos municípios."
+    tabelas: [municipio]
+    colunas: [id_municipio, ano]
+    severidade: silencioso
+    verificado: "linhas por ano: 1991 = 4.491, 1996 = 5.507, 2008 = 5.565, 2012 = 5.570 — medido 2026-11-04"
+  - id: linha_sem_codigo_em_2025
+    resumo: "2025 tem 5.571 linhas em municipio: uma delas, com populacao = 5.877, vem com id_municipio e sigla_uf NULL (município novo ainda sem código). Filtrar por id_municipio ou juntar com o diretório descarta 5.877 pessoas e a soma municipal fica em 213.415.160, contra 213.421.037 em uf e brasil."
+    tabelas: [municipio]
+    colunas: [id_municipio, sigla_uf]
+    severidade: silencioso
+    verificado: "2025: count(*) = 5.571, count(DISTINCT id_municipio) = 5.570, linha NULL com 5.877; soma com código = 213.415.160, uf = 213.421.037 — medido 2026-11-04"

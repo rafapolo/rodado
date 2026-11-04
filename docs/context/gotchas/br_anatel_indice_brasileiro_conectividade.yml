@@ -1,0 +1,20 @@
+dataset: br_anatel_indice_brasileiro_conectividade
+gotchas:
+  - id: hhi_e_inverso_da_concentracao
+    resumo: "hhi_smp e hhi_scm não são o HHI clássico: são o inverso da concentração normalizado de 0 a 100 (maior = mais competitivo). Correlacionar 'HHI' esperando concentração inverte o sinal. Médias nacionais: hhi_scm 57,1 (2021) e 53,4 (2024)."
+    tabelas: [municipio]
+    colunas: [hhi_smp, hhi_scm]
+    severidade: silencioso
+    verificado: "hhi_smp com 101 valores inteiros de 0 a 100 (column_codes); média de hhi_scm 2021 = 57,1 e 2024 = 53,4 — medido 2026-11-04"
+  - id: fibra_2022_copia_de_2023
+    resumo: "fibra de 2023 é idêntica à de 2022 nos 5.570 municípios (mesmos valores linha a linha); as outras colunas mudam (cobertura_pop_4g5g igual em só 199, ibc igual em 13). A fibra de 2023 é arrastada, então variação 2022-2023 em fibra é zero por construção. Em 2024 a variável ganha uma 3ª categoria (50: 1.250 municípios; 100: 3.113; 0: 1.207) e não é comparável com antes."
+    tabelas: [municipio]
+    colunas: [fibra]
+    severidade: silencioso
+    verificado: "join 2022 x 2023 por id_municipio: fibra igual em 5.570 de 5.570; 2021 x 2022 igual em 4.584; fibra 2024: 100 = 3.113, 50 = 1.250, 0 = 1.207 — medido 2026-11-04"
+  - id: indicadores_ja_normalizados_0_a_100
+    resumo: "ibc, cobertura_pop_4g5g, densidade_smp, hhi_* e adensamento_estacoes são índices de 0 a 100 (densidade_smp máxima 100 em todos os anos), não unidades físicas. Não leia densidade_smp como acessos por habitante nem some entre municípios; fibra vem como texto ('0', '50', '100'). A queda de 2024 em cobertura_pop_4g5g (82,2 para 78,9) e densidade_smp (66,5 para 51,2) vem da mudança de metodologia, não de perda de cobertura."
+    tabelas: [municipio]
+    colunas: [ibc, cobertura_pop_4g5g, densidade_smp, fibra]
+    severidade: silencioso
+    verificado: "médias nacionais: densidade_smp 2023 = 66,5 e 2024 = 51,2; cobertura_pop_4g5g 2023 = 82,2 e 2024 = 78,9; ibc 2024 mín 9,8 máx 94,6 — medido 2026-11-04"

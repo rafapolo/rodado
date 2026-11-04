@@ -1,0 +1,18 @@
+dataset: br_ibge_amc
+gotchas:
+  - id: um_par_de_anos_por_consulta
+    resumo: "municipio_de_para guarda 78 pares (ano_de, ano_para) de 1872 a 2010 empilhados na mesma tabela, 5.565 municípios em cada um (434.070 linhas). Sem filtrar ano_de E ano_para, o join repete cada município 78 vezes e a contagem de AMCs mistura bases. id_amc só vale dentro do par."
+    detalhe: >
+      Número de AMCs por par: 1872-2010 = 482, 1970-2010 = 3.800, 1991-2010 = 4.298, 2000-2010 =
+      5.476. Quanto mais distantes os anos, menos AMCs (municípios que se desmembraram são
+      agrupados). Para comparar duas datas, filtre o par exato e agregue por id_amc.
+    tabelas: [municipio_de_para]
+    colunas: [ano_de, ano_para, id_amc]
+    severidade: silencioso
+    verificado: "434.070 linhas = 78 pares x 5.565; AMCs 1872-2010 = 482, 2000-2010 = 5.476 — medido 2026-11-04"
+  - id: base_de_5565_municipios
+    resumo: "A base é a malha de 2010 (5.565 municípios), não a atual de 5.570/5.571: os municípios instalados depois de 2010 não estão em id_municipio. Juntar com br_bd_diretorios_brasil.municipio deixa de fora os mais novos. Pelo bd_diretorios, os códigos casam sem perda no sentido tabela -> diretório."
+    tabelas: [municipio_de_para]
+    colunas: [id_municipio]
+    severidade: silencioso
+    verificado: "par 2000-2010: 5.565 municípios, todos presentes em br_bd_diretorios_brasil.municipio, que tem 6 municípios a mais — medido 2026-11-04"

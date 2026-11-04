@@ -1,0 +1,20 @@
+dataset: br_datasus_cid10
+gotchas:
+  - id: codigo_sem_ponto_e_em_dois_niveis
+    resumo: "As chaves não têm ponto: SUBCAT é 'X840' (4 caracteres, 12.188 linhas) e 3 caracteres ('X84') em 263 linhas que são categorias sem subdivisão; a categoria de 3 caracteres também está em codigos.CAT (2.045 categorias). Junte tabelas do espelho (causa_basica do SIM, CID de internações) por SUBCAT para 4 caracteres e por CAT/substr(,1,3) para 3, nunca com o ponto ('X84.0')."
+    tabelas: [subcategorias, codigos]
+    colunas: [SUBCAT, CAT]
+    severidade: silencioso
+    verificado: "subcategorias: 12.451 linhas (263 de 3 caracteres, 12.188 de 4), nenhuma com ponto; codigos: 2.045 categorias; todo CAT casa com substr(SUBCAT,1,3) — medido 2026-11-04"
+  - id: colunas_em_maiusculas_e_vazio_nao_e_nulo
+    resumo: "As colunas vêm em MAIÚSCULAS (SUBCAT, DESCRICAO, CLASSIF, RESTRSEXO) e o 'sem valor' é string vazia, não NULL: CLASSIF = '' em 12.073 de 12.451 linhas e RESTRSEXO = '' em 11.577 (F em 758, M em 116). Filtrar IS NULL não acha nada. RESTRSEXO marca códigos restritos a um sexo, útil para validar o SIM/SIH."
+    tabelas: [subcategorias, codigos]
+    colunas: [CLASSIF, RESTRSEXO, CAUSAOBITO]
+    severidade: aviso
+    verificado: "CLASSIF vazio 12.073 e nulo 0; RESTRSEXO F 758, M 116, vazio 11.577 — medido 2026-11-04"
+  - id: duplica_o_diretorio_do_bd
+    resumo: "br_bd_diretorios_brasil.cid_10 tem 14.941 linhas (inclui capítulos e grupos), contra 12.451 subcategorias + 2.045 categorias aqui: as duas listas não são a mesma tabela. Para decodificar causa de óbito use um só dos lados em toda a análise e confira a cobertura (a categoria sem subcategoria precisa do nível de 3 caracteres)."
+    tabelas: [subcategorias, codigos]
+    colunas: [SUBCAT, CAT]
+    severidade: aviso
+    verificado: "br_bd_diretorios_brasil.cid_10 = 14.941 linhas; aqui 12.451 + 2.045 — medido 2026-11-04"

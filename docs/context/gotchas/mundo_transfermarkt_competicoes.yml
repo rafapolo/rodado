@@ -1,0 +1,26 @@
+dataset: mundo_transfermarkt_competicoes
+gotchas:
+  - id: serie_termina_no_meio_de_2024
+    resumo: "brasileirao_serie_a para em 2024-10-27 com 286 dos 380 jogos da temporada 2024, e copa_brasil para em 2024-08-29 (112 jogos; a competição termina em novembro/dezembro, com a final fora). Tabela de classificação ou artilharia 'final de 2024' sai errada."
+    tabelas: [brasileirao_serie_a, copa_brasil]
+    colunas: [ano_campeonato, data]
+    severidade: silencioso
+    verificado: "Série A 2024: 286 jogos, 2024-04-13 a 2024-10-27; Copa do Brasil 2024: 112 jogos até 2024-08-29 — medido 2026-11-04"
+  - id: anos_antigos_incompletos
+    resumo: "As temporadas 2003 a 2005 da Série A não estão completas: 2003 e 2004 têm 456 jogos (os campeonatos de 24 clubes tiveram 552), 2005 tem 418 (22 clubes, 462). De 2006 em diante, 380 jogos por ano. Colocação final e saldo de gols de 2003-2005 não fecham."
+    tabelas: [brasileirao_serie_a]
+    colunas: [ano_campeonato]
+    severidade: silencioso
+    verificado: "jogos por ano: 2003 = 456, 2004 = 456, 2005 = 418, 2006 a 2023 = 380 — medido 2026-11-04"
+  - id: estatisticas_de_jogo_so_de_2018
+    resumo: "Dados além do placar começam tarde: publico só de 2007 em diante (0 de 2003 a 2006); valor_equipe_titular e tecnico incompletos (2007: 288 de 380); escanteios, chutes, faltas e impedimentos só de 2018 (211 de 380), com cobertura quase total só em 2020-2023. Média de escanteios por jogo mistura os jogos sem dado se tratar nulo como zero. publico = 0 em 858 jogos (portões fechados e jogos sem informação)."
+    tabelas: [brasileirao_serie_a, copa_brasil]
+    colunas: [publico, escanteios_mandante, chutes_mandante, valor_equipe_titular_mandante]
+    severidade: silencioso
+    verificado: "count(escanteios_mandante) por ano: 2018 = 211, 2019 = 168, 2020 = 374; count(publico) 2003-2006 = 0; publico = 0 em 858 jogos — medido 2026-11-04"
+  - id: copa_do_brasil_2020_a_2024
+    resumo: "copa_brasil cobre só 2020 a 2024 (112 a 122 jogos por edição; a edição de 2020 vai de 2020-02-05 a 2021-03-07, adiada pela pandemia, e a de 2023 termina em 2023-09-24). Não há histórico anterior a 2020."
+    tabelas: [copa_brasil]
+    colunas: [ano_campeonato, data]
+    severidade: aviso
+    verificado: "jogos por ano: 2020 = 120, 2021 = 122, 2022 = 122, 2023 = 122, 2024 = 112 — medido 2026-11-04"

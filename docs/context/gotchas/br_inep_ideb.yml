@@ -1,0 +1,37 @@
+dataset: br_inep_ideb
+gotchas:
+  - id: rede_publica_e_total_somam_as_outras
+    resumo: "Em municipio a rede 'publica' é a agregação de estadual + municipal + federal para o mesmo município e ensino; somar ou fazer média entre redes inclui a mesma escola duas vezes. brasil e uf têm também 'privada' e 'total'."
+    detalhe: >
+      Para um município use uma só rede por vez: 'publica' (5.566 municípios
+      no fundamental iniciais em 2023) ou as redes separadas. Em municipio não há
+      'privada' nem 'total'. O ensino médio aparece como anos_escolares
+      'todos (1-4)' (ensino = 'medio'). Conferido contra o IDEB oficial do Brasil:
+      2023 rede pública 5,7 (iniciais), 4,7 (finais), 4,1 (médio).
+    tabelas: [municipio, uf, regiao, brasil]
+    colunas: [rede, anos_escolares]
+    severidade: silencioso
+    verificado: "municipio 2023: publica = 5.566 + 5.568 + 5.559 linhas, estadual 4.904 (finais), municipal 3.906; brasil 2023 publica ideb 5,7/4,7/4,1 e total 6,0/5,0/4,3 — medido 2026-11-04"
+  - id: cobertura_cai_em_2015_e_2021
+    resumo: "municipio tem 28.839 linhas por edição até 2013, só 17.707 em 2015 e 40.464+ de 2017 em diante; em 2021 só 28.585 das 40.542 linhas têm ideb (nota SAEB ausente em 30%) e projecao é nula desde 2021."
+    detalhe: >
+      A queda em 2015 não é perda de município, é a edição publicada com menos
+      linhas; comparar média de município entre edições mistura conjuntos
+      diferentes. Contagem com ideb por edição: 24.127 (2005), 34.339 (2023),
+      35.453 (2025). taxa_aprovacao é mais completa que ideb (35.897 em 2021).
+      Edições bienais (2005, 2007, ..., 2025). indicador_rendimento vai de 0 a 1,
+      taxa_aprovacao de 0 a 100 e nota_saeb_media_padronizada de 0 a 10.
+    tabelas: [municipio, escola]
+    colunas: [ideb, nota_saeb_matematica, projecao, ano]
+    severidade: silencioso
+    verificado: "municipio linhas por ano: 28.839 (2005-2013), 17.707 (2015), 40.464 (2017), 40.682 (2025); ideb não nulo 2021 = 28.585 de 40.542; projecao nn=0 em 2021, 2023, 2025 — medido 2026-11-04"
+  - id: escola_grao_quase_unico
+    resumo: "escola: 1.300.821 linhas para 1.300.804 chaves (ano, id_escola, rede, ensino, anos_escolares): 17 repetidas; municipio é único (364.673 chaves)."
+    detalhe: >
+      Para um ranking de escolas deduplique pela chave antes de ordenar. As notas SAEB
+      estão em 798.987 das linhas, o IDEB em 798.778; escolas sem nota (amostra
+      pequena) não têm ideb.
+    tabelas: [escola]
+    colunas: [id_escola, ideb]
+    severidade: silencioso
+    verificado: "escola: 1.300.821 linhas, 1.300.804 chaves; municipio: 364.673 e 364.673 — medido 2026-11-04"

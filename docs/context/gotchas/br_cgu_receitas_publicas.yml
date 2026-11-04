@@ -1,0 +1,31 @@
+dataset: br_cgu_receitas_publicas
+gotchas:
+  - id: soma_inclui_operacoes_de_credito
+    resumo: "valor_realizado somado por ano é mais do dobro da arrecadação: em 2023 dá R$ 4,31 tri, dos quais R$ 1,75 tri são origem 'Operações de Crédito' (emissão/refinanciamento da dívida). Para arrecadação use categoria_economica = 'Receitas Correntes' (R$ 2,34 tri em 2023)."
+    detalhe: >
+      A tabela é a receita da União inteira por classificação orçamentária. 2023: Receitas de
+      Capital R$ 1.940 bi, Receitas Correntes R$ 2.344 bi, intra-orçamentárias R$ 21 bi. Dentro
+      do capital, Operações de Crédito sozinha vale R$ 1.754 bi. Contribuições R$ 1.185 bi e
+      Impostos R$ 851 bi são a arrecadação tributária.
+    tabelas: [receitas]
+    colunas: [valor_realizado, origem, categoria_economica]
+    severidade: silencioso
+    verificado: "2023: soma valor_realizado = 4.305,7 bi; Receitas Correntes 2.344,2 bi; Operações de Crédito 1.754,1 bi — medido 2026-11-04"
+  - id: grao_muda_em_2016
+    resumo: "2013-2015 têm cerca de 4,5 mil linhas por ano, todas com data_lancamento = 31 de dezembro (total anual por classificação); de 2016 em diante são 140-195 mil linhas com lançamento diário. Contagem de linhas e série mensal só valem de 2016 em diante."
+    tabelas: [receitas]
+    colunas: [data_lancamento]
+    severidade: silencioso
+    verificado: "linhas 2015 = 4.523, 2016 = 194.533; data_lancamento 2013-2015 só 12-31 — medido 2026-11-04"
+  - id: ultimo_ano_incompleto
+    resumo: "2024 termina em 2024-12-07 e dezembro tem só 2.754 linhas e R$ 23,9 bi (os outros meses ficam entre R$ 318 e 612 bi): o ano está truncado. A tabela não chega a 2025."
+    tabelas: [receitas]
+    colunas: [ano_exercicio, data_lancamento]
+    severidade: silencioso
+    verificado: "max(data_lancamento) = 2024-12-07; dezembro/2024 = 23,9 bi contra 317,9 bi em novembro — medido 2026-11-04"
+  - id: valores_negativos_e_extremos
+    resumo: "valor_realizado tem estornos negativos (3.200 linhas em 2023; mínimo de -R$ 156 bi em 2016) e máximos de centenas de bilhões numa linha (R$ 771 bi em 2015). São lançamentos reais de receita da União, não erro de escala, mas um filtro de 'outlier' ou um MAX por linha engana."
+    tabelas: [receitas]
+    colunas: [valor_realizado]
+    severidade: aviso
+    verificado: "2023: 3.200 linhas negativas de 169.702; mínimo 2016 = -156,3 bi; máximo 2015 = 771,1 bi — medido 2026-11-04"

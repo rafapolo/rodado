@@ -1,0 +1,24 @@
+dataset: br_ms_sipni_dicionarios
+gotchas:
+  - id: code_harmonizado_nao_e_o_da_fonte
+    resumo: "Nos dicionários vacinas, doses_tipo e faixa_etaria, a coluna code é um código harmonizado do projeto e o código que vem nas tabelas de dose (IMUNO, DOSE, FX_ETARIA de br_ms_sipni_doses_historicas) está em source_codes, lista separada por vírgula. Juntar IMUNO = code casa quase tudo (49 dos 59 códigos de 2018) mas com a vacina errada (code 01 é BCG, enquanto IMUNO '02' é BCG). Junte por source_codes depois de string_split/unnest."
+    detalhe: >
+      Teste com os 59 IMUNO distintos de 2018: 58 estão em source_codes e 49
+      em code, porque os dois conjuntos de números se sobrepõem. Doses de
+      2018 cujo IMUNO não está em source_codes: 1.258 de 114,2 milhões.
+    tabelas: [vacinas, doses_tipo, faixa_etaria]
+    colunas: [code, source_codes]
+    severidade: silencioso
+    verificado: "vacinas 85 linhas (85 code); doses_tipo 12; faixa_etaria 101 linhas para 100 code (code 01 duas vezes: 'Ate 30 dias' e 'Homens sem discriminação de idade'); IMUNO de 2018: 58 de 59 em source_codes, 49 de 59 em code; DOSE: 32 de 35 códigos fora de code; FX_ETARIA: 82 de 130 fora de code — medido 2026-11-04"
+  - id: cobertura_indicadores_outro_codigo
+    resumo: "cobertura_indicadores (26 linhas, colunas imuno e nome) usa um terceiro sistema de códigos de imunobiológico ('072' é BCG, '099' hepatite B em crianças até 30 dias, '061' rotavírus) que não é o de vacinas.code nem o de IMUNO das doses. Só serve para br_ms_sipni_cobertura_historica."
+    tabelas: [cobertura_indicadores]
+    colunas: [imuno, nome]
+    severidade: silencioso
+    verificado: "cobertura_indicadores: 26 linhas, 26 imuno distintos, exemplos 072 BCG, 099 Hepatite B, 061 Rotavírus Humano; vacinas.code 01 = BCG — medido 2026-11-04"
+  - id: code_texto_com_zero_a_esquerda
+    resumo: "code é texto com zero à esquerda ('01', '02'; em doses_tipo '1', '2' sem zero): não compare com número nem com colunas inteiras. Os dicionários trazem 85 vacinas, 12 tipos de dose e 100 faixas etárias, e não cobrem todos os códigos de br_ms_sipni_microdados (esquema próprio)."
+    tabelas: [vacinas, doses_tipo, faixa_etaria]
+    colunas: [code]
+    severidade: aviso
+    verificado: "vacinas.code '01'..; doses_tipo.code '1' '2' '3' '4'; tipos VARCHAR — medido 2026-11-04"

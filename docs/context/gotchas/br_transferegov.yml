@@ -1,0 +1,36 @@
+dataset: br_transferegov
+gotchas:
+  - id: transferencias_so_2020_e_so_covid
+    resumo: "transferencias tem só 4.248 empenhos (R$ 3,00 bi): 4.246 de 2020 e 2 de 2019 (tipo 'Estimado'), todos da mesma unidade gestora, com objeto de auxílio emergencial. Não é o total de transferências voluntárias da União e não tem município nem UF do recebedor."
+    detalhe: >
+      Para valores por município use planos_acao (id_plano_acao casa em 100% das
+      transferencias: 0 sem correspondência) com
+      codigo_ibge_municipio_ente_recebedor_plano_acao e uf_ente_recebedor_plano_acao.
+      O ano_empenho é INTEGER. Qualquer correlação entre arrecadação e
+      transferências feita a partir desta tabela é de um único ano.
+    tabelas: [transferencias]
+    colunas: [valor_empenho, ano_empenho, id_plano_acao]
+    severidade: silencioso
+    verificado: "4.248 linhas = 4.248 id_empenho; ano_empenho 2020 = 4.246 (R$ 3.000 mi), 2019 = 2 (R$ 2 mi); id_plano_acao fora de planos_acao = 0 — medido 2026-11-04"
+  - id: planos_acao_inclui_rejeitados_e_em_elaboracao
+    resumo: "planos_acao soma R$ 37,86 bi de valor_total_plano_acao, mas só 22.809 de 25.969 planos (R$ 33,35 bi) estão AUTORIZADO; REJEITADO (369), EM_ELABORACAO (2.110, R$ 0,89 bi) e demais entram na soma se não filtrar situacao_plano_acao."
+    detalhe: >
+      valor_total_repasse_plano_acao (R$ 35,12 bi) = emenda + específico +
+      voluntário (confere ao centavo). É valor planejado, não pago: o pago está em
+      transferencias (só 2020). O repassador (ente, UF e município do repassador) é
+      100% nulo: 6 colunas *_ente_repassador_* vazias; o repassador é sempre o
+      fundo (sempre Brasília).
+    tabelas: [planos_acao]
+    colunas: [situacao_plano_acao, valor_total_plano_acao, valor_total_repasse_plano_acao, id_ente_repassador_plano_acao, cnpj_ente_repassador_plano_acao]
+    severidade: silencioso
+    verificado: "25.969 planos; AUTORIZADO 22.809 = R$ 33,35 bi de R$ 37,86 bi; repasse 35,12 bi = soma das 3 partes 35,12 bi; 6 colunas ente_repassador nn=0 — medido 2026-11-04"
+  - id: datas_de_vigencia_varchar_com_ano_errado
+    resumo: "data_inicio_vigencia_plano_acao e data_fim_* são VARCHAR e têm ano impossível: início em 0023, 0200..0230, 1202 (14 planos antes de 1990) e fim até 2252-05-30 (3 planos depois de 2060). A massa está em 2020 (5.614), 2023 (11.767) e 2025 (6.002)."
+    detalhe: >
+      Converta com TRY_CAST e descarte datas fora de 2019-2035. programas tem 129
+      linhas para 125 id_programa distintos (4 repetidos); nome_programa e
+      objetivo_programa têm o texto 'x' como placeholder em alguns.
+    tabelas: [planos_acao, programas]
+    colunas: [data_inicio_vigencia_plano_acao, data_fim_vigencia_plano_acao, id_programa, nome_programa]
+    severidade: silencioso
+    verificado: "ano de início: 0023 (3), 0200 a 0230 (6), 1202 (1), 1987 (1), 2020 (5.614), 2023 (11.767), 2025 (6.002); fim máx 2252-05-30; programas 129 linhas / 125 ids — medido 2026-11-04"

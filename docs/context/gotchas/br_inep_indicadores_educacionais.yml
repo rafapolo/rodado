@@ -1,0 +1,14 @@
+dataset: br_inep_indicadores_educacionais
+gotchas:
+  - id: colunas_deslocadas_2023_2024
+    resumo: "Em municipio e escola os anos 2023 e 2024 vêm com as colunas fora de lugar: atu_em tem média 0,8 (contra 26 até 2022), taxa_aprovacao_em + taxa_reprovacao_em + taxa_abandono_em somam 50 (municipio) ou 21 (escola) em vez de 100, e taxa_abandono_em passa de 25. Em uf, regiao e brasil só 2023 está assim (2024 e 2025 estão certos). Não use taxa nem tdi/atu desses anos."
+    detalhe: >
+      São Paulo, rede pública, 2023: atu_ei = 95,4 (é uma taxa de aprovação), atu_em = 0,1,
+      taxa_abandono_em = 34,6; em 2022 os mesmos campos dão 21,4, 34,1 e 5,3. rede e
+      localizacao também mudam de caixa (publica/total até 2022, Pública/Total desde 2023),
+      então filtrar rede = 'publica' perde 2023 em diante. A última evasão (municipio_taxa_transicao)
+      é de 2022. Para o período do Pé-de-Meia (2024 em diante) não há taxa de abandono municipal confiável aqui.
+    tabelas: [municipio, escola, uf, regiao, brasil]
+    colunas: [atu_em, taxa_aprovacao_em, taxa_reprovacao_em, taxa_abandono_em, rede, localizacao]
+    severidade: silencioso
+    verificado: "municipio, rede total/total: soma das taxas do ensino médio 100,0 de 2017 a 2022, 49,6 em 2023 e 50,5 em 2024; atu_em 0,87 e 0,79; escola 21,3 e 21,2; uf 21,7 só em 2023, 2024 = 100,0 — medido 2026-11-04"

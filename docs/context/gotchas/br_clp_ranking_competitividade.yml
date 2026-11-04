@@ -1,0 +1,22 @@
+dataset: br_clp_ranking_competitividade
+gotchas:
+  - id: uma_linha_por_pilar_e_ranking_geral_misturado
+    resumo: "nota_geral_municipio (7.055) e nota_geral_uf (2.376) têm 1 linha por município/UF x pilar; 'Ranking Geral' é só uma das 17 (município) ou 11 (UF) categorias, e no município 'Dimensão: Economia/Instituições/Sociedade' são agregados dos pilares. AVG ou COUNT sem filtrar pilar_dimensao/pilar mistura tudo."
+    detalhe: >
+      Para a nota final use pilar_dimensao = 'Ranking Geral' (pilar = 'Ranking Geral'
+      na UF). colocacao é a posição dentro de cada pilar (1 a 415 em todos os 17).
+      Os nomes dos pilares diferem entre a tabela de município e a de UF
+      ('Segurança' x 'Segurança Pública', 'Sustentabilidade fiscal' x 'Solidez Fiscal').
+    tabelas: [nota_geral_municipio, nota_geral_uf]
+    colunas: [pilar_dimensao, pilar, nota_geral, colocacao]
+    severidade: silencioso
+    verificado: "municipio: 17 pilares x 415 municípios = 7.055; uf: 11 pilares x 27 UFs x 8 anos = 2.376 — medido 2026-11-04"
+  - id: municipio_so_2022_e_so_415
+    resumo: "nota_geral_municipio cobre só 2022 e só 415 municípios (os de mais de 80 mil habitantes); não é cobertura nacional nem série. A UF vai de 2015 a 2022."
+    detalhe: >
+      nota_geral vai de 0 a 97,88 no município (0 a 100 na UF): é escala 0-100
+      normalizada dentro do ano, não valor absoluto comparável entre anos.
+    tabelas: [nota_geral_municipio, nota_geral_uf]
+    colunas: [ano, id_municipio, nota_geral]
+    severidade: silencioso
+    verificado: "municipio: ano d=1 (2022), id_municipio 415 distintos; uf: 2015 a 2022, 297 linhas por ano — medido 2026-11-04"

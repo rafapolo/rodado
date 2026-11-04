@@ -21,3 +21,9 @@ gotchas:
     colunas: [codigo_bdi, tipo_mercado, ticker, isin, volume]
     severidade: aviso
     verificado: "2026-10-31: BDI 78 = 8.070.569, 82 = 7.119.486, 02 = 3.253.028, 96 = 2.493.240; 0 duplicatas de data+ticker+mercado+BDI+prazo em 2024"
+  - id: bdi_02_inclui_etf_e_unit
+    resumo: "Ação à vista (codigo_bdi = '02', tipo_mercado = '010') também traz ETF (IBOV11, R$ 133 bi em 2024, o quinto maior volume) e units: ticker não é sempre uma companhia. Para ligar à CVM, o ETF fica sem par e a unit pode ficar (BPAC11)."
+    tabelas: [cotacoes]
+    colunas: [ticker, codigo_bdi, especificacao, volume]
+    severidade: silencioso
+    verificado: "2024: 444 tickers com BDI 02 e mercado 010, R$ 4.740 bi; IBOV11 R$ 133,3 bi (especificacao 'IBO'), BPAC11 R$ 75,0 bi (especificacao 'UNT'); 411 tickers casam com br_cvm_cia_aberta.fca_valor_mobiliario, 94,7% do volume — medido 2026-11-04"

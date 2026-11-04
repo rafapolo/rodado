@@ -1,0 +1,38 @@
+dataset: global_icij_offshoreleaks
+gotchas:
+  - id: relationships_mistura_vinculo_e_similaridade
+    resumo: "relationships tem 3,34 milhões de arestas, mas só officer_of (1,72 mi), registered_address (833 mil) e intermediary_of (599 mil) são vínculos reais; same_name_as, similar, same_company_as, same_as, same_id_as e outros 7 tipos (~188 mil) são ligações de similaridade do ICIJ."
+    detalhe: >
+      Contar 'relacionamentos' de uma entidade sem filtrar rel_type conta também
+      nomes parecidos. Para o mesmo ator em fontes diferentes o ICIJ usa
+      same_name_as (104.170) e similar (46.761): são dedução, não prova.
+      node_id é único em cada tabela de nós (entities, officers, addresses,
+      intermediaries) e todo node_id_start das relações existe em alguma tabela
+      de nós, então o join fecha; a chave é node_id, comum às 5 tabelas de nós.
+    tabelas: [relationships]
+    colunas: [rel_type, node_id_start, node_id_end]
+    severidade: silencioso
+    verificado: "rel_type: officer_of 1.720.357, registered_address 832.721, intermediary_of 598.546, same_name_as 104.170, similar 46.761, same_company_as 15.523, connected_to 12.145 (15 tipos, 3.339.267 arestas); node_id_start: 1.131.496 distintos, 0 sem nó — medido 2026-11-04"
+  - id: vazio_em_texto_e_datas_varchar
+    resumo: "Campo ausente é texto vazio '' (não NULL): count(incorporation_date) = 814.344 mas 25.874 são ''. Datas (incorporation_date, inactivation_date, start_date) são VARCHAR em formatos mistos ('Sep 25, 2012', '31-OCT-2014', '9/9/2015', 'OCT-2019')."
+    detalhe: >
+      IS NOT NULL não filtra nada; use <> ''. Converter data exige tratar pelo
+      menos 4 formatos e vem de fonte diferente (sourceID). country_codes é lista
+      separada por ';' ('ZWE;GBR'), então filtrar país é LIKE '%BRA%' e não igualdade;
+      o campo countries traz nome por extenso ('Brazil').
+    tabelas: [entities, officers, relationships, addresses]
+    colunas: [incorporation_date, inactivation_date, struck_off_date, start_date, end_date, country_codes, countries]
+    severidade: silencioso
+    verificado: "entities: incorporation_date '' em 25.874 de 814.344, nn=814.344; country_codes LIKE '%BRA%' = 1.532 entidades e 5.024 officers — medido 2026-11-04"
+  - id: officers_sem_documento_homonimia
+    resumo: "officers (771.315) tem só name e países, sem CPF, CNPJ ou data de nascimento; casar com sócios do CNPJ por nome produz homônimos em massa (ver bloqueio T48-3)."
+    detalhe: >
+      Dos 5.024 officers com BRA no country_codes, nenhum tem documento. Uma
+      linha de officers pode ser um 'node' de fonte distinta para a mesma pessoa
+      (ver same_name_as). Sem segunda chave (endereço, data) o cruzamento por
+      nome não identifica beneficiário final. Há linha com countries = 'ok'
+      (dado deslocado da fonte).
+    tabelas: [officers, entities]
+    colunas: [name, countries]
+    severidade: silencioso
+    verificado: "officers: 771.315 linhas, 5.024 com BRA, countries = 'ok' em 1; entities com BRA 1.532 — medido 2026-11-04; casamento por nome com br_me_cnpj.socios medido antes em respostas.md (2.293 de 4.025 nomes casam, 'ROBERTO RESTUM' casa 944)"

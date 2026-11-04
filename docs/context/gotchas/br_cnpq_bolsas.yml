@@ -1,0 +1,27 @@
+dataset: br_cnpq_bolsas
+gotchas:
+  - id: serie_termina_em_2022_e_grao_muda_em_2021
+    resumo: "microdados vai de 2002 a 2022 (nada depois). Até 2020 há ~1 linha por processo; em 2021 e 2022 o mesmo processo aparece em mais de uma linha (234.178 linhas para 150.384 processos em 2021), então COUNT(*) por ano infla o número de bolsas."
+    detalhe: >
+      Para contar bolsas ou bolsistas use COUNT(DISTINCT processo) (ou
+      beneficiario), não COUNT(*). O valor total por ano é contínuo
+      (R$ 1,18 bi em 2021, R$ 1,70 bi em 2022 contra R$ 1,30 bi em 2020), ou seja,
+      a soma de valor não sofre dupla contagem, só a contagem de linhas. A
+      mesma chave (ano, processo, beneficiário, modalidade, valor) repete em
+      101 linhas de 2018.
+    tabelas: [microdados]
+    colunas: [processo, ano]
+    severidade: silencioso
+    verificado: "2020: 149.553 linhas / 149.546 processos; 2021: 234.178 / 150.384; 2022: 227.257 / 167.437; valor por ano em R$ mi: 2014 3.135, 2020 1.297, 2021 1.184, 2022 1.698 — medido 2026-11-04"
+  - id: colunas_que_so_existem_a_partir_de_2021
+    resumo: "titulo_projeto, unidade_orcamentaria, data_inicio_processo e data_fim_processo só vêm preenchidos em 2021-2022 (data_* só 2022: 227.257 linhas); plano_interno e fonte_recurso são 100% vazias."
+    detalhe: >
+      Análise de projeto por título ou por unidade orçamentária cobre só os 2
+      últimos anos. categoria_nivel falha em 75% das linhas. O município de origem
+      não existe (só sigla_uf_origem, nula em 259 mil linhas) e sigla_uf_destino
+      tem o valor 'EXTERIOR' (1.145) além das UFs. valor tem 925 nulos (359 em
+      2002, 561 em 2003) e um negativo (2004).
+    tabelas: [microdados]
+    colunas: [titulo_projeto, unidade_orcamentaria, data_inicio_processo, data_fim_processo, plano_interno, fonte_recurso, sigla_uf_origem, valor]
+    severidade: silencioso
+    verificado: "count: data_inicio_processo 227.257 (só 2022), titulo_projeto 387.644 (2021-22), unidade_orcamentaria 461.435, plano_interno 0, fonte_recurso 0; valor nulo 923 em 2002-2004 — medido 2026-11-04"

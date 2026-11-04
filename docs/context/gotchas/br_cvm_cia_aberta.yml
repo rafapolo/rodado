@@ -26,3 +26,9 @@ gotchas:
     colunas: [CNPJ_CIA, CNPJ_Companhia, CD_CVM]
     severidade: erro
     verificado: "cadastro: 2.678 linhas, todas no formato pontuado; 2.515 de 2.531 CNPJs distintos casam com a matriz em br_me_cnpj.estabelecimentos depois de regexp_replace(CNPJ_CIA, '\\D', '', 'g') — medido 2026-10-10"
+  - id: codigo_negociacao_e_o_ticker_com_buracos
+    resumo: "fca_valor_mobiliario.Codigo_Negociacao é o ticker da B3 (liga br_b3_cotacoes.cotacoes.ticker), mas 281 de 7.025 linhas de ações e units em bolsa têm código fora do formato (000000, 4030, 25585) ou minúsculo ('tgma3'). Use upper(trim(...)); BPAC11, CSNA3 e CMIN3 ficam sem par."
+    tabelas: [fca_valor_mobiliario]
+    colunas: [Codigo_Negociacao, CNPJ_Companhia, Mercado]
+    severidade: aviso
+    verificado: "Mercado = 'Bolsa', Valor_Mobiliario em Ações Ordinárias, Ações Preferenciais e Units: 7.025 linhas, 571 companhias, 4.220 no formato de ticker, 281 fora (49 companhias) — medido 2026-11-04"

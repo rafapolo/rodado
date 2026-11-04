@@ -1,0 +1,14 @@
+dataset: br_ba_feiradesantana_camara_leis
+gotchas:
+  - id: sem_coluna_de_data
+    resumo: "A tabela não tem data nem número como coluna: só categoria, titulo, resumo e texto. Ano e número da norma estão dentro do titulo em formatos diferentes ('LEI Nº 3331, DE 21 DE JUNHO DE 2012.', 'LEI PROMULGADA Nº 4/1953', 'RESOLUÇÃO Nº 367/2000'). Extrair o ano por regexp no fim do título falha em 1.247 das 6.033 normas (20%); o ano de alguns títulos extraídos é lixo (3473, 3474, 3477 são o número da lei, não o ano)."
+    tabelas: [microdados]
+    colunas: [titulo]
+    severidade: silencioso
+    verificado: "6.033 linhas, 6.033 titulo distintos; regexp de 4 dígitos no fim do título vazia em 1.247 linhas e devolve 3473, 3474, 3477 como 'ano' em outras — medido 2026-11-04"
+  - id: texto_muito_variavel_e_categorias
+    resumo: "texto vai de poucas linhas até 3,27 milhões de caracteres (média 2.888): há consolidações inteiras e o regimento interno em uma só linha; 4 textos se repetem. categoria mistura espécies (Leis Ordinárias 3.367, Decretos Legislativos 1.428, Resoluções 523, Lei Promulgada 345, Decretos 218, Leis Complementares 124, Emendas à Lei Orgânica 27, Regimento interno 1): filtre por categoria antes de contar 'leis'. É só a legislação da Câmara de Vereadores de Feira de Santana (BA)."
+    tabelas: [microdados]
+    colunas: [texto, categoria]
+    severidade: silencioso
+    verificado: "length(texto): média 2.888, máx 3.272.351; 6.029 textos distintos em 6.033 linhas; nenhuma linha com texto nulo ou menor que 50 caracteres; categorias acima — medido 2026-11-04"

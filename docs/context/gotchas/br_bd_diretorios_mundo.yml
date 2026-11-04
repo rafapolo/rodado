@@ -1,0 +1,14 @@
+dataset: br_bd_diretorios_mundo
+gotchas:
+  - id: pais_inclui_entidades_historicas_sem_iso
+    resumo: "pais tem 277 linhas mas só 249 códigos ISO3/M49: 28 entidades históricas ou sem ISO (Zanzibar, Iêmen do Norte e do Sul, Coreia, Vietnã do Sul) têm sigla_iso3 e id_m49 nulos. Juntar por nome ou contar linhas dá 277 países, o correto é 249."
+    detalhe: >
+      sigla_iso3 e id_m49 nulos em 28 linhas, sigla_iso2 em 29, sigla_cow em 60,
+      sigla_pnud em 86. Junte sempre por sigla_iso3 não nula. nome_pt tem 275 valores
+      distintos de 277 linhas (2 repetidos) e nome_oficial_en é nulo em 28.
+      Também nomenclatura_comum_mercosul (13.744) e sistema_harmonizado (6.620)
+      são tabelas de códigos de mercadoria de 6/8 dígitos, não de país.
+    tabelas: [pais]
+    colunas: [sigla_iso3, id_m49, nome_pt, sigla_iso2]
+    severidade: silencioso
+    verificado: "277 linhas, 249 id_m49 distintos, sigla_iso3 nulo em 28, nome_pt 275 distintos — medido 2026-11-04"

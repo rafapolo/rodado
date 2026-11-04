@@ -1,0 +1,28 @@
+dataset: br_mgi_pncp
+gotchas:
+  - id: valor_homologado_com_registros_impossiveis
+    resumo: "valorTotalHomologado e valorTotalEstimado têm registros de bilhões a trilhões de reais que a fonte aceitou: somar sem corte dá R$ 5.289 bi homologados em 2024, dos quais 88% estão em 81 registros acima de R$ 1 bi. Corte por registro (ex.: menor que R$ 1 bi) ou use a mediana antes de qualquer total."
+    detalhe: >
+      O maior de 2024 é R$ 2.900 bi do Tribunal Superior Eleitoral (fornecimento de água
+      e esgoto, inexigibilidade); depois R$ 634 bi de Tefé (livros) e R$ 157 bi de São Luís.
+      O valor estimado de 2025 soma R$ 266 trilhões. O erro vem da fonte: o espelho federal
+      br_mgi_compras_publicas.contratacao traz os mesmos números (R$ 3.820 bi em 2024 para as
+      mesmas contratações) e br_pncp.contratos também. Sem os registros de R$ 1 bi ou mais, 2024
+      tem R$ 639,6 bi homologados (R$ 220 bi na esfera municipal); a mediana por contratação
+      é R$ 12 mil.
+    tabelas: [contratacao]
+    colunas: [valorTotalHomologado, valorTotalEstimado]
+    severidade: silencioso
+    verificado: "2024: 883.981 contratações com homologado > 0, R$ 5.288,8 bi; 81 com R$ 1 bi ou mais somam R$ 4.649,2 bi, 16 com R$ 10 bi ou mais; 2025 R$ 5.193 bi e 116 acima de R$ 1 bi; estimado de 2025 R$ 266.451 bi — medido 2026-11-04"
+  - id: municipio_no_struct
+    resumo: "O município e a UF do órgão estão dentro do STRUCT unidadeOrgao (codigoIbge, ufSigla, municipioNome), e a esfera dentro de orgaoEntidade (esferaId F, E, M, D, N). unidadeOrgao.codigoIbge tem 7 dígitos e casa com o diretório sem conversão."
+    tabelas: [contratacao]
+    colunas: [unidadeOrgao, orgaoEntidade]
+    severidade: aviso
+    verificado: "esfera M em 2024: 583.164 contratações com valor, 4.703 códigos de 7 dígitos, 4.703 no diretório, nenhum nulo — medido 2026-11-04"
+  - id: chave_liga_ao_mgi_compras
+    resumo: "numeroControlePNCP é único (4.250.794 linhas) e liga a br_mgi_compras_publicas.contratacao.numero_controle_pncp: 99,7% das 1.001.583 contratações federais do MGI estão aqui, com o mesmo valor homologado em 99,8%."
+    tabelas: [contratacao]
+    colunas: [numeroControlePNCP]
+    severidade: aviso
+    verificado: "998.538 de 1.001.583 casam; 851.032 de 852.713 com homologado igual — medido 2026-11-04"

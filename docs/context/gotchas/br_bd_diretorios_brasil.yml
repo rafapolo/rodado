@@ -1,0 +1,32 @@
+dataset: br_bd_diretorios_brasil
+gotchas:
+  - id: cep_com_municipio_em_lista
+    resumo: "Em cep, 395 CEPs que atravessam mais de um município trazem id_municipio como lista separada por vírgula ('2919207,2927408') e, em 3 deles, sigla_uf também ('PB,RN'). O join por igualdade com municipio.id_municipio perde essas linhas sem erro, e nome_municipio vem NULL nelas."
+    tabelas: [cep]
+    colunas: [id_municipio, sigla_uf, nome_municipio]
+    severidade: silencioso
+    verificado: "905.210 CEPs distintos; 395 com id_municipio fora de municipio (lista com vírgula), nome_municipio NULL; 3 com sigla_uf em lista — medido 2026-11-04"
+  - id: municipio_5571_linhas
+    resumo: "municipio tem 5.571 linhas, não 5.570: Boa Esperança do Norte (MT, 5101837) é o município novo e vem sem id_municipio_rf, id_municipio_tse, id_municipio_bcb, id_comarca, id_regiao_saude e ddd. Junção por esses códigos devolve 5.570 e o município novo some; por id_municipio devolve 5.571."
+    tabelas: [municipio]
+    colunas: [id_municipio_rf, id_municipio_tse, id_municipio_bcb]
+    severidade: silencioso
+    verificado: "count(*) = 5.571; count(id_municipio_rf) = count(id_municipio_tse) = count(id_municipio_bcb) = 5.570; a linha sem código é 5101837 — medido 2026-11-04"
+  - id: codigos_alternativos_sem_zero
+    resumo: "id_municipio_rf (SIAFI/Receita) e id_municipio_tse são números SEM zero à esquerda e com tamanhos diferentes (rf: 1 a 4 dígitos; tse: 2 a 5), enquanto id_municipio tem 7 dígitos e id_municipio_6 tem 6. Junte como inteiro (try_cast ... AS INTEGER), nunca por texto, e nunca confunda id_municipio_6 (sem dígito verificador, usado pelo SUS) com id_municipio_rf."
+    tabelas: [municipio]
+    colunas: [id_municipio_rf, id_municipio_tse, id_municipio_6]
+    severidade: silencioso
+    verificado: "tamanho de id_municipio_rf: 4 dígitos = 4.572, 3 = 899, 2 = 90, 1 = 9; id_municipio_tse: 5 dígitos = 5.051, 4 = 467 — medido 2026-11-04"
+  - id: escola_ausente_sem_coordenada
+    resumo: "escola é um catálogo de 299.547 escolas, das quais 87.161 estão com situacao_catalogo = 'Ausente' (fora do cadastro vigente) e 212.386 'Presente'. latitude/longitude são texto e faltam em 134.348 linhas (44,8%): 80.144 das Ausentes e 54.204 das Presentes. Não use a tabela como retrato das escolas ativas sem filtrar situacao_catalogo."
+    tabelas: [escola]
+    colunas: [situacao_catalogo, latitude, longitude]
+    severidade: silencioso
+    verificado: "Presente 212.386, Ausente 87.161; try_cast(latitude AS DOUBLE) nulo em 134.348 de 299.547 — medido 2026-11-04"
+  - id: amazonia_legal_773
+    resumo: "amazonia_legal soma 773 municípios (capital_uf soma 27). Conferir contra a lista oficial antes de usar a flag como recorte da região."
+    tabelas: [municipio]
+    colunas: [amazonia_legal]
+    severidade: aviso
+    verificado: "sum(amazonia_legal) = 773 e sum(capital_uf) = 27 em 5.571 linhas — medido 2026-11-04"

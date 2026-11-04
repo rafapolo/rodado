@@ -65,3 +65,15 @@ gotchas:
     colunas: [v00397, v00398, v00399, v00400, v00401, v00402]
     severidade: aviso
     verificado: "2026-11-03: SIDRA 6892 n6 ano 2022 contra agregados_municipio em 3303401, 3550308, 1100015 e 4314902"
+  - id: sexo_do_responsavel_em_agregados
+    resumo: "O sexo da pessoa responsável pelo domicílio existe, só não tem tabela com esse nome: está em agregados_municipio/bairro/distrito/subdistrito e setor_censitario, cruzado com tipo de domicílio, fonte de água, banheiro, esgoto, lixo, composição familiar e cor/raça (49 variáveis; feminino = número par, masculino = o anterior)."
+    detalhe: >
+      Chefia feminina por município sem sobreposição - (v01338+v01340+v01342+v01344+v01346) /
+      (v01337…v01346) (cor/raça × sexo, particiona os domicílios com responsável). Segunda
+      partição independente pela fonte de água, v00183…v00198. As duas dão 49,11% e 49,15% no
+      Brasil e correlação 0,9996 entre os 5.570 municípios. Procure no
+      agregados_dicionario_variaveis por 'Sexo da pessoa responsável'.
+    tabelas: [agregados_municipio, setor_censitario]
+    colunas: [v01337, v01338, v00183, v00184]
+    severidade: aviso
+    verificado: "35.317.162 domicílios chefiados por mulher de 71.921.679 com responsável identificado (v00001 = 72.438.953) — medido 2026-11-04"

@@ -1,0 +1,32 @@
+dataset: br_inep_avaliacao_alfabetizacao
+gotchas:
+  - id: ausente_conta_como_nao_alfabetizado
+    resumo: "Em alunos, o aluno ausente (presenca = 0) vem com alfabetizado = 0 e sem proficiencia: 244.381 em 2023 e 267.772 em 2024. A média simples de alfabetizado dá 50,2% (2023) e 52,2% (2024), abaixo do oficial. A taxa oficial usa peso_aluno sobre quem fez a prova."
+    detalhe: >
+      Com peso_aluno, soma(peso x alfabetizado) / soma(peso) dá 59,2% em 2024,
+      igual à taxa_alfabetizacao de meta_alfabetizacao_brasil (59,2). Em 2023
+      dá 57,5% contra 55,9% oficial: a divergência de 1,6 ponto vem do ajuste
+      de participação que o INEP aplicou, que a tabela de alunos não carrega.
+      alfabetizado, presenca e preenchimento_caderno são texto '0'/'1'.
+    tabelas: [alunos]
+    colunas: [alfabetizado, presenca, peso_aluno]
+    severidade: silencioso
+    verificado: "alunos 2023: 1.747.439 linhas, 244.381 ausentes, 877.427 alfabetizados, 1.502.809 com proficiencia; 2024: 2.120.560, 267.772 ausentes, 1.107.119 alfabetizados; média ponderada 59,2% (2024) e 57,5% (2023); oficial 59,2 e 55,9 — medido 2026-11-04"
+  - id: rede_codigos_se_sobrepoem
+    resumo: "Em municipio e uf, rede mistura categorias que se contêm: 0 = total (federal, estadual, municipal e privada), 5 = pública estadual e municipal, 6 = pública com federal, além de 1 federal, 2 estadual, 3 municipal, 4 privada. Somar ou tirar média entre redes conta o mesmo aluno duas vezes; fixe uma rede."
+    tabelas: [municipio, uf, alunos]
+    colunas: [rede, taxa_alfabetizacao]
+    severidade: silencioso
+    verificado: "municipio 2024: rede 0 em 398 municípios, 2 em 1.086, 3 em 5.448, 5 em 5.516; 2023: só 2, 3 e 5 (sem a rede 0) — medido 2026-11-04"
+  - id: meta_brasil_so_publica_2025_sem_municipio
+    resumo: "meta_alfabetizacao_brasil só tem rede Pública e vai até 2025 (66,0%); municipio e uf não têm 2025. taxa_alfabetizacao é percentual (0 a 100), não proporção. serie é sempre 2 (2º ano do fundamental)."
+    tabelas: [meta_alfabetizacao_brasil, municipio, uf]
+    colunas: [taxa_alfabetizacao]
+    severidade: silencioso
+    verificado: "brasil: 2023 55,9; 2024 59,2; 2025 66,0 (participação 86,0 / 87,37 / 88,0); municipio: taxa mínima 2,12 e máxima 100,0, anos 2023 e 2024 — medido 2026-11-04"
+  - id: id_escola_mascarado_em_alunos
+    resumo: "alunos.id_escola é um código mascarado (60000001 a 60042811), não o do INEP: 0 de 36.776 escolas de 2023 e 0 de 42.497 de 2024 casam com br_inep_indicador_nivel_socioeconomico.escola. Não há como ligar aluno ao INSE da escola; use a tabela municipio/uf."
+    tabelas: [alunos]
+    colunas: [id_escola]
+    severidade: silencioso
+    verificado: "join por id_escola com INSE escola 2023, 0 casamentos; min 60000001 max 60042811 — medido 2026-11-04"

@@ -1,0 +1,26 @@
+dataset: br_senado_dadosabertos
+gotchas:
+  - id: autoria_com_uf_so_em_metade
+    resumo: "O sufixo '(PARTIDO/UF)' em materias.autoria, de onde se tira o partido e a UF do senador autor, existe em só 84.687 das 162.921 matérias (52%): o resto é autoria de órgão, comissão, Câmara ou Poder Executivo. A UF/partido por texto também depende da época (2003: 1.304 de 3.187; 2023: 4.282 de 5.559). Para autoria por senador filtre antes por autoria que contenha o padrão."
+    tabelas: [materias]
+    colunas: [autoria]
+    severidade: silencioso
+    verificado: "autoria LIKE '%/%)' em 84.687 de 162.921; 2003 = 1.304 de 3.187, 2010 = 1.198 de 2.971, 2023 = 4.282 de 5.559 — medido 2026-11-04"
+  - id: materias_inclui_requerimentos
+    resumo: "materias é todo tipo de proposição, não só projeto de lei: dos 162.921 documentos, 63.380 são Requerimento, 40.896 Projeto de Lei Ordinária, 17.095 Projeto de Decreto Legislativo, 14.095 Mensagem, 7.504 Medida Provisória. Produção legislativa por senador sem filtrar tipoDocumento conta requerimento como lei. Só 10.779 estão tramitando (tramitando = 'Sim', texto)."
+    tabelas: [materias]
+    colunas: [tipoDocumento, tramitando]
+    severidade: silencioso
+    verificado: "tipoDocumento: Requerimento 63.380, PL Ordinária 40.896, PDL 17.095, Mensagem 14.095, MPV 7.504; tramitando Sim 10.779, Não 152.142 — medido 2026-11-04"
+  - id: votacoes_so_nominais_e_incompletas
+    resumo: "votacoes tem 3.619 linhas de 1988 a 2026 (3.119 aprovadas, 389 rejeitadas, 108 sem resultado), muito menos que as votações reais do plenário: são as registradas com matéria. totalVotosSim/Nao/Abstencao estão preenchidos só em parte (2015 e 2001: nenhuma; 2019: 76 de 193) e resultadoVotacao é letra (A, R, E, P). Não some votos sem checar count(totalVotosSim)."
+    tabelas: [votacoes]
+    colunas: [totalVotosSim, totalVotosNao, resultadoVotacao]
+    severidade: silencioso
+    verificado: "linhas por ano: 2019 = 193 (com totalVotosSim 76), 2015 = 17 (0), 2001 = 56 (0); resultadoVotacao A = 3.119, R = 389, NULL = 108 — medido 2026-11-04"
+  - id: senadores_e_retrato_da_legislatura_atual
+    resumo: "senadores tem 81 linhas, uma por senador da legislatura atual (27 UFs), sem histórico; colunas em CamelCase. Não serve para saber quem era senador em 2005; o partido é o atual. comissoes (216) também é retrato, com DataInicio."
+    tabelas: [senadores, comissoes]
+    colunas: [CodigoParlamentar, SiglaPartidoParlamentar, UfParlamentar]
+    severidade: aviso
+    verificado: "senadores: 81 linhas, 81 CodigoParlamentar distintos, 27 UfParlamentar — medido 2026-11-04"

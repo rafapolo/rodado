@@ -1,0 +1,26 @@
+dataset: br_poder360_pesquisas
+gotchas:
+  - id: ano_e_da_eleicao_serie_para_em_2023
+    resumo: "ano é o ano da eleição a que a pesquisa se refere, não o da pesquisa: ano = 2022 tem pesquisas feitas desde 2019-08-18 e ano = 2024 e 2026 já aparecem com data de 2023. A série para em 2023-11-21: não há pesquisa de 2024 em diante, e 2026 tem só 56 linhas. Use data para quando a pesquisa foi feita."
+    tabelas: [microdados]
+    colunas: [ano, data]
+    severidade: silencioso
+    verificado: "data mínima 2000-01-01 e máxima 2023-11-21; ano 2022: 29.174 linhas com data de 2019-08-18 a 2023-03-23; ano 2024: 2.610 linhas (data de 2023-01-22 a 2023-11-21); ano 2026: 56 linhas, todas de 2023-10-03 — medido 2026-11-04"
+  - id: mistura_tipos_de_pergunta_e_respostas_nao_candidato
+    resumo: "Uma linha é pesquisa × cenário × resposta, e percentual mistura tipo (estimulada 107.236, espontânea 32.434, rejeição 21.172, nulo 1.233) e tipo_voto (votos totais 157.305, votos válidos 4.770). Rejeição não soma com intenção de voto, e a soma de um cenário pode dar 200 ou mais (várias respostas por entrevistado). nome_candidato também traz respostas que não são candidato ('brancos / nulos', 'não sabem / não responderam', ~25 variações de texto)."
+    tabelas: [microdados]
+    colunas: [percentual, tipo, tipo_voto, nome_candidato]
+    severidade: silencioso
+    verificado: "162.075 linhas, 9.883 pesquisas, 24.459 cenários; cenários presidenciais de 2022 com soma de estimulada/votos totais de 200,0 (id_cenario 25720, 26939) e 105,0 (28005); 'não sabem / não responderam' 9.554 linhas, 'brancos / nulos' 4.449 — medido 2026-11-04"
+  - id: percentual_150_e_chave_repetida
+    resumo: "percentual está na escala 0 a 100, mas há uma linha com 150,0 (rejeição de Guilherme Boulos, cenário 23327, 2020-08-13). A chave (cenário, candidato, tipo, turno, tipo_voto) repete em 428 linhas (162.075 linhas para 161.647 chaves): deduplique antes de somar."
+    tabelas: [microdados]
+    colunas: [percentual, id_cenario, id_candidato_poder360]
+    severidade: silencioso
+    verificado: "percentual: mín 0,0, máx 150,0, 1 linha acima de 100; 428 linhas repetidas na chave — medido 2026-11-04"
+  - id: municipio_nulo_fora_de_prefeito
+    resumo: "nome_municipio é nulo em 92.983 linhas (57%): são pesquisas estaduais e nacionais. Pesquisa municipal só existe para cargo = prefeito (68.998 linhas). cargo 'congresso nacional' tem 4 linhas."
+    tabelas: [microdados]
+    colunas: [nome_municipio, cargo]
+    severidade: silencioso
+    verificado: "cargo: prefeito 68.998; presidente 39.725; governador 37.767; senador 15.581; nome_municipio nulo 92.983 — medido 2026-11-04"

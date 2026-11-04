@@ -1,0 +1,20 @@
+dataset: politicos
+gotchas:
+  - id: view_mistura_historico_da_camara_e_senado_atual
+    resumo: "politicos.contato é uma view que une a Câmara e o Senado e não é a lista de quem está no cargo: camara tem 7.583 deputados de todas as legislaturas (só 526 em exercício; os demais Vacância 2.719, Fim de Mandato 986, Suplência 324, Afastado 189 e 2.813 sem situação), enquanto senado tem só os 81 atuais. Contar casa = 'camara' conta ex-deputados; filtre em_exercicio."
+    tabelas: [contato]
+    colunas: [casa, em_exercicio, situacao]
+    severidade: silencioso
+    verificado: "camara 7.583 linhas (7.583 id), em_exercicio 526; senado 81 linhas, todas em exercício; situação da Câmara: NULL 2.813, Vacância 2.719, Fim de Mandato 986, Exercício 526, Suplência 324, Afastado 189 — medido 2026-11-04"
+  - id: contato_so_de_quem_esta_em_exercicio
+    resumo: "email só existe para quem está em exercício (513 dos 526 deputados em exercício e 78 dos 81 senadores; zero entre os ex-deputados); cpf vem em 3.708 deputados e em nenhum senador; partido e uf faltam em parte dos ex-deputados (partido nulo em 2.345, uf nula em 35). Não use a view como cadastro histórico de contatos nem para ligar o senador ao CPF."
+    tabelas: [contato]
+    colunas: [email, cpf, partido, uf]
+    severidade: silencioso
+    verificado: "camara: email 513, cpf 3.708, partido 5.238, uf 7.548 de 7.583; senado: email 78, cpf 0, partido 81, uf 81 de 81 — medido 2026-11-04"
+  - id: nome_difere_do_nome_civil
+    resumo: "nome é o nome parlamentar e nome_completo é o nome civil: diferem em 7.501 das 7.664 linhas. Para juntar com CPF/nome de outras bases (TSE, filiação) use nome_completo (camara) e não nome. nome_eleitoral existe só na Câmara (7.583) e é nulo no Senado. Os id são das casas (id_deputado, código do senador) e não se comparam entre elas."
+    tabelas: [contato]
+    colunas: [nome, nome_completo, nome_eleitoral, id]
+    severidade: silencioso
+    verificado: "nome <> nome_completo em 7.501 de 7.664 linhas; nome_eleitoral preenchido em 7.583 (camara) e 0 (senado) — medido 2026-11-04"

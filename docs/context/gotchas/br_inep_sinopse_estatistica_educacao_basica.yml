@@ -1,0 +1,48 @@
+dataset: br_inep_sinopse_estatistica_educacao_basica
+gotchas:
+  - id: docente_hierarquia_e_dupla_contagem
+    resumo: "As tabelas docente_* misturam totais e partes (rede 'Pública' junto de Estadual/Municipal/Federal, localizacao 'Total' junto de Urbana/Rural, etapa 'Educação Básica' junto das etapas) e o mesmo docente aparece em mais de uma linha. Somar sem fixar um nível dá de 2x a 3x o número real."
+    detalhe: >
+      Educação Básica 2023 (docente_localizacao, Brasil): Pública 1.975.816 + Privada 586.452 =
+      2.562.268; Municipal 1.303.727 + Estadual 702.304 + Federal 38.089 + Privada 586.452 =
+      2.630.572; Urbana + Rural (3.947.719 e 725.307 somados nas cinco redes) não fecha com o
+      Total. A diferença entre as somas é o docente que leciona em mais de uma rede ou zona, que
+      a fonte conta em cada uma. Para o total de docentes use etapa_ensino = 'Educação Básica',
+      rede em ('Pública','Privada') e localizacao = 'Total'. Sem filtro, a soma de 2023 é 9,3
+      milhões na etapa Educação Básica e 15,5 milhões só na rede Pública.
+    tabelas: [docente_localizacao, docente_etapa_ensino, docente_faixa_etaria_sexo, docente_regime_contrato, docente_escolaridade]
+    colunas: [quantidade_docente, rede, localizacao, etapa_ensino]
+    severidade: silencioso
+    verificado: "2023 Educação Básica, localizacao Total: Pública 1.975.816, Privada 586.452, Municipal 1.303.727, Estadual 702.304, Federal 38.089 — medido 2026-11-04"
+  - id: docente_2024_sem_total_publico
+    resumo: "Em docente_localizacao, 2024 não tem localizacao = 'Total' para as redes públicas (só Urbana e Rural), mas tem para a Privada. Filtrar localizacao = 'Total' devolve a Privada (598.277) e some a Pública, Estadual, Municipal e Federal desse ano; 2023 e 2025 vêm completos."
+    detalhe: >
+      Em 2024, para Educação Básica, as redes públicas têm 11.140 linhas (5.570 municípios x
+      Urbana e Rural); em 2023 têm 16.710 (x Total). Docentes públicos 2024 = Urbana 1.652.509 +
+      Rural 361.174 = 2.013.683 (soma das duas zonas, que pode contar o mesmo professor duas
+      vezes). Nas etapas filhas (Creche, Anos Iniciais, EJA...) a Privada de 2024 também falta o
+      Total (11.140 linhas).
+    tabelas: [docente_localizacao]
+    colunas: [localizacao, ano]
+    severidade: silencioso
+    verificado: "2024 Educação Básica: redes públicas só Urbana/Rural (5.570 linhas cada); Privada com Total = 598.277; 2023 Pública Total = 1.975.816 e 2025 = 2.028.092 — medido 2026-11-04"
+  - id: matricula_etapas_sobrepostas
+    resumo: "Em localizacao (matrícula), somar todas as etapas dá 50,0 milhões em 2023, mas 'Educação Especial - Classes Comuns' (1.617.420) é matrícula já contada nas outras etapas, e Educação Profissional / EJA se sobrepõem. Sem a classe comum especial, são 48,4 milhões. Use um recorte de etapa, não a soma."
+    detalhe: >
+      Tabela localizacao, 2023, por etapa: EF Anos Iniciais 14.426.650, EF Anos Finais 11.681.558,
+      Médio Regular 7.676.743, Pré-escola 5.338.282, Creche 4.122.873, EJA 2.589.815, Educação
+      Profissional 2.413.825, Especial Classes Comuns 1.617.420, Especial Classes Exclusivas
+      154.010. Aqui a rede é só Federal, Estadual, Municipal e Privada (sem 'Pública') e a
+      localização só Urbana e Rural (sem 'Total'): as etapas são mais simples que as das docente_*,
+      mas as sobreposições de etapa permanecem. Em etapa_ensino_serie as etapas Anos Iniciais e
+      Finais, Médio, Pré-escola e Creche têm os mesmos totais.
+    tabelas: [localizacao, etapa_ensino_serie]
+    colunas: [quantidade_matricula, etapa_ensino]
+    severidade: silencioso
+    verificado: "2023: soma de todas as etapas de localizacao = 50.021.176; Ensino Fundamental (iniciais + finais) = 26.108.208 nas duas tabelas — medido 2026-11-04"
+  - id: serie_2007_2025_municipios
+    resumo: "A série cobre 2007 a 2025 com 5.565 municípios até 2012 e 5.570 de 2013 em diante (5.571 em 2025). Matrículas do Ensino Fundamental caem de 32,3 milhões (2007) para 25,8 milhões (2025)."
+    tabelas: [localizacao, docente_localizacao]
+    colunas: [ano, id_municipio]
+    severidade: aviso
+    verificado: "municípios distintos 5.565 (2007-2012), 5.570 (2013-2024), 5.571 (2025); EF 2007 = 32.346.623 e 2025 = 25.806.767 — medido 2026-11-04"

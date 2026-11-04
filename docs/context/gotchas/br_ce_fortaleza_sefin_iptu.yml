@@ -1,0 +1,20 @@
+dataset: br_ce_fortaleza_sefin_iptu
+gotchas:
+  - id: um_ano_uma_face_por_linha
+    resumo: "face_quadra tem uma linha por face de quadra e um único ano (2023): 68.932 linhas = 68.932 id_face_quadra. Não é série nem cadastro de imóveis; é a planta de valores por trecho de rua. Comparação entre anos não é possível com este dataset."
+    tabelas: [face_quadra]
+    colunas: [ano, id_face_quadra]
+    severidade: silencioso
+    verificado: "ano 2023 em todas as 68.932 linhas; count(DISTINCT id_face_quadra) = 68.932 — medido 2026-11-04"
+  - id: valor_por_m2_com_cauda_longa
+    resumo: "valor (R$ por m² do terreno na planta genérica de valores) varia de 0,83 a 5.573,49, com média de 102,1; os máximos são trechos da Avenida Beira Mar (5.573,49). Média simples entre faces pesa igual faces de tamanhos diferentes; metrica é texto com a medida da face (20, 40, 60, 80, 120... com centenas de valores distintos), não categoria."
+    tabelas: [face_quadra]
+    colunas: [valor, metrica]
+    severidade: silencioso
+    verificado: "valor: mín 0,83, máx 5.573,49, média 102,1, nenhum zero nem nulo; metrica mais comum 20 (15.158 faces), 40 (8.891), 60 (6.371), 80 (5.065) — medido 2026-11-04"
+  - id: indicadores_booleanos_e_pavimentacao
+    resumo: "indicador_* são booleanos de infraestrutura da face (água, esgoto, galeria pluvial, sarjeta, iluminação, arborização) com nulos (indicador_agua nulo em 87 faces; 94% das faces têm água) e pavimentacao é texto (Asfalto 46.594, Pedra rústica 14.726, Sem Pavimentação 5.031, Paralelepípedo 2.259, Premoldado 150, Concreto 107, nulo 65). Nulo não é 'não tem'."
+    tabelas: [face_quadra]
+    colunas: [indicador_agua, indicador_esgoto, pavimentacao]
+    severidade: silencioso
+    verificado: "indicador_agua preenchido em 68.845 de 68.932, verdadeiro em 65.054; pavimentacao nulo em 65 — medido 2026-11-04"

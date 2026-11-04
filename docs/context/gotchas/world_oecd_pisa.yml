@@ -1,0 +1,33 @@
+dataset: world_oecd_pisa
+gotchas:
+  - id: peso_e_valores_plausiveis
+    resumo: "A nota do aluno é plausible_value_1..10_<área>, não uma coluna única, e a média da população exige final_student_weight. A média simples erra: Brasil 2025 em matemática dá 368,6 sem peso e 377,0 com peso (PV1). Para erro-padrão use as 80 réplicas student_weight_1..80."
+    detalhe: >
+      Com final_student_weight e a primeira plausible value, o Brasil sai com
+      matemática 377,3 (2015), 382,8 (2018), 377,8 (2022) e 377,0 (2025), leitura
+      408,1, 413,1, 411,5 e 408,1, ciência 401,1, 404,5, 403,4 e 408,9. Os
+      oficiais da OCDE para 2015, 2018 e 2022 são 377/407/401, 384/413/404 e
+      379/410/403, ou seja, a PV1 sozinha fica a 1-2 pontos; a média das 10 PVs
+      aproxima mais.
+    tabelas: [student]
+    colunas: [final_student_weight, plausible_value_1_mathematics, plausible_value_1_reading, plausible_value_1_science]
+    severidade: silencioso
+    verificado: "Brasil PV1 ponderada: mat 377,3/382,8/377,8/377,0, simples 374,4/384,3/380,3/368,6 (2015/2018/2022/2025); oficial 377/384/379 — medido 2026-11-04"
+  - id: colunas_vazias_por_edicao
+    resumo: "Colunas existem para todas as edições, mas só algumas são preenchidas por ano: plausible_value_*_ldw e *_environmental_science só em 2025 (721.036 alunos), body_mass_index só em 2018 e 2022 (71.235 e 91.074), e gender é nulo em 141.925 alunos de 2025 (19%) contra 2 a 79 nas outras edições. Média ou contagem entre anos conta nulo como ausência."
+    tabelas: [student]
+    colunas: [plausible_value_1_ldw, plausible_value_1_environmental_science, body_mass_index, gender]
+    severidade: silencioso
+    verificado: "count por ano (2015/2018/2022/2025): ldw 0/0/0/721.036; body_mass_index 0/71.235/91.074/0; gender nulo 0/2/79/141.925 — medido 2026-11-04"
+  - id: cobertura_de_dominio_e_pais
+    resumo: "Em 2018 5.377 alunos não têm nota (606.627 de 612.004 com PV em matemática, leitura e ciência) e em 2025 8.653 não têm matemática/leitura; os países passam de 73 (2015) a 90 (2025). A amostra do Brasil triplica em 2025 (30.140 alunos contra 10.798 em 2022). Contar alunos de um país entre anos não mede população."
+    tabelas: [student]
+    colunas: [plausible_value_1_mathematics]
+    severidade: silencioso
+    verificado: "alunos por edição 519.334 / 612.004 / 613.744 / 755.721, países 73/80/80/90; Brasil 23.141 / 10.691 / 10.798 / 30.140 — medido 2026-11-04"
+  - id: codigos_texto
+    resumo: "gender é texto com os códigos '1' e '2' (decodifique pelo dicionário da OCDE); student_id é único (uma linha por aluno e edição, 2.5 milhões no total) e a tabela não é particionada: projete poucas colunas, pois são mais de 400."
+    tabelas: [student]
+    colunas: [gender, student_id]
+    severidade: aviso
+    verificado: "student_id distinto = linhas em cada edição (519.334, 612.004, 613.744, 755.721); gender 1: 260.245 e 2: 259.089 em 2015 — medido 2026-11-04"

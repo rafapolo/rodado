@@ -1,0 +1,20 @@
+dataset: br_ggb_relatorio_lgbtqi
+gotchas:
+  - id: grupo_categorias_sobrepostas
+    resumo: "Em grupo_lgbtqia as categorias se sobrepõem (Trans ou Travesti contém Transsexual e Travesti, listados à parte): somar homicidios entre grupos dá mais que o total do ano — 2019 soma 450 contra 329 em brasil, e prop_homicidios_total soma 136,8%. Use uma categoria por vez ou só as de nível mais alto, nunca a soma da tabela."
+    tabelas: [grupo_lgbtqia]
+    colunas: [grupo, homicidios, prop_homicidios_total]
+    severidade: silencioso
+    verificado: "soma de homicidios por ano em grupo_lgbtqia: 2011 267; 2014 314 (95,9%); 2015 119 (115,0%); 2017 433; 2018 415; 2019 450 (136,8%); 2020 228; brasil 2019 = 329 — medido 2026-11-04"
+  - id: totais_nao_batem_entre_tabelas
+    resumo: "As cinco tabelas medem o mesmo fenômeno e os totais por ano divergem: 2019 tem 329 em brasil e causa_obito e local, 321 em raca_cor e 450 em grupo_lgbtqia; 2017 tem 445 em brasil e 433 no grupo; 2015 tem 319 e 316 e 119 no grupo. local soma 116,8% em 2017. Use brasil para o total anual e as outras só para composição, sem dividir uma pelas outras."
+    tabelas: [brasil, causa_obito, grupo_lgbtqia, local, raca_cor]
+    colunas: [homicidios, prop_homicidios_total]
+    severidade: silencioso
+    verificado: "brasil 2000-2019: 130 a 445 (pico 445 em 2017, 329 em 2019); raca_cor 2019 321; local 2017 445 com soma de prop 116,8; raca_cor 2015 316 com 101,3% — medido 2026-11-04"
+  - id: cobertura_por_ano_e_nulos
+    resumo: "As tabelas de composição cobrem anos diferentes e têm nulo onde a fonte não detalhou: causa_obito e local só em 2019; grupo_lgbtqia 2011-2020 (prop nulo em 2011-2013, 2016 e 2020); raca_cor 2011-2019 com homicidios nulo em 2011, 2012 e 2016; brasil de 2000 a 2019. ano é texto. Série nacional (sem UF), 145 linhas ao todo, e é contagem de casos documentados pelo grupo, não de estatística oficial de saúde."
+    tabelas: [brasil, causa_obito, grupo_lgbtqia, local, raca_cor]
+    colunas: [ano]
+    severidade: silencioso
+    verificado: "brasil 20 anos (2000-2019); causa_obito 13 linhas de 2019; grupo_lgbtqia anos 2011-2020; raca_cor homicidios nulo em 2011, 2012 e 2016 — medido 2026-11-04"

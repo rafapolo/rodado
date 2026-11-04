@@ -1,0 +1,15 @@
+dataset: br_tesouro_cauc
+gotchas:
+  - id: retrato_unico_e_valores_sao_vencimentos
+    resumo: "situacao_municipios é um retrato único (5.569 municípios, vencimentos de 2026-10 a 2027-04) com 1 coluna por item do CAUC ('1.1', '3.2.4'...) e valores TEXTO: '!' = pendência, 'dd/mm/aa' = data até a qual o item está regular, 'Desabilitado' = não se aplica. Não há série histórica."
+    detalhe: >
+      Para 'municípios com pendência no item 1.1' use "1.1" = '!' (1.052 de
+      5.569); no 3.1.1 são 820; no 1.2, 465. Datas são dd/mm/aa em texto (ano de dois
+      dígitos, '26/04/27'). Os nomes das colunas são códigos; o significado está
+      em legenda_itens (78 linhas, com nivel 'municipios' ou 'estados'). A coluna
+      Fonte é 100% nula e População é VARCHAR. O Código IBGE tem 7 dígitos e é
+      único (5.569 linhas, 5.569 códigos); falta 1 dos 5.570 municípios.
+    tabelas: [situacao_municipios, situacao_estados, legenda_itens]
+    colunas: [1.1, 1.2, 3.1.1, Fonte, População]
+    severidade: silencioso
+    verificado: "5.569 linhas = 5.569 Código IBGE; '1.1' = '!' em 1.052; '1.2' = '!' em 465 e '30/10/26' em 5.104; '3.1.1' = '!' em 820; Fonte nn=0 — medido 2026-11-04"

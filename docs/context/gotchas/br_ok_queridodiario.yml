@@ -1,0 +1,26 @@
+dataset: br_ok_queridodiario
+gotchas:
+  - id: cobertura_524_municipios
+    resumo: "A tabela diarios cobre só 524 municípios (9,4% dos 5.570) e começa em 2023-07-10; 2023 é meio ano (53.079 diários em 511 municípios) e 2026 vai até 2026-10-30 com 446 municípios. Contar diários por município ou por ano mede a cobertura do Querido Diário, não a atividade da prefeitura."
+    tabelas: [diarios]
+    colunas: [territory_id, date]
+    severidade: silencioso
+    verificado: "524 territory_id distintos; min(date) = 2023-07-10, max = 2026-10-30; diários por ano 2023 = 53.079, 2024 = 108.005, 2025 = 92.316, 2026 = 72.652 — medido 2026-11-04"
+  - id: diarios_repetidos
+    resumo: "326.052 linhas para 301.859 url distintas (24.193 linhas repetidas) e 313.575 combinações de município, data, edição e extra. Uma mesma edição pode estar duplicada: conte url distintas, não linhas."
+    tabelas: [diarios]
+    colunas: [url, edition, is_extra_edition]
+    severidade: silencioso
+    verificado: "count(*) = 326.052; count(DISTINCT url) = 301.859; count(DISTINCT territory_id, date, edition, is_extra_edition) = 313.575 — medido 2026-11-04"
+  - id: edition_e_rotulo_livre
+    resumo: "edition é rótulo livre da edição ('Volume 9 - Nº. BAC20240726' ou vazio), não número de páginas nem sequência: vazio em 11.306 linhas; is_extra_edition marca 15.695 edições extras. A tabela não tem tamanho do diário: texto e texto_bytes estão em br_ok_queridodiario_texto.diarios."
+    tabelas: [diarios]
+    colunas: [edition, is_extra_edition]
+    severidade: aviso
+    verificado: "edition vazio ou nulo em 11.306 linhas; is_extra_edition verdadeiro em 15.695 — medido 2026-11-04"
+  - id: territory_id_e_ibge_7_digitos
+    resumo: "territory_id é o código IBGE de 7 dígitos (todas as 326.052 linhas casam com br_bd_diretorios_brasil.municipio.id_municipio); as colunas vêm em inglês (territory_name, state_code, date, scraped_at)."
+    tabelas: [diarios]
+    colunas: [territory_id, state_code]
+    severidade: aviso
+    verificado: "length(territory_id) = 7 em 100% das linhas; 0 fora de br_bd_diretorios_brasil.municipio — medido 2026-11-04"

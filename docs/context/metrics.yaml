@@ -334,3 +334,17 @@ metrics:
       ano` numa tabela `*_mes` agrupa por mês do calendário, não por ano
       civil, e produz resultado sem sentido em silêncio. Achado
       respondendo tasks/perguntas.md T52-4, 2026-08-25.
+
+  taxa_chefia_feminina:
+    description: percentual dos domicílios particulares permanentes ocupados cuja pessoa responsável é mulher (Censo 2022)
+    unit: percentual (0-100)
+    grain: [id_municipio]
+    source_table: br_ibge_censo_2022.agregados_municipio
+    expression: "100.0 * (v01338+v01340+v01342+v01344+v01346) / NULLIF(v01337+v01339+v01341+v01343+v01345+v01338+v01340+v01342+v01344+v01346, 0)"
+    required_filters: ["sem partição (5.570 linhas, uma por município, só Censo 2022): filtrar id_municipio ou id_uf para o recorte"]
+    synonyms: [chefia feminina, mulheres chefes de família, domicílios chefiados por mulheres, responsável mulher]
+    verified: "49,11% no Brasil (35.317.162 de 71.921.679) e 49,15% pela partição de fonte de água; r = 0,9996 entre as duas nos 5.570 municípios; média municipal 44,9% — 2026-11-04"
+    caveat: >-
+      o denominador soma só os domicílios com sexo e cor/raça do responsável (99,3% do
+      v00001 = 72.438.953); a média simples dos municípios (44,9%) é menor que a nacional
+      porque município pequeno tem menos responsáveis mulheres.

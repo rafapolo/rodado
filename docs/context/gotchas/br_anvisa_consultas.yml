@@ -1,0 +1,26 @@
+dataset: br_anvisa_consultas
+gotchas:
+  - id: lmr_sentinela_999_e_zero
+    resumo: "Em agrotoxicos, NU_LMR é texto e usa 999 para 'limite não estabelecido' (433 linhas de TIPO_LIMITE 'Não estabelecido', mais 12 de outros tipos) e 0 para 'limite de tolerância' (230 linhas). Média ou máximo de NU_LMR sem filtrar por TIPO_LIMITE = 'Limite máximo' é lixo. A unidade é sempre mg/kg."
+    tabelas: [agrotoxicos]
+    colunas: [NU_LMR, TIPO_LIMITE]
+    severidade: silencioso
+    verificado: "9.676 linhas; Limite máximo SIM 8.759 (0,002 a 999, 11 com 999), Não estabelecido 433 todas 999, Limite de tolerância NÃO 221 todas 0, tolerância SIM 10; unidade MILIGRAMA/KILOGRAMA única — medido 2026-11-04"
+  - id: agrotoxico_nao_autorizado_na_lista
+    resumo: "agrotoxicos traz LMR de substâncias com ST_AUTORIZADO = 'NÃO' (473 linhas) e de linhas com DT_FIM_VIGENCIA preenchida (1.371): são limites históricos ou de substância banida. Para o limite em vigor filtre ST_AUTORIZADO = 'SIM' e DT_FIM_VIGENCIA nula."
+    tabelas: [agrotoxicos]
+    colunas: [ST_AUTORIZADO, DT_FIM_VIGENCIA]
+    severidade: silencioso
+    verificado: "ST_AUTORIZADO NÃO: 252 (Limite máximo) + 221 (tolerância) = 473; DT_FIM_VIGENCIA preenchida em 1.371 de 9.676; 385 substâncias × 164 culturas — medido 2026-11-04"
+  - id: registro_ativo_com_vencimento_passado
+    resumo: "Em alimentos, só 18% dos registros estão Ativos (8.700 de 48.956) e 108 desses Ativos têm DT_VENCIMENTO_REGISTRO anterior a hoje. 98% dos Inativos têm vencimento passado, mas a data vai até 2032 e começa em 1999. Use ST_SITUACAO_REGISTRO, não a data, para registro vigente; conte empresas com count(DISTINCT NU_CNPJ_EMPRESA) (7.507)."
+    tabelas: [alimentos]
+    colunas: [ST_SITUACAO_REGISTRO, DT_VENCIMENTO_REGISTRO]
+    severidade: silencioso
+    verificado: "alimentos: Inativo 40.256 (39.388 com vencimento passado), Ativo 8.700 (108 passado); 48.671 NU_REGISTRO_PRODUTO distintos para 48.956 linhas; vencimento de 1999-01-08 a 2032-01-05 — medido 2026-11-04"
+  - id: medicamentos_data_texto_mmaaaa_e_repeticao
+    resumo: "Em registros (só medicamentos), DATA_VENCIMENTO_REGISTRO é texto no formato MMAAAA sem separador ('122009' = dez/2009), com 3.923 nulos, um '000000' e 17 valores fora do padrão (5 e 4 dígitos, '07/2021'); já DATA_FINALIZACAO_PROCESSO é dd/mm/aaaa. A linha é registro × princípio ativo × produto: 42.661 linhas para 32.800 registros, então count(*) conta apresentação. 66% estão Inativos (28.159)."
+    tabelas: [registros]
+    colunas: [DATA_VENCIMENTO_REGISTRO, DATA_FINALIZACAO_PROCESSO, NUMERO_REGISTRO_PRODUTO]
+    severidade: silencioso
+    verificado: "length(DATA_VENCIMENTO_REGISTRO): 6 → 38.721; NULL 3.923; 5 → 8; 7 → 8; 4 → 1; 42.661 linhas, 32.800 registros distintos, 35.758 chaves (registro, princípio, produto); SITUACAO Inativo 28.159, Ativo 14.502 — medido 2026-11-04"

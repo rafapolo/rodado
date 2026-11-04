@@ -1,0 +1,35 @@
+dataset: br_mjsp_ckan
+gotchas:
+  - id: procon_so_2024_e_7_ufs
+    resumo: "procon tem só reclamações arquivadas em 2024 (AnoCalendario único) de 7 UFs (CE 51%, SP 35%, GO 8%, PE, SC, PB, MT); não representa o Brasil nem permite série ou ranking por estado."
+    detalhe: >
+      13.803 reclamações, todas com DataArquivamento em 2024 (as aberturas vão
+      de 2010 a 2024: 451 abertas antes de 2020). O Ceará sozinho tem 51% e
+      PB e MT têm 48 e 11 linhas: a proporção por UF reflete quais Procons
+      mandaram dado ao SINDEC, não litigiosidade. Não compare estados.
+    tabelas: [procon]
+    colunas: [UF, AnoCalendario, Regiao, CodigoRegiao]
+    severidade: silencioso
+    verificado: "UF: CE 7.071, SP 4.858, GO 1.161, PE 436, SC 218, PB 48, MT 11 (soma 13.803); AnoCalendario d=1 (2024); DataAbertura min 2010-01-19 — medido 2026-11-04"
+  - id: procon_documento_sem_zero_a_esquerda
+    resumo: "NumeroCNPJ perdeu zeros à esquerda (comprimentos 14, 13, 12, 5, 3...) e é nulo em 712 linhas; Tipo '1' = pessoa jurídica, '0' = física. Junte com lpad(NumeroCNPJ,14,'0') e só quando Tipo = '1'."
+    detalhe: >
+      Só 8.356 dos 13.091 documentos têm 14 dígitos. Valores de 3 e 5 caracteres
+      (138 e 13 linhas) não são CNPJ e não casam depois do lpad. Tipo = 0 tem 12
+      documentos de 11 dígitos (CPF). RadicalCNPJ também perde zeros e vale
+      '0' em alguns casos. Colunas da Receita (RazaoSocialRFB, CNAEPrincipal) são nulas
+      em 3.386 linhas (24,5%).
+    tabelas: [procon]
+    colunas: [NumeroCNPJ, RadicalCNPJ, Tipo]
+    severidade: silencioso
+    verificado: "length(NumeroCNPJ): 14 -> 8.356, 13 -> 3.994, 12 -> 555, 3 -> 138, 5 -> 13, nulo 712; CNAEPrincipal nn=10.417 de 13.803 — medido 2026-11-04"
+  - id: infopen_1351_colunas_com_nomes_que_quebram_o_sql
+    resumo: "infopen é 1 linha por estabelecimento prisional (1.514) com 1.351 colunas cujos nomes são o texto do questionário, com aspas, '|' e quebra de linha; um SELECT com nome citado sem escape dá Parser Error."
+    detalhe: >
+      Os nomes ('2.6 Módulo de oficinas | Outro(s). Qual(is)? | ...') não servem
+      como identificador. Consulte pelo ordinal (describe, depois COLUMNS('regex')
+      ou posição). Os totais prisionais por UF/ano estão em br_mj_sisdepen.
+    tabelas: [infopen]
+    colunas: []
+    severidade: aviso
+    verificado: "describe: 1.351 colunas, 1.514 linhas; 'Parser Error: syntax error at or near \"cela\"' ao citar o nome de coluna — medido 2026-11-04"

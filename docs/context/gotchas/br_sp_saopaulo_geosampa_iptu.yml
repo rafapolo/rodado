@@ -1,0 +1,44 @@
+dataset: br_sp_saopaulo_geosampa_iptu
+gotchas:
+  - id: valor_terreno_e_construcao_sao_por_m2
+    resumo: "valor_terreno e valor_construcao são valores de R$ por m² (mediana 1.603 e 2.205 em 2024; máx 32.871), não o valor venal do imóvel. SUM(valor_terreno) = R$ 11,6 bi não significa nada; o valor venal sai de area x valor."
+    detalhe: >
+      Valor venal aproximado = area_terreno * fracao_ideal * valor_terreno +
+      area_construida * valor_construcao * fator_obsolescencia. Em 2024 dá R$ 1,92
+      trilhão para 3,65 milhões de imóveis (632 milhões de m² de terreno e 563
+      milhões de m² construídos), ordem de grandeza da base do IPTU de São Paulo.
+      Usar valor_terreno direto como se fosse reais por imóvel subestima 100x.
+    tabelas: [iptu]
+    colunas: [valor_terreno, valor_construcao]
+    severidade: silencioso
+    verificado: "2024: sum(valor_terreno) = 11,6 bi e sum(valor_construcao) = 8,3 bi (somas de R$/m²); valor venal por área x valor = R$ 1.916 bi — medido 2026-11-04"
+  - id: um_retrato_por_ano_nao_somar_anos
+    resumo: "Cada ano (1995 a 2025) é o cadastro inteiro: 3.649.510 imóveis em 2024 e 3.806.436 em 2025, um por numero_contribuinte. Somar ou contar sem fixar ano empilha 31 vezes o mesmo imóvel."
+    detalhe: >
+      numero_contribuinte (SQL) é único dentro do ano em todos os 31 anos (linhas =
+      distintos). A tabela é muito grande (93 milhões de linhas, 447 arquivos): sempre
+      WHERE ano = X.
+    tabelas: [iptu]
+    colunas: [ano, numero_contribuinte]
+    severidade: silencioso
+    verificado: "linhas = count(distinct numero_contribuinte) em todos os anos 1995-2025; 2.356.614 (1995) a 3.806.436 (2025) — medido 2026-11-04"
+  - id: terreno_tem_ano_de_construcao_zero
+    resumo: "ano_construcao_corrigida = 0 e area_construida = 0 são os terrenos (98.498 em 2024, finalidade_imovel 'Terreno'); excluir antes de calcular idade ou m² construído médio. mes_inicio_vida_contribuinte = 0 em 5 linhas."
+    detalhe: >
+      O zero é ausência de construção, não ano 0. Há ainda ano_construcao_corrigida
+      entre 1 e 16 em 6 linhas (erro de digitação). fracao_ideal vale mais que 1 em 6
+      linhas (máx 500) e é 1 na maior parte. quantidade_esquina_imovel é VARCHAR
+      ('0'..'5').
+    tabelas: [iptu]
+    colunas: [ano_construcao_corrigida, area_construida, fracao_ideal, mes_inicio_vida_contribuinte]
+    severidade: silencioso
+    verificado: "2024: ano_construcao_corrigida = 0 em 98.498 linhas = finalidade_imovel 'Terreno' = area_construida 0; fracao_ideal > 1 em 6; mes_inicio = 0 em 5 — medido 2026-11-04"
+  - id: bairro_e_cep_vazios_nos_anos_antigos
+    resumo: "bairro só vem preenchido em 65% das linhas de 2024 (2.361.048 de 3.649.510), em 39% de 1995 e vazio a partir de 2025 não: 2025 traz 3.806.436 (100%). Agrupar por bairro em série longa mistura cobertura."
+    detalhe: >
+      cep é praticamente completo (657 nulos em 2024). Para geografia use cep ou
+      os campos de logradouro, não bairro, em séries que cruzam 2024/2025.
+    tabelas: [iptu]
+    colunas: [bairro, cep]
+    severidade: silencioso
+    verificado: "count(bairro): 1995 = 923.224 de 2.356.614; 2005 = 1.219.853; 2015 = 2.051.822; 2024 = 2.361.048; 2025 = 3.806.436 de 3.806.436 — medido 2026-11-04"

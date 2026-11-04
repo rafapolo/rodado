@@ -1,0 +1,48 @@
+dataset: br_inep_censo_educacao_superior
+gotchas:
+  - id: cine_nome_e_id_trocados
+    resumo: "Em curso, de 2009 a 2023 id_curso_cine guarda o NOME do curso ('Pedagogia') e nome_curso_cine guarda o CÓDIGO ('0113P01'); em 2024 estão na ordem certa e o código vem entre aspas literais ('\"0322B01\"')."
+    detalhe: >
+      Os rótulos das colunas estão invertidos em 15 dos 16 anos. Para agrupar
+      por curso CINE use COALESCE entre as duas, ou escolha por ano. No
+      2024 id_curso_cine = '"0322B01"' (com aspas dentro do texto): faça
+      replace(id_curso_cine, '"', '') antes de juntar com anos anteriores.
+      Já nome_area_geral/id_area_geral estão corretos.
+    tabelas: [curso]
+    colunas: [id_curso_cine, nome_curso_cine]
+    severidade: silencioso
+    verificado: "nome_curso_cine casa ^[0-9]{3,7}... em 100% das linhas de 2009-2023 (ex. 573.019 em 2022) e em 0 de 2024; id_curso_cine de 2024 = 720.349 linhas com aspas literais — medido 2026-11-04"
+  - id: grao_curso_polo_nao_e_curso
+    resumo: "Cada linha de curso é um curso x local de oferta (inclui polos EAD): 573.019 linhas em 2022 para 45.296 id_curso; COUNT(*) conta ofertas, não cursos. Matrículas somam sem dupla contagem."
+    detalhe: >
+      A explosão de linhas (52 mil em 2009, 720 mil em 2024) vem dos polos de EAD
+      (quantidade_vagas_ead de 1,6 para 18,6 milhões), não de mais cursos
+      (28.966 para 46.150 id_curso distintos). A soma de quantidade_matriculas
+      fecha com o Censo oficial: 9.444.116 (2022), 9.977.217 (2023), 10.227.266
+      (2024). Use COUNT(DISTINCT id_curso) para contar cursos.
+    tabelas: [curso]
+    colunas: [id_curso, quantidade_matriculas, quantidade_vagas]
+    severidade: silencioso
+    verificado: "2022: 573.019 linhas, 45.296 id_curso, 572.623 chaves (ano,ies,curso,município); sum(quantidade_matriculas) 2022=9.444.116, 2023=9.977.217, 2024=10.227.266 — medido 2026-11-04"
+  - id: municipio_e_uf_ausentes_por_ano
+    resumo: "sigla_uf/id_municipio são nulos em 11.778 linhas de 2024 e 1.261 de 2013 (cursos sem local); em 2022 o município vem como '0' e a UF nula em 9.603 linhas. Totais por UF ficam abaixo do nacional."
+    detalhe: >
+      Agregar por UF perde essas linhas; some o nacional sem group by para
+      fechar. A coluna rede é nula em 64.865 de 66.126 linhas de 2013 e
+      indicador_gratuito é nula em todo 2009 (52.146).
+    tabelas: [curso]
+    colunas: [sigla_uf, id_municipio, rede, indicador_gratuito]
+    severidade: silencioso
+    verificado: "2024: sigla_uf nula 11.778; 2013: 1.261; 2022: id_municipio '0' = 9.603 e sigla_uf nula 9.603; rede 2013 nn=1.261 de 66.126; indicador_gratuito 2009 nn=0 — medido 2026-11-04"
+  - id: codigo_de_organizacao_administrativa_muda
+    resumo: "tipo_organizacao_administrativa usa códigos diferentes em 2009 (1,2,3,6,8,9) e 2024 (1,2,3,4,5,7): o mesmo número não é a mesma categoria entre anos; também há colunas sempre zero."
+    detalhe: >
+      Em 2024 o código 4 concentra 638.763 das 720.349 linhas (polos de EAD de
+      instituição privada). Não compare código entre anos sem o dicionario. Colunas
+      constantes 0 em todos os anos: quantidade_vagas_processos_seletivos,
+      quantidade_inscritos_processos_seletivos, quantidade_ingressantes_processos_seletivos,
+      quantidade_ingressantes_outro_tipo_selecao.
+    tabelas: [curso]
+    colunas: [tipo_organizacao_administrativa, quantidade_vagas_processos_seletivos, quantidade_ingressantes_outro_tipo_selecao]
+    severidade: silencioso
+    verificado: "2009: códigos {1: 6.161, 2: 5.015, 3: 743, 6: 31.782, 8: 6.379, 9: 2.066}; 2024: {1: 10.352, 2: 8.608, 3: 255, 4: 638.763, 5: 61.435, 7: 936}; 4 colunas com min=max=0 — medido 2026-11-04"

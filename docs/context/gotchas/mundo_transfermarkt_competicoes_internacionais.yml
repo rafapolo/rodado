@@ -1,0 +1,20 @@
+dataset: mundo_transfermarkt_competicoes_internacionais
+gotchas:
+  - id: temporada_texto_com_virgula_e_cobertura
+    resumo: "temporada é texto com virgula ('2003,2004'), não '2003/04' nem um ano inteiro; a tabela é só a Champions League de 2003-04 a 2023-24 (21 temporadas, 2.617 partidas), sem 2024-25 em diante. Faltam jogos: 2019-20 tem 119 partidas (de 125), 2007-08 e 2013-14 têm 124. O dataset se chama 'competições internacionais' mas só tem champions_league."
+    tabelas: [champions_league]
+    colunas: [temporada, data]
+    severidade: silencioso
+    verificado: "21 temporadas; 125 partidas por temporada exceto 2007,2008 (124), 2013,2014 (124), 2019,2020 (119); data de 2003-09-15 a 2024-06-01 — medido 2026-11-04"
+  - id: publico_zero_e_valor_nulo
+    resumo: "publico = 0 não é falta de dado: 103 das 125 partidas de 2020-21 (e 13 de 2019-20) foram a portas fechadas pela pandemia. Média de público desse período sem filtrar subestima. valor_equipe_titular_* (valor de mercado Transfermarkt) é nulo em 36 partidas de 2017-18 e 3 de 2009-10; publico e arbitro estão sempre preenchidos."
+    tabelas: [champions_league]
+    colunas: [publico, valor_equipe_titular_mandante, valor_equipe_titular_visitante]
+    severidade: silencioso
+    verificado: "publico = 0: 2020,2021 103 de 125; 2019,2020 13 de 119; 2021,2022 6; count(valor_equipe_titular_mandante): 2017,2018 89 de 125; 2009,2010 122 de 125 — medido 2026-11-04"
+  - id: colunas_por_time_mandante_visitante
+    resumo: "Uma linha por partida com colunas *_mandante e *_visitante (gols, escanteios, faltas, valor da equipe): para estatística por time é preciso empilhar os dois lados (UNION ALL). Times vêm só pelo nome (128 nomes distintos), sem id de clube."
+    tabelas: [champions_league]
+    colunas: [time_mandante, time_visitante, gols_mandante, gols_visitante]
+    severidade: aviso
+    verificado: "gols_mandante nulo em 0 partidas em todas as 21 temporadas; 2.617 partidas, chave (temporada, data, mandante, visitante) única, 128 times; esquema com 2 colunas por estatística — medido 2026-11-04"

@@ -1,0 +1,24 @@
+dataset: world_sofascore_competicoes_futebol
+gotchas:
+  - id: uma_linha_por_partida_e_periodo
+    resumo: "A linha é partida × período (coluna tempo): 1 = primeiro tempo, 2 = segundo tempo, e 3 e 4 = prorrogação (só mata-mata da Champions). gols_mandante e gols_visitante são os gols daquele período, não da partida; o placar final é a soma dos períodos de id_partida. Contar linhas conta cada partida duas vezes (Brasileirão 2023: 760 linhas para 380 partidas)."
+    detalhe: >
+      Gols no Brasileirão 2016: 392 no 1º tempo + 520 no 2º = 912 em 379
+      partidas, 2,4 por jogo. Filtrar tempo = '1' e somar daria só os gols do
+      primeiro tempo.
+    tabelas: [brasileirao_serie_a, uefa_champions_league]
+    colunas: [tempo, gols_mandante, gols_visitante, id_partida]
+    severidade: silencioso
+    verificado: "Brasileirão 2023: 380 partidas em tempo 1 e 380 em tempo 2, gols 439 + 507; Champions 2008: tempo 3 e 4 com 4 partidas cada — medido 2026-11-04"
+  - id: temporada_incompleta_e_gaps
+    resumo: "Cobertura irregular: Brasileirão 2020 tem 266 partidas (de 380), 2021 tem 489 (inclui jogos de 2020 adiados e passa de 380), 2016 e 2024 têm 379, e 2025 só 10 partidas (29 a 31/03/2025). Champions não tem 2020, 2019 vai só até 2019-06-01 com 28 partidas e 2022 até 2022-11-02 nas fases iniciais. ano é o ano da data, não a temporada (use temporada)."
+    tabelas: [brasileirao_serie_a, uefa_champions_league]
+    colunas: [ano, temporada, id_partida]
+    severidade: silencioso
+    verificado: "partidas distintas Brasileirão: 2016 379; 2017-2019 380; 2020 266; 2021 489; 2022-2023 380; 2024 379; 2025 10; Champions: 2007 96; 2008-2015 125; 2019 28; sem 2020 — medido 2026-11-04"
+  - id: gols_esperados_so_a_partir_de_2022
+    resumo: "gol_esperado_* (xG) só existe de 2022 em diante no Brasileirão (380 por ano) e só 96 partidas da Champions de 2022 (de 147); antes é nulo. posse_bola e passe vêm em todas as temporadas. Média de xG por temporada compara coberturas diferentes."
+    tabelas: [brasileirao_serie_a, uefa_champions_league]
+    colunas: [gol_esperado_mandante, gol_esperado_visitante, grande_chance_mandante]
+    severidade: silencioso
+    verificado: "count(gol_esperado_mandante) Brasileirão: 0 em 2016-2021, 380 em 2022 e 2023, 379 em 2024; Champions 2022: 96 de 147 partidas — medido 2026-11-04"

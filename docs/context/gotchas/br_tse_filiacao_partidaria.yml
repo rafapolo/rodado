@@ -1,0 +1,26 @@
+dataset: br_tse_filiacao_partidaria
+gotchas:
+  - id: microdados_e_retrato_atual
+    resumo: "microdados é o retrato de agosto/2026 (data_extracao 2026-08-04, 554 mil linhas de 2024): 17,5 milhões de registros de filiação, uma linha por registro_filiacao, não por pessoa. Não é a série histórica de filiados; para quem já saiu de um partido use microdados_antigos."
+    tabelas: [microdados]
+    colunas: [registro_filiacao, titulo_eleitor]
+    severidade: silencioso
+    verificado: "17.534.818 linhas = 17.534.818 registro_filiacao, 17.419.642 títulos (112.996 títulos com mais de uma linha, filiado em partidos diferentes); situacao_registro Regular 16.717.635, Cancelado 746.556, Suspenso 70.625 — medido 2026-11-04"
+  - id: regular_com_desfiliacao
+    resumo: "situacao_registro = 'Regular' não exclui data_desfiliacao preenchida: 720.199 registros Regulares têm data de desfiliação (715.930 depois da filiação), então filtrar só por Regular conta filiado que já pediu desfiliação. Para filiados ativos exija data_desfiliacao e data_cancelamento nulas."
+    tabelas: [microdados]
+    colunas: [situacao_registro, data_desfiliacao, data_cancelamento]
+    severidade: silencioso
+    verificado: "Regular com data_desfiliacao: 720.199 de 16.717.635; data_desfiliacao preenchida em 782.651 linhas no total — medido 2026-11-04"
+  - id: cpf_e_data_incompletos
+    resumo: "cpf nulo em 416.529 registros (2,4%); 522.621 filiações são anteriores a 1985 e 657 têm data_filiacao exatamente 1980-01-01, a data piso do sistema, não filiação real."
+    tabelas: [microdados, microdados_antigos]
+    colunas: [cpf, data_filiacao]
+    severidade: silencioso
+    verificado: "cpf preenchido em 17.118.289 de 17.534.818; data_filiacao 1980-01-01 em 657 linhas, antes de 1985 em 522.621 — medido 2026-11-04"
+  - id: antigos_outro_vocabulario
+    resumo: "microdados_antigos (24,7 milhões de linhas, processamento até 2021-06) usa situacao_registro em caixa alta e com outro conjunto (REGULAR, CANCELADO, DESFILIADO, SUB_JUDICE) e nomes diferentes de coluna (titulo_eleitoral, não titulo_eleitor; sem cpf nem registro_filiacao; zona/secao inteiros). Não une com microdados sem renomear, e traz 10 filiações datadas depois do processamento (até 2023-10)."
+    tabelas: [microdados_antigos]
+    colunas: [situacao_registro, titulo_eleitoral, data_filiacao]
+    severidade: silencioso
+    verificado: "antigos: REGULAR 16.017.608, CANCELADO 7.819.233, DESFILIADO 828.892; 20.046.640 títulos distintos; 343 DESFILIADO sem data_desfiliacao — medido 2026-11-04"

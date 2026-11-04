@@ -1,0 +1,30 @@
+dataset: br_ms_sipni_doses_historicas
+gotchas:
+  - id: view_aborta_ler_por_ano
+    resumo: "A view br_ms_sipni_doses_historicas.doses_agregadas aborta com 'INTERNAL Error: Unsupported type for NumericValueUnionToValue', mesmo com filtro de ano. Ler cada partição direto: read_parquet('.../doses_agregadas/ano=AAAA/**/*.parquet', union_by_name=true), uma por vez."
+    tabelas: [doses_agregadas]
+    severidade: aviso
+    verificado: "count(*) na view com ANO=2019 aborta; read_parquet de ano=2019 com union_by_name devolve 2.603.737 linhas — medido 2026-11-04"
+  - id: qt_dose_texto_e_nula
+    resumo: "Todas as colunas são texto, inclusive QT_DOSE (use try_cast). Em 2006, 2007, 2008, 2010 e 2011 cerca de 392 mil linhas por ano (~9%) têm QT_DOSE nula, espalhadas em todos os meses; somar doses nesses anos subconta."
+    tabelas: [doses_agregadas]
+    colunas: [QT_DOSE]
+    severidade: silencioso
+    verificado: "QT_DOSE nula: 2006 393.816 de 4.204.085; 2007 392.302; 2008 393.105; 2010 392.695; 2011 391.257; zero nos demais anos exceto 2004 (9), 2005 (6), 2009 (2) — medido 2026-11-04"
+  - id: serie_termina_em_maio_de_2019
+    resumo: "O ano 2019 só vai de janeiro a maio, e maio está incompleto (295.641 linhas contra ~575 mil nos meses anteriores). Total de 2019 (29,6 milhões de doses) não é comparável com 2018 (114,2 milhões)."
+    tabelas: [doses_agregadas]
+    colunas: [ANOMES]
+    severidade: silencioso
+    verificado: "2019: 201901 8.244.026 doses, 201902 7.057.859, 201903 6.859.240, 201904 5.731.904, 201905 1.665.150; nenhum mês depois — medido 2026-11-04"
+  - id: grao_muda_em_2004
+    resumo: "O número de linhas triplica em 2004 (1,43 milhão em 2002, 1,31 milhão em 2003, 4,13 milhões em 2004) sem que as doses subam (141 milhões em 2003, 171 milhões em 2004): a granularidade passou a detalhar mais. Conte doses (QT_DOSE), nunca linhas, ao comparar anos."
+    tabelas: [doses_agregadas]
+    severidade: silencioso
+    verificado: "linhas: 2003 1.311.805; 2004 4.127.645; 2018 7.945.858. Tipos de imunobiológico distintos: 16 em 1994, 33 em 2000, 70 em 2016 — medido 2026-11-04"
+  - id: municipio_seis_digitos
+    resumo: "MUNIC tem 6 dígitos (sem o dígito verificador do IBGE), não 7: não casa direto com id_municipio de outras tabelas. Use substr(id_municipio,1,6)."
+    tabelas: [doses_agregadas]
+    colunas: [MUNIC]
+    severidade: silencioso
+    verificado: "length(MUNIC) = 6 em todas as 7.945.858 linhas de 2018; 5.570 municípios distintos em 2017-2019 — medido 2026-11-04"
