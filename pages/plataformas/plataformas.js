@@ -57,7 +57,7 @@
       var href = it.url || (encodeURIComponent(it.slug) + '/');
       var titulo = campo(it, 'title');
       var dek = campo(it, 'dek');
-      html += '<a class="teaser-tile" href="' + href + '">' +
+      html += '<a class="teaser-tile" href="' + href + '" target="_blank" rel="noopener">' +
         '<img src="' + it.screenshot + '" alt="' + (campo(it, 'caption') || titulo) + '" loading="lazy">' +
         '<span class="teaser-title">' + titulo + '</span>' +
         (dek ? '<p class="teaser-dek">' + dek + '</p>' : '') +
