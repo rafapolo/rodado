@@ -563,6 +563,9 @@ def _run_sql_ssh(sql: str) -> dict:
         # s3://healthbr-data: third-party public SIPNI bucket (CC-BY 4.0), read
         # through the SECRET in ~/.duckdbrc — this prefix only
         f"SET allowed_directories=['{BEELINK_HOME}/rodado/', '{BEELINK_HOME}/duckdb_tmp/', 's3://healthbr-data/'];\n"
+        # DuckDB 2.0: httpfs reads the CA bundle from disk, so the lock above blocks
+        # s3://healthbr-data unless the bundle is allowed (1.5 accepts this too)
+        "SET allowed_paths=['/etc/ssl/certs/ca-certificates.crt'];\n"
         "SET enable_external_access=false;\n"
         "SET lock_configuration=true;\n"
         f"{sql}"
