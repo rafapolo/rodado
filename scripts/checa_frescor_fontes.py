@@ -13,7 +13,7 @@ data mais recente DENTRO do dado, que vem de dataset_freshness.yaml — ou, na
 falta dele, o `updated_at` (parquet mais novo da tabela). Para cada entrada imprime o que a fonte diz, o
 que o espelho tem e o comando do gate (scripts/scrap/atualiza_fonte.py) que
 atualizaria. Não roda scraper e não grava nada: é a Fase 1 de
-tasks/automatizar_atualizacao_fontes.md — automatizar a checagem, não a
+tasks/done/automatizar_atualizacao_fontes.md — automatizar a checagem, não a
 correção.
 
 Dois avisos de leitura:
