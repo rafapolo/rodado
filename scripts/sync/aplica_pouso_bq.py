@@ -42,13 +42,16 @@ def aplica(chave, ok, estado):
     prefixo = f"{POUSO}/{chave}"
     sys.path.insert(0, str(REPO / "scripts/sync"))
     from fonte_propria import recusa
+    import retrato_novo
     ds_tb = ".".join(chave.split("/")[:2])
-    if (m := recusa(ds_tb)):
+    retrato = retrato_novo.config(ds_tb)
+    if not retrato and (m := recusa(ds_tb)):
         log("  recusada:", chave, m)
         return False
     dest = RAIZ / chave.rsplit("/", 1)[0]
     p, col, n = ok["p"], ok["col"], ok["bq"]
-    novo = dest / f".novo_{p}"
+    # retrato novo (último retrato + *_historico): cai no diretório de trabalho, nunca em <tb>/
+    novo = Path(os.path.expanduser(retrato_novo.pasta(ds_tb))) / p if retrato else dest / f".novo_{p}"
     subprocess.run(["rm", "-rf", str(novo)], check=True)
     r = corre(MC, "cp", "--recursive", "-q", prefixo + "/", str(novo) + "/")
     if r.returncode:
@@ -60,6 +63,19 @@ def aplica(chave, ok, estado):
         subprocess.run(["rm", "-rf", str(novo)])
         log("  conferência falhou:", chave, conf)
         return False
+    if retrato:
+        # --anexa confere D contra a fonte e o passado contra o histórico; ocupado => próxima passada
+        r = subprocess.run(["bash", "-c", retrato_novo.comando(ds_tb, novo=shlex.quote(str(novo))).replace("flock ", "flock -n ", 1)],
+                           capture_output=True, text=True, cwd=str(REPO))
+        if r.returncode:
+            log("  --anexa não concluiu (ocupado ou recusado), o retrato fica em", novo, (r.stdout + r.stderr)[-300:])
+            return False
+        estado["aplicadas"].append(chave)
+        estado["bytes"] += ok.get("bytes", 0)
+        ESTADO.write_text(json.dumps(estado))
+        corre(MC, "rm", "--recursive", "--force", prefixo + "/")
+        log(f"  {chave}: anexado ao histórico ({n:,} linhas)")
+        return True
     backup = H / f"backups/pouso_{time.strftime('%Y%m%d')}/{dest.relative_to(RAIZ)}"
     antigos = " ".join(shlex.quote(a) for a in ok.get("antigos") or [])
     mover = f"mkdir -p {shlex.quote(str(backup))} && mv {antigos} {shlex.quote(str(backup))}/ && " if antigos else ""

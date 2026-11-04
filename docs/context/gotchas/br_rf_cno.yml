@@ -8,6 +8,8 @@ gotchas:
       juntas). Os 192/312 retratos de 2024-08-05 em diante estão em microdados_historico,
       areas_historico, cnaes_historico e vinculos_historico (ver historico_como_ler).
       Evolução ou estado numa data passada sai do histórico, nunca das tabelas atuais.
+      Retrato novo da fonte entra por `gera_retrato_historico.py --anexa` (docs/tecnico/mes_novo_cno.md):
+      as datas acima mudam a cada anexo; a vigente de cada tabela é `max(fim)` do seu `*_historico`.
     tabelas: [microdados, areas, cnaes, vinculos]
     colunas: [data_extracao]
     severidade: silencioso
@@ -45,7 +47,8 @@ gotchas:
       repetida dentro do mesmo retrato (areas, vinculos de 2025-06-04) vira uma linha
       por cópia. A data D precisa ser um retrato existente: entre dois retratos o
       histórico responde como o anterior. O último retrato de microdados é 2026-01-28;
-      o de areas, cnaes e vinculos é 2026-09-12 (as tabelas não andam juntas).
+      o de areas, cnaes e vinculos é 2026-09-12 (as tabelas não andam juntas; um retrato novo
+      anexado por `--anexa` avança `max(fim)` da sua tabela, e só dela).
     tabelas: [microdados_historico, areas_historico, cnaes_historico, vinculos_historico]
     colunas: [inicio, fim]
     severidade: silencioso

@@ -41,6 +41,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 import bq_quota  # noqa: E402
+import retrato_novo  # noqa: E402
 from ressincroniza_bq import (BEELINK, BILLING_PROJECT, BQ_PROJECT, ROOT, duck,  # noqa: E402
                               escreve_shards, exige_espaco, exige_sandbox, sh)
 
@@ -112,6 +113,17 @@ def planeja(client, bq, alvo):
         mudou.append({"p": p, "disco": no_disco.get(p, 0), "bq": n, "antigos": antigos})
     so_disco = sorted(str(p) for p in no_disco if p not in no_bq)
 
+    retrato = retrato_novo.config(alvo)
+    if retrato:
+        # último retrato + *_historico: só entra partição mais nova que o histórico; as antigas
+        # "faltam" no disco por desenho (estão em *_historico) e não podem voltar como arquivo solto
+        ult = duck(f"SELECT max(fim)::VARCHAR u FROM read_parquet('{remoto}_historico/*.parquet');")
+        if not ult:
+            return {"tabela": alvo, "erro": f"sem {tb}_historico no disco"}
+        ult = ult[0]["u"]
+        mudou = [m for m in mudou if str(m["p"]) > ult]
+        recusadas = []
+
     custo = 0
     if mudou:
         lista = ", ".join(literal(m["p"], tipo) for m in mudou)
@@ -120,7 +132,7 @@ def planeja(client, bq, alvo):
         custo = seco.total_bytes_processed
         if custo is None:
             custo = int(sum(m["bq"] for m in mudou) * por_linha)
-    return {"tabela": alvo, "col": col, "tipo": tipo, "restrita": restrita, "por_linha": por_linha, "mudou": mudou, "recusadas": recusadas,
+    return {"tabela": alvo, "retrato": bool(retrato), "col": col, "tipo": tipo, "restrita": restrita, "por_linha": por_linha, "mudou": mudou, "recusadas": recusadas,
             "so_disco": so_disco, "custo": custo,
             "falta": sum(m["bq"] - m["disco"] for m in mudou)}
 
@@ -171,7 +183,8 @@ def aplica(client, leitor, bq, pa, pq, plano, backup, reserva_gb):
             return {"tabela": alvo, "erro": falta, "feitas": feitas}
         if not bq_quota.reserve(estimado):
             return {"tabela": alvo, "erro": f"cota do mês: {bq_quota.status()}", "feitas": feitas}
-        novo = f"{remoto}/.novo_{m['p']}"
+        # retrato novo: cai no diretório de trabalho e passa pelo --anexa, nunca em <tb>/
+        novo = f"{retrato_novo.pasta(alvo)}/{m['p']}" if plano.get("retrato") else f"{remoto}/.novo_{m['p']}"
         with tempfile.TemporaryDirectory() as tmp:
             local = Path(tmp) / "p"
             local.mkdir()
@@ -195,6 +208,10 @@ def aplica(client, leitor, bq, pa, pq, plano, backup, reserva_gb):
         if not conf or conf[0]["n"] != m["bq"] or conf[0]["na"] != m["bq"]:
             return {"tabela": alvo, "erro": f"{where}: conferência no beelink falhou ({conf})",
                     "feitas": feitas}
+        if plano.get("retrato"):
+            print(f"    {where}: {m['bq']:,} linhas em {novo} (aguarda o --anexa)", flush=True)
+            feitas.append(m["p"])
+            continue
         # troca: antigos para o backup, novos entram com o próximo nome numérico livre
         dest = f"{backup}/{ds}/{tb}"
         antigos = " ".join(f"'{f}'" for f in m["antigos"])
@@ -206,6 +223,19 @@ def aplica(client, leitor, bq, pa, pq, plano, backup, reserva_gb):
            f"rmdir .novo_{m['p']}", check=True)
         print(f"    {where}: {m['disco']:,} -> {m['bq']:,}", flush=True)
         feitas.append(m["p"])
+
+    if plano.get("retrato"):
+        if not feitas:
+            return {"tabela": alvo, "feitas": feitas, "ganho": 0}
+        # histórico + tabela atual = o retrato mais novo; o --anexa confere e só então troca
+        print(f"    anexando {len(feitas)} retrato(s) ao histórico…", flush=True)
+        r = subprocess.run(["ssh", BEELINK, retrato_novo.comando(alvo)], capture_output=True, text=True,
+                           timeout=4 * 3600)
+        print("      " + "\n      ".join(r.stdout.strip().splitlines()[-12:]), flush=True)
+        if r.returncode != 0:
+            return {"tabela": alvo, "erro": f"--anexa falhou (retrato novo fica em {retrato_novo.pasta(alvo)}): "
+                    f"{(r.stderr or r.stdout)[-300:]}", "feitas": feitas}
+        return {"tabela": alvo, "feitas": feitas, "ganho": plano["falta"]}
 
     lista = ", ".join(f"'{p}'" for p in feitas)
     dep = duck(f"SELECT CAST({col} AS VARCHAR) p, count(*) n FROM read_parquet('{remoto}/*.parquet', "
@@ -253,11 +283,12 @@ def main():
         prontos = {p["tabela"]: p for p in json.loads(Path(a.plano).read_text()) if not p.get("erro")}
     from fonte_propria import recusa
     for alvo in alvos:
-        if (m := recusa(alvo)):
+        if not retrato_novo.config(alvo) and (m := recusa(alvo)):
             print(f"  {alvo:55} recusada: {m}", flush=True)
             continue
         try:
-            p = prontos.get(alvo) or planeja(client, bq, alvo)
+            # retrato (último + *_historico): plano gravado antes da rota não filtrava o histórico, refaz
+            p = (None if retrato_novo.config(alvo) else prontos.get(alvo)) or planeja(client, bq, alvo)
         except Exception as exc:                                  # noqa: BLE001
             p = {"tabela": alvo, "erro": str(exc)[:200]}
         planos.append(p)
