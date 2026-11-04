@@ -53,7 +53,7 @@ def _conexao(arquivo=":memory:"):
 def baixa_views():
     con = _conexao()
     try:
-        texto = con.execute("SELECT content FROM read_text(?)", [ORIGEM]).fetchone()[0]
+        texto = con.execute("SELECT content FROM read_text(?)", [ORIGEM]).fetchall()[0][0]
     finally:
         con.close()
     return texto, hashlib.sha256(texto.encode()).hexdigest()
@@ -152,7 +152,7 @@ def monta(conteudo):
             else:
                 fontes[nome] = _sha(sql)
         con.execute("CHECKPOINT")
-        n_views = con.execute("SELECT count(*) FROM duckdb_views() WHERE NOT internal").fetchone()[0]
+        n_views = con.execute("SELECT count(*) FROM duckdb_views() WHERE NOT internal").fetchall()[0][0]
     finally:
         con.close()
     os.replace(novo, BANCO)

@@ -25,6 +25,7 @@ RAIZ = os.environ.get("RODADO_RAIZ", "s3://baseldosdados/")   # onde as views do
 # Gambiarra: tabela com cópia no SSD do finland (volume, /dados/local/<dataset>/<tabela>/) é
 # lida de lá e não do bucket; catalogo.py troca o caminho ao montar a view.
 LOCAL = os.environ.get("RODADO_LOCAL", "/dados/local/")
+CA_BUNDLE = os.environ.get("RODADO_CA_BUNDLE", "/etc/ssl/certs/ca-certificates.crt")
 TEMPO_LIMITE = int(os.environ.get("RODADO_TEMPO_LIMITE", "300"))
 TEMP = os.environ.get("RODADO_TEMP", "/tmp/duckdb")
 
@@ -152,6 +153,8 @@ def _abre() -> duckdb.DuckDBPyConnection:
         con.create_function("_mascara_cpf", mascara_texto, [sqltypes.VARCHAR], sqltypes.VARCHAR,
                             side_effects=False)
         con.execute("SET allowed_directories=?", [_diretorios_das_views(con)])
+        # DuckDB 2.0: o httpfs lê o bundle de CA do disco e o allowed_directories o barra
+        con.execute("SET allowed_paths=?", [[CA_BUNDLE]])
         con.execute("SET enable_external_access=false")
         con.execute("SET lock_configuration=true")
     except BaseException:
@@ -191,7 +194,7 @@ def conecta() -> duckdb.DuckDBPyConnection:
     con = base.cursor()
     con.execute("USE catalogo")   # o USE vale por conexão: cada cursor nasce em memory
     externo, travado = con.execute(
-        "SELECT current_setting('enable_external_access'), current_setting('lock_configuration')").fetchone()
+        "SELECT current_setting('enable_external_access'), current_setting('lock_configuration')").fetchall()[0]
     if externo or not travado:
         con.close()
         raise RuntimeError("instância sem trava")
@@ -223,7 +226,7 @@ def _confere_arvore(con, sql: str) -> None:
     """
     _carrega_macros(con)
     try:
-        arvore = json.loads(con.execute("SELECT json_serialize_sql(?)", [sql]).fetchone()[0])
+        arvore = json.loads(con.execute("SELECT json_serialize_sql(?)", [sql]).fetchall()[0][0])
     except (duckdb.Error, TypeError, ValueError):
         raise ConsultaRecusada("consulta não pôde ser conferida") from None
     if arvore.get("error"):

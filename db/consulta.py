@@ -648,7 +648,7 @@ def _referencias(con, sql):
     """Tabelas (dataset, tabela) e nomes de coluna que a SQL cita, pela árvore do parser (sem
     ligar nada: funciona também na consulta que o binder recusou)."""
     try:
-        arvore = json.loads(con.execute("SELECT json_serialize_sql(?)", [sql]).fetchone()[0])
+        arvore = json.loads(con.execute("SELECT json_serialize_sql(?)", [sql]).fetchall()[0][0])
     except (duckdb.Error, TypeError, ValueError):
         return [], set()
     tabelas, colunas, pilha = [], set(), [arvore]
@@ -697,8 +697,8 @@ ORDENADA_POR_ANO = {("br_ms_sih", "aihs_reduzidas"), ("br_ans_beneficiario", "in
 def _particoes(con, dataset, tabela):
     """Partição hive de verdade: `/chave=valor/` no caminho dos arquivos da view."""
     sql = con.execute("SELECT sql FROM duckdb_views() WHERE schema_name = ? AND view_name = ?",
-                      [dataset, tabela]).fetchone()
-    return set(re.findall(r"/([A-Za-z_]\w*)=[^/']+/", sql[0] if sql else ""))
+                      [dataset, tabela]).fetchall()
+    return set(re.findall(r"/([A-Za-z_]\w*)=[^/']+/", sql[0][0] if sql else ""))
 
 
 def _primeira_frase(texto, teto=240):
@@ -767,9 +767,9 @@ def _tamanho(con, tabelas, colunas, sql=""):
     itens, problemas, avisos = [], [], []
     for ds, t in tabelas:
         linhas = con.execute('SELECT rows FROM _rodado_metadata WHERE dataset = ? AND "table" = ?',
-                             [ds, t]).fetchone()
+                             [ds, t]).fetchall()
         part = _particoes(con, ds, t)
-        item = {"tabela": f"{ds}.{t}", "linhas": linhas[0] if linhas else None,
+        item = {"tabela": f"{ds}.{t}", "linhas": linhas[0][0] if linhas else None,
                 "particoes": sorted(part), "filtra_particao": bool(part & colunas)}
         n = item["linhas"] or 0
         if part and not item["filtra_particao"] and n > 50_000_000:
@@ -903,7 +903,7 @@ class Handler(BaseHTTPRequestHandler):
             if time.time() - _guia["em"] > 600:
                 con = rodado_sql.conecta()
                 try:
-                    tab, ds, tamanho, fontes = con.execute(SQL_GUIA_RESUMO).fetchone()
+                    tab, ds, tamanho, fontes = con.sql(SQL_GUIA_RESUMO).fetchall()[0]
                     datasets = con.sql(SQL_GUIA_DATASETS).fetchall()
                 finally:
                     con.close()
@@ -1020,13 +1020,13 @@ class Handler(BaseHTTPRequestHandler):
             if not linhas:
                 return self._json({"erro": f"tabela {alvo} não existe"}, 400)
             sql = con.execute("SELECT sql FROM duckdb_views() WHERE schema_name = ? AND view_name = ?",
-                              partes).fetchone()
+                              partes).fetchall()
         except duckdb.Error as e:
             return self._json({"erro": str(e)}, 400)
         finally:
             con.close()
         # partição hive de verdade: `/chave=valor/` no caminho dos arquivos da view
-        hive = set(re.findall(r"/([A-Za-z_]\w*)=[^/']+/", sql[0] if sql else ""))
+        hive = set(re.findall(r"/([A-Za-z_]\w*)=[^/']+/", sql[0][0] if sql else ""))
         self._json([{"coluna": l[0], "tipo": l[1], "particao": l[0] in hive} for l in linhas])
 
     def _salva_q(self):
