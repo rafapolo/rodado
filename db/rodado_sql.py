@@ -302,7 +302,7 @@ def mascara_cpf(rel):
         if t in ("VARCHAR", "JSON"):
             e = f"_mascara_cpf({ref})"
         elif t in ("VARCHAR[]", "JSON[]"):
-            e = f"list_transform({ref}, x -> _mascara_cpf(x))"
+            e = f"list_transform({ref}, lambda x: _mascara_cpf(x))"
         elif "VARCHAR" in t or "JSON" in t:
             e = f"_mascara_cpf(CAST({ref} AS VARCHAR))"
         elif "cpf" in nome.lower() and t.split("(")[0] in _INTEIROS:
