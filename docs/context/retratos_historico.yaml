@@ -1,0 +1,12 @@
+# Tabelas espelhadas da Base dos Dados que guardam só o ÚLTIMO retrato (<t>/000000000000.parquet)
+# e o passado em <t>_historico (períodos inicio/fim). Lido por scripts/sync/retrato_novo.py.
+#
+# Retrato novo da BD nunca vira parquet solto em <t>/: os syncs que escrevem tabela inteira
+# (ressincroniza_bq, sync_drifted_incremental) recusam estas tabelas, e os que trazem partição
+# (atualiza_particoes_bq, aplica_pouso_bq) baixam para ~/scrap_tmp/retrato_novo/<ds>/<tb>/<p>/ e
+# chamam `gera_retrato_historico.py <ds> <tb> --anexa`. Procedimento: docs/tecnico/mes_novo_cno.md.
+tabelas:
+  br_rf_cno.microdados: {chave: id_cno, data: data_extracao}
+  br_rf_cno.areas: {chave: id_cno, data: data_extracao}
+  br_rf_cno.cnaes: {chave: id_cno, data: data_extracao}
+  br_rf_cno.vinculos: {chave: id_cno, data: data_extracao}
