@@ -1,0 +1,14 @@
+dataset: br_fnde_pnae
+gotchas:
+  - id: alunos_so_ate_2022
+    resumo: "alunos_atendidos termina em 2022 (1999–2022): o serviço Olinda do FNDE não foi atualizado, enquanto o ComunicaBR traz estudantes de 2023 a 2026 (26,1 milhões em 2025). Não há ano em comum para conferir. Para o repasse em R$ use br_cgu_transferencias, ação 00PI, que bate exato com o painel."
+    tabelas: [alunos_atendidos]
+    colunas: [ano, alunos_atendidos]
+    severidade: silencioso
+    verificado: "ano máximo 2022 com 37.128.827 alunos em 41.518 linhas — medido 2026-11-04"
+  - id: municipio_por_nome
+    resumo: "A fonte só traz nome e UF; id_municipio sai do casamento com o diretório e 1.465 das 703.271 linhas (0,2%; Itapajé, Embu, Brodowski, Poxoréu, Augusto Severo, Januário Cicco...) ficam nulas por grafia antiga. Linhas são município × esfera (ESTADUAL/MUNICIPAL) × etapa: filtre esfera ao comparar com rede municipal."
+    tabelas: [alunos_atendidos]
+    colunas: [id_municipio, nome_municipio_origem, esfera]
+    severidade: aviso
+    verificado: "1.465 linhas sem id_municipio — medido 2026-11-04"

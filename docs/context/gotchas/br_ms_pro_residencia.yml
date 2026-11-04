@@ -1,0 +1,14 @@
+dataset: br_ms_pro_residencia
+gotchas:
+  - id: bolsas_decimais_e_so_2026
+    resumo: "As duas tabelas por instituição são só o ano de referência 2026 (um retrato). A fonte escreve bolsas como '3,0' na residência médica e como inteiro na de área profissional; aqui viram número. Linhas são programa × instituição: some bolsas_financiadas para o total (35.513 médicas e 18.216 de área profissional em 2026)."
+    tabelas: [residencia_medica, residencia_area_profissional]
+    colunas: [bolsas_financiadas, ano_referencia]
+    severidade: aviso
+    verificado: "residencia_medica 5.754 linhas, residencia_area_profissional 1.505 — medido 2026-11-04"
+  - id: indicadores_uf_batem_com_comunicabr
+    resumo: "indicadores_uf (10 indicadores por UF, 2010–2026) reproduz o ComunicaBR: residentes médicos ativos (mgdi_ms_am3) de RJ em 2024, 2025 e 2026 = 1.994, 2.306 e 3.668, igual ao painel; área profissional (mgdi_ms_4ru) RJ 2025 = 814 e 2026 = 1.225 contra 1.226 no painel. valor_brasil repete o total nacional em cada linha: não some entre UFs com ele."
+    tabelas: [indicadores_uf]
+    colunas: [indicador, valor_uf]
+    severidade: aviso
+    verificado: "conferência com br_presidencia_comunicabr.uf, Bolsa Residência Médica e Multi — medido 2026-11-04"

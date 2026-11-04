@@ -1,0 +1,20 @@
+dataset: br_ms_mais_medicos
+gotchas:
+  - id: linha_nao_municipal
+    resumo: "consolidado traz linhas de nível DSEI (distrito sanitário indígena) e ESTADUAL e serie_historica traz DSEI no mesmo campo ibge (códigos de 1 a 3 dígitos): nelas id_municipio é nulo. Filtre id_municipio IS NOT NULL (ou nivel = 'MUNICIPAL') antes de agregar por município; sem o filtro o Brasil sai maior (26.660 contra 25.868)."
+    tabelas: [consolidado, serie_historica]
+    colunas: [id_municipio, nivel, codigo_ibge_origem]
+    severidade: silencioso
+    verificado: "consolidado: total_ocupadas 25.868 nos 5.571 municipais e 26.660 em todas as linhas — medido 2026-11-04"
+  - id: serie_historica_retratos_irregulares
+    resumo: "serie_historica é uma foto por data de referência (156 datas distintas, de 2013-11 a 2026-10, em dias diferentes de cada mês): é estoque de profissionais ativos, não fluxo. Para o mês, pegue a última dt_referencia dele; não some datas."
+    tabelas: [serie_historica]
+    colunas: [dt_referencia, total_prof_ativos]
+    severidade: aviso
+    verificado: "Rio de Janeiro: 411 (2026-08-10), 405 (2026-09-08), 405 (2026-10-05); ComunicaBR set/2026 traz 405 — medido 2026-11-04"
+  - id: dado_nominal_fora
+    resumo: "As relações nominais do portal (profissionais ativos com nome e CRM, coparticipação nominal, relatório CNES por profissional, especialistas por instituição formadora) não entraram no espelho, de propósito: dado pessoal sem uso para os indicadores. Os agregados por município estão completos."
+    tabelas: [consolidado]
+    colunas: []
+    severidade: aviso
+    verificado: "decisão registrada em tasks/done/datasets_to_scrap_done.md — 2026-11-04"

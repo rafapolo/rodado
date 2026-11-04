@@ -73,3 +73,9 @@ gotchas:
     severidade: silencioso
     verificado: "2025, vínculos ativos em 31/12: 1.027.791 em 35 códigos sem par na CBO sem lpad; 4.731 em 7 códigos com lpad; 2010 tem os códigos com 6 dígitos — medido 2026-11-03"
 
+  - id: estoque_de_aprendiz
+    resumo: "O estoque de jovens aprendizes sai de tipo_vinculo = 55 (APREND CONTR) com vinculo_ativo_3112 = 1; o Novo CAGED só dá o fluxo (indicador_aprendiz). Bate com o 'Jovem Aprendiz - Total de Contratos' do ComunicaBR: Brasil 2024 599.059 contra 587.387 (2,0%), 2025 664.164 contra 661.916 (0,3%); por município, Rio de Janeiro 2025 33.652 contra 33.555 e São Paulo 57.519 contra 57.174. 2023 fica 4,1% acima (549.141 contra 527.530)."
+    tabelas: [microdados_vinculos]
+    colunas: [tipo_vinculo, vinculo_ativo_3112]
+    severidade: aviso
+    verificado: "RAIS 2023–2025, tipo_vinculo = '55' e vinculo_ativo_3112 em ('1', 1); id_municipio de 7 dígitos; cinco municípios conferidos — medido 2026-11-04"

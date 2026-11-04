@@ -56,3 +56,20 @@ gotchas:
     colunas: [ano, mes]
     severidade: aviso
     verificado: "2026 com 10 meses e R$ 690,9 bi na coleta de 2026-10-31"
+  - id: paulo_gustavo_onde_esta_o_resto
+    resumo: "Os R$ 1,04 bi que faltam da Lei Paulo Gustavo existem na execução orçamentária, não aqui: br_cgu_despesas_publicas.execucao tem a ação 00UR com R$ 3.862,0 mi empenhados (plano 0001 audiovisual R$ 2.797,0 mi, plano 0002 demais áreas R$ 1.065,0 mi), tudo pago como restos a pagar (valor_pago_r = 0, valor_restos_a_pagar_pagos_r = R$ 3.862,0 mi). Falta a ponta de quem recebeu: o dado de transferência por favorecido do plano 0002 não chegou a este arquivo. O ComunicaBR (R$ 1,94 bi aos municípios) inclui os dois planos."
+    detalhe: >
+      Por município o ComunicaBR é 1,50 a 1,56 vez o plano 0001 daqui (Salvador 1,50,
+      Rio de Janeiro 1,52, São Paulo 1,56): a diferença é a parcela das demais áreas
+      da cultura. Para a lei toda, a ordem de grandeza é a execução (3,862 bi) e a
+      LC 195; para o repasse por ente, só o plano 0001 está completo.
+    tabelas: [transferencias]
+    colunas: [acao, codigo_plano_orcamentario, valor_transferido]
+    severidade: silencioso
+    verificado: "execucao: 27 linhas da ação 00UR, empenhado R$ 3.862,0 mi, RAP pagos R$ 3.862,0 mi; transferencias: R$ 2.818,4 mi em 2023 — medido 2026-11-04"
+  - id: pnae_pdde_pnate_contra_comunicabr
+    resumo: "O repasse do PNAE (ação 00PI) bate exato com o ComunicaBR por município (R$ 124.787.916 no Rio de Janeiro em 2025); PDDE (0515) e PNATE (0969) não: o favorecido do PDDE é a escola/unidade executora, não a prefeitura, e o PNATE diverge até 39% (Nova Friburgo 0,61x)."
+    tabelas: [transferencias]
+    colunas: [acao, codigo_favorecido, valor_transferido]
+    severidade: aviso
+    verificado: "2025: PNAE 3 de 3 municípios com razão 1,000; PDDE 0,73 a 1,19; PNATE 0,61 a 1,00 — medido 2026-11-04"
