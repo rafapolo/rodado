@@ -38,12 +38,12 @@ PAD = 78
 VARIANTS = {
     "og.png": {
         "eyebrow": "1.752 TABELAS · 294 DATASETS · 130 FONTES · 545 GB",
-        "head": ["Brasil em números,", "retratos dos dados oficiais"],
+        "head": ["Brasil em dados,", "retratos dos números oficiais"],
         "dek": "Vínculos de emprego, óbitos, contratos públicos, resultados\neleitorais — cruzados por raça, classe, gênero e território.",
     },
     "og-en.png": {
         "eyebrow": "1,752 TABLES · 294 DATASETS · 130 SOURCES · 545 GB",
-        "head": ["Brazil by the numbers,", "portraits from official data"],
+        "head": ["Brazil in data,", "portraits of the official numbers"],
         "dek": "Employment records, deaths, public contracts, election results —\ncross-referenced by race, class, gender and territory.",
     },
     # o cartão de /atlas/ (scripts/build_atlas.py aponta para ele)

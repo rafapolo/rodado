@@ -74,7 +74,7 @@ def main() -> None:
     print(f"{assets / 'apple-touch-icon.png'}")
 
     manifest = {
-        "name": "rodado — Brasil em números",
+        "name": "rodado — Brasil em dados",
         "short_name": "rodado",
         "description": "Dados públicos brasileiros cruzados em investigações sobre desigualdade, poder, economia, saúde e violência.",
         "start_url": "/",
