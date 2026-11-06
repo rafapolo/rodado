@@ -102,7 +102,7 @@ def bloco_analises(itens: list[dict], lang: str) -> str:
     if not escolhidas:
         return ""
     linhas = [f'  <h2 id="analises">{t["analises_h2"]}</h2>',
-              '  <div class="noticias">']
+              '  <div class="noticias carrossel">']
     for it in escolhidas:
         href = href_relativo(it.get("url") or f"/analises/{it['slug']}/")
         fonte = (it.get("tags") or [""])[0]
@@ -114,9 +114,12 @@ def bloco_analises(itens: list[dict], lang: str) -> str:
             + (f'<span class="noticia-fonte">{e(fonte)}</span>' if fonte else "")
             + "</a>"
         )
+    # o "ver todas" é o último cartão do carrossel (assets/carrossel.js)
+    n = sum(1 for i in itens if not (i.get("par") and i.get("lang") == "en"))
+    linhas.append('    <a class="noticia ver-todas" href="/analises/">'
+                  '<span class="ver-todas-seta" aria-hidden="true">→</span>'
+                  f'<span class="noticia-titulo">{t["analises_todas"].format(n=n).rstrip(" →")}</span></a>')
     linhas.append("  </div>")
-    linhas.append(f'  <p class="secao-mais"><a href="/analises/">'
-                  f'{t["analises_todas"].format(n=sum(1 for i in itens if not (i.get("par") and i.get("lang") == "en")))}</a></p>')
     return "\n".join(linhas)
 
 
@@ -129,7 +132,7 @@ def bloco_plataformas(itens: list[dict], lang: str) -> str:
 
     linhas = [f'  <h2 id="plataformas">{t["plataformas_h2"]}</h2>',
               f'  <p class="secao-dek">{t["plataformas_dek"]}</p>',
-              '  <div class="teaser vitrine">']
+              '  <div class="teaser vitrine carrossel">']
     por_slug = {it["slug"]: it for it in itens}
     faltam = [s for s in HOME_PLATAFORMAS if s not in por_slug]
     if faltam:
@@ -144,10 +147,12 @@ def bloco_plataformas(itens: list[dict], lang: str) -> str:
             f'width="640" height="480" loading="lazy">'
             f'<span>{e(titulo)}</span></a>'
         )
-    linhas.append("  </div>")
+    # o "ver todas" é o último cartão do carrossel (assets/carrossel.js)
     destino = "/plataformas/en.html" if en else "/plataformas/"
-    linhas.append(f'  <p class="secao-mais"><a href="{destino}">'
-                  f'{t["plataformas_todas"].format(n=len(itens))}</a></p>')
+    linhas.append(f'    <a class="teaser-tile ver-todas" href="{destino}">'
+                  f'<span class="ver-todas-seta" aria-hidden="true">→</span>'
+                  f'<span>{t["plataformas_todas"].format(n=len(itens)).rstrip(" →")}</span></a>')
+    linhas.append("  </div>")
     return "\n".join(linhas)
 
 

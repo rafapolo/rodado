@@ -495,14 +495,15 @@ tr:last-child td { border-bottom: 1px solid var(--rule); }
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
   margin: 1.2rem 0 2.5rem;
-  border: 1px solid var(--rule);
-  border-top: 3px solid var(--accent);
+  border: 1px solid var(--accent);
   border-radius: 4px;
   background: var(--bg);
   overflow: hidden;
 }
-.cartao-db-img { display: block; background: #0d0d0c; }
-.cartao-db-img img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: left center; aspect-ratio: 1200 / 630; }
+/* imagem inteira, sem corte: a coluna de texto costuma ser mais alta que a
+   imagem (1200x630), então ela fica centrada na vertical sobre o fundo escuro */
+.cartao-db-img { display: flex; align-items: center; background: #0d0d0c; }
+.cartao-db-img img { display: block; width: 100%; height: auto; aspect-ratio: 1200 / 630; }
 .cartao-db-img:hover img { opacity: 0.9; }
 .cartao-db-corpo { padding: 1.3rem 1.5rem 1.4rem; display: flex; flex-direction: column; gap: 0.8rem; }
 .cartao-db-titulo { font-family: var(--sans); font-size: 1.15rem; font-weight: 700; margin: 0; }
@@ -648,3 +649,147 @@ footer .footer-by { margin-left: auto; }
 .fa-scale-balanced { --fa: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 640 512%22%3E%3Cpath d=%22M384 32H512c17.7 0 32 14.3 32 32s-14.3 32-32 32H398.4c-5.2 25.8-22.9 47.1-46.4 57.3V448H512c17.7 0 32 14.3 32 32s-14.3 32-32 32H320 128c-17.7 0-32-14.3-32-32s14.3-32 32-32H288V153.3c-23.5-10.3-41.2-31.6-46.4-57.3H128c-17.7 0-32-14.3-32-32s14.3-32 32-32H256c14.6-19.4 37.8-32 64-32s49.4 12.6 64 32zm55.6 288H584.4L512 195.8 439.6 320zM512 416c-62.9 0-115.2-34-126-78.9c-2.6-11 1-22.3 6.7-32.1l95.2-163.2c5-8.6 14.2-13.8 24.1-13.8s19.1 5.3 24.1 13.8l95.2 163.2c5.7 9.8 9.3 21.1 6.7 32.1C627.2 382 574.9 416 512 416zM126.8 195.8L54.4 320H199.3L126.8 195.8zM.9 337.1c-2.6-11 1-22.3 6.7-32.1l95.2-163.2c5-8.6 14.2-13.8 24.1-13.8s19.1 5.3 24.1 13.8l95.2 163.2c5.7 9.8 9.3 21.1 6.7 32.1C242 382 189.7 416 126.8 416S11.7 382 .9 337.1z%22/%3E%3C/svg%3E"); width: 1.25em; }
 .fa-shield-halved { --fa: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 512 512%22%3E%3Cpath d=%22M256 0c4.6 0 9.2 1 13.4 2.9L457.7 82.8c22 9.3 38.4 31 38.3 57.2c-.5 99.2-41.3 280.7-213.6 363.2c-16.7 8-36.1 8-52.8 0C57.3 420.7 16.5 239.2 16 140c-.1-26.2 16.3-47.9 38.3-57.2L242.7 2.9C246.8 1 251.4 0 256 0zm0 66.8V444.8C394 378 431.1 230.1 432 141.4L256 66.8l0 0z%22/%3E%3C/svg%3E"); width: 1em; }
 .fa-square-poll-vertical { --fa: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 448 512%22%3E%3Cpath d=%22M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm64 192c17.7 0 32 14.3 32 32v96c0 17.7-14.3 32-32 32s-32-14.3-32-32V256c0-17.7 14.3-32 32-32zm64-64c0-17.7 14.3-32 32-32s32 14.3 32 32V352c0 17.7-14.3 32-32 32s-32-14.3-32-32V160zM320 288c17.7 0 32 14.3 32 32v32c0 17.7-14.3 32-32 32s-32-14.3-32-32V320c0-17.7 14.3-32 32-32z%22/%3E%3C/svg%3E"); width: 0.875em; }
+
+/* ── carrossel: faixas .teaser da home rolam na horizontal ──
+   scroll-snap nativo (toque/trackpad); assets/carrossel.js põe as setas
+   ‹ › por cima e apaga a que está no fim. O último cartão (.ver-todas)
+   leva à página com tudo. Só na home: /plataformas/ usa .teaser em grade. */
+
+.carrossel-wrap { position: relative; margin: 0 0 2.5rem; }
+.carrossel-wrap .teaser,
+.carrossel-wrap .noticias { margin: 0; }
+
+.teaser.carrossel,
+.noticias.carrossel {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+.carrossel::-webkit-scrollbar { display: none; }
+
+.teaser.carrossel .teaser-tile {
+  flex: 0 0 clamp(220px, calc((100% - 3px) / 3.4), 300px);
+  max-width: none;
+  scroll-snap-align: start;
+}
+
+/* legenda centrada na vertical no espaço que sobra embaixo da imagem
+   (os cartões da faixa têm a altura do mais alto) */
+.teaser.carrossel .teaser-tile:not(.ver-todas) {
+  display: flex;
+  flex-direction: column;
+}
+
+.teaser.carrossel .teaser-tile:not(.ver-todas) span {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding-top: 0.6rem;
+  padding-bottom: 0.6rem;
+}
+
+.teaser-tile.ver-todas {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  text-align: center;
+  background: var(--bg-raised);
+}
+
+.teaser .teaser-tile.ver-todas .ver-todas-seta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  font-size: 2.6rem;
+  line-height: 1;
+  font-weight: 300;
+  color: var(--accent);
+  transition: transform 0.2s ease;
+}
+
+.teaser.carrossel .teaser-tile.ver-todas span:last-child {
+  padding: 0 1rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.teaser-tile.ver-todas:hover .ver-todas-seta { transform: translateX(6px); }
+
+.carrossel-seta {
+  position: absolute;
+  top: calc(50% - 1.5rem);
+  z-index: 2;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  border: 1px solid var(--rule);
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  transition: opacity 0.2s ease;
+}
+
+.carrossel-seta:hover { background: var(--bg-raised); }
+.carrossel-seta[hidden] { display: block; opacity: 0; pointer-events: none; }
+.carrossel-seta.ant { left: -1.2rem; }
+.carrossel-seta.prox { right: -1.2rem; }
+
+@media (hover: none), (max-width: 720px) {
+  .carrossel-seta { display: none !important; }
+  .teaser.carrossel .teaser-tile { flex-basis: 72%; }
+  .noticias.carrossel .noticia { flex-basis: 82%; }
+}
+
+/* durante o arrasto com mouse (carrossel.js) o snap e o smooth brigam com o
+   scrollLeft direto: desliga os dois até soltar, aí o snap encaixa */
+@media (hover: hover) { .carrossel { cursor: grab; } }
+.carrossel.arrastando {
+  cursor: grabbing;
+  scroll-snap-type: none;
+  scroll-behavior: auto;
+  user-select: none;
+}
+
+/* análises recentes em carrossel: mesmos cartões .noticia, largura fixa;
+   o espaço entre eles vem do gap, não do fundo como no .teaser */
+.noticias.carrossel {
+  gap: 1rem;
+  padding: 0 0 0.2rem;
+}
+
+.noticias.carrossel .noticia {
+  flex: 0 0 clamp(250px, calc((100% - 2rem) / 3.25), 340px);
+  scroll-snap-align: start;
+}
+
+.noticia.ver-todas {
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  text-align: center;
+  background: var(--bg-raised);
+}
+
+.noticia.ver-todas .ver-todas-seta {
+  font-size: 2.6rem;
+  font-weight: 300;
+  line-height: 1;
+  color: var(--accent);
+  transition: transform 0.2s ease;
+}
+
+.noticia.ver-todas .noticia-titulo { color: var(--accent); }
+.noticia.ver-todas:hover .ver-todas-seta { transform: translateX(6px); }
