@@ -1,4 +1,4 @@
-# rodado — Brasil em números, retratos dos dados oficiais
+# rodado — Brasil em dados, retratos dos números oficiais
 
 > 1.752 tabelas públicas brasileiras — de instituições oficiais (RAIS, SIM, TSE, CGU, IBGE, INEP, CNES e outras), somadas a 102 fontes raspadas de forma independente — lidas a partir de perguntas investigativas, não de uma vitrine técnica: o que esses registros, cruzados, revelam sobre desigualdade, poder, economia, saúde e violência no Brasil?
 
