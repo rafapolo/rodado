@@ -47,11 +47,13 @@ main:not(.wide) #doc ul, main:not(.wide) #doc ol { max-width: var(--measure); }
    texto da lista de análises), não só uma linha de 0.78rem */
 #doc .teaser-tile img { border: none; cursor: pointer; }
 #doc .teaser-tile img:hover { border-color: transparent; }
-/* 358px + 1.5rem de gap fecha 3 por linha nos ~1132px de conteúdo do
-   main.wide com desktop aberto (1180px - 2×1.5rem de padding) */
-#doc .teaser { gap: 1.5rem; background: none; border: none; }
+/* masonry por colunas CSS: cada cartão tem a altura do próprio conteúdo,
+   sem linhas alinhadas; colunas de no mínimo 250px dão 4 nos ~1132px do
+   main.wide no desktop e descem para 3, 2 e 1 conforme a largura */
+#doc .teaser { display: block; columns: 250px; column-gap: 1.25rem; background: none; border: none; }
 #doc .teaser-tile {
-  flex-basis: 358px; max-width: 358px;
+  display: block; width: 100%; max-width: none;
+  break-inside: avoid; margin: 0 0 1.25rem;
   border: 1px solid var(--rule); border-radius: 10px; overflow: hidden;
 }
 #doc .teaser-tile img { border-radius: 0; }
@@ -120,7 +122,7 @@ main > .meta { margin: 0 0 1rem; }
    horizontal do título/dek — o cartão comprimido de /analises/ usava 0.7rem
    e uma etiqueta que quebrava em duas linhas; aqui há espaço de sobra */
 #doc .teaser-tile .tags { gap: 0.35rem; margin: 0.7rem 0 0; padding: 0 1.15rem 1.1rem; }
-#doc .teaser-tile .tag { font-size: 0.72rem; padding: 0.12rem 0.55rem; }
+#doc .teaser-tile .tag { font-size: 0.72rem; padding: 0.12rem 0.55rem; max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
 /* o tile passa a --bg-raised no hover, que é o fundo da própria etiqueta: sem
    inverter os dois, a pílula some debaixo do cursor */
 #doc .teaser-tile:hover .tag { background: var(--bg); }
