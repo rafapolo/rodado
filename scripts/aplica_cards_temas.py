@@ -28,13 +28,14 @@ def lis(cartao: str) -> list[str]:
 
 
 def aplica(cartao: str, prop: dict, lang: str, fixes: list[int]) -> str:
-    m = re.search(r'<code class="card-id">([^<]*)</code>', cartao)
-    atuais = [x.strip() for x in m.group(1).split(",") if x.strip()]
+    m = re.search(r'<ul class="card-id-tags">.*?</ul>', cartao, re.S)
+    atuais = re.findall(r'<code class="card-id">([^<]*)</code>', m.group(0))
     fora = set(prop.get("card_id_remove", []))
     lista = [x for x in atuais if x not in fora]
     lista += [x for x in prop.get("card_id_add", []) if x not in lista]
     if lista != atuais:
-        cartao = cartao.replace(m.group(0), f'<code class="card-id">{", ".join(lista)}</code>')
+        pilulas = "".join(f'<li><code class="card-id">{x}</code></li>' for x in lista)
+        cartao = cartao.replace(m.group(0), f'<ul class="card-id-tags">{pilulas}</ul>')
     if prop.get(f"desc_{lang}"):  # HTML pronto (com <code>), escrito pelo agente que revisou o tema
         cartao = re.sub(r'<p class="card-desc">.*?</p>', lambda _: f'<p class="card-desc">{prop[f"desc_{lang}"]}</p>',
                         cartao, count=1, flags=re.S)

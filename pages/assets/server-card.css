@@ -16,7 +16,9 @@
 .card-badge { flex-shrink: 0; font-size: 12px; font-weight: 600; color: var(--ink-faint); }
 .card-category { font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); margin-top: 8px; }
 .card-id-row { margin-top: 14px; }
-.card-id { display: block; font-family: 'IBM Plex Mono', monospace; font-size: 12px; line-height: 1.6; color: var(--accent); background: var(--bg-raised); border: 1px solid var(--rule); border-radius: 7px; padding: 7px 10px; word-break: break-word; }
+/* uma pílula por tabela, no mesmo desenho das .card-tag das páginas de tema */
+.card-id-tags { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.card-id { display: inline-block; font: 500 11.5px/1.3 'IBM Plex Mono', monospace; color: var(--ink-soft); background: var(--bg-raised); border: 1px solid var(--rule); border-radius: 999px; padding: 4px 10px; overflow-wrap: anywhere; }
 .card-desc { font-size: 12px; line-height: 1.55; color: var(--ink-soft); margin: 14px 0 6px; }
 /* identificador longo (dependencia_administrativa_escola) não tem onde quebrar e vazava do cartão */
 .card-desc code, .card-cruz-item code { word-break: break-word; overflow-wrap: anywhere; }

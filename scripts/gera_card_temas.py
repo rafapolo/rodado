@@ -79,7 +79,7 @@ def dataset_de(nome: str, ds: dict[str, str], soltos: dict[str, str]) -> str | N
 
 def adapta(cartao: str, pasta: str, origem: str, ds: dict[str, str], soltos: dict[str, str]) -> str:
     rot, abrir, catalogo = TEXTOS[pasta]
-    nomes = re.search(r'<code class="card-id">([^<]*)</code>', cartao).group(1).split(",")
+    nomes = re.findall(r'<code class="card-id">([^<]*)</code>', cartao)
     desc = re.search(r'<p class="card-desc">.*?</p>', cartao, re.S)
     if desc:
         nomes += re.findall(r"<code>([a-z][a-z0-9_.]*)</code>", desc.group(0))
