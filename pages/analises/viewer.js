@@ -211,14 +211,11 @@
     });
   }
 
-  // as tags dizem de que fonte pública o trabalho foi tirado — vêm do manifest:
-  // na lista ficam abaixo do resumo, no cartão de plataforma abaixo da legenda,
-  // para dar o cheiro do dado antes do clique
-  function etiquetas(it) {
-    var tags = (it.tags || []).map(function (t) {
-      return '<span class="tag">' + t + '</span>';
-    }).join('');
-    return tags ? '<p class="tags">' + tags + '</p>' : '';
+  // rodado_em é DD-MM-AAAA; sem ele, cai no ano-mês de "date" (igual a gera_home.py)
+  function dataBr(it) {
+    var d = it.rodado_em;
+    if (d && /^\d{2}-\d{2}-\d{4}$/.test(d)) return d.replace(/-/g, '/');
+    return it.date || '';
   }
 
   function renderIndex(items) {
@@ -242,17 +239,21 @@
       '<p class="mod-sub">Cada uma abre com o achado e leva a tabela de ' +
       'evidência junto — número, fonte oficial e a data em que foi rodada, ' +
       'para conferir, não só ler.</p>' +
-      '<ul class="idx-list">';
+      '<div class="noticias idx-cartoes">';
+    // os mesmos cartões .noticia da home (site.css), em grade com todas
     items.forEach(function (it) {
       // "url" é para análises hospedadas fora do results/*.md (ex.: repos
       // externos, checados out em pages/analises/ no deploy)
       var href = it.url || (encodeURIComponent(it.slug) + '/');
-      html += '<li><a href="' + href + '">' + it.title + '</a>' +
-        (it.rodado_em ? ' <span class="meta">· rodado em ' + it.rodado_em + '</span>' : '') +
-        (it.dek ? '<p class="dek">' + it.dek + '</p>' : '') +
-        etiquetas(it) + '</li>';
+      var fonte = (it.tags || [])[0];
+      html += '<a class="noticia" href="' + href + '">' +
+        '<span class="noticia-data">' + dataBr(it) + '</span>' +
+        '<span class="noticia-titulo">' + it.title + '</span>' +
+        (it.dek ? '<span class="noticia-dek">' + it.dek + '</span>' : '') +
+        (fonte ? '<span class="noticia-fonte">' + fonte + '</span>' : '') +
+        '</a>';
     });
-    docEl.innerHTML = html + '</ul>';
+    docEl.innerHTML = html + '</div>';
     document.title = 'Análises de dados públicos — rodado';
   }
 
