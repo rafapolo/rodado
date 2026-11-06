@@ -122,7 +122,11 @@ main > .meta { margin: 0 0 1rem; }
    horizontal do título/dek — o cartão comprimido de /analises/ usava 0.7rem
    e uma etiqueta que quebrava em duas linhas; aqui há espaço de sobra */
 #doc .teaser-tile .tags { gap: 0.35rem; margin: 0.7rem 0 0; padding: 0 1.15rem 1.1rem; }
-#doc .teaser-tile .tag { font-size: 0.72rem; padding: 0.12rem 0.55rem; max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
+/* no cartão estreito a etiqueta longa quebra em duas linhas: com raio de pílula
+   (999px) vira um balão ovalado; raio pequeno mantém um retângulo limpo, e o
+   texto não encosta na curva */
+#doc .teaser-tile .tag { font-size: 0.72rem; padding: 0.15rem 0.5rem; max-width: 100%;
+  white-space: normal; overflow-wrap: break-word; border-radius: 0.35rem; line-height: 1.45; }
 /* o tile passa a --bg-raised no hover, que é o fundo da própria etiqueta: sem
    inverter os dois, a pílula some debaixo do cursor */
 #doc .teaser-tile:hover .tag { background: var(--bg); }
