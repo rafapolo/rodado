@@ -3,8 +3,8 @@
     python scripts/gera_card_temas.py
 
 mcp.html → pages/temas/NN-*.html e mcp-en.html → pages/temas-en/NN-*.html. O
-cartão é achado pelo link do título (href="temas/NN-....html") e entra antes de
-</main>, entre marcadores; rodar de novo substitui o bloco, então editar o
+cartão é achado pelo link do título (href="temas/NN-....html") e entra logo
+depois da abertura (p.lede ou p.dek), entre marcadores — no celular fica no alto; rodar de novo substitui o bloco, então editar o
 cartão no mcp.html e rodar este script é o caminho para manter os dois iguais.
 O estilo está em assets/server-card.css (o mesmo que o mcp.html usa).
 
@@ -125,7 +125,13 @@ def main() -> None:
             t = re.sub(re.escape(INI) + r".*?" + re.escape(FIM) + r"\n?", "", t, flags=re.S)
             if t.count("</main>") != 1:
                 raise SystemExit(f"{alvo}: esperava um </main>")
-            t = t.replace("</main>", bloco + "</main>")
+            # logo depois da abertura (lede, ou dek): na tela estreita o cartão
+            # aparece no alto, não no fim; na larga é absoluto, à direita
+            abertura = (re.search(r'[ \t]*<p class="lede">.*?</p>\n', t, re.S)
+                        or re.search(r'[ \t]*<p class="dek">.*?</p>\n', t, re.S))
+            if not abertura:
+                raise SystemExit(f"{alvo}: sem p.lede nem p.dek para ancorar o cartão")
+            t = t[:abertura.end()] + bloco + t[abertura.end():]
             t = re.sub(r"<main(?: class=\"[^\"]*\")?>", '<main class="com-card">', t, count=1)
             if CSS not in t:
                 # fora do bloco head:start/end, que o gera_seo.py reescreve
