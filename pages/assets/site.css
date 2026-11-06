@@ -489,11 +489,35 @@ tr:last-child td { border-bottom: 1px solid var(--rule); }
 .teaser.vitrine { margin-bottom: 0.6rem; }
 .teaser.vitrine .teaser-tile span { font-size: 0.86rem; color: var(--ink-soft); font-weight: 600; }
 
-/* cartão de acesso (db.rodado.xyz): a imagem é o og 1200×630, sem corte 4:3 */
-.teaser.acesso { max-width: 482px; margin: 0 auto 1rem; }
-.teaser.acesso .teaser-tile { flex: 1 1 auto; max-width: none; }
-.teaser.acesso .teaser-tile img { aspect-ratio: 1200 / 630; }
-.teaser.acesso .teaser-tile span { font-size: 0.86rem; color: var(--ink-soft); font-weight: 600; }
+/* cartão do db.rodado.xyz: imagem do terminal à esquerda, texto e os três
+   caminhos (terminal, /llm, /index) à direita; empilha no celular */
+.cartao-db {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  margin: 1.2rem 0 2.5rem;
+  border: 1px solid var(--rule);
+  border-top: 3px solid var(--accent);
+  border-radius: 4px;
+  background: var(--bg);
+  overflow: hidden;
+}
+.cartao-db-img { display: block; background: #0d0d0c; }
+.cartao-db-img img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: left center; aspect-ratio: 1200 / 630; }
+.cartao-db-img:hover img { opacity: 0.9; }
+.cartao-db-corpo { padding: 1.3rem 1.5rem 1.4rem; display: flex; flex-direction: column; gap: 0.8rem; }
+.cartao-db-titulo { font-family: var(--sans); font-size: 1.15rem; font-weight: 700; margin: 0; }
+.cartao-db-titulo a { color: var(--ink); text-decoration: none; }
+.cartao-db-titulo a:hover { color: var(--accent); }
+.cartao-db-dek { font-family: var(--sans); font-size: 0.88rem; line-height: 1.55; color: var(--ink-soft); margin: 0; }
+.cartao-db-vias { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.55rem; }
+.cartao-db-vias li { font-family: var(--sans); font-size: 0.84rem; line-height: 1.45; color: var(--ink-soft); padding-left: 0.8rem; border-left: 2px solid var(--rule); }
+.cartao-db-vias a { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-weight: 600; color: var(--accent); text-decoration: none; margin-right: 0.35rem; }
+.cartao-db-vias a:hover { text-decoration: underline; }
+@media (max-width: 720px) {
+  .cartao-db { grid-template-columns: 1fr; }
+  .cartao-db-img img { height: auto; }
+  .cartao-db-corpo { padding: 1.1rem 1.1rem 1.2rem; }
+}
 
 /* consultas mais abertas do db.rodado.xyz/index */
 .consultas-titulo { font-family: var(--sans); font-size: 1rem; margin: 1.8rem 0 0.2rem; }
