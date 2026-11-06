@@ -38,7 +38,7 @@ TEXTO = {
         "analises_h2": "Análises recentes",
         "analises_todas": "Todas as {n} análises →",
         "plataformas_h2": "Plataformas",
-        "plataformas_dek": "Painéis, mapas e redes para explorar o dado inteiro, "
+        "plataformas_dek": "<a href=\"/plataformas/\">Painéis, mapas e redes</a> para explorar o dado inteiro, "
                            "não só o recorte de uma análise.",
         "plataformas_todas": "Ver as {n} plataformas →",
     },
@@ -46,7 +46,7 @@ TEXTO = {
         "analises_h2": "Analyses in English",
         "analises_todas": "All analyses (mostly in Portuguese) →",
         "plataformas_h2": "Platforms",
-        "plataformas_dek": "Dashboards, maps and networks to explore the whole "
+        "plataformas_dek": "<a href=\"/plataformas/en.html\">Dashboards, maps and networks</a> to explore the whole "
                            "data, not just the slice an analysis used. The "
                            "platforms themselves are in Portuguese.",
         "plataformas_todas": "See the {n} platforms →",
