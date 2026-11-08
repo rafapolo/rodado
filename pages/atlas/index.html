@@ -1468,14 +1468,14 @@ function renderDs(d) {
       ${fact(bytes(dsTables[d].reduce((s, i) => s + TB[i].b, 0)), "em disco")}
     </div>
     ${fonteDs(D)}
-    <div id="i-det"></div>
     <p class="sec">Chaves deste dataset</p>
     <div class="chips">${ks.length ? ks.map(ki =>
       `<button class="chip" data-k="${ki}"><i style="background:var(--hub)"></i>${esc(KS[ki].n)}</button>`).join("")
       : '<span class="note">Nenhuma coluna deste dataset é compartilhada com outro. Ele não liga em nada.</span>'}</div>
     <p class="sec">Tabelas</p>
     <div class="tlist">${dsTables[d].slice().sort((a, b) => TB[b].r - TB[a].r).map(ti =>
-      `<button data-t="${ti}" title="${esc(TB[ti].n)}"><span class="t">${esc(TB[ti].n)}</span><span class="r">${human(TB[ti].r)}${TB[ti].ate ? " · " + quando(TB[ti].ate) : ""}</span></button>`).join("")}</div>`;
+      `<button data-t="${ti}" title="${esc(TB[ti].n)}"><span class="t">${esc(TB[ti].n)}</span><span class="r">${human(TB[ti].r)}${TB[ti].ate ? " · " + quando(TB[ti].ate) : ""}</span></button>`).join("")}</div>
+    <div id="i-det"></div>`;
   wire();
   detalhesDe(D.n).then(x => {
     const alvo = document.getElementById("i-det");
@@ -1500,7 +1500,7 @@ function renderTbl(ti) {
       ${fact(bytes(T.b), "em disco")}
     </div>`;
   if (T.ate) h += `<p class="note-src">dados até ${quando(T.ate)}</p>`;
-  h += `<div id="i-det"></div><div id="i-card"></div>`;
+  h += `<div id="i-card"></div>`;
   h += `<p class="sec">Chaves</p><div class="chips">${T.k.length
     ? T.k.slice().sort((a, b) => KS[a].t - KS[b].t).map(ki =>
         `<button class="chip" data-k="${ki}"><i style="background:var(--hub)"></i>${esc(KS[ki].n)}</button>`).join("")
@@ -1511,6 +1511,7 @@ function renderTbl(ti) {
       const isK = ki !== undefined;
       return `<div class="col${isK ? " key" : ""}">${isK ? `<i class="kd" style="background:var(--hub)"></i>` : ""}<span>${esc(n)}</span><span class="ty">${esc(ty)}</span></div>`;
     }).join("")}</div>`;
+  h += `<div id="i-det"></div>`;   // armadilhas e procedência ficam no fim do painel
   iBody.innerHTML = h;
   wire();
   cartaoDe(DS[T.ds].n).then(d => {
