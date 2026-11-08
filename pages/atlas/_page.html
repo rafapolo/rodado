@@ -777,18 +777,11 @@ function fit(animate) {
   const kk = Math.min(W / (bounds.x1 - bounds.x0), H / (bounds.y1 - bounds.y0)) * 0.96;
   goTo((bounds.x0 + bounds.x1) / 2, (bounds.y0 + bounds.y1) / 2, kk, animate);
 }
-/* In `grade`, 833 tables' worth of cards is roughly five screens even packed
-   perfectly, so fitting them all lands below every label threshold. The disc
-   layouts are compact enough to open whole. */
+/* O ponto de partida é o espelho inteiro, em todas as distribuições: na
+   grade o primeiro quadro mostra todos os cartões de dataset (a pedido), e o
+   zoom é que desce às tabelas e às colunas-chave. */
 function home(animate) {
-  if (isDisc()) return fit(animate);
-  let sx = 0, sy = 0, sw = 0;
-  DS.forEach((d, i) => {
-    if (!d.nk) return;
-    const [x, y, w, h] = L.ds[i], a = w * h;
-    sx += x * a; sy += y * a; sw += a;
-  });
-  goTo(sx / sw, sy / sw, 0.55, animate);
+  return fit(animate);
 }
 function goTo(cx, cy, kk, animate) {
   kk = Math.max(0.06, Math.min(9, kk));
