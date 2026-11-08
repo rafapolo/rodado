@@ -217,11 +217,6 @@ button { font: inherit; color: inherit; }
 .onto-ctl .doms i { width: 8px; height: 8px; border-radius: 50%; }
 .onto-ctl .doms button[aria-pressed="false"] { opacity: .45; }
 .onto-ctl .doms button[aria-pressed="false"] i { background: transparent !important; outline: 1px solid var(--ink-3); }
-.onto-ctl .acts { display: flex; gap: 6px; }
-.onto-ctl .acts button {
-  flex: 1; padding: 5px 8px; border-radius: 6px; border: 1px solid var(--line-2); background: var(--card-2); cursor: pointer; font-size: 12px;
-}
-.onto-ctl .acts button[aria-pressed="true"] { border-color: var(--focus); color: var(--focus); }
 .onto-ctl .why { font-size: 11.5px; color: var(--ink-3); line-height: 1.45; margin: 8px 0 0; }
 .onto span { display: block; font-size: 12px; color: var(--ink-2); line-height: 1.35; }
 .legend-t, .list-t {
@@ -288,9 +283,6 @@ canvas.drag { cursor: grabbing; }
 .cvonto .onode text { fill: #fff; font-weight: 600; font-family: "IBM Plex Sans", sans-serif; text-anchor: middle; pointer-events: none; }
 .cvonto .onode.sel circle { stroke: var(--ink) !important; stroke-width: 4; }
 .cvonto .onode.pinned circle { stroke-dasharray: 3 2; }
-.cvonto .ods { cursor: pointer; }
-.cvonto .ods circle { stroke: var(--ground); stroke-width: 1; }
-.cvonto .odl line { stroke: var(--line-2); stroke-width: .6; }
 .cvonto .dim { opacity: .12; }
 .cvonto .gone { display: none; }
 .cv3d-loading {
@@ -534,11 +526,7 @@ canvas.drag { cursor: grabbing; }
     <div class="onto-ctl" id="ontoCtl">
       <p class="legend-t">Ontologia · domínios</p>
       <div class="doms" id="ontoDoms"></div>
-      <div class="acts">
-        <button id="ontoDs" type="button" aria-pressed="false">datasets</button>
-        <button id="ontoRelayout" type="button">reorganizar</button>
-      </div>
-      <p class="why">Seta tracejada: a ligação existe no mundo, mas o dado público não deixa fazê-la. Clique numa coluna ou dataset para descer à grade.</p>
+      <p class="why">Seta tracejada: a ligação existe no mundo, mas o dado público não deixa fazê-la. Clique numa coluna ou dataset para descer a Temas.</p>
     </div>
   </div>
 
@@ -578,7 +566,7 @@ canvas.drag { cursor: grabbing; }
       <marker id="oa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="off-arrow" d="M0,0 L10,5 L0,10 z"/></marker>
       <marker id="oa-on" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="on-arrow" d="M0,0 L10,5 L0,10 z"/></marker>
     </defs>
-    <g id="oView"><g id="oDsl" class="odl"></g><g id="oEdges"></g><g id="oDsn"></g><g id="oNodes"></g></g>
+    <g id="oView"><g id="oEdges"></g><g id="oNodes"></g></g>
   </svg>
   <div class="tip" id="tip"></div>
 
@@ -635,20 +623,20 @@ canvas.drag { cursor: grabbing; }
 
 function boot(G) {
 const DS = G.datasets, KS = G.keys, TB = G.tables;
-const [CELL_W, CELL_H, PAD, HEADER] = G.layout.cell;
 
-/* Two ways of distributing the same 833 tables. `grade` packs them into dataset
-   cards — most legible, least expressive about affinity. `temas` puts every
-   table in the field as a body of its own, inside its theme's territory. */
+/* Três vistas do mesmo espelho. `ontologia` (a padrão) sobe um nível: as
+   entidades que as chaves identificam. `temas` põe cada tabela no campo como
+   um corpo, dentro do território do seu tema; `3d` é o grafo dataset↔chave em
+   três dimensões. (A `grade`, cartões de dataset empacotados, saiu a pedido.) */
 const MODES = [
-  ["grade", "Grade", "cartões de dataset empacotados; tabelas em grade dentro"],
   ["temas", "Temas", "um território por tema; as chaves flutuam entre os que ligam"],
   ["3d", "3D", "o mesmo grafo dataset↔chave, em três dimensões"],
   ["ontologia", "Ontologia", "um nível acima: as entidades que as chaves identificam e como se ligam"],
 ];
-let mode = "grade";
-const isDisc = () => mode === "temas";
-let L = G.layout[mode];
+const DEFAULT_MODE = "ontologia";
+let mode = "temas";          // o canvas monta em Temas; o boot troca para a padrão
+const isDisc = () => true;   // o canvas só desenha Temas agora
+let L = G.layout.temas;
 
 /* Themes, in fixed hue order by size (biggest first — matches
    ATLAS_THEME_ORDER in gera_schema_graph.py); "outros" is neutral on
@@ -690,17 +678,9 @@ const dsEdges = [];
 const dsKeys = DS.map(() => new Set());
 dsEdges.forEach(([d, k]) => dsKeys[d].add(k));
 
-// Cell geometry inside a dataset card. `cols` is whatever the packer used —
-// never recompute it here, or the grid stops matching the card it sits in.
-const cellsOf = di => {
-  const cols = L.ds[di][4];
-  return { cols, rows: Math.ceil(dsTables[di].length / cols) };
-};
-
 // Full-strength theme colour reads as too loud filling a whole card header or
 // disc; a pale wash used to lose the hue entirely (saúde/população/território
-// collapsed to the same pink). This is the middle point, shared by both the
-// Grade header fill and the Temas table bodies so the two modes tone-match.
+// collapsed to the same pink). This is the middle point for the table bodies.
 const THEME_TONE = 0.62;
 
 /* Edge weight. `ano` reaches 389 tables and `id_escola` 14; letting them draw
@@ -788,13 +768,8 @@ function measure() {
     x0 = Math.min(x0, x - w / 2); y0 = Math.min(y0, y - h / 2);
     x1 = Math.max(x1, x + w / 2); y1 = Math.max(y1, y + h / 2);
   };
-  if (isDisc()) {
-    P.tb.forEach(([x, y, r]) => add(x, y, r * 2, r * 2));
-    P.keys.forEach(([x, y, r]) => add(x, y, r * 2, r * 2));
-  } else {
-    L.ds.forEach(([x, y, w, h]) => add(x, y, w, h));
-    L.keys.forEach(([x, y, w]) => add(x, y, w, 34));
-  }
+  P.tb.forEach(([x, y, r]) => add(x, y, r * 2, r * 2));
+  P.keys.forEach(([x, y, r]) => add(x, y, r * 2, r * 2));
   const m = 80;
   bounds = { x0: x0 - m, y0: y0 - m, x1: x1 + m, y1: y1 + m };
 }
@@ -803,9 +778,7 @@ function fit(animate) {
   const kk = Math.min(W / (bounds.x1 - bounds.x0), H / (bounds.y1 - bounds.y0)) * 0.96;
   goTo((bounds.x0 + bounds.x1) / 2, (bounds.y0 + bounds.y1) / 2, kk, animate);
 }
-/* O ponto de partida é o espelho inteiro, em todas as distribuições: na
-   grade o primeiro quadro mostra todos os cartões de dataset (a pedido), e o
-   zoom é que desce às tabelas e às colunas-chave. */
+/* O ponto de partida é o espelho inteiro; o zoom é que desce às tabelas. */
 function home(animate) {
   return fit(animate);
 }
@@ -873,10 +846,7 @@ function setMode(next) {
     if (graph3d) graph3d.pauseAnimation();
   }
 
-  L = G.layout[mode];
-  // The two 2D modes draw different marks — a dataset card and a table body —
-  // so there is nothing to morph between; cross-fade and reframe instead.
-  if (isDisc()) P = { tb: L.tb.map(a => a.slice()), keys: L.keys.map(a => a.slice()) };
+  // back on the flat canvas: cross-fade and reframe
   measure();
   if (reduced()) { fade = 1; home(false); return; }
   fade = 0;
@@ -894,12 +864,8 @@ const toWorld = (px, py) => [(px - tx) / k, (py - ty) / k];
 /* ── level of detail ─────────────────────────────────────────────── */
 // Zoom is the interface: the same layout answers a different question at each
 // depth, so nothing is hidden behind a click.
-const LOD = () => isDisc() ? (k < 0.9 ? 0 : 1)
-                           : (k < 0.42 ? 0 : k < 1.25 ? 1 : 2);
-const LOD_NAME = {
-  grade: ["datasets", "tabelas", "colunas-chave"],
-  disc:  ["chaves", "tabelas"],
-};
+const LOD = () => k < 0.9 ? 0 : 1;
+const LOD_NAME = ["chaves", "tabelas"];
 
 /* ── highlight sets ──────────────────────────────────────────────── */
 function activeSet() {
@@ -960,12 +926,12 @@ function draw() {
   ctx.globalAlpha = fade;
   ctx.translate(tx, ty);
   ctx.scale(k, k);
-  if (isDisc()) drawDiscs(act); else drawGrade(act);
+  drawDiscs(act);
   ctx.restore();
 
   document.getElementById("zlvl").textContent = Math.round(k * 100) + "%";
   document.getElementById("lod").textContent =
-    (isDisc() ? LOD_NAME.disc : LOD_NAME.grade)[LOD()];
+    LOD_NAME[LOD()];
 }
 
 /* ── disc layouts: every table is a body ─────────────────────────────
@@ -1112,223 +1078,25 @@ function drawDiscs(act) {
   ctx.textAlign = "left";
 }
 
-/* ── packed layout: the dataset card is the body ─────────────────── */
-function drawGrade(act) {
-  const lod = LOD();
-  const vx0 = -tx / k, vy0 = -ty / k, vx1 = (W - tx) / k, vy1 = (H - ty) / k;
-  const vis = (x, y, w, h) => x + w / 2 > vx0 && x - w / 2 < vx1 && y + h / 2 > vy0 && y - h / 2 < vy1;
-
-  /* edges */
-  ctx.lineCap = "round";
-  const drawEdge = (ax, ay, aw, ah, ki, on, lineTheme) => {
-    const [kx, ky, kw] = L.keys[ki];
-    const w = wNorm(ki);
-    const [px, py] = edgePoint(ax, ay, aw, ah, kx, ky);
-    const [qx, qy] = edgePoint(kx, ky, kw, 34, ax, ay);
-    ctx.strokeStyle = on ? (ki >= 0 && lineTheme ? lineTheme : C.hub) : C.line2;
-    ctx.globalAlpha = on ? (0.5 + 0.45 * w) : (act ? 0.05 : 0.10 + 0.44 * w);
-    ctx.lineWidth = ((on ? 1.5 : 0.75) + 1.5 * w) / k;
-    ctx.beginPath();
-    ctx.moveTo(px, py);
-    ctx.lineTo(qx, qy);
-    ctx.stroke();
-  };
-
-  if (lod < 2) {
-    for (const [d, ki] of dsEdges) {
-      const [x, y, w, h] = L.ds[d];
-      if (!vis(x, y, w, h)) continue;
-      drawEdge(x, y, w, h, ki, !!act && act.keys.has(ki) && act.dss.has(d), dcol(d));
-    }
-  } else {
-    for (let ti = 0; ti < TB.length; ti++) {
-      const t = TB[ti];
-      if (!t.k.length) continue;
-      const [x, y, w, h] = L.ds[t.ds];
-      if (!vis(x, y, w, h)) continue;
-      const { cols } = cellsOf(t.ds);
-      const idx = dsTables[t.ds].indexOf(ti);
-      const cx = x - w / 2 + PAD + (idx % cols) * CELL_W + CELL_W / 2;
-      const cy = y - h / 2 + HEADER + Math.floor(idx / cols) * CELL_H + CELL_H / 2;
-      for (const ki of t.k) {
-          drawEdge(cx, cy, CELL_W - 8, CELL_H - 4, ki, !!act && act.tbls.has(ti) && act.keys.has(ki), tcol(ti));
-      }
-    }
-  }
-  ctx.globalAlpha = 1;
-
-  /* dataset cards */
-  for (let d = 0; d < DS.length; d++) {
-    const [x, y, w, h] = L.ds[d];
-    if (!vis(x, y, w, h)) continue;
-    const on = !act || act.dss.has(d);
-    const X = x - w / 2, Y = y - h / 2;
-
-    ctx.globalAlpha = on ? 1 : 0.3;
-    roundRect(X, Y, w, h, 7);
-    ctx.fillStyle = C.card;
-    ctx.fill();
-    ctx.strokeStyle = sel && sel.type === "ds" && sel.i === d ? C.focus : C.line;
-    ctx.lineWidth = (sel && sel.type === "ds" && sel.i === d ? 2 : 1) / k;
-    ctx.stroke();
-
-    // Header tinted with the dataset's theme colour at THEME_TONE — same
-    // constant the Temas bodies fill at, so the two modes read as one hue at
-    // matching strength. It sits over the opaque card fill above, so at this
-    // mid alpha the card's own light/dark ground still carries the text.
-    const dg = DS[d].dom;
-    roundRect(X, Y, w, HEADER, 7);
-    ctx.save(); ctx.clip();
-    ctx.fillStyle = dg ? dcol(d) : C.card2;
-    ctx.globalAlpha = (on ? 1 : 0.3) * (dg ? THEME_TONE : 1);
-    ctx.fillRect(X, Y, w, HEADER);
-    ctx.restore();
-    ctx.strokeStyle = C.line;
-    ctx.lineWidth = 1 / k;
-    ctx.beginPath(); ctx.moveTo(X, Y + HEADER); ctx.lineTo(X + w, Y + HEADER); ctx.stroke();
-
-    ctx.textBaseline = "middle";
-    const count = DS[d].t + " · " + human(DS[d].r);
-    ctx.font = '600 12px "IBM Plex Mono", monospace';
-    const nameW = ctx.measureText(DS[d].n).width;
-    ctx.font = '400 9.5px "IBM Plex Sans", sans-serif';
-    // The name is what the card is; the count is a nicety. If both do not fit,
-    // the count goes — truncating "br_me_caged" to "br_me_cag" to preserve
-    // "4 · 241 mi" is the wrong trade.
-    const showCount = k > 0.3 && nameW + ctx.measureText(count).width + 26 <= w;
-    const countW = showCount ? ctx.measureText(count).width + 10 : 0;
-    if (showCount) {
-      ctx.fillStyle = C.ink3;
-      ctx.textAlign = "right";
-      ctx.fillText(count, X + w - 9, Y + HEADER / 2 + 0.5);
-      ctx.textAlign = "left";
-    }
-    if (k > 0.14) {
-      ctx.fillStyle = C.ink;
-      ctx.font = '600 12px "IBM Plex Mono", monospace';
-      ctx.save();
-      roundRect(X + 8, Y, Math.max(10, w - 17 - countW), HEADER, 0); ctx.clip();
-      ctx.fillText(DS[d].n, X + 9, Y + HEADER / 2 + 0.5);
-      ctx.restore();
-    }
-
-    if (lod >= 1) {
-      const { cols } = cellsOf(d);
-      dsTables[d].forEach((ti, idx) => {
-        const t = TB[ti];
-        const cx = X + PAD + (idx % cols) * CELL_W;
-        const cy = Y + HEADER + Math.floor(idx / cols) * CELL_H;
-        const tOn = !act || act.tbls.has(ti);
-        ctx.globalAlpha = on ? (tOn ? 1 : 0.35) : 0.3;
-
-        const isSel = sel && sel.type === "tbl" && sel.i === ti;
-        if (isSel || (hover && hover.type === "tbl" && hover.i === ti)) {
-          roundRect(cx + 1, cy + 1, CELL_W - 4, CELL_H - 3, 4);
-          ctx.fillStyle = C.card2; ctx.fill();
-          if (isSel) { ctx.strokeStyle = C.focus; ctx.lineWidth = 1.5 / k; ctx.stroke(); }
-        }
-        ctx.fillStyle = t.k.length ? C.ink : C.ink3;
-        ctx.font = '400 10px "IBM Plex Mono", monospace';
-        ctx.save();
-        roundRect(cx + 4, cy, CELL_W - 12, CELL_H, 0); ctx.clip();
-        ctx.fillText(t.n, cx + 5, cy + (lod >= 2 ? 8.5 : CELL_H / 2));
-        ctx.restore();
-
-        if (lod >= 2) {
-          // the key columns themselves, which is what the deepest zoom is for
-          let ox = cx + 5;
-          ctx.font = '500 7.5px "IBM Plex Mono", monospace';
-          for (const ki of t.k) {
-                  const label = KS[ki].n;
-            const tw = ctx.measureText(label).width + 6;
-            if (ox + tw > cx + CELL_W - 6) { ctx.fillStyle = C.ink3; ctx.fillText("+", ox + 1, cy + 19); break; }
-            ctx.fillStyle = C.hub;
-            ctx.globalAlpha = (on ? (tOn ? 1 : .35) : .3) * (act && act.keys.has(ki) ? 1 : .72);
-            roundRect(ox, cy + 13, tw, 8.5, 2);
-            ctx.fill();
-            ctx.fillStyle = C.ground;
-            ctx.fillText(label, ox + 3, cy + 17.6);
-            ctx.globalAlpha = on ? (tOn ? 1 : 0.35) : 0.3;
-            ox += tw + 3;
-          }
-        }
-      });
-    }
-  }
-  ctx.globalAlpha = 1;
-
-  /* key hubs — drawn last so they sit above the cards they connect */
-  ctx.textBaseline = "middle";
-  for (let ki = 0; ki < KS.length; ki++) {
-    const [x, y, w] = L.keys[ki];
-    if (!vis(x, y, w, 34)) continue;
-    const on = !act || act.keys.has(ki);
-    const isSel = sel && sel.type === "key" && sel.i === ki;
-    const col = C.hub;
-
-    ctx.globalAlpha = on ? 1 : 0.22;
-    roundRect(x - w / 2, y - 17, w, 34, 17);
-    ctx.fillStyle = col;
-    ctx.fill();
-    if (isSel) {
-      ctx.strokeStyle = C.ink;
-      ctx.lineWidth = 2.5 / k;
-      ctx.stroke();
-    }
-    if (k > 0.16) {
-      ctx.fillStyle = C.ground;
-      ctx.font = '600 12px "IBM Plex Mono", monospace';
-      ctx.textAlign = "center";
-      ctx.fillText(KS[ki].n, x, y - 3);
-      ctx.font = '500 8.5px "IBM Plex Sans", sans-serif';
-      ctx.globalAlpha = on ? 0.82 : 0.22;
-      ctx.fillText(KS[ki].t + " tabelas · " + KS[ki].d + " datasets", x, y + 9);
-      ctx.textAlign = "left";
-    }
-  }
-  ctx.globalAlpha = 1;
-}
-
 /* ── hit testing ─────────────────────────────────────────────────── */
 function hit(px, py) {
   const [wx, wy] = toWorld(px, py);
-  if (isDisc()) {
-    // keys first: they are drawn on top, so they win the click
-    let best = null, bd = Infinity;
-    for (let ki = 0; ki < KS.length; ki++) {
-      const [x, y, r] = P.keys[ki];
-      const d = Math.hypot(wx - x, wy - y);
-      if (d <= r && d < bd) { bd = d; best = { type: "key", i: ki }; }
-    }
-    if (best) return best;
-    bd = Infinity;
-    for (let ti = 0; ti < TB.length; ti++) {
-        const [x, y, r] = P.tb[ti];
-      // a generous target: the smallest discs are 3px in world units
-      const d = Math.hypot(wx - x, wy - y);
-      if (d <= Math.max(r, 7 / k) && d < bd) { bd = d; best = { type: "tbl", i: ti }; }
-    }
-    return best;
+  // keys first: they are drawn on top, so they win the click
+  let best = null, bd = Infinity;
+  for (let ki = 0; ki < KS.length; ki++) {
+    const [x, y, r] = P.keys[ki];
+    const d = Math.hypot(wx - x, wy - y);
+    if (d <= r && d < bd) { bd = d; best = { type: "key", i: ki }; }
   }
-  for (let ki = KS.length - 1; ki >= 0; ki--) {
-    const [x, y, w] = L.keys[ki];
-    if (Math.abs(wx - x) < w / 2 && Math.abs(wy - y) < 17) return { type: "key", i: ki };
+  if (best) return best;
+  bd = Infinity;
+  for (let ti = 0; ti < TB.length; ti++) {
+    const [x, y, r] = P.tb[ti];
+    // a generous target: the smallest discs are 3px in world units
+    const d = Math.hypot(wx - x, wy - y);
+    if (d <= Math.max(r, 7 / k) && d < bd) { bd = d; best = { type: "tbl", i: ti }; }
   }
-  for (let d = 0; d < DS.length; d++) {
-    const [x, y, w, h] = L.ds[d];
-    if (Math.abs(wx - x) > w / 2 || Math.abs(wy - y) > h / 2) continue;
-    const X = x - w / 2, Y = y - h / 2;
-    if (LOD() >= 1 && wy > Y + HEADER) {
-      const { cols } = cellsOf(d);
-      const cxi = Math.floor((wx - X - PAD) / CELL_W);
-      const cyi = Math.floor((wy - Y - HEADER) / CELL_H);
-      const idx = cyi * cols + cxi;
-      if (cxi >= 0 && cxi < cols && idx >= 0 && idx < dsTables[d].length)
-        return { type: "tbl", i: dsTables[d][idx] };
-    }
-    return { type: "ds", i: d };
-  }
-  return null;
+  return best;
 }
 
 /* ── interaction ─────────────────────────────────────────────────── */
@@ -1669,19 +1437,19 @@ document.getElementById("i-close").onclick = () => select(null);
 addEventListener("keydown", e => { if (e.key === "Escape") select(null); });
 
 function flyKey(ki) {
-  if (mode === "ontologia") setMode("grade");   // descer da ontologia ao mapa físico
+  if (mode === "ontologia") setMode("temas");   // descer da ontologia ao mapa físico
   if (mode === "3d") { fly3D(d3NodeByKey.get(ki)); return; }
-  const [x, y] = isDisc() ? P.keys[ki] : L.keys[ki];
-  goTo(x, y, Math.max(k, isDisc() ? 0.55 : 0.75), true);
+  const [x, y] = P.keys[ki];
+  goTo(x, y, Math.max(k, 0.55), true);
 }
 function flyTbl(ti) {
-  if (mode === "ontologia") setMode("grade");   // descer da ontologia ao mapa físico
+  if (mode === "ontologia") setMode("temas");   // descer da ontologia ao mapa físico
   if (mode === "3d") { fly3D(d3NodeByDs.get(TB[ti].ds)); return; }
-  const [x, y] = isDisc() ? P.tb[ti] : L.ds[TB[ti].ds];
-  goTo(x, y, Math.max(k, isDisc() ? 1.1 : 1.5), true);
+  const [x, y] = P.tb[ti];
+  goTo(x, y, Math.max(k, 1.1), true);
 }
 function flyTheme(th) {
-  if (mode === "ontologia") setMode("grade");   // descer da ontologia ao mapa físico
+  if (mode === "ontologia") setMode("temas");   // descer da ontologia ao mapa físico
   const ts = themeTables[th];
   if (mode === "3d") {
     let x = 0, y = 0, z = 0, n = 0;
@@ -1704,29 +1472,17 @@ function flyTheme(th) {
     goTo(x, y, Math.min(9, Math.max(0.3, Math.min(W, H) / (r * 4.5))), true);
     return;
   }
-  if (isDisc()) {
-    let x = 0, y = 0;
-    ts.forEach(ti => { x += P.tb[ti][0]; y += P.tb[ti][1]; });
-    goTo(x / ts.length, y / ts.length, Math.max(k, 0.5), true);
-    return;
-  }
-  let x = 0, y = 0, n = 0;
-  const seen = new Set();
-  ts.forEach(ti => { if (!seen.has(TB[ti].ds)) { seen.add(TB[ti].ds); x += L.ds[TB[ti].ds][0]; y += L.ds[TB[ti].ds][1]; n++; } });
-  goTo(x / n, y / n, Math.max(k, 0.45), true);
+  let x = 0, y = 0;
+  ts.forEach(ti => { x += P.tb[ti][0]; y += P.tb[ti][1]; });
+  goTo(x / ts.length, y / ts.length, Math.max(k, 0.5), true);
 }
 function flyDs(d, animate = true) {
-  if (mode === "ontologia") setMode("grade");   // descer da ontologia ao mapa físico
+  if (mode === "ontologia") setMode("temas");   // descer da ontologia ao mapa físico
   if (mode === "3d") { fly3D(d3NodeByDs.get(d)); return; }
-  if (isDisc()) {                      // no dataset body here — frame its tables
-    const ts = dsTables[d];
-    let x = 0, y = 0;
-    ts.forEach(ti => { x += P.tb[ti][0]; y += P.tb[ti][1]; });
-    goTo(x / ts.length, y / ts.length, Math.max(k, 0.9), animate);
-    return;
-  }
-  const [x, y] = L.ds[d];
-  goTo(x, y, Math.max(k, 0.9), animate);
+  const ts = dsTables[d];               // no dataset body — frame its tables
+  let x = 0, y = 0;
+  ts.forEach(ti => { x += P.tb[ti][0]; y += P.tb[ti][1]; });
+  goTo(x / ts.length, y / ts.length, Math.max(k, 0.9), animate);
 }
 
 /* ── 3D mode ─────────────────────────────────────────────────────── */
@@ -2017,13 +1773,13 @@ function init3D() {
    de forças no estilo Neo4j. Fonte: docs/context/ontologia.yaml, gerado por
    scripts/gera_ontologia.ts em ontologia.json — carregado só no primeiro
    clique, como o 3D. Chaves e datasets vêm como índices do schema_graph, então
-   clicar numa coluna ou num dataset desce direto para a grade. */
+   clicar numa coluna ou num dataset desce direto para Temas. */
 const ontoEl = document.getElementById("cvOnto");
 const oView = document.getElementById("oView");
 let O = null, oLoading = false;
 const oPending = [];
-let oNodes = [], oEdges = [], oDsN = [], oDsL = [], oAnch = {};
-let oT = { x: 0, y: 0, k: 1 }, oAlpha = 1, oRaf = 0, oShowDs = false;
+let oNodes = [], oEdges = [], oAnch = {};
+let oT = { x: 0, y: 0, k: 1 }, oAlpha = 1, oRaf = 0;
 const oHidden = new Set();
 const ontoCor = d => O ? `var(--t-${O.dominios[d].cor})` : "var(--hub)";
 const tipoLeg = t => t.replace(/_/g, " ");
@@ -2071,11 +1827,6 @@ function initOnto() {
   const pares = {};
   for (const e of oEdges) (pares[[Math.min(e.de, e.para), Math.max(e.de, e.para)]] ??= []).push(e);
   for (const k in pares) pares[k].forEach((e, j, a) => { e.curva = a.length > 1 ? (j - (a.length - 1) / 2) * 34 : 0; });
-  const tempo = O.classes.findIndex(c => c.id === "tempo");
-  oDsN = O.datasets.map((c, i) => ({ i, kind: "d", c, r: 3 + Math.min(4, Math.sqrt(DS[i].t)),
-    x: 0, y: 0, vx: 0, vy: 0, fx: null, fy: null }));
-  oDsL = [];
-  for (const d of oDsN) for (const [ci, n] of d.c) if (ci !== tempo) oDsL.push({ s: d, t: oNodes[ci], w: n });
 
   // território no meio; pessoas e empresas em lados opostos da dobradiça
   // "CPF ou CNPJ", cada uma perto de quem conta a sua história
@@ -2087,7 +1838,6 @@ function initOnto() {
   for (const d of doms) { const a = oAnch[d] || [0, 0]; oAnch[d] = { x: a[0] * .8, y: a[1] * .8 }; }
 
   const gE = document.getElementById("oEdges"), gN = document.getElementById("oNodes");
-  const gD = document.getElementById("oDsn"), gL = document.getElementById("oDsl");
   for (const e of oEdges) {
     const g = svgEl("g", { class: "oe" + (e.conceito ? " conceito" : "") }, gE);
     e.path = svgEl("path", { "marker-end": "url(#oa)" }, g);
@@ -2110,15 +1860,6 @@ function initOnto() {
     n.g = g;
     ontoDrag(n);
   }
-  for (const l of oDsL) l.line = svgEl("line", {}, gL);
-  for (const d of oDsN) {
-    const g = svgEl("g", { class: "ods" }, gD);
-    svgEl("circle", { r: d.r, fill: `var(--t-${DS[d.i].dom})` }, g);
-    svgEl("title", {}, g).textContent = `${DS[d.i].n} — ${DS[d.i].t} tabela${DS[d.i].t > 1 ? "s" : ""}`;
-    d.g = g;
-    ontoDrag(d);
-  }
-  gD.style.display = gL.style.display = "none";
 
   // pan e zoom; clique no fundo (sem arrastar) limpa a seleção
   ontoEl.addEventListener("wheel", ev => {
@@ -2168,14 +1909,10 @@ function ontoSeed() {
     n.x = a.x + (Math.random() - .5) * 160; n.y = a.y + (Math.random() - .5) * 160;
     n.vx = n.vy = 0; n.fx = n.fy = null; n.g.classList.remove("pinned");
   }
-  for (const d of oDsN) {
-    const host = oDsL.find(l => l.s === d)?.t || oNodes.find(n => n.id === "tempo");
-    d.x = host.x + (Math.random() - .5) * 200; d.y = host.y + (Math.random() - .5) * 200; d.vx = d.vy = 0;
-  }
 }
 
 function ontoTick() {
-  const live = oShowDs ? oNodes.concat(oDsN) : oNodes, k = oAlpha;
+  const live = oNodes, k = oAlpha;   // só classes: a camada de datasets saiu a pedido
   for (let i = 0; i < live.length; i++) {
     const a = live[i];
     for (let j = i + 1; j < live.length; j++) {
@@ -2196,11 +1933,6 @@ function ontoTick() {
     const dx = e.t.x - e.s.x, dy = e.t.y - e.s.y, d = Math.hypot(dx, dy) || 1;
     const f = (d - (e.s.r + e.t.r + 90)) * .02 * k;
     e.s.vx += dx / d * f; e.s.vy += dy / d * f; e.t.vx -= dx / d * f; e.t.vy -= dy / d * f;
-  }
-  if (oShowDs) for (const l of oDsL) {
-    const dx = l.t.x - l.s.x, dy = l.t.y - l.s.y, d = Math.hypot(dx, dy) || 1;
-    const f = (d - (l.t.r + 30)) * .03 * k / Math.max(1, l.s.c.length * .7);
-    l.s.vx += dx / d * f; l.s.vy += dy / d * f;
   }
   for (const n of oNodes) {
     const a = oAnch[n.dom];
@@ -2236,13 +1968,6 @@ function ontoRender() {
     e.path.setAttribute("d", d);
     e.label.setAttribute("transform", `translate(${lx.toFixed(1)},${ly.toFixed(1)}) rotate(${ang.toFixed(1)})`);
   }
-  if (oShowDs) {
-    for (const d of oDsN) d.g.setAttribute("transform", `translate(${d.x.toFixed(1)},${d.y.toFixed(1)})`);
-    for (const l of oDsL) {
-      l.line.setAttribute("x1", l.s.x.toFixed(1)); l.line.setAttribute("y1", l.s.y.toFixed(1));
-      l.line.setAttribute("x2", l.t.x.toFixed(1)); l.line.setAttribute("y2", l.t.y.toFixed(1));
-    }
-  }
 }
 
 function ontoHeat(a) {
@@ -2258,7 +1983,7 @@ function ontoStop() { if (oRaf) cancelAnimationFrame(oRaf); oRaf = 0; }
 const ontoApplyT = () => oView.setAttribute("transform", `translate(${oT.x},${oT.y}) scale(${oT.k})`);
 function ontoFit() {
   if (!O) return;
-  const vis = (oShowDs ? oNodes.concat(oDsN) : oNodes).filter(n => n.kind === "d" || !oHidden.has(n.dom));
+  const vis = oNodes.filter(n => !oHidden.has(n.dom));
   if (!vis.length) return;
   const xs = vis.map(n => n.x), ys = vis.map(n => n.y);
   const x0 = Math.min(...xs) - 80, x1 = Math.max(...xs) + 80, y0 = Math.min(...ys) - 80, y1 = Math.max(...ys) + 80;
@@ -2296,11 +2021,11 @@ function ontoDrag(n) {
     const r = ontoEl.getBoundingClientRect();
     n.fx = (ev.clientX - r.left - oT.x) / oT.k + drag.dx; n.fy = (ev.clientY - r.top - oT.y) / oT.k + drag.dy;
     drag.moved = true;
-    if (n.kind === "c") n.g.classList.add("pinned");
+    n.g.classList.add("pinned");
     ontoHeat(.3);
   });
   n.g.addEventListener("pointerup", () => {
-    if (drag && !drag.moved) select(n.kind === "c" ? { type: "cls", i: n.i } : { type: "ds", i: n.i });
+    if (drag && !drag.moved) select({ type: "cls", i: n.i });
     drag = null;
   });
   n.g.addEventListener("dblclick", ev => {
@@ -2318,13 +2043,11 @@ function ontoHighlight() {
     es = new Set(oEdges.filter(e => e.s === n || e.t === n));
     ns = new Set([n]);
     for (const e of es) { ns.add(e.s); ns.add(e.t); }
-    if (oShowDs) for (const l of oDsL) if (l.t === n) ns.add(l.s);
   } else if (sel && sel.type === "rel") {
     const e = oEdges[sel.i];
     es = new Set([e]); ns = new Set([e.s, e.t]);
   } else if (sel && sel.type === "ds") {
-    const d = oDsN[sel.i];
-    ns = new Set([d, ...d.c.map(([ci]) => oNodes[ci])]); es = new Set();
+    ns = new Set(O.datasets[sel.i].map(([ci]) => oNodes[ci])); es = new Set();
   }
   for (const n of oNodes) n.g.classList.toggle("dim", !!ns && !ns.has(n));
   for (const e of oEdges) {
@@ -2333,14 +2056,11 @@ function ontoHighlight() {
     e.g.classList.toggle("on", on);
     e.path.setAttribute("marker-end", on ? "url(#oa-on)" : "url(#oa)");
   }
-  for (const d of oDsN) d.g.classList.toggle("dim", !!ns && !ns.has(d));
-  for (const l of oDsL) l.line.classList.toggle("dim", !!ns && !(ns.has(l.s) && ns.has(l.t)));
 }
 
 function ontoApplyHidden() {
   for (const n of oNodes) n.g.classList.toggle("gone", oHidden.has(n.dom));
   for (const e of oEdges) e.g.classList.toggle("gone", oHidden.has(e.s.dom) || oHidden.has(e.t.dom));
-  for (const l of oDsL) l.line.classList.toggle("gone", oHidden.has(l.t.dom));
 }
 
 // div[4] do rail: cartão de entrada fora do modo, controles dentro dele
@@ -2360,20 +2080,6 @@ function ontoRail() {
   });
 }
 document.getElementById("ontoCard").onclick = () => setMode("ontologia");
-document.getElementById("ontoDs").onclick = e => {
-  if (!O) return;
-  oShowDs = !oShowDs;
-  e.currentTarget.setAttribute("aria-pressed", String(oShowDs));
-  document.getElementById("oDsn").style.display = document.getElementById("oDsl").style.display = oShowDs ? "" : "none";
-  if (oShowDs) for (let i = 0; i < 150; i++) { oAlpha = Math.max(oAlpha, .4); ontoTick(); }
-  ontoRender(); ontoFit(); ontoHighlight(); ontoHeat(.2);
-};
-document.getElementById("ontoRelayout").onclick = () => {
-  if (!O) return;
-  ontoSeed(); oAlpha = 1;
-  for (let i = 0; i < 400; i++) ontoTick();
-  ontoRender(); ontoFit();
-};
 
 // inspetor: classe e relação, no mesmo painel que dataset e chave usam
 function renderCls(ci) {
@@ -2396,7 +2102,7 @@ function renderCls(ci) {
     h += `<p class="sec">Conceitos de join (bridges.yaml)</p><div class="chips">${c.conceitos.map(([k, t]) =>
       `<span class="chip" title="${esc(t)}">${esc(k)}</span>`).join("")}</div>`;
   if (c.chaves.length)
-    h += `<p class="sec">Colunas no espelho · clique para ver na grade</p><div class="chips">${c.chaves.map(([ki]) =>
+    h += `<p class="sec">Colunas no espelho · clique para ver em Temas</p><div class="chips">${c.chaves.map(([ki]) =>
       `<button class="chip" data-k="${ki}"><i style="background:${ontoCor(c.dom)}"></i>${esc(KS[ki].n)}</button>`).join("")}</div>`;
   if (c.ds.length)
     h += `<p class="sec">Datasets que a medem</p><div class="tlist">${c.ds.map(([di, n]) =>
@@ -2441,7 +2147,7 @@ function syncUrl() {
     if (sel && sel.type === "cls" && O) { u.searchParams.set("classe", O.classes[sel.i].id); changed = true; }
     else if (u.searchParams.has("classe")) { u.searchParams.delete("classe"); changed = true; }
 
-    if (mode !== "grade") { u.searchParams.set("mode", mode); changed = true; }
+    if (mode !== DEFAULT_MODE) { u.searchParams.set("mode", mode); changed = true; }
     else if (u.searchParams.has("mode")) { u.searchParams.delete("mode"); changed = true; }
 
     if (!changed) return;
@@ -2451,7 +2157,9 @@ function syncUrl() {
 function openFromUrl() {
   const params = new URLSearchParams(location.search);
   const m = params.get("mode");
-  if (m && MODES.some(([id]) => id === m) && m !== mode) setMode(m);
+  // sem ?mode abre na Ontologia; um ?db= antigo (da grade) cai em Temas, onde o dataset tem corpo
+  const alvo = m && MODES.some(([id]) => id === m) ? m : params.get("db") ? "temas" : DEFAULT_MODE;
+  if (alvo !== mode) setMode(alvo);
 
   const c = params.get("classe");
   if (c) ensureOnto(() => {
@@ -2473,10 +2181,9 @@ document.getElementById("s-d").textContent = fmt(G.meta.datasets);
 document.getElementById("s-k").textContent = fmt(G.meta.keys);
 document.getElementById("s-e").textContent = fmt(G.meta.edges);
 
-// grade: cards in a grid. temas: territories of clustered bodies. 3d: the
+// temas: territories of clustered bodies. 3d: the
 // same dataset↔chave graph in a force layout, lazily loaded on first visit.
 const MODE_ICON = {
-  grade: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1.5" y="1.5" width="5.5" height="5.5" rx="1"/><rect x="9" y="1.5" width="5.5" height="5.5" rx="1"/><rect x="1.5" y="9" width="5.5" height="5.5" rx="1"/><rect x="9" y="9" width="5.5" height="5.5" rx="1"/></svg>',
   temas: '<svg viewBox="0 0 16 16" fill="currentColor"><circle cx="4.5" cy="4.5" r="3"/><circle cx="12" cy="4" r="2"/><circle cx="5" cy="12" r="2.3"/><circle cx="12.5" cy="11.5" r="1.6"/></svg>',
   "3d": '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 1.3 14 4.6v6.8L8 14.7 2 11.4V4.6Z"/><path d="M8 1.3v6.7m0 0L2 4.6m6 3.4 6-3.4m-6 3.4v6.7"/></svg>',
   ontologia: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M5 10.5 11 4.5M5 10.5l7 2"/><circle cx="4.5" cy="10.5" r="3" fill="currentColor"/><circle cx="11.5" cy="4" r="2.2"/><circle cx="12.5" cy="12.7" r="1.8"/></svg>',

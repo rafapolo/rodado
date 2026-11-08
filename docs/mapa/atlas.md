@@ -13,9 +13,10 @@ python3 scripts/build_atlas.py /tmp/atlas.html   # também emite a cópia autoco
 - `_page.html` é a **única fonte**; `index.html` é gerado — não edite o gerado.
 - O grafo é **bipartido**: tabela→chave, nunca tabela→tabela. Par a par seriam
   89.598 arestas (novelo); pela chave são 2.151.
-- Duas distribuições, ambas pré-calculadas em Python e embarcadas no JSON:
-  `grade` (cartões de dataset empacotados) e `temas` (um território por tema,
-  chaves flutuando entre os que ligam).
+- Três vistas: Ontologia (padrão, ver abaixo), `temas` (um território por
+  tema, chaves flutuando entre os que ligam; layout pré-calculado em Python e
+  embarcado no JSON) e 3D. A Grade de cartões de dataset saiu em 2026-11-08,
+  a pedido.
 - O painel repete o que `describe_table` do MCP diz de cada tabela: armadilhas
   (`gotchas/`), colunas com código (`dicionario_coverage.json`,
   `coded_differently`, `column_codes.yaml`; o `nao_verificado` fica de fora, a
@@ -41,7 +42,7 @@ um passo separado, com os dois jeitos de falhar em silêncio — ver
 
 ## Modo Ontologia (`?mode=ontologia`)
 
-A quarta distribuição do atlas, um nível acima das outras: as entidades que as
+A vista padrão do atlas (a Grade de cartões saiu a pedido), um nível acima de Temas e 3D: as entidades que as
 chaves identificam (Município, Estabelecimento, Pessoa, Licitação…) e as
 relações entre elas, num grafo de forças em SVG. `docs/context/ontologia.yaml`
 é curado à mão (classes, regex das variantes de coluna, relações com o `via`);
@@ -49,10 +50,10 @@ relações entre elas, num grafo de forças em SVG. `docs/context/ontologia.yaml
 `schema_graph.json` e grava `pages/atlas/ontologia.json` (buscado só quando o
 modo abre; embutido na cópia de Artifact) + `docs/mapa/ONTOLOGIA.md` (mermaid,
 ELK). Chaves e datasets vão como índices do `schema_graph.json`, então clicar
-numa coluna ou dataset no inspetor desce para a grade.
+numa coluna ou dataset no inspetor desce para Temas.
 
-- Não tem botão em Distribuição: entra pelo `div[4]` do rail, que é o cartão de entrada fora do modo e os controles dentro
-  dele (domínios, camada de datasets, reorganizar).
+- Não tem botão em Distribuição: o `div[4]` do rail é o cartão que volta a
+  ela vindo de Temas ou 3D e, dentro dela, os controles (domínios para esconder).
 - `?mode=ontologia&classe=<id>` abre já com a classe no inspetor.
 - O build recusa conceito de `bridges.yaml` sem classe ou em duas, e relação
   para classe inexistente — conceito novo em `bridges.yaml` exige classe aqui.
