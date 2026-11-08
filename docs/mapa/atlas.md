@@ -38,3 +38,22 @@ python3 scripts/build_atlas.py /tmp/atlas.html   # também emite a cópia autoco
 Ligar um **dataset novo** no atlas (tema certo, chave de join reconhecida) é
 um passo separado, com os dois jeitos de falhar em silêncio — ver
 `docs/tecnico/housekeeping.md`, item 9.
+
+## Modo Ontologia (`?mode=ontologia`)
+
+A quarta distribuição do atlas, um nível acima das outras: as entidades que as
+chaves identificam (Município, Estabelecimento, Pessoa, Licitação…) e as
+relações entre elas, num grafo de forças em SVG. `docs/context/ontologia.yaml`
+é curado à mão (classes, regex das variantes de coluna, relações com o `via`);
+`bun scripts/gera_ontologia.ts` lê esse YAML, `bridges.yaml` e
+`schema_graph.json` e grava `pages/atlas/ontologia.json` (buscado só quando o
+modo abre; embutido na cópia de Artifact) + `docs/mapa/ONTOLOGIA.md` (mermaid,
+ELK). Chaves e datasets vão como índices do `schema_graph.json`, então clicar
+numa coluna ou dataset no inspetor desce para a grade.
+
+- O `div[4]` do rail é o cartão de entrada fora do modo e os controles dentro
+  dele (domínios, camada de datasets, reorganizar).
+- `?mode=ontologia&classe=<id>` abre já com a classe no inspetor.
+- O build recusa conceito de `bridges.yaml` sem classe ou em duas, e relação
+  para classe inexistente — conceito novo em `bridges.yaml` exige classe aqui.
+- Ordem: `gera_schema_graph.py` → `gera_ontologia.ts` → `build_atlas.py`.

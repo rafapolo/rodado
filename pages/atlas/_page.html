@@ -169,6 +169,36 @@ button { font: inherit; color: inherit; }
 #q::placeholder { color: var(--ink-3); font-weight: 400; }
 
 .legend { padding: 13px 18px 14px; border-bottom: 1px solid var(--line); }
+/* atalho para a ontologia: um nível acima do atlas, as entidades que as chaves identificam */
+.onto { padding: 12px 18px 13px; border-bottom: 1px solid var(--line); }
+.onto a {
+  display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink);
+  padding: 8px 10px; border: 1px solid var(--line-2); border-radius: 6px; background: var(--card-2);
+}
+.onto a:hover { border-color: var(--focus); }
+.onto svg { flex: none; }
+.onto b { display: block; font-size: 13px; }
+.onto button.card {
+  width: 100%; text-align: left; display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--ink);
+  padding: 8px 10px; border: 1px solid var(--line-2); border-radius: 6px; background: var(--card-2);
+}
+.onto button.card:hover { border-color: var(--focus); }
+.onto-ctl { display: none; }
+.onto-ctl .doms { display: flex; flex-wrap: wrap; gap: 5px; margin: 6px 0 9px; }
+.onto-ctl .doms button {
+  display: inline-flex; align-items: center; gap: 5px; padding: 2px 8px; border-radius: 999px; cursor: pointer;
+  background: transparent; border: 1px solid var(--line-2); font-size: 11.5px; color: var(--ink-2);
+}
+.onto-ctl .doms i { width: 8px; height: 8px; border-radius: 50%; }
+.onto-ctl .doms button[aria-pressed="false"] { opacity: .45; }
+.onto-ctl .doms button[aria-pressed="false"] i { background: transparent !important; outline: 1px solid var(--ink-3); }
+.onto-ctl .acts { display: flex; gap: 6px; }
+.onto-ctl .acts button {
+  flex: 1; padding: 5px 8px; border-radius: 6px; border: 1px solid var(--line-2); background: var(--card-2); cursor: pointer; font-size: 12px;
+}
+.onto-ctl .acts button[aria-pressed="true"] { border-color: var(--focus); color: var(--focus); }
+.onto-ctl .why { font-size: 11.5px; color: var(--ink-3); line-height: 1.45; margin: 8px 0 0; }
+.onto span { display: block; font-size: 12px; color: var(--ink-2); line-height: 1.35; }
 .legend-t, .list-t {
   font-size: 10.5px; text-transform: uppercase; letter-spacing: .07em;
   color: var(--ink-3); margin: 0 0 9px;
@@ -215,6 +245,29 @@ canvas { display: block; width: 100%; height: 100%; cursor: grab; }
 canvas.drag { cursor: grabbing; }
 .cv3d { position: absolute; inset: 0; display: none; cursor: grab; }
 .cv3d canvas { width: 100%; height: 100%; }
+/* modo Ontologia: um SVG próprio no palco, como o 3D tem o seu WebGL */
+.cvonto { position: absolute; inset: 0; width: 100%; height: 100%; display: none; cursor: grab; touch-action: none; user-select: none; }
+.cvonto.panning { cursor: grabbing; }
+.cvonto .oe path { fill: none; stroke: var(--line-2); stroke-width: 1.4; }
+.cvonto .oe.conceito path { stroke-dasharray: 5 4; }
+.cvonto .oe text {
+  font: 500 9.5px "IBM Plex Mono", ui-monospace, monospace; letter-spacing: .02em; fill: var(--ink-2); cursor: pointer;
+  paint-order: stroke; stroke: var(--ground); stroke-width: 4px; stroke-linejoin: round;
+}
+.cvonto .oe.on path { stroke: var(--focus); stroke-width: 2; }
+.cvonto .oe.on text { fill: var(--ink); font-weight: 600; }
+.cvonto .on-arrow { fill: var(--focus); }
+.cvonto .off-arrow { fill: var(--line-2); }
+.cvonto .onode { cursor: pointer; }
+.cvonto .onode circle { stroke-width: 2.5; }
+.cvonto .onode text { fill: #fff; font-weight: 600; font-family: "IBM Plex Sans", sans-serif; text-anchor: middle; pointer-events: none; }
+.cvonto .onode.sel circle { stroke: var(--ink) !important; stroke-width: 4; }
+.cvonto .onode.pinned circle { stroke-dasharray: 3 2; }
+.cvonto .ods { cursor: pointer; }
+.cvonto .ods circle { stroke: var(--ground); stroke-width: 1; }
+.cvonto .odl line { stroke: var(--line-2); stroke-width: .6; }
+.cvonto .dim { opacity: .12; }
+.cvonto .gone { display: none; }
 .cv3d-loading {
   position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
   color: var(--ink-3); font: 500 13px "IBM Plex Sans", sans-serif; background: var(--ground);
@@ -363,6 +416,10 @@ canvas.drag { cursor: grabbing; }
   font-family: "IBM Plex Mono", monospace; font-size: 11.5px;
 }
 .tlist button:hover { color: var(--focus); }
+/* relações da ontologia: o tipo em cima, a coluna por onde passa embaixo */
+.tlist.rels button { flex-direction: column; gap: 2px; align-items: stretch; }
+.tlist.rels .t { white-space: normal; }
+.tlist.rels .r { margin-left: 0; white-space: normal; font-family: "IBM Plex Sans", sans-serif; font-size: 11.5px; }
 .tlist .t { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .tlist .r {
   margin-left: auto; flex: none; white-space: nowrap;
@@ -440,6 +497,25 @@ canvas.drag { cursor: grabbing; }
     <input id="q" type="search" placeholder="buscar tabela, dataset ou chave" autocomplete="off" spellcheck="false" aria-label="Buscar">
   </div>
 
+  <div class="onto">
+    <button class="card" id="ontoCard" type="button">
+      <svg width="34" height="28" viewBox="0 0 34 28" aria-hidden="true">
+        <g stroke="var(--line-2)" stroke-width="1.2"><line x1="9" y1="18" x2="22" y2="7"/><line x1="9" y1="18" x2="26" y2="22"/><line x1="22" y1="7" x2="26" y2="22"/></g>
+        <circle cx="9" cy="18" r="6.5" fill="var(--t-territorio)"/><circle cx="22" cy="7" r="4.5" fill="var(--t-economia)"/><circle cx="26" cy="22" r="4" fill="var(--t-populacao)"/>
+      </svg>
+      <div><b>Ontologia</b><span>as entidades que as chaves identificam e como se ligam</span></div>
+    </button>
+    <div class="onto-ctl" id="ontoCtl">
+      <p class="legend-t">Ontologia · domínios</p>
+      <div class="doms" id="ontoDoms"></div>
+      <div class="acts">
+        <button id="ontoDs" type="button" aria-pressed="false">datasets</button>
+        <button id="ontoRelayout" type="button">reorganizar</button>
+      </div>
+      <p class="why">Seta tracejada: a ligação existe no mundo, mas o dado público não deixa fazê-la. Clique numa coluna ou dataset para descer à grade.</p>
+    </div>
+  </div>
+
   <div class="legend">
     <p class="legend-t">Distribuição</p>
     <div class="modes" id="modes"></div>
@@ -471,6 +547,13 @@ canvas.drag { cursor: grabbing; }
   <canvas id="cv"></canvas>
   <div id="cv3d" class="cv3d"></div>
   <div id="cv3dLoading" class="cv3d-loading" style="display:none">carregando 3D…</div>
+  <svg id="cvOnto" class="cvonto" aria-label="Ontologia: classes de entidade e relações">
+    <defs>
+      <marker id="oa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="off-arrow" d="M0,0 L10,5 L0,10 z"/></marker>
+      <marker id="oa-on" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="on-arrow" d="M0,0 L10,5 L0,10 z"/></marker>
+    </defs>
+    <g id="oView"><g id="oDsl" class="odl"></g><g id="oEdges"></g><g id="oDsn"></g><g id="oNodes"></g></g>
+  </svg>
   <div class="tip" id="tip"></div>
 
   <div class="hud">
@@ -502,6 +585,7 @@ canvas.drag { cursor: grabbing; }
 </div>
 
 <script type="application/json" id="graph">__GRAPH_JSON__</script>
+<script type="application/json" id="ontojson">__ONTO_JSON__</script>
 
 <script>
 "use strict";
@@ -534,6 +618,7 @@ const MODES = [
   ["grade", "Grade", "cartões de dataset empacotados; tabelas em grade dentro"],
   ["temas", "Temas", "um território por tema; as chaves flutuam entre os que ligam"],
   ["3d", "3D", "o mesmo grafo dataset↔chave, em três dimensões"],
+  ["ontologia", "Ontologia", "um nível acima: as entidades que as chaves identificam e como se ligam"],
 ];
 let mode = "grade";
 const isDisc = () => mode === "temas";
@@ -728,14 +813,29 @@ let fade = 1;
 function setMode(next) {
   if (next === mode) return;
   const goingTo3D = next === "3d", leaving3D = mode === "3d";
+  const goingToOnto = next === "ontologia", leavingOnto = mode === "ontologia";
+  if (leavingOnto && sel && (sel.type === "cls" || sel.type === "rel")) { sel = null; insp.classList.remove("on"); }
   mode = next;
   syncUrl();
+  ontoRail();
+  renderList(document.getElementById("q").value);
   document.querySelectorAll("[data-mode]").forEach(b =>
     b.setAttribute("aria-pressed", String(b.dataset.mode === mode)));
   document.getElementById("d3panel").style.display = goingTo3D ? "" : "none";
   document.getElementById("hint3d").style.display = goingTo3D ? "block" : "none";
-  document.getElementById("zlvl").style.display = goingTo3D ? "none" : "";
-  document.getElementById("lod").style.display = goingTo3D ? "none" : "";
+  document.getElementById("zlvl").style.display = goingTo3D || goingToOnto ? "none" : "";
+  document.getElementById("lod").style.display = goingTo3D || goingToOnto ? "none" : "";
+
+  // Ontologia: outra camada, como o 3D — o canvas some, o SVG aparece
+  if (leavingOnto) { ontoEl.style.display = "none"; ontoStop(); }
+  if (goingToOnto) {
+    cv.style.display = "none";
+    cv3dEl.style.display = "none";
+    if (graph3d) graph3d.pauseAnimation();
+    ontoEl.style.display = "block";
+    ensureOnto(() => { ontoFit(); ontoHighlight(); });
+    return;
+  }
 
   // Grade/Temas redraw the same flat canvas; 3D is a whole other renderer
   // living in its own layer — swap which one is visible and stop there.
@@ -748,7 +848,7 @@ function setMode(next) {
     ensure3D(() => { init3D(); if (graph3d) graph3d.resumeAnimation(); });
     return;
   }
-  if (leaving3D) {
+  if (leaving3D || leavingOnto) {
     cv3dEl.style.display = "none";
     cv.style.display = "block";
     if (graph3d) graph3d.pauseAnimation();
@@ -832,7 +932,7 @@ function edgePoint(cx, cy, w, h, tx2, ty2) {
 }
 
 function draw() {
-  if (mode === "3d") return;   // the WebGL layer renders itself
+  if (mode === "3d" || mode === "ontologia") return;   // these layers render themselves
   const act = activeSet();
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   ctx.fillStyle = C.ground;
@@ -1292,15 +1392,19 @@ function select(h) {
     else if (h.type === "tbl") selectNode3D(d3NodeByDs.get(TB[h.i].ds));
     else clearSelect3D();   // theme: no single 3D node stands for it
   }
+  if (mode === "ontologia") ontoHighlight();
   if (!h) { insp.classList.remove("on"); draw(); return; }
   if (h.type === "theme") renderTheme(h.th);
+  else if (h.type === "cls") renderCls(h.i);
+  else if (h.type === "rel") renderRel(h.i);
   else if (h.type === "key") renderKey(h.i);
   else if (h.type === "ds") renderDs(h.i);
   else renderTbl(h.i);
   insp.classList.add("on");
   document.querySelectorAll(".row").forEach(r => r.classList.toggle("on",
     (h.type === "theme" && r.dataset.th === h.th) ||
-    (h.type === "key" && +r.dataset.k === h.i)));
+    (h.type === "key" && +r.dataset.k === h.i) ||
+    (h.type === "cls" && +r.dataset.oc === h.i)));
   draw();
 }
 const fact = (v, l) => `<div class="fact"><b>${v}</b><span>${l}</span></div>`;
@@ -1546,16 +1650,19 @@ document.getElementById("i-close").onclick = () => select(null);
 addEventListener("keydown", e => { if (e.key === "Escape") select(null); });
 
 function flyKey(ki) {
+  if (mode === "ontologia") setMode("grade");   // descer da ontologia ao mapa físico
   if (mode === "3d") { fly3D(d3NodeByKey.get(ki)); return; }
   const [x, y] = isDisc() ? P.keys[ki] : L.keys[ki];
   goTo(x, y, Math.max(k, isDisc() ? 0.55 : 0.75), true);
 }
 function flyTbl(ti) {
+  if (mode === "ontologia") setMode("grade");   // descer da ontologia ao mapa físico
   if (mode === "3d") { fly3D(d3NodeByDs.get(TB[ti].ds)); return; }
   const [x, y] = isDisc() ? P.tb[ti] : L.ds[TB[ti].ds];
   goTo(x, y, Math.max(k, isDisc() ? 1.1 : 1.5), true);
 }
 function flyTheme(th) {
+  if (mode === "ontologia") setMode("grade");   // descer da ontologia ao mapa físico
   const ts = themeTables[th];
   if (mode === "3d") {
     let x = 0, y = 0, z = 0, n = 0;
@@ -1590,6 +1697,7 @@ function flyTheme(th) {
   goTo(x / n, y / n, Math.max(k, 0.45), true);
 }
 function flyDs(d, animate = true) {
+  if (mode === "ontologia") setMode("grade");   // descer da ontologia ao mapa físico
   if (mode === "3d") { fly3D(d3NodeByDs.get(d)); return; }
   if (isDisc()) {                      // no dataset body here — frame its tables
     const ts = dsTables[d];
@@ -1883,6 +1991,419 @@ function init3D() {
   };
 }
 
+/* ── modo Ontologia ──────────────────────────────────────────────────
+   Um nível acima das outras três distribuições: em vez de tabela → chave,
+   as CLASSES de entidade que as chaves identificam (Município,
+   Estabelecimento, Pessoa, Licitação…) e as relações entre elas, num grafo
+   de forças no estilo Neo4j. Fonte: docs/context/ontologia.yaml, gerado por
+   scripts/gera_ontologia.ts em ontologia.json — carregado só no primeiro
+   clique, como o 3D. Chaves e datasets vêm como índices do schema_graph, então
+   clicar numa coluna ou num dataset desce direto para a grade. */
+const ontoEl = document.getElementById("cvOnto");
+const oView = document.getElementById("oView");
+let O = null, oLoading = false;
+const oPending = [];
+let oNodes = [], oEdges = [], oDsN = [], oDsL = [], oAnch = {};
+let oT = { x: 0, y: 0, k: 1 }, oAlpha = 1, oRaf = 0, oShowDs = false;
+const oHidden = new Set();
+const ontoCor = d => O ? `var(--t-${O.dominios[d].cor})` : "var(--hub)";
+const tipoLeg = t => t.replace(/_/g, " ");
+
+function ensureOnto(cb) {
+  if (O) { cb(); return; }
+  oPending.push(cb);
+  if (oLoading) return;
+  oLoading = true;
+  const inline = document.getElementById("ontojson").textContent.trim();
+  const got = inline && inline !== "__ONTO" + "_JSON__"
+    ? Promise.resolve(JSON.parse(inline))
+    : fetch("ontologia.json").then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
+  got.then(data => {
+    O = data;
+    initOnto();
+    ontoRail();
+    renderList(document.getElementById("q").value);
+    oPending.splice(0).forEach(f => f());
+  }).catch(err => {
+    oLoading = false;
+    ontoEl.innerHTML = `<text x="40" y="60" fill="var(--ink-2)">Não consegui carregar ontologia.json (${esc(String(err))}).</text>`;
+  });
+}
+
+function openCls(ci) {
+  if (mode !== "ontologia") setMode("ontologia");
+  ensureOnto(() => { select({ type: "cls", i: ci }); ontoCenter(oNodes[ci]); });
+  if (innerWidth <= 860) rail.classList.remove("on");
+}
+
+const svgEl = (tag, attrs, parent) => {
+  const e = document.createElementNS("http://www.w3.org/2000/svg", tag);
+  for (const a in attrs) e.setAttribute(a, attrs[a]);
+  if (parent) parent.appendChild(e);
+  return e;
+};
+
+function initOnto() {
+  const doms = Object.keys(O.dominios);
+  const maxT = Math.max(...O.classes.map(c => c.tabelas));
+  oNodes = O.classes.map((c, i) => ({ ...c, i, kind: "c", r: 20 + 42 * Math.sqrt(c.tabelas / maxT),
+    x: 0, y: 0, vx: 0, vy: 0, fx: null, fy: null }));
+  oEdges = O.relacoes.map((r, i) => ({ ...r, i, s: oNodes[r.de], t: oNodes[r.para] }));
+  const pares = {};
+  for (const e of oEdges) (pares[[Math.min(e.de, e.para), Math.max(e.de, e.para)]] ??= []).push(e);
+  for (const k in pares) pares[k].forEach((e, j, a) => { e.curva = a.length > 1 ? (j - (a.length - 1) / 2) * 34 : 0; });
+  const tempo = O.classes.findIndex(c => c.id === "tempo");
+  oDsN = O.datasets.map((c, i) => ({ i, kind: "d", c, r: 3 + Math.min(4, Math.sqrt(DS[i].t)),
+    x: 0, y: 0, vx: 0, vy: 0, fx: null, fy: null }));
+  oDsL = [];
+  for (const d of oDsN) for (const [ci, n] of d.c) if (ci !== tempo) oDsL.push({ s: d, t: oNodes[ci], w: n });
+
+  // território no meio; pessoas e empresas em lados opostos da dobradiça
+  // "CPF ou CNPJ", cada uma perto de quem conta a sua história
+  oAnch = {
+    territorio: [0, 0], empresa: [430, -230], titular: [620, 20], pessoa: [430, 270],
+    estado: [900, -150], politica: [820, 330], classificacao: [140, -430], infraestrutura: [120, 420],
+    educacao: [-450, -220], saude: [-430, 250], tempo: [-560, -330],
+  };
+  for (const d of doms) { const a = oAnch[d] || [0, 0]; oAnch[d] = { x: a[0] * .8, y: a[1] * .8 }; }
+
+  const gE = document.getElementById("oEdges"), gN = document.getElementById("oNodes");
+  const gD = document.getElementById("oDsn"), gL = document.getElementById("oDsl");
+  for (const e of oEdges) {
+    const g = svgEl("g", { class: "oe" + (e.conceito ? " conceito" : "") }, gE);
+    e.path = svgEl("path", { "marker-end": "url(#oa)" }, g);
+    e.label = svgEl("text", { dy: "-3", "text-anchor": "middle" }, g);
+    e.label.textContent = tipoLeg(e.tipo);
+    e.label.addEventListener("pointerdown", ev => ev.stopPropagation());
+    e.label.addEventListener("click", ev => { ev.stopPropagation(); select({ type: "rel", i: e.i }); });
+    svgEl("title", {}, g).textContent = `${e.s.nome} — ${tipoLeg(e.tipo)} → ${e.t.nome}\n${e.via}`;
+    e.g = g;
+  }
+  for (const n of oNodes) {
+    const g = svgEl("g", { class: "onode" }, gN);
+    svgEl("circle", { r: n.r, fill: ontoCor(n.dom), stroke: ontoCor(n.dom) }, g);
+    const lines = quebra(n.nome, n.r), fs = Math.max(9, Math.min(15, n.r / 3.4));
+    const t = svgEl("text", { style: `font-size:${fs}px` }, g);
+    lines.forEach((ln, j) => {
+      svgEl("tspan", { x: 0, dy: j === 0 ? -((lines.length - 1) * fs * 1.1) / 2 + fs * .35 : fs * 1.1 }, t).textContent = ln;
+    });
+    svgEl("title", {}, g).textContent = `${n.nome} — ${fmt(n.tabelas)} tabelas, ${n.ds.length} datasets`;
+    n.g = g;
+    ontoDrag(n);
+  }
+  for (const l of oDsL) l.line = svgEl("line", {}, gL);
+  for (const d of oDsN) {
+    const g = svgEl("g", { class: "ods" }, gD);
+    svgEl("circle", { r: d.r, fill: `var(--t-${DS[d.i].dom})` }, g);
+    svgEl("title", {}, g).textContent = `${DS[d.i].n} — ${DS[d.i].t} tabela${DS[d.i].t > 1 ? "s" : ""}`;
+    d.g = g;
+    ontoDrag(d);
+  }
+  gD.style.display = gL.style.display = "none";
+
+  // pan e zoom; clique no fundo (sem arrastar) limpa a seleção
+  ontoEl.addEventListener("wheel", ev => {
+    ev.preventDefault();
+    const r = ontoEl.getBoundingClientRect();
+    ontoZoom(Math.exp(-ev.deltaY * .0015), ev.clientX - r.left, ev.clientY - r.top);
+  }, { passive: false });
+  let pan = null;
+  ontoEl.addEventListener("pointerdown", ev => {
+    pan = { x: ev.clientX - oT.x, y: ev.clientY - oT.y, moved: false };
+    ontoEl.classList.add("panning"); ontoEl.setPointerCapture(ev.pointerId);
+  });
+  ontoEl.addEventListener("pointermove", ev => {
+    if (!pan) return;
+    if (Math.abs(ev.clientX - pan.x - oT.x) + Math.abs(ev.clientY - pan.y - oT.y) > 2) pan.moved = true;
+    oT.x = ev.clientX - pan.x; oT.y = ev.clientY - pan.y; ontoApplyT();
+  });
+  ontoEl.addEventListener("pointerup", () => {
+    if (pan && !pan.moved) select(null);
+    pan = null; ontoEl.classList.remove("panning");
+  });
+  // ao mudar o tamanho do palco: com classe selecionada, mantém ela no centro
+  new ResizeObserver(() => {
+    if (mode !== "ontologia") return;
+    if (sel && sel.type === "cls") ontoCenter(oNodes[sel.i]); else ontoFit();
+  }).observe(ontoEl);
+
+  ontoSeed();
+  for (let i = 0; i < 400; i++) ontoTick();
+  ontoRender();
+}
+
+function quebra(nome, r) {
+  const max = Math.max(6, Math.floor(r / 3.6)), out = [];
+  let cur = "";
+  for (const w of nome.split(" ")) {
+    if ((cur + " " + w).trim().length > max && cur) { out.push(cur); cur = w; }
+    else cur = (cur + " " + w).trim();
+  }
+  out.push(cur);
+  return out.slice(0, 3);
+}
+
+function ontoSeed() {
+  for (const n of oNodes) {
+    const a = oAnch[n.dom];
+    n.x = a.x + (Math.random() - .5) * 160; n.y = a.y + (Math.random() - .5) * 160;
+    n.vx = n.vy = 0; n.fx = n.fy = null; n.g.classList.remove("pinned");
+  }
+  for (const d of oDsN) {
+    const host = oDsL.find(l => l.s === d)?.t || oNodes.find(n => n.id === "tempo");
+    d.x = host.x + (Math.random() - .5) * 200; d.y = host.y + (Math.random() - .5) * 200; d.vx = d.vy = 0;
+  }
+}
+
+function ontoTick() {
+  const live = oShowDs ? oNodes.concat(oDsN) : oNodes, k = oAlpha;
+  for (let i = 0; i < live.length; i++) {
+    const a = live[i];
+    for (let j = i + 1; j < live.length; j++) {
+      const b = live[j];
+      let dx = b.x - a.x, dy = b.y - a.y;
+      const d2 = dx * dx + dy * dy || .01, both = a.kind === "c" && b.kind === "c";
+      if (!both && d2 > 90000) continue;
+      const str = both ? 9000 : (a.kind === "d" && b.kind === "d" ? 60 : 500);
+      const d = Math.sqrt(d2), f = str / d2 * k;
+      dx /= d; dy /= d;
+      a.vx -= dx * f; a.vy -= dy * f; b.vx += dx * f; b.vy += dy * f;
+      const min = a.r + b.r + (both ? 26 : 2);
+      if (d < min) { const p = (min - d) / 2; a.x -= dx * p; a.y -= dy * p; b.x += dx * p; b.y += dy * p; }
+    }
+  }
+  for (const e of oEdges) {
+    if (e.s === e.t) continue;
+    const dx = e.t.x - e.s.x, dy = e.t.y - e.s.y, d = Math.hypot(dx, dy) || 1;
+    const f = (d - (e.s.r + e.t.r + 90)) * .02 * k;
+    e.s.vx += dx / d * f; e.s.vy += dy / d * f; e.t.vx -= dx / d * f; e.t.vy -= dy / d * f;
+  }
+  if (oShowDs) for (const l of oDsL) {
+    const dx = l.t.x - l.s.x, dy = l.t.y - l.s.y, d = Math.hypot(dx, dy) || 1;
+    const f = (d - (l.t.r + 30)) * .03 * k / Math.max(1, l.s.c.length * .7);
+    l.s.vx += dx / d * f; l.s.vy += dy / d * f;
+  }
+  for (const n of oNodes) {
+    const a = oAnch[n.dom];
+    n.vx += (a.x - n.x) * .004 * k; n.vy += (a.y - n.y) * .004 * k;
+  }
+  for (const n of live) {
+    if (n.fx != null) { n.x = n.fx; n.y = n.fy; n.vx = n.vy = 0; continue; }
+    n.vx *= .6; n.vy *= .6; n.x += n.vx; n.y += n.vy;
+  }
+  oAlpha *= .985;
+}
+
+function ontoRender() {
+  for (const n of oNodes) n.g.setAttribute("transform", `translate(${n.x.toFixed(1)},${n.y.toFixed(1)})`);
+  for (const e of oEdges) {
+    let d, lx, ly, ang = 0;
+    if (e.s === e.t) {
+      const { x, y, r } = e.s;
+      d = `M${x + r * .7},${y - r * .7} C${x + r * 2.6},${y - r * 2.6} ${x - r * 2.6},${y - r * 2.6} ${x - r * .7},${y - r * .75}`;
+      lx = x; ly = y - r * 2.05;
+    } else {
+      const dx = e.t.x - e.s.x, dy = e.t.y - e.s.y, len = Math.hypot(dx, dy) || 1;
+      const mx = (e.s.x + e.t.x) / 2 - dy / len * e.curva, my = (e.s.y + e.t.y) / 2 + dx / len * e.curva;
+      const a0 = Math.atan2(my - e.s.y, mx - e.s.x), a1 = Math.atan2(my - e.t.y, mx - e.t.x);
+      const x0 = e.s.x + Math.cos(a0) * e.s.r, y0 = e.s.y + Math.sin(a0) * e.s.r;
+      const x1 = e.t.x + Math.cos(a1) * (e.t.r + 2), y1 = e.t.y + Math.sin(a1) * (e.t.r + 2);
+      d = e.curva ? `M${x0},${y0} Q${mx},${my} ${x1},${y1}` : `M${x0},${y0} L${x1},${y1}`;
+      lx = e.curva ? (x0 + 2 * mx + x1) / 4 : (x0 + x1) / 2;
+      ly = e.curva ? (y0 + 2 * my + y1) / 4 : (y0 + y1) / 2;
+      ang = Math.atan2(y1 - y0, x1 - x0) * 180 / Math.PI;
+      if (ang > 90 || ang < -90) ang += 180;
+    }
+    e.path.setAttribute("d", d);
+    e.label.setAttribute("transform", `translate(${lx.toFixed(1)},${ly.toFixed(1)}) rotate(${ang.toFixed(1)})`);
+  }
+  if (oShowDs) {
+    for (const d of oDsN) d.g.setAttribute("transform", `translate(${d.x.toFixed(1)},${d.y.toFixed(1)})`);
+    for (const l of oDsL) {
+      l.line.setAttribute("x1", l.s.x.toFixed(1)); l.line.setAttribute("y1", l.s.y.toFixed(1));
+      l.line.setAttribute("x2", l.t.x.toFixed(1)); l.line.setAttribute("y2", l.t.y.toFixed(1));
+    }
+  }
+}
+
+function ontoHeat(a) {
+  oAlpha = Math.max(oAlpha, a);
+  if (!oRaf) oRaf = requestAnimationFrame(ontoLoop);
+}
+function ontoLoop() {
+  ontoTick(); ontoRender();
+  oRaf = oAlpha > .02 && mode === "ontologia" ? requestAnimationFrame(ontoLoop) : 0;
+}
+function ontoStop() { if (oRaf) cancelAnimationFrame(oRaf); oRaf = 0; }
+
+const ontoApplyT = () => oView.setAttribute("transform", `translate(${oT.x},${oT.y}) scale(${oT.k})`);
+function ontoFit() {
+  if (!O) return;
+  const vis = (oShowDs ? oNodes.concat(oDsN) : oNodes).filter(n => n.kind === "d" || !oHidden.has(n.dom));
+  if (!vis.length) return;
+  const xs = vis.map(n => n.x), ys = vis.map(n => n.y);
+  const x0 = Math.min(...xs) - 80, x1 = Math.max(...xs) + 80, y0 = Math.min(...ys) - 80, y1 = Math.max(...ys) + 80;
+  const { width, height } = ontoEl.getBoundingClientRect();
+  if (!width || !height) return;
+  oT.k = Math.min(width / (x1 - x0), height / (y1 - y0), 1.4);
+  oT.x = width / 2 - oT.k * (x0 + x1) / 2; oT.y = height / 2 - oT.k * (y0 + y1) / 2;
+  ontoApplyT();
+}
+function ontoZoom(f, px, py) {
+  const { width, height } = ontoEl.getBoundingClientRect();
+  if (px === undefined) { px = width / 2; py = height / 2; }
+  const k2 = Math.min(4, Math.max(.15, oT.k * f));
+  oT.x = px - (px - oT.x) * k2 / oT.k; oT.y = py - (py - oT.y) * k2 / oT.k; oT.k = k2;
+  ontoApplyT();
+}
+function ontoCenter(n) {
+  const { width, height } = ontoEl.getBoundingClientRect();
+  // o inspetor cobre a direita do palco: centra na parte que sobra à vista
+  const livre = width - (insp.classList.contains("on") ? insp.offsetWidth : 0);
+  oT.x = livre / 2 - n.x * oT.k; oT.y = height / 2 - n.y * oT.k; ontoApplyT();
+}
+
+function ontoDrag(n) {
+  let drag = null;
+  n.g.addEventListener("pointerdown", ev => {
+    ev.stopPropagation();
+    const r = ontoEl.getBoundingClientRect();
+    const px = (ev.clientX - r.left - oT.x) / oT.k, py = (ev.clientY - r.top - oT.y) / oT.k;
+    drag = { dx: n.x - px, dy: n.y - py, moved: false };
+    n.g.setPointerCapture(ev.pointerId);
+  });
+  n.g.addEventListener("pointermove", ev => {
+    if (!drag) return;
+    const r = ontoEl.getBoundingClientRect();
+    n.fx = (ev.clientX - r.left - oT.x) / oT.k + drag.dx; n.fy = (ev.clientY - r.top - oT.y) / oT.k + drag.dy;
+    drag.moved = true;
+    if (n.kind === "c") n.g.classList.add("pinned");
+    ontoHeat(.3);
+  });
+  n.g.addEventListener("pointerup", () => {
+    if (drag && !drag.moved) select(n.kind === "c" ? { type: "cls", i: n.i } : { type: "ds", i: n.i });
+    drag = null;
+  });
+  n.g.addEventListener("dblclick", ev => {
+    ev.stopPropagation(); n.fx = n.fy = null; n.g.classList.remove("pinned"); ontoHeat(.3);
+  });
+}
+
+// acende a vizinhança do que está selecionado; o resto apaga
+function ontoHighlight() {
+  if (!O) return;
+  let ns = null, es = null;
+  oNodes.forEach(n => n.g.classList.toggle("sel", !!sel && sel.type === "cls" && sel.i === n.i));
+  if (sel && sel.type === "cls") {
+    const n = oNodes[sel.i];
+    es = new Set(oEdges.filter(e => e.s === n || e.t === n));
+    ns = new Set([n]);
+    for (const e of es) { ns.add(e.s); ns.add(e.t); }
+    if (oShowDs) for (const l of oDsL) if (l.t === n) ns.add(l.s);
+  } else if (sel && sel.type === "rel") {
+    const e = oEdges[sel.i];
+    es = new Set([e]); ns = new Set([e.s, e.t]);
+  } else if (sel && sel.type === "ds") {
+    const d = oDsN[sel.i];
+    ns = new Set([d, ...d.c.map(([ci]) => oNodes[ci])]); es = new Set();
+  }
+  for (const n of oNodes) n.g.classList.toggle("dim", !!ns && !ns.has(n));
+  for (const e of oEdges) {
+    const on = !!es && es.has(e);
+    e.g.classList.toggle("dim", !!es && !on);
+    e.g.classList.toggle("on", on);
+    e.path.setAttribute("marker-end", on ? "url(#oa-on)" : "url(#oa)");
+  }
+  for (const d of oDsN) d.g.classList.toggle("dim", !!ns && !ns.has(d));
+  for (const l of oDsL) l.line.classList.toggle("dim", !!ns && !(ns.has(l.s) && ns.has(l.t)));
+}
+
+function ontoApplyHidden() {
+  for (const n of oNodes) n.g.classList.toggle("gone", oHidden.has(n.dom));
+  for (const e of oEdges) e.g.classList.toggle("gone", oHidden.has(e.s.dom) || oHidden.has(e.t.dom));
+  for (const l of oDsL) l.line.classList.toggle("gone", oHidden.has(l.t.dom));
+}
+
+// div[4] do rail: cartão de entrada fora do modo, controles dentro dele
+function ontoRail() {
+  const on = mode === "ontologia";
+  document.getElementById("ontoCard").style.display = on ? "none" : "";
+  document.getElementById("ontoCtl").style.display = on ? "block" : "none";
+  const box = document.getElementById("ontoDoms");
+  if (!O || box.childElementCount) return;
+  box.innerHTML = Object.entries(O.dominios).map(([d, v]) =>
+    `<button type="button" data-dom="${d}" aria-pressed="true"><i style="background:${ontoCor(d)}"></i>${esc(v.nome)}</button>`).join("");
+  box.querySelectorAll("button").forEach(b => b.onclick = () => {
+    const d = b.dataset.dom;
+    oHidden.has(d) ? oHidden.delete(d) : oHidden.add(d);
+    b.setAttribute("aria-pressed", String(!oHidden.has(d)));
+    ontoApplyHidden();
+  });
+}
+document.getElementById("ontoCard").onclick = () => setMode("ontologia");
+document.getElementById("ontoDs").onclick = e => {
+  if (!O) return;
+  oShowDs = !oShowDs;
+  e.currentTarget.setAttribute("aria-pressed", String(oShowDs));
+  document.getElementById("oDsn").style.display = document.getElementById("oDsl").style.display = oShowDs ? "" : "none";
+  if (oShowDs) for (let i = 0; i < 150; i++) { oAlpha = Math.max(oAlpha, .4); ontoTick(); }
+  ontoRender(); ontoFit(); ontoHighlight(); ontoHeat(.2);
+};
+document.getElementById("ontoRelayout").onclick = () => {
+  if (!O) return;
+  ontoSeed(); oAlpha = 1;
+  for (let i = 0; i < 400; i++) ontoTick();
+  ontoRender(); ontoFit();
+};
+
+// inspetor: classe e relação, no mesmo painel que dataset e chave usam
+function renderCls(ci) {
+  const c = O.classes[ci];
+  iKind.textContent = "Classe · " + O.dominios[c.dom].nome;
+  iName.textContent = c.nome;
+  setDesc(c.desc);
+  const out = oEdges.filter(e => e.de === ci), inn = oEdges.filter(e => e.para === ci && e.de !== ci);
+  const rel = (e, dir) => `<button data-or="${e.i}" title="${esc(e.via)}"><span class="t">${dir === "out"
+      ? `${esc(tipoLeg(e.tipo))} → ${esc(e.t.nome)}` : `${esc(e.s.nome)} → ${esc(tipoLeg(e.tipo))}`}</span><span class="r">${e.conceito ? "fora do espelho · " : ""}${esc(e.via)}</span></button>`;
+  let h = `<div class="facts">
+      ${fact(fmt(c.tabelas), "tabelas")}
+      ${fact(fmt(c.ds.length), "datasets")}
+      ${fact(human(c.linhas), "linhas")}
+      ${fact(fmt(c.chaves.length), "colunas")}
+    </div>`;
+  if (out.length || inn.length)
+    h += `<p class="sec">Relações</p><div class="tlist rels">${out.map(e => rel(e, "out")).join("")}${inn.map(e => rel(e, "in")).join("")}</div>`;
+  if (c.conceitos.length)
+    h += `<p class="sec">Conceitos de join (bridges.yaml)</p><div class="chips">${c.conceitos.map(([k, t]) =>
+      `<span class="chip" title="${esc(t)}">${esc(k)}</span>`).join("")}</div>`;
+  if (c.chaves.length)
+    h += `<p class="sec">Colunas no espelho · clique para ver na grade</p><div class="chips">${c.chaves.map(([ki]) =>
+      `<button class="chip" data-k="${ki}"><i style="background:${ontoCor(c.dom)}"></i>${esc(KS[ki].n)}</button>`).join("")}</div>`;
+  if (c.ds.length)
+    h += `<p class="sec">Datasets que a medem</p><div class="tlist">${c.ds.map(([di, n]) =>
+      `<button data-d="${di}" title="${esc(DS[di].de || "")}"><span class="t">${esc(DS[di].n)}</span><span class="r">${n} tab.</span></button>`).join("")}</div>`;
+  iBody.innerHTML = h;
+  wire();
+  iBody.querySelectorAll("[data-or]").forEach(b => b.onclick = () => {
+    const e = oEdges[+b.dataset.or];
+    const other = e.s.i === ci ? e.t : e.s;
+    select({ type: "cls", i: other.i }); ontoCenter(other);
+  });
+}
+function renderRel(ri) {
+  const e = oEdges[ri];
+  iKind.textContent = "Relação" + (e.conceito ? " · fora do espelho" : "");
+  iName.textContent = `${e.s.nome} — ${tipoLeg(e.tipo)} → ${e.t.nome}`;
+  setDesc("");
+  iBody.innerHTML = `<p class="sec">Por onde passa</p><p class="note">${esc(e.via)}</p>
+    ${e.conceito ? '<p class="note">A ligação existe no mundo, mas o dado público não deixa fazê-la: CPF mascarado, microdado desidentificado ou texto livre.</p>' : ""}
+    <p class="sec">Classes</p>
+    <div class="tlist">${[e.s, e.t].map(n => `<button data-oc="${n.i}"><span class="t">${esc(n.nome)}</span><span class="r">${fmt(n.tabelas)} tab.</span></button>`).join("")}</div>`;
+  iBody.querySelectorAll("[data-oc]").forEach(b => b.onclick = () => {
+    const n = oNodes[+b.dataset.oc]; select({ type: "cls", i: n.i }); ontoCenter(n);
+  });
+}
+
 /* ── link direto ──────────────────────────────────────────────────
    `?db=br_me_rais` abre o atlas já centrado naquele dataset, com o painel
    aberto; `?mode=3d` (ou `temas`) abre já na distribuição escolhida — os dois
@@ -1898,6 +2419,9 @@ function syncUrl() {
     if (sel && sel.type === "ds") { u.searchParams.set("db", DS[sel.i].n); changed = true; }
     else if (u.searchParams.has("db")) { u.searchParams.delete("db"); changed = true; }
 
+    if (sel && sel.type === "cls" && O) { u.searchParams.set("classe", O.classes[sel.i].id); changed = true; }
+    else if (u.searchParams.has("classe")) { u.searchParams.delete("classe"); changed = true; }
+
     if (mode !== "grade") { u.searchParams.set("mode", mode); changed = true; }
     else if (u.searchParams.has("mode")) { u.searchParams.delete("mode"); changed = true; }
 
@@ -1909,6 +2433,12 @@ function openFromUrl() {
   const params = new URLSearchParams(location.search);
   const m = params.get("mode");
   if (m && MODES.some(([id]) => id === m) && m !== mode) setMode(m);
+
+  const c = params.get("classe");
+  if (c) ensureOnto(() => {
+    const ci = O.classes.findIndex(x => x.id === c);
+    if (ci >= 0) openCls(ci);
+  });
 
   const q = params.get("db");
   if (!q) return;
@@ -1930,6 +2460,7 @@ const MODE_ICON = {
   grade: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1.5" y="1.5" width="5.5" height="5.5" rx="1"/><rect x="9" y="1.5" width="5.5" height="5.5" rx="1"/><rect x="1.5" y="9" width="5.5" height="5.5" rx="1"/><rect x="9" y="9" width="5.5" height="5.5" rx="1"/></svg>',
   temas: '<svg viewBox="0 0 16 16" fill="currentColor"><circle cx="4.5" cy="4.5" r="3"/><circle cx="12" cy="4" r="2"/><circle cx="5" cy="12" r="2.3"/><circle cx="12.5" cy="11.5" r="1.6"/></svg>',
   "3d": '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 1.3 14 4.6v6.8L8 14.7 2 11.4V4.6Z"/><path d="M8 1.3v6.7m0 0L2 4.6m6 3.4 6-3.4m-6 3.4v6.7"/></svg>',
+  ontologia: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M5 10.5 11 4.5M5 10.5l7 2"/><circle cx="4.5" cy="10.5" r="3" fill="currentColor"/><circle cx="11.5" cy="4" r="2.2"/><circle cx="12.5" cy="12.7" r="1.8"/></svg>',
 };
 const modesEl = document.getElementById("modes");
 modesEl.innerHTML = MODES.map(([id, name, desc]) =>
@@ -1942,7 +2473,17 @@ const listEl = document.getElementById("list");
 const listT = document.getElementById("list-t");
 function renderList(q) {
   q = (q || "").trim().toLowerCase();
-  if (!q) {
+  if (!q && mode === "ontologia" && O) {
+    listT.textContent = "Classes";
+    const maxT = Math.max(...O.classes.map(c => c.tabelas));
+    listEl.innerHTML = Object.keys(O.dominios).map(d => O.classes.map((c, i) => [c, i]).filter(([c]) => c.dom === d)
+      .sort((a, b) => b[0].tabelas - a[0].tabelas).map(([c, i]) =>
+      `<button class="row" data-oc="${i}" title="${esc(O.dominios[d].nome)}">
+        <span class="dot" style="background:${ontoCor(d)}"></span>
+        <span class="nm">${esc(c.nome)}</span>
+        <span class="bar"><i style="width:${Math.max(4, Math.round(c.tabelas / maxT * 100))}%;background:${ontoCor(d)}"></i></span>
+        <span class="ct">${c.tabelas}</span></button>`).join("")).join("");
+  } else if (!q) {
     listT.textContent = "Temas";
     listEl.innerHTML = themeList.map(th => {
       const n = themeTables[th].length;
@@ -1955,6 +2496,7 @@ function renderList(q) {
     }).join("");
   } else {
     const hits = [];
+    if (O) O.classes.forEach((c, i) => { if (c.nome.toLowerCase().includes(q) || c.id.includes(q)) hits.push(["cls", i, c.nome, c.tabelas]); });
     KS.forEach((kk, i) => { if (kk.n.toLowerCase().includes(q)) hits.push(["key", i, kk.n, kk.t]); });
     DS.forEach((d, i) => { if (d.n.toLowerCase().includes(q)) hits.push(["ds", i, d.n, d.t]); });
     TB.forEach((t, i) => {
@@ -1963,8 +2505,8 @@ function renderList(q) {
     });
     listT.textContent = hits.length ? `${hits.length} resultado${hits.length > 1 ? "s" : ""}` : "Nada encontrado";
     listEl.innerHTML = hits.length ? hits.slice(0, 300).map(([ty, i, label, n]) =>
-      `<button class="row" data-${ty === "key" ? "k" : ty === "ds" ? "d" : "t"}="${i}">
-        <span class="dot" style="background:${ty === "key" ? "var(--hub)"
+      `<button class="row" data-${ty === "key" ? "k" : ty === "ds" ? "d" : ty === "cls" ? "oc" : "t"}="${i}">
+        <span class="dot" style="background:${ty === "cls" ? ontoCor(O.classes[i].dom) : ty === "key" ? "var(--hub)"
           : ty === "ds" ? `var(--t-${DS[i].dom})` : `var(--t-${DS[TB[i].ds].dom})`}"></span>
         <span class="nm">${esc(label)}</span><span class="ct">${n}</span></button>`).join("")
       : '<p class="empty">Nenhuma chave, dataset ou tabela com esse nome.</p>';
@@ -1974,6 +2516,7 @@ function renderList(q) {
       if (r.dataset.th !== undefined) { select({ type: "theme", th: r.dataset.th }); flyTheme(r.dataset.th); }
       else if (r.dataset.k !== undefined) { const i = +r.dataset.k; select({ type: "key", i }); flyKey(i); }
       else if (r.dataset.d !== undefined) { const i = +r.dataset.d; select({ type: "ds", i }); flyDs(i); }
+      else if (r.dataset.oc !== undefined) openCls(+r.dataset.oc);
       else { const i = +r.dataset.t; select({ type: "tbl", i }); flyTbl(i); }
       if (innerWidth <= 860) rail.classList.remove("on");
     };
@@ -1995,20 +2538,24 @@ function renderList(q) {
 document.getElementById("q").addEventListener("input", e => renderList(e.target.value));
 
 document.getElementById("zin").onclick = () => {
+  if (mode === "ontologia") { ontoZoom(1.4); return; }
   if (mode === "3d") { if (graph3d) dollyCamera3D(1 / 1.4); return; }
   goTo((W / 2 - tx) / k, (H / 2 - ty) / k, k * 1.5, true);
 };
 document.getElementById("zout").onclick = () => {
+  if (mode === "ontologia") { ontoZoom(1 / 1.4); return; }
   if (mode === "3d") { if (graph3d) dollyCamera3D(1.4); return; }
   goTo((W / 2 - tx) / k, (H / 2 - ty) / k, k / 1.5, true);
 };
 document.getElementById("reset").onclick = () => {
   select(null);
+  if (mode === "ontologia") { ontoFit(); return; }
   if (mode === "3d") { if (graph3d) graph3d.zoomToFit(600, 40); return; }
   fit(true);
 };
 document.getElementById("home").onclick = () => {
   select(null);
+  if (mode === "ontologia") { ontoFit(); return; }
   if (mode === "3d") { if (graph3d) graph3d.zoomToFit(600, 40); return; }
   home(true);
 };

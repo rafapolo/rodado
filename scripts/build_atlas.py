@@ -27,6 +27,10 @@ SRC = REPO / "pages" / "atlas" / "_page.html"
 GRAPH = REPO / "pages" / "atlas" / "schema_graph.json"
 SITE = REPO / "pages" / "atlas" / "index.html"
 PLACEHOLDER = "__GRAPH_JSON__"
+# o modo Ontologia busca pages/atlas/ontologia.json (bun scripts/gera_ontologia.ts);
+# na cópia de Artifact vai embutido, pelo mesmo motivo do grafo
+ONTO = REPO / "pages" / "atlas" / "ontologia.json"
+ONTO_PLACEHOLDER = "__ONTO_JSON__"
 
 
 HEAD_EXTRA = """<meta charset="utf-8">
@@ -73,12 +77,13 @@ def build(artifact_out: Path | None = None):
     if "</script" in graph.lower():
         sys.exit("graph JSON contains a closing script tag")
 
-    SITE.write_text(wrap_document(tpl.replace(PLACEHOLDER, "")))
+    SITE.write_text(wrap_document(tpl.replace(PLACEHOLDER, "").replace(ONTO_PLACEHOLDER, "")))
     print(f"site     {SITE.relative_to(REPO)} "
           f"({SITE.stat().st_size / 1024:.0f} KB + {len(graph) / 1024:.0f} KB de dados)")
 
     if artifact_out:
-        artifact_out.write_text(tpl.replace(PLACEHOLDER, graph))
+        onto = ONTO.read_text().strip() if ONTO.exists() else ""
+        artifact_out.write_text(tpl.replace(PLACEHOLDER, graph).replace(ONTO_PLACEHOLDER, onto))
         print(f"artifact {artifact_out} ({artifact_out.stat().st_size / 1024:.0f} KB, autocontido)")
 
 

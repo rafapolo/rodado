@@ -1,0 +1,388 @@
+# Ontologia do espelho — as coisas do mundo que as chaves de join identificam.
+#
+# O atlas desenha tabela → chave (o mapa físico). Aqui o nível sobe: cada
+# CLASSE é uma entidade (Município, Estabelecimento, Licitação…) e junta os
+# conceitos de `bridges.yaml → concepts` que a identificam. Os 62 conceitos
+# entram cada um em exatamente uma classe — `scripts/gera_ontologia.ts`
+# recusa o build se algum sobrar ou repetir.
+#
+#   python3 scripts/gera_schema_graph.py   # schema_graph.json (já existe no fluxo do atlas)
+#   bun scripts/gera_ontologia.ts          # este arquivo + bridges.yaml + schema_graph.json
+#                                          #   -> pages/atlas/ontologia.html
+#
+# Campos de cada classe:
+#   nome      rótulo do nó
+#   dominio   uma das chaves de `dominios` (dá a cor)
+#   desc      uma frase, pt-BR
+#   conceitos nomes de `bridges.yaml → concepts` (casam a chave homônima do atlas)
+#   chaves    regex (sem distinção de maiúsculas) para as variantes do atlas que
+#             não são conceito: `id_municipio_residencia`, `cnpj_fornecedor`…
+#             A primeira classe cuja regex casa leva a chave; conceito exato
+#             vence regex.
+#
+# Relações: `de -[tipo]-> para`. `via` diz por qual coluna a ligação passa
+# no espelho; `ligacao: conceito` marca as que existem no mundo mas que o
+# espelho não consegue fazer (microdado desidentificado, CPF mascarado,
+# texto livre) — desenhadas tracejadas.
+
+dominios:
+  territorio:     {nome: Território,        cor: territorio}
+  tempo:          {nome: Tempo,             cor: outros}
+  pessoa:         {nome: Pessoas,           cor: populacao}
+  empresa:        {nome: Empresas,          cor: economia}
+  titular:        {nome: CPF ou CNPJ,       cor: seguranca}
+  classificacao:  {nome: Classificações,    cor: cultura_arte}
+  educacao:       {nome: Educação,          cor: educacao}
+  saude:          {nome: Saúde,             cor: saude}
+  estado:         {nome: Estado e compras,  cor: governo}
+  politica:       {nome: Política,          cor: politica}
+  infraestrutura: {nome: Infraestrutura,    cor: infraestrutura}
+
+classes:
+  # ── território ────────────────────────────────────────────────────────
+  municipio:
+    nome: Município
+    dominio: territorio
+    desc: O eixo do espelho. Código IBGE de 7 dígitos; todo outro código de município (TSE, Receita, SIAFI, BCB, 6 dígitos do DATASUS) se converte nele.
+    conceitos: [id_municipio, id_municipio_6, id_municipio_tse, id_municipio_rf, id_municipio_bcb, codigo_municipio_siafi, municipio, nome_municipio]
+    chaves: ['^id_municipio', '^cod(igo)?_municipio', '^municipio', '^nome_municipio', '^ID_MUNICIP$', '^ID_MN_RESI$']
+  uf:
+    nome: UF
+    dominio: territorio
+    desc: Unidade da federação, por sigla (SP) ou código IBGE (35). A coluna mais compartilhada do espelho.
+    conceitos: [sigla_uf, id_uf, uf, estado]
+    chaves: ['^sigla_uf', '^uf(_|$)', '_uf$', '^sg_uf$', '^uf_', '^nome_uf$', '^id_uf']
+  regiao:
+    nome: Grande região
+    dominio: territorio
+    desc: Norte, Nordeste, Sudeste, Sul, Centro-Oeste.
+    conceitos: [id_regiao]
+    chaves: ['^nome_regiao$']
+  regiao_ibge:
+    nome: Região geográfica
+    dominio: territorio
+    desc: Recortes do IBGE entre a UF e o município — meso e microrregião (até 2017), regiões intermediária e imediata (depois).
+    conceitos: [id_mesorregiao, id_microrregiao, id_regiao_imediata, id_regiao_intermediaria]
+    chaves: ['^nome_regiao_(imediata|intermediaria)$']
+  regiao_metropolitana:
+    nome: Região metropolitana
+    dominio: territorio
+    desc: Região metropolitana e concentração urbana — conjuntos de municípios.
+    conceitos: [id_regiao_metropolitana]
+    chaves: ['regiao_metropolitana', 'concentracao_urbana']
+  regiao_saude:
+    nome: Região de saúde
+    dominio: territorio
+    desc: A unidade em que o SUS planeja a política de saúde; agrupa municípios.
+    conceitos: [id_regiao_saude]
+    chaves: ['regiao_saude', '^ID_REGIONA$', '^ID_RG_RESI$']
+  distrito:
+    nome: Distrito
+    dominio: territorio
+    desc: Subdivisão do município (e subdistrito, um nível abaixo). Malha muda a cada censo.
+    conceitos: [id_distrito, id_subdistrito]
+    chaves: ['^nome_(sub)?distrito$']
+  setor_censitario:
+    nome: Setor censitário
+    dominio: territorio
+    desc: A geografia mais fina do espelho — 15 dígitos, os 7 primeiros são o município.
+    conceitos: [id_setor_censitario]
+  cep:
+    nome: CEP
+    dominio: territorio
+    desc: Código postal; o diretório leva cada CEP a um município.
+    conceitos: [cep]
+    chaves: ['^cep']
+  pais:
+    nome: País
+    dominio: territorio
+    desc: Códigos de país (M49, ISO3…) — comércio exterior e as bases world_*.
+    conceitos: [id_pais, sigla_pais_iso3]
+    chaves: ['^pais_', '^sigla_pais', '^nome_pais$']
+  imovel_rural:
+    nome: Imóvel rural
+    dominio: territorio
+    desc: Imóvel rural no CAR, no SNCR/INCRA ou na Receita (NIRF) — três cadastros que só se ligam em parte.
+    conceitos: [id_imovel_car, codigo_imovel_sncr, nirf]
+
+  # ── tempo ─────────────────────────────────────────────────────────────
+  tempo:
+    nome: Período
+    dominio: tempo
+    desc: Ano, mês, trimestre, data. Está em quase toda tabela e é a partição a filtrar primeiro — por isso não desenha arestas, só existe.
+    conceitos: [ano, mes, data, trimestre, semestre, year]
+    chaves: ['^(ano|mes|data|date|dt_|trimestre|semestre|year)', '^NU_ANO$', 'ano(mes|processo|contrato)$', '^data']
+
+  # ── empresas ──────────────────────────────────────────────────────────
+  empresa:
+    nome: Empresa
+    dominio: empresa
+    desc: A pessoa jurídica, pelos 8 primeiros dígitos do CNPJ — sem filial.
+    conceitos: [cnpj_basico]
+  estabelecimento:
+    nome: Estabelecimento
+    dominio: empresa
+    desc: Matriz ou filial, CNPJ completo de 14 dígitos. O espelho tem 60 milhões em br_me_cnpj.
+    conceitos: [cnpj]
+    chaves: ['^cnpj_(empresa|estabelecimento|dv|ordem|cliente|agencia|exportador|emissor|controlador|custodiante|auditor|admin|periciadora|prestador_contas|candidato|instituicao)', '^nome_(empresarial|fantasia|razao_social|empresa)$']
+  companhia_aberta:
+    nome: Companhia aberta
+    dominio: empresa
+    desc: Empresa com ações na B3, registrada na CVM. O ticker não traz CNPJ; o elo é o formulário da CVM.
+    conceitos: [ticker]
+    chaves: ['^cnpj_cia$', '^cnpj_companhia$', '^cd_cvm$', '^codigo_cvm$']
+  fundo:
+    nome: Fundo de investimento
+    dominio: empresa
+    desc: Fundo registrado na CVM, com CNPJ próprio. Classe sem conceito em bridges.yaml — vem só das chaves.
+    conceitos: []
+    chaves: ['^cnpj_fundo']
+  # ── pessoas ───────────────────────────────────────────────────────────
+  pessoa:
+    nome: Pessoa
+    dominio: pessoa
+    desc: Pessoa física, pelo CPF — quase sempre mascarado no dado público, o que faz da data de nascimento o desempate.
+    conceitos: [cpf, data_nascimento]
+    chaves: ['^cpf_(?!cnpj)', '^id_pessoa$', '^id_servidor$', '^ano_nasc', '^nome_(completo|beneficiario|parlamentar|eleitoral|candidato|responsavel|representante_legal)$']
+  # ── a dobradiça: a mesma coluna guarda uma pessoa ou uma empresa ──────
+  titular:
+    nome: CPF ou CNPJ
+    dominio: titular
+    desc: Uma coluna só que guarda CPF ou CNPJ — favorecido, fornecedor, doador, sancionado. Pelo tamanho do valor vira Pessoa ou Estabelecimento.
+    conceitos: [cpf_cnpj]
+    chaves: ['cpf_?cnpj', 'cnpj_?cpf', '^nome_(favorecido|fornecedor|credor|devedor|contratado|vencedor|doador)$']
+
+  # ── classificações ────────────────────────────────────────────────────
+  cnae:
+    nome: CNAE
+    dominio: classificacao
+    desc: Atividade econômica. Subclasse → classe → grupo → divisão → seção, pelo próprio código.
+    conceitos: [cnae_2_subclasse, cnae_1]
+    chaves: ['cnae']
+  cbo:
+    nome: CBO
+    dominio: classificacao
+    desc: Ocupação (CBO 2002; a de 1994 nos arquivos antigos da RAIS).
+    conceitos: [cbo_2002]
+    chaves: ['^cbo', '^ID_OCUPA_N$']
+  cid:
+    nome: CID-10
+    dominio: classificacao
+    desc: Doença e causa de morte. Categoria (3 caracteres) → capítulo.
+    conceitos: [cid_principal_categoria]
+    chaves: ['^cid_', '^ID_AGRAVO$']
+  ncm:
+    nome: NCM
+    dominio: classificacao
+    desc: Produto no comércio exterior, 8 dígitos.
+    conceitos: [id_ncm]
+    chaves: ['ncm']
+  sh:
+    nome: Sistema Harmonizado
+    dominio: classificacao
+    desc: O nível acima da NCM (SH4 = os 4 primeiros dígitos).
+    conceitos: [id_sh4]
+  natureza_juridica:
+    nome: Natureza jurídica
+    dominio: classificacao
+    desc: Se o CNPJ é LTDA, fundação, município, autarquia… Separa o público do privado.
+    conceitos: [id_natureza_juridica]
+
+  # ── educação ──────────────────────────────────────────────────────────
+  escola:
+    nome: Escola
+    dominio: educacao
+    desc: Código INEP de 8 dígitos — censo escolar, IDEB, SAEB.
+    conceitos: [id_escola]
+  turma:
+    nome: Turma
+    dominio: educacao
+    desc: Turma no censo escolar.
+    conceitos: [id_turma]
+  aluno:
+    nome: Aluno
+    dominio: educacao
+    desc: Aluno dentro de uma edição de pesquisa — não atravessa anos.
+    conceitos: [id_aluno]
+  ies:
+    nome: Instituição de ensino superior
+    dominio: educacao
+    desc: Universidade, centro universitário ou faculdade.
+    conceitos: [id_ies]
+    chaves: ['^cnpj_mantenedora$']
+  curso:
+    nome: Curso superior
+    dominio: educacao
+    desc: Curso de graduação de uma IES.
+    conceitos: [id_curso]
+    chaves: ['^nome_curso$']
+  enem:
+    nome: Participante do ENEM
+    dominio: educacao
+    desc: Inscrição no ENEM; liga o microdado ao questionário socioeconômico do mesmo ano.
+    conceitos: [id_inscricao]
+
+  # ── saúde ─────────────────────────────────────────────────────────────
+  cnes:
+    nome: Estabelecimento de saúde
+    dominio: saude
+    desc: Código CNES, 7 dígitos — a espinha dos dados do SUS.
+    conceitos: [id_estabelecimento_cnes]
+  equipe:
+    nome: Equipe de saúde
+    dominio: saude
+    desc: Equipe de atenção primária cadastrada no CNES.
+    conceitos: [id_equipe]
+
+  # ── estado e compras ──────────────────────────────────────────────────
+  orgao:
+    nome: Órgão público
+    dominio: estado
+    desc: Órgão do governo; em compras, sobe para o órgão superior.
+    conceitos: [id_orgao]
+    chaves: ['orgao']
+  unidade_gestora:
+    nome: Unidade gestora
+    dominio: estado
+    desc: O nível orçamentário a que o gasto é atribuído (UG).
+    conceitos: [id_unidade_gestora]
+    chaves: ['unidade_gestora']
+  licitacao:
+    nome: Licitação
+    dominio: estado
+    desc: O certame; liga itens, participantes, empenhos e contratos.
+    conceitos: [id_licitacao]
+    chaves: ['^id_licitacao']
+  contrato:
+    nome: Contrato
+    dominio: estado
+    desc: Contrato de compra, com itens, aditivos e apostilamentos.
+    conceitos: [id_contrato]
+  empenho:
+    nome: Empenho
+    dominio: estado
+    desc: Reserva do orçamento — o elo entre a licitação e o dinheiro de fato comprometido, liquidado e pago.
+    conceitos: [id_empenho]
+    chaves: ['^id_(empenho|liquidacao|pagamento)']
+  contratacao_pncp:
+    nome: Contratação no PNCP
+    dominio: estado
+    desc: Contratação publicada no Portal Nacional de Contratações Públicas.
+    conceitos: [numero_controle_pncp]
+  processo:
+    nome: Processo administrativo
+    dominio: estado
+    desc: Número de processo — texto livre entre fontes; normalizar os dígitos antes de juntar.
+    conceitos: [numero_processo]
+    chaves: ['^id_processo$']
+  acordao_tcu:
+    nome: Acórdão do TCU
+    dominio: estado
+    desc: Deliberação do Tribunal de Contas — liga a decisão à pessoa ou empresa declarada inidônea ou inabilitada.
+    conceitos: [numero_acordao_tcu]
+
+  # ── política ──────────────────────────────────────────────────────────
+  partido:
+    nome: Partido
+    dominio: politica
+    desc: Sigla partidária — resultados, filiação e votações da Câmara.
+    conceitos: [sigla_partido]
+  candidatura:
+    nome: Candidatura
+    dominio: politica
+    desc: Uma candidatura no TSE (sequencial) — bens, receitas, despesas, redes sociais.
+    conceitos: [sequencial_candidato]
+  parlamentar:
+    nome: Parlamentar
+    dominio: politica
+    desc: Deputado ou senador — despesas, votos, comissões.
+    conceitos: [id_deputado]
+    chaves: ['^id_senador$', '^id_votacao$', '^id_legislatura$']
+
+  # ── infraestrutura ────────────────────────────────────────────────────
+  usina:
+    nome: Usina de energia
+    dominio: infraestrutura
+    desc: Empreendimento de geração na ANEEL, pelo CEG.
+    conceitos: [ceg]
+  obra:
+    nome: Obra
+    dominio: infraestrutura
+    desc: Obra de construção civil no Cadastro Nacional de Obras da Receita.
+    conceitos: [id_cno]
+
+relacoes:
+  # território — subir de nível é posicional ou projeção do diretório (hierarchies.yaml)
+  - {de: municipio, tipo: FICA_EM, para: uf, via: 'id_uf = 2 primeiros dígitos do id_municipio'}
+  - {de: uf, tipo: FICA_EM, para: regiao, via: 'nome_regiao no diretório da UF'}
+  - {de: municipio, tipo: PERTENCE_A, para: regiao_ibge, via: 'colunas id_* do diretório de municípios'}
+  - {de: municipio, tipo: PERTENCE_A, para: regiao_metropolitana, via: 'id_regiao_metropolitana no diretório'}
+  - {de: municipio, tipo: PERTENCE_A, para: regiao_saude, via: 'id_regiao_saude no diretório'}
+  - {de: regiao_ibge, tipo: FICA_EM, para: uf, via: 'diretório de municípios'}
+  - {de: distrito, tipo: FICA_EM, para: municipio, via: '7 primeiros dígitos do id_distrito'}
+  - {de: setor_censitario, tipo: FICA_EM, para: distrito, via: 'id_distrito/id_subdistrito no diretório de setores'}
+  - {de: cep, tipo: FICA_EM, para: municipio, via: 'br_bd_diretorios_brasil.cep'}
+  - {de: imovel_rural, tipo: FICA_EM, para: municipio, via: 'o id_imovel_car carrega o IBGE7 (UF-IBGE7-HASH)'}
+
+  # pessoas e empresas — as duas histórias e a dobradiça entre elas
+  - {de: estabelecimento, tipo: FILIAL_DE, para: empresa, via: 'cnpj_basico = 8 primeiros dígitos do cnpj'}
+  - {de: estabelecimento, tipo: FICA_EM, para: municipio, via: 'id_municipio_rf → id_municipio (diretório)'}
+  - {de: estabelecimento, tipo: ATIVIDADE, para: cnae, via: 'cnae_fiscal_principal / secundária'}
+  - {de: empresa, tipo: NATUREZA, para: natureza_juridica, via: 'id_natureza_juridica em br_me_cnpj.empresas'}
+  - {de: pessoa, tipo: SOCIO_DE, para: empresa, via: 'br_me_cnpj.socios — CPF do sócio vem mascarado', ligacao: conceito}
+  - {de: pessoa, tipo: TRABALHA_EM, para: estabelecimento, via: 'RAIS/CAGED públicos são desidentificados', ligacao: conceito}
+  - {de: pessoa, tipo: OCUPACAO, para: cbo, via: 'cbo_2002 no vínculo da RAIS/CAGED'}
+  - {de: titular, tipo: E_UM, para: pessoa, via: 'valor com 11 dígitos'}
+  - {de: titular, tipo: E_UM, para: estabelecimento, via: 'valor com 14 dígitos'}
+  - {de: companhia_aberta, tipo: E_UMA, para: empresa, via: 'CNPJ_CIA / CNPJ_Companhia → cnpj_basico'}
+  - {de: fundo, tipo: ADMINISTRADO_POR, para: estabelecimento, via: 'cnpj_admin / cnpj_custodiante'}
+
+  # classificações e comércio exterior
+  - {de: ncm, tipo: SUBCLASSE_DE, para: sh, via: '4 primeiros dígitos da NCM'}
+  - {de: municipio, tipo: EXPORTA, para: ncm, via: 'br_me_comex_stat'}
+  - {de: municipio, tipo: COMERCIA_COM, para: pais, via: 'br_me_comex_stat (id_pais / sigla_pais_iso3)'}
+  - {de: pessoa, tipo: DIAGNOSTICO, para: cid, via: 'SIM/SIH/SINAN: o evento tem CID, mas não CPF', ligacao: conceito}
+
+  # educação
+  - {de: escola, tipo: FICA_EM, para: municipio, via: 'id_municipio no diretório de escolas'}
+  - {de: turma, tipo: DA_ESCOLA, para: escola, via: 'id_escola no censo escolar'}
+  - {de: aluno, tipo: MATRICULADO_EM, para: turma, via: 'id_turma no censo escolar'}
+  - {de: curso, tipo: OFERECIDO_POR, para: ies, via: 'id_ies'}
+  - {de: ies, tipo: MANTIDA_POR, para: estabelecimento, via: 'cnpj_mantenedora'}
+  - {de: enem, tipo: FEZ_PROVA_EM, para: municipio, via: 'id_municipio_prova'}
+  - {de: enem, tipo: ESTUDOU_EM, para: escola, via: 'id_escola no microdado do ENEM'}
+
+  # saúde
+  - {de: cnes, tipo: FICA_EM, para: municipio, via: 'id_municipio (6 dígitos no DATASUS)'}
+  - {de: cnes, tipo: E_UM, para: estabelecimento, via: 'cnpj do mantenedor no CNES'}
+  - {de: equipe, tipo: ATUA_EM, para: cnes, via: 'id_estabelecimento_cnes em br_ms_cnes.equipe'}
+
+  # estado e compras
+  - {de: orgao, tipo: SUBORDINADO_A, para: orgao, via: 'id_orgao_superior'}
+  - {de: orgao, tipo: E_UM, para: estabelecimento, via: 'cnpj_orgao'}
+  - {de: unidade_gestora, tipo: VINCULADA_A, para: orgao, via: 'id_orgao'}
+  - {de: licitacao, tipo: REALIZADA_POR, para: unidade_gestora, via: 'id_unidade_gestora'}
+  - {de: licitacao, tipo: PARTICIPANTE, para: titular, via: 'licitacao_participante (cpf_cnpj)'}
+  - {de: contrato, tipo: RESULTA_DE, para: licitacao, via: 'id_licitacao em contrato_compra'}
+  - {de: contrato, tipo: CONTRATADO, para: titular, via: 'cpf_cnpj_fornecedor'}
+  - {de: empenho, tipo: EMPENHA, para: licitacao, via: 'licitacao_empenho'}
+  - {de: empenho, tipo: FAVORECE, para: titular, via: 'favorecido do pagamento'}
+  - {de: processo, tipo: ORIGINA, para: licitacao, via: 'numero_processo, texto livre entre fontes', ligacao: conceito}
+  - {de: contratacao_pncp, tipo: CONTRATANTE, para: orgao, via: 'cnpj do órgão'}
+  - {de: contratacao_pncp, tipo: CONTRATADO, para: titular, via: 'ni_fornecedor (CPF ou CNPJ)'}
+  - {de: acordao_tcu, tipo: SANCIONA, para: titular, via: 'cpf_cnpj do responsável'}
+
+  # política
+  - {de: candidatura, tipo: DE, para: pessoa, via: 'cpf do candidato no TSE'}
+  - {de: candidatura, tipo: FILIADA_A, para: partido, via: 'sigla_partido'}
+  - {de: candidatura, tipo: DISPUTA_EM, para: municipio, via: 'id_municipio_tse → id_municipio'}
+  - {de: titular, tipo: DOOU_PARA, para: candidatura, via: 'cpf_cnpj_doador nas receitas'}
+  - {de: titular, tipo: FORNECEU_PARA, para: candidatura, via: 'cpf_cnpj_fornecedor nas despesas'}
+  - {de: parlamentar, tipo: FILIADO_A, para: partido, via: 'sigla_partido'}
+  - {de: parlamentar, tipo: ELEITO_POR, para: uf, via: 'sigla_uf'}
+
+  # infraestrutura
+  - {de: usina, tipo: FICA_EM, para: municipio, via: 'código IBGE do empreendimento'}
+  - {de: usina, tipo: PERTENCE_A, para: estabelecimento, via: 'CNPJ do agente proprietário'}
+  - {de: obra, tipo: FICA_EM, para: municipio, via: 'município da obra no CNO'}
+  - {de: obra, tipo: RESPONSAVEL, para: estabelecimento, via: 'CNPJ responsável no CNO'}
