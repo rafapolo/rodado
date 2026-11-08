@@ -52,8 +52,7 @@ modo abre; embutido na cópia de Artifact) + `docs/mapa/ONTOLOGIA.md` (mermaid,
 ELK). Chaves e datasets vão como índices do `schema_graph.json`, então clicar
 numa coluna ou dataset no inspetor desce para Temas.
 
-- Não tem botão em Distribuição: o `div[4]` do rail é o cartão que volta a
-  ela vindo de Temas ou 3D e, dentro dela, os controles (domínios para esconder).
+- Em Distribuição é o primeiro dos três botões (Ontologia · Temas · 3D).
 - `?mode=ontologia&classe=<id>` abre já com a classe no inspetor.
 - O build recusa conceito de `bridges.yaml` sem classe ou em duas, e relação
   para classe inexistente — conceito novo em `bridges.yaml` exige classe aqui.

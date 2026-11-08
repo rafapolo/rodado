@@ -169,31 +169,6 @@ button { font: inherit; color: inherit; }
 #q::placeholder { color: var(--ink-3); font-weight: 400; }
 
 .legend { padding: 13px 18px 14px; border-bottom: 1px solid var(--line); }
-/* atalho para a ontologia: um nível acima do atlas, as entidades que as chaves identificam */
-.onto { padding: 12px 18px 13px; border-bottom: 1px solid var(--line); }
-.onto a {
-  display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink);
-  padding: 8px 10px; border: 1px solid var(--line-2); border-radius: 6px; background: var(--card-2);
-}
-.onto a:hover { border-color: var(--focus); }
-.onto svg { flex: none; }
-.onto b { display: block; font-size: 13px; }
-.onto button.card {
-  width: 100%; text-align: left; display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--ink);
-  padding: 8px 10px; border: 1px solid var(--line-2); border-radius: 6px; background: var(--card-2);
-}
-.onto button.card:hover { border-color: var(--focus); }
-.onto-ctl { display: none; }
-.onto-ctl .doms { display: flex; flex-wrap: wrap; gap: 5px; margin: 6px 0 9px; }
-.onto-ctl .doms button {
-  display: inline-flex; align-items: center; gap: 5px; padding: 2px 8px; border-radius: 999px; cursor: pointer;
-  background: transparent; border: 1px solid var(--line-2); font-size: 11.5px; color: var(--ink-2);
-}
-.onto-ctl .doms i { width: 8px; height: 8px; border-radius: 50%; }
-.onto-ctl .doms button[aria-pressed="false"] { opacity: .45; }
-.onto-ctl .doms button[aria-pressed="false"] i { background: transparent !important; outline: 1px solid var(--ink-3); }
-.onto-ctl .why { font-size: 11.5px; color: var(--ink-3); line-height: 1.45; margin: 8px 0 0; }
-.onto span { display: block; font-size: 12px; color: var(--ink-2); line-height: 1.35; }
 .legend-t, .list-t {
   font-size: 10.5px; text-transform: uppercase; letter-spacing: .07em;
   color: var(--ink-3); margin: 0 0 9px;
@@ -489,21 +464,6 @@ canvas.drag { cursor: grabbing; }
     <input id="q" type="search" placeholder="buscar tabela, dataset ou chave" autocomplete="off" spellcheck="false" aria-label="Buscar">
   </div>
 
-  <div class="onto">
-    <button class="card" id="ontoCard" type="button">
-      <svg width="34" height="28" viewBox="0 0 34 28" aria-hidden="true">
-        <g stroke="var(--line-2)" stroke-width="1.2"><line x1="9" y1="18" x2="22" y2="7"/><line x1="9" y1="18" x2="26" y2="22"/><line x1="22" y1="7" x2="26" y2="22"/></g>
-        <circle cx="9" cy="18" r="6.5" fill="var(--t-territorio)"/><circle cx="22" cy="7" r="4.5" fill="var(--t-economia)"/><circle cx="26" cy="22" r="4" fill="var(--t-populacao)"/>
-      </svg>
-      <div><b>Ontologia</b><span>as entidades que as chaves identificam e como se ligam</span></div>
-    </button>
-    <div class="onto-ctl" id="ontoCtl">
-      <p class="legend-t">Ontologia · domínios</p>
-      <div class="doms" id="ontoDoms"></div>
-      <p class="why">Seta tracejada: a ligação existe no mundo, mas o dado público não deixa fazê-la. Clique numa coluna ou dataset para descer a Temas.</p>
-    </div>
-  </div>
-
   <div class="legend">
     <p class="legend-t">Distribuição</p>
     <div class="modes" id="modes"></div>
@@ -603,9 +563,9 @@ const DS = G.datasets, KS = G.keys, TB = G.tables;
    um corpo, dentro do território do seu tema; `3d` é o grafo dataset↔chave em
    três dimensões. (A `grade`, cartões de dataset empacotados, saiu a pedido.) */
 const MODES = [
+  ["ontologia", "Ontologia", "um nível acima: as entidades que as chaves identificam e como se ligam"],
   ["temas", "Temas", "um território por tema; as chaves flutuam entre os que ligam"],
   ["3d", "3D", "o mesmo grafo dataset↔chave, em três dimensões"],
-  ["ontologia", "Ontologia", "um nível acima: as entidades que as chaves identificam e como se ligam"],
 ];
 const DEFAULT_MODE = "ontologia";
 let mode = "temas";          // o canvas monta em Temas; o boot troca para a padrão
@@ -783,7 +743,6 @@ function setMode(next) {
   if (leavingOnto && sel && (sel.type === "cls" || sel.type === "rel")) { sel = null; insp.classList.remove("on"); }
   mode = next;
   syncUrl();
-  ontoRail();
   renderList(document.getElementById("q").value);
   document.querySelectorAll("[data-mode]").forEach(b =>
     b.setAttribute("aria-pressed", String(b.dataset.mode === mode)));
@@ -1754,7 +1713,6 @@ let O = null, oLoading = false;
 const oPending = [];
 let oNodes = [], oEdges = [], oAnch = {};
 let oT = { x: 0, y: 0, k: 1 }, oAlpha = 1, oRaf = 0;
-const oHidden = new Set();
 const ontoCor = d => O ? `var(--t-${O.dominios[d].cor})` : "var(--hub)";
 const tipoLeg = t => t.replace(/_/g, " ");
 
@@ -1770,7 +1728,6 @@ function ensureOnto(cb) {
   got.then(data => {
     O = data;
     initOnto();
-    ontoRail();
     renderList(document.getElementById("q").value);
     oPending.splice(0).forEach(f => f());
   }).catch(err => {
@@ -1957,7 +1914,7 @@ function ontoStop() { if (oRaf) cancelAnimationFrame(oRaf); oRaf = 0; }
 const ontoApplyT = () => oView.setAttribute("transform", `translate(${oT.x},${oT.y}) scale(${oT.k})`);
 function ontoFit() {
   if (!O) return;
-  const vis = oNodes.filter(n => !oHidden.has(n.dom));
+  const vis = oNodes;
   if (!vis.length) return;
   const xs = vis.map(n => n.x), ys = vis.map(n => n.y);
   const x0 = Math.min(...xs) - 80, x1 = Math.max(...xs) + 80, y0 = Math.min(...ys) - 80, y1 = Math.max(...ys) + 80;
@@ -2031,29 +1988,6 @@ function ontoHighlight() {
     e.path.setAttribute("marker-end", on ? "url(#oa-on)" : "url(#oa)");
   }
 }
-
-function ontoApplyHidden() {
-  for (const n of oNodes) n.g.classList.toggle("gone", oHidden.has(n.dom));
-  for (const e of oEdges) e.g.classList.toggle("gone", oHidden.has(e.s.dom) || oHidden.has(e.t.dom));
-}
-
-// div[4] do rail: cartão de entrada fora do modo, controles dentro dele
-function ontoRail() {
-  const on = mode === "ontologia";
-  document.getElementById("ontoCard").style.display = on ? "none" : "";
-  document.getElementById("ontoCtl").style.display = on ? "block" : "none";
-  const box = document.getElementById("ontoDoms");
-  if (!O || box.childElementCount) return;
-  box.innerHTML = Object.entries(O.dominios).map(([d, v]) =>
-    `<button type="button" data-dom="${d}" aria-pressed="true"><i style="background:${ontoCor(d)}"></i>${esc(v.nome)}</button>`).join("");
-  box.querySelectorAll("button").forEach(b => b.onclick = () => {
-    const d = b.dataset.dom;
-    oHidden.has(d) ? oHidden.delete(d) : oHidden.add(d);
-    b.setAttribute("aria-pressed", String(!oHidden.has(d)));
-    ontoApplyHidden();
-  });
-}
-document.getElementById("ontoCard").onclick = () => setMode("ontologia");
 
 // inspetor: classe e relação, no mesmo painel que dataset e chave usam
 function renderCls(ci) {
@@ -2163,8 +2097,7 @@ const MODE_ICON = {
   ontologia: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M5 10.5 11 4.5M5 10.5l7 2"/><circle cx="4.5" cy="10.5" r="3" fill="currentColor"/><circle cx="11.5" cy="4" r="2.2"/><circle cx="12.5" cy="12.7" r="1.8"/></svg>',
 };
 const modesEl = document.getElementById("modes");
-// a Ontologia é um modo, mas entra pelo cartão do rail (div[4]), não por aqui
-modesEl.innerHTML = MODES.filter(([id]) => id !== "ontologia").map(([id, name, desc]) =>
+modesEl.innerHTML = MODES.map(([id, name, desc]) =>
   `<button data-mode="${id}" aria-pressed="${id === mode}" title="${esc(desc)}">
      ${MODE_ICON[id] || ""}
      <span class="nm">${name}</span></button>`).join("");
