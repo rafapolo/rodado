@@ -1,5 +1,6 @@
 <title>Rodado Atlas</title>
 <link rel="preload" href="../assets/fonts/ibm-plex-sans-latin-400-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/site-nav.css">
 
 <style>
 /* IBM Plex servida do próprio site (pages/assets/fonts), não do Google Fonts:
@@ -120,7 +121,10 @@ body {
   overflow: hidden;
   display: grid;
   grid-template-columns: 296px 1fr;
+  /* o menu do site (assets/site-nav.css) em cima, ocupando as duas colunas */
+  grid-template-rows: auto minmax(0, 1fr);
 }
+body > .site-nav { grid-column: 1 / -1; }
 button { font: inherit; color: inherit; }
 :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 3px; }
 
@@ -134,11 +138,6 @@ button { font: inherit; color: inherit; }
   z-index: 3;
 }
 .rail-head { padding: 14px 18px 14px; border-bottom: 1px solid var(--line); }
-.back {
-  display: inline-block; margin-bottom: 7px;
-  font-size: 11.5px; color: var(--ink-3); text-decoration: none;
-}
-.back:hover { color: var(--ink); }
 .rail-head h1 {
   margin: 0 0 3px;
   font-size: 16px;
@@ -375,7 +374,7 @@ canvas.drag { cursor: grabbing; }
 @media (max-width: 860px) {
   body { grid-template-columns: 1fr; }
   .rail {
-    position: absolute; inset: 0 auto 0 0; width: 296px;
+    position: absolute; inset: var(--nav-h, 0px) auto 0 0; width: 296px;  /* abaixo do menu do site */
     transform: translateX(-100%); transition: transform .22s cubic-bezier(.4,0,.2,1);
     box-shadow: var(--shadow);
   }
@@ -400,9 +399,32 @@ canvas.drag { cursor: grabbing; }
 }
 </style>
 
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="brand" href="/">rodado</a>
+    <div class="nav-right">
+      <div class="links">
+        <a href="/analises/">Análises</a>
+        <a href="/plataformas/">Plataformas</a>
+        <a href="https://xn--2dk.xyz/">DataViz</a>
+        <a href="/temas/">Temas</a>
+        <a href="/atlas/">Atlas</a>
+        <a class="mcp-link" href="/mcp.html">MCP</a>
+      </div>
+      <div class="nav-controls">
+        <div class="lang-switch">
+          <span class="lang-current">PT</span>
+          <span class="lang-sep">/</span>
+          <a href="/en.html" class="lang-link">EN</a>
+        </div>
+        <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema claro/escuro" type="button"><i class="fa-solid fa-moon"></i></button>
+      </div>
+    </div>
+  </div>
+</nav>
+
 <aside class="rail" id="rail">
   <div class="rail-head">
-    <a class="back" href="/">← rodado</a>
     <h1>Rodado Atlas</h1>
     <p class="sub">As tabelas não vêm conectadas prontas. O que as liga são colunas que guardam a mesma informação com nomes diferentes — um CNPJ, um município, uma data. Cada etiqueta marca um desses pontos em comum.</p>
   </div>
@@ -2031,3 +2053,4 @@ Object.assign(window, { G, DS, KS, TB, L, P, select, goTo, flyKey, flyDs, flyThe
   getGraph3D: () => graph3d, getG3: () => G3, hoverTheme3D, clearHover3D });
 }
 </script>
+<script src="../assets/theme-toggle.js"></script>
