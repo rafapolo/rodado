@@ -1,8 +1,8 @@
 # rodado — Brasil em dados, retratos dos números oficiais
 
-> 1.752 tabelas públicas brasileiras — de instituições oficiais (RAIS, SIM, TSE, CGU, IBGE, INEP, CNES e outras), somadas a 102 fontes raspadas de forma independente — lidas a partir de perguntas investigativas, não de uma vitrine técnica: o que esses registros, cruzados, revelam sobre desigualdade, poder, economia, saúde e violência no Brasil?
+> 1.752 tabelas públicas brasileiras — de instituições oficiais (RAIS, SIM, TSE, CGU, IBGE, INEP, CNES e outras), somadas a 139 fontes raspadas de forma independente — lidas a partir de perguntas investigativas, não de uma vitrine técnica: o que esses registros, cruzados, revelam sobre desigualdade, poder, economia, saúde e violência no Brasil?
 
-**[rodado.xyz](https://rodado.xyz)** — os 43 temas publicados · [English](https://rodado.xyz/en.html)
+**[rodado.xyz](https://rodado.xyz)** — os 43 temas publicados · [atlas e ontologia](https://rodado.xyz/atlas/) · [English](https://rodado.xyz/en.html)
 
 ---
 
@@ -10,7 +10,7 @@
 
 Cada um dos 43 temas deste projeto parte de dados administrativos reais — vínculos de emprego, óbitos, contratos públicos, resultados eleitorais, matrículas escolares — e pergunta o que eles escondem quando cruzados por raça, classe, gênero, território e ocupação. Não é uma pesquisa de opinião nem um modelo teórico: é o retrato que o próprio Estado brasileiro produziu sobre si mesmo, através dos registros que gera para administrar a população, e que raramente são lidos lado a lado.
 
-O projeto nasce de uma aposta simples: que dados administrativos brutos, quando cruzados com cuidado, contam uma história mais direta sobre desigualdade do que a maior parte do debate público — e que essa história vale a pena ser escrita em tom investigativo, não hedgeado.
+O projeto nasce de uma aposta simples: que dados administrativos brutos, quando cruzados com cuidado, contam uma história mais direta sobre desigualdade do que a maior parte do debate público — e que essa história merece ser contada com a firmeza que os números sustentam, sem rodeios e sem ir além do que eles mostram.
 
 Cada tema no site publicado combina uma narrativa em prosa com as tabelas de evidência por trás dela — para que qualquer afirmação possa ser conferida, não só lida.
 
@@ -66,7 +66,7 @@ As 1.752 tabelas cobrem 43 domínios temáticos, cada um documentado em [`overvi
 
 ## Sobre os dados
 
-Os dados vêm de instituições públicas brasileiras — ministérios, tribunais, institutos e agências reguladoras — reunidos em um espelho próprio em Parquet, sem precisar importar nada localmente. 115 dessas 130 fontes são raspadas de forma independente, cobrindo o que não está disponível em nenhum repositório consolidado (sanções nacionais e internacionais, SICAF, SINAN Violência, reclamações de consumidor e mais). No total, 1.752 tabelas (545 GB em Parquet+zstd) são consultadas sob demanda via DuckDB, o que permite cruzar bases de ministérios, tribunais, institutos e fontes independentes numa única consulta SQL.
+Os dados vêm de instituições públicas brasileiras — ministérios, tribunais, institutos e agências reguladoras — reunidos em um espelho próprio em Parquet. Metade dele (904 tabelas em 166 datasets) espelha a [Base dos Dados](https://basedosdados.org); a outra metade (848 tabelas) vem de 139 fontes raspadas de forma independente, cobrindo o que não está em nenhum repositório consolidado: sanções nacionais e internacionais, SICAF, SINAN Violência, reclamações de consumidor, PNCP, CVM, ONS e mais. No total são 1.752 tabelas em 294 datasets — 33,8 bilhões de linhas, 545 GB em Parquet+zstd —, consultadas sob demanda via DuckDB, o que permite cruzar bases de ministérios, tribunais, institutos e fontes independentes numa única consulta SQL.
 
 ## Como as tabelas se conectam
 
@@ -74,8 +74,14 @@ O espelho não tem chave estrangeira. O que liga uma tabela à outra são coluna
 
 Esse conhecimento fica em três arquivos, versionados junto com o resto:
 
-- **`docs/context/bridges.yaml`** — as 54 pontes entre colunas equivalentes, cada uma com a expressão SQL que converte uma ponta na outra e o registro do que ela casou quando foi conferida. Junto vão as colunas que *parecem* chave e não são: `valor` aparece em 91 tabelas de 56 datasets significando coisas diferentes, e juntar por ele produz um resultado grande, plausível e errado.
+- **`docs/context/bridges.yaml`** — os 68 conceitos de junção (município, CNPJ, CPF, escola, licitação…) e as 126 pontes entre colunas equivalentes, cada uma com a expressão SQL que converte uma ponta na outra e o registro do que ela casou quando foi conferida. Junto vão as 21 colunas que *parecem* chave e não são: `valor` aparece em 91 tabelas de 56 datasets significando coisas diferentes, e juntar por ele produz um resultado grande, plausível e errado.
 - **`docs/context/metrics.yaml`** — a definição única de cada número recorrente (população, PIB per capita, saldo do CAGED), com a expressão, a unidade e o valor conferido. Sem isso cada análise re-deriva o mesmo cálculo e as diferenças só aparecem quando dois textos publicados discordam.
 - **`docs/context/hierarchies.yaml`** — como subir de um código para o nível acima. CNAE e CID-10 são códigos prefixais: a divisão sai de um `substr()` da subclasse, sem join nenhum.
 
 Os três são servidos ao assistente como ferramentas, não como texto para ele interpretar: pedir a ligação entre duas tabelas devolve a cláusula `ON` pronta, com o aviso de que uma delas devolve toda linha duas vezes, se for o caso.
+
+## Atlas e ontologia
+
+O [atlas](https://rodado.xyz/atlas/) mostra o espelho inteiro em três vistas. A **Ontologia**, que abre por padrão, sobe um nível acima das tabelas: as 45 entidades que as chaves identificam — município, estabelecimento, pessoa, licitação, escola, candidatura — e as 59 relações entre elas, cada uma com a coluna por onde passa. Pessoas e empresas ficam em lados opostos, ligadas pela coluna que guarda CPF ou CNPJ; as relações que existem no mundo mas que o dado público não deixa fazer (CPF mascarado, microdado desidentificado) aparecem tracejadas. **Temas** espalha as tabelas pelo território do seu assunto, e **3D** mostra o mesmo grafo de datasets e chaves em três dimensões.
+
+A ontologia é curada em [`docs/context/ontologia.yaml`](docs/context/ontologia.yaml), que agrupa os 68 conceitos de `bridges.yaml` em classes; a versão em diagrama está em [`docs/mapa/ONTOLOGIA.md`](docs/mapa/ONTOLOGIA.md).
