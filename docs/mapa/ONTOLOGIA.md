@@ -3,7 +3,7 @@
 Gerado por `scripts/gera_ontologia.ts` a partir de `docs/context/ontologia.yaml` — não edite.
 Versão navegável: o modo Ontologia do atlas, [rodado.xyz/atlas/?mode=ontologia](https://rodado.xyz/atlas/?mode=ontologia).
 
-45 classes, 59 relações; os 68 conceitos de `bridges.yaml` cabem nelas, e 1387 das 1751 tabelas tocam alguma.
+44 classes, 59 relações; os 68 conceitos de `bridges.yaml` cabem nelas, e 1155 das 1751 tabelas tocam alguma.
 Linha tracejada: a ligação existe no mundo, mas o espelho não consegue fazê-la (CPF mascarado, microdado desidentificado, texto livre).
 
 ```mermaid

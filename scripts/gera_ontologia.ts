@@ -22,7 +22,7 @@ const BRIDGES = join(REPO, "docs/context/bridges.yaml");
 const GRAPH = join(REPO, "pages/atlas/schema_graph.json");
 const OUT = join(REPO, "pages/atlas/ontologia.json");
 
-type Classe = { nome: string; dominio: string; desc: string; conceitos: string[]; chaves?: string[] };
+type Classe = { nome: string; dominio: string; desc: string; conceitos: string[]; chaves?: string[]; desenha?: boolean };
 type Rel = { de: string; tipo: string; para: string; via: string; ligacao?: string };
 
 const onto = Bun.YAML.parse(await Bun.file(ONTO).text()) as {
@@ -100,12 +100,23 @@ for (const t of g.tables) {
 }
 
 const semClasse = g.keys.filter((_: unknown, i: number) => !classeDaChave[i]);
-const tabelasComClasse = g.tables.filter((t: { k: number[] }) => t.k.some((ki) => classeDaChave[ki])).length;
+// conta só as classes desenhadas: uma tabela que só tem `ano` não toca o grafo
+const tabelasComClasse = g.tables.filter((t: { k: number[] }) =>
+  t.k.some((ki) => classeDaChave[ki] && onto.classes[classeDaChave[ki]!].desenha !== false)).length;
+
+// classes com `desenha: false` (o Período) ficam classificadas mas fora do grafo;
+// os índices de saída são renumerados sem elas
+const vis = ids.filter((id) => onto.classes[id].desenha !== false);
+const novo = new Map(vis.map((id, i) => [idx.get(id)!, i]));
+for (const r of onto.relacoes)
+  if (!novo.has(idx.get(r.de)!) || !novo.has(idx.get(r.para)!))
+    throw new Error(`relação ${r.de} -[${r.tipo}]-> ${r.para} toca classe que não é desenhada`);
+const domsVis = new Set(vis.map((id) => onto.classes[id].dominio));
 
 const out = {
   meta: {
     gerado: new Date().toISOString().slice(0, 10),
-    classes: ids.length,
+    classes: vis.length,
     relacoes: onto.relacoes.length,
     conceitos: Object.keys(bridges.concepts).length,
     chaves: g.keys.length,
@@ -114,10 +125,10 @@ const out = {
     tabelas_com_classe: tabelasComClasse,
     datasets: g.datasets.length,
   },
-  dominios: onto.dominios,
-  classes: ids.map((id, i) => {
+  dominios: Object.fromEntries(Object.entries(onto.dominios).filter(([d]) => domsVis.has(d))),
+  classes: vis.map((id) => {
     const c = onto.classes[id];
-    const p = porClasse[i];
+    const p = porClasse[idx.get(id)!];
     return {
       id,
       nome: c.nome,
@@ -131,13 +142,13 @@ const out = {
     };
   }),
   relacoes: onto.relacoes.map((r) => ({
-    de: idx.get(r.de),
-    para: idx.get(r.para),
+    de: novo.get(idx.get(r.de)!),
+    para: novo.get(idx.get(r.para)!),
     tipo: r.tipo,
     via: r.via,
     conceito: r.ligacao === "conceito" ? 1 : 0,
   })),
-  datasets: dsClasses.map((m) => [...m].sort((a, b) => b[1] - a[1])),
+  datasets: dsClasses.map((m) => [...m].filter(([ci]) => novo.has(ci)).map(([ci, n]) => [novo.get(ci)!, n]).sort((a, b) => b[1] - a[1])),
   sem_classe: g.keys.map((_: unknown, i: number) => i).filter((i: number) => !classeDaChave[i]),
 };
 

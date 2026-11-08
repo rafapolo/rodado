@@ -1750,7 +1750,7 @@ function ensureOnto(cb) {
   const inline = document.getElementById("ontojson").textContent.trim();
   const got = inline && inline !== "__ONTO" + "_JSON__"
     ? Promise.resolve(JSON.parse(inline))
-    : fetch("ontologia.json").then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
+    : fetch("ontologia.json", { cache: "no-cache" }).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
   got.then(data => {
     O = data;
     initOnto();
@@ -1841,7 +1841,7 @@ function initOnto() {
   // ao mudar o tamanho do palco: com classe selecionada, mantém ela no centro
   new ResizeObserver(() => {
     if (mode !== "ontologia") return;
-    if (sel && sel.type === "cls") ontoCenter(oNodes[sel.i]); else ontoFit();
+    if (sel && sel.type === "cls") ontoCenter(oNodes[sel.i], false); else ontoFit();
   }).observe(ontoEl);
 
   ontoSeed();
@@ -1957,11 +1957,21 @@ function ontoZoom(f, px, py) {
   oT.x = px - (px - oT.x) * k2 / oT.k; oT.y = py - (py - oT.y) * k2 / oT.k; oT.k = k2;
   ontoApplyT();
 }
-function ontoCenter(n) {
+let oPanRaf = 0;
+function ontoCenter(n, animate = true) {
   const { width, height } = ontoEl.getBoundingClientRect();
   // o inspetor cobre a direita do palco: centra na parte que sobra à vista
   const livre = width - (insp.classList.contains("on") ? insp.offsetWidth : 0);
-  oT.x = livre / 2 - n.x * oT.k; oT.y = height / 2 - n.y * oT.k; ontoApplyT();
+  const nx = livre / 2 - n.x * oT.k, ny = height / 2 - n.y * oT.k;
+  if (oPanRaf) { cancelAnimationFrame(oPanRaf); oPanRaf = 0; }
+  if (!animate || reduced()) { oT.x = nx; oT.y = ny; ontoApplyT(); return; }
+  // desliza até o nó, como o goTo do canvas: o grafo não salta
+  const x0 = oT.x, y0 = oT.y, t0 = performance.now(), D = 520;
+  (function step(now) {
+    const p = Math.min(1, (now - t0) / D), e = ease(p);
+    oT.x = x0 + (nx - x0) * e; oT.y = y0 + (ny - y0) * e; ontoApplyT();
+    oPanRaf = p < 1 ? requestAnimationFrame(step) : 0;
+  })(t0);
 }
 
 function ontoDrag(n) {

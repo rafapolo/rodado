@@ -109,6 +109,9 @@ classes:
   tempo:
     nome: Período
     dominio: tempo
+    # está em quase toda tabela e não liga a nada: desenhado, ficava solto num
+    # canto do grafo. Os conceitos seguem classificados aqui; o nó não sai.
+    desenha: false
     desc: Ano, mês, trimestre, data. Está em quase toda tabela e é a partição a filtrar primeiro — por isso não desenha arestas, só existe.
     conceitos: [ano, mes, data, trimestre, semestre, year]
     chaves: ['^(ano|mes|data|date|dt_|trimestre|semestre|year)', '^NU_ANO$', 'ano(mes|processo|contrato)$', '^data']
