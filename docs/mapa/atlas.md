@@ -44,7 +44,12 @@ um passo separado, com os dois jeitos de falhar em silêncio — ver
 
 A vista padrão do atlas (a Grade de cartões saiu a pedido), um nível acima de Temas e 3D: as entidades que as
 chaves identificam (Município, Estabelecimento, Pessoa, Licitação…) e as
-relações entre elas, num grafo de forças em SVG. `docs/context/ontologia.yaml`
+relações entre elas, num grafo de forças em SVG. Além das entidades (disco
+cheio), os **fatos** (anel): óbito, internação, ocorrência, nota, vínculo,
+benefício, sanção, voto… — entram por tabela (`tabelas:` no YAML), não por
+coluna. As colunas vêm de todo o `schemas.json`, não só das chaves do atlas, e
+o gerador confere as colunas de CNPJ/CPF do `../datative` quando o repo está ao
+lado. `docs/context/ontologia.yaml`
 é curado à mão (classes, regex das variantes de coluna, relações com o `via`);
 `bun scripts/gera_ontologia.ts` lê esse YAML, `bridges.yaml` e
 `schema_graph.json` e grava `pages/atlas/ontologia.json` (buscado só quando o

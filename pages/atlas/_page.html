@@ -231,6 +231,7 @@ canvas.drag { cursor: grabbing; }
 .cvonto .onode { cursor: pointer; }
 .cvonto .onode circle { stroke-width: 2.5; }
 .cvonto .onode text { fill: #fff; font-weight: 600; font-family: "IBM Plex Sans", sans-serif; text-anchor: middle; pointer-events: none; }
+.cvonto .onode.fato circle { stroke-width: 3.5; }
 .cvonto .onode.sel circle { stroke: var(--ink) !important; stroke-width: 4; }
 .cvonto .onode.pinned circle { stroke-dasharray: 3 2; }
 .cvonto .dim { opacity: .12; }
@@ -1752,7 +1753,8 @@ const svgEl = (tag, attrs, parent) => {
 function initOnto() {
   const doms = Object.keys(O.dominios);
   const maxT = Math.max(...O.classes.map(c => c.tabelas));
-  oNodes = O.classes.map((c, i) => ({ ...c, i, kind: "c", r: 20 + 42 * Math.sqrt(c.tabelas / maxT),
+  // fato tem raio mínimo maior: o SIM são 6 tabelas, mas é o registro de todo óbito do país
+  oNodes = O.classes.map((c, i) => ({ ...c, i, kind: "c", r: Math.max(c.fato ? 30 : 20, 20 + 42 * Math.sqrt(c.tabelas / maxT)),
     x: 0, y: 0, vx: 0, vy: 0, fx: null, fy: null }));
   oEdges = O.relacoes.map((r, i) => ({ ...r, i, s: oNodes[r.de], t: oNodes[r.para] }));
   const pares = {};
@@ -1763,8 +1765,8 @@ function initOnto() {
   // "CPF ou CNPJ", cada uma perto de quem conta a sua história
   oAnch = {
     territorio: [0, 0], empresa: [430, -230], titular: [620, 20], pessoa: [430, 270],
-    estado: [900, -150], politica: [820, 330], classificacao: [140, -430], infraestrutura: [120, 420],
-    educacao: [-450, -220], saude: [-430, 250], tempo: [-560, -330],
+    estado: [900, -150], politica: [820, 330], classificacao: [140, -430], infraestrutura: [330, 520],
+    educacao: [-450, -260], saude: [-480, 230], seguranca: [-60, 520], meio_ambiente: [-780, -10],
   };
   for (const d of doms) { const a = oAnch[d] || [0, 0]; oAnch[d] = { x: a[0] * .8, y: a[1] * .8 }; }
 
@@ -1781,9 +1783,11 @@ function initOnto() {
   }
   for (const n of oNodes) {
     const g = svgEl("g", { class: "onode" }, gN);
-    svgEl("circle", { r: n.r, fill: ontoCor(n.dom), stroke: ontoCor(n.dom) }, g);
+    // entidade = disco cheio; fato (óbito, ocorrência, nota…) = anel vazado
+    if (n.fato) g.classList.add("fato");
+    svgEl("circle", { r: n.r, fill: n.fato ? "var(--ground)" : ontoCor(n.dom), stroke: ontoCor(n.dom) }, g);
     const lines = quebra(n.nome, n.r), fs = Math.max(9, Math.min(15, n.r / 3.4));
-    const t = svgEl("text", { style: `font-size:${fs}px` }, g);
+    const t = svgEl("text", { style: `font-size:${fs}px` + (n.fato ? `;fill:${ontoCor(n.dom)}` : "") }, g);
     lines.forEach((ln, j) => {
       svgEl("tspan", { x: 0, dy: j === 0 ? -((lines.length - 1) * fs * 1.1) / 2 + fs * .35 : fs * 1.1 }, t).textContent = ln;
     });
@@ -2002,7 +2006,7 @@ function ontoHighlight() {
 // inspetor: classe e relação, no mesmo painel que dataset e chave usam
 function renderCls(ci) {
   const c = O.classes[ci];
-  iKind.textContent = "Classe · " + O.dominios[c.dom].nome;
+  iKind.textContent = (c.fato ? "Fato · " : "Entidade · ") + O.dominios[c.dom].nome;
   iName.textContent = c.nome;
   setDesc(c.desc);
   const out = oEdges.filter(e => e.de === ci), inn = oEdges.filter(e => e.para === ci && e.de !== ci);
@@ -2019,9 +2023,13 @@ function renderCls(ci) {
   if (c.conceitos.length)
     h += `<p class="sec">Conceitos de join (bridges.yaml)</p><div class="chips">${c.conceitos.map(([k, t]) =>
       `<span class="chip" title="${esc(t)}">${esc(k)}</span>`).join("")}</div>`;
+  // [coluna, nº de tabelas, índice da chave no atlas ou -1]: só as chaves do atlas
+  // têm corpo em Temas, as outras ficam como etiqueta
   if (c.chaves.length)
-    h += `<p class="sec">Colunas no espelho · clique para ver em Temas</p><div class="chips">${c.chaves.map(([ki]) =>
-      `<button class="chip" data-k="${ki}"><i style="background:${ontoCor(c.dom)}"></i>${esc(KS[ki].n)}</button>`).join("")}</div>`;
+    h += `<p class="sec">Colunas no espelho · as marcadas abrem em Temas</p><div class="chips">${c.chaves.slice(0, 80).map(([col, n, ki]) =>
+      ki >= 0 ? `<button class="chip" data-k="${ki}" title="${n} tabela${n > 1 ? "s" : ""}"><i style="background:${ontoCor(c.dom)}"></i>${esc(col)}</button>`
+              : `<span class="chip" title="${n} tabela${n > 1 ? "s" : ""}">${esc(col)}</span>`).join("")}</div>
+      ${c.chaves.length > 80 ? `<p class="note">+ ${c.chaves.length - 80} colunas</p>` : ""}`;
   if (c.ds.length)
     h += `<p class="sec">Datasets que a medem</p><div class="tlist">${c.ds.map(([di, n]) =>
       `<button data-d="${di}" title="${esc(DS[di].de || "")}"><span class="t">${esc(DS[di].n)}</span><span class="r">${n} tab.</span></button>`).join("")}</div>`;

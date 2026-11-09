@@ -15,10 +15,19 @@
 #   dominio   uma das chaves de `dominios` (dá a cor)
 #   desc      uma frase, pt-BR
 #   conceitos nomes de `bridges.yaml → concepts` (casam a chave homônima do atlas)
-#   chaves    regex (sem distinção de maiúsculas) para as variantes do atlas que
-#             não são conceito: `id_municipio_residencia`, `cnpj_fornecedor`…
-#             A primeira classe cuja regex casa leva a chave; conceito exato
-#             vence regex.
+#   chaves    regex (sem distinção de maiúsculas) aplicada a TODA coluna do
+#             espelho (schemas.json), não só às chaves do atlas:
+#             `id_municipio_residencia`, `cpf_cnpj_contratado`… A primeira
+#             classe cuja regex casa leva a coluna.
+#   chaves_amplas  regex de último recurso, testada depois de todas as `chaves`
+#             ("tem cnpj no nome" → Estabelecimento).
+#   colunas   colunas nomeadas por inteiro (dataset.tabela.coluna), para nomes
+#             genéricos demais para regex: o `documento` do MIDES é CPF/CNPJ.
+#   tabelas   regex sobre "dataset.tabela": a tabela inteira registra a classe.
+#             É o que define um FATO (`tipo: fato`): óbito, internação,
+#             ocorrência, nota, vínculo — coisas que acontecem a uma entidade
+#             num lugar, e que nenhuma coluna-chave sozinha identifica.
+#   Precedência: conceito exato → coluna nomeada → chaves → chaves_amplas.
 #
 # Relações: `de -[tipo]-> para`. `via` diz por qual coluna a ligação passa
 # no espelho; `ligacao: conceito` marca as que existem no mundo mas que o
@@ -30,11 +39,13 @@ dominios:
   tempo:          {nome: Tempo,             cor: outros}
   pessoa:         {nome: Pessoas,           cor: populacao}
   empresa:        {nome: Empresas,          cor: economia}
-  titular:        {nome: CPF ou CNPJ,       cor: seguranca}
+  titular:        {nome: CPF ou CNPJ,       cor: outros}
   classificacao:  {nome: Classificações,    cor: cultura_arte}
   educacao:       {nome: Educação,          cor: educacao}
   saude:          {nome: Saúde,             cor: saude}
   estado:         {nome: Estado e compras,  cor: governo}
+  seguranca:      {nome: Segurança,         cor: seguranca}
+  meio_ambiente:  {nome: Meio ambiente,     cor: meio_ambiente}
   politica:       {nome: Política,          cor: politica}
   infraestrutura: {nome: Infraestrutura,    cor: infraestrutura}
 
@@ -104,6 +115,7 @@ classes:
     dominio: territorio
     desc: Imóvel rural no CAR, no SNCR/INCRA ou na Receita (NIRF) — três cadastros que só se ligam em parte.
     conceitos: [id_imovel_car, codigo_imovel_sncr, nirf]
+    chaves: ['^id_imovel(_incra|_receita_federal)?$', '^(id|num|cod)_car$', '^id_sncr$', '^cod_imovel$', '^nome_imovel$']
 
   # ── tempo ─────────────────────────────────────────────────────────────
   tempo:
@@ -122,12 +134,14 @@ classes:
     dominio: empresa
     desc: A pessoa jurídica, pelos 8 primeiros dígitos do CNPJ — sem filial.
     conceitos: [cnpj_basico]
+    chaves: ['^cnpj_basico']
   estabelecimento:
     nome: Estabelecimento
     dominio: empresa
     desc: Matriz ou filial, CNPJ completo de 14 dígitos. O espelho tem 60 milhões em br_me_cnpj.
     conceitos: [cnpj]
     chaves: ['^cnpj_(empresa|estabelecimento|dv|ordem|cliente|agencia|exportador|emissor|controlador|custodiante|auditor|admin|periciadora|prestador_contas|candidato|instituicao)', '^nome_(empresarial|fantasia|razao_social|empresa)$']
+    chaves_amplas: ['cnpj']
   companhia_aberta:
     nome: Companhia aberta
     dominio: empresa
@@ -147,13 +161,20 @@ classes:
     desc: Pessoa física, pelo CPF — quase sempre mascarado no dado público, o que faz da data de nascimento o desempate.
     conceitos: [cpf, data_nascimento]
     chaves: ['^cpf_(?!cnpj)', '^id_pessoa$', '^id_servidor$', '^ano_nasc', '^nome_(completo|beneficiario|parlamentar|eleitoral|candidato|responsavel|representante_legal)$']
+    chaves_amplas: ['cpf']
   # ── a dobradiça: a mesma coluna guarda uma pessoa ou uma empresa ──────
   titular:
     nome: CPF ou CNPJ
     dominio: titular
     desc: Uma coluna só que guarda CPF ou CNPJ — favorecido, fornecedor, doador, sancionado. Pelo tamanho do valor vira Pessoa ou Estabelecimento.
     conceitos: [cpf_cnpj]
-    chaves: ['cpf_?cnpj', 'cnpj_?cpf', '^nome_(favorecido|fornecedor|credor|devedor|contratado|vencedor|doador)$']
+    chaves: ['cpf_?cnpj', 'cnpj_?cpf', 'cgc_?cpf', '^ni_fornecedor$', '^nome_(favorecido|fornecedor|credor|devedor|contratado|vencedor|doador)$']
+    colunas:
+      - world_wb_mides.licitacao_item.documento
+      - world_wb_mides.licitacao_participante.documento
+      - br_rf_cno.microdados.id_responsavel
+      - br_rf_cno.vinculos.id_responsavel
+      - br_ms_sih.servicos_profissionais.id_prestador_servico
 
   # ── classificações ────────────────────────────────────────────────────
   cnae:
@@ -256,17 +277,20 @@ classes:
     desc: O certame; liga itens, participantes, empenhos e contratos.
     conceitos: [id_licitacao]
     chaves: ['^id_licitacao']
+    tabelas: ['\.[^.]*(licitac|pregao)']
   contrato:
     nome: Contrato
     dominio: estado
     desc: Contrato de compra, com itens, aditivos e apostilamentos.
     conceitos: [id_contrato]
+    tabelas: ['\.[^.]*contrat']
   empenho:
     nome: Empenho
     dominio: estado
     desc: Reserva do orçamento — o elo entre a licitação e o dinheiro de fato comprometido, liquidado e pago.
     conceitos: [id_empenho]
     chaves: ['^id_(empenho|liquidacao|pagamento)']
+    tabelas: ['\.[^.]*(empenho|liquidacao)']
   contratacao_pncp:
     nome: Contratação no PNCP
     dominio: estado
@@ -283,6 +307,7 @@ classes:
     dominio: estado
     desc: Deliberação do Tribunal de Contas — liga a decisão à pessoa ou empresa declarada inidônea ou inabilitada.
     conceitos: [numero_acordao_tcu]
+    tabelas: ['^br_tcu_dadosabertos\.']
 
   # ── política ──────────────────────────────────────────────────────────
   partido:
@@ -313,6 +338,182 @@ classes:
     dominio: infraestrutura
     desc: Obra de construção civil no Cadastro Nacional de Obras da Receita.
     conceitos: [id_cno]
+
+  # ══ FATOS ═════════════════════════════════════════════════════════════
+  # O que acontece a uma entidade num lugar. Entram pela tabela (`tabelas`),
+  # não por coluna: um óbito não tem código próprio, mas o SIM inteiro é
+  # registro de óbitos. As seções do painel municipal (xyz/dataviz/municipio)
+  # foram o guia do que um município conta.
+
+  # ── saúde ─────────────────────────────────────────────────────────────
+  obito:
+    nome: Óbito
+    dominio: saude
+    tipo: fato
+    desc: Declaração de óbito no SIM — causa (CID), local, idade, raça.
+    conceitos: []
+    tabelas: ['^br_ms_sim\.']
+  nascimento:
+    nome: Nascimento
+    dominio: saude
+    tipo: fato
+    desc: Declaração de nascido vivo no SINASC — pré-natal, parto, peso.
+    conceitos: []
+    tabelas: ['^br_ms_sinasc\.']
+  internacao:
+    nome: Internação
+    dominio: saude
+    tipo: fato
+    desc: Autorização de internação hospitalar no SUS (SIH) — diagnóstico, procedimento, valor.
+    conceitos: []
+    tabelas: ['^br_ms_sih\.']
+  atendimento:
+    nome: Atendimento no SUS
+    dominio: saude
+    tipo: fato
+    desc: Produção ambulatorial e de atenção básica — consultas, exames, procedimentos.
+    conceitos: []
+    tabelas: ['^br_ms_sia\.', '^br_ms_atencao_basica\.', '^br_ms_sisvan\.', '^br_saude_farmaciapopular\.']
+  notificacao:
+    nome: Notificação de agravo
+    dominio: saude
+    tipo: fato
+    desc: Caso notificado ao SINAN — dengue, zika, malária, violência doméstica e sexual.
+    conceitos: []
+    tabelas: ['^br_ms_sinan']
+  vacinacao:
+    nome: Vacinação
+    dominio: saude
+    tipo: fato
+    desc: Dose aplicada e cobertura vacinal (SI-PNI, imunizações, covid-19).
+    conceitos: []
+    tabelas: ['^br_ms_(sipni|imunizacoes|vacinacao_covid19)']
+
+  # ── segurança ─────────────────────────────────────────────────────────
+  ocorrencia:
+    nome: Ocorrência criminal
+    dominio: seguranca
+    tipo: fato
+    desc: Homicídio, roubo, feminicídio, apreensão — registrados pela polícia (SINESP, SSP-SP, ISP-RJ, Fórum de Segurança).
+    conceitos: []
+    tabelas: ['^br_mjs?p?_sinesp\.', '^br_mj_sinesp\.', '^br_sp_gov_ssp\.', '^br_rj_isp_', '^br_fbsp_absp\.', '^br_ipea_atlasviolencia\.']
+  acidente:
+    nome: Acidente de trânsito
+    dominio: seguranca
+    tipo: fato
+    desc: Acidente nas rodovias federais (PRF) — vítimas, causa, trecho; e as infrações autuadas.
+    conceitos: []
+    tabelas: ['^br_prf_']
+  prisao:
+    nome: Pessoa presa ou procurada
+    dominio: seguranca
+    tipo: fato
+    desc: População carcerária por unidade prisional (SISDEPEN) e mandados em aberto.
+    conceitos: []
+    tabelas: ['^br_mjs?p?_sisdepen\.', '^br_mj_sisdepen\.', '^br_mjsp_procurados\.']
+
+  # ── educação ──────────────────────────────────────────────────────────
+  avaliacao:
+    nome: Nota de avaliação
+    dominio: educacao
+    tipo: fato
+    desc: Nota em prova — ENEM, SAEB, IDEB, alfabetização, e as comparações internacionais (PISA, TIMSS, PIRLS).
+    conceitos: []
+    tabelas: ['^br_inep_(enem|saeb|ideb|ana|avaliacao_alfabetizacao)\.', '^world_(oecd_pisa|iea_timss|iea_pirls)\.']
+
+  # ── pessoas: trabalho e renda ─────────────────────────────────────────
+  vinculo:
+    nome: Vínculo de emprego
+    dominio: pessoa
+    tipo: fato
+    desc: Emprego formal declarado na RAIS e as admissões e desligamentos do CAGED.
+    conceitos: []
+    tabelas: ['^br_me_rais\.microdados_vinculos', '^br_me_caged\.']
+  beneficio:
+    nome: Benefício social
+    dominio: pessoa
+    tipo: fato
+    desc: Pagamento a pessoa ou família — Bolsa Família, BPC, Pé-de-Meia, Seguro-Defeso, Garantia-Safra, Bolsa Verde, benefícios do INSS.
+    conceitos: []
+    tabelas: ['^br_cgu_(beneficios_cidadao|novo_bolsa_familia|pe_de_meia|seguro_defeso|garantia_safra)\.', '^br_mps_beneficios\.', '^br_mma_bolsa_verde\.', '^br_mds_cadunico\.']
+
+  # ── empresas: dinheiro e consumo ──────────────────────────────────────
+  credito:
+    nome: Crédito e financiamento
+    dominio: empresa
+    tipo: fato
+    desc: Empréstimo e financiamento — BNDES, crédito rural (SICOR), carteira dos bancos (ESTBAN, SCR).
+    conceitos: []
+    tabelas: ['^br_bndes_', '^br_bcb_(sicor|estban|scrdata)\.']
+  reclamacao:
+    nome: Reclamação de consumidor
+    dominio: empresa
+    tipo: fato
+    desc: Queixa registrada no consumidor.gov.br e nos Procons contra uma empresa.
+    conceitos: []
+    tabelas: ['^br_mj_consumidorgovbr\.', '^br_mjsp_ckan\.procon']
+
+  # ── estado: punição, dívida e gasto ───────────────────────────────────
+  sancao:
+    nome: Sanção
+    dominio: estado
+    tipo: fato
+    desc: Empresa ou pessoa punida — inidônea, suspensa, improbidade, trabalho escravo, sanções internacionais.
+    conceitos: []
+    tabelas: ['^br_cgu_sancoes\.', '^br_tcu_inidoneos\.', '^br_mte_listasuja\.', '^br_cnj_improbidade', '^br_bcb_penalidades\.', '^(eu|un)_sanctions\.', '^global_(ofac_sanctions|opensanctions)\.']
+  divida:
+    nome: Dívida ativa
+    dominio: estado
+    tipo: fato
+    desc: Débito inscrito na dívida ativa da União (PGFN) — tributário, previdenciário, FGTS.
+    conceitos: []
+    tabelas: ['^br_pgfn_dividaativa\.', '^br_mf_divida_ativa\.']
+  despesa:
+    nome: Despesa pública
+    dominio: estado
+    tipo: fato
+    desc: Dinheiro que saiu — pagamento a favorecido, cartão corporativo, viagem, emenda, transferência, cota parlamentar.
+    conceitos: []
+    tabelas: ['^br_cgu_(despesas_publicas|cartao_pagamento|viagens|transferencias|emendas_parlamentares)\.', '^br_tesouro_transferencias\.', '^br_camara_dados_abertos\.despesa', '^br_senado_ceaps\.']
+
+  # ── política ──────────────────────────────────────────────────────────
+  voto:
+    nome: Resultado eleitoral
+    dominio: politica
+    tipo: fato
+    desc: Votos por candidato, seção e município; perfil do eleitorado.
+    conceitos: []
+    tabelas: ['^br_tse_eleicoes\.(resultados|detalhes_votacao|perfil_eleitorado|votacao)', '^br_rodado_eleicoes\.']
+  doacao:
+    nome: Doação de campanha
+    dominio: politica
+    tipo: fato
+    desc: Receita de candidato, comitê ou partido — quem doou e quanto.
+    conceitos: []
+    tabelas: ['^br_tse_eleicoes\.receitas']
+  votacao:
+    nome: Votação no Congresso
+    dominio: politica
+    tipo: fato
+    desc: Voto de deputado ou senador em proposição, em plenário ou comissão.
+    conceitos: []
+    tabelas: ['^br_camara_dados_abertos\.votac', '^br_senado_dados_?abertos\.votac']
+
+  # ── meio ambiente ─────────────────────────────────────────────────────
+  infracao_ambiental:
+    nome: Infração ambiental
+    dominio: meio_ambiente
+    tipo: fato
+    desc: Auto de infração e área embargada — IBAMA, ICMBio, secretarias estaduais.
+    conceitos: []
+    tabelas: ['^br_ibama_(autos|embargos_novo)\.', '^br_icmbio_embargos\.', '^br_sema_mt_embargos\.', '^br_semas_pa_ldi\.']
+  desmatamento:
+    nome: Desmatamento e queimada
+    dominio: meio_ambiente
+    tipo: fato
+    desc: Área desmatada (PRODES, DETER), foco de queimada, transição de cobertura (MapBiomas), emissão de gases (SEEG).
+    conceitos: []
+    tabelas: ['^br_inpe_(prodes|prodes_acumulado|deter|queimadas)\.', '^br_mapbiomas_', '^br_seeg_emissoes\.']
 
 relacoes:
   # território — subir de nível é posicional ou projeção do diretório (hierarchies.yaml)
@@ -389,3 +590,43 @@ relacoes:
   - {de: usina, tipo: PERTENCE_A, para: estabelecimento, via: 'CNPJ do agente proprietário'}
   - {de: obra, tipo: FICA_EM, para: municipio, via: 'município da obra no CNO'}
   - {de: obra, tipo: RESPONSAVEL, para: estabelecimento, via: 'CNPJ responsável no CNO'}
+
+  # ── fatos: onde acontecem e a quem ────────────────────────────────────
+  - {de: obito, tipo: OCORRE_EM, para: municipio, via: 'município de ocorrência e de residência'}
+  - {de: obito, tipo: CAUSA, para: cid, via: 'causa básica (CID-10)'}
+  - {de: nascimento, tipo: OCORRE_EM, para: municipio, via: 'município de nascimento e de residência da mãe'}
+  - {de: nascimento, tipo: EM, para: cnes, via: 'estabelecimento do parto (CNES)'}
+  - {de: internacao, tipo: EM, para: cnes, via: 'hospital da AIH (CNES)'}
+  - {de: internacao, tipo: DIAGNOSTICO, para: cid, via: 'diagnóstico principal (CID-10)'}
+  - {de: atendimento, tipo: EM, para: cnes, via: 'estabelecimento que produziu (CNES)'}
+  - {de: notificacao, tipo: AGRAVO, para: cid, via: 'agravo notificado (CID-10)'}
+  - {de: notificacao, tipo: OCORRE_EM, para: municipio, via: 'município de notificação e de residência'}
+  - {de: vacinacao, tipo: OCORRE_EM, para: municipio, via: 'município de aplicação'}
+  - {de: ocorrencia, tipo: OCORRE_EM, para: municipio, via: 'município ou UF do registro'}
+  - {de: acidente, tipo: OCORRE_EM, para: municipio, via: 'município do trecho da rodovia'}
+  - {de: prisao, tipo: OCORRE_EM, para: uf, via: 'UF da unidade prisional'}
+  - {de: prisao, tipo: DE, para: pessoa, via: 'dado agregado ou sem CPF', ligacao: conceito}
+  - {de: avaliacao, tipo: DE, para: enem, via: 'nota por inscrição no microdado do ENEM'}
+  - {de: avaliacao, tipo: DA_ESCOLA, para: escola, via: 'id_escola no SAEB e no IDEB'}
+  - {de: avaliacao, tipo: OCORRE_EM, para: municipio, via: 'IDEB e SAEB por município'}
+  - {de: vinculo, tipo: EM, para: estabelecimento, via: 'CNPJ do empregador na RAIS identificada; desidentificado no microdado público'}
+  - {de: vinculo, tipo: DE, para: pessoa, via: 'trabalhador sem CPF no dado público', ligacao: conceito}
+  - {de: vinculo, tipo: OCUPACAO, para: cbo, via: 'cbo_2002 do vínculo'}
+  - {de: beneficio, tipo: PAGO_A, para: pessoa, via: 'CPF mascarado e nome do favorecido'}
+  - {de: beneficio, tipo: OCORRE_EM, para: municipio, via: 'município do favorecido'}
+  - {de: credito, tipo: TOMADO_POR, para: titular, via: 'CNPJ/CPF do cliente (BNDES) ou só o município (SICOR, ESTBAN)'}
+  - {de: credito, tipo: OCORRE_EM, para: municipio, via: 'município do cliente ou da agência'}
+  - {de: reclamacao, tipo: CONTRA, para: estabelecimento, via: 'CNPJ da empresa reclamada'}
+  - {de: sancao, tipo: SANCIONA, para: titular, via: 'CPF/CNPJ do sancionado'}
+  - {de: acordao_tcu, tipo: ORIGINA, para: sancao, via: 'acórdão que declarou a inidoneidade'}
+  - {de: divida, tipo: DEVIDA_POR, para: titular, via: 'CPF/CNPJ do devedor'}
+  - {de: despesa, tipo: FAVORECE, para: titular, via: 'CPF/CNPJ do favorecido'}
+  - {de: despesa, tipo: PAGA_POR, para: orgao, via: 'órgão e unidade gestora pagadores'}
+  - {de: voto, tipo: EM, para: candidatura, via: 'sequencial do candidato'}
+  - {de: voto, tipo: OCORRE_EM, para: municipio, via: 'id_municipio_tse → id_municipio'}
+  - {de: doacao, tipo: PARA, para: candidatura, via: 'sequencial do candidato que recebeu'}
+  - {de: doacao, tipo: DE, para: titular, via: 'cpf_cnpj_doador'}
+  - {de: votacao, tipo: DE, para: parlamentar, via: 'id_deputado / id_senador'}
+  - {de: infracao_ambiental, tipo: AUTUA, para: titular, via: 'CPF/CNPJ do autuado'}
+  - {de: infracao_ambiental, tipo: OCORRE_EM, para: municipio, via: 'município da infração'}
+  - {de: desmatamento, tipo: OCORRE_EM, para: municipio, via: 'município do polígono ou do foco'}
