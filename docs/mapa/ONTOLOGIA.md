@@ -3,7 +3,7 @@
 Gerado por `scripts/gera_ontologia.ts` a partir de `docs/context/ontologia.yaml` — não edite.
 Versão navegável: o modo Ontologia do atlas, [rodado.xyz/atlas/?mode=ontologia](https://rodado.xyz/atlas/?mode=ontologia).
 
-66 classes (22 delas fatos, em círculo duplo), 97 relações; os 68 conceitos de `bridges.yaml` cabem nelas, e 1316 das 1751 tabelas tocam alguma.
+86 classes (32 delas fatos, em círculo duplo), 137 relações; os 68 conceitos de `bridges.yaml` cabem nelas, e 1546 das 1751 tabelas tocam alguma.
 Linha tracejada: a ligação existe no mundo, mas o espelho não consegue fazê-la (CPF mascarado, microdado desidentificado, texto livre).
 
 ```mermaid
@@ -26,6 +26,8 @@ flowchart LR
     pessoa(("Pessoa"))
     vinculo((("Vínculo de emprego")))
     beneficio((("Benefício social")))
+    domicilio(("Domicílio"))
+    pesquisa_domiciliar((("Censo e pesquisa domiciliar")))
   end
   subgraph dom_empresa["Empresas"]
     empresa(("Empresa"))
@@ -34,6 +36,8 @@ flowchart LR
     fundo(("Fundo de investimento"))
     credito((("Crédito e financiamento")))
     reclamacao((("Reclamação de consumidor")))
+    preco((("Preço e índice")))
+    cadeia_commodity((("Cadeia de commodity")))
   end
   subgraph dom_titular["CPF ou CNPJ"]
     titular(("CPF ou CNPJ"))
@@ -45,6 +49,7 @@ flowchart LR
     ncm(("NCM"))
     sh(("Sistema Harmonizado"))
     natureza_juridica(("Natureza jurídica"))
+    conta(("Plano de contas"))
   end
   subgraph dom_educacao["Educação"]
     escola(("Escola"))
@@ -64,6 +69,8 @@ flowchart LR
     atendimento((("Atendimento no SUS")))
     notificacao((("Notificação de agravo")))
     vacinacao((("Vacinação")))
+    operadora(("Operadora de saúde"))
+    plano_saude((("Plano de saúde")))
   end
   subgraph dom_estado["Estado e compras"]
     orgao(("Órgão público"))
@@ -77,6 +84,11 @@ flowchart LR
     sancao((("Sanção")))
     divida((("Dívida ativa")))
     despesa((("Despesa pública")))
+    convenio(("Convênio"))
+    programa(("Programa de governo"))
+    projeto_cultural(("Projeto cultural"))
+    financas((("Finanças do ente")))
+    decisao_judicial((("Decisão judicial")))
   end
   subgraph dom_seguranca["Segurança"]
     ocorrencia((("Ocorrência criminal")))
@@ -86,6 +98,9 @@ flowchart LR
   subgraph dom_meio_ambiente["Meio ambiente"]
     infracao_ambiental((("Infração ambiental")))
     desmatamento((("Desmatamento e queimada")))
+    estacao(("Estação de monitoramento"))
+    especie(("Espécie ameaçada"))
+    medicao((("Medição hidrometeorológica")))
   end
   subgraph dom_politica["Política"]
     partido(("Partido"))
@@ -94,10 +109,15 @@ flowchart LR
     voto((("Resultado eleitoral")))
     doacao((("Doação de campanha")))
     votacao((("Votação no Congresso")))
+    legislativo((("Atividade legislativa")))
   end
   subgraph dom_infraestrutura["Infraestrutura"]
     usina(("Usina de energia"))
     obra(("Obra"))
+    subsistema(("Subsistema elétrico"))
+    processo_minerario(("Processo minerário"))
+    energia((("Geração e carga de energia")))
+    transporte((("Transporte")))
   end
   municipio -- FICA_EM --> uf
   uf -- FICA_EM --> regiao
@@ -196,28 +216,68 @@ flowchart LR
   infracao_ambiental -- AUTUA --> titular
   infracao_ambiental -- OCORRE_EM --> municipio
   desmatamento -- OCORRE_EM --> municipio
+  usina -- PERTENCE_A --> subsistema
+  subsistema -- ABRANGE --> uf
+  energia -- EM --> subsistema
+  energia -- DE --> usina
+  energia -- DISTRIBUIDA_POR --> estabelecimento
+  convenio -- CONCEDIDO_POR --> orgao
+  convenio -- RECEBIDO_POR --> titular
+  convenio -- OCORRE_EM --> municipio
+  convenio -- FINANCIA --> contrato
+  convenio -- PREVISTO_EM --> programa
+  despesa -- PREVISTA_EM --> programa
+  domicilio -- FICA_EM --> setor_censitario
+  pessoa -. MORA_EM .-> domicilio
+  pesquisa_domiciliar -- EM --> domicilio
+  pesquisa_domiciliar -- OCORRE_EM --> municipio
+  financas -- DE --> municipio
+  financas -- DE --> uf
+  financas -- CLASSIFICADA_EM --> conta
+  operadora -- E_UM --> estabelecimento
+  plano_saude -- OFERECIDO_POR --> operadora
+  plano_saude -- OCORRE_EM --> municipio
+  estacao -- FICA_EM --> municipio
+  medicao -- EM --> estacao
+  projeto_cultural -- PROPOSTO_POR --> titular
+  projeto_cultural -- PATROCINADO_POR --> titular
+  projeto_cultural -- OCORRE_EM --> municipio
+  processo_minerario -- TITULAR --> titular
+  processo_minerario -- FICA_EM --> municipio
+  infracao_ambiental -. ENVOLVE .-> especie
+  legislativo -- DE --> parlamentar
+  votacao -- SOBRE --> legislativo
+  decisao_judicial -- EM --> processo
+  decisao_judicial -- CONDENA --> titular
+  preco -- OCORRE_EM --> regiao_metropolitana
+  preco -- EM --> estabelecimento
+  transporte -- OPERADO_POR --> titular
+  transporte -- OCORRE_EM --> municipio
+  cadeia_commodity -- ORIGEM --> municipio
+  cadeia_commodity -- EXPORTADA_POR --> titular
+  cadeia_commodity -- DESTINO --> pais
   classDef c_territorio fill:#d55181,stroke:#d55181,color:#fff
   class municipio,uf,regiao,regiao_ibge,regiao_metropolitana,regiao_saude,distrito,setor_censitario,cep,pais,imovel_rural c_territorio
   classDef c_empresa fill:#199e70,stroke:#199e70,color:#fff
-  class empresa,estabelecimento,companhia_aberta,fundo,credito,reclamacao c_empresa
+  class empresa,estabelecimento,companhia_aberta,fundo,credito,reclamacao,preco,cadeia_commodity c_empresa
   classDef c_pessoa fill:#d95926,stroke:#d95926,color:#fff
-  class pessoa,vinculo,beneficio c_pessoa
+  class pessoa,vinculo,beneficio,domicilio,pesquisa_domiciliar c_pessoa
   classDef c_titular fill:#5d6675,stroke:#5d6675,color:#fff
   class titular c_titular
   classDef c_classificacao fill:#c063c7,stroke:#c063c7,color:#fff
-  class cnae,cbo,cid,ncm,sh,natureza_juridica c_classificacao
+  class cnae,cbo,cid,ncm,sh,natureza_juridica,conta c_classificacao
   classDef c_educacao fill:#3987e5,stroke:#3987e5,color:#fff
   class escola,turma,aluno,ies,curso,enem,avaliacao c_educacao
   classDef c_seguranca fill:#9085e9,stroke:#9085e9,color:#fff
   class ocorrencia,acidente,prisao c_seguranca
   classDef c_meio_ambiente fill:#96b83a,stroke:#96b83a,color:#fff
-  class infracao_ambiental,desmatamento c_meio_ambiente
+  class infracao_ambiental,desmatamento,estacao,especie,medicao c_meio_ambiente
   classDef c_saude fill:#e66767,stroke:#e66767,color:#fff
-  class cnes,equipe,obito,nascimento,internacao,atendimento,notificacao,vacinacao c_saude
+  class cnes,equipe,obito,nascimento,internacao,atendimento,notificacao,vacinacao,operadora,plano_saude c_saude
   classDef c_estado fill:#c98500,stroke:#c98500,color:#fff
-  class orgao,unidade_gestora,licitacao,contrato,empenho,contratacao_pncp,processo,acordao_tcu,sancao,divida,despesa c_estado
+  class orgao,unidade_gestora,licitacao,contrato,empenho,contratacao_pncp,processo,acordao_tcu,sancao,divida,despesa,convenio,programa,projeto_cultural,financas,decisao_judicial c_estado
   classDef c_politica fill:#008300,stroke:#008300,color:#fff
-  class partido,candidatura,parlamentar,voto,doacao,votacao c_politica
+  class partido,candidatura,parlamentar,voto,doacao,votacao,legislativo c_politica
   classDef c_infraestrutura fill:#7086dd,stroke:#7086dd,color:#fff
-  class usina,obra c_infraestrutura
+  class usina,obra,subsistema,processo_minerario,energia,transporte c_infraestrutura
 ```

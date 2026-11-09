@@ -333,6 +333,7 @@ classes:
     dominio: infraestrutura
     desc: Empreendimento de geração na ANEEL, pelo CEG.
     conceitos: [ceg]
+    chaves: ['^id_ons$', '^id_empreendimento_aneel$', '^id_usina', '^cod_?ceg$']
   obra:
     nome: Obra
     dominio: infraestrutura
@@ -403,7 +404,7 @@ classes:
     tipo: fato
     desc: Acidente nas rodovias federais (PRF) — vítimas, causa, trecho; e as infrações autuadas.
     conceitos: []
-    tabelas: ['^br_prf_']
+    tabelas: ['^br_prf_', '^br_antt_dadosabertos\.acidentes']
   prisao:
     nome: Pessoa presa ou procurada
     dominio: seguranca
@@ -460,7 +461,7 @@ classes:
     tipo: fato
     desc: Empresa ou pessoa punida — inidônea, suspensa, improbidade, trabalho escravo, sanções internacionais.
     conceitos: []
-    tabelas: ['^br_cgu_sancoes\.', '^br_tcu_inidoneos\.', '^br_mte_listasuja\.', '^br_cnj_improbidade', '^br_bcb_penalidades\.', '^(eu|un)_sanctions\.', '^global_(ofac_sanctions|opensanctions)\.']
+    tabelas: ['^br_ans_operadoras\.penalidades', '^br_cgu_sancoes\.', '^br_tcu_inidoneos\.', '^br_mte_listasuja\.', '^br_cnj_improbidade', '^br_bcb_penalidades\.', '^(eu|un)_sanctions\.', '^global_(ofac_sanctions|opensanctions)\.']
   divida:
     nome: Dívida ativa
     dominio: estado
@@ -514,6 +515,151 @@ classes:
     desc: Área desmatada (PRODES, DETER), foco de queimada, transição de cobertura (MapBiomas), emissão de gases (SEEG).
     conceitos: []
     tabelas: ['^br_inpe_(prodes|prodes_acumulado|deter|queimadas)\.', '^br_mapbiomas_', '^br_seeg_emissoes\.']
+
+  # ══ ACRÉSCIMOS de 2026-11-09 ══════════════════════════════════════════
+  # o que ainda ficava de fora: energia, convênios, domicílio, finanças dos
+  # entes, saúde suplementar, água e clima, Legislativo, Judiciário, preços,
+  # cultura, mineração, transporte. Fora de propósito: metadados, o censo de
+  # 1872 e as bases internacionais.
+
+  # ── entidades ─────────────────────────────────────────────────────────
+  subsistema:
+    nome: Subsistema elétrico
+    dominio: infraestrutura
+    desc: Sudeste/Centro-Oeste, Sul, Nordeste, Norte — as quatro regiões em que o ONS opera o sistema interligado.
+    conceitos: []
+    chaves: ['^id_subsistema', '^subsistema$', '^nom_subsistema$']
+  convenio:
+    nome: Convênio
+    dominio: estado
+    desc: Proposta e convênio de transferência voluntária da União (SICONV/TransfereGov) — o caminho de boa parte das emendas.
+    conceitos: []
+    chaves: ['^id_proposta$', '^(id|nr|numero)_convenio', '^id_plano_acao$']
+    tabelas: ['^br_transferegov']
+  programa:
+    nome: Programa de governo
+    dominio: estado
+    desc: Programa e ação orçamentária — o "para quê" do gasto.
+    conceitos: []
+    chaves: ['^(id|cod|codigo)_programa', '^id_acao$', '^codigo_acao$', '^nome_programa', '^nome_acao$']
+  domicilio:
+    nome: Domicílio
+    dominio: pessoa
+    desc: Casa recenseada ou entrevistada — o endereço do CNEFE, o domicílio do Censo, da PNAD e da POF.
+    conceitos: []
+    chaves: ['^id_domicilio$', '^id_endereco$', '^cod_unico_endereco$']
+    tabelas: ['^br_ibge_cnefe\.', '^br_ibge_censo_2022\.(cadastro_enderecos|domicilio|caracteristica_domicilio)']
+  conta:
+    nome: Plano de contas
+    dominio: classificacao
+    desc: Conta contábil e orçamentária — a linha do balanço, da receita e da despesa (SICONFI, CVM, ANS).
+    conceitos: []
+    chaves: ['^cd_conta', '^id_conta_bd$', '^conta_bd$', '^conta$']
+  operadora:
+    nome: Operadora de saúde
+    dominio: saude
+    desc: Operadora de plano de saúde registrada na ANS.
+    conceitos: []
+    chaves: ['registro_operadora', '^reg_ans$', '^registro ans$', '^(codigo|cd)_operadora$']
+  estacao:
+    nome: Estação de monitoramento
+    dominio: meio_ambiente
+    desc: Estação meteorológica (INMET) ou hidrológica (ANA) — o ponto onde chuva, vazão e temperatura são medidas.
+    conceitos: []
+    chaves: ['^id_estacao$', '^estacao$', '^id_posto']
+    tabelas: ['^br_ana_telemetria\.(estacoes|inventario)', '^br_inmet_bdmep\.estacao']
+  projeto_cultural:
+    nome: Projeto cultural
+    dominio: estado
+    desc: Projeto da Lei Rouanet (PRONAC) — proponente, patrocinador, fornecedor.
+    conceitos: []
+    chaves: ['^pronac$']
+    tabelas: ['^br_minc_salic\.']
+  processo_minerario:
+    nome: Processo minerário
+    dominio: infraestrutura
+    desc: Título e requerimento na ANM — pesquisa, lavra, licenciamento — e a CFEM que a mineração recolhe.
+    conceitos: []
+    chaves: ['^processo_?minerario$']
+    tabelas: ['^br_anm\.']
+  especie:
+    nome: Espécie ameaçada
+    dominio: meio_ambiente
+    desc: Fauna e flora na lista nacional de espécies ameaçadas de extinção.
+    conceitos: []
+    tabelas: ['^br_mma_extincao\.']
+
+  # ── fatos ─────────────────────────────────────────────────────────────
+  energia:
+    nome: Geração e carga de energia
+    dominio: infraestrutura
+    tipo: fato
+    desc: Operação do sistema elétrico — geração por usina, carga, reservatórios, custo marginal, continuidade e tarifas das distribuidoras, consumo.
+    conceitos: []
+    tabelas: ['^br_ons_', '^br_aneel_dadosabertos\.(indicadores_continuidade|tarifas|empreendimento_geracao_distribuida)', '^br_mme_']
+  pesquisa_domiciliar:
+    nome: Censo e pesquisa domiciliar
+    dominio: pessoa
+    tipo: fato
+    desc: O que o IBGE pergunta em casa — Censo 2010 e 2022, PNAD Contínua, PNAD Covid, POF, PNS.
+    conceitos: []
+    tabelas: ['^br_ibge_censo_2022\.', '^br_ibge_censo_demografico\.', '^br_ibge_censo2022_', '^br_ibge_(pnadc|pnad|pnad_covid|pof)\.', '^br_ms_pns\.']
+  financas:
+    nome: Finanças do ente
+    dominio: estado
+    tipo: fato
+    desc: Receita, despesa e balanço de União, estados e municípios — SICONFI, SIOP, arrecadação federal, CAPAG, CAUC, SIOPS, Fundeb.
+    conceitos: []
+    tabelas: ['^br_me_siconfi\.', '^br_siop_orcamento\.', '^br_rf_arrecadacao\.', '^br_tesouro_(capag|cauc)\.', '^br_ms_siops\.', '^br_fnde_fundeb\.', '^br_firjan_ifgf\.', '^br_cgu_(receitas_publicas|orcamento_publico)\.', '^br_bd_execucao_estadual\.']
+  plano_saude:
+    nome: Plano de saúde
+    dominio: saude
+    tipo: fato
+    desc: Beneficiário, plano, reclamação e ressarcimento ao SUS na saúde suplementar (ANS).
+    conceitos: []
+    tabelas: ['^br_ans_']
+  medicao:
+    nome: Medição hidrometeorológica
+    dominio: meio_ambiente
+    tipo: fato
+    desc: Chuva, vazão, cota de rio, volume de reservatório, temperatura e qualidade do ar.
+    conceitos: []
+    tabelas: ['^br_ana_(telemetria|reservatorios|bho|outorgas)\.', '^br_inmet_bdmep\.', '^br_inpe_sisam\.', '^br_inea_boletim\.']
+  legislativo:
+    nome: Atividade legislativa
+    dominio: politica
+    tipo: fato
+    desc: Proposição, discurso, comissão, frente parlamentar, evento — o trabalho do Congresso fora da votação.
+    conceitos: []
+    tabelas: ['^br_camara_dados_abertos\.(proposicao|evento|frente|orgao|legislatura|funcionario)', '^br_senado_dados_?abertos\.(processo|materias|discurso|relatoria|comissao|comissoes|bloco|lideranca|mesa)', '^br_ba_feiradesantana_camara_leis\.']
+  decisao_judicial:
+    nome: Decisão judicial
+    dominio: estado
+    tipo: fato
+    desc: Decisão do STF, documento do STJ, condenação por improbidade, estatística do CNJ.
+    conceitos: []
+    tabelas: ['^br_stf_corte_aberta\.decisoes', '^br_stj_dadosabertos\.', '^br_cnj_']
+  preco:
+    nome: Preço e índice
+    dominio: empresa
+    tipo: fato
+    desc: Inflação (IPCA, INPC, IGP, IPP), câmbio, preço de combustível na bomba, de medicamento, de carro e de insumo de construção.
+    conceitos: []
+    tabelas: ['^br_ibge_(ipca|ipca15|inpc|ipp)\.', '^br_fgv_igp\.', '^br_bcb_(ptax|sgs)\.', '^br_fipe_veiculos\.', '^br_anp_', '^br_caixa_sinapi\.', '^br_anvisa_cmed']
+  transporte:
+    nome: Transporte
+    dominio: infraestrutura
+    tipo: fato
+    desc: Voo e aeronave (ANAC), transportador de carga e frete (ANTT), frota de veículos (SENATRAN).
+    conceitos: []
+    tabelas: ['^br_anac_dadosabertos\.', '^br_antt_dadosabertos\.(rntrc|ciot)', '^br_senatran_']
+  cadeia_commodity:
+    nome: Cadeia de commodity
+    dominio: empresa
+    tipo: fato
+    desc: Soja e carne do município produtor ao porto e ao comprador (TRASE) — frigorífico, esmagadora, armazém.
+    conceitos: []
+    tabelas: ['^br_trase_supply_chain\.']
 
 relacoes:
   # território — subir de nível é posicional ou projeção do diretório (hierarchies.yaml)
@@ -630,3 +776,45 @@ relacoes:
   - {de: infracao_ambiental, tipo: AUTUA, para: titular, via: 'CPF/CNPJ do autuado'}
   - {de: infracao_ambiental, tipo: OCORRE_EM, para: municipio, via: 'município da infração'}
   - {de: desmatamento, tipo: OCORRE_EM, para: municipio, via: 'município do polígono ou do foco'}
+
+  # ── acréscimos de 2026-11-09 ──────────────────────────────────────────
+  - {de: usina, tipo: PERTENCE_A, para: subsistema, via: 'id_subsistema na geração por usina (ONS)'}
+  - {de: subsistema, tipo: ABRANGE, para: uf, via: 'sigla_uf das usinas e da carga'}
+  - {de: energia, tipo: EM, para: subsistema, via: 'id_subsistema'}
+  - {de: energia, tipo: DE, para: usina, via: 'id_ons / id_empreendimento_aneel'}
+  - {de: energia, tipo: DISTRIBUIDA_POR, para: estabelecimento, via: 'CNPJ da distribuidora (ANEEL)'}
+  - {de: convenio, tipo: CONCEDIDO_POR, para: orgao, via: 'órgão concedente'}
+  - {de: convenio, tipo: RECEBIDO_POR, para: titular, via: 'CNPJ do convenente (prefeitura, OSC)'}
+  - {de: convenio, tipo: OCORRE_EM, para: municipio, via: 'município do convenente'}
+  - {de: convenio, tipo: FINANCIA, para: contrato, via: 'contratos e obras do convênio'}
+  - {de: convenio, tipo: PREVISTO_EM, para: programa, via: 'ID_PROGRAMA'}
+  - {de: despesa, tipo: PREVISTA_EM, para: programa, via: 'programa e ação orçamentária'}
+  - {de: domicilio, tipo: FICA_EM, para: setor_censitario, via: 'id_setor_censitario do endereço'}
+  - {de: pessoa, tipo: MORA_EM, para: domicilio, via: 'id_pessoa dentro do id_domicilio, sem CPF', ligacao: conceito}
+  - {de: pesquisa_domiciliar, tipo: EM, para: domicilio, via: 'id_domicilio (PNAD, POF); agregado por setor no Censo'}
+  - {de: pesquisa_domiciliar, tipo: OCORRE_EM, para: municipio, via: 'agregados do Censo por município'}
+  - {de: financas, tipo: DE, para: municipio, via: 'id_municipio (SICONFI, CAPAG, SIOPS)'}
+  - {de: financas, tipo: DE, para: uf, via: 'sigla_uf'}
+  - {de: financas, tipo: CLASSIFICADA_EM, para: conta, via: 'id_conta_bd / conta'}
+  - {de: operadora, tipo: E_UM, para: estabelecimento, via: 'CNPJ da operadora'}
+  - {de: plano_saude, tipo: OFERECIDO_POR, para: operadora, via: 'registro ANS'}
+  - {de: plano_saude, tipo: OCORRE_EM, para: municipio, via: 'beneficiários por município'}
+  - {de: estacao, tipo: FICA_EM, para: municipio, via: 'id_municipio da estação'}
+  - {de: medicao, tipo: EM, para: estacao, via: 'código da estação'}
+  - {de: projeto_cultural, tipo: PROPOSTO_POR, para: titular, via: 'proponente_cgccpf'}
+  - {de: projeto_cultural, tipo: PATROCINADO_POR, para: titular, via: 'doador_cgccpf / patrocinador_cnpjcpf'}
+  - {de: projeto_cultural, tipo: OCORRE_EM, para: municipio, via: 'município do projeto'}
+  - {de: processo_minerario, tipo: TITULAR, para: titular, via: 'cpf_cnpj_do_titular'}
+  - {de: processo_minerario, tipo: FICA_EM, para: municipio, via: 'municipio_s (texto) e código na CFEM'}
+  - {de: infracao_ambiental, tipo: ENVOLVE, para: especie, via: 'espécime no auto do IBAMA, por nome científico', ligacao: conceito}
+  - {de: legislativo, tipo: DE, para: parlamentar, via: 'autor da proposição, orador, membro'}
+  - {de: votacao, tipo: SOBRE, para: legislativo, via: 'proposição votada'}
+  - {de: decisao_judicial, tipo: EM, para: processo, via: 'número do processo'}
+  - {de: decisao_judicial, tipo: CONDENA, para: titular, via: 'condenado por improbidade (CNJ)'}
+  - {de: preco, tipo: OCORRE_EM, para: regiao_metropolitana, via: 'IPCA e INPC por região metropolitana'}
+  - {de: preco, tipo: EM, para: estabelecimento, via: 'CNPJ do posto (ANP)'}
+  - {de: transporte, tipo: OPERADO_POR, para: titular, via: 'CPF/CNPJ do transportador (RNTRC)'}
+  - {de: transporte, tipo: OCORRE_EM, para: municipio, via: 'origem e destino do frete; frota por município'}
+  - {de: cadeia_commodity, tipo: ORIGEM, para: municipio, via: 'município produtor'}
+  - {de: cadeia_commodity, tipo: EXPORTADA_POR, para: titular, via: 'CNPJ do exportador'}
+  - {de: cadeia_commodity, tipo: DESTINO, para: pais, via: 'país importador'}
