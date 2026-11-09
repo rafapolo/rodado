@@ -1768,7 +1768,13 @@ function initOnto() {
     estado: [900, -150], politica: [820, 330], classificacao: [140, -430], infraestrutura: [330, 520],
     educacao: [-450, -260], saude: [-480, 230], seguranca: [-60, 520], meio_ambiente: [-780, -10],
   };
-  for (const d of doms) { const a = oAnch[d] || [0, 0]; oAnch[d] = { x: a[0] * .8, y: a[1] * .8 }; }
+  // com 86 classes as âncoras precisam de folga: o território ocupa o meio sozinho
+  // esticadas na vertical: os domínios se espalham mais em x, e o palco é quase quadrado
+  for (const d of doms) { const a = oAnch[d] || [0, 0]; oAnch[d] = { x: a[0] * 1.1, y: a[1] * 1.75 }; }
+  // grau de cada nó: a mola de um hub (Município, UF) é mais fraca, como no d3,
+  // senão ele puxa o grafo inteiro para um novelo no centro
+  for (const n of oNodes) n.grau = 0;
+  for (const e of oEdges) { e.s.grau++; e.t.grau++; }
 
   const gE = document.getElementById("oEdges"), gN = document.getElementById("oNodes");
   for (const e of oEdges) {
@@ -1855,18 +1861,18 @@ function ontoTick() {
       let dx = b.x - a.x, dy = b.y - a.y;
       const d2 = dx * dx + dy * dy || .01, both = a.kind === "c" && b.kind === "c";
       if (!both && d2 > 90000) continue;
-      const str = both ? 9000 : (a.kind === "d" && b.kind === "d" ? 60 : 500);
+      const str = both ? 20000 : (a.kind === "d" && b.kind === "d" ? 60 : 500);
       const d = Math.sqrt(d2), f = str / d2 * k;
       dx /= d; dy /= d;
       a.vx -= dx * f; a.vy -= dy * f; b.vx += dx * f; b.vy += dy * f;
-      const min = a.r + b.r + (both ? 26 : 2);
+      const min = a.r + b.r + (both ? 34 : 2);
       if (d < min) { const p = (min - d) / 2; a.x -= dx * p; a.y -= dy * p; b.x += dx * p; b.y += dy * p; }
     }
   }
   for (const e of oEdges) {
     if (e.s === e.t) continue;
     const dx = e.t.x - e.s.x, dy = e.t.y - e.s.y, d = Math.hypot(dx, dy) || 1;
-    const f = (d - (e.s.r + e.t.r + 90)) * .02 * k;
+    const f = (d - (e.s.r + e.t.r + 120)) * .03 * k / Math.sqrt(Math.min(e.s.grau, e.t.grau) || 1);
     e.s.vx += dx / d * f; e.s.vy += dy / d * f; e.t.vx -= dx / d * f; e.t.vy -= dy / d * f;
   }
   for (const n of oNodes) {
