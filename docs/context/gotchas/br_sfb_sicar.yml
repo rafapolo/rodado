@@ -18,10 +18,33 @@ gotchas:
     severidade: silencioso
     verificado: "5 datas distintas, cada UF em uma só — medido 2026-09-25"
   - id: area_imovel_e_serie_mensal
-    resumo: "area_imovel guarda 10 fotos mensais (2024-10 a 2025-10, 79,3 mi linhas) e é de outra safra que as outras tabelas. Toda contagem ou soma pega uma foto só."
+    resumo: "area_imovel guarda só o último retrato (2025-10-15, 8.195.400 linhas). Os 10 retratos (2024-10-04 a 2025-10-15) estão em area_imovel_historico: filtrar uma data_extracao antiga em area_imovel devolve zero linhas."
+    detalhe: >
+      Desde 2026-11-10 a tabela tem 3 partes (29 GB de 10 retratos viraram 6 GB). area_imovel: o retrato mais novo,
+      com as 11 colunas de sempre. area_imovel_historico: inicio, fim e as 9 colunas de identidade do imóvel
+      (sigla_uf, id_municipio, id_imovel, modulos_fiscais, area, status, tipo, condicao, geometria); cada linha vale
+      de inicio a fim (datas de retrato, inclusive) e um imóvel que muda qualquer campo abre um período novo, então
+      contar linhas do histórico não conta imóveis. Retrato de uma data D: WHERE D BETWEEN inicio AND fim, com D uma das
+      10 datas reais (2024-10-04, 2024-11-16, 2024-12-19, 2025-02-21, 2025-04-15, 2025-05-16, 2025-07-15,
+      2025-08-15, 2025-09-15, 2025-10-15; entre duas datas o histórico responde como a anterior). area_imovel_retratos:
+      uma linha por (data_extracao, sigla_uf, data_atualizacao_car) com a contagem n de linhas (270 linhas). A
+      data_atualizacao_car saiu da identidade porque é metadado do retrato (constante por extração e UF); com ela dentro
+      quase toda linha abriria período novo e o histórico não comprimiria. Foto de 2025-10-15 e retratos antigos têm
+      outra safra que as demais tabelas do dataset. Retrato novo ainda não entra por --anexa (a coluna fora da identidade não é tratada):
+      não solte parquet em area_imovel/; os syncs da BD recusam a tabela.
     tabelas: [area_imovel]
     severidade: silencioso
-    verificado: "foto 2025-10-15: 8.186.157 imóveis, 822,8 mi ha (715,8 sem cancelados) — medido 2026-09-25"
+    verificado: "area_imovel 8.195.400 linhas (2025-10-15); area_imovel_historico 10.933.215 períodos (2.737.815 fechados + 8.195.400 vigentes), 8.186.217 id_imovel distintos; os 10 retratos reconstruídos pelo histórico = os 1.010 arquivos antigos em contagem e soma de hash (10/10), 79.325.829 linhas; foto 2025-10-15: 8.186.157 imóveis, 822,8 mi ha (715,8 sem cancelados, medido 2026-09-25) — medido 2026-11-10"
+  - id: retrato_2025_02_21_ms_duas_datas
+    resumo: "No retrato 2025-02-21, 93.059 imóveis de MS aparecem duas vezes, com data_atualizacao_car 2025-02-01 e 2025-02-04 (7.634.617 linhas para 7.531.923 ids). Juntar area_imovel_retratos por (data_extracao, sigla_uf) dobra as linhas de MS nessa data."
+    detalhe: >
+      A cópia repetida é uma linha por cópia em area_imovel_historico (as duas cópias têm a mesma identidade, então a
+      reconstrução da data devolve as duas). A tabela area_imovel_retratos guarda as duas datas de MS nessa extração
+      (único caso de mais de uma data_atualizacao_car por extração e UF). Para um id só, deduplique por id_imovel.
+    tabelas: [area_imovel]
+    colunas: [id_imovel, data_atualizacao_car]
+    severidade: silencioso
+    verificado: "retrato 2025-02-21 reconstruído: 7.634.617 linhas; area_imovel_retratos: MS 2025-02-21 tem 2 datas, soma n = 186.118 (2 x 93.059); 269 pares (extração, UF) e 270 linhas — medido 2026-11-10"
   - id: id_imovel_repete_na_foto
     resumo: "Na foto 2025-10-15 o id_imovel aparece 8.195.400 vezes para 8.186.157 ids: há 9.243 repetições. Deduplique por id_imovel."
     tabelas: [area_imovel]

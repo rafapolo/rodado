@@ -2,7 +2,7 @@
 
 **Gerado por `scripts/gera_catalog_md.py`, a partir de `_rodado_metadata/catalog.parquet` — não editar à mão.** Descrições vêm de `docs/context/dataset_descriptions.yaml`; a coluna Dado até vem de `docs/context/dataset_freshness.yaml` (curado, só ~6 datasets por enquanto — vazio não significa "sem gap", significa "não conferido ainda"). Editar os YAML e regenerar (`build_metadata_catalog.py` → `gera_catalog_md.py`), nunca este arquivo.
 
-**294 datasets, 1.756 tabelas, 33.784.227.135 linhas.** 32 dataset(s) sem descrição. 4 com data de frescor conferida (de 294).
+**294 datasets, 1.758 tabelas, 33.729.903.868 linhas.** 32 dataset(s) sem descrição. 4 com data de frescor conferida (de 294).
 
 | Dataset | Descrição | Tabelas | Linhas | Dado até | Fonte |
 |---|---|---:|---:|---|---|
@@ -73,7 +73,7 @@
 | `br_cgu_sancoes` | CGU — sanções administrativas (CEIS, CNEP, CEPIM, acordos de leniência) | 6 | 45.506 | — | Base dos Dados |
 | `br_cgu_seguro_defeso` | Seguro-Defeso — pagamentos aos pescadores artesanais durante o defeso | 3 | 47.779.027 | — | Portal - Seguro-Defeso |
 | `br_cgu_servidores_executivo_federal` | CGU — cadastro e remuneração de servidores do Poder Executivo federal | 7 | 432.489.430 | — | Base dos Dados |
-| `br_cgu_transferencias` | _(sem descrição)_ | 1 | 23.089.550 | — | Portal da Transparência — Transferências (todos os repasses da União a estados, municípios e fundos) |
+| `br_cgu_transferencias` | _(sem descrição)_ | 1 | 23.086.484 | — | Portal da Transparência — Transferências (todos os repasses da União a estados, municípios e fundos) |
 | `br_cgu_viagens` | CGU — viagens a serviço de servidores federais | 4 | 53.192.569 | — | Portal - Viagens |
 | `br_clp_ranking_competitividade` | CLP — ranking de competitividade dos estados | 2 | 9.431 | — | Base dos Dados |
 | `br_cnj_estatisticas_poder_judiciario` | CNJ — recursos financeiros do Poder Judiciário | 1 | 1.189 | — | Base dos Dados |
@@ -83,7 +83,7 @@
 | `br_comprasgov_sicaf` | SICAF — cadastro de fornecedores habilitados a contratar com o governo | 1 | 962.016 | — | SICAF fornecedores |
 | `br_cvm_administradores_carteira` | CVM — administradores de carteira de valores mobiliários | 3 | 16.476 | — | Base dos Dados |
 | `br_cvm_cia_aberta` | CVM — companhias abertas (cadastro, demonstrações financeiras, formulário de referência, administradores e remuneração) | 118 | 70.967.743 | — | CVM — companhias abertas (cadastro, DFP, ITR, FRE, FCA, IPE, VLMO, CGVN, recompra de ações) |
-| `br_cvm_fundos` | CVM — cadastro de fundos de investimento | 39 | 440.462.914 | 2026-10-29 | CVM Fundos |
+| `br_cvm_fundos` | CVM — cadastro de fundos de investimento | 39 | 440.462.913 | 2026-11-06 | CVM Fundos |
 | `br_cvm_oferta_publica_distribuicao` | CVM — ofertas públicas de distribuição de valores mobiliários | 1 | 27.486 | — | Base dos Dados |
 | `br_datahackers_state_data` | Data Hackers — pesquisa State of Data sobre o mercado de dados no Brasil | 1 | 4.271 | — | Base dos Dados |
 | `br_datasus_cid10` | DATASUS — tabela de códigos CID-10 e CID-O | 6 | 15.672 | — | CID-10 (tabela de códigos, DATASUS) |
@@ -121,7 +121,7 @@
 | `br_ibge_pam` | IBGE — Produção Agrícola Municipal, lavouras permanentes e temporárias | 2 | 20.097.187 | — | Base dos Dados |
 | `br_ibge_pas` | _(sem descrição)_ | 2 | 812.172 | — | Base dos Dados |
 | `br_ibge_pevs` | IBGE — Produção da Extração Vegetal e da Silvicultura | 2 | 558.451 | — | Base dos Dados |
-| `br_ibge_pia` | _(sem descrição)_ | 2 | 1.004.426 | — | Base dos Dados |
+| `br_ibge_pia` | _(sem descrição)_ | 2 | 6.808.795 | — | Base dos Dados |
 | `br_ibge_pib` | IBGE — PIB municipal e estadual | 8 | 225.905 | — | IBGE — Contas Nacionais Trimestrais (PIB e valor adicionado por setor), série completa |
 | `br_ibge_pnad` | IBGE — PNAD, microdados compatibilizados históricos | 3 | 9.587.801 | — | Base dos Dados |
 | `br_ibge_pnad_covid` | IBGE — PNAD-COVID19, microdados mensais de mai a nov/2020 (2,65 mi pessoas, pesar por v1032) e o dicionário | 2 | 2.651.013 | — | IBGE — PNAD COVID19, microdados mensais mai–nov/2020 |
@@ -230,7 +230,7 @@
 | `br_pncp` | PNCP — Portal Nacional de Contratações Públicas, licitações e contratos de todos os entes | 1 | 5.370.608 | — | PNCP — Portal Nacional de Contratações Públicas |
 | `br_poder360_pesquisas` | Poder360 — pesquisas eleitorais | 1 | 162.075 | — | Base dos Dados |
 | `br_presidencia_comunicabr` | Presidência — ComunicaBR, painel de 84 programas federais (Bolsa Família, MCMV, PNAE, Mais Médicos, Plano Safra…) por município, UF e Brasil, 2023–2026, agregado e com ref por variável; um parquet por coleta | 3 | 1.566.488 | — | Presidência — ComunicaBR, painel de indicadores dos programas federais por município |
-| `br_prf_acidentes` | Acidentes em rodovias federais (PRF) — ocorrências, pessoas envolvidas e causas | 3 | 11.879.282 | — | Base dos Dados |
+| `br_prf_acidentes` | Acidentes em rodovias federais (PRF) — ocorrências, pessoas envolvidas e causas | 3 | 11.950.547 | — | PRF — acidentes 2026 (setembro) em `br_prf_acidentes` |
 | `br_prf_infracoes` | _(sem descrição)_ | 1 | 63.217.947 | — | PRF — infrações (autos) em rodovias federais |
 | `br_rf_arrecadacao` | Receita Federal — arrecadação tributária federal | 5 | 535.465 | — | Base dos Dados |
 | `br_rf_cafir` | Receita Federal — Cadastro de Imóveis Rurais (CAFIR) | 2 | 179.992.711 | — | Base dos Dados |
@@ -240,7 +240,7 @@
 | `br_rj_isp_estatisticas_seguranca` | ISP-RJ — estatísticas de segurança pública do estado do Rio de Janeiro | 14 | 168.346 | — | Base dos Dados |
 | `br_rodado_eleicoes` | Rodado — ponte entre seção eleitoral (TSE, 2022 e 2026) e setor censitário do Censo 2022 | 5 | 2.207.335 | — | IBGE CNEFE 2022 × TSE locais de votação 2026 — coordenada estimada para os locais que o TSE não georreferenciou |
 | `br_rodado_indicadores_municipais` | Rodado — os indicadores do painel municipal em formato longo: 987 indicadores em 19 seções (segurança, saúde, educação, benefícios…) para os 5.571 municípios, uma linha por município × indicador × ano/mês/dimensão | 1 | 12.382.056 | — | Base dos Dados |
-| `br_saude_bps` | Boletim de Pessoal da Saúde — dados de profissionais de saúde | 1 | 372.701 | — | BPS |
+| `br_saude_bps` | Boletim de Pessoal da Saúde — dados de profissionais de saúde | 1 | 373.811 | — | BPS |
 | `br_saude_farmaciapopular` | Farmácia Popular — estabelecimentos credenciados | 3 | 522.807 | — | Farmácia Popular — pessoas atendidas por município (MGDI, Ministério da Saúde) |
 | `br_sedec_desastres` | SEDEC/Defesa Civil — reconhecimentos vigentes de situação de emergência ou calamidade | 1 | 20.380 | — | Base dos Dados |
 | `br_seeg_emissoes` | SEEG — emissões estimadas de gases de efeito estufa por município e setor | 3 | 183.668.150 | — | Base dos Dados |
@@ -254,7 +254,7 @@
 | `br_senatran_frota` | SENATRAN — frota de veículos por município e tipo, mensal desde 2013 | 1 | 20.223.786 | — | SENATRAN — frota de veículos por município e tipo |
 | `br_sfb_cnfp` | _(sem descrição)_ | 1 | 12.874 | — | SFB — Cadastro Nacional de Florestas Públicas 2025 |
 | `br_sfb_concessoes` | _(sem descrição)_ | 2 | 75 | — | Serviço Florestal Brasileiro — concessões florestais federais (contratos e produção) |
-| `br_sfb_sicar` | SICAR/SFB — Cadastro Ambiental Rural | 10 | 132.944.211 | — | SFB — SICAR, as 5 tabelas restantes, sem geometria |
+| `br_sfb_sicar` | SICAR/SFB — Cadastro Ambiental Rural | 12 | 72.747.267 | — | SFB — SICAR, as 5 tabelas restantes, sem geometria |
 | `br_sgb_setorizacao_risco` | _(sem descrição)_ | 1 | 17.838 | — | SGB — Setorização de riscos geológicos (setores de risco alto e muito alto) |
 | `br_simet_educacao_conectada` | Programa Educação Conectada — conectividade de internet em escolas | 1 | 137.914 | — | Base dos Dados |
 | `br_siop_orcamento` | SIOP — Sistema Integrado de Planejamento e Orçamento federal | 4 | 37.247 | — | SIOP |

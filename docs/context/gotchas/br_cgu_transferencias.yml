@@ -73,3 +73,24 @@ gotchas:
     colunas: [acao, codigo_favorecido, valor_transferido]
     severidade: aviso
     verificado: "2025: PNAE 3 de 3 municípios com razão 1,000; PDDE 0,73 a 1,19; PNATE 0,61 a 1,00 — medido 2026-11-04"
+  - id: fonte_reagrega_linhas_mesma_soma
+    resumo: "Em 2026-11-10 a fonte devolveu 201908, 201909, 202307 e 202404 com menos linhas e a mesma soma: não são duplicatas nem reversões, é re-agregação (linhas de mesma chave foram somadas numa só). Os parquet atuais foram mantidos."
+    detalhe: >
+      Comparando por chave sem rótulos (todos os códigos, sem codigo_orgao_siafi, mais
+      o valor), as chaves são as mesmas nos dois lados (nenhuma só de um lado) e a soma
+      de valor_transferido por chave coincide; muda só a multiplicidade. Exemplo em
+      201908: duas linhas de R$ 68.950,00 (órgão nulo) viram uma de R$ 137.900,00 com
+      codigo_orgao_siafi 53000. Nos quatro meses o que sumiu é a parte sem órgão: a
+      fonte passou a preencher o órgão e, com ele, juntou o que antes eram linhas
+      separadas. Contagens atual → nova: 201908 141.686 → 141.684 (2 chaves),
+      201909 186.433 → 186.430 (3), 202307 140.922 → 140.907 (15), 202404
+      223.395 → 220.349 (3.052 chaves com menos linhas, 6 com mais). Zero linhas sem
+      correspondente e zero chaves com soma diferente, então reversão real não houve.
+      Como a decisão de promoção só cobre duplicata exata e reversão, esses quatro
+      meses não foram trocados. A fonte também reescreve rótulos (nome_orgao, nome_*)
+      e codigo_orgao_siafi em muitos meses: compare sempre por chave sem rótulo e sem
+      o código do órgão, e conte multiplicidade e soma por chave, não linha inteira.
+    tabelas: [transferencias]
+    colunas: [codigo_orgao_siafi, nome_orgao, valor_transferido]
+    severidade: aviso
+    verificado: "4 meses comparados em beelink, staging _recusados_transferencias_20261110: 0 chaves exclusivas de um lado, 0 chaves com soma diferente — medido 2026-11-10"

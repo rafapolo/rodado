@@ -14,3 +14,23 @@ gotchas:
     colunas: [data_da_insercao, descricao_catmat]
     severidade: silencioso
     verificado: "372.701 linhas depois de somar 1.573 às 371.128; data_da_insercao máxima de 2026-10-06 para 2026-10-29 — medido 2026-10-31"
+  - id: fusao_por_chave_nao_por_data_insercao
+    resumo: "Para somar a coleta nova ao disco, a chave é (instituição, data, codigo_br, anvisa, quantidade, preço, fornecedor) — não data_da_insercao: ela perde linhas que a coleta anterior deixou de pegar."
+    detalhe: >
+      Fusão de 2026-11-10 (coleta de 229.190 linhas contra 372.701 no espelho): só
+      209 linhas tinham data_da_insercao posterior a 2026-10-29, mas 1.110 chaves da
+      coleta não existiam no disco. As outras 901 têm inserção antiga (a varredura
+      de 10-31 pegou só parte de algumas compras; ex. uma instituição tinha 19
+      linhas no disco e 136 na fonte para o mesmo dia). Só 11 das 1.110 têm gêmea no
+      disco com outra data da compra, 12 diferem só em fornecedor/anvisa — a chave é
+      estável. Procedimento: anti-join da coleta contra o disco pela chave acima
+      (anvisa nula tratada como vazia, demais colunas com IS NOT DISTINCT FROM), UNION
+      ALL das novas depois das linhas do disco, mesmo schema, zstd, row group 122880;
+      backup em ~/scrap_tmp/backup/br_saude_bps/dados/<data>-fusao/; conferir
+      linhas = antes + novas e sum(hash) das linhas antigas igual (file_row_number
+      abaixo de N, excluído da hash); valida_parquet.py. Nunca promover a coleta por
+      cima (a fonte perdeu 2020 e ~20% dos outros anos).
+    tabelas: [dados]
+    colunas: [cnpj_da_instituicao, data_da_compra, codigo_br, anvisa, quantidade_itens_comprados, preco_unitario, cnpj_do_fornecedor, data_da_insercao]
+    severidade: silencioso
+    verificado: "373.811 linhas depois de somar 1.110 às 372.701; sum(hash) das 372.701 antigas idêntico — medido 2026-11-10"

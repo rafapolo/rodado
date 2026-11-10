@@ -1,20 +1,26 @@
 dataset: br_ibge_pia
 gotchas:
   - id: mesma_celula_em_varias_tabelas
-    resumo: "Em sidra, a mesma célula (localidade, período, variável e categorias) aparece em mais de uma id_tabela, e em 19.607 de 60.545 casos com valor diferente: as tabelas de eras diferentes se sobrepõem. Filtre sempre uma id_tabela, escolhida em sidra_tabelas."
+    resumo: "Em sidra, a mesma célula (localidade, período, variável e categorias) aparece em mais de uma id_tabela, e em 209.608 de 1.416.182 casos com valor diferente (inclui coincidência de código entre classificações diferentes, CNAE x Prodlist): as tabelas de eras diferentes se sobrepõem. Filtre sempre uma id_tabela, escolhida em sidra_tabelas."
     tabelas: [sidra]
     colunas: [id_tabela, valor, periodo, id_variavel]
     severidade: silencioso
-    verificado: "60.545 células em mais de uma id_tabela, 19.607 com valor distinto, em 129.022 linhas — medido 2026-10-31"
+    verificado: "1.416.182 células em mais de uma id_tabela, 209.608 com valor distinto, em 3.170.928 linhas — medido 2026-11-10, depois da fase 2 (eram 60.545 / 19.607 / 129.022 em 2026-10-31)"
   - id: valor_nulo_tem_motivo
     resumo: "valor NULL não é zero: simbolo diz o motivo ('...' não disponível, 'X' sigilo; as letras A a D têm sentido definido na nota de cada tabela). Somar UFs não fecha com o Brasil onde há 'X'."
     tabelas: [sidra]
     colunas: [valor, simbolo]
     severidade: silencioso
-    verificado: "259.887 valores nulos em 1.004.359 linhas; 173.432 com '...', 67.135 com 'X' — medido 2026-10-31"
+    verificado: "2.595.288 valores nulos em 6.808.728 linhas (38%); 2.270.414 com '...', 305.554 com 'X' — medido 2026-11-10 (eram 259.887 de 1.004.359 em 2026-10-31); nenhum nulo sem simbolo"
   - id: percentual_e_valor_na_mesma_coluna
     resumo: "valor mistura Mil Reais, Percentual, Unidades, Pessoas e Coeficiente na mesma coluna: filtre id_variavel e olhe unidade antes de somar."
     tabelas: [sidra]
     colunas: [valor, unidade, id_variavel]
     severidade: erro
-    verificado: "445.027 linhas em Percentual, 376.716 em Mil Reais — medido 2026-10-31"
+    verificado: "2.800.387 linhas em Percentual ou %, medido 2026-11-10 (445.027 em Percentual antes da fase 2)"
+  - id: fase2_cnae_e_prodlist_so_brasil
+    resumo: "Desde 2026-11-10 sidra traz também as 34 tabelas CNAE e Prodlist que ficaram de fora na primeira carga (18 da PIA-Empresa, 16 da PIA-Produto), 5.804.369 linhas. 32 são só Brasil (id_nivel '1'); só 1848 e 1987 (unidades locais por UF) têm UF. A PIA-Produto (Prodlist: produto x classe de atividade, 800 a 3.787 categorias) tem a maioria dos valores NULL com '...': antes de somar, filtre valor IS NOT NULL e confira a quantidade de células nulas. Tabelas de eras diferentes (CNAE 1.0, 2.0, 2.0 com 30+ pessoas; Prodlist 2007, 2010, 2013, 2016, 2019) usam códigos de categoria diferentes: não junte entre id_tabela sem passar por sidra_tabelas."
+    tabelas: [sidra, sidra_tabelas]
+    colunas: [id_tabela, id_nivel, valor, simbolo, id_categoria_1]
+    severidade: silencioso
+    verificado: "34 tabelas, 5.804.369 linhas (= soma das células pedidas à API, 0 chaves repetidas), sidra com 6.808.728 linhas e chaves distintas; as 'sem motivo conhecido' eram bug do estimador de tamanho, que multiplicava por 28 UFs tabelas só com N1 — medido 2026-11-10"

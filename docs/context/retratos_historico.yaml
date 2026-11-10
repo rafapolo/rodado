@@ -10,3 +10,7 @@ tabelas:
   br_rf_cno.areas: {chave: id_cno, data: data_extracao}
   br_rf_cno.cnaes: {chave: id_cno, data: data_extracao}
   br_rf_cno.vinculos: {chave: id_cno, data: data_extracao}
+  # SICAR: data_atualizacao_car é metadado do retrato (fica fora da identidade e vai para area_imovel_retratos).
+  # O --anexa ainda NÃO trata coluna fora da identidade: retrato novo = regerar com gera_retrato_historico.py
+  # (ver tasks/plans/compactar_retratos_outros_datasets.md, 2026-11-10); os syncs da BD recusam a tabela.
+  br_sfb_sicar.area_imovel: {chave: id_imovel, data: data_extracao, exclui_identidade: [data_atualizacao_car], lateral_por: [sigla_uf]}

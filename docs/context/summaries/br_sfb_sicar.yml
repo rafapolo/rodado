@@ -4,22 +4,22 @@ dataset: br_sfb_sicar
 tabelas:
   area_imovel:
     ultima_data: "2025-10-15"  # dado mais recente, gerado por scripts/gera_ultima_data.py
-    grao: "um imóvel rural cadastrado no CAR em uma foto mensal (data_extracao), com polígono e área"
+    grao: "um imóvel rural cadastrado no CAR no último retrato (data_extracao 2025-10-15), com polígono e área; os 10 retratos de 2024-10 a 2025-10 estão em area_imovel_historico (inicio, fim) e as datas de atualização do CAR em area_imovel_retratos"
     chave: "id_imovel, data_extracao (no AC: 561.730 linhas, 561.730 distintos); nacionalmente a foto 2025-10-15 repete 9.243 ids (ver gotcha id_imovel_repete_na_foto)"
-    tempo: {natureza: soma_de_retratos, coluna: data_extracao, cobertura: "2024-10-04–2025-10-15 (10 fotos mensais, 79,3 milhões de linhas)"}
+    tempo: {natureza: retrato, coluna: data_extracao, cobertura: "só o retrato 2025-10-15 (8,2 milhões de linhas); os 10 retratos de 2024-10-04 a 2025-10-15 (79,3 milhões de linhas) em area_imovel_historico, inicio/fim"}
     territorio: {nivel: municipio, colunas: {sigla_uf: "sigla da UF", id_municipio: "código IBGE do município, 7 dígitos, texto"}}
     medidas:
       - {coluna: area, o_que: "área do imóvel", unidade: "ha", soma: sim}
       - {coluna: modulos_fiscais, o_que: "área em módulos fiscais (VARCHAR: converta com ::double)", unidade: "módulos fiscais", soma: sim}
     filtros_tipicos:
-      - "data_extracao = DATE '2025-10-15' (uma foto só; sem isso conta cada imóvel até 10 vezes)"
+      - "area_imovel já é uma foto só (2025-10-15): não filtre data_extracao. Retrato antigo: area_imovel_historico WHERE DATE '2025-02-21' BETWEEN inicio AND fim (só as 10 datas reais)"
       - "status <> 'CA' para tirar cancelados; status vai de 'AT', 'PE', 'SU', 'CA' (significado dos códigos não documentado; 'CA' coincide com condicao 'Cancelado por decisao administrativa')"
       - "condicao = 'Aguardando analise' (79% dos imóveis) ou 'Analisado, ...': ver gotcha condicao_e_a_analise"
       - "tipo = 'IRU' (2.058.306 na amostra), 'AST' (9.328), 'PCT' (1.034): significado não documentado (provável imóvel rural / assentamento / povos tradicionais)"
     use_para: "contar imóveis e somar área declarada no CAR por UF, município e situação"
     nao_use_para: "somar área sem fixar uma foto, ou tratar a soma como terra distinta: os polígonos se sobrepõem (ver gotcha poligonos_sobrepostos)"
     rascunho: [use_para, nao_use_para, significado de tipo e status, "soma de modulos_fiscais"]
-    verificado: "AC: 561.730 linhas = 561.730 distintos de (id_imovel,data_extracao); AC foto 2025-10-15: 58.394 linhas = 58.394 ids; 9 fotos nas amostras; demais números nos gotchas — medido 2026-10-27"
+    verificado: "AC: 561.730 linhas = 561.730 distintos de (id_imovel,data_extracao); AC foto 2025-10-15: 58.394 linhas = 58.394 ids; demais números nos gotchas; 2026-11-10: tabela trocada por último retrato (8.195.400) + area_imovel_historico (10.933.215 períodos) + area_imovel_retratos (270 linhas), os 10 retratos reconstruídos iguais aos 1.010 arquivos antigos — medido 2026-10-27 e 2026-11-10"
   app:
     ultima_data: "2026-08-04"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma feição de área de preservação permanente (APP) de um imóvel, por tipo"

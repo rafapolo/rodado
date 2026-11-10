@@ -4,7 +4,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 `last_update` é a data do parquet mais recente do dataset no beelink (para tabela nativa do
 `.duckdb`, sem parquet, o `scrape_date` do catálogo).
 
-294 datasets, 1756 tabelas.
+294 datasets, 1758 tabelas.
 
 | dataset | tabelas | linhas | last_update |
 |---|---:|---:|---|
@@ -75,7 +75,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_cgu_sancoes` | 6 | 45.506 | 2026-10-30 |
 | `br_cgu_seguro_defeso` | 3 | 47.779.027 | 2026-10-31 |
 | `br_cgu_servidores_executivo_federal` | 7 | 432.489.430 | 2026-11-01 |
-| `br_cgu_transferencias` | 1 | 23.089.550 | 2026-11-10 |
+| `br_cgu_transferencias` | 1 | 23.086.484 | 2026-11-10 |
 | `br_cgu_viagens` | 4 | 53.192.569 | 2026-10-30 |
 | `br_clp_ranking_competitividade` | 2 | 9.431 | 2026-07-09 |
 | `br_cnj_estatisticas_poder_judiciario` | 1 | 1.189 | 2026-07-09 |
@@ -85,7 +85,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_comprasgov_sicaf` | 1 | 962.016 | 2026-10-07 |
 | `br_cvm_administradores_carteira` | 3 | 16.476 | 2026-10-30 |
 | `br_cvm_cia_aberta` | 118 | 70.967.743 | 2026-10-21 |
-| `br_cvm_fundos` | 39 | 440.462.914 | 2026-11-02 |
+| `br_cvm_fundos` | 39 | 440.462.913 | 2026-11-10 |
 | `br_cvm_oferta_publica_distribuicao` | 1 | 27.486 | 2026-10-30 |
 | `br_datahackers_state_data` | 1 | 4.271 | 2026-07-05 |
 | `br_datasus_cid10` | 6 | 15.672 | 2026-07-10 |
@@ -123,7 +123,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_ibge_pam` | 2 | 20.097.187 | 2026-07-05 |
 | `br_ibge_pas` | 2 | 812.172 | 2026-10-25 |
 | `br_ibge_pevs` | 2 | 558.451 | 2026-07-05 |
-| `br_ibge_pia` | 2 | 1.004.426 | 2026-10-25 |
+| `br_ibge_pia` | 2 | 6.808.795 | 2026-11-10 |
 | `br_ibge_pib` | 8 | 225.905 | 2026-11-03 |
 | `br_ibge_pnad` | 3 | 9.587.801 | 2026-07-05 |
 | `br_ibge_pnad_covid` | 2 | 2.651.013 | 2026-09-25 |
@@ -232,7 +232,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_pncp` | 1 | 5.370.608 | 2026-11-02 |
 | `br_poder360_pesquisas` | 1 | 162.075 | 2026-10-31 |
 | `br_presidencia_comunicabr` | 3 | 1.566.488 | 2026-10-13 |
-| `br_prf_acidentes` | 3 | 11.879.282 | 2026-10-07 |
+| `br_prf_acidentes` | 3 | 11.950.547 | 2026-11-10 |
 | `br_prf_infracoes` | 1 | 63.217.947 | 2026-10-25 |
 | `br_rf_arrecadacao` | 5 | 535.465 | 2026-07-07 |
 | `br_rf_cafir` | 2 | 179.992.711 | 2026-11-01 |
@@ -242,7 +242,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_rj_isp_estatisticas_seguranca` | 14 | 168.346 | 2026-10-31 |
 | `br_rodado_eleicoes` | 5 | 2.207.335 | 2026-10-26 |
 | `br_rodado_indicadores_municipais` | 1 | 12.382.056 | 2026-10-13 |
-| `br_saude_bps` | 1 | 372.701 | 2026-10-31 |
+| `br_saude_bps` | 1 | 373.811 | 2026-11-10 |
 | `br_saude_farmaciapopular` | 3 | 522.807 | 2026-11-04 |
 | `br_sedec_desastres` | 1 | 20.380 | 2026-10-09 |
 | `br_seeg_emissoes` | 3 | 183.668.150 | 2026-07-08 |
@@ -256,7 +256,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_senatran_frota` | 1 | 20.223.786 | 2026-11-03 |
 | `br_sfb_cnfp` | 1 | 12.874 | 2026-10-25 |
 | `br_sfb_concessoes` | 2 | 75 | 2026-11-04 |
-| `br_sfb_sicar` | 10 | 132.944.211 | 2026-10-09 |
+| `br_sfb_sicar` | 12 | 72.747.267 | 2026-11-10 |
 | `br_sgb_setorizacao_risco` | 1 | 17.838 | 2026-10-25 |
 | `br_simet_educacao_conectada` | 1 | 137.914 | 2026-07-09 |
 | `br_siop_orcamento` | 4 | 37.247 | 2026-10-21 |

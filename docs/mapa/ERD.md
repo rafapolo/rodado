@@ -2,13 +2,13 @@
 
 🇬🇧 [English version](ERD_EN.md)
 
-Mapa de entidades e relações das 1755 tabelas (293 datasets) do espelho. Gerado por `scripts/gera_erd.py` a partir de `schemas.json` em 2026-11-10 — não edite à mão, regenere.
+Mapa de entidades e relações das 1757 tabelas (293 datasets) do espelho. Gerado por `scripts/gera_erd.py` a partir de `schemas.json` em 2026-11-10 — não edite à mão, regenere.
 
 As expressões de join, o formato de cada chave e as pegadinhas estão em [`docs/context/join_keys.md`](docs/context/join_keys.md). Este arquivo é o mapa; aquele é o manual.
 
 ## Como ler
 
-Um único `erDiagram` com 1755 tabelas seria ilegível, então o modelo sobe um nível:
+Um único `erDiagram` com 1757 tabelas seria ilegível, então o modelo sobe um nível:
 
 - **entidade = dataset**; **atributo = uma das tabelas** dele;
 - o *tipo* do atributo lista as chaves que aquela tabela carrega (`mun`, `uf`, `cnpj`, `cnes`, `escola`, `setor`, `cep`, `cpf`, `cnae`, `cbo`, `cid`, `ncm`, `pais`, `partido`, `orgao`, `ug`, `funcprog`, `ano`, `mes`), ou `sem_chave` quando não há nenhuma;
@@ -81,11 +81,11 @@ erDiagram
 | Governo, orçamento e compras | 41 | 187 | 36 |
 | Política e eleições | 9 | 132 | 9 |
 | Justiça, segurança e sanções | 23 | 63 | 14 |
-| Território, ambiente e infraestrutura | 33 | 131 | 28 |
+| Território, ambiente e infraestrutura | 33 | 133 | 28 |
 | Demografia e indicadores sociais | 27 | 258 | 26 |
 | Internacional, cultura e esporte | 9 | 25 | 3 |
 | Outros | 36 | 312 | 31 |
-| **total** | **293** | **1755** | **248** |
+| **total** | **293** | **1757** | **248** |
 
 45 datasets não têm chave documentada alguma; 441 tabelas individuais não carregam chave nenhuma (ambas as listas no fim).
 
@@ -499,7 +499,7 @@ erDiagram
         mun_uf_cnes microdados_estabelecimento "805.8k linhas"
     }
     br_saude_bps {
-        mun_cnpj_ano dados "372.7k linhas"
+        mun_cnpj_ano dados "373.8k linhas"
     }
     br_saude_farmaciapopular {
         mun_uf_cnpj estabelecimentos "32.6k linhas"
@@ -2092,7 +2092,7 @@ erDiagram
 
 ## Território, ambiente e infraestrutura
 
-33 datasets · 131 tabelas
+33 datasets · 133 tabelas
 
 **1/3**
 
@@ -2351,7 +2351,9 @@ erDiagram
     br_sfb_sicar {
         mun_uf app "28.1M linhas"
         mun_uf area_consolidada "6.9M linhas"
-        mun_uf area_imovel "79.3M linhas"
+        mun_uf area_imovel "8.2M linhas"
+        mun_uf area_imovel_historico "10.9M linhas"
+        uf area_imovel_retratos "270 linhas"
         mun_uf area_pousio "212.3k linhas"
         sem_chave dicionario "96 linhas"
         mun_uf hidrografia "4.4M linhas"
@@ -2670,7 +2672,7 @@ erDiagram
         mun sidra_tabelas "307 linhas"
     }
     br_ibge_pia {
-        sem_chave sidra "1M linhas"
+        sem_chave sidra "6.8M linhas"
         mun sidra_tabelas "67 linhas"
     }
     br_ibge_pnad {
