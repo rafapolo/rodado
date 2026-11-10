@@ -380,6 +380,37 @@ de empenhos) · `br_cgu_ebt` · `br_geobr_mapas`.
 
 Três deles já foram testados nesta rodada (E1, E2, E3 acima).
 
+## Rodada da fila inédita H63–H70 (2026-11-10)
+
+Oito trincas de famílias nunca cruzadas, saídas de `scripts/hipoteses/93_inedito.py`
+(8.449 combinações inéditas de 2 a 4 famílias após corrigir o caminho de
+`hipoteses.md`; as 1.383 citadas antes eram do cálculo anterior). Dado extraído
+fresco do beelink (Atlas Esgotos, INPE queimadas e PRODES, CAFIR 2025-09-02,
+IDEB 2023, TSE 2020/2022, PPM 2022, CAPAG 2026); controles (população, PIB per
+capita, UF) vêm do painel municipal de 2026-09-06. `r_parcial` = Spearman depois
+de residualizar log-população, log-PIB per capita e efeito fixo de UF. Só uma
+das oito é forte, e é confirmatória; as outras sete ficam em
+`tasks/plans/hipoteses.md` com veredito.
+
+| # | Relação | Nível | n | Valor | Por que importa |
+|---|---|---|---|---|---|
+| **H70** | Cobertura do Bolsa Família (`nbf_share_dom`) × voto em Lula no 2º turno de 2022 | município | 5.555 | **r_parcial +0,41** (bruto +0,80; sem UF +0,60); quintis: 36% → 78% de votos | Confirma, com a ponte política × transferência de renda que o espelho nunca tinha cruzado, uma relação já conhecida: não é achado novo, é validação do método. Totais conferidos: Lula 60,19 mi e Bolsonaro 58,21 mi no 2º turno (oficial 60,3 e 58,2 mi) |
+
+**Moderado, fora da tabela (H67):** o desmatamento PRODES 2019-23 como fração da
+área do município sobe com a cobertura do Bolsa Família (Spearman +0,45, `r_parcial` +0,17),
+mas o sinal **se inverte dentro da Amazônia Legal** (−0,25, n = 730) e é +0,52 fora dela
+(n = 4.525): quem mede cobertura de transferência está medindo bioma. Não usar a
+correlação agregada.
+
+**Nulos e fracos desta rodada** (detalhe na fila): H63 partido do prefeito × esgoto sem
+atendimento (fraco: diferença bruta grande — PSDB mediana 0,16, PT 0,67 — encolhe para
+±4% do ranking sob controle); H64 focos de calor × óbito respiratório (nulo e contrário:
+quintis 237 → 177 óbitos por 100 mil, `r_parcial` −0,06); H65 concentração fundiária
+(p90 da área CAFIR) × homicídio (fraco: `r_parcial` +0,12; quintis 15,8 → 22,4); H66 esgoto
+sem atendimento × IDEB (colapsa de −0,29 para −0,07 com UF; 15 de 23 UFs negativas, mediana −0,06);
+H68 bovinos por habitante × voto em Bolsonaro (nulo: o sinal troca de +0,07 para −0,08 com UF);
+H69 poupança corrente do CAPAG × IDEB (fraco: `r_parcial` −0,11).
+
 ## Avisos de dado (quem for reusar estas tabelas)
 
 - **`br_pncp.contratos.valorGlobal` é inutilizável em soma** — R$ 47,7 trilhões
@@ -525,3 +556,8 @@ Três deles já foram testados nesta rodada (E1, E2, E3 acima).
   município** — o valor está em `br_bcb_sicor.saldo`/`liberacao`, sem município.
   Cruzamentos de "crédito por hectare" a partir daí medem **densidade de
   contrato**, não volume financeiro.
+- **`br_tesouro_capag.municipios` tem o cabeçalho deslocado em duas colunas na
+  carga 2026**: a coluna `UF` guarda o código IBGE do município, `CAPAG` guarda o
+  nome e `Código Município Completo`/`Nome_Município` vêm `NULL`. Os `Indicador 1/2/3`
+  e `Nota 1/2/3` estão alinhados; `Indicador 2` tem texto (`n.d.`) em alguns municípios
+  (5.439 numéricos de 5.569) — usar `try_cast`. Medido 2026-11-10.

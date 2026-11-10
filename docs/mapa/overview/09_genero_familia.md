@@ -162,3 +162,6 @@ A gravidez adolescente pode ser explicada pela falta de educação sexual combin
 ## Implicações para Políticas Públicas
 
 Programas de educação sexual nas escolas podem reduzir gravidez. Acesso a contraceptivos deve ser expanded. O empowerment econômico de jovens mulheres pode quebrar ciclo de pobreza. Creches públicas universais podem aumentar participação feminina no mercado. Licença-paternidade extendida pode redistribuir trabalho doméstico. Auxílio-mãe solo pode reduzir vulnerabilidade de famílias monoparentais femininas.
+
+## Atualização 2026-11-10 — SINASC 2024
+Mães < 18 anos em 2024: 121.027 (5,1% dos nascimentos; 2022: 143.583). Por raça da mãe: parda 82.058 (6,2%), branca 23.792 (3,0%), preta 8.041 (4,2%), indígena 4.335 (15,0%), amarela 412 (3,8%). Top UF por município de nascimento: SP 14.500, PA 10.884, BA 9.557, MA 8.612, MG 8.149. Cesariana 2024: branca 67,3%, amarela 61,6%, parda 58,2%, preta 54,8%, indígena 29,3%.

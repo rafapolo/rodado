@@ -128,3 +128,6 @@ A interseccionalidade explica como sistemas de opressão se articulam. A hipóte
 ## Implicações para Políticas Públicas
 
 Políticas focalizadas em "mulheres" ou "negros" não chegam a mulheres negras. Dados desagregados são pré-requisito. Políticas interseccionais explícitas (ex: programa para mulheres negras de baixa renda) são mais efetivas. Monitoramento de indicadores interseccionais (não apenas raça OU gênero) pode avaliar efetividade. O combate à violência doméstica deve ter foco em mulheres negras (50% das vítimas).
+
+## Atualização 2026-11-10 — SINASC/SIM 2024
+RMM 2024: preta 84,3 · indígena 134,9 · parda 51,7 · branca 54,4 · Brasil 55,5 (preta/branca 1,55x; 2022: 2,2x). Cesariana (SINASC 2024, tipo informado): branca 67,3% · parda 58,2% · preta 54,8% · indígena 29,3%.

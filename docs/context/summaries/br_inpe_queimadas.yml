@@ -3,23 +3,23 @@
 dataset: br_inpe_queimadas
 tabelas:
   microdados:
-    ultima_data: "2026-10-07"  # dado mais recente, gerado por scripts/gera_ultima_data.py
+    ultima_data: "2026-11-02"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um foco de queimada detectado por satélite (instante × posição × satélite)"
-    chave: "nenhuma: em ano = 2026 há 2.157.888 linhas e 2.157.886 combinações de (data_hora, latitude, longitude, satelite), 2 linhas repetem; 2022 é único (200.763 de 200.763)"
-    tempo: {natureza: serie_diaria, coluna: data_hora, cobertura: "2003–2026-10-07"}
-    territorio: {nivel: ponto, colunas: {latitude: "graus", longitude: "graus", id_municipio: "código IBGE de 7 dígitos do foco", sigla_uf: "UF", bioma: "Amazônia, Cerrado, Caatinga, Mata Atlântica, Pampa, Pantanal (6 linhas nulas no perfil)"}}
+    chave: "nenhuma: em ano = 2026 há 2.973.649 linhas e 2.973.637 combinações de (data_hora, latitude, longitude, satelite), 12 repetidas; em 2022 era único (200.763 de 200.763)"
+    tempo: {natureza: serie_diaria, coluna: "data_hora (VARCHAR 'AAAA-MM-DD HH:MM:SS', 19 caracteres; mes e ano casam com ela em 2026)", cobertura: "2003-01-01 a 2026-11-02 17:40 (2026 parcial). 2003–2022: 4.639.768 focos, uma série do satélite de referência; 2023 em diante: todos os satélites (2023 4.676.188, 2024 8.148.844, 2025 3.463.949, 2026 2.973.649)"}
+    territorio: {nivel: ponto, colunas: {latitude: "graus", longitude: "graus", id_municipio: "código IBGE de 7 dígitos do foco (0 nulos em 2003–2022 e 2026)", sigla_uf: "UF", bioma: "Amazônia, Cerrado, Caatinga, Mata Atlântica, Pampa, Pantanal (nulo em 2 linhas até 2022, 6 em 2026, 3 em 2025)"}}
     medidas:
-      - {expressao: "count(*)", o_que: "número de focos", unidade: "focos", soma: sim}
-      - {coluna: potencia_radiativa_fogo, o_que: "potência radiativa do fogo (FRP)", unidade: "MW (não documentado no banco)", soma: nao}
-      - {coluna: dias_sem_chuva, o_que: "dias sem chuva até o foco; -999 = sem dado", unidade: "dias", soma: nao}
-      - {coluna: risco_fogo, o_que: "risco de fogo, 0 a 1; -999 = sem dado", unidade: "índice", soma: nao}
-      - {coluna: precipitacao, o_que: "precipitação associada ao foco", unidade: "mm (não documentado)", soma: nao}
+      - {expressao: "count(*)", o_que: "número de focos (não é área queimada nem número de incêndios: um incêndio gera vários focos, de vários satélites)", unidade: "focos", soma: sim}
+      - {coluna: potencia_radiativa_fogo, o_que: "potência radiativa do fogo (FRP); 100% nula até 2022; em 2026 nula em 84.103, de 0 a 4.031, mediana 10,3", unidade: "MW (INPE; o espelho não documenta)", soma: nao}
+      - {coluna: dias_sem_chuva, o_que: "dias sem chuva até o foco; -999 = sem dado; 100% nula até 2022; máximo 120", unidade: "dias", soma: nao}
+      - {coluna: risco_fogo, o_que: "risco de fogo, 0 a 1; -999 = sem dado; 100% nula até 2022", unidade: "índice", soma: nao}
+      - {coluna: precipitacao, o_que: "precipitação associada ao foco; 100% nula até 2022; em 2026 de 0 a 163,47, nula em 198.159", unidade: "mm (INPE; o espelho não documenta)", soma: nao}
     filtros_tipicos:
-      - "ano = <ano> (partição; a tabela tem 23 milhões de linhas)"
-      - "satelite = 'AQUA_M-T' para série comparável (gotcha todos_os_satelites_desde_2023)"
-      - "dias_sem_chuva <> -999 e risco_fogo <> -999 antes de média (gotcha sentinela_999)"
-      - "data_hora é VARCHAR: compare com strings 'AAAA-MM-DD HH:MM:SS'"
-    use_para: "contar focos por município, bioma, UF e período"
-    nao_use_para: "área queimada (um foco não é área) ou comparar anos antes e depois de 2023 sem filtrar satelite"
-    rascunho: [use_para, nao_use_para, "unidades de potencia_radiativa_fogo e precipitacao"]
-    verificado: "23.086.637 linhas; ano 2003–2026; 2026: 2.157.888 linhas, -999 em 19.905 dias_sem_chuva e 16.153 risco_fogo; 2022: 200.763 focos todos com satelite NULL; 2023: 4.676.188 com satelite preenchido; AQUA_M-T em 2026: 76.209 — medido 2026-10-27. Gotchas: duas_origens, sentinela_999, todos_os_satelites_desde_2023."
+      - "ano = <ano> (a tabela tem 23,9 milhões de linhas; em 2024 sozinho 8,1 milhões)"
+      - "satelite = 'AQUA_M-T' para série comparável de 2023 em diante (gotcha todos_os_satelites_desde_2023): 189.901 em 2023, 278.341 em 2024, 136.393 em 2025, 104.058 em 2026; satelite é NULL até 2022 (série de referência), e em 2026 há 12 satélites (GOES-19 724.798, NOAA-20 666.564, NOAA-21 648.616, NPP-375 470.839...)"
+      - "dias_sem_chuva <> -999 e risco_fogo <> -999 antes de média (gotcha sentinela_999); em 2026: -999 em 29.355 dias_sem_chuva e 19.885 risco_fogo, nenhum em precipitacao nem em potencia_radiativa_fogo"
+      - "data_hora é VARCHAR: compare com strings 'AAAA-MM-DD HH:MM:SS' (gotcha duas_origens)"
+    use_para: "contar focos por município, bioma, UF e período; mapear focos; sazonalidade diária e horária; FRP, risco de fogo e dias sem chuva só de 2023 em diante."
+    nao_use_para: "área queimada (um foco não é área); contagem de focos antes e depois de 2023 sem filtrar satelite (de 200 mil a 8 milhões por ano); FRP, risco, precipitação ou dias sem chuva em 2003–2022 (100% nulos); média de risco_fogo/dias_sem_chuva sem tirar -999; ano de 2026 contra ano fechado (vai até 2 de novembro)."
+    rascunho: ["unidades de potencia_radiativa_fogo (MW) e precipitacao (mm): vistas só as faixas, a unidade vem da documentação do INPE"]
+    verificado: "23.902.398 linhas; ano 2003–2026. 2003–2022: 4.639.768 linhas, com potencia_radiativa_fogo, risco_fogo, precipitacao, dias_sem_chuva e satelite 100% nulos, id_municipio preenchido em todas e bioma nulo em 2. 2023 e 2024: nulos de FRP 2,9% e 4,2%. 2026: 2.973.649 linhas (data_hora de 2026-01-01 00:00:00 a 2026-11-02 17:40:00), 2.973.637 chaves distintas, id_municipio sem nulos, bioma nulo em 6, -999 em 19.885 risco_fogo e 29.355 dias_sem_chuva, 0 em precipitacao e FRP; AQUA_M-T 104.058 em 2026. 2025: 3.463.949; data_hora começa com o ano da partição em 2025 e 2026 (0 exceções); mes = mês de data_hora em 2026 (0 exceções) — medido 2026-10-27, refeito 2026-11-10 (o cartão de 2026-10-27 parava em 2026-10-07)"

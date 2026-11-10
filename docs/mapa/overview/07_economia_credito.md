@@ -37,10 +37,10 @@ O SICOR em `br_bcb_sicor.operacao` com 522 MB detalha crédito rural com `valor_
 
 | Indicador | Valor |
 |-----------|-------|
-| PIB total (2021) | **R$ 9,0 trilhões** |
+| PIB total (2023) | **R$ 10,9 trilhões** |
 | Número de municípios | 5.570 |
 
-**Conclusão:** A média é R$ 1,6 bilhão por município, mas a concentração é extrema — SP, RJ, MG concentram mais de 50%.
+**Conclusão:** A média é R$ 2,0 bilhões por município, mas a concentração é extrema — SP, RJ, MG concentram mais de 50%.
 
 ### 2. Crédito rural: grandesvs pequenos
 
@@ -74,11 +74,11 @@ O SICOR em `br_bcb_sicor.operacao` com 522 MB detalha crédito rural com `valor_
 
 | UF | % do PIB Nacional |
 |----|-----------------|
-| SP | **32%** |
-| RJ | 11% |
-| MG | 10% |
-| Top 3 | 53% |
-| Top 10 | 72% |
+| SP | **31,5%** |
+| RJ | 10,7% |
+| MG | 8,9% |
+| Top 3 | 51% |
+| Top 10 | 81% |
 
 **Conclusão:** 3 estados geram mais da metade do PIB — resto do Brasil é subdesenvolvido.
 
@@ -113,23 +113,23 @@ O SICOR em `br_bcb_sicor.operacao` com 522 MB detalha crédito rural com `valor_
 
 **Conclusão:** Especialização produtiva = vulnerabilidade — crise em um produto = crise regional.
 
-### Concentracao do PIB municipal (2021)
+### Concentracao do PIB municipal (2023)
 
 | Recorte | Municipios | % do PIB |
 |---|---|---|
-| 10 maiores | 10 | 23,5% |
-| 1% mais ricos | 55 | 43,6% |
+| 10 maiores | 10 | 24,5% |
+| 1% mais ricos | 56 | 44,4% |
 | Metade inferior | 2.785 | 3,8% |
 
-**Conclusao:** 55 municipios produzem 11x mais que os 2.785 mais pobres somados. Fonte: `br_ibge_pib.municipio`.
+**Conclusao:** 56 municipios produzem quase 12x mais que os 2.785 mais pobres somados. Fonte: `br_ibge_pib.municipio`.
 
 ## Cruzamentos Poderosos
-- **PIB x Municipio:** 55 municipios concentram 43,6% do PIB.
+- **PIB x Municipio:** 56 municipios concentram 44,4% do PIB.
 
 - **Crédito × Terra:** grandes produtores com terra captam crédito
 - **Banco × Região:** desertos bancários perpetuam desigualdade
 - **Oligopólio × Preço:** concentradores cobram mais
-- **PIB × Região:** 3 estados = 53% do PIB — resto é subdesenvolvido
+- **PIB × Região:** 3 estados = 51% do PIB — resto é subdesenvolvido
 - **CNPJ × Mortalidade:** 65% das empresas fecham — ecossistema frágil
 - **MPE × Juros:** paga 8x mais que grandes → exclusão financeira
 - **Agricultura × Concentração:** sojasó em 3 estados = vulnerabilidade regional

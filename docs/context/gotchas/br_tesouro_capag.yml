@@ -7,6 +7,7 @@ gotchas:
       está em "UF" e o nome em "CAPAG". Nota 1, Nota 2 e Nota 3 (A/B/C) e os
       indicadores parecem no lugar certo; a classificação final e a sigla da UF
       se perderam. Para UF, use substr("UF", 1, 2) como código IBGE do estado.
+      "Indicador 2" traz o texto n.d. em alguns municípios: use try_cast (achado na H69, 2026-11-10).
     tabelas: [municipios]
     colunas: [CAPAG, UF, Código Município Completo, Nome_Município]
     severidade: erro

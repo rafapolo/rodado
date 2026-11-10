@@ -148,3 +148,6 @@ Novas tabelas usadas na página:
 - `br_ibge_censo2022_raca.instrucao` — `cor_raca`, `categoria_principal` (nível de instrução), `valor`; pessoas de 18+ por município (5.571 linhas por categoria × cor). Superior completo: branca 23,8%, parda 11,1%, preta 10,7%, indígena 7,1%, amarela 41,1% (Brasil 16,8% de 154,3 mi). Soma das 4 categorias bate com o Total (diferença de 24 pessoas em brancos).
 - `br_ipea_atlasviolencia.series` + `valores_nacional` — séries do Atlas da Violência; `serie_id` 53 (taxa negros), 158 (taxa não negros), 41/42 (contagens). Taxa negros 36,8 → 29,7 (2013→2022); não negros 15,5 → 10,8; razão 2,4 → 2,7.
 - SIM por raça e causa: 2023 negros × brancos — todas as causas 690.485 × 737.590; diabetes E10–E14 34.191 × 34.445; externas V01–Y98 93.268 × 57.492; homicídios X85–Y09 2024 30.726 × 8.380 (3,67x). Desde 2022 `raca_cor` vem decodificada ('parda'); até 2021, código ('4.0').
+
+## Atualização 2026-11-10 — mortes maternas em 2024
+Razão de mortalidade materna por 100 mil nascidos vivos (SIM causa básica O00–O95, O98–O99; SINASC), 2024: preta 84,3 (160 óbitos), indígena 134,9, parda 51,7, branca 54,4, Brasil 55,5. Preta/branca = 1,55x (era 2,2x em 2022; 2023: 73,8 vs 47,5). Números pequenos oscilam de um ano para o outro. Os números de 2022 acima ficam como série.

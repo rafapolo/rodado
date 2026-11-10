@@ -83,7 +83,7 @@ for line in (REPO/"docs"/"pesquisa"/"hipoteses"/"perguntas.md").read_text(encodi
     if len(f) >= 2: coberto[f].append(f"P{tema}-{m.group(1)}")
 
 # hipoteses.md e achados_fortes.md — só citam o nome do dataset no texto
-for arq, tag in [("tasks/hipoteses.md","H"), ("docs/pesquisa/hipoteses/achados_fortes.md","A")]:
+for arq, tag in [("tasks/plans/hipoteses.md","H"), ("docs/pesquisa/hipoteses/achados_fortes.md","A")]:
     for line in (REPO/arq).read_text(encoding="utf-8").splitlines():
         if not line.startswith("|"): continue
         cod = re.match(r"\|\s*\*\*([A-Z]?\d+[a-z]?)\*\*", line)

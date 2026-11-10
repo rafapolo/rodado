@@ -616,21 +616,32 @@ tabelas:
     verificado: 2.495.360 linhas, todas distintas; soma populacao = 203.080.756 (o total oficial); Homens 98.532.431, Mulheres 104.548.325 — medido 2026-10-27
   setor_censitario:
     grao: "um setor censitário do Censo 2022, com geometria, contagens básicas e 1.411 variáveis v00001–v01411"
-    chave: "id_setor_censitario (468.099 linhas = 468.099 distintos)"
+    chave: "id_setor_censitario (468.099 linhas = 468.099 distintos; 15 caracteres em todas, sem a letra 'P' do CNEFE)"
     tempo: {natureza: sem_tempo, coluna: "", cobertura: "Censo Demográfico 2022 (retrato único)"}
-    territorio: {nivel: outro, colunas: {id_setor_censitario: "código do setor (menor unidade; para município use id_municipio)", id_municipio: "código IBGE de 7 dígitos (5.571 distintos)", id_uf: "código da UF (texto, 11 a 53)", geometria: "polígono do setor (sem nulos)"}}
+    territorio:
+      nivel: outro
+      colunas:
+        geometria: "polígono do setor (sem nulos)"
+        id_municipio: "código IBGE de 7 dígitos (5.571 distintos: os 5.570 municípios e '0', que são 2 setores sem moradores com 13.085,9 km², as lagoas)"
+        id_setor_censitario: "código do setor (15 dígitos, menor unidade; para município use id_municipio)"
+        id_uf: "código da UF (texto, 27 valores, 11 a 53)"
     medidas:
-      - {coluna: pessoas, o_que: "população residente do setor; soma nacional 203.080.756", unidade: "pessoas", soma: sim}
-      - {coluna: domicilios, o_que: "total de domicílios; soma nacional 90.704.582", unidade: "domicílios", soma: sim}
-      - {coluna: domicilios_particulares_ocupados, o_que: "domicílios particulares ocupados (DPPO + DPIO); soma nacional 72.522.372", unidade: "domicílios", soma: sim}
-      - {coluna: area, o_que: "área do setor", unidade: "km² (não conferida)", soma: sim}
-      - {coluna: media_moradores_domicilios, o_que: "média de moradores por domicílio particular ocupado", unidade: "pessoas/domicílio", soma: nao}
+      - {coluna: pessoas, o_que: "população residente do setor; soma nacional 203.080.756 (igual a agregados_municipio); 9.327 setores com 0", unidade: pessoas, soma: sim}
+      - {coluna: domicilios, o_que: "total de domicílios = domicilios_particulares + domicilios_coletivos em 100% dos setores; soma nacional 90.704.582", unidade: domicílios, soma: sim}
+      - {coluna: domicilios_particulares, o_que: "soma nacional 90.600.065, igual ao count de COD_ESPECIE = '1' do CNEFE", unidade: domicílios, soma: sim}
+      - {coluna: domicilios_coletivos, o_que: "soma nacional 104.517, igual ao count de COD_ESPECIE = '2' do CNEFE", unidade: domicílios, soma: sim}
+      - {coluna: domicilios_particulares_ocupados, o_que: "domicílios particulares ocupados (DPPO + DPIO); soma nacional 72.522.372", unidade: domicílios, soma: sim}
+      - {coluna: area, o_que: "área do setor; soma 8.510.417,2 km², a área do Brasil (min 0,00015, max 38.943 km²), sem nulos", unidade: "km²", soma: sim}
+      - {coluna: media_moradores_domicilios, o_que: "média de moradores por domicílio particular ocupado", unidade: pessoas/domicílio, soma: nao}
+      - {coluna: porcentagem_domicilios_imputados, o_que: "porcentagem de domicílios imputados no setor", unidade: "%", soma: nao}
       - {coluna: "v00001 a v01411", o_que: "variáveis do Censo (significado em setor_censitario_dicionario_variaveis.descricao): v00001–v00089 domicílio parte 1, v00090–v00495 parte 2, v00496–v00643 parte 3, v00644–v01005 alfabetização, v01006–v01041 demografia, v01042–v01223 parentesco, v01224–v01316 óbitos, v01317–v01411 cor ou raça", unidade: "contagens (BIGINT)", soma: sim}
-    filtros_tipicos: ["id_municipio = '<código de 7 dígitos>' (texto)", "consulte setor_censitario_dicionario_variaveis (tabela='setor_censitario', coluna='v00001') antes de usar uma vNNNNN; nulos nas v são dado suprimido ou não aplicável (4% a 42% por coluna)"]
-    use_para: "população e características por setor, bairro ou município (agregue por id_municipio) com mapa."
-    nao_use_para: "somar média_moradores ou porcentagens; ler geometria sem necessidade (coluna pesada); somar vNNNNN sem conferir a descrição."
-    rascunho: [use_para, nao_use_para, area]
-    verificado: "468.099 linhas, id_setor_censitario único; 5.571 municípios; geometria sem nulos; dicionário com 1.537 variáveis — medido 2026-10-27"
+    filtros_tipicos:
+      - "id_municipio = '<código de 7 dígitos>' (texto); id_uf = '28' (texto) para uma UF"
+      - "consulte setor_censitario_dicionario_variaveis (tabela='setor_censitario', coluna='v00001') antes de usar uma vNNNNN; nulos nas v são dado suprimido ou não aplicável (4% a 42% por coluna), nunca zero (gotcha sigilo_e_null)"
+      - "não ler geometria sem necessidade (coluna pesada)"
+    use_para: "população, domicílios e características por setor, bairro ou município (agregue por id_municipio) com mapa; denominador por área pequena; contagem oficial de domicílios para conferir com o CNEFE."
+    nao_use_para: "somar média_moradores_domicilios ou porcentagem_domicilios_imputados; somar vNNNNN sem conferir a descrição; juntar com o CNEFE por setor (COD_SETOR do CNEFE tem 16 caracteres com 'P' e 24% dos setores de SE não existem aqui: agregue por município, onde os domicílios batem exatamente); indígenas e quilombolas (estão em setor_censitario_*_indigenas/_quilombolas); somar setores para o total do município quando houver sigilo (use agregados_municipio)."
+    verificado: "468.099 linhas, id_setor_censitario único, 15 caracteres; 27 UFs; 5.571 id_municipio ('0' com 2 setores, 0 pessoas, 13.085,9 km²); pessoas 203.080.756, domicilios 90.704.582 = particulares 90.600.065 + coletivos 104.517 (0 setores com diferença), ocupados 72.522.372; nulos 0 em area, pessoas, domicilios, media_moradores e porcentagem_domicilios_imputados; area soma 8.510.417,25 km²; geometria sem nulos; dicionário com 1.537 variáveis. Cruzamento com CNEFE: domicilios_particulares e domicilios_coletivos iguais ao count de COD_ESPECIE 1 e 2 no Brasil e, em SE, nos 75 municípios (diferença 0); por setor, 1.226 dos 5.148 setores do CNEFE de SE não têm par, e 1.424 dos 5.346 setores de SE aqui não têm par pelo código no CNEFE — medido 2026-10-27, refeito 2026-11-10"
   setor_censitario_dicionario_variaveis:
     grao: uma variável vNNNNN de uma tabela setor_censitario_*
     chave: '(tabela, coluna): 1.537 linhas = 1.537 distintas'

@@ -5,32 +5,32 @@ tabelas:
   pagamento:
     ultima_data: "2026-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma parcela do Novo Bolsa Família paga a um favorecido num mês de pagamento (ano_mes), com o mês de competência e o de referência da parcela"
-    chave: "nenhuma: em ano_mes = '202403', 20.534.090 linhas para 20.508.639 pares (favorecido_id, mes_referencia), ~25 mil linhas repetidas (0,12%)"
-    tempo: {natureza: serie_mensal, coluna: ano_mes, cobertura: "202303–202608 (texto AAAAMM; 42 meses)"}
-    territorio: {nivel: municipio, colunas: {uf: "UF", codigo_municipio_siafi: "código SIAFI de 4 dígitos, não é IBGE", nome_municipio: "nome do município"}}
+    chave: "nenhuma: em ano_mes = '202609', 18.695.578 linhas para 18.695.264 pares (favorecido_id, mes_referencia), 314 repetidas (0,002%); em 202403, ~25 mil (0,12%). Com valor e município no par, só 16 sobram em 202609"
+    tempo: {natureza: serie_mensal, coluna: ano_mes, cobertura: "202303–202609 (texto AAAAMM; 43 meses, um parquet por mês). mes_competencia = ano_mes (mês do pagamento) nos meses conferidos; mes_referencia é o mês a que a parcela se refere"}
+    territorio: {nivel: municipio, colunas: {uf: "sigla da UF (27, sem nulos)", codigo_municipio_siafi: "código SIAFI de 4 dígitos, não é IBGE (5.570 em 202403; 5.571 em 202609)", nome_municipio: "nome do município"}}
     medidas:
-      - {coluna: valor_parcela, o_que: "valor da parcela paga", unidade: "R$", soma: sim}
-      - {expressao: "count(*)", o_que: "parcelas pagas (um favorecido pode ter mais de uma por mês)", unidade: "parcelas", soma: sim}
-    filtros_tipicos: ["ano_mes = '202403': texto AAAAMM; a tabela tem 840 milhões de linhas, filtre sempre o mês", "mes_referencia = mes_competencia = ano_mes na maioria; em 202403, 163.301 linhas (0,8%) têm mes_referencia anterior (parcelas retroativas) e mes_competencia sempre igual a ano_mes"]
-    use_para: "somar pagamentos e contar parcelas por mês, UF ou município (gotcha agregue_pela_pagamento: sem nome/CPF/NIS vá direto aqui)."
-    nao_use_para: "contar famílias com count(DISTINCT favorecido_id) como se fosse pessoa: o mesmo NIS pode ter mais de um favorecido_id; e o NIS/CPF/nome está em favorecido."
-    rascunho: [use_para, nao_use_para]
-    verificado: "840.156.267 linhas, 42 meses; em 202403: 20.534.090 linhas, 20.345.412 favorecido_id distintos, R$ 13.399.004.244 (bate com o gotcha diverge_da_copia_cgu), mes_competencia = ano_mes em todas — medido 2026-10-27"
+      - {coluna: valor_parcela, o_que: "valor da parcela paga (mínimo R$ 25, nunca ≤ 0; em 202609 máximo R$ 5.942, média R$ 677, mediana R$ 650)", unidade: "R$ (202403: 13,40 bi; 202609: 12,66 bi)", soma: sim}
+      - {expressao: "count(*)", o_que: "parcelas pagas no mês (um favorecido pode ter mais de uma: a atual e retroativas)", unidade: "parcelas", soma: sim}
+    filtros_tipicos:
+      - "ano_mes = '202609': texto AAAAMM; a tabela tem 858,9 milhões de linhas (18 a 21 milhões por mês), filtre sempre o mês; sem filtro a soma de 43 meses é o total pago desde 2023, não um mês"
+      - "mes_referencia <> ano_mes são parcelas retroativas: 202403 tem 163.301 (0,8%, referência de até 12 meses antes, 202303 a 202403); 202609 tem 42.724 (0,23%, de 202601 a 202609)"
+    use_para: "total pago e número de parcelas por mês, UF ou município (SIAFI), e a série mensal do programa desde março de 2023; para pessoa ou famílias use a tabela favorecido (gotcha agregue_pela_pagamento: sem nome/CPF/NIS vá direto aqui)."
+    nao_use_para: "contar famílias ou pessoas: a unidade é a parcela, e favorecido_id é um trio (NIS, CPF, nome) em que o mesmo NIS pode ter mais de um (202609: 18.652.576 favorecido_id para 18.695.578 parcelas); tratar codigo_municipio_siafi como IBGE; comparar o total com br_cgu_beneficios_cidadao sem citar a fonte (gotcha diverge_da_copia_cgu); somar vários meses sem fixar o período."
+    verificado: "858.851.845 linhas, 43 meses (202303 a 202609). 202609: 18.695.578 linhas, 18.652.576 favorecido_id distintos, R$ 12.659.797.511, mes_competencia = ano_mes, valor entre 25 e 5.942, 0 valores ≤ 0, 5.571 códigos SIAFI de 4 dígitos, 27 UFs (BA 2.341.654, SP 2.182.844, PE 1.477.970), 18.695.264 pares (favorecido_id, mes_referencia). 202403: 20.534.090 linhas, 20.345.412 favorecido_id, R$ 13.399.004.244 (bate com o gotcha diverge_da_copia_cgu), 5.570 códigos SIAFI. Linhas de 2026 por mês: 19.480.034 / 19.302.492 / 18.858.133 / 18.863.704 / 18.977.829 / 19.178.729 / 18.986.686 / 18.809.420 / 18.695.578 (202601 a 202609) — medido 2026-11-10 (o cartão de 2026-10-27 parava em 202608, 840.156.267 linhas)"
   favorecido:
-    grao: "um trio (NIS, CPF, nome) de beneficiário, com identificador inteiro favorecido_id"
-    chave: "favorecido_id"
+    grao: "um trio (NIS, CPF, nome) de beneficiário, com identificador inteiro favorecido_id; não é uma pessoa: o mesmo NIS pode ter mais de um trio"
+    chave: "favorecido_id (30.232.434 linhas = 30.232.434 distintos)"
     tempo: {natureza: sem_tempo}
     territorio: {nivel: nenhum}
-    filtros_tipicos: ["regexp_full_match(cpf_favorecido, '[0-9]{11}'): só CPFs completos (gotcha cpf_completado); cpf_favorecido é nulo em ~22% na amostra do perfil"]
-    use_para: "obter NIS, CPF e nome de uma parcela, ligando por favorecido_id."
-    nao_use_para: "contar beneficiários pelo número de linhas: um NIS pode ter vários trios."
-    rascunho: [use_para, nao_use_para]
-    verificado: "30.065.885 linhas = 30.065.885 favorecido_id distintos — medido 2026-10-27"
+    filtros_tipicos: ["regexp_full_match(cpf_favorecido, '[0-9]{11}'): só CPFs completos, 14.928.840 (49,4%); nulo em 6.795.857 (22,5%); o resto, 8.507.737 (28,1%), não tem 11 dígitos, pela máscara da fonte (gotcha cpf_completado)"]
+    use_para: "obter NIS, CPF e nome de uma parcela, ligando por favorecido_id a pagamento; contar pessoas por NIS distinto (28.020.776)."
+    nao_use_para: "contar beneficiários pelo número de linhas (30,2 milhões de trios para 28,0 milhões de NIS); tratar o CPF mascarado como identificador (repete entre pessoas diferentes); listar nome ou CPF (dado pessoal)."
+    verificado: "30.232.434 linhas = 30.232.434 favorecido_id distintos (máximo 30.232.434); 28.020.776 NIS distintos, NIS nulo em 1; cpf_favorecido com 11 dígitos em 14.928.840 e nulo em 6.795.857 — medido 2026-11-10 (eram 30.065.885 em 2026-10-27)"
   novo_bolsa_familia:
     ultima_data: "2026-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma parcela paga num mês (view: pagamento JOIN favorecido, com NIS, CPF e nome)"
     chave: "mesma de pagamento: nenhuma"
-    tempo: {natureza: serie_mensal, coluna: ano_mes, cobertura: "202303–202608 (texto AAAAMM)"}
+    tempo: {natureza: serie_mensal, coluna: ano_mes, cobertura: "202303–202609 (texto AAAAMM; 43 meses)"}
     territorio: {nivel: municipio, colunas: {uf: "UF", codigo_municipio_siafi: "código SIAFI de 4 dígitos", nome_municipio: "nome"}}
     medidas:
       - {coluna: valor_parcela, o_que: "valor da parcela", unidade: "R$", soma: sim}

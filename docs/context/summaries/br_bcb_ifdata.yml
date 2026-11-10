@@ -47,21 +47,22 @@ tabelas:
     verificado: "440.444 linhas; (ano, mes, id_instituicao) 217.072 distintos; com tipo_consolidado única — medido 2026-10-27"
   relatorio:
     ultima_data: "2026-06"  # dado mais recente, gerado por scripts/gera_ultima_data.py
-    grao: "um saldo de uma conta de um relatório × instituição × tipo de consolidação × trimestre"
-    chave: "ano_mes, tipo_instituicao, cod_inst, numero_relatorio, conta (ano = 2026: 1.751.234 linhas = 1.751.234 distintos)"
-    tempo: {natureza: serie_de_periodos, coluna: ano_mes, cobertura: "2000–202606 (trimestral)"}
+    grao: "o saldo de uma conta (coluna do relatório) de uma instituição, num tipo de consolidação e trimestre: um relatório do IF.data em formato longo"
+    chave: "(ano_mes, tipo_instituicao, cod_inst, numero_relatorio, conta): única em 202606 (874.212 linhas = 874.212 distintos) e em 2026 (1.751.234); com grupo na chave também 874.212"
+    tempo: {natureza: serie_de_periodos, coluna: ano_mes, cobertura: "200003–202606, trimestral (meses 3, 6, 9, 12; 106 trimestres); ano e mes também existem. Cada trimestre é um retrato do balanço, não fluxo"}
     territorio: {nivel: nenhum, colunas: {}}
     medidas:
-      - {coluna: saldo, o_que: "saldo da conta no trimestre (nulo em 27,05%)", unidade: "R$", soma: sim}
+      - {coluna: saldo, o_que: "saldo da conta no trimestre, em reais (BB, Ativo Total 202606: 2.461.086.914.237,77); nulo em 27,05%; negativo em contas como Perda Esperada", unidade: "R$ (valor inteiro, não em milhares)", soma: "sim só dentro de um mesmo relatório e conta; as contas de um relatório são subtotais e componentes uns dos outros (Operações de Crédito (e) = e1 + e2 + e3 + e4; Ativo Total = a + b + ... + j), então somar contas diferentes conta em dobro"}
     filtros_tipicos:
-      - "tipo_instituicao: 1 = prudencial, 2 = financeiro, 3 = individual (gotcha um_tipo_e_um_relatorio); em 2026: 1 (1.103.594 linhas), 3 (341.145), 2 (306.495)"
-      - "numero_relatorio: 1 Resumo, 2 Ativo, 3 Passivo, 4 Demonstração de Resultado (tipo 3, 202606)"
-      - "ativo total: conta 140220 / nome_coluna 'Ativo Total' no Resumo, mas o código muda entre trimestres (gotcha conta_muda_de_codigo); em 202606, tipo 3, cod_inst '00000000' (Banco do Brasil): R$ 2,461 tri"
-      - "tabela de 54,7 milhões de linhas: filtre ano ou ano_mes"
-    use_para: "ativo, captações, patrimônio e resultado por instituição e trimestre"
-    nao_use_para: "somar tipos de instituição ou relatórios juntos (dobra) ou juntar com instituicao"
-    rascunho: [use_para, nao_use_para]
-    verificado: "ano=2026: 1.751.234 linhas = chave única; 202606 tipo 3: relatórios 1 (11.354 linhas), 2 (38.928), 3 (35.684), 4 (84.344) — medido 2026-10-27"
+      - "tipo_instituicao: 1 = prudencial (desde 201403), 2 = financeiro, 3 = individual (os dois desde 200003), 4 = só o relatório 15 de câmbio (201412 a 202306, 121.374 linhas, 217 instituições). Os três primeiros contam a mesma instituição de novo: Ativo Total do Resumo em 202412 é 17,05 tri (tipo 1), 17,48 (tipo 2) e 17,51 (tipo 3); em 202606, 18,94 / 19,46 / 19,50 (gotcha um_tipo_e_um_relatorio)"
+      - "numero_relatorio (202606, tipo 3): 1 Resumo (11.354 linhas, 7 contas), 2 Ativo (38.928, 24), 3 Passivo (35.684, 22), 4 Demonstração de Resultado (84.344, 52). O tipo 1 tem também 5 Informações de Capital, 6 Segmentação, 7 Carteira por indexador, 9 por região, 10 clientes e operações, 11 Pessoa Física, 12 Pessoa Jurídica por CNAE, 13 PJ por modalidade, 14 por porte, 16 por carteiras de instrumentos (o 8 acaba em 202412; o 15 é o câmbio do tipo 4)"
+      - "ativo total: use numero_relatorio = 1 e nome_coluna = 'Ativo Total' (sozinho esse nome também aparece no relatório 4 (visto em 202506, 202509 e 202512) e, no relatório 2, vem com a quebra de linha e a fórmula: 'Ativo Total \n(k) = ...'). O código da conta mudou de 78182 (até 202412) para 140220 (a partir de 202503); filtre pelo nome dentro do trimestre"
+      - "cod_inst: 8 caracteres (CNPJ básico com zeros ou 'C00xxxxx'): Banco do Brasil = '00000000'. 202606 tipo 3, Resumo: 1.622 instituições, Ativo Total R$ 2,461 tri no BB"
+      - "tabela de 54,7 milhões de linhas: filtre ano ou ano_mes (um parquet por trimestre)"
+    use_para: "ativo, captações, patrimônio líquido, lucro, carteira de crédito e demonstração de resultado por instituição e trimestre, e a carteira de crédito por modalidade, CNAE ou região (tipo 1)."
+    nao_use_para: "somar tipos de instituição ou relatórios juntos (triplica o ativo do sistema); somar contas de um relatório entre si (subtotais); comparar o código de conta entre trimestres (muda em 202503); juntar com instituicao (chave recodificada, gotcha instituicao_da_bd_nao_casa); tratar o saldo como fluxo do trimestre (é o estoque da data, e o resultado do relatório 4 é acumulado no período que a fonte define, não conferido aqui)."
+    rascunho: ["se a Demonstração de Resultado (relatório 4) é acumulada no ano ou isolada no trimestre"]
+    verificado: "54.698.889 linhas; ano_mes 200003–202606; 202606: 874.212 linhas = 874.212 chaves; tipo 1 (1.398 instituições), tipo 2 (1.458), tipo 3 (1.622); numero_relatorio 1 a 16. Ativo Total do Banco do Brasil, tipo 3, Resumo: 283,7 bi (200612), 973,8 (201212), 1.327,8 (201712), 1.927,6 (202212), 2.304,1 (202412), 2.340,9 (202506), 2.430,7 (202509), 2.341,2 (202512), 2.461,1 (202606); conta 78182 até 202412 e 140220 de 202503 em diante (a gotcha conta_muda_de_codigo diz que o layout novo é de 2025-09: o código já mudou em 202503); em 202606 o BB tem no relatório 2 Operações de Crédito (e) 885,1 bi = Valor Contábil Bruto 981,6 − Perda Esperada 96,4 − hedge 0,001 — medido 2026-10-27, refeito 2026-11-10"
   dicionario:
     grao: "um código com seu rótulo (sr, tc, tcb, td, ti, tipo_consolidado) para instituicao e coluna"
     use_para: "traduzir os códigos de classificação do IF.data em texto"

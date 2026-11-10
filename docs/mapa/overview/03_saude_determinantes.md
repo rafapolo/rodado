@@ -154,3 +154,6 @@ A regulamentação de cesarianas eletivas pode reduzir taxas. O acompanha doula 
 
 - Mortalidade infantil 2022 (métrica `mortalidade_infantil`, residência): Norte 14,1‰ (4.054/288.435), Nordeste 12,9, Centro-Oeste 11,4, Sudeste 10,7, Sul 9,5, Brasil 11,6 (29.644/2.560.251). Substitui a tabela antiga (18,2/14,5/10,1/9,8/12,3), que não tinha base.
 - `br_ans_beneficiario.informacao_consolidada` — `ano`, `mes`, `sigla_uf`, `cobertura_assistencia_beneficiario` (texto com mojibake: filtrar `LIKE 'M%'` para médico-hospitalar), `quantidade_beneficiario_ativo`, `data_carga` (usar a máxima). Out/2025: 53.277.390 beneficiários médico-hospitalares = 25,0% da população; SP 40,6%, DF 34,3%, RJ 32,6% … AC 5,3%, RR 4,4%; 46.673 sem UF.
+
+## Atualização 2026-11-10 — números de 2024
+Cesariana 2024 (SINASC): branca 67,3% (528.714/785.903), amarela 61,6%, parda 58,2%, preta 54,8%, indígena 29,3%. Mortalidade infantil 2024 (métrica `mortalidade_infantil`, residência): Norte 14,5‰, Nordeste 12,3, Centro-Oeste 11,4, Sudeste 10,8, Sul 9,5, Brasil 11,5 (27.512/2.389.271); Norte 53% acima do Sul. Novo Bolsa Família: R$ 157,1 bi em 2025; set/2026 18,7 milhões de famílias, R$ 677 por família.

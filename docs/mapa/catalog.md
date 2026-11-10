@@ -2,7 +2,7 @@
 
 **Gerado por `scripts/gera_catalog_md.py`, a partir de `_rodado_metadata/catalog.parquet` — não editar à mão.** Descrições vêm de `docs/context/dataset_descriptions.yaml`; a coluna Dado até vem de `docs/context/dataset_freshness.yaml` (curado, só ~6 datasets por enquanto — vazio não significa "sem gap", significa "não conferido ainda"). Editar os YAML e regenerar (`build_metadata_catalog.py` → `gera_catalog_md.py`), nunca este arquivo.
 
-**294 datasets, 1.756 tabelas, 33.783.874.764 linhas.** 32 dataset(s) sem descrição. 4 com data de frescor conferida (de 294).
+**294 datasets, 1.756 tabelas, 33.784.227.135 linhas.** 32 dataset(s) sem descrição. 4 com data de frescor conferida (de 294).
 
 | Dataset | Descrição | Tabelas | Linhas | Dado até | Fonte |
 |---|---|---:|---:|---|---|
@@ -24,7 +24,7 @@
 | `br_ans_beneficiario` | ANS — beneficiários de planos de saúde suplementar | 1 | 2.307.338.481 | — | Base dos Dados |
 | `br_ans_operadoras` | ANS — operadoras de planos de saúde (cadastro, reclamações, penalidades, ressarcimento ao SUS, demonstrações contábeis) | 18 | 111.128.794 | — | ANS — pastas restantes da raiz PDA (SIP, IGR, histórico de planos, características dos produtos, painel de precificação, TISS dados de planos) |
 | `br_antt_dadosabertos` | ANTT — RNTRC (transportadores e veículos de carga), CIOT e acidentes nas rodovias federais concedidas | 4 | 18.909.325 | — | ANTT — RNTRC, veículos, CIOT, acidentes em rodovias concedidas |
-| `br_anvisa_cmed` | CMED/ANVISA — preços regulados de medicamentos | 1 | 52.816 | — | CMED (preços de medicamentos, ANVISA) |
+| `br_anvisa_cmed` | CMED/ANVISA — preços regulados de medicamentos | 1 | 53.388 | — | CMED (preços de medicamentos, ANVISA) |
 | `br_anvisa_consultas` | ANVISA — registros de agrotóxicos, alimentos e produtos regulados | 3 | 101.293 | — | ANVISA (consulta completa) |
 | `br_anvisa_medicamentos_industrializados` | ANVISA — medicamentos industrializados registrados | 1 | 10.000.000 | — | Base dos Dados |
 | `br_b3_cotacoes` | _(sem descrição)_ | 1 | 24.760.472 | — | B3 — cotações históricas diárias (COTAHIST) |
@@ -33,11 +33,11 @@
 | `br_bcb_desenrola` | BCB — programa Desenrola Brasil (renegociação de dívidas de pessoa física) | 1 | 14.122 | — | BCB Desenrola Brasil |
 | `br_bcb_estban` | BCB ESTBAN — estatísticas bancárias por agência/município | 3 | 779.013.036 | — | Base dos Dados |
 | `br_bcb_ifdata` | BCB IF.data — indicadores financeiros de instituições financeiras | 5 | 55.700.812 | — | BCB — IF.data (valores e cadastro por instituição) |
-| `br_bcb_penalidades` | BCB — penalidades aplicadas a instituições financeiras | 1 | 16.989 | — | BCB Penalties |
+| `br_bcb_penalidades` | BCB — penalidades aplicadas a instituições financeiras | 1 | 17.012 | — | BCB Penalties |
 | `br_bcb_pix_municipio` | BCB — volume de transações Pix por município, separado por perfil pagador/recebedor PF/PJ | 1 | 401.019 | — | BCB — Estatísticas do Pix por município |
-| `br_bcb_ptax` | BCB PTAX — cotação de fechamento do dólar e das demais moedas, diária, via Olinda | 3 | 805.814 | — | BCB — PTAX (cotações diárias) |
-| `br_bcb_scrdata` | BCB SCR.data — carteira de crédito do Sistema de Informações de Crédito | 1 | 43.376.247 | — | BCB SCR.data |
-| `br_bcb_sgs` | BCB SGS — séries temporais macroeconômicas (câmbio, Selic, inflação etc.) | 1 | 25.228 | 2026-10-30 | BACEN/BCB SGS séries |
+| `br_bcb_ptax` | BCB PTAX — cotação de fechamento do dólar e das demais moedas, diária, via Olinda | 3 | 806.069 | — | BCB — PTAX (cotações diárias) |
+| `br_bcb_scrdata` | BCB SCR.data — carteira de crédito do Sistema de Informações de Crédito | 1 | 43.690.931 | — | BCB SCR.data |
+| `br_bcb_sgs` | BCB SGS — séries temporais macroeconômicas (câmbio, Selic, inflação etc.) | 1 | 25.248 | 2026-11-09 | BACEN/BCB SGS séries |
 | `br_bcb_sicor` | BCB SICOR — operações de crédito rural | 20 | 787.221.440 | — | Base dos Dados |
 | `br_bd_diretorios_brasil` | Base dos Dados — diretórios de referência (CEP, CNAE, CID, município etc.) | 23 | 2.033.171 | — | Base dos Dados |
 | `br_bd_diretorios_data_tempo` | Base dos Dados — diretório de calendário/tempo | 11 | 1.922.812 | — | Base dos Dados |
@@ -73,7 +73,7 @@
 | `br_cgu_sancoes` | CGU — sanções administrativas (CEIS, CNEP, CEPIM, acordos de leniência) | 6 | 45.506 | — | Base dos Dados |
 | `br_cgu_seguro_defeso` | Seguro-Defeso — pagamentos aos pescadores artesanais durante o defeso | 3 | 47.779.027 | — | Portal - Seguro-Defeso |
 | `br_cgu_servidores_executivo_federal` | CGU — cadastro e remuneração de servidores do Poder Executivo federal | 7 | 432.489.430 | — | Base dos Dados |
-| `br_cgu_transferencias` | _(sem descrição)_ | 1 | 23.060.808 | — | Portal da Transparência — Transferências (todos os repasses da União a estados, municípios e fundos) |
+| `br_cgu_transferencias` | _(sem descrição)_ | 1 | 23.089.550 | — | Portal da Transparência — Transferências (todos os repasses da União a estados, municípios e fundos) |
 | `br_cgu_viagens` | CGU — viagens a serviço de servidores federais | 4 | 53.192.569 | — | Portal - Viagens |
 | `br_clp_ranking_competitividade` | CLP — ranking de competitividade dos estados | 2 | 9.431 | — | Base dos Dados |
 | `br_cnj_estatisticas_poder_judiciario` | CNJ — recursos financeiros do Poder Judiciário | 1 | 1.189 | — | Base dos Dados |
@@ -96,7 +96,7 @@
 | `br_fnde_pnate` | _(sem descrição)_ | 1 | 5.531 | — | Base dos Dados |
 | `br_geobr_mapas` | geobr — malhas geográficas oficiais do IBGE (municípios, UFs, biomas, terras indígenas etc.) | 25 | 984.345 | — | Base dos Dados |
 | `br_ggb_relatorio_lgbtqi` | Grupo Gay da Bahia — relatório de mortes de pessoas LGBTQI+ | 5 | 145 | — | Base dos Dados |
-| `br_ibama_autos` | IBAMA — autos de infração ambiental | 8 | 3.097.591 | — | IBAMA — autos de infração |
+| `br_ibama_autos` | IBAMA — autos de infração ambiental | 8 | 3.103.683 | — | IBAMA — autos de infração |
 | `br_ibama_ctf` | IBAMA — Cadastro Técnico Federal de atividades potencialmente poluidoras | 2 | 1.473.755 | — | IBAMA — CTF/APP (atividades potencialmente poluidoras) |
 | `br_ibama_embargos_novo` | IBAMA — termos de embargo ambiental | 8 | 978.607 | — | IBAMA — termos de embargo (re-raspagem) |
 | `br_ibge_amc` | IBGE — correspondência de áreas mínimas comparáveis entre municípios ao longo do tempo | 1 | 434.070 | — | Base dos Dados |
@@ -283,8 +283,8 @@
 | `eu_sanctions` | União Europeia — lista de sanções | 1 | 44.043 | — | EU Sanctions |
 | `global_ibge_tabua_mares` | IBGE — tábua de marés | 2 | 1.261.446 | — | Tábua de Marés |
 | `global_icij_offshoreleaks` | ICIJ Offshore Leaks — empresas offshore, intermediários e beneficiários | 6 | 5.356.929 | — | ICIJ Offshore Leaks |
-| `global_ofac_sanctions` | OFAC (EUA) — lista de sanções | 1 | 19.484 | — | OFAC |
-| `global_opensanctions` | OpenSanctions — consolidado mundial de listas de sanções e PEP | 1 | 1.246.531 | — | OpenSanctions |
+| `global_ofac_sanctions` | OFAC (EUA) — lista de sanções | 1 | 19.563 | — | OFAC |
+| `global_opensanctions` | OpenSanctions — consolidado mundial de listas de sanções e PEP | 1 | 1.248.435 | — | OpenSanctions |
 | `mundo_transfermarkt_competicoes` | Transfermarkt — Campeonato Brasileiro Série A e Copa do Brasil | 2 | 9.054 | — | Base dos Dados |
 | `mundo_transfermarkt_competicoes_internacionais` | Transfermarkt — Champions League | 1 | 2.617 | — | Base dos Dados |
 | `politicos` | Base dos Dados — contatos de políticos | 1 | 7.664 | — | Políticos — contato (Câmara + Senado) |

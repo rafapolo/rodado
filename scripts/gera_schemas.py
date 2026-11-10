@@ -258,6 +258,21 @@ def run_via_ssh():
         print(f"Raw stdout (first 1k): {stdout[:1000]}", file=sys.stderr)
         sys.exit(1)
 
+    # DESCRIBE de view nativa lenta (vacinacao_2020) estoura o timeout de vez em
+    # quando e a tabela sumia de schemas.json -> gera_schema_graph.py apagava
+    # pages/atlas/detalhes/<dataset>.json. Mantem a entrada nativa da rodada anterior.
+    try:
+        anterior = json.loads(OUTPUT.read_text(encoding="utf-8")).get("tables", {})
+    except Exception:
+        anterior = {}
+    for key, info in anterior.items():
+        if info.get("source") == "duckdb_native" and key not in output["tables"]:
+            output["tables"][key] = info
+            output["_meta"]["total_tables"] += 1
+            output["_meta"]["native_tables"] = output["_meta"].get("native_tables", 0) + 1
+            print(f"  [native] {key}: DESCRIBE falhou, mantida a entrada anterior", file=sys.stderr)
+    output["tables"] = dict(sorted(output["tables"].items()))
+
     with open(OUTPUT, "w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
 

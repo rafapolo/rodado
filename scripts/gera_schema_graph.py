@@ -374,6 +374,7 @@ ATLAS_DATASET_THEME = {
     "br_tcu_inidoneos": "seguranca",
     "br_tesouro_capag": "governo",
     "br_tesouro_cauc": "governo",
+    "br_tesouro_transferencias": "governo",
     "br_transferegov": "governo",
     "br_transferegov_siconv": "governo",
     "br_trase_supply_chain": "meio_ambiente",

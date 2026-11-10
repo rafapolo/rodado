@@ -4,7 +4,7 @@ This file provides guidance to coding agents (Claude Code, Pi, and others) when 
 
 ## Project Overview
 
-**baseldosdados** mirrors public Brazilian government tables from [Base dos Dados](https://basedosdados.org) — stored as Parquet+zstd in `~/rodado` on beelink — and extends that mirror with independently-scraped sources that fill the remaining gaps (sanctions lists, SICAF, SINAN microdata, consumer complaints and more — see `tasks/done/datasets_to_scrap_done.md` for the provenance of every scraped source and `tasks/routine/datasets_to_scrap.md` for the queue). 1.756 tabelas · 294 datasets · 130 fontes · 545 GB (33,78 bilhões de linhas) as of 2026-11-10. DuckDB queries the data on-demand without local imports.
+**baseldosdados** mirrors public Brazilian government tables from [Base dos Dados](https://basedosdados.org) — stored as Parquet+zstd in `~/rodado` on beelink — and extends that mirror with independently-scraped sources that fill the remaining gaps (sanctions lists, SICAF, SINAN microdata, consumer complaints and more — see `tasks/done/datasets_to_scrap_done.md` for the provenance of every scraped source and `tasks/routine/datasets_to_scrap.md` for the queue). 1.756 tabelas · 294 datasets · 140 fontes · 545 GB (33,78 bilhões de linhas) as of 2026-11-10. DuckDB queries the data on-demand without local imports.
 
 ## Commands
 
