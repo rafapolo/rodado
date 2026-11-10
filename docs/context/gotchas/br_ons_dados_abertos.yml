@@ -24,3 +24,9 @@ gotchas:
     colunas: [ceg, val_potenciaefetiva, dat_desativacao]
     severidade: silencioso
     verificado: "1.972 CEG sem desativação, 1.946 casam (98,7%) com br_aneel_dadosabertos.siga_empreendimentos_geracao.CodCEG; hidrelétrica 109,15 GW contra 102,15 GW, 95,15 contra 95,15 sem Itaipu — medido 2026-11-04"
+  - id: deprec_e_copia_do_diario_hidrologico
+    resumo: "deprec_hidro e deprec_fluv são conjuntos marcados como 'deprec' (depreciados) no bucket do ONS. deprec_hidro tem o mesmo dicionário de dados_hidrologicos_di (Dados Hidrológicos Diários, mesmas colunas, id_reservatorio, 2000 em diante) e é a mesma série; para análise use dados_hidrologicos_di e não some as duas. deprec_fluv é a série diária das grandezas fluviométricas (a partir de 2015), a mesma família de grandezas_fluviometricas_di."
+    tabelas: [deprec_hidro, deprec_fluv, dados_hidrologicos_di, grandezas_fluviometricas_di]
+    colunas: [id_reservatorio, din_instante, din_medicao]
+    severidade: silencioso
+    verificado: "deprec_hidro 1.642.081 linhas de 2000-01-01 a 2026-10-28 (176 reservatórios) contra 1.602.669 de dados_hidrologicos_di até 2026-10-25 — medido 2026-11-10; a conferência linha a linha entre as duas não foi feita"

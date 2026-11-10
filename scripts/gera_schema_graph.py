@@ -338,6 +338,7 @@ ATLAS_DATASET_THEME = {
     "br_ok_queridodiario_texto": "governo",
     "br_ons_avaliacao_operacao": "infraestrutura",
     "br_ons_estimativa_custos": "infraestrutura",
+    "br_ons_dados_abertos": "infraestrutura",
     "br_pgfn_dividaativa": "governo",
     "br_pncp": "governo",
     "br_poder360_pesquisas": "politica",

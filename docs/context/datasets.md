@@ -4,7 +4,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 `last_update` é a data do parquet mais recente do dataset no beelink (para tabela nativa do
 `.duckdb`, sem parquet, o `scrape_date` do catálogo).
 
-294 datasets, 1752 tabelas.
+294 datasets, 1756 tabelas.
 
 | dataset | tabelas | linhas | last_update |
 |---|---:|---:|---|
@@ -226,7 +226,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_ok_queridodiario` | 1 | 326.052 | 2026-10-30 |
 | `br_ok_queridodiario_texto` | 1 | 320.422 | 2026-10-21 |
 | `br_ons_avaliacao_operacao` | 6 | 89.805.415 | 2026-10-07 |
-| `br_ons_dados_abertos` | 87 | 642.861.687 | 2026-11-02 |
+| `br_ons_dados_abertos` | 91 | 644.965.031 | 2026-11-10 |
 | `br_ons_estimativa_custos` | 5 | 1.407.872 | 2026-10-07 |
 | `br_pgfn_dividaativa` | 2 | 914.557.709 | 2026-10-30 |
 | `br_pncp` | 1 | 5.370.608 | 2026-11-02 |
@@ -279,7 +279,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_transferegov` | 3 | 30.346 | 2026-10-21 |
 | `br_transferegov_siconv` | 62 | 69.060.758 | 2026-10-21 |
 | `br_trase_supply_chain` | 7 | 1.824.843 | 2026-07-18 |
-| `br_tse_eleicoes` | 32 | 1.719.534.484 | 2026-11-04 |
+| `br_tse_eleicoes` | 32 | 1.719.609.912 | 2026-11-10 |
 | `br_tse_filiacao_partidaria` | 2 | 42.201.443 | 2026-10-09 |
 | `br_ufmg_censo_demografico_1872` | 58 | 1.251.630 | 2026-10-07 |
 | `eu_sanctions` | 1 | 44.043 | 2026-10-30 |
