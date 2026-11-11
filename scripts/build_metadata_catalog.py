@@ -717,34 +717,38 @@ def write_datasets_md(beelink_tables, arrays):
     que não mexe no `scrape_date`. Sem parquet (tabela nativa do `.duckdb`), vale o
     `scrape_date` do catálogo."""
     por_ds = {}
+    # infra interna, não é dado do espelho (docs/context/README.md já a deixa fora do schema)
+    fora = {"_local_rais_cnpj"}
     scrape = {(d, t): sd for d, t, sd in zip(arrays["dataset"], arrays["table"], arrays["scrape_date"])}
     for t in beelink_tables:
-        if t["source"] == "view_only":
+        if t["source"] == "view_only" or t["dataset"] in fora:
             continue
-        d = por_ds.setdefault(t["dataset"], {"tabelas": 0, "bytes": 0, "linhas": 0, "last_update": ""})
+        d = por_ds.setdefault(t["dataset"], {"tabelas": 0, "bytes": 0, "linhas": 0, "updated_at": ""})
         d["tabelas"] += 1
         d["bytes"] += t.get("size_bytes") or 0
         d["linhas"] += t.get("rows") or 0
         data = (t.get("mtime") or scrape.get((t["dataset"], t["table"])) or "")[:10]
-        d["last_update"] = max(d["last_update"], data)
+        d["updated_at"] = max(d["updated_at"], data)
     linhas = [
         "# Datasets do espelho",
         "",
         "Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo — não editar à mão.",
-        "`last_update` é a data do parquet mais recente do dataset no beelink (para tabela nativa do",
-        "`.duckdb`, sem parquet, o `scrape_date` do catálogo).",
+        "`updated_at` é quando NÓS gravamos o dataset pela última vez: data do parquet mais recente no",
+        "beelink (tabela nativa do `.duckdb`, sem parquet: o `scrape_date` do catálogo). Não diz até que",
+        "data o dado vai (isso é `last_date` em `docs/mapa/catalog.md`, coluna \"Dado até\"), nem quando",
+        "conferimos a fonte (esse registro não existe).",
         "`tamanho` é a soma dos bytes comprimidos dos dados dos parquets (`size_bytes` do catálogo, GB decimal);",
         "o arquivo em disco é ~1% maior (rodapé e índices), e muito mais em dataset minúsculo.",
         "`0 B` = só view ou tabela nativa do `.duckdb`, sem parquet.",
         "",
         f"{len(por_ds)} datasets, {sum(d['tabelas'] for d in por_ds.values())} tabelas.",
         "",
-        "| dataset | tabelas | tamanho | linhas | last_update |",
+        "| dataset | tabelas | tamanho | linhas | updated_at |",
         "|---|---:|---:|---:|---|",
     ]
     for ds in sorted(por_ds):
         d = por_ds[ds]
-        linhas.append(f"| `{ds}` | {d['tabelas']} | {tamanho_legivel(d['bytes'])} | {format(d['linhas'], ',').replace(',', '.')} | {d['last_update'] or '—'} |")
+        linhas.append(f"| `{ds}` | {d['tabelas']} | {tamanho_legivel(d['bytes'])} | {format(d['linhas'], ',').replace(',', '.')} | {d['updated_at'] or '—'} |")
     out = REPO_ROOT / "docs" / "context" / "datasets.md"
     out.write_text("\n".join(linhas) + "\n", encoding="utf-8")
     print(f"Wrote {len(por_ds)} datasets to {out}", file=sys.stderr)

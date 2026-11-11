@@ -1,17 +1,18 @@
 # Datasets do espelho
 
 Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo — não editar à mão.
-`last_update` é a data do parquet mais recente do dataset no beelink (para tabela nativa do
-`.duckdb`, sem parquet, o `scrape_date` do catálogo).
+`updated_at` é quando NÓS gravamos o dataset pela última vez: data do parquet mais recente no
+beelink (tabela nativa do `.duckdb`, sem parquet: o `scrape_date` do catálogo). Não diz até que
+data o dado vai (isso é `last_date` em `docs/mapa/catalog.md`, coluna "Dado até"), nem quando
+conferimos a fonte (esse registro não existe).
 `tamanho` é a soma dos bytes comprimidos dos dados dos parquets (`size_bytes` do catálogo, GB decimal);
 o arquivo em disco é ~1% maior (rodapé e índices), e muito mais em dataset minúsculo.
 `0 B` = só view ou tabela nativa do `.duckdb`, sem parquet.
 
-295 datasets, 1759 tabelas.
+294 datasets, 1758 tabelas.
 
-| dataset | tabelas | tamanho | linhas | last_update |
+| dataset | tabelas | tamanho | linhas | updated_at |
 |---|---:|---:|---:|---|
-| `_local_rais_cnpj` | 1 | 0 B | 40.626.223 | 2026-07-09 |
 | `br_abrinq_oca` | 1 | 379,8 KB | 55.700 | 2026-07-05 |
 | `br_ana_atlas_esgotos` | 1 | 633,2 KB | 5.570 | 2026-07-05 |
 | `br_ana_bho` | 1 | 7,5 MB | 462.539 | 2026-08-10 |

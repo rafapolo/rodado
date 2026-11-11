@@ -25,3 +25,14 @@ br_mjsp_sinesp.ocorrencias: '"mes/ano"'                       # verificado 2026-
 br_cvm_fundos.fundos: DT_PATRIM_LIQ                            # verificado 2026-09-04: coluna é por-fundo (último patrimônio líquido reportado por cada fundo), não uma data de corte única; fonte (dados.cvm.gov.br/cad_fi.csv) é atualizada diariamente
 br_tesouro_capag.estados: null                                 # sem coluna de data por linha — frescor é por arquivo_origem (ano da edição CAPAG); conferido 2026-09-04: já temos "Capag Estados 2025", igual à fonte, sem gap
 br_anvisa_cmed.precos: null                                    # sem coluna de data por linha — frescor é do arquivo xls_conformidade na fonte (gov.br/anvisa), datado 2026-08-11; nosso scrape_date era 2026-07-11, ~1 mês defasado
+br_ms_sisvan.microdados: data_acompanhamento                   # verificado 2026-11-11: max 2023-12-31, nenhuma data no futuro
+world_wb_mides.empenho: data                                   # verificado 2026-11-11: max 2026-09-17, nenhuma data no futuro
+world_wb_mides.pagamento: 'CASE WHEN data <= current_date THEN data END'     # verificado 2026-11-11: max bruto é 3011-10-04 (lixo na fonte); limitado a hoje dá 2026-09-17
+world_wb_mides.liquidacao: 'CASE WHEN data <= current_date THEN data END'    # verificado 2026-11-11: max bruto é 2200-12-31 (lixo na fonte); limitado a hoje dá 2026-09-17
+br_ans_beneficiario.informacao_consolidada: data_carga         # verificado 2026-11-11: max 2025-11-24; data da carga mensal da ANS, não data de evento
+br_bd_execucao_estadual.despesa: data                          # verificado 2026-11-11: max 2026-09-14, nenhuma data no futuro
+br_ms_sih.aihs_reduzidas: data_saida                           # verificado 2026-11-11: max 2026-01-31 (data de saída da internação; data_nascimento_paciente não serve)
+br_mf_divida_ativa.previdenciario: data_inscricao              # verificado 2026-11-11: max 2026-10-02, nenhuma data no futuro
+br_tse_eleicoes.resultados_candidato_secao: data_eleicao       # verificado 2026-11-11: max 2026-10-25 (2º turno de 2026); data da eleição, não da apuração
+br_ok_queridodiario_texto.diarios: date                        # verificado 2026-11-11: max 2026-10-06 (data do diário, não do scrape_at)
+br_me_cnpj.estabelecimentos: data                              # verificado 2026-11-11: max 2026-10-01 (data do retrato mensal; data_inicio_atividade pode estar no futuro, não usar)
