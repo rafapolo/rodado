@@ -47,3 +47,15 @@ gotchas:
     severidade: silencioso
     verificado: "129.188 linhas; 484 com IGR > 1.000; 17.501 com menos de 1.000 beneficiários; máximo 9.100.000 — medido 2026-10-25"
 
+  - id: ativas_e_canceladas_apos_atualizacao
+    resumo: "Depois da recoleta de 2026-11-11, 6 operadoras que a fonte já tirou de operadoras_ativas continuam lá (linha só do espelho, mantida na fusão) e também estão em operadoras_canceladas. Ao unir as duas tabelas, prefira a linha de canceladas para o registro que aparecer nas duas."
+    detalhe: >
+      Toda tabela com carimbo de atualização (DT_ATUALIZACAO, DATA_ATUALIZACAO_ARQUIVO) muda
+      em todas as linhas a cada coleta; comparar linha a linha dá 100% de diferença sem que o
+      dado tenha mudado. Funda por chave (ID_PLANO, NR_DEMANDA, NUM_ATENDIMENTO, REGISTRO_OPERADORA...).
+      ressarcimento_sus_beneficiarios traz ANO_ABI e DIAS_PERM_INTERN como texto na fonte; o disco
+      os tem como INTEGER e foram convertidos de volta.
+    tabelas: [operadoras_ativas, operadoras_canceladas]
+    colunas: [REGISTRO_OPERADORA]
+    severidade: aviso
+    verificado: "operadoras_ativas 1.105 no disco, 1.102 na fonte, 1.108 fundido; os 6 só do disco estão todos em operadoras_canceladas (3.084) — medido 2026-11-11"

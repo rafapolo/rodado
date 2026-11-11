@@ -18,3 +18,8 @@ gotchas:
     colunas: ["Ano Abertura"]
     severidade: silencioso
     verificado: "2020 e 2021 aparecem nas duas grafias — medido 2026-09-25"
+  - id: waf_bloqueia_lista_de_publicacoes
+    resumo: "Em 2026-11-11 publicacoes.json do consumidor.gov.br respondeu 504 'The requested URL was rejected' (WAF F5) à Mac em três tentativas espaçadas, e nenhum dos 254 proxies BR do pool abriu: a tabela parou em finalizadas_2026-09 e a atualização ficou pendente (falta finalizadas_2026-10)."
+    tabelas: [reclamacoes]
+    severidade: aviso
+    verificado: "curl com o UA do Chrome: 504 em 30 s com corpo 'Request Rejected' e support ID; Pool de _proxy_br: 'nenhum proxy BR abre' em 254 testados — medido 2026-11-11"

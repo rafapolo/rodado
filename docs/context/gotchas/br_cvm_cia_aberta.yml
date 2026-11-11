@@ -32,3 +32,15 @@ gotchas:
     colunas: [Codigo_Negociacao, CNPJ_Companhia, Mercado]
     severidade: aviso
     verificado: "Mercado = 'Bolsa', Valor_Mobiliario em Ações Ordinárias, Ações Preferenciais e Units: 7.025 linhas, 571 companhias, 4.220 no formato de ticker, 281 fora (49 companhias) — medido 2026-11-04"
+  - id: atualizacao_funde_por_documento
+    resumo: "Recoleta da CVM não é promoção cega: a fonte perde documentos antigos (FRE tem ~240 por tabela só no espelho), renomeia empresas e republica versões. Funda por documento (CNPJ + data + versão [+ ID_Documento]) mantendo o que só o espelho tem; o scraper com memory_limit de 6 GB estoura em ~85 tabelas (dfp, itr, fre, fca) e precisa de 14 GB."
+    detalhe: >
+      Na rodada de 2026-11-11, de 118 tabelas só 3 vieram idênticas em tudo; o resto "perdia"
+      de 24 a 86 mil linhas na comparação linha a linha, quase sempre porque DENOM_CIA mudou
+      (ex.: "LIGHT S.A." de "LIGHT S.A. - EM RECUPERAÇÃO JUDICIAL"). Linha idêntica por linha
+      não serve de chave; a unidade é o documento. A fonte também entrega como VARCHAR colunas
+      que o disco tem como DOUBLE, DATE ou INTEGER (fre_remuneracao_total_orgao, fre_obrigacao,
+      fca_geral e outras): TRY_CAST ao tipo do disco, sem perda de valor.
+    tabelas: [cadastro, dfp_dre_con, fre_remuneracao_total_orgao, ipe_documentos]
+    severidade: aviso
+    verificado: "70.967.743 linhas no disco, 71.294.089 na fonte, 71.347.599 depois de fundir; views = disco nas 118 tabelas — medido 2026-11-11"
