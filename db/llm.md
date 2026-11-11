@@ -44,6 +44,9 @@ Toda rota além desta página pede **uma** destas, que quem te pediu a tarefa pr
 Guarde em variável de ambiente; nunca escreva a senha ou o token em arquivo, log, commit ou
 resposta. Sem credencial a resposta é `401`. Nos exemplos abaixo, `$AUTH` é `-u rodado:$RODADO_SENHA`.
 
+O token pode ser **pessoal** (um por pessoa ou agente, que o dono revoga sozinho): é ele que dá
+nome ao seu uso e conta a sua cota. Peça o seu a quem mantém o serviço.
+
 ## 2. O fluxo que funciona
 
 1. **Descobrir** — texto, um dataset por linha, com a descrição e as tabelas com o número de
@@ -140,6 +143,13 @@ o corpo traz a armadilha e a `dica`; repita com `?ciente=1` depois de tratar del
 - Tabelas como `dataset.tabela`. Funções que abrem arquivo (`read_parquet`, `read_csv`,
   `glob`…) e `FROM 'caminho'` são recusadas: use as views.
 - {tempo} s por consulta e {simultaneas} consultas ao mesmo tempo no servidor inteiro. Seja sequencial.
+- **Limites de uso** (contra raspagem; agregar no servidor quase não gasta nada deles):
+  cota de **{cota_dia} linhas devolvidas por dia** por token pessoal (sem token, por IP; o cabeçalho
+  `X-Cota-Restante` diz quanto sobra e o `429` traz `Retry-After` com os segundos até zerar, à
+  meia-noite de Brasília); **{por_minuto} consultas por minuto** e 2 ao mesmo tempo por IP (`429` com
+  `Retry-After`). São recusados com `400` e uma `dica`: `OFFSET` acima de {offset_max} e a leitura
+  inteira, sem `WHERE` nem `GROUP BY`, de tabela com mais de {amplo_linhas} linhas — a não ser com
+  `LIMIT` (ou `limite=`) de até {amplo_limite}. O `POST /confere` avisa antes.
 - Tabela grande (dezenas de milhões de linhas ou mais) exige filtro na partição — as colunas
   com `"particao": true` em `/colunas`, em geral `ano`, `mes`, `sigla_uf`. Sem isso a consulta
   lê o dataset inteiro e estoura o tempo.
@@ -156,7 +166,9 @@ normalmente (`WHERE cpf = '...'`, `JOIN ... USING (cpf)`), só não espere receb
 CNPJ vem inteiro.
 
 Cada requisição devolve no máximo {limite_maximo} linhas. Para mais que isso, agregue no servidor
-ou fatie (uma requisição por `ano`, `sigla_uf`… ou com `ORDER BY` + `OFFSET`), sempre uma por vez.
+ou fatie por filtro (uma requisição por `ano`, `sigla_uf`… ou por chave: `WHERE id > <último visto>
+ORDER BY id LIMIT n`), sempre uma por vez. `OFFSET` fundo (acima de {offset_max}) é recusado, e
+tudo o que você baixa conta na cota diária ({cota_dia} linhas).
 
 - **CSV/TSV/Parquet direto**: `?formato=csv` (ou `tsv`, `parquet`) e `-o arquivo`:
   `curl $AUTH 'https://db.rodado.xyz/query?formato=parquet&limite=10000' --data-binary @q.sql -o r.parquet`

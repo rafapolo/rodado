@@ -15,7 +15,7 @@ RUN python -c "import duckdb; duckdb.connect().execute('INSTALL httpfs')"
 WORKDIR /app
 COPY proxy/Caddyfile /etc/caddy/Caddyfile
 COPY proxy/og.html /srv/og.html
-COPY rodado_sql.py consulta.py terminal.py catalogo.py index.html llm.md contexto.json inicia.sh ./
+COPY rodado_sql.py limites.py consulta.py terminal.py catalogo.py index.html llm.md contexto.json inicia.sh ./
 # o servidor MCP (/mcp) e a camada semântica que ele lê; o deploy põe em mcp/ a cópia de
 # mcp/mcp_server.py e dos arquivos de docs/context — nunca docs/context/privado/
 COPY mcp/ ./mcp/

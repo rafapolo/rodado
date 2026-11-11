@@ -38,4 +38,9 @@ laco terminal espera ttyd -i 127.0.0.1 -p 18080 -b /tty -W -m 4 \
   -t 'fontFamily="JetBrains Mono", Menlo, monospace' -t "theme=$TEMA" \
   python3 terminal.py &
 
+# tokens por pessoa (DB_TOKENS="nome:token,..."): o Caddy os reconhece por esta regex; entrada
+# fora do formato é recusada com aviso, e sem nenhuma a regex nunca casa (limites.py)
+DB_TOKENS_RE="$(python3 limites.py regex)" || DB_TOKENS_RE='a^'
+export DB_TOKENS_RE
+
 exec caddy run --config /etc/caddy/Caddyfile --adapter caddyfile

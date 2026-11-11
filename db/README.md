@@ -52,7 +52,9 @@ com as armadilhas medidas das tabelas citadas junto do resultado; `formato` = `j
 de objetos, como era o padrão até 2026-10-20), `csv`, `tsv` ou `parquet`; `limite` = linhas
 devolvidas (padrão e máximo 10.000). Os cabeçalhos `X-Linhas`, `X-Truncado` e
 `X-Segundos` trazem quantas linhas vieram, se o limite cortou e quanto levou. Um comando
-por requisição, 300 s no máximo, 4 consultas simultâneas.
+por requisição, 300 s no máximo, 4 consultas simultâneas. Há ainda cota diária de linhas, ritmo
+por IP e recusa de raspagem (`X-Cota-Restante`, `429` com `Retry-After`): ver "Limites contra
+raspagem" abaixo.
 
 - `https://db.rodado.xyz/mcp` — o servidor MCP (`mcp/mcp_server.py`, *streamable HTTP*), atrás
   da mesma senha/token: `claude mcp add --transport http rodado https://db.rodado.xyz/mcp`
@@ -91,6 +93,72 @@ Não segura quem disfarça de propósito (`reverse(cpf)`, `substr` em pedaços, 
 com outro nome): é proteção da saída comum, não controle de acesso. Teste:
 `python3 db/testes/mascara_cpf.py`.
 
+## Limites contra raspagem
+
+Plano em `tasks/plans/limites_abuso_db.md`. O dado é público na origem: o objetivo é deixar a
+raspagem em massa **lenta, cara e atribuível**, sem atrapalhar quem agrega no servidor. Tudo
+em `limites.py` (sem dependência de DuckDB), ligado em `consulta.py`; cada limite se muda por
+variável de ambiente (descomentar no `haloy.yml`) e `0` o desliga.
+
+| O quê | Padrão | Variável | Resposta |
+|---|---|---|---|
+| Cota de linhas devolvidas por dia (meia-noite de Brasília), por token pessoal ou, sem ele, por IP; SQLite em `/dados/limites.sqlite` (sobrevive a deploy) | 200.000 | `RODADO_COTA_DIA` | `429` + `Retry-After` + `dica`; `X-Cota-Restante` em toda resposta de `/query`; a última consulta do dia é cortada no que sobra |
+| Consultas por minuto por IP (janela deslizante) | 30 | `RODADO_POR_MINUTO` | `429` + `Retry-After` |
+| Consultas ao mesmo tempo por IP (as 4 vagas globais continuam) | 2 | `RODADO_SIMULTANEAS_IP` | `429`, `Retry-After: 5` |
+| `OFFSET` acima disto, em qualquer ponto da consulta (e `OFFSET` que não é literal) | 100.000 | `RODADO_OFFSET_MAX` | `400` + `dica` |
+| Tabela com mais de N linhas lida inteira (colunas cruas ou `*`, sem `WHERE`/`GROUP BY`/`DISTINCT`/join), a não ser com `LIMIT` ou `?limite=` até M | N = 1.000.000, M = 1.000 | `RODADO_AMPLO_LINHAS`, `RODADO_AMPLO_LIMITE` | `400` + `dica`; o `/confere` lista o mesmo problema |
+| `formato=parquet` só com token pessoal | desligado | `RODADO_PARQUET_SO_TOKEN=1` | `403` + `dica` |
+| Nomes de token fora da cota | nenhum | `RODADO_ISENTOS="nome1,nome2"` | `X-Cota-Restante: ilimitada` |
+| Aviso (uma vez por chave e dia) ao passar de 80% da cota, ou de 20 recusas de ritmo no dia | 80 / 20 | `RODADO_AVISO_PCT`, `RODADO_AVISO_429` | linha `[limites] AVISO` no log do container |
+
+**Quem fica de fora.** O terminal do navegador (`terminal.py`) não passa pelo `/query` e não
+conta. O MCP de `/mcp` chama o `consulta.py` por dentro do container, sem passar pelo Caddy: sem
+`X-Rodado-Ip`, é tratado como interno e fica fora da cota e do ritmo (mas não das recusas de
+`OFFSET` e de tabela grande). `/llm`, `/contexto`, `/exemplos`, `/tabelas`, `/colunas`,
+`/confere`, `/ping` e o `/index` não têm cota nem ritmo. O botão CSV da página usa `limite=1000`,
+que passa pela regra da tabela grande.
+
+**O que a recusa de tabela grande não pega** (só o comando de cima, de uma tabela, sem filtro):
+`WITH x AS (SELECT * FROM grande) SELECT * FROM x`, `row_number()` como paginação e `WHERE id > n`
+em laço. Isso a cota e o ritmo seguram: nenhum caminho passa de 200 mil linhas por dia e por chave.
+
+### Tokens por pessoa
+
+`DB_TOKENS="nome:token,nome2:token2"` (nome `[A-Za-z0-9_.-]`, até 32; token `[A-Za-z0-9_-]`, 16 a 128
+caracteres; entrada fora disso é recusada com aviso no log). O `DB_TOKEN` do dono e a senha
+HTTP Basic continuam valendo como antes.
+
+- O **Caddy** valida: `inicia.sh` exporta `DB_TOKENS_RE` (`python3 limites.py regex`, uma regex
+  ancorada com os tokens; sem nenhum, `a^`, que nunca casa) e o `@token` do Caddyfile a confere em
+  `?token=` e no cookie `rodado_token`. O app nunca vê os tokens que o Caddy rejeitou.
+- O **app** só dá nome: o Caddy copia o token da URL para o cabeçalho `X-Rodado-Token` (apagando
+  o que o cliente mandou) e o IP real para `X-Rodado-Ip` (`{client_ip}`, com `trusted_proxies
+  private_ranges` + `trusted_proxies_strict`, porque o haloy fica na frente). O log traz
+  `[consulta] usuario=ana ip=… linhas=… restante=…`: o nome, nunca o token nem o SQL.
+- O primeiro acesso por `?token=` grava o token da pessoa no cookie (antes gravava sempre o do
+  dono). O link curto `/q/<id>` continua dando o cookie do `DB_TOKEN`.
+- **Criar:** `ssh finland` → `echo "ana:$(openssl rand -hex 24)" >> /root/rodado-db/.tokens` (arquivo
+  com `chmod 600`, nunca no repositório) e redeploy com `DB_TOKENS="$(paste -sd, .tokens)"`. **Revogar:**
+  apagar a linha e redeployar; o `401` vale só para aquele token e o cookie dele morre junto.
+- Dar a alguém `?token=` ou `Authorization` é dar a cota dele; sem token a cota é do IP.
+
+### Conferir depois do deploy
+
+```bash
+curl -si -u rodado:SENHA https://db.rodado.xyz/ping | grep -i x-seu-ip   # de duas redes: IPs diferentes e públicos
+curl -si "https://db.rodado.xyz/query?token=TOKEN_DA_ANA" --data-binary 'SELECT 1' | grep -i 'x-cota\|HTTP/'
+curl -s  -u rodado:SENHA https://db.rodado.xyz/query --data-binary 'SELECT * FROM br_me_cnpj.estabelecimentos LIMIT 10 OFFSET 200000'   # 400
+ssh finland 'docker logs --tail 20 $(docker ps -qf name=rodado-db) | grep consulta'
+```
+
+Se `X-Seu-Ip` vier igual (o do haloy) para redes diferentes, o haloy não manda `X-Forwarded-For`
+ou fica fora de `private_ranges`: o limite por IP valeria para o mundo inteiro. Desligue-o
+(`RODADO_POR_MINUTO=0`, `RODADO_SIMULTANEAS_IP=0`) e ajuste o `trusted_proxies` do Caddyfile.
+
+Testes (sem catálogo nem rede; um DuckDB em memória e o `Handler` de verdade): `python3 db/testes/limites.py`
+(22 casos) e `python3 db/testes/mascara_cpf.py` (11). A parte do Caddy (regex dos tokens, cabeçalhos
+forjados, cookie por pessoa) foi conferida à mão com o `caddy` local e um servidor de eco.
+
 ## Como funciona
 
 ```mermaid
@@ -107,6 +175,7 @@ flowchart LR
 | Peça | Onde | Arquivo |
 |---|---|---|
 | Conexão travada (núcleo) | container | `rodado_sql.py` |
+| Limites contra raspagem: tokens por pessoa, cota diária, ritmo por IP, recusa de OFFSET fundo e de tabela grande sem filtro | container | `limites.py`, `consulta.py`, `proxy/Caddyfile` |
 | Terminal (via ttyd): SQL colorido ao digitar, Enter envia no `;`, Tab completa dataset/tabela/coluna | container, até 4 abas | `terminal.py` |
 | Página com a árvore, `/catalogo.json` (cache 10 min), `/tabelas` (o catálogo enxuto do `/llm`, filtrável por `tema`, `busca`, `dataset`), `/contexto`, `/colunas`, `/query`, `/ping` | container, `127.0.0.1:18081` | `consulta.py`, `index.html` |
 | Guia público para agentes em `/llm` (também `/llms.txt`, `/.well-known/llms.txt` e `/` pedido com `Accept: text/markdown`); o 401 e o cabeçalho `Link` de toda resposta apontam para ele | container, sem senha | `llm.md`, `proxy/Caddyfile` |
@@ -207,6 +276,14 @@ proporcionalmente mais lenta — filtre por partição (`ano`, `mes`, `sigla_uf`
 
 O túnel SSH reverso do beelink foi desligado na mesma data, e removidos o usuário `tunel` e o bloco `Match User tunel` do `sshd_config` no finland e a chave `~/.ssh/rodado_tunel` no beelink.
 
+**Armadilha do Caddy 2.10 (2026-11-11):** `{query.token}.matches(...)` e `{cookie.x}.matches(...)` em expressão CEL
+dão `no such overload` quando o token ou o cookie está **ausente**, e o Caddy responde 500 a toda requisição sem
+token (até com a senha certa). Por isso o token por pessoa usa `vars_regexp`, não CEL. Testar mudança no
+`Caddyfile` **no container de produção** (`docker exec`, outro Caddy em `:8090` com o mesmo ambiente), não com o
+Caddy do Mac: a versão e o ambiente diferem e o teste local do Mac não pegou este erro. Casos mínimos: sem
+credencial → 401, cookie qualquer → 401, token errado/vazio/com sufixo → 401, token do dono e de pessoa (URL e
+cookie) → 200, `/llm` e `/health` → 200.
+
 ## Operação
 
 ```bash
@@ -214,7 +291,7 @@ O túnel SSH reverso do beelink foi desligado na mesma data, e removidos o usuá
 ssh finland 'docker logs --tail 50 $(docker ps -qf name=rodado-db)'
 
 # deploy: código para o finland e haloy deploy (o S3_KEY/S3_SECRET vêm de /root/rodado-db/.s3)
-scp db/{Dockerfile,haloy.yml,inicia.sh,rodado_sql.py,consulta.py,terminal.py,catalogo.py,index.html,llm.md,contexto.json} finland:/root/rodado-db/
+scp db/{Dockerfile,haloy.yml,inicia.sh,rodado_sql.py,limites.py,consulta.py,terminal.py,catalogo.py,index.html,llm.md,contexto.json} finland:/root/rodado-db/
 scp db/proxy/{Caddyfile,og.html} finland:/root/rodado-db/proxy/
 # o MCP de /mcp: o servidor e a camada semântica que ele lê, arquivo por arquivo
 # (nunca docs/context/privado/); rodado-schema.json fica fora do git, gere antes
@@ -225,7 +302,8 @@ scp docs/context/gotchas/* finland:/root/rodado-db/mcp/context/gotchas/
 # cartões e perfis das tabelas (describe_table lê sob demanda, um dataset por vez; ~13 MB)
 scp docs/context/summaries/* finland:/root/rodado-db/mcp/context/summaries/
 ssh finland 'cd /root/rodado-db && set -a && . /etc/haloy/.env && . ./.s3 && set +a &&
-  DB_USUARIO=rodado DB_SENHA_HASH="$(cat .senha_hash)" DB_TOKEN="$(cat .token)" haloy deploy -c haloy.yml'
+  DB_USUARIO=rodado DB_SENHA_HASH="$(cat .senha_hash)" DB_TOKEN="$(cat .token)" \
+  DB_TOKENS="$(paste -sd, .tokens 2>/dev/null)" haloy deploy -c haloy.yml'   # .tokens: um nome:token por linha
 
 # catálogo: depois de uma sincronização ou de uma cópia no SSD, remontar sem esperar os 15 min
 # (incremental: segundos; com --completo, do zero: ~25 min)

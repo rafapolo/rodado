@@ -4,37 +4,61 @@
 {
 	admin off
 	auto_https off
+	# O haloy (proxy do finland) fica na frente deste Caddy: sem confiar nele, o IP de todo mundo
+	# seria o dele e o limite por IP do consulta.py valeria para o mundo inteiro. `strict` lê o
+	# X-Forwarded-For da direita para a esquerda e para no primeiro IP fora de private_ranges.
+	servers {
+		trusted_proxies static private_ranges
+		trusted_proxies_strict
+	}
 }
 
 # Rotas para o app, depois da autenticação (senha ou token).
-# /tty/ é o ttyd (terminal, com websocket); /mcp, o servidor MCP; o resto — página com a árvore de
-# datasets, /catalogo.json, /colunas e /query — é o consulta.py.
 (app) {
-	# o token nunca chega ao app nem vaza no Referer para as fontes do Google
-	uri query -token
-	header Referrer-Policy "same-origin"
-	handle /tty* {
-		reverse_proxy 127.0.0.1:18080 {
-			flush_interval -1
+	# `route` fixa a ordem: o token da URL é copiado para o cabeçalho antes de sair dela (o app só
+	# usa para dar nome à consulta; quem manda é o Caddy, que apaga o que o cliente enviou). O token
+	# nunca chega ao app na URL nem vaza no Referer para as fontes do Google.
+	route {
+		request_header -X-Rodado-Ip
+		request_header -X-Rodado-Token
+		request_header X-Rodado-Ip "{client_ip}"
+		request_header X-Rodado-Token "{query.token}"
+		uri query -token
+		header Referrer-Policy "same-origin"
+		# /tty/ é o ttyd (terminal, com websocket); /mcp, o servidor MCP; o resto — página com a
+		# árvore de datasets, /catalogo.json, /colunas e /query — é o consulta.py.
+		handle /tty* {
+			reverse_proxy 127.0.0.1:18080 {
+				flush_interval -1
+			}
 		}
-	}
-	# /mcp é o servidor MCP (streamable HTTP, mcp/mcp_server.py); a consulta dele leva
-	# até os 300 s do consulta.py
-	handle /mcp* {
-		reverse_proxy 127.0.0.1:18082 {
-			flush_interval -1
-			transport http {
-				read_timeout 340s
+		# /mcp é o servidor MCP (streamable HTTP, mcp/mcp_server.py); a consulta dele leva
+		# até os 300 s do consulta.py
+		handle /mcp* {
+			reverse_proxy 127.0.0.1:18082 {
+				flush_interval -1
+				transport http {
+					read_timeout 340s
+				}
+			}
+		}
+		handle {
+			reverse_proxy 127.0.0.1:18081 {
+				transport http {
+					read_timeout 320s
+				}
 			}
 		}
 	}
-	handle {
-		reverse_proxy 127.0.0.1:18081 {
-			transport http {
-				read_timeout 320s
-			}
-		}
+}
+
+# Entrada com token: grava o cookie quando o token veio na URL e segue para o app.
+(com_token) {
+	header @token_na_url {
+		>Set-Cookie "rodado_token={http.request.header.X-Rodado-Token}; Path=/; Max-Age=2592000; HttpOnly; Secure; SameSite=Lax"
+		Cache-Control "no-store"
 	}
+	import app
 }
 
 :8080 {
@@ -114,14 +138,25 @@
 	# terceiros, curl). O primeiro acesso grava o token num cookie HttpOnly, porque o
 	# iframe do terminal, o websocket e os fetch da página não levam o ?token. Sem
 	# DB_TOKEN no ambiente o token fica desligado (senão "?token=" vazio passaria).
-	@token expression `"{$DB_TOKEN}" != "" && ({query.token} == "{$DB_TOKEN}" || {cookie.rodado_token} == "{$DB_TOKEN}")`
-	handle @token {
-		@token_na_url expression `{query.token} == "{$DB_TOKEN}"`
-		header @token_na_url {
-			Set-Cookie "rodado_token={$DB_TOKEN}; Path=/; Max-Age=2592000; HttpOnly; Secure; SameSite=Lax"
-			Cache-Control "no-store"
-		}
-		import app
+	# Além do DB_TOKEN (o do dono), vale qualquer token de DB_TOKENS (um por pessoa, `nome:token`):
+	# inicia.sh exporta DB_TOKENS_RE, a regex ancorada deles (limites.py regex; sem tokens, uma
+	# regex que nunca casa). Revogar é tirar da lista e redeployar: o cookie dele também morre.
+	# O token do dono (DB_TOKEN) é comparação simples em CEL. Os tokens por pessoa (DB_TOKENS_RE)
+	# usam `vars_regexp`, não `.matches()` em CEL: no Caddy 2.10 um ?token ou cookie ausente chega
+	# como nulo e `.matches()` dá "no such overload" (500 em toda requisição sem token, até com a
+	# senha certa). `vars_regexp` trata o ausente como vazio, e a regex ancorada nunca casa vazio.
+	@token_na_url expression `{query.token} != ""`
+	@token_dono expression `"{$DB_TOKEN}" != "" && ({query.token} == "{$DB_TOKEN}" || {cookie.rodado_token} == "{$DB_TOKEN}")`
+	@token_pessoa_url vars_regexp {http.request.uri.query.token} {$DB_TOKENS_RE:a^}
+	@token_pessoa_cookie vars_regexp {http.request.cookie.rodado_token} {$DB_TOKENS_RE:a^}
+	handle @token_dono {
+		import com_token
+	}
+	handle @token_pessoa_url {
+		import com_token
+	}
+	handle @token_pessoa_cookie {
+		import com_token
 	}
 
 	handle {

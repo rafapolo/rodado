@@ -24,11 +24,13 @@ import threading
 import time
 import unicodedata
 import uuid
+from http.cookies import SimpleCookie
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlparse
 
 import duckdb
 
+import limites
 import rodado_sql
 
 PAGINA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "index.html")
@@ -438,11 +440,20 @@ LIMITE_PADRAO = 10_000
 LIMITE_MAXIMO = 10_000
 N_SIMULTANEAS = int(os.environ.get("RODADO_SIMULTANEAS", "4"))
 SIMULTANEAS = threading.BoundedSemaphore(N_SIMULTANEAS)
+# Limites contra raspagem (limites.py, plano tasks/plans/limites_abuso_db.md). Cada um se desliga
+# com 0 na variável de ambiente; os padrões são os do plano.
+CFG = limites.Config.do_ambiente()
+LIMITES = limites.Limites(CFG)
+TOKENS, _RECUSADOS = limites.carrega_tokens(os.environ.get("DB_TOKENS", ""))
+for _n in _RECUSADOS:
+    print(f"[limites] DB_TOKENS: entrada '{_n}' recusada", flush=True)
 
 USO = """\
 Guia para agentes (comece por ele): https://db.rodado.xyz/llm
 POST /query com o SQL no corpo (ou GET /query?q=...). Só leitura, um comando por vez.
 Parâmetros: formato=json|csv|tsv|parquet, limite=N linhas (padrão e máximo 10000).
+Limites: cota diária de linhas (X-Cota-Restante), consultas por minuto por IP, sem OFFSET fundo
+nem tabela grande inteira sem filtro: detalhes no /llm.
 Sem formato, a resposta é {"linhas": [...], "avisos": [...], "contexto": [...], "truncado": ...}:
 os avisos medidos das tabelas citadas vêm no corpo. formato=json devolve só a lista de linhas.
 Cabeçalhos da resposta: X-Linhas, X-Truncado, X-Segundos, X-Avisos, X-Contexto.
@@ -798,6 +809,29 @@ def _tamanho(con, tabelas, colunas, sql=""):
     return itens, problemas, avisos
 
 
+def _linhas_do_parquet(arquivo):
+    """Linhas de um parquet pelo rodapé, numa instância à parte (a da consulta não lê arquivo)."""
+    con = duckdb.connect(":memory:")
+    try:
+        return con.execute("SELECT num_rows FROM parquet_file_metadata(?)", [arquivo]).fetchall()[0][0]
+    finally:
+        con.close()
+
+
+def _raspagem(con, sql, limite_pedido):
+    """(mensagem, dica) se a consulta é o padrão de raspagem (OFFSET fundo, tabela grande lida
+    inteira sem filtro); senão None. Se o parser não serializa, deixa passar: quem recusa é o resto."""
+    try:
+        arvore = json.loads(con.execute("SELECT json_serialize_sql(?)", [sql]).fetchall()[0][0])
+    except (duckdb.Error, TypeError, ValueError):
+        return None
+
+    def linhas(ds, t):
+        r = con.execute('SELECT rows FROM _rodado_metadata WHERE dataset = ? AND "table" = ?', [ds, t]).fetchall()
+        return r[0][0] if r else None
+    return limites.raspagem(arvore, linhas, limite_pedido, CFG)
+
+
 def _ascii(texto):
     """Cabeçalho HTTP só leva latin-1 com segurança; o aviso vai sem acento."""
     return _sem_acento_mantem_caixa(texto).encode("ascii", "replace").decode()
@@ -875,10 +909,26 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(dados)
 
-    def _erro(self, status, msg, **extra):
+    def _erro(self, status, msg, cabecalhos=None, **extra):
         self._responde(status, json.dumps({"erro": rodado_sql.mascara_texto(msg), **{k: v for k, v in extra.items() if v}},
                                           ensure_ascii=False) + "\n",
-                       "application/json; charset=utf-8")
+                       "application/json; charset=utf-8", cabecalhos)
+
+    def _identidade(self):
+        """Quem pede, pelos cabeçalhos que só o Caddy põe (ele os apaga antes: ver proxy/Caddyfile).
+        Sem X-Rodado-Ip a chamada veio de dentro do container (o MCP de /mcp), fora dos limites por
+        pessoa. O nome vem do token; o token nunca é guardado nem registrado."""
+        ip = (self.headers.get("X-Rodado-Ip") or "").strip()
+        token = (self.headers.get("X-Rodado-Token") or "").strip()
+        if not token:
+            try:
+                token = SimpleCookie(self.headers.get("Cookie") or "")["rodado_token"].value
+            except KeyError:
+                pass
+        nome = TOKENS.get(token)
+        return {"ip": ip, "interno": not ip, "nome": nome,
+                "chave": f"token:{nome}" if nome else f"ip:{ip}",
+                "isento": bool(nome and nome in CFG.isentos)}
 
     def _json(self, obj, status=200):
         self._responde(status, json.dumps(obj, ensure_ascii=False, default=_json_valor),
@@ -916,6 +966,9 @@ class Handler(BaseHTTPRequestHandler):
                     "limite_padrao": _milhar(LIMITE_PADRAO), "limite_maximo": _milhar(LIMITE_MAXIMO),
                     "tempo": rodado_sql.TEMPO_LIMITE, "simultaneas": N_SIMULTANEAS,
                     "temas": _indice_temas(datasets),
+                    "cota_dia": _milhar(CFG.cota_dia) if CFG.cota_dia else "sem limite",
+                    "por_minuto": CFG.por_minuto or "sem limite", "offset_max": _milhar(CFG.offset_max),
+                    "amplo_linhas": _milhar(CFG.amplo_linhas), "amplo_limite": _milhar(CFG.amplo_limite),
                     "gerado_contexto": CONTEXTO.get("gerado", "?"),
                 }
                 for chave, valor in valores.items():   # format() quebraria nas chaves do SQL do guia
@@ -994,6 +1047,8 @@ class Handler(BaseHTTPRequestHandler):
                     existentes.append((ds, t))
                 saida, grandes, lentas = _tamanho(con, existentes, colunas, sql)
                 problemas += grandes
+                if (abuso := _raspagem(con, comandos[0].query, LIMITE_PADRAO)):   # o /query a recusa com 400
+                    problemas.append(f"{abuso[0]} — o /query recusa; {abuso[1]}")
                 problemas += [f"{b} — o /query recusa até você repetir com ?ciente=1"
                               for b in _bloqueios(tabelas, colunas)]
                 desconhecidas = sorted(colunas - conhecidas) if conhecidas else []
@@ -1090,7 +1145,8 @@ class Handler(BaseHTTPRequestHandler):
                 return self._json(itens)
             return self._responde(200, _pagina_q(itens), "text/html; charset=utf-8", {"Cache-Control": "no-store"})
         if url.path == "/ping":  # mede a ida e volta até o servidor Python (o /health o Caddy responde sozinho)
-            return self._responde(200, "pong\n", extra={"Cache-Control": "no-store"})
+            return self._responde(200, "pong\n", extra={"Cache-Control": "no-store",
+                                                          "X-Seu-Ip": self.headers.get("X-Rodado-Ip") or "interno"})
         # / para quem pede markdown (agentes) e não HTML: o terminal da página não serve a eles
         aceita = self.headers.get("Accept", "")
         if url.path == "/" and not ("text/markdown" in aceita and "text/html" not in aceita):
@@ -1153,6 +1209,18 @@ class Handler(BaseHTTPRequestHandler):
             return self._confere(corpo)
         self._executa(corpo, params)
 
+    def _conta(self, quem, linhas, segundos, cota):
+        """Soma as linhas entregues à cota de quem pediu, registra a consulta (nome, nunca o token
+        nem o SQL) e devolve o cabeçalho X-Cota-Restante atualizado."""
+        if not quem["interno"]:
+            LIMITES.registra(quem["chave"], linhas, quem["isento"])
+            restante = LIMITES.restante(quem["chave"], quem["isento"])
+            if restante is not None:
+                cota = {"X-Cota-Restante": str(restante)}
+        print(f"[consulta] usuario={quem['nome'] or '-'} ip={quem['ip'] or 'interno'} linhas={linhas} "
+              f"segundos={segundos:.1f}" + (f" restante={cota['X-Cota-Restante']}" if cota else ""), flush=True)
+        return cota
+
     def _executa(self, sql, params):
         # Sem `formato`, o JSON vem embrulhado com os avisos no corpo: o agente que só lê o corpo
         # (curl sem -i) via X-Avisos não via nada, e 163 das 189 armadilhas (as que não são [erro]) não recusam a consulta.
@@ -1166,9 +1234,38 @@ class Handler(BaseHTTPRequestHandler):
         except ValueError:
             return self._erro(400, "limite deve ser inteiro")
 
+        limite_pedido = limite
+        quem = self._identidade()
+        if formato == "parquet" and CFG.parquet_so_token and not quem["nome"] and not quem["interno"]:
+            return self._erro(403, "formato=parquet exige token pessoal",
+                              dica="peça um token ao dono do serviço, ou use formato=json, csv ou tsv")
+        vaga_ip = False
+        cota = {}
+        if not quem["interno"]:   # o MCP de dentro do container fica fora dos limites por pessoa
+            restante = LIMITES.restante(quem["chave"], quem["isento"])
+            if quem["isento"]:
+                cota = {"X-Cota-Restante": "ilimitada"}
+            elif restante is not None:
+                cota = {"X-Cota-Restante": str(restante)}
+                if restante <= 0:
+                    espera = limites.segundos_ate_meia_noite(time.time())
+                    return self._erro(429, f"cota diária de {_milhar(CFG.cota_dia)} linhas esgotada",
+                                      cabecalhos={**cota, "Retry-After": str(espera)},
+                                      dica=f"zera em {espera // 3600} h {espera % 3600 // 60} min (meia-noite de Brasília); "
+                                           "agregue no servidor (GROUP BY) em vez de baixar linhas")
+                limite = min(limite, restante)
+            recusa = LIMITES.admite(quem["ip"])
+            if recusa:
+                espera, motivo = recusa
+                return self._erro(429, motivo, cabecalhos={**cota, "Retry-After": str(espera)},
+                                  dica=f"tente de novo em {espera} s; uma consulta de cada vez, agregada, rende mais")
+            vaga_ip = True
         if not SIMULTANEAS.acquire(timeout=60):
-            return self._erro(429, "muitas consultas ao mesmo tempo; tente de novo")
+            if vaga_ip:
+                LIMITES.libera(quem["ip"])
+            return self._erro(429, "muitas consultas ao mesmo tempo; tente de novo", cabecalhos=cota)
         inicio = time.monotonic()
+        n_parquet = 0
         try:
             con = rodado_sql.conecta()
             try:
@@ -1177,6 +1274,9 @@ class Handler(BaseHTTPRequestHandler):
                     return self._erro(400, "um comando por requisição")
                 tabelas, colunas = _referencias(con, comandos[0].query)
                 avisos = _avisos(tabelas, colunas)
+                if (abuso := _raspagem(con, comandos[0].query, limite_pedido)):
+                    return self._erro(400, "consulta recusada, parece raspagem: " + abuso[0], cabecalhos=cota,
+                                      dica=abuso[1], avisos=avisos)
                 bloqueios = _bloqueios(tabelas, colunas)
                 if bloqueios and (params.get("ciente") or [""])[0] != "1":
                     return self._erro(400, "a consulta cita coluna de armadilha medida que dá resultado "
@@ -1198,6 +1298,7 @@ class Handler(BaseHTTPRequestHandler):
                             arq = os.path.join(rodado_sql.TEMP, f"r_{uuid.uuid4().hex}.parquet")
                             try:
                                 rel.limit(limite).write_parquet(arq, compression="zstd")
+                                n_parquet = _linhas_do_parquet(arq)
                                 with open(arq, "rb") as f:
                                     dados = f.read()
                             finally:
@@ -1227,18 +1328,23 @@ class Handler(BaseHTTPRequestHandler):
             return self._erro(400, str(e))
         finally:
             SIMULTANEAS.release()
+            if vaga_ip:
+                LIMITES.libera(quem["ip"])
 
         if linhas is None:
+            cota = self._conta(quem, n_parquet, time.monotonic() - inicio, cota)
             return self._responde(200, dados, "application/vnd.apache.parquet",
-                                  {**_cabecalhos_de_aviso(tabelas, avisos),
+                                  {**_cabecalhos_de_aviso(tabelas, avisos), **cota,
+                                   "X-Linhas": str(n_parquet),
                                    "X-Segundos": f"{time.monotonic() - inicio:.3f}"})
         if (ident := _id_salvo(sql)):   # o mesmo texto de um link: atualiza o tempo dele
             _anota_q(ident, segundos=round(time.monotonic() - inicio, 3), erro=None,
                      medido_em=datetime.datetime.now(BRT).isoformat(timespec="seconds"))
         truncado = len(linhas) > limite
         linhas = linhas[:limite]
+        cota = self._conta(quem, len(linhas), time.monotonic() - inicio, cota)
         extra = {
-            **_cabecalhos_de_aviso(tabelas, avisos),
+            **_cabecalhos_de_aviso(tabelas, avisos), **cota,
             "X-Linhas": str(len(linhas)),
             "X-Truncado": "1" if truncado else "0",
             "X-Segundos": f"{time.monotonic() - inicio:.3f}",

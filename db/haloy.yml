@@ -20,6 +20,10 @@ env:
   - name: DB_TOKEN
     from:
       env: DB_TOKEN
+  # tokens por pessoa, `nome:token` separados por vírgula (vazio: só o DB_TOKEN do dono vale)
+  - name: DB_TOKENS
+    from:
+      env: DB_TOKENS
   - name: S3_KEY
     from:
       env: S3_KEY
@@ -31,3 +35,13 @@ env:
   # Com keep-alive desligado, cada tentativa abre conexão nova: 30 s não repete a falha de 12/10.
   - name: RODADO_HTTP_TIMEOUT
     value: "30"
+  # Limites contra raspagem (db/limites.py, plano tasks/plans/limites_abuso_db.md). Os valores
+  # abaixo são os padrões do código; 0 desliga cada um. Descomente para mudar sem editar o código.
+  # - {name: RODADO_COTA_DIA, value: "200000"}        # linhas devolvidas por token (ou IP) e dia
+  # - {name: RODADO_POR_MINUTO, value: "30"}          # consultas por IP por minuto
+  # - {name: RODADO_SIMULTANEAS_IP, value: "2"}       # consultas ao mesmo tempo por IP
+  # - {name: RODADO_OFFSET_MAX, value: "100000"}      # OFFSET acima disto é recusado
+  # - {name: RODADO_AMPLO_LINHAS, value: "1000000"}   # tabela maior que isto não sai inteira sem filtro...
+  # - {name: RODADO_AMPLO_LIMITE, value: "1000"}      # ...salvo com LIMIT/limite até isto
+  # - {name: RODADO_PARQUET_SO_TOKEN, value: "0"}     # 1: formato=parquet só com token pessoal
+  # - {name: RODADO_ISENTOS, value: ""}               # nomes de token fora da cota (ex.: "polo")
