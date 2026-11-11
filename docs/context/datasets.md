@@ -3,303 +3,306 @@
 Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo — não editar à mão.
 `last_update` é a data do parquet mais recente do dataset no beelink (para tabela nativa do
 `.duckdb`, sem parquet, o `scrape_date` do catálogo).
+`tamanho` é a soma dos bytes comprimidos dos dados dos parquets (`size_bytes` do catálogo, GB decimal);
+o arquivo em disco é ~1% maior (rodapé e índices), e muito mais em dataset minúsculo.
+`0 B` = só view ou tabela nativa do `.duckdb`, sem parquet.
 
 295 datasets, 1759 tabelas.
 
-| dataset | tabelas | linhas | last_update |
-|---|---:|---:|---|
-| `_local_rais_cnpj` | 1 | 40.626.223 | 2026-07-09 |
-| `br_abrinq_oca` | 1 | 55.700 | 2026-07-05 |
-| `br_ana_atlas_esgotos` | 1 | 5.570 | 2026-07-05 |
-| `br_ana_bho` | 1 | 462.539 | 2026-08-10 |
-| `br_ana_outorgas` | 2 | 192.772 | 2026-10-07 |
-| `br_ana_reservatorios` | 1 | 1.157.621 | 2026-07-05 |
-| `br_ana_telemetria` | 13 | 165.719.332 | 2026-10-21 |
-| `br_anac_dadosabertos` | 3 | 814.362 | 2026-10-30 |
-| `br_anatel_banda_larga_fixa` | 4 | 63.650.648 | 2026-10-30 |
-| `br_anatel_indice_brasileiro_conectividade` | 1 | 22.280 | 2026-07-05 |
-| `br_anatel_telefonia_movel` | 6 | 179.805.272 | 2026-11-02 |
-| `br_aneel_dadosabertos` | 8 | 41.048.559 | 2026-11-02 |
-| `br_anm` | 22 | 8.380.445 | 2026-10-21 |
-| `br_anp_combustiveis` | 1 | 2.205.259 | 2026-10-21 |
-| `br_anp_precos_combustiveis` | 1 | 16.887.683 | 2026-10-09 |
-| `br_ans_beneficiario` | 1 | 2.307.338.481 | 2026-10-29 |
-| `br_ans_operadoras` | 18 | 111.128.794 | 2026-10-25 |
-| `br_antt_dadosabertos` | 4 | 18.909.325 | 2026-10-28 |
-| `br_anvisa_cmed` | 1 | 53.388 | 2026-11-10 |
-| `br_anvisa_consultas` | 3 | 101.363 | 2026-11-11 |
-| `br_anvisa_medicamentos_industrializados` | 1 | 10.000.000 | 2026-07-09 |
-| `br_b3_cotacoes` | 1 | 24.760.472 | 2026-10-31 |
-| `br_ba_feiradesantana_camara_leis` | 1 | 6.033 | 2026-07-05 |
-| `br_bcb_agencia` | 2 | 4.113.511 | 2026-10-29 |
-| `br_bcb_desenrola` | 1 | 14.122 | 2026-11-03 |
-| `br_bcb_estban` | 3 | 779.013.036 | 2026-11-01 |
-| `br_bcb_ifdata` | 5 | 55.700.812 | 2026-09-25 |
-| `br_bcb_penalidades` | 1 | 17.012 | 2026-11-10 |
-| `br_bcb_pix_municipio` | 1 | 401.019 | 2026-10-30 |
-| `br_bcb_ptax` | 3 | 806.069 | 2026-11-10 |
-| `br_bcb_scrdata` | 1 | 43.690.931 | 2026-11-10 |
-| `br_bcb_sgs` | 1 | 25.248 | 2026-11-10 |
-| `br_bcb_sicor` | 20 | 787.221.440 | 2026-11-02 |
-| `br_bd_diretorios_brasil` | 23 | 2.033.171 | 2026-10-30 |
-| `br_bd_diretorios_data_tempo` | 11 | 1.922.812 | 2026-07-05 |
-| `br_bd_diretorios_mundo` | 4 | 20.648 | 2026-08-23 |
-| `br_bd_diretorios_us` | 11 | 267.724 | 2026-10-30 |
-| `br_bd_execucao_estadual` | 19 | 196.476.239 | 2026-10-07 |
-| `br_bd_metadados` | 7 | 123.379 | 2026-08-23 |
-| `br_bd_vizinhanca` | 2 | 523.926 | 2026-07-05 |
-| `br_bndes_desembolsos` | 1 | 3.762.192 | 2026-10-15 |
-| `br_bndes_operacoes_contratadas` | 6 | 2.432.028 | 2026-10-15 |
-| `br_brasilapi` | 4 | 6.149 | 2026-10-21 |
-| `br_brasilio_holdings` | 1 | 515.191 | 2026-07-10 |
-| `br_caixa_sinapi` | 1 | 2.258.550 | 2026-10-30 |
-| `br_caixa_sorteios` | 1 | 15.294 | 2026-07-05 |
-| `br_camara_dados_abertos` | 30 | 15.053.218 | 2026-11-11 |
-| `br_capes_bolsas` | 1 | 146.036 | 2026-10-07 |
-| `br_ce_fortaleza_sefin_iptu` | 1 | 68.932 | 2026-07-05 |
-| `br_cgu_beneficios_cidadao` | 6 | 3.321.211.133 | 2026-10-26 |
-| `br_cgu_cartao_pagamento` | 4 | 3.213.220 | 2026-10-30 |
-| `br_cgu_dados_abertos` | 3 | 89.771 | 2026-07-05 |
-| `br_cgu_despesas_publicas` | 2 | 130.395.546 | 2026-10-15 |
-| `br_cgu_ebt` | 2 | 1.384 | 2026-07-09 |
-| `br_cgu_emendas_parlamentares` | 4 | 1.094.989 | 2026-10-30 |
-| `br_cgu_fef` | 3 | 84.945 | 2026-07-09 |
-| `br_cgu_garantia_safra` | 3 | 36.210.983 | 2026-10-22 |
-| `br_cgu_gas_do_povo` | 1 | 24.494.950 | 2026-10-31 |
-| `br_cgu_licitacao_contrato` | 8 | 100.216.979 | 2026-10-30 |
-| `br_cgu_novo_bolsa_familia` | 3 | 889.084.279 | 2026-10-31 |
-| `br_cgu_orcamento_publico` | 1 | 341.269 | 2026-10-09 |
-| `br_cgu_pe_de_meia` | 4 | 97.981.384 | 2026-10-22 |
-| `br_cgu_pessoal_executivo_federal` | 1 | 732.269 | 2026-10-07 |
-| `br_cgu_receitas_publicas` | 1 | 1.529.345 | 2026-07-05 |
-| `br_cgu_sancoes` | 6 | 45.506 | 2026-10-30 |
-| `br_cgu_seguro_defeso` | 3 | 47.779.027 | 2026-10-31 |
-| `br_cgu_servidores_executivo_federal` | 7 | 432.489.430 | 2026-11-01 |
-| `br_cgu_transferencias` | 1 | 23.086.484 | 2026-11-10 |
-| `br_cgu_viagens` | 4 | 53.192.569 | 2026-10-30 |
-| `br_clp_ranking_competitividade` | 2 | 9.431 | 2026-07-09 |
-| `br_cnj_estatisticas_poder_judiciario` | 1 | 1.189 | 2026-07-09 |
-| `br_cnj_improbidade_administrativa` | 1 | 53.342 | 2026-07-05 |
-| `br_cnpq_bolsas` | 2 | 2.839.807 | 2026-07-05 |
-| `br_comprasgov_catmatcatser` | 2 | 252.825 | 2026-10-21 |
-| `br_comprasgov_sicaf` | 1 | 962.016 | 2026-10-07 |
-| `br_cvm_administradores_carteira` | 3 | 16.476 | 2026-10-30 |
-| `br_cvm_cia_aberta` | 118 | 70.967.743 | 2026-10-21 |
-| `br_cvm_fundos` | 39 | 440.462.913 | 2026-11-10 |
-| `br_cvm_oferta_publica_distribuicao` | 1 | 27.486 | 2026-10-30 |
-| `br_datahackers_state_data` | 1 | 4.271 | 2026-07-05 |
-| `br_datasus_cid10` | 6 | 15.672 | 2026-07-10 |
-| `br_fbsp_absp` | 3 | 2.484 | 2026-07-09 |
-| `br_fgv_igp` | 7 | 2.536 | 2026-07-05 |
-| `br_fipe_veiculos` | 1 | 11.425 | 2026-10-07 |
-| `br_firjan_ifgf` | 1 | 55.680 | 2026-07-09 |
-| `br_fnde_fundeb` | 2 | 15.063.256 | 2026-10-21 |
-| `br_fnde_pnae` | 1 | 703.271 | 2026-11-04 |
-| `br_fnde_pnate` | 1 | 5.531 | 2026-11-04 |
-| `br_geobr_mapas` | 25 | 984.345 | 2026-07-05 |
-| `br_ggb_relatorio_lgbtqi` | 5 | 145 | 2026-07-09 |
-| `br_ibama_autos` | 8 | 3.103.683 | 2026-11-10 |
-| `br_ibama_ctf` | 2 | 1.473.755 | 2026-10-21 |
-| `br_ibama_embargos_novo` | 8 | 978.607 | 2026-11-04 |
-| `br_ibge_amc` | 1 | 434.070 | 2026-07-09 |
-| `br_ibge_areas_risco` | 4 | 21.499 | 2026-10-25 |
-| `br_ibge_cbo_2002` | 2 | 177.556 | 2026-07-09 |
-| `br_ibge_censo2022_raca` | 2 | 1.415.034 | 2026-07-18 |
-| `br_ibge_censo2022_religiao` | 15 | 6.451.488 | 2026-07-18 |
-| `br_ibge_censo_2022` | 47 | 171.441.122 | 2026-10-11 |
-| `br_ibge_censo_agropecuario` | 3 | 212.112.778 | 2026-10-26 |
-| `br_ibge_censo_demografico` | 38 | 181.895.148 | 2026-10-09 |
-| `br_ibge_cnefe` | 1 | 111.102.875 | 2026-10-21 |
-| `br_ibge_estadic` | 39 | 7.348 | 2026-10-25 |
-| `br_ibge_inpc` | 4 | 658.100 | 2026-10-30 |
-| `br_ibge_ipca` | 4 | 686.056 | 2026-10-30 |
-| `br_ibge_ipca15` | 4 | 397.247 | 2026-10-30 |
-| `br_ibge_ipp` | 6 | 5.118 | 2026-07-09 |
-| `br_ibge_lspa` | 2 | 76.725 | 2026-10-25 |
-| `br_ibge_munic` | 48 | 1.102.387 | 2026-10-25 |
-| `br_ibge_nomes_brasil` | 1 | 1.959.116 | 2026-07-09 |
-| `br_ibge_pac` | 2 | 504.016 | 2026-10-25 |
-| `br_ibge_paic` | 2 | 370.915 | 2026-10-25 |
-| `br_ibge_pam` | 2 | 20.097.187 | 2026-07-05 |
-| `br_ibge_pas` | 2 | 812.172 | 2026-10-25 |
-| `br_ibge_pevs` | 2 | 558.451 | 2026-07-05 |
-| `br_ibge_pia` | 2 | 6.808.795 | 2026-11-10 |
-| `br_ibge_pib` | 8 | 225.905 | 2026-11-03 |
-| `br_ibge_pnad` | 3 | 9.587.801 | 2026-07-05 |
-| `br_ibge_pnad_covid` | 2 | 2.651.013 | 2026-09-25 |
-| `br_ibge_pnadc` | 14 | 31.529.302 | 2026-07-09 |
-| `br_ibge_pof` | 18 | 6.218.668 | 2026-10-31 |
-| `br_ibge_populacao` | 3 | 192.080 | 2026-07-05 |
-| `br_ibge_ppm` | 4 | 3.111.747 | 2026-10-09 |
-| `br_icmbio_embargos` | 1 | 14.806 | 2026-10-28 |
-| `br_ieps_saude` | 5 | 73.980 | 2026-07-09 |
-| `br_incra_acervo` | 6 | 3.830.361 | 2026-10-25 |
-| `br_inea_boletim` | 5 | 24.743 | 2026-09-04 |
-| `br_inep_ana` | 3 | 98.778 | 2026-07-09 |
-| `br_inep_avaliacao_alfabetizacao` | 7 | 3.902.954 | 2026-07-05 |
-| `br_inep_censo_educacao_superior` | 3 | 3.891.339 | 2026-07-05 |
-| `br_inep_censo_escolar` | 3 | 43.369.601 | 2026-10-09 |
-| `br_inep_educacao_especial` | 15 | 12.213.008 | 2026-07-05 |
-| `br_inep_enem` | 32 | 243.708.756 | 2026-10-09 |
-| `br_inep_formacao_docente` | 4 | 164.105 | 2026-07-09 |
-| `br_inep_ideb` | 5 | 1.669.520 | 2026-10-09 |
-| `br_inep_indicador_nivel_socioeconomico` | 5 | 528.410 | 2026-07-09 |
-| `br_inep_indicadores_educacionais` | 12 | 5.135.062 | 2026-07-09 |
-| `br_inep_saeb` | 11 | 201.337.763 | 2026-10-30 |
-| `br_inep_sinopse_estatistica_educacao_basica` | 18 | 121.127.598 | 2026-10-09 |
-| `br_inmet_bdmep` | 2 | 90.064.017 | 2026-10-28 |
-| `br_inpe_deter` | 2 | 1.415.408 | 2026-11-02 |
-| `br_inpe_prodes` | 1 | 156.864 | 2026-07-06 |
-| `br_inpe_prodes_acumulado` | 3 | 14.457.350 | 2026-10-25 |
-| `br_inpe_queimadas` | 1 | 23.902.398 | 2026-11-02 |
-| `br_inpe_sisam` | 1 | 158.705.816 | 2026-07-06 |
-| `br_ipea_acesso_oportunidades` | 1 | 336.427 | 2026-07-09 |
-| `br_ipea_atlasviolencia` | 2 | 3.006 | 2026-08-27 |
-| `br_ipea_avs` | 1 | 319.681 | 2026-07-06 |
-| `br_mapbiomas_estatisticas` | 7 | 4.393.055 | 2026-10-07 |
-| `br_mc_indicadores` | 1 | 1.118.855 | 2026-07-09 |
-| `br_mcid_mcmv` | 2 | 821.795 | 2026-11-04 |
-| `br_mdr_snis` | 2 | 245.101 | 2026-07-06 |
-| `br_mds_cadunico` | 2 | 350.069.349 | 2026-09-24 |
-| `br_me_caged` | 6 | 766.354.473 | 2026-10-31 |
-| `br_me_clima_organizacional` | 1 | 16.436 | 2026-07-09 |
-| `br_me_cno` | 3 | 1.020.894 | 2026-07-09 |
-| `br_me_cnpj` | 8 | 537.025.666 | 2026-10-29 |
-| `br_me_comex_stat` | 5 | 133.659.718 | 2026-10-09 |
-| `br_me_estoque_divida_publica` | 1 | 124.419 | 2026-07-09 |
-| `br_me_exportadoras_importadoras` | 1 | 3 | 2026-07-09 |
-| `br_me_rais` | 3 | 2.408.887.556 | 2026-10-10 |
-| `br_me_rais_identificada` | 1 | 36.161.488 | 2026-08-26 |
-| `br_me_siape` | 1 | 358.869 | 2026-07-09 |
-| `br_me_sic` | 2 | 30.001 | 2026-07-06 |
-| `br_me_siconfi` | 19 | 112.117.034 | 2026-10-09 |
-| `br_me_siorg` | 1 | 258 | 2026-07-09 |
-| `br_mec_prouni` | 1 | 20 | 2026-07-06 |
-| `br_mec_sisu` | 1 | 34.700.256 | 2026-07-06 |
-| `br_mf_divida_ativa` | 2 | 146.548.734 | 2026-11-03 |
-| `br_mg_belohorizonte_smfa_iptu` | 2 | 21.463.825 | 2026-07-06 |
-| `br_mgi_compras_publicas` | 21 | 100.278.894 | 2026-10-31 |
-| `br_mgi_pncp` | 4 | 5.738.944 | 2026-11-01 |
-| `br_minc_salic` | 18 | 4.370.266 | 2026-10-25 |
-| `br_mj_consumidorgovbr` | 1 | 15.392.507 | 2026-10-21 |
-| `br_mj_sinesp` | 3 | 9.097.924 | 2026-10-07 |
-| `br_mj_sisdepen` | 7 | 3.059.458 | 2026-10-07 |
-| `br_mjsp_ckan` | 2 | 15.317 | 2026-10-28 |
-| `br_mjsp_procurados` | 1 | 188 | 2026-10-21 |
-| `br_mjsp_sinesp` | 2 | 23.843 | 2026-07-10 |
-| `br_mjsp_sisdepen` | 1 | 38.364 | 2026-10-21 |
-| `br_mma_bolsa_verde` | 1 | 658.600 | 2026-11-04 |
-| `br_mma_cnuc` | 1 | 44.508 | 2026-10-25 |
-| `br_mma_extincao` | 2 | 7.676 | 2026-07-09 |
-| `br_mma_sinpatinhas` | 1 | 930.442 | 2026-10-07 |
-| `br_mme_consumo_energia_eletrica` | 1 | 38.880 | 2026-07-06 |
-| `br_mme_luz_para_todos` | 2 | 619.959 | 2026-11-04 |
-| `br_mobilidados_indicadores` | 10 | 671.362 | 2026-07-09 |
-| `br_mp_pep` | 1 | 1.799.733 | 2026-10-09 |
-| `br_mps_beneficios` | 3 | 81.063.055 | 2026-10-07 |
-| `br_ms_atencao_basica` | 1 | 901.944 | 2026-07-09 |
-| `br_ms_cnes` | 14 | 1.327.769.452 | 2026-11-01 |
-| `br_ms_imunizacoes` | 1 | 149.124 | 2026-07-09 |
-| `br_ms_mais_medicos` | 4 | 856.984 | 2026-11-04 |
-| `br_ms_pns` | 3 | 521.059 | 2026-07-06 |
-| `br_ms_populacao` | 1 | 4.919.222 | 2026-07-06 |
-| `br_ms_pro_residencia` | 3 | 11.849 | 2026-11-04 |
-| `br_ms_sia` | 3 | 6.298.035.211 | 2026-10-29 |
-| `br_ms_sih` | 3 | 2.627.317.711 | 2026-11-01 |
-| `br_ms_sim` | 6 | 107.245.069 | 2026-10-30 |
-| `br_ms_sinan` | 3 | 37.154.410 | 2026-11-03 |
-| `br_ms_sinan_chikungunya` | 1 | 2.514.085 | 2026-10-30 |
-| `br_ms_sinan_esquistossomose` | 1 | 169.721 | 2026-10-21 |
-| `br_ms_sinan_febre_amarela` | 1 | 82.844 | 2026-10-30 |
-| `br_ms_sinan_malaria` | 1 | 71.159 | 2026-10-30 |
-| `br_ms_sinan_violencia` | 1 | 5.384.473 | 2026-10-31 |
-| `br_ms_sinan_zika` | 1 | 607.893 | 2026-10-30 |
-| `br_ms_sinasc` | 2 | 93.344.585 | 2026-11-01 |
-| `br_ms_siops` | 2 | 144.405 | 2026-10-31 |
-| `br_ms_sipni_cobertura_historica` | 1 | 2.762.327 | 2026-02-27 |
-| `br_ms_sipni_dicionarios` | 4 | 224 | 2026-03-03 |
-| `br_ms_sipni_doses_historicas` | 1 | 93.785.056 | 2026-03-02 |
-| `br_ms_sipni_microdados` | 1 | 102.423.524 | 2026-07-26 |
-| `br_ms_sisvan` | 2 | 406.253.847 | 2026-07-07 |
-| `br_ms_vacinacao_covid19` | 2 | 805.917 | 2026-07-09 |
-| `br_mte_listasuja` | 5 | 2.837 | 2026-10-30 |
-| `br_ok_queridodiario` | 1 | 326.052 | 2026-10-30 |
-| `br_ok_queridodiario_texto` | 1 | 320.422 | 2026-10-21 |
-| `br_ons_avaliacao_operacao` | 6 | 89.805.415 | 2026-10-07 |
-| `br_ons_dados_abertos` | 91 | 644.965.031 | 2026-11-10 |
-| `br_ons_estimativa_custos` | 5 | 1.407.872 | 2026-10-07 |
-| `br_pgfn_dividaativa` | 2 | 914.557.709 | 2026-10-30 |
-| `br_pncp` | 1 | 5.370.608 | 2026-11-02 |
-| `br_poder360_pesquisas` | 1 | 162.075 | 2026-10-31 |
-| `br_presidencia_comunicabr` | 3 | 1.566.488 | 2026-10-13 |
-| `br_prf_acidentes` | 3 | 11.950.547 | 2026-11-10 |
-| `br_prf_infracoes` | 1 | 63.217.947 | 2026-10-25 |
-| `br_rf_arrecadacao` | 5 | 535.465 | 2026-07-07 |
-| `br_rf_cafir` | 2 | 179.992.711 | 2026-11-01 |
-| `br_rf_cno` | 9 | 39.403.764 | 2026-11-03 |
-| `br_rf_dirpf` | 2 | 35.356 | 2026-10-21 |
-| `br_rf_simples_estatisticas` | 2 | 4.287.160 | 2026-10-25 |
-| `br_rj_isp_estatisticas_seguranca` | 14 | 168.346 | 2026-10-31 |
-| `br_rodado_eleicoes` | 5 | 2.207.335 | 2026-10-26 |
-| `br_rodado_indicadores_municipais` | 1 | 12.382.056 | 2026-10-13 |
-| `br_saude_bps` | 1 | 373.811 | 2026-11-10 |
-| `br_saude_farmaciapopular` | 3 | 522.807 | 2026-11-04 |
-| `br_sedec_desastres` | 1 | 20.380 | 2026-10-09 |
-| `br_seeg_emissoes` | 3 | 183.668.150 | 2026-07-08 |
-| `br_sema_mt_embargos` | 2 | 27.093 | 2026-10-25 |
-| `br_semas_pa_ldi` | 1 | 5.387 | 2026-10-28 |
-| `br_senado_ceaps` | 1 | 398.027 | 2026-10-30 |
-| `br_senado_dados_abertos` | 18 | 612.356 | 2026-10-31 |
-| `br_senado_dados_abertos_administrativos` | 40 | 641.617 | 2026-10-09 |
-| `br_senado_dadosabertos` | 4 | 167.221 | 2026-11-11 |
-| `br_senatran_estatisticas` | 1 | 159.327 | 2026-10-07 |
-| `br_senatran_frota` | 1 | 20.223.786 | 2026-11-03 |
-| `br_sfb_cnfp` | 1 | 12.874 | 2026-10-25 |
-| `br_sfb_concessoes` | 2 | 75 | 2026-11-04 |
-| `br_sfb_sicar` | 12 | 72.747.267 | 2026-11-10 |
-| `br_sgb_setorizacao_risco` | 1 | 17.838 | 2026-10-25 |
-| `br_simet_educacao_conectada` | 1 | 137.914 | 2026-07-09 |
-| `br_siop_orcamento` | 4 | 37.247 | 2026-10-21 |
-| `br_sp_alesp` | 3 | 686.545 | 2026-10-31 |
-| `br_sp_gov_ssp` | 1 | 5.607.730 | 2026-11-03 |
-| `br_sp_saopaulo_geosampa_iptu` | 1 | 93.430.758 | 2026-07-09 |
-| `br_stf_corte_aberta` | 2 | 2.708.896 | 2026-10-09 |
-| `br_stj_dadosabertos` | 1 | 3.604.791 | 2026-10-21 |
-| `br_susep_dados_abertos` | 22 | 11.866.281 | 2026-10-25 |
-| `br_tce_es` | 5 | 13.083 | 2026-11-11 |
-| `br_tce_pi` | 5 | 405 | 2026-10-21 |
-| `br_tce_rj` | 6 | 225.683 | 2026-10-21 |
-| `br_tce_sp` | 1 | 644 | 2026-10-07 |
-| `br_tce_to` | 1 | 50 | 2026-10-21 |
-| `br_tcu_dadosabertos` | 1 | 38.630 | 2026-11-02 |
-| `br_tcu_inidoneos` | 4 | 58.562 | 2026-10-30 |
-| `br_tesouro_capag` | 2 | 5.815 | 2026-10-07 |
-| `br_tesouro_cauc` | 3 | 5.674 | 2026-11-11 |
-| `br_tesouro_transferencias` | 2 | 25.346.631 | 2026-10-31 |
-| `br_transferegov` | 3 | 30.346 | 2026-10-21 |
-| `br_transferegov_siconv` | 62 | 69.060.758 | 2026-10-21 |
-| `br_trase_supply_chain` | 7 | 1.824.843 | 2026-07-18 |
-| `br_tse_eleicoes` | 32 | 1.719.609.912 | 2026-11-10 |
-| `br_tse_filiacao_partidaria` | 2 | 42.201.443 | 2026-10-09 |
-| `br_ufmg_censo_demografico_1872` | 58 | 1.251.630 | 2026-10-07 |
-| `eu_sanctions` | 1 | 44.043 | 2026-10-30 |
-| `global_ibge_tabua_mares` | 2 | 1.261.446 | 2026-10-21 |
-| `global_icij_offshoreleaks` | 6 | 5.356.929 | 2026-10-07 |
-| `global_ofac_sanctions` | 1 | 19.563 | 2026-11-10 |
-| `global_opensanctions` | 1 | 1.248.435 | 2026-11-10 |
-| `mundo_transfermarkt_competicoes` | 2 | 9.054 | 2026-10-09 |
-| `mundo_transfermarkt_competicoes_internacionais` | 1 | 2.617 | 2026-10-31 |
-| `politicos` | 1 | 7.664 | 2026-07-22 |
-| `un_sanctions` | 1 | 1.007 | 2026-11-10 |
-| `us_harvard_ned` | 2 | 6.309 | 2026-07-09 |
-| `world_ampas_oscar` | 1 | 415 | 2026-07-09 |
-| `world_iea_pirls` | 8 | 1.941.828 | 2026-07-09 |
-| `world_iea_timss` | 11 | 1.929.595 | 2026-07-09 |
-| `world_imdb_movies` | 1 | 33.600 | 2026-07-09 |
-| `world_noaa_etopo` | 1 | 10.407.600 | 2026-11-11 |
-| `world_oecd_pisa` | 1 | 2.500.803 | 2026-10-10 |
-| `world_oecd_public_finance` | 1 | 2.646 | 2026-07-09 |
-| `world_olympedia_olympics` | 6 | 482.195 | 2026-07-09 |
-| `world_sofascore_competicoes_futebol` | 2 | 11.324 | 2026-07-09 |
-| `world_wb_mides` | 9 | 1.283.413.820 | 2026-11-01 |
-| `world_wwf_hydrosheds` | 3 | 15.119.487 | 2026-07-09 |
+| dataset | tabelas | tamanho | linhas | last_update |
+|---|---:|---:|---:|---|
+| `_local_rais_cnpj` | 1 | 0 B | 40.626.223 | 2026-07-09 |
+| `br_abrinq_oca` | 1 | 379,8 KB | 55.700 | 2026-07-05 |
+| `br_ana_atlas_esgotos` | 1 | 633,2 KB | 5.570 | 2026-07-05 |
+| `br_ana_bho` | 1 | 7,5 MB | 462.539 | 2026-08-10 |
+| `br_ana_outorgas` | 2 | 3,8 MB | 192.772 | 2026-10-07 |
+| `br_ana_reservatorios` | 1 | 18,2 MB | 1.157.621 | 2026-07-05 |
+| `br_ana_telemetria` | 13 | 615,6 MB | 165.719.332 | 2026-10-21 |
+| `br_anac_dadosabertos` | 3 | 13,3 MB | 814.362 | 2026-10-30 |
+| `br_anatel_banda_larga_fixa` | 4 | 442,4 MB | 63.650.648 | 2026-10-30 |
+| `br_anatel_indice_brasileiro_conectividade` | 1 | 451,5 KB | 22.280 | 2026-07-05 |
+| `br_anatel_telefonia_movel` | 6 | 611,2 MB | 179.805.272 | 2026-11-02 |
+| `br_aneel_dadosabertos` | 8 | 285,4 MB | 41.048.559 | 2026-11-02 |
+| `br_anm` | 22 | 380,8 MB | 8.380.445 | 2026-10-21 |
+| `br_anp_combustiveis` | 1 | 31,6 MB | 2.205.259 | 2026-10-21 |
+| `br_anp_precos_combustiveis` | 1 | 427,9 MB | 16.887.683 | 2026-10-09 |
+| `br_ans_beneficiario` | 1 | 8,2 GB | 2.307.338.481 | 2026-10-29 |
+| `br_ans_operadoras` | 18 | 851,8 MB | 111.128.794 | 2026-10-25 |
+| `br_antt_dadosabertos` | 4 | 124,3 MB | 18.909.325 | 2026-10-28 |
+| `br_anvisa_cmed` | 1 | 5,0 MB | 53.388 | 2026-11-10 |
+| `br_anvisa_consultas` | 3 | 2,4 MB | 101.363 | 2026-11-11 |
+| `br_anvisa_medicamentos_industrializados` | 1 | 60,6 MB | 10.000.000 | 2026-07-09 |
+| `br_b3_cotacoes` | 1 | 520,2 MB | 24.760.472 | 2026-10-31 |
+| `br_ba_feiradesantana_camara_leis` | 1 | 3,3 MB | 6.033 | 2026-07-05 |
+| `br_bcb_agencia` | 2 | 156,5 MB | 4.113.511 | 2026-10-29 |
+| `br_bcb_desenrola` | 1 | 105,0 KB | 14.122 | 2026-11-03 |
+| `br_bcb_estban` | 3 | 2,9 GB | 779.013.036 | 2026-11-01 |
+| `br_bcb_ifdata` | 5 | 170,3 MB | 55.700.812 | 2026-09-25 |
+| `br_bcb_penalidades` | 1 | 484,6 KB | 17.012 | 2026-11-10 |
+| `br_bcb_pix_municipio` | 1 | 23,1 MB | 401.019 | 2026-10-30 |
+| `br_bcb_ptax` | 3 | 10,9 MB | 806.069 | 2026-11-10 |
+| `br_bcb_scrdata` | 1 | 2,0 GB | 43.690.931 | 2026-11-10 |
+| `br_bcb_sgs` | 1 | 62,7 KB | 25.248 | 2026-11-10 |
+| `br_bcb_sicor` | 20 | 24,1 GB | 787.221.440 | 2026-11-02 |
+| `br_bd_diretorios_brasil` | 23 | 148,9 MB | 2.033.171 | 2026-10-30 |
+| `br_bd_diretorios_data_tempo` | 11 | 5,9 MB | 1.922.812 | 2026-07-05 |
+| `br_bd_diretorios_mundo` | 4 | 1,5 MB | 20.648 | 2026-08-23 |
+| `br_bd_diretorios_us` | 11 | 6,1 MB | 267.724 | 2026-10-30 |
+| `br_bd_execucao_estadual` | 19 | 12,0 GB | 196.476.239 | 2026-10-07 |
+| `br_bd_metadados` | 7 | 15,7 MB | 123.379 | 2026-08-23 |
+| `br_bd_vizinhanca` | 2 | 1,4 MB | 523.926 | 2026-07-05 |
+| `br_bndes_desembolsos` | 1 | 35,9 MB | 3.762.192 | 2026-10-15 |
+| `br_bndes_operacoes_contratadas` | 6 | 73,9 MB | 2.432.028 | 2026-10-15 |
+| `br_brasilapi` | 4 | 61,0 KB | 6.149 | 2026-10-21 |
+| `br_brasilio_holdings` | 1 | 10,8 MB | 515.191 | 2026-07-10 |
+| `br_caixa_sinapi` | 1 | 6,2 MB | 2.258.550 | 2026-10-30 |
+| `br_caixa_sorteios` | 1 | 28,8 KB | 15.294 | 2026-07-05 |
+| `br_camara_dados_abertos` | 30 | 297,6 MB | 15.053.218 | 2026-11-11 |
+| `br_capes_bolsas` | 1 | 4,0 MB | 146.036 | 2026-10-07 |
+| `br_ce_fortaleza_sefin_iptu` | 1 | 1,6 MB | 68.932 | 2026-07-05 |
+| `br_cgu_beneficios_cidadao` | 6 | 11,9 GB | 3.321.211.133 | 2026-10-26 |
+| `br_cgu_cartao_pagamento` | 4 | 50,1 MB | 3.213.220 | 2026-10-30 |
+| `br_cgu_dados_abertos` | 3 | 7,2 MB | 89.771 | 2026-07-05 |
+| `br_cgu_despesas_publicas` | 2 | 3,0 GB | 130.395.546 | 2026-10-15 |
+| `br_cgu_ebt` | 2 | 10,7 KB | 1.384 | 2026-07-09 |
+| `br_cgu_emendas_parlamentares` | 4 | 25,3 MB | 1.094.989 | 2026-10-30 |
+| `br_cgu_fef` | 3 | 512,5 KB | 84.945 | 2026-07-09 |
+| `br_cgu_garantia_safra` | 3 | 136,2 MB | 36.210.983 | 2026-10-22 |
+| `br_cgu_gas_do_povo` | 1 | 433,8 MB | 24.494.950 | 2026-10-31 |
+| `br_cgu_licitacao_contrato` | 8 | 1,9 GB | 100.216.979 | 2026-10-30 |
+| `br_cgu_novo_bolsa_familia` | 3 | 3,6 GB | 889.084.279 | 2026-10-31 |
+| `br_cgu_orcamento_publico` | 1 | 11,7 MB | 341.269 | 2026-10-09 |
+| `br_cgu_pe_de_meia` | 4 | 582,3 MB | 97.981.384 | 2026-10-22 |
+| `br_cgu_pessoal_executivo_federal` | 1 | 15,1 MB | 732.269 | 2026-10-07 |
+| `br_cgu_receitas_publicas` | 1 | 15,6 MB | 1.529.345 | 2026-07-05 |
+| `br_cgu_sancoes` | 6 | 3,4 MB | 45.506 | 2026-10-30 |
+| `br_cgu_seguro_defeso` | 3 | 145,6 MB | 47.779.027 | 2026-10-31 |
+| `br_cgu_servidores_executivo_federal` | 7 | 3,8 GB | 432.489.430 | 2026-11-01 |
+| `br_cgu_transferencias` | 1 | 340,4 MB | 23.086.484 | 2026-11-10 |
+| `br_cgu_viagens` | 4 | 1,1 GB | 53.192.569 | 2026-10-30 |
+| `br_clp_ranking_competitividade` | 2 | 44,6 KB | 9.431 | 2026-07-09 |
+| `br_cnj_estatisticas_poder_judiciario` | 1 | 373,1 KB | 1.189 | 2026-07-09 |
+| `br_cnj_improbidade_administrativa` | 1 | 2,7 MB | 53.342 | 2026-07-05 |
+| `br_cnpq_bolsas` | 2 | 90,7 MB | 2.839.807 | 2026-07-05 |
+| `br_comprasgov_catmatcatser` | 2 | 14,2 MB | 252.825 | 2026-10-21 |
+| `br_comprasgov_sicaf` | 1 | 24,7 MB | 962.016 | 2026-10-07 |
+| `br_cvm_administradores_carteira` | 3 | 449,6 KB | 16.476 | 2026-10-30 |
+| `br_cvm_cia_aberta` | 118 | 304,8 MB | 70.967.743 | 2026-10-21 |
+| `br_cvm_fundos` | 39 | 4,2 GB | 440.462.913 | 2026-11-10 |
+| `br_cvm_oferta_publica_distribuicao` | 1 | 1,1 MB | 27.486 | 2026-10-30 |
+| `br_datahackers_state_data` | 1 | 367,6 KB | 4.271 | 2026-07-05 |
+| `br_datasus_cid10` | 6 | 452,3 KB | 15.672 | 2026-07-10 |
+| `br_fbsp_absp` | 3 | 40,1 KB | 2.484 | 2026-07-09 |
+| `br_fgv_igp` | 7 | 102,6 KB | 2.536 | 2026-07-05 |
+| `br_fipe_veiculos` | 1 | 171,7 KB | 11.425 | 2026-10-07 |
+| `br_firjan_ifgf` | 1 | 599,0 KB | 55.680 | 2026-07-09 |
+| `br_fnde_fundeb` | 2 | 93,1 MB | 15.063.256 | 2026-10-21 |
+| `br_fnde_pnae` | 1 | 3,3 MB | 703.271 | 2026-11-04 |
+| `br_fnde_pnate` | 1 | 129,7 KB | 5.531 | 2026-11-04 |
+| `br_geobr_mapas` | 25 | 257,5 MB | 984.345 | 2026-07-05 |
+| `br_ggb_relatorio_lgbtqi` | 5 | 2,2 KB | 145 | 2026-07-09 |
+| `br_ibama_autos` | 8 | 111,4 MB | 3.103.683 | 2026-11-10 |
+| `br_ibama_ctf` | 2 | 33,0 MB | 1.473.755 | 2026-10-21 |
+| `br_ibama_embargos_novo` | 8 | 235,3 MB | 978.607 | 2026-11-04 |
+| `br_ibge_amc` | 1 | 349,9 KB | 434.070 | 2026-07-09 |
+| `br_ibge_areas_risco` | 4 | 2,3 MB | 21.499 | 2026-10-25 |
+| `br_ibge_cbo_2002` | 2 | 962,1 KB | 177.556 | 2026-07-09 |
+| `br_ibge_censo2022_raca` | 2 | 2,0 MB | 1.415.034 | 2026-07-18 |
+| `br_ibge_censo2022_religiao` | 15 | 8,3 MB | 6.451.488 | 2026-07-18 |
+| `br_ibge_censo_2022` | 47 | 4,6 GB | 171.441.122 | 2026-10-11 |
+| `br_ibge_censo_agropecuario` | 3 | 136,9 MB | 212.112.778 | 2026-10-26 |
+| `br_ibge_censo_demografico` | 38 | 5,3 GB | 181.895.148 | 2026-10-09 |
+| `br_ibge_cnefe` | 1 | 3,1 GB | 111.102.875 | 2026-10-21 |
+| `br_ibge_estadic` | 39 | 635,7 KB | 7.348 | 2026-10-25 |
+| `br_ibge_inpc` | 4 | 4,2 MB | 658.100 | 2026-10-30 |
+| `br_ibge_ipca` | 4 | 4,3 MB | 686.056 | 2026-10-30 |
+| `br_ibge_ipca15` | 4 | 2,7 MB | 397.247 | 2026-10-30 |
+| `br_ibge_ipp` | 6 | 80,1 KB | 5.118 | 2026-07-09 |
+| `br_ibge_lspa` | 2 | 88,4 KB | 76.725 | 2026-10-25 |
+| `br_ibge_munic` | 48 | 11,6 MB | 1.102.387 | 2026-10-25 |
+| `br_ibge_nomes_brasil` | 1 | 6,0 MB | 1.959.116 | 2026-07-09 |
+| `br_ibge_pac` | 2 | 1,8 MB | 504.016 | 2026-10-25 |
+| `br_ibge_paic` | 2 | 1,1 MB | 370.915 | 2026-10-25 |
+| `br_ibge_pam` | 2 | 70,3 MB | 20.097.187 | 2026-07-05 |
+| `br_ibge_pas` | 2 | 3,4 MB | 812.172 | 2026-10-25 |
+| `br_ibge_pevs` | 2 | 3,4 MB | 558.451 | 2026-07-05 |
+| `br_ibge_pia` | 2 | 12,5 MB | 6.808.795 | 2026-11-10 |
+| `br_ibge_pib` | 8 | 6,1 MB | 225.905 | 2026-11-03 |
+| `br_ibge_pnad` | 3 | 121,4 MB | 9.587.801 | 2026-07-05 |
+| `br_ibge_pnad_covid` | 2 | 62,1 MB | 2.651.013 | 2026-09-25 |
+| `br_ibge_pnadc` | 14 | 29,3 GB | 31.529.302 | 2026-07-09 |
+| `br_ibge_pof` | 18 | 100,1 MB | 6.218.668 | 2026-10-31 |
+| `br_ibge_populacao` | 3 | 660,0 KB | 192.080 | 2026-07-05 |
+| `br_ibge_ppm` | 4 | 15,0 MB | 3.111.747 | 2026-10-09 |
+| `br_icmbio_embargos` | 1 | 15,4 MB | 14.806 | 2026-10-28 |
+| `br_ieps_saude` | 5 | 11,8 MB | 73.980 | 2026-07-09 |
+| `br_incra_acervo` | 6 | 1,5 GB | 3.830.361 | 2026-10-25 |
+| `br_inea_boletim` | 5 | 1,3 MB | 24.743 | 2026-09-04 |
+| `br_inep_ana` | 3 | 5,9 MB | 98.778 | 2026-07-09 |
+| `br_inep_avaliacao_alfabetizacao` | 7 | 59,9 MB | 3.902.954 | 2026-07-05 |
+| `br_inep_censo_educacao_superior` | 3 | 192,7 MB | 3.891.339 | 2026-07-05 |
+| `br_inep_censo_escolar` | 3 | 828,6 MB | 43.369.601 | 2026-10-09 |
+| `br_inep_educacao_especial` | 15 | 32,0 MB | 12.213.008 | 2026-07-05 |
+| `br_inep_enem` | 32 | 8,9 GB | 243.708.756 | 2026-10-09 |
+| `br_inep_formacao_docente` | 4 | 217,7 KB | 164.105 | 2026-07-09 |
+| `br_inep_ideb` | 5 | 34,5 MB | 1.669.520 | 2026-10-09 |
+| `br_inep_indicador_nivel_socioeconomico` | 5 | 8,3 MB | 528.410 | 2026-07-09 |
+| `br_inep_indicadores_educacionais` | 12 | 411,2 MB | 5.135.062 | 2026-07-09 |
+| `br_inep_saeb` | 11 | 8,5 GB | 201.337.763 | 2026-10-30 |
+| `br_inep_sinopse_estatistica_educacao_basica` | 18 | 407,1 MB | 121.127.598 | 2026-10-09 |
+| `br_inmet_bdmep` | 2 | 1,8 GB | 90.064.017 | 2026-10-28 |
+| `br_inpe_deter` | 2 | 366,5 MB | 1.415.408 | 2026-11-02 |
+| `br_inpe_prodes` | 1 | 881,2 KB | 156.864 | 2026-07-06 |
+| `br_inpe_prodes_acumulado` | 3 | 3,0 GB | 14.457.350 | 2026-10-25 |
+| `br_inpe_queimadas` | 1 | 368,7 MB | 23.902.398 | 2026-11-02 |
+| `br_inpe_sisam` | 1 | 1,6 GB | 158.705.816 | 2026-07-06 |
+| `br_ipea_acesso_oportunidades` | 1 | 18,4 MB | 336.427 | 2026-07-09 |
+| `br_ipea_atlasviolencia` | 2 | 23,8 KB | 3.006 | 2026-08-27 |
+| `br_ipea_avs` | 1 | 37,1 MB | 319.681 | 2026-07-06 |
+| `br_mapbiomas_estatisticas` | 7 | 42,0 MB | 4.393.055 | 2026-10-07 |
+| `br_mc_indicadores` | 1 | 9,9 MB | 1.118.855 | 2026-07-09 |
+| `br_mcid_mcmv` | 2 | 8,3 MB | 821.795 | 2026-11-04 |
+| `br_mdr_snis` | 2 | 66,0 MB | 245.101 | 2026-07-06 |
+| `br_mds_cadunico` | 2 | 719,6 MB | 350.069.349 | 2026-09-24 |
+| `br_me_caged` | 6 | 5,9 GB | 766.354.473 | 2026-10-31 |
+| `br_me_clima_organizacional` | 1 | 956,2 KB | 16.436 | 2026-07-09 |
+| `br_me_cno` | 3 | 4,9 MB | 1.020.894 | 2026-07-09 |
+| `br_me_cnpj` | 8 | 15,4 GB | 537.025.666 | 2026-10-29 |
+| `br_me_comex_stat` | 5 | 1,5 GB | 133.659.718 | 2026-10-09 |
+| `br_me_estoque_divida_publica` | 1 | 1,2 MB | 124.419 | 2026-07-09 |
+| `br_me_exportadoras_importadoras` | 1 | 303 B | 3 | 2026-07-09 |
+| `br_me_rais` | 3 | 62,1 GB | 2.408.887.556 | 2026-10-10 |
+| `br_me_rais_identificada` | 1 | 512,9 MB | 36.161.488 | 2026-08-26 |
+| `br_me_siape` | 1 | 1,3 MB | 358.869 | 2026-07-09 |
+| `br_me_sic` | 2 | 199,1 KB | 30.001 | 2026-07-06 |
+| `br_me_siconfi` | 19 | 1,2 GB | 112.117.034 | 2026-10-09 |
+| `br_me_siorg` | 1 | 2,8 KB | 258 | 2026-07-09 |
+| `br_mec_prouni` | 1 | 768 B | 20 | 2026-07-06 |
+| `br_mec_sisu` | 1 | 1,4 GB | 34.700.256 | 2026-07-06 |
+| `br_mf_divida_ativa` | 2 | 5,5 GB | 146.548.734 | 2026-11-03 |
+| `br_mg_belohorizonte_smfa_iptu` | 2 | 2,6 GB | 21.463.825 | 2026-07-06 |
+| `br_mgi_compras_publicas` | 21 | 8,9 GB | 100.278.894 | 2026-10-31 |
+| `br_mgi_pncp` | 4 | 752,5 MB | 5.738.944 | 2026-11-01 |
+| `br_minc_salic` | 18 | 550,3 MB | 4.370.266 | 2026-10-25 |
+| `br_mj_consumidorgovbr` | 1 | 188,8 MB | 15.392.507 | 2026-10-21 |
+| `br_mj_sinesp` | 3 | 25,0 MB | 9.097.924 | 2026-10-07 |
+| `br_mj_sisdepen` | 7 | 5,5 MB | 3.059.458 | 2026-10-07 |
+| `br_mjsp_ckan` | 2 | 1,5 MB | 15.317 | 2026-10-28 |
+| `br_mjsp_procurados` | 1 | 12,7 KB | 188 | 2026-10-21 |
+| `br_mjsp_sinesp` | 2 | 35,7 KB | 23.843 | 2026-07-10 |
+| `br_mjsp_sisdepen` | 1 | 12,3 MB | 38.364 | 2026-10-21 |
+| `br_mma_bolsa_verde` | 1 | 6,7 MB | 658.600 | 2026-11-04 |
+| `br_mma_cnuc` | 1 | 712,4 KB | 44.508 | 2026-10-25 |
+| `br_mma_extincao` | 2 | 48,2 KB | 7.676 | 2026-07-09 |
+| `br_mma_sinpatinhas` | 1 | 5,5 MB | 930.442 | 2026-10-07 |
+| `br_mme_consumo_energia_eletrica` | 1 | 377,8 KB | 38.880 | 2026-07-06 |
+| `br_mme_luz_para_todos` | 2 | 1,3 MB | 619.959 | 2026-11-04 |
+| `br_mobilidados_indicadores` | 10 | 625,3 KB | 671.362 | 2026-07-09 |
+| `br_mp_pep` | 1 | 7,8 MB | 1.799.733 | 2026-10-09 |
+| `br_mps_beneficios` | 3 | 525,8 MB | 81.063.055 | 2026-10-07 |
+| `br_ms_atencao_basica` | 1 | 5,1 MB | 901.944 | 2026-07-09 |
+| `br_ms_cnes` | 14 | 28,6 GB | 1.327.769.452 | 2026-11-01 |
+| `br_ms_imunizacoes` | 1 | 9,4 MB | 149.124 | 2026-07-09 |
+| `br_ms_mais_medicos` | 4 | 2,1 MB | 856.984 | 2026-11-04 |
+| `br_ms_pns` | 3 | 49,8 MB | 521.059 | 2026-07-06 |
+| `br_ms_populacao` | 1 | 17,1 MB | 4.919.222 | 2026-07-06 |
+| `br_ms_pro_residencia` | 3 | 146,2 KB | 11.849 | 2026-11-04 |
+| `br_ms_sia` | 3 | 34,0 GB | 6.298.035.211 | 2026-10-29 |
+| `br_ms_sih` | 3 | 32,6 GB | 2.627.317.711 | 2026-11-01 |
+| `br_ms_sim` | 6 | 1,5 GB | 107.245.069 | 2026-10-30 |
+| `br_ms_sinan` | 3 | 617,4 MB | 37.154.410 | 2026-11-03 |
+| `br_ms_sinan_chikungunya` | 1 | 48,2 MB | 2.514.085 | 2026-10-30 |
+| `br_ms_sinan_esquistossomose` | 1 | 4,2 MB | 169.721 | 2026-10-21 |
+| `br_ms_sinan_febre_amarela` | 1 | 3,2 MB | 82.844 | 2026-10-30 |
+| `br_ms_sinan_malaria` | 1 | 1,7 MB | 71.159 | 2026-10-30 |
+| `br_ms_sinan_violencia` | 1 | 162,2 MB | 5.384.473 | 2026-10-31 |
+| `br_ms_sinan_zika` | 1 | 8,6 MB | 607.893 | 2026-10-30 |
+| `br_ms_sinasc` | 2 | 1,7 GB | 93.344.585 | 2026-11-01 |
+| `br_ms_siops` | 2 | 12,2 MB | 144.405 | 2026-10-31 |
+| `br_ms_sipni_cobertura_historica` | 1 | 20,6 MB | 2.762.327 | 2026-02-27 |
+| `br_ms_sipni_dicionarios` | 4 | 5,9 KB | 224 | 2026-03-03 |
+| `br_ms_sipni_doses_historicas` | 1 | 298,9 MB | 93.785.056 | 2026-03-02 |
+| `br_ms_sipni_microdados` | 1 | 0 B | 102.423.524 | 2026-07-26 |
+| `br_ms_sisvan` | 2 | 20,6 GB | 406.253.847 | 2026-07-07 |
+| `br_ms_vacinacao_covid19` | 2 | 5,5 MB | 805.917 | 2026-07-09 |
+| `br_mte_listasuja` | 5 | 206,4 KB | 2.837 | 2026-10-30 |
+| `br_ok_queridodiario` | 1 | 20,3 MB | 326.052 | 2026-10-30 |
+| `br_ok_queridodiario_texto` | 1 | 3,3 GB | 320.422 | 2026-10-21 |
+| `br_ons_avaliacao_operacao` | 6 | 945,3 MB | 89.805.415 | 2026-10-07 |
+| `br_ons_dados_abertos` | 91 | 2,9 GB | 644.965.031 | 2026-11-10 |
+| `br_ons_estimativa_custos` | 5 | 34,8 MB | 1.407.872 | 2026-10-07 |
+| `br_pgfn_dividaativa` | 2 | 20,7 GB | 914.557.709 | 2026-10-30 |
+| `br_pncp` | 1 | 513,6 MB | 5.370.608 | 2026-11-02 |
+| `br_poder360_pesquisas` | 1 | 1,4 MB | 162.075 | 2026-10-31 |
+| `br_presidencia_comunicabr` | 3 | 6,6 MB | 1.566.488 | 2026-10-13 |
+| `br_prf_acidentes` | 3 | 414,6 MB | 11.950.547 | 2026-11-10 |
+| `br_prf_infracoes` | 1 | 872,6 MB | 63.217.947 | 2026-10-25 |
+| `br_rf_arrecadacao` | 5 | 5,9 MB | 535.465 | 2026-07-07 |
+| `br_rf_cafir` | 2 | 4,3 GB | 179.992.711 | 2026-11-01 |
+| `br_rf_cno` | 9 | 556,7 MB | 39.403.764 | 2026-11-03 |
+| `br_rf_dirpf` | 2 | 846,5 KB | 35.356 | 2026-10-21 |
+| `br_rf_simples_estatisticas` | 2 | 15,4 MB | 4.287.160 | 2026-10-25 |
+| `br_rj_isp_estatisticas_seguranca` | 14 | 2,8 MB | 168.346 | 2026-10-31 |
+| `br_rodado_eleicoes` | 5 | 43,4 MB | 2.207.335 | 2026-10-26 |
+| `br_rodado_indicadores_municipais` | 1 | 55,7 MB | 12.382.056 | 2026-10-13 |
+| `br_saude_bps` | 1 | 7,9 MB | 373.811 | 2026-11-10 |
+| `br_saude_farmaciapopular` | 3 | 3,6 MB | 522.807 | 2026-11-04 |
+| `br_sedec_desastres` | 1 | 34,1 KB | 20.380 | 2026-10-09 |
+| `br_seeg_emissoes` | 3 | 2,7 GB | 183.668.150 | 2026-07-08 |
+| `br_sema_mt_embargos` | 2 | 36,8 MB | 27.093 | 2026-10-25 |
+| `br_semas_pa_ldi` | 1 | 11,8 MB | 5.387 | 2026-10-28 |
+| `br_senado_ceaps` | 1 | 10,3 MB | 398.027 | 2026-10-30 |
+| `br_senado_dados_abertos` | 18 | 28,2 MB | 612.356 | 2026-10-31 |
+| `br_senado_dados_abertos_administrativos` | 40 | 9,8 MB | 641.617 | 2026-10-09 |
+| `br_senado_dadosabertos` | 4 | 11,2 MB | 167.221 | 2026-11-11 |
+| `br_senatran_estatisticas` | 1 | 559,8 KB | 159.327 | 2026-10-07 |
+| `br_senatran_frota` | 1 | 40,0 MB | 20.223.786 | 2026-11-03 |
+| `br_sfb_cnfp` | 1 | 228,4 MB | 12.874 | 2026-10-25 |
+| `br_sfb_concessoes` | 2 | 2,9 KB | 75 | 2026-11-04 |
+| `br_sfb_sicar` | 12 | 9,0 GB | 72.747.267 | 2026-11-10 |
+| `br_sgb_setorizacao_risco` | 1 | 2,6 MB | 17.838 | 2026-10-25 |
+| `br_simet_educacao_conectada` | 1 | 10,4 MB | 137.914 | 2026-07-09 |
+| `br_siop_orcamento` | 4 | 1,9 MB | 37.247 | 2026-10-21 |
+| `br_sp_alesp` | 3 | 6,0 MB | 686.545 | 2026-10-31 |
+| `br_sp_gov_ssp` | 1 | 145,9 MB | 5.607.730 | 2026-11-03 |
+| `br_sp_saopaulo_geosampa_iptu` | 1 | 2,4 GB | 93.430.758 | 2026-07-09 |
+| `br_stf_corte_aberta` | 2 | 146,2 MB | 2.708.896 | 2026-10-09 |
+| `br_stj_dadosabertos` | 1 | 78,8 MB | 3.604.791 | 2026-10-21 |
+| `br_susep_dados_abertos` | 22 | 23,7 MB | 11.866.281 | 2026-10-25 |
+| `br_tce_es` | 5 | 165,4 KB | 13.083 | 2026-11-11 |
+| `br_tce_pi` | 5 | 16,1 KB | 405 | 2026-10-21 |
+| `br_tce_rj` | 6 | 16,0 MB | 225.683 | 2026-10-21 |
+| `br_tce_sp` | 1 | 10,3 KB | 644 | 2026-10-07 |
+| `br_tce_to` | 1 | 1,8 KB | 50 | 2026-10-21 |
+| `br_tcu_dadosabertos` | 1 | 1,7 MB | 38.630 | 2026-11-02 |
+| `br_tcu_inidoneos` | 4 | 1,6 MB | 58.562 | 2026-10-30 |
+| `br_tesouro_capag` | 2 | 251,1 KB | 5.815 | 2026-10-07 |
+| `br_tesouro_cauc` | 3 | 103,8 KB | 5.674 | 2026-11-11 |
+| `br_tesouro_transferencias` | 2 | 265,1 MB | 25.346.631 | 2026-10-31 |
+| `br_transferegov` | 3 | 7,1 MB | 30.346 | 2026-10-21 |
+| `br_transferegov_siconv` | 62 | 2,8 GB | 69.060.758 | 2026-10-21 |
+| `br_trase_supply_chain` | 7 | 62,9 MB | 1.824.843 | 2026-07-18 |
+| `br_tse_eleicoes` | 32 | 13,0 GB | 1.719.609.912 | 2026-11-10 |
+| `br_tse_filiacao_partidaria` | 2 | 1,1 GB | 42.201.443 | 2026-10-09 |
+| `br_ufmg_censo_demografico_1872` | 58 | 8,4 MB | 1.251.630 | 2026-10-07 |
+| `eu_sanctions` | 1 | 1,7 MB | 44.043 | 2026-10-30 |
+| `global_ibge_tabua_mares` | 2 | 3,2 MB | 1.261.446 | 2026-10-21 |
+| `global_icij_offshoreleaks` | 6 | 62,7 MB | 5.356.929 | 2026-10-07 |
+| `global_ofac_sanctions` | 1 | 1,0 MB | 19.563 | 2026-11-10 |
+| `global_opensanctions` | 1 | 82,4 MB | 1.248.435 | 2026-11-10 |
+| `mundo_transfermarkt_competicoes` | 2 | 193,9 KB | 9.054 | 2026-10-09 |
+| `mundo_transfermarkt_competicoes_internacionais` | 1 | 104,1 KB | 2.617 | 2026-10-31 |
+| `politicos` | 1 | 0 B | 7.664 | 2026-07-22 |
+| `un_sanctions` | 1 | 166,8 KB | 1.007 | 2026-11-10 |
+| `us_harvard_ned` | 2 | 9,3 MB | 6.309 | 2026-07-09 |
+| `world_ampas_oscar` | 1 | 14,9 KB | 415 | 2026-07-09 |
+| `world_iea_pirls` | 8 | 323,3 MB | 1.941.828 | 2026-07-09 |
+| `world_iea_timss` | 11 | 507,6 MB | 1.929.595 | 2026-07-09 |
+| `world_imdb_movies` | 1 | 3,9 MB | 33.600 | 2026-07-09 |
+| `world_noaa_etopo` | 1 | 19,3 MB | 10.407.600 | 2026-11-11 |
+| `world_oecd_pisa` | 1 | 1,9 GB | 2.500.803 | 2026-10-10 |
+| `world_oecd_public_finance` | 1 | 680,9 KB | 2.646 | 2026-07-09 |
+| `world_olympedia_olympics` | 6 | 24,6 MB | 482.195 | 2026-07-09 |
+| `world_sofascore_competicoes_futebol` | 2 | 861,4 KB | 11.324 | 2026-07-09 |
+| `world_wb_mides` | 9 | 54,9 GB | 1.283.413.820 | 2026-11-01 |
+| `world_wwf_hydrosheds` | 3 | 9,8 GB | 15.119.487 | 2026-07-09 |

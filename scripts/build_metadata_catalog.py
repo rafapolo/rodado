@@ -699,6 +699,15 @@ def build_catalog():
     refresh_views()
 
 
+def tamanho_legivel(n):
+    """Bytes em texto legível (base 1000, como o "521 GB" do AGENTS.md; vírgula decimal): 1,5 GB."""
+    n = float(n or 0)
+    for un in ("B", "KB", "MB", "GB", "TB"):
+        if n < 1000 or un == "TB":
+            return f"{int(n)} B" if un == "B" else f"{n:.1f} {un}".replace(".", ",")
+        n /= 1000
+
+
 def write_datasets_md(beelink_tables, arrays):
     """Emite docs/context/datasets.md — um dataset por linha, com a data da última
     atualização. Substitui o all_tables.txt (lista chapada de `dataset.tabela`).
@@ -712,8 +721,9 @@ def write_datasets_md(beelink_tables, arrays):
     for t in beelink_tables:
         if t["source"] == "view_only":
             continue
-        d = por_ds.setdefault(t["dataset"], {"tabelas": 0, "linhas": 0, "last_update": ""})
+        d = por_ds.setdefault(t["dataset"], {"tabelas": 0, "bytes": 0, "linhas": 0, "last_update": ""})
         d["tabelas"] += 1
+        d["bytes"] += t.get("size_bytes") or 0
         d["linhas"] += t.get("rows") or 0
         data = (t.get("mtime") or scrape.get((t["dataset"], t["table"])) or "")[:10]
         d["last_update"] = max(d["last_update"], data)
@@ -723,15 +733,18 @@ def write_datasets_md(beelink_tables, arrays):
         "Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo — não editar à mão.",
         "`last_update` é a data do parquet mais recente do dataset no beelink (para tabela nativa do",
         "`.duckdb`, sem parquet, o `scrape_date` do catálogo).",
+        "`tamanho` é a soma dos bytes comprimidos dos dados dos parquets (`size_bytes` do catálogo, GB decimal);",
+        "o arquivo em disco é ~1% maior (rodapé e índices), e muito mais em dataset minúsculo.",
+        "`0 B` = só view ou tabela nativa do `.duckdb`, sem parquet.",
         "",
         f"{len(por_ds)} datasets, {sum(d['tabelas'] for d in por_ds.values())} tabelas.",
         "",
-        "| dataset | tabelas | linhas | last_update |",
-        "|---|---:|---:|---|",
+        "| dataset | tabelas | tamanho | linhas | last_update |",
+        "|---|---:|---:|---:|---|",
     ]
     for ds in sorted(por_ds):
         d = por_ds[ds]
-        linhas.append(f"| `{ds}` | {d['tabelas']} | {d['linhas']:,} | {d['last_update'] or '—'} |".replace(",", "."))
+        linhas.append(f"| `{ds}` | {d['tabelas']} | {tamanho_legivel(d['bytes'])} | {format(d['linhas'], ',').replace(',', '.')} | {d['last_update'] or '—'} |")
     out = REPO_ROOT / "docs" / "context" / "datasets.md"
     out.write_text("\n".join(linhas) + "\n", encoding="utf-8")
     print(f"Wrote {len(por_ds)} datasets to {out}", file=sys.stderr)
