@@ -28,7 +28,7 @@ o arquivo em disco é ~1% maior (rodapé e índices), e muito mais em dataset mi
 | `br_anp_combustiveis` | 1 | 31,6 MB | 2.205.259 | 2026-10-21 |
 | `br_anp_precos_combustiveis` | 1 | 427,9 MB | 16.887.683 | 2026-10-09 |
 | `br_ans_beneficiario` | 1 | 8,2 GB | 2.307.338.481 | 2026-10-29 |
-| `br_ans_operadoras` | 18 | 851,8 MB | 111.128.794 | 2026-10-25 |
+| `br_ans_operadoras` | 18 | 866,4 MB | 111.586.224 | 2026-11-11 |
 | `br_antt_dadosabertos` | 4 | 124,3 MB | 18.909.325 | 2026-10-28 |
 | `br_anvisa_cmed` | 1 | 5,0 MB | 53.388 | 2026-11-10 |
 | `br_anvisa_consultas` | 3 | 2,4 MB | 101.363 | 2026-11-11 |
@@ -64,7 +64,7 @@ o arquivo em disco é ~1% maior (rodapé e índices), e muito mais em dataset mi
 | `br_cgu_beneficios_cidadao` | 6 | 11,9 GB | 3.321.211.133 | 2026-10-26 |
 | `br_cgu_cartao_pagamento` | 4 | 50,1 MB | 3.213.220 | 2026-10-30 |
 | `br_cgu_dados_abertos` | 3 | 7,2 MB | 89.771 | 2026-07-05 |
-| `br_cgu_despesas_publicas` | 2 | 3,0 GB | 130.395.546 | 2026-10-15 |
+| `br_cgu_despesas_publicas` | 2 | 3,0 GB | 131.107.783 | 2026-11-11 |
 | `br_cgu_ebt` | 2 | 10,7 KB | 1.384 | 2026-07-09 |
 | `br_cgu_emendas_parlamentares` | 4 | 25,3 MB | 1.094.989 | 2026-10-30 |
 | `br_cgu_fef` | 3 | 512,5 KB | 84.945 | 2026-07-09 |
@@ -88,7 +88,7 @@ o arquivo em disco é ~1% maior (rodapé e índices), e muito mais em dataset mi
 | `br_comprasgov_catmatcatser` | 2 | 14,2 MB | 252.825 | 2026-10-21 |
 | `br_comprasgov_sicaf` | 1 | 24,7 MB | 962.016 | 2026-10-07 |
 | `br_cvm_administradores_carteira` | 3 | 449,6 KB | 16.476 | 2026-10-30 |
-| `br_cvm_cia_aberta` | 118 | 304,8 MB | 70.967.743 | 2026-10-21 |
+| `br_cvm_cia_aberta` | 118 | 307,9 MB | 71.347.599 | 2026-11-11 |
 | `br_cvm_fundos` | 39 | 4,2 GB | 440.462.913 | 2026-11-10 |
 | `br_cvm_oferta_publica_distribuicao` | 1 | 1,1 MB | 27.486 | 2026-10-30 |
 | `br_datahackers_state_data` | 1 | 367,6 KB | 4.271 | 2026-07-05 |
@@ -165,7 +165,7 @@ o arquivo em disco é ~1% maior (rodapé e índices), e muito mais em dataset mi
 | `br_mcid_mcmv` | 2 | 8,3 MB | 821.795 | 2026-11-04 |
 | `br_mdr_snis` | 2 | 66,0 MB | 245.101 | 2026-07-06 |
 | `br_mds_cadunico` | 2 | 719,6 MB | 350.069.349 | 2026-09-24 |
-| `br_me_caged` | 6 | 5,9 GB | 766.354.473 | 2026-10-31 |
+| `br_me_caged` | 6 | 5,9 GB | 770.758.064 | 2026-11-11 |
 | `br_me_clima_organizacional` | 1 | 956,2 KB | 16.436 | 2026-07-09 |
 | `br_me_cno` | 3 | 4,9 MB | 1.020.894 | 2026-07-09 |
 | `br_me_cnpj` | 8 | 15,4 GB | 537.025.666 | 2026-10-29 |

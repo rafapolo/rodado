@@ -2,7 +2,7 @@
 
 **Gerado por `scripts/gera_catalog_md.py`, a partir de `_rodado_metadata/catalog.parquet` — não editar à mão.** Descrições vêm de `docs/context/dataset_descriptions.yaml`; a coluna Dado até vem de `docs/context/dataset_freshness.yaml` (curado, só ~6 datasets por enquanto — vazio não significa "sem gap", significa "não conferido ainda"). Editar os YAML e regenerar (`build_metadata_catalog.py` → `gera_catalog_md.py`), nunca este arquivo.
 
-**295 datasets, 1.759 tabelas, 33.740.315.314 linhas.** 33 dataset(s) sem descrição. 4 com data de frescor conferida (de 295).
+**295 datasets, 1.759 tabelas, 33.746.268.428 linhas.** 33 dataset(s) sem descrição. 13 com data de frescor conferida (de 295).
 
 | Dataset | Descrição | Tabelas | Linhas | Dado até | Fonte |
 |---|---|---:|---:|---|---|
@@ -21,8 +21,8 @@
 | `br_anm` | ANM/SIGMINE — processos minerários, CFEM (royalties de mineração) e licenciamento | 22 | 8.380.445 | — | ANM / SIGMINE — títulos minerários e CFEM |
 | `br_anp_combustiveis` | ANP — preços de combustíveis por posto/revenda | 1 | 2.205.259 | — | Base dos Dados |
 | `br_anp_precos_combustiveis` | ANP — preços de combustíveis pesquisados (via Base dos Dados) | 1 | 16.887.683 | — | Base dos Dados |
-| `br_ans_beneficiario` | ANS — beneficiários de planos de saúde suplementar | 1 | 2.307.338.481 | — | Base dos Dados |
-| `br_ans_operadoras` | ANS — operadoras de planos de saúde (cadastro, reclamações, penalidades, ressarcimento ao SUS, demonstrações contábeis) | 18 | 111.128.794 | — | ANS — pastas restantes da raiz PDA (SIP, IGR, histórico de planos, características dos produtos, painel de precificação, TISS dados de planos) |
+| `br_ans_beneficiario` | ANS — beneficiários de planos de saúde suplementar | 1 | 2.307.338.481 | 2025-11-24 | Base dos Dados |
+| `br_ans_operadoras` | ANS — operadoras de planos de saúde (cadastro, reclamações, penalidades, ressarcimento ao SUS, demonstrações contábeis) | 18 | 111.586.224 | — | ANS — pastas restantes da raiz PDA (SIP, IGR, histórico de planos, características dos produtos, painel de precificação, TISS dados de planos) |
 | `br_antt_dadosabertos` | ANTT — RNTRC (transportadores e veículos de carga), CIOT e acidentes nas rodovias federais concedidas | 4 | 18.909.325 | — | Base dos Dados |
 | `br_anvisa_cmed` | CMED/ANVISA — preços regulados de medicamentos | 1 | 53.388 | — | CMED (preços de medicamentos, ANVISA) |
 | `br_anvisa_consultas` | ANVISA — registros de agrotóxicos, alimentos e produtos regulados | 3 | 101.363 | — | Base dos Dados |
@@ -43,7 +43,7 @@
 | `br_bd_diretorios_data_tempo` | Base dos Dados — diretório de calendário/tempo | 11 | 1.922.812 | — | Base dos Dados |
 | `br_bd_diretorios_mundo` | Base dos Dados — diretórios internacionais (país, NCM, sistema harmonizado) | 4 | 20.648 | — | Base dos Dados |
 | `br_bd_diretorios_us` | Base dos Dados — diretórios de referência dos EUA | 11 | 267.724 | — | Base dos Dados |
-| `br_bd_execucao_estadual` | Execução orçamentária e compras dos governos estaduais (Base dos Dados) — despesa, empenho, liquidação, pagamento, contratos, licitações e notas fiscais | 19 | 196.476.239 | — | Base dos Dados |
+| `br_bd_execucao_estadual` | Execução orçamentária e compras dos governos estaduais (Base dos Dados) — despesa, empenho, liquidação, pagamento, contratos, licitações e notas fiscais | 19 | 196.476.239 | 2026-09-14 | Base dos Dados |
 | `br_bd_metadados` | Base dos Dados — metadados do próprio catálogo original (tabelas, organizações) | 7 | 123.379 | — | Base dos Dados |
 | `br_bd_vizinhanca` | Base dos Dados — vizinhança geográfica de municípios e UFs | 2 | 523.926 | — | Base dos Dados |
 | `br_bndes_desembolsos` | BNDES — desembolsos mensais por setor, porte, UF e produto | 1 | 3.762.192 | — | Base dos Dados |
@@ -58,7 +58,7 @@
 | `br_cgu_beneficios_cidadao` | CGU — benefícios sociais federais (Bolsa Família, Auxílio Emergencial, BPC etc.) | 6 | 3.321.211.133 | — | Base dos Dados |
 | `br_cgu_cartao_pagamento` | CGU — gastos com cartão de pagamento do governo federal | 4 | 3.213.220 | — | Base dos Dados |
 | `br_cgu_dados_abertos` | CGU — metadados do catálogo dados.gov.br (conjuntos, recursos, organizações), foto de fev/2024 | 3 | 89.771 | — | Base dos Dados |
-| `br_cgu_despesas_publicas` | CGU/Portal da Transparência — execução da despesa federal (empenhado, liquidado, pago, restos a pagar) e recebimentos por favorecido, mês a mês desde 2014 | 2 | 130.395.546 | — | Base dos Dados |
+| `br_cgu_despesas_publicas` | CGU/Portal da Transparência — execução da despesa federal (empenhado, liquidado, pago, restos a pagar) e recebimentos por favorecido, mês a mês desde 2014 | 2 | 131.107.783 | — | Base dos Dados |
 | `br_cgu_ebt` | CGU — Escala Brasil Transparente 360°, nota de transparência de 665 municípios avaliados e das 27 UFs, 2020 e 2021 | 2 | 1.384 | — | Base dos Dados |
 | `br_cgu_emendas_parlamentares` | CGU — emendas parlamentares ao orçamento federal | 4 | 1.094.989 | — | Portal da Transparência — Emendas parlamentares por favorecido e convênios |
 | `br_cgu_fef` | CGU — Fundo de Erradicação da Pobreza e sorteios de fiscalização | 3 | 84.945 | — | Base dos Dados |
@@ -82,7 +82,7 @@
 | `br_comprasgov_catmatcatser` | ComprasGov — catálogo de materiais e serviços padronizados (CATMAT/CATSER) | 2 | 252.825 | — | CATMAT/CATSER (catálogo de materiais/serviços) |
 | `br_comprasgov_sicaf` | SICAF — cadastro de fornecedores habilitados a contratar com o governo | 1 | 962.016 | — | SICAF fornecedores |
 | `br_cvm_administradores_carteira` | CVM — administradores de carteira de valores mobiliários | 3 | 16.476 | — | Base dos Dados |
-| `br_cvm_cia_aberta` | CVM — companhias abertas (cadastro, demonstrações financeiras, formulário de referência, administradores e remuneração) | 118 | 70.967.743 | — | CVM — companhias abertas (cadastro, DFP, ITR, FRE, FCA, IPE, VLMO, CGVN, recompra de ações) |
+| `br_cvm_cia_aberta` | CVM — companhias abertas (cadastro, demonstrações financeiras, formulário de referência, administradores e remuneração) | 118 | 71.347.599 | — | CVM cia aberta e ANS operadoras, recoleta de 2026-11-11 |
 | `br_cvm_fundos` | CVM — cadastro de fundos de investimento | 39 | 440.462.913 | 2026-11-06 | Base dos Dados |
 | `br_cvm_oferta_publica_distribuicao` | CVM — ofertas públicas de distribuição de valores mobiliários | 1 | 27.486 | — | Base dos Dados |
 | `br_datahackers_state_data` | Data Hackers — pesquisa State of Data sobre o mercado de dados no Brasil | 1 | 4.271 | — | Base dos Dados |
@@ -159,10 +159,10 @@
 | `br_mcid_mcmv` | _(sem descrição)_ | 2 | 821.795 | — | Ministério das Cidades — Minha Casa Minha Vida (financiamento FGTS por município e empreendimentos subsidiados) |
 | `br_mdr_snis` | SNIS/MDR — indicadores de água e esgoto por município e prestador de serviço | 2 | 245.101 | — | Base dos Dados |
 | `br_mds_cadunico` | CadÚnico (MDS) — indicadores municipais mensais do Cadastro Único e Bolsa Família | 2 | 350.069.349 | — | Base dos Dados |
-| `br_me_caged` | Ministério do Trabalho — CAGED, movimentação de empregos formais (admissões/demissões) | 6 | 766.354.473 | — | Base dos Dados |
+| `br_me_caged` | Ministério do Trabalho — CAGED, movimentação de empregos formais (admissões/demissões) | 6 | 770.758.064 | — | Base dos Dados |
 | `br_me_clima_organizacional` | Ministério da Economia — pesquisa de clima organizacional no serviço público | 1 | 16.436 | — | Base dos Dados |
 | `br_me_cno` | Cadastro Nacional de Obras (CNO) — obras e vínculos de trabalhadores da construção | 3 | 1.020.894 | — | Base dos Dados |
-| `br_me_cnpj` | Receita Federal — cadastro completo de empresas, estabelecimentos, sócios e Simples Nacional | 8 | 537.025.666 | — | Base dos Dados |
+| `br_me_cnpj` | Receita Federal — cadastro completo de empresas, estabelecimentos, sócios e Simples Nacional | 8 | 537.025.666 | 2026-10-01 | Base dos Dados |
 | `br_me_comex_stat` | Comex Stat — exportação e importação por município e NCM | 5 | 133.659.718 | — | Base dos Dados |
 | `br_me_estoque_divida_publica` | Tesouro Nacional — estoque da dívida pública federal | 1 | 124.419 | — | Base dos Dados |
 | `br_me_exportadoras_importadoras` | dicionário de empresas exportadoras e importadoras | 1 | 3 | — | Base dos Dados |
@@ -174,7 +174,7 @@
 | `br_me_siorg` | SIORG — remuneração de cargos em comissão da administração federal | 1 | 258 | — | Base dos Dados |
 | `br_mec_prouni` | MEC ProUni — dicionário de variáveis do programa | 1 | 20 | — | Base dos Dados |
 | `br_mec_sisu` | MEC SISU — microdados de inscrição no Sistema de Seleção Unificada | 1 | 34.700.256 | — | Base dos Dados |
-| `br_mf_divida_ativa` | PGFN — estoque trimestral da dívida ativa do FGTS e previdenciária, uma linha por inscrição e devedor (via Base dos Dados) | 2 | 146.548.734 | — | Base dos Dados |
+| `br_mf_divida_ativa` | PGFN — estoque trimestral da dívida ativa do FGTS e previdenciária, uma linha por inscrição e devedor (via Base dos Dados) | 2 | 146.548.734 | 2026-10-02 | Base dos Dados |
 | `br_mg_belohorizonte_smfa_iptu` | Prefeitura de Belo Horizonte — cadastro de IPTU | 2 | 21.463.825 | — | Base dos Dados |
 | `br_mgi_compras_publicas` | Compras públicas federais do Compras.gov.br (MGI) — licitações, pregões, itens, ofertas, compras sem licitação, fornecedores e catálogo de materiais e serviços | 21 | 100.278.894 | — | Base dos Dados |
 | `br_mgi_pncp` | Portal Nacional de Contratações Públicas (PNCP) via Base dos Dados — dicionário de códigos (as tabelas grandes estão sob acesso restrito no BD) | 4 | 5.738.944 | — | Base dos Dados |
@@ -203,7 +203,7 @@
 | `br_ms_populacao` | Ministério da Saúde — estimativas populacionais por município | 1 | 4.919.222 | — | Base dos Dados |
 | `br_ms_pro_residencia` | _(sem descrição)_ | 3 | 11.849 | — | Pró-Residência em Saúde — Ministério da Saúde |
 | `br_ms_sia` | SIA/SUS — produção ambulatorial e psicossocial | 3 | 6.298.035.211 | — | Base dos Dados |
-| `br_ms_sih` | SIH/SUS — Autorizações de Internação Hospitalar (AIH) | 3 | 2.627.317.711 | — | Base dos Dados |
+| `br_ms_sih` | SIH/SUS — Autorizações de Internação Hospitalar (AIH) | 3 | 2.627.317.711 | 2026-01-31 | Base dos Dados |
 | `br_ms_sim` | SIM — Sistema de Informações sobre Mortalidade | 6 | 107.245.069 | — | Base dos Dados |
 | `br_ms_sinan` | SINAN — notificação compulsória de dengue e influenza/SRAG | 3 | 37.154.410 | — | Base dos Dados |
 | `br_ms_sinan_chikungunya` | SINAN — notificação compulsória de chikungunya | 1 | 2.514.085 | — | SINAN Chikungunya |
@@ -218,11 +218,11 @@
 | `br_ms_sipni_dicionarios` | SI-PNI — dicionários de cobertura vacinal | 4 | 224 | — | SI-PNI dicionários (healthbr-data) |
 | `br_ms_sipni_doses_historicas` | SI-PNI — doses de vacina aplicadas, série histórica agregada | 1 | 93.785.056 | — | SI-PNI doses históricas (healthbr-data) |
 | `br_ms_sipni_microdados` | SI-PNI — microdados de vacinação individual (2020) | 1 | 102.423.524 | — | SI-PNI microdados (healthbr-data) |
-| `br_ms_sisvan` | SISVAN — Sistema de Vigilância Alimentar e Nutricional | 2 | 406.253.847 | — | Base dos Dados |
+| `br_ms_sisvan` | SISVAN — Sistema de Vigilância Alimentar e Nutricional | 2 | 406.253.847 | 2023-12-31 | Base dos Dados |
 | `br_ms_vacinacao_covid19` | Ministério da Saúde — vacinação contra covid-19 | 2 | 805.917 | — | Base dos Dados |
 | `br_mte_listasuja` | MTE — Lista Suja do trabalho escravo (Cadastro de Empregadores) e CEAC, com CNPJ/CPF | 5 | 2.837 | — | Base dos Dados |
 | `br_ok_queridodiario` | Querido Diário — metadados de diários oficiais municipais | 1 | 326.052 | — | Querido Diário |
-| `br_ok_queridodiario_texto` | Querido Diário — texto integral das edições de diários oficiais municipais | 1 | 320.422 | — | Querido Diário — texto integral das edições |
+| `br_ok_queridodiario_texto` | Querido Diário — texto integral das edições de diários oficiais municipais | 1 | 320.422 | 2026-10-06 | Querido Diário — texto integral das edições |
 | `br_ons_avaliacao_operacao` | ONS — avaliação da operação do Sistema Interligado Nacional (geração por usina, térmicas por motivo de despacho, restrição de eólicas, energia armazenada e afluente por reservatório) | 6 | 89.805.415 | — | Base dos Dados |
 | `br_ons_dados_abertos` | _(sem descrição)_ | 91 | 644.965.031 | — | ONS — dados abertos, 4 conjuntos que faltavam |
 | `br_ons_estimativa_custos` | ONS — estimativas de custo da operação (balanço de energia por subsistema, custo marginal semanal e semi-horário, custo variável das térmicas) | 5 | 1.407.872 | — | Base dos Dados |
@@ -277,7 +277,7 @@
 | `br_transferegov` | TransfereGov — planos de ação, programas e transferências (API normalizada) | 3 | 30.346 | — | Base dos Dados |
 | `br_transferegov_siconv` | TransfereGov/SICONV — convênios, contratos de repasse e execução física/financeira completa | 62 | 69.060.758 | — | Base dos Dados |
 | `br_trase_supply_chain` | Trase — cadeia de suprimentos de soja e carne bovina, do frigorífico/esmagadora à origem | 7 | 1.824.843 | — | Base dos Dados |
-| `br_tse_eleicoes` | TSE — eleições 2026 (candidatos, votação, resultados, bens, receitas) | 32 | 1.719.609.912 | — | Base dos Dados |
+| `br_tse_eleicoes` | TSE — eleições 2026 (candidatos, votação, resultados, bens, receitas) | 32 | 1.719.609.912 | 2026-10-25 | Base dos Dados |
 | `br_tse_filiacao_partidaria` | TSE — filiação partidária | 2 | 42.201.443 | — | Base dos Dados |
 | `br_ufmg_censo_demografico_1872` | Recenseamento Geral do Império do Brasil de 1872 (UFMG) por província, município e paróquia, nos dados originais e corrigidos | 58 | 1.251.630 | — | Base dos Dados |
 | `eu_sanctions` | União Europeia — lista de sanções | 1 | 44.043 | — | Base dos Dados |
@@ -294,10 +294,10 @@
 | `world_iea_pirls` | IEA PIRLS — avaliação internacional de leitura do 4º ano, 51 países, sem o Brasil nem outro país latino-americano (filtrar pirls_type = Normal) | 8 | 1.941.828 | — | Base dos Dados |
 | `world_iea_timss` | IEA TIMSS 2023 — matemática e ciências do 4º e 8º anos, 59 países, com o Brasil | 11 | 1.929.595 | — | Base dos Dados |
 | `world_imdb_movies` | IMDB — filmes mais bem avaliados por ano | 1 | 33.600 | — | Base dos Dados |
-| `world_noaa_etopo` | _(sem descrição)_ | 1 | 10.407.600 | — | NOAA NCEI, ETOPO 2022 Global Relief Model, resolução de 60 arco-segundos — https://www.ncei.noaa.gov/products/etopo-global-relief-model |
+| `world_noaa_etopo` | _(sem descrição)_ | 1 | 10.407.600 | — | NOAA NCEI, ETOPO 2022 v1, 60 arco-segundos, superfície — https://www.ngdc.noaa.gov/thredds/dodsC/global/ETOPO2022/60s/60s_surface_elev_netcdf/ (citação: NOAA NCEI 2022, doi:10.25921/fd45-gt74) |
 | `world_oecd_pisa` | OCDE PISA — avaliação internacional de estudantes | 1 | 2.500.803 | — | Base dos Dados |
 | `world_oecd_public_finance` | OCDE — finanças públicas por país | 1 | 2.646 | — | Base dos Dados |
 | `world_olympedia_olympics` | Olympedia — atletas e resultados olímpicos históricos | 6 | 482.195 | — | Base dos Dados |
 | `world_sofascore_competicoes_futebol` | Sofascore — Campeonato Brasileiro Série A e Champions League | 2 | 11.324 | — | Base dos Dados |
-| `world_wb_mides` | World Bank/MIDES — licitações e execução orçamentária (dataset internacional de referência) | 9 | 1.283.413.820 | — | Base dos Dados |
+| `world_wb_mides` | World Bank/MIDES — licitações e execução orçamentária (dataset internacional de referência) | 9 | 1.283.413.820 | 2026-09-17 | Base dos Dados |
 | `world_wwf_hydrosheds` | WWF HydroSHEDS — bacias, lagos e rios do mundo, dataset hidrográfico de referência | 3 | 15.119.487 | — | Base dos Dados |
