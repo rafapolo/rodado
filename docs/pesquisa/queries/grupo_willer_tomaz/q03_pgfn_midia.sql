@@ -1,7 +1,10 @@
 -- Dívida ativa da União do grupo de mídia (Difusora TV, Difusora Comunicação, Curimã, Caxias, Jota):
 -- cada inscrição contada uma vez, com quantas das cinco empresas respondem por ela
 WITH d AS (
-  SELECT NUMERO_INSCRICAO, substr(regexp_replace(CPF_CNPJ, '[^0-9]', '', 'g'), 1, 8) AS raiz,
+  -- a raiz só no ramo de 14 dígitos: coluna mista de CPF e CNPJ (o db.rodado.xyz recusa substr de CPF)
+  SELECT NUMERO_INSCRICAO,
+         CASE WHEN length(regexp_replace(CPF_CNPJ, '[^0-9]', '', 'g')) = 14
+              THEN substr(regexp_replace(CPF_CNPJ, '[^0-9]', '', 'g'), 1, 8) END AS raiz,
          SITUACAO_INSCRICAO, TRY_CAST(VALOR_CONSOLIDADO AS DOUBLE) AS valor
   FROM br_pgfn_dividaativa.divida
   WHERE substr(regexp_replace(CPF_CNPJ, '[^0-9]', '', 'g'), 1, 8)

@@ -127,7 +127,11 @@ não têm cota nem ritmo (são metadados). O botão CSV da página (`#exporta`) 
 dado pelo navegador: `formato=csv&limite=1000&ciente=1` pelo `/query`, com o cookie ou a senha, e
 cabe nos limites padrão (teste `exporta_do_terminal_segue_funcionando_com_os_padroes`).
 
-**O que segue aberto:** duas pendências registradas fora do git (`tasks/plans/limites_abuso_db.md`).
+**CPF na saída** (desde 2026-11-11): além da máscara por valor, `rodado_sql._confere_cpf` lê a
+árvore do parser e recusa transformar ou renomear coluna com "cpf" no nome no que a consulta
+devolve (filtrar, juntar, agrupar e contar seguem livres); vale para o terminal, o `/query` e o
+MCP. Teste: `python3 db/testes/cpf_saida.py`. O que segue aberto fica fora do git
+(`tasks/plans/limites_abuso_db.md`).
 
 **O que a recusa de tabela grande não pega** (só o comando de cima, de uma tabela, sem filtro):
 `WITH x AS (SELECT * FROM grande) SELECT * FROM x`, `row_number()` como paginação e `WHERE id > n`
@@ -148,7 +152,11 @@ HTTP Basic continuam valendo como antes.
   private_ranges` + `trusted_proxies_strict`, porque o haloy fica na frente). O log traz
   `[consulta] usuario=ana ip=… linhas=… restante=…`: o nome, nunca o token nem o SQL.
 - O primeiro acesso por `?token=` grava o token da pessoa no cookie (antes gravava sempre o do
-  dono). O link curto `/q/<id>` continua dando o cookie do `DB_TOKEN`.
+  dono). O link curto `/q/<id>` dá o cookie do `DB_TOKEN_LINK` (desde 2026-11-11; antes, o do
+  `DB_TOKEN`): o `consulta.py` o chama de `link`, com cota própria comum a todos os visitantes
+  (50 mil linhas e 50 MB por dia, `RODADO_COTA_LINK_DIA`, `RODADO_COTA_LINK_BYTES_DIA`). Ele vale
+  só no cookie, nunca em `?token=`. Trocar `/root/rodado-db/.token_link` e redeployar derruba todo
+  cookie de link sem mexer no do dono; sem `DB_TOKEN_LINK`, o link pede a senha.
 - **Criar:** `ssh finland` → `echo "ana:$(openssl rand -hex 24)" >> /root/rodado-db/.tokens` (arquivo
   com `chmod 600`, nunca no repositório) e redeploy com `DB_TOKENS="$(paste -sd, .tokens)"`. **Revogar:**
   apagar a linha e redeployar; o `401` vale só para aquele token e o cookie dele morre junto.
@@ -316,7 +324,7 @@ scp docs/context/gotchas/* finland:/root/rodado-db/mcp/context/gotchas/
 # cartões e perfis das tabelas (describe_table lê sob demanda, um dataset por vez; ~13 MB)
 scp docs/context/summaries/* finland:/root/rodado-db/mcp/context/summaries/
 ssh finland 'cd /root/rodado-db && set -a && . /etc/haloy/.env && . ./.s3 && set +a &&
-  DB_USUARIO=rodado DB_SENHA_HASH="$(cat .senha_hash)" DB_TOKEN="$(cat .token)" \
+  DB_USUARIO=rodado DB_SENHA_HASH="$(cat .senha_hash)" DB_TOKEN="$(cat .token)" DB_TOKEN_LINK="$(cat .token_link)" \
   DB_TOKENS="$(paste -sd, .tokens 2>/dev/null)" haloy deploy -c haloy.yml'   # .tokens: um nome:token por linha
 
 # catálogo: depois de uma sincronização ou de uma cópia no SSD, remontar sem esperar os 15 min

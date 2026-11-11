@@ -245,6 +245,243 @@ def _confere_arvore(con, sql: str) -> None:
         if no.get("type") == "BASE_TABLE" and re.search(r"[/\\.:]", str(no.get("table_name") or "")):
             raise ConsultaRecusada("ler arquivo pelo caminho não é permitido; consulte as views (dataset.tabela)")
         pilha.extend(no.values())
+    _confere_cpf(con, arvore)
+
+
+# ---------------------------------------------------------------------------- CPF na saída
+# A máscara da saída (mascara_cpf, abaixo) olha tipo e valor: `CAST(cpf AS BIGINT) AS n`,
+# `cpf::BLOB`, `split(cpf, '')`, `substr` em dois pedaços ou uma conta devolviam o CPF inteiro
+# (conferido em 2026-11-11). Esta regra fecha isso pela árvore do parser: coluna com "cpf" no
+# nome pode ser filtrada, juntada, agrupada e ordenada à vontade, mas no que a consulta devolve
+# só aparece pura (e a máscara a pega), passada adiante sem mudar (CASE, coalesce, min/max),
+# dentro de uma condição (=, IN, IS NULL…) ou contada (count, approx_count_distinct). E não
+# pode trocar de nome para um sem "cpf" (alias, CTE com colunas, `* RENAME`, UNION por posição,
+# UNPIVOT), senão a transformação viria um nível acima com outro nome. Colunas mistas
+# (`cpf_cnpj`) entram também: 8 dígitos de um CPF somados ao miolo que a máscara mostra o
+# remontam. O que segue aberto está em tasks/plans/limites_abuso_db.md.
+
+_NOME_CPF = re.compile(r"cpf", re.I)
+# o valor sai igual (a máscara da saída o pega)
+_PASSA = {"coalesce", "ifnull", "nullif", "min", "max", "any_value", "first", "last", "arbitrary",
+          "arg_min", "arg_max", "argmin", "argmax", "min_by", "max_by"}
+# o resultado é um número que não carrega o CPF
+_CONTA = {"count", "approx_count_distinct", "count_star"}
+_BOOL_OPERADORES = {"OPERATOR_IS_NULL", "OPERATOR_IS_NOT_NULL", "COMPARE_IN", "COMPARE_NOT_IN", "OPERATOR_NOT"}
+# chaves da árvore em que a coluna não vira valor de saída
+_CHAVES_LIVRES = {"partitions", "orders", "filter", "filter_expr", "when_expr", "order_bys"}
+
+_DICA_CPF = ("coluna de CPF só sai pura (mascarada) ou contada: filtre, junte, agrupe e ordene por ela "
+             "à vontade (WHERE, JOIN, GROUP BY), conte com count(DISTINCT …), mas não a transforme "
+             "(CAST, substr, split, list, to_json…) nem a renomeie para um nome sem \"cpf\". Coluna mista "
+             "(cpf_cnpj): para a raiz do CNPJ, CASE WHEN length(regexp_replace(col, '[^0-9]', '', 'g')) = 14 "
+             "THEN substr(regexp_replace(col, '[^0-9]', '', 'g'), 1, 8) END")
+
+
+def _cpf(nome) -> bool:
+    return bool(nome) and bool(_NOME_CPF.search(str(nome)))
+
+
+def _recusa_cpf(motivo: str):
+    raise ConsultaRecusada(f"{motivo} — {_DICA_CPF}")
+
+
+def _ref_cpf(no) -> bool:
+    return isinstance(no, dict) and no.get("class") == "COLUMN_REF" and _cpf((no.get("column_names") or [""])[-1])
+
+
+def _so_cnpj(quando, coluna) -> bool:
+    """`length(regexp_replace(<coluna>, '[^0-9]', '', 'g')) = 14`: a condição que só deixa CNPJ.
+    `length(<coluna>) = 14` sozinho não serve: CPF formatado (000.000.000-00) também tem 14."""
+    if not isinstance(quando, dict) or quando.get("type") != "COMPARE_EQUAL":
+        return False
+    lados = [quando.get("left"), quando.get("right")]
+
+    def texto(no):
+        return (no or {}).get("literal", {}).get("text") if (no or {}).get("class") == "CONSTANT" else None
+
+    def args(no):
+        return [a.get("expression") for a in (no or {}).get("arguments") or []] or (no or {}).get("children") or []
+
+    for f, k in (lados, lados[::-1]):
+        if texto(k) != "14" or (f or {}).get("function_name", "").lower() not in ("length", "len", "strlen", "char_length"):
+            continue
+        a = args(f)
+        if len(a) != 1 or (a[0] or {}).get("function_name", "").lower() != "regexp_replace":
+            continue
+        r = args(a[0])
+        if len(r) >= 3 and (r[0] or {}).get("class") == "COLUMN_REF" \
+                and (r[0].get("column_names") or [""])[-1].lower() == coluna.lower() \
+                and texto(r[1]) in ("[^0-9]", "\\D") and texto(r[2]) == "" and (len(r) == 3 or texto(r[3]) == "g"):
+            return True
+    return False
+
+
+def _confere_expressao(expr, linhas_de_tabela) -> bool:
+    """Recusa se a expressão transforma coluna de CPF (ou a linha inteira de uma tabela, ou um
+    `COLUMNS(*)`); devolve True se o valor do CPF chega à saída sem mudar."""
+    carrega = False
+    pilha = [(expr, ())]          # (nó, ancestrais como (nó, chave))
+    while pilha:
+        no, anc = pilha.pop()
+        if isinstance(no, list):
+            pilha.extend((x, anc) for x in no)
+            continue
+        if not isinstance(no, dict):
+            continue
+        if no.get("class") == "SUBQUERY":        # a consulta de dentro é conferida por conta própria
+            continue
+        nomes = no.get("column_names") or []
+        alvo = (_ref_cpf(no) or (no.get("class") == "COLUMN_REF" and len(nomes) == 1 and nomes[0].lower() in linhas_de_tabela)
+                or (no.get("class") == "STAR" and anc))
+        if alvo:
+            # da saída para dentro: a primeira condição ou contagem neutraliza o que vem abaixo
+            # (`length(cpf) = 11` devolve booleano); a primeira transformação antes disso recusa
+            passa = True
+            coluna = (nomes or [""])[-1]
+            for pai, chave in anc:
+                if chave == "then_expr" and "cnpj" in coluna.lower() and _so_cnpj(pai.get("when_expr"), coluna):
+                    passa = False      # coluna mista dentro de um ramo que só aceita CNPJ
+                    break
+                classe, tipo = pai.get("class"), pai.get("type")
+                funcao = str(pai.get("function_name") or "").lower()
+                if chave in _CHAVES_LIVRES or classe in ("COMPARISON", "CONJUNCTION", "BETWEEN") \
+                        or (classe == "OPERATOR" and tipo in _BOOL_OPERADORES) \
+                        or (classe in ("FUNCTION", "WINDOW", "AGGREGATE") and funcao in _CONTA):
+                    passa = False
+                    break
+                if not classe or classe == "CASE" \
+                        or (classe in ("FUNCTION", "AGGREGATE", "WINDOW") and funcao in _PASSA):
+                    continue           # entrada de CASE/ORDER sem classe, ou o valor passa igual
+                coluna = ".".join(nomes) or "COLUMNS(*)"
+                _recusa_cpf(f"{funcao or tipo or classe}() sobre {coluna} devolveria o CPF sem máscara")
+            carrega = carrega or passa
+            continue
+        for chave, valor in no.items():
+            if isinstance(valor, (dict, list)):
+                pilha.append((valor, anc + ((no, chave),)))
+    return carrega
+
+
+def _nomes_de_saida(no) -> list:
+    """[(nome, carrega_cpf)] das colunas que um nó devolve; None no lugar de uma `*`."""
+    while no and no.get("type") == "SET_OPERATION_NODE":
+        no = (no.get("children") or [no.get("left")])[0]
+    saida = []
+    for item in (no or {}).get("select_list") or []:
+        if item.get("class") == "STAR":
+            saida.append(None)
+        elif item.get("class") == "COLUMN_REF":
+            nome = item.get("alias") or (item.get("column_names") or [""])[-1]
+            saida.append((nome, _ref_cpf(item)))
+        else:
+            saida.append((item.get("alias") or "", None))   # None: decide quem conferiu o item
+    return saida
+
+
+def _confere_renomeia(nomes_novos, antigos, onde):
+    for i, novo in enumerate(nomes_novos):
+        if i >= len(antigos) or antigos[i] is None:
+            if i < len(antigos):
+                _recusa_cpf(f"{onde}: renomear colunas de uma `*` não é permitido quando pode haver CPF")
+            continue
+        nome, carrega = antigos[i]
+        if (carrega or _cpf(nome)) and not _cpf(novo):
+            _recusa_cpf(f"{onde}: a coluna {nome} viraria {novo}")
+
+
+def _colunas_da_tabela(con, no):
+    try:
+        return [(c, _cpf(c)) for (c,) in con.execute(
+            "SELECT column_name FROM duckdb_columns() WHERE schema_name = ? AND table_name = ? ORDER BY column_index",
+            [no.get("schema_name") or "main", no.get("table_name")]).fetchall()]
+    except duckdb.Error:
+        return []
+
+
+def _confere_cpf(con, arvore) -> None:
+    """A regra do CPF na saída, em todo SELECT da consulta (subconsulta, CTE, UNION, LATERAL)."""
+    # `SELECT t` devolve a linha inteira da tabela t como struct: conta como coluna de CPF quando
+    # t é uma view do catálogo com coluna de CPF e o nome não é também coluna dela (CTE e
+    # subconsulta ficam de fora: `cnes` pode ser CTE e coluna ao mesmo tempo)
+    linhas_de_tabela = set()
+    pilha = [arvore]
+    while pilha:
+        no = pilha.pop()
+        if isinstance(no, list):
+            pilha.extend(no)
+            continue
+        if not isinstance(no, dict):
+            continue
+        if no.get("type") == "BASE_TABLE" and no.get("schema_name"):
+            colunas = _colunas_da_tabela(con, no)
+            if any(c for _, c in colunas):
+                nomes = {n.lower() for n, _ in colunas}
+                for k in ("alias", "table_name"):
+                    if no.get(k) and str(no[k]).lower() not in nomes:
+                        linhas_de_tabela.add(str(no[k]).lower())
+        pilha.extend(v for v in no.values() if isinstance(v, (dict, list)))
+
+    pilha = [arvore]
+    while pilha:
+        no = pilha.pop()
+        if isinstance(no, list):
+            pilha.extend(no)
+            continue
+        if not isinstance(no, dict):
+            continue
+        tipo = no.get("type")
+        if tipo == "SELECT_NODE":
+            for item in no.get("select_list") or []:
+                if item.get("class") == "STAR":
+                    for r in item.get("replace_list") or []:
+                        carrega = _confere_expressao(r.get("value"), linhas_de_tabela)
+                        if carrega and not _cpf(r.get("key")):
+                            _recusa_cpf(f"* REPLACE poria CPF em {r.get('key')}")
+                    for r in item.get("rename_list") or []:
+                        de = r.get("key") or {}
+                        de = (de.get("column") or ".".join(de.get("column_names") or [])) if isinstance(de, dict) else str(de)
+                        if _cpf(de) and not _cpf(r.get("value")):
+                            _recusa_cpf(f"* RENAME: a coluna {de} viraria {r.get('value')}")
+                    if item.get("columns") and item.get("expr") is not None:
+                        _confere_expressao(item["expr"], linhas_de_tabela)
+                    continue
+                carrega = _confere_expressao(item, linhas_de_tabela)
+                alias = item.get("alias")
+                if carrega and alias and not _cpf(alias):
+                    _recusa_cpf(f"a coluna de CPF não pode sair com o nome {alias}")
+            for cte in ((no.get("cte_map") or {}).get("map") or []):
+                aliases = (cte.get("value") or {}).get("aliases") or []
+                if aliases:
+                    _confere_renomeia(aliases, _nomes_de_saida((cte.get("value") or {}).get("query_node")),
+                                      f"WITH {cte.get('key')}(…)")
+        elif tipo == "SET_OPERATION_NODE":
+            filhos = no.get("children") or [x for x in (no.get("left"), no.get("right")) if x]
+            if filhos:
+                base = _nomes_de_saida(filhos[0])
+                for filho in filhos[1:]:
+                    for i, saida in enumerate(_nomes_de_saida(filho)):
+                        if saida is None or i >= len(base) or base[i] is None:
+                            continue
+                        if (saida[1] or _cpf(saida[0])) and not _cpf(base[i][0]):
+                            _recusa_cpf(f"UNION poria a coluna {saida[0]} sob o nome {base[i][0]}")
+        elif tipo in ("BASE_TABLE", "SUBQUERY") and no.get("column_name_alias"):
+            antigos = (_colunas_da_tabela(con, no) if tipo == "BASE_TABLE"
+                       else _nomes_de_saida((no.get("subquery") or {}).get("node")))
+            _confere_renomeia(no["column_name_alias"], antigos, f"{no.get('alias') or 'tabela'}(…)")
+        elif tipo == "PIVOT":
+            fora_da_fonte = {k: v for k, v in no.items() if k != "source"}
+            sub = [fora_da_fonte]
+            while sub:
+                x = sub.pop()
+                if isinstance(x, list):
+                    sub.extend(x)
+                elif isinstance(x, dict):
+                    if _ref_cpf(x) or x.get("class") == "STAR" or any(_cpf(n) for n in (x.get("unpivot_names") or [])):
+                        _recusa_cpf("PIVOT/UNPIVOT sobre coluna de CPF a tiraria do nome")
+                    if any(isinstance(n, str) and _cpf(n) for n in (x.get("pivot_names") or []) + (x.get("entries") or [])):
+                        _recusa_cpf("PIVOT/UNPIVOT sobre coluna de CPF a tiraria do nome")
+                    sub.extend(v for v in x.values() if isinstance(v, (dict, list)))
+        pilha.extend(v for v in no.values() if isinstance(v, (dict, list)))
 
 
 # CPF nunca sai inteiro: a consulta pode filtrar e juntar pelo CPF completo, mas todo
@@ -306,9 +543,11 @@ def mascara_cpf(rel):
             e = f"_mascara_cpf({ref})"
         elif t in ("VARCHAR[]", "JSON[]"):
             e = f"list_transform({ref}, lambda x: _mascara_cpf(x))"
-        elif "VARCHAR" in t or "JSON" in t:
+        elif "VARCHAR" in t or "JSON" in t or t == "BLOB":
+            # BLOB: `cpf::BLOB` saía como bytes do CPF inteiro
             e = f"_mascara_cpf(CAST({ref} AS VARCHAR))"
-        elif "cpf" in nome.lower() and t.split("(")[0] in _INTEIROS:
+        # só em nome de coluna: `count_star() FILTER (WHERE cpf …)` é contagem, não CPF
+        elif "cpf" in nome.lower() and "(" not in nome and t.split("(")[0] in _INTEIROS:
             e = f"_mascara_cpf(lpad(CAST({ref} AS VARCHAR), 11, '0'))"
         else:
             exprs.append(f"{ref} AS {alias}")

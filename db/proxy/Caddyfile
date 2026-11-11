@@ -107,12 +107,16 @@
 	}
 
 	# Link curto /q/<id>: quem abre um link que existe (o SQL salvo em /dados/q/<id>.sql, no
-	# volume deste container) entra como quem tem o token — terminal completo, a pedido — e a
+	# volume deste container) entra com o token DE LINK — terminal completo, a pedido — e a
 	# página executa o SQL. Um id que não existe cai na senha, como qualquer outra rota:
 	# sem a conferência do arquivo, qualquer /q/xxxxxxxx abriria o site.
+	# Até 2026-11-11 o cookie levava o DB_TOKEN do dono: quem recebia um link tinha acesso
+	# completo por 30 dias, mesmo com o token pessoal revogado. Agora leva o DB_TOKEN_LINK, que o
+	# consulta.py chama de "link" e põe numa cota própria e baixa; trocá-lo derruba todo cookie
+	# de link sem mexer no do dono. Sem DB_TOKEN_LINK, o link pede a senha.
 	@link_q {
 		path_regexp qid ^/q/([A-Za-z0-9_-]{8,16})$
-		expression `"{$DB_TOKEN}" != ""`
+		expression `"{$DB_TOKEN_LINK}" != ""`
 	}
 	handle @link_q {
 		@existe file {
@@ -121,7 +125,7 @@
 		}
 		handle @existe {
 			header {
-				Set-Cookie "rodado_token={$DB_TOKEN}; Path=/; Max-Age=2592000; HttpOnly; Secure; SameSite=Lax"
+				Set-Cookie "rodado_token={$DB_TOKEN_LINK}; Path=/; Max-Age=2592000; HttpOnly; Secure; SameSite=Lax"
 				Cache-Control "no-store"
 			}
 			import app
@@ -149,6 +153,8 @@
 	@token_dono expression `"{$DB_TOKEN}" != "" && ({query.token} == "{$DB_TOKEN}" || {cookie.rodado_token} == "{$DB_TOKEN}")`
 	@token_pessoa_url vars_regexp {http.request.uri.query.token} {$DB_TOKENS_RE:a^}
 	@token_pessoa_cookie vars_regexp {http.request.cookie.rodado_token} {$DB_TOKENS_RE:a^}
+	# o cookie dado pelo link /q (só pelo cookie: o token de link não vale em ?token=)
+	@token_link expression `"{$DB_TOKEN_LINK}" != "" && {cookie.rodado_token} == "{$DB_TOKEN_LINK}"`
 	handle @token_dono {
 		import com_token
 	}
@@ -156,6 +162,9 @@
 		import com_token
 	}
 	handle @token_pessoa_cookie {
+		import com_token
+	}
+	handle @token_link {
 		import com_token
 	}
 

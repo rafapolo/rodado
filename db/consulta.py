@@ -445,6 +445,8 @@ SIMULTANEAS = threading.BoundedSemaphore(N_SIMULTANEAS)
 CFG = limites.Config.do_ambiente()
 LIMITES = limites.Limites(CFG)
 TOKENS, _RECUSADOS = limites.carrega_tokens(os.environ.get("DB_TOKENS", ""))
+# o token que o link /q grava no cookie: nome "link", cota própria e baixa (limites.BALDE_LINK)
+TOKENS = limites.com_token_de_link(TOKENS, os.environ.get("DB_TOKEN_LINK", "").strip())
 for _n in _RECUSADOS:
     print(f"[limites] DB_TOKENS: entrada '{_n}' recusada", flush=True)
 

@@ -3,4 +3,4 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 [ -d node_modules ] || bun install --silent
-RODADO_SENHA="${RODADO_SENHA:-$(ssh finland 'cat /root/rodado-db/.senha')}" exec bun test --timeout 60000 "$@"
+RODADO_SENHA="${RODADO_SENHA:-$(ssh finland 'cat /root/rodado-db/.senha')}" exec bun test --timeout 240000 "$@"

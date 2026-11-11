@@ -23,6 +23,7 @@ os.environ.update({
     "RODADO_LIMITES_DB": os.path.join(TMP, "limites.sqlite"), "RODADO_TEMP": os.path.join(TMP, "duck"),
     "RODADO_DIR_Q": os.path.join(TMP, "q"),
     "DB_TOKENS": "ana:anaanaanaanaana1234 bia:biabiabiabiabia5678,polo:pelopelopelopelo9999",
+    "DB_TOKEN_LINK": "linklinklinklink4321",
 })
 os.makedirs(os.environ["RODADO_TEMP"])
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
@@ -496,6 +497,21 @@ def volume_antigo_ganha_a_coluna_de_bytes():
     limites.Limites(limites.Config(arquivo=arq))      # a segunda abertura (outro processo) não tenta de novo
     lim.registra("token:ana", 10, bytes_=10)
     assert lim.restante("token:ana") == 20 and lim.restante_bytes("token:ana") == 990
+
+
+@teste
+def token_de_link_tem_cota_propria():
+    # o cookie que o link /q grava: nome "link", cota baixa comum a todos os visitantes, fora do
+    # balde da senha e longe do token do dono
+    assert limites.com_token_de_link({"a" * 16: "link", "b" * 16: "bia"}, "c" * 16) == {"b" * 16: "bia", "c" * 16: "link"}
+    assert limites.com_token_de_link({}, "curto") == {} and limites.com_token_de_link({}, "") == {}
+    novo(cota_dia=1000, cota_senha_dia=1000, cota_link_dia=100)
+    st, cab, _c = pede(N60, ip="10.6.0.1", cookie="linklinklinklink4321")
+    assert st == 200 and cab["x-cota-restante"] == "40", cab
+    st, cab, _c = pede(N60, ip="10.6.0.2", cookie="linklinklinklink4321")     # outro visitante, mesmo balde
+    assert st == 200 and cab["x-linhas"] == "40" and cab["x-cota-restante"] == "0", cab
+    assert pede("SELECT 1", ip="10.6.0.3", cookie="linklinklinklink4321")[0] == 429
+    assert pede(N60, ip="10.6.0.3")[1]["x-cota-restante"] == "940"            # a senha não foi gasta
 
 
 if __name__ == "__main__":

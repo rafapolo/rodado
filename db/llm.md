@@ -166,6 +166,11 @@ o corpo traz a armadilha e a `dica`; repita com `?ciente=1` depois de tratar del
 **CPF sai mascarado** (`***.456.789-**`) em todo resultado e mensagem de erro, também quando
 renomeado ou dentro de outro texto. A consulta vê o CPF inteiro: filtre e junte por ele
 normalmente (`WHERE cpf = '...'`, `JOIN ... USING (cpf)`), só não espere recebê-lo de volta.
+Coluna com "cpf" no nome só sai pura (mascarada), contada (`count(DISTINCT cpf)`) ou dentro de
+uma condição; transformá-la no `SELECT` (`CAST`, `substr`, `split`, `list`, `to_json`…) ou
+renomeá-la para um nome sem "cpf" é recusado com `400`. Em coluna mista (`cpf_cnpj`), a raiz do
+CNPJ sai assim: `CASE WHEN length(regexp_replace(col, '[^0-9]', '', 'g')) = 14 THEN
+substr(regexp_replace(col, '[^0-9]', '', 'g'), 1, 8) END`.
 CNPJ vem inteiro.
 
 Cada requisição devolve no máximo {limite_maximo} linhas. Para mais que isso, agregue no servidor

@@ -37,6 +37,8 @@ TOKEN_OK = re.compile(r"^[A-Za-z0-9_-]{16,128}$")
 REGEX_NENHUM = "a^"     # RE2 válida que nunca casa; vazia casaria o token ausente
 BALDE_SENHA = "senha:todos"   # chave da cota comum de quem entra sem token pessoal
 BALDE_TERMINAL = "terminal:todos"   # cota comum a todas as abas do terminal (/tty), que não sabe o IP
+NOME_LINK = "link"                  # o DB_TOKEN_LINK, que o link /q grava no cookie de quem o abre
+BALDE_LINK = f"token:{NOME_LINK}"   # cota comum a todos os visitantes de links
 
 
 def _inteiro(nome, padrao):
@@ -54,6 +56,8 @@ class Config:
     cota_senha_dia: int = 2_000_000        # linhas por dia somando todo o tráfego sem token; 0 desliga
     cota_senha_bytes_dia: int = 2_500_000_000   # bytes, idem; 0 desliga
     prefixo_ipv6: int = 64         # IPv6 vira esta rede na chave de cota e ritmo
+    cota_link_dia: int = 50_000             # linhas por dia, todos os visitantes de link /q somados
+    cota_link_bytes_dia: int = 50_000_000   # bytes, idem
     terminal_max_linhas: int = 200          # teto do `.linhas` do terminal; o resto sai pelo CSV (#exporta)
     cota_terminal_dia: int = 100_000        # linhas exibidas por dia, todas as abas somadas; 0 desliga
     cota_terminal_bytes_dia: int = 100_000_000   # bytes exibidos, idem; 0 desliga
@@ -78,6 +82,8 @@ class Config:
             cota_senha_dia=_inteiro("RODADO_COTA_SENHA_DIA", 2_000_000),
             cota_senha_bytes_dia=_inteiro("RODADO_COTA_SENHA_BYTES_DIA", 2_500_000_000),
             prefixo_ipv6=_inteiro("RODADO_PREFIXO_IPV6", 64),
+            cota_link_dia=_inteiro("RODADO_COTA_LINK_DIA", 50_000),
+            cota_link_bytes_dia=_inteiro("RODADO_COTA_LINK_BYTES_DIA", 50_000_000),
             terminal_max_linhas=_inteiro("RODADO_TERMINAL_MAX_LINHAS", 200),
             cota_terminal_dia=_inteiro("RODADO_COTA_TERMINAL_DIA", 100_000),
             cota_terminal_bytes_dia=_inteiro("RODADO_COTA_TERMINAL_BYTES_DIA", 100_000_000),
@@ -111,6 +117,15 @@ def carrega_tokens(texto):
         tokens[token] = nome
         nomes.add(nome)
     return tokens, recusados
+
+
+def com_token_de_link(tokens, token_link):
+    """Os tokens por pessoa mais o de link (nome `link`), se ele está no formato. Um token por
+    pessoa chamado `link` perderia a vez: o nome é reservado."""
+    tokens = {t: n for t, n in tokens.items() if n != NOME_LINK}
+    if token_link and TOKEN_OK.match(token_link) and token_link not in tokens:
+        tokens[token_link] = NOME_LINK
+    return tokens
 
 
 def regex_tokens(tokens):
@@ -281,6 +296,8 @@ class Limites:
         """(linhas, bytes) por dia da chave; 0 é sem teto. O balde da senha tem os seus."""
         if chave == BALDE_SENHA:
             return self.cfg.cota_senha_dia, self.cfg.cota_senha_bytes_dia
+        if chave == BALDE_LINK:
+            return self.cfg.cota_link_dia, self.cfg.cota_link_bytes_dia
         if chave == BALDE_TERMINAL:
             return self.cfg.cota_terminal_dia, self.cfg.cota_terminal_bytes_dia
         return self.cfg.cota_dia, self.cfg.cota_bytes_dia

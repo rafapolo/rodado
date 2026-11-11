@@ -129,8 +129,18 @@ const auditaContraste = (p: Page, seletor: string) =>
 
 describe("API /query", () => {
   // formato=json: a lista pura; sem formato o corpo vem embrulhado com os avisos (teste próprio abaixo)
-  const q = (sql: string, params = "?formato=json", auth = AUTH) =>
-    fetch(`${BASE}/query${params}`, { method: "POST", body: sql, headers: auth ? { Authorization: auth } : {} });
+  // A suíte passa das 30 consultas por minuto por IP (limites.py): espera o Retry-After do 429 de
+  // ritmo, como um cliente educado, em vez de contar a recusa como falha do teste.
+  const q = async (sql: string, params = "?formato=json", auth = AUTH): Promise<Response> => {
+    for (let tentativa = 0; ; tentativa++) {
+      const r = await fetch(`${BASE}/query${params}`, { method: "POST", body: sql, headers: auth ? { Authorization: auth } : {} });
+      if (r.status !== 429 || tentativa >= 2) return r;
+      const espera = Number(r.headers.get("Retry-After") || "5");
+      if (!(espera <= 70)) return r;   // cota do dia esgotada: não adianta esperar
+      await r.arrayBuffer();
+      await Bun.sleep(espera * 1000);
+    }
+  };
 
   test("sem senha devolve 401, inclusive na página e no terminal", async () => {
     for (const caminho of ["/query", "/", "/tty/", "/catalogo.json", "/tabelas"]) {
@@ -175,6 +185,16 @@ describe("API /query", () => {
     const r = await q("FROM br_bd_diretorios_brasil.uf", "?formato=tsv&limite=3");
     expect(r.headers.get("x-truncado")).toBe("1");
     expect((await r.text()).trim().split("\n").length).toBe(4);
+  });
+
+  test("#exporta: o pedido do botão de CSV cabe nos limites (tabela grande, 1.000 linhas)", async () => {
+    // o mesmo pedido do index.html: formato=csv&limite=1000&ciente=1, aqui numa tabela de 70 mi de
+    // linhas sem filtro — passa pela regra da tabela grande e gasta cota de linhas e de bytes
+    const r = await q("SELECT * FROM br_me_cnpj.estabelecimentos", "?formato=csv&limite=1000&ciente=1");
+    expect(r.status).toBe(200);
+    expect(r.headers.get("x-linhas")).toBe("1000");
+    expect(Number(r.headers.get("x-cota-bytes-restante"))).toBeGreaterThan(0);
+    expect((await r.text()).trim().split("\n").length).toBe(1001);
   });
 
   test("parquet tipado (lido pelo próprio cabeçalho mágico)", async () => {

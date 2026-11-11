@@ -20,6 +20,10 @@ env:
   - name: DB_TOKEN
     from:
       env: DB_TOKEN
+  # o token que o link /q grava no cookie de quem o abre (cota própria, "link"); vazio: link pede senha
+  - name: DB_TOKEN_LINK
+    from:
+      env: DB_TOKEN_LINK
   # tokens por pessoa, `nome:token` separados por vírgula (vazio: só o DB_TOKEN do dono vale)
   - name: DB_TOKENS
     from:
@@ -43,6 +47,8 @@ env:
   # - {name: RODADO_COTA_SENHA_DIA, value: "2000000"}  # linhas por dia, todo o tráfego sem token somado
   # - {name: RODADO_COTA_SENHA_BYTES_DIA, value: "2500000000"}  # bytes, idem
   # - {name: RODADO_PREFIXO_IPV6, value: "64"}        # IPv6 conta pela rede /64
+  # - {name: RODADO_COTA_LINK_DIA, value: "50000"}   # linhas por dia, visitantes de link /q somados
+  # - {name: RODADO_COTA_LINK_BYTES_DIA, value: "50000000"}  # bytes, idem
   # - {name: RODADO_TERMINAL_MAX_LINHAS, value: "200"}  # teto do .linhas do terminal
   # - {name: RODADO_COTA_TERMINAL_DIA, value: "100000"}  # linhas exibidas, todas as abas somadas
   # - {name: RODADO_COTA_TERMINAL_BYTES_DIA, value: "100000000"}  # bytes exibidos, idem
@@ -52,4 +58,5 @@ env:
   # - {name: RODADO_AMPLO_LINHAS, value: "1000000"}   # tabela maior que isto não sai inteira sem filtro...
   # - {name: RODADO_AMPLO_LIMITE, value: "1000"}      # ...salvo com LIMIT/limite até isto
   # - {name: RODADO_PARQUET_SO_TOKEN, value: "0"}     # 1: formato=parquet só com token pessoal
-  # - {name: RODADO_ISENTOS, value: ""}               # nomes de token fora da cota (ex.: "polo")
+  # nomes de token fora da cota: a automação do dono (avaliação cega, MCP remoto) não divide balde
+  - {name: RODADO_ISENTOS, value: "dono"}
