@@ -54,7 +54,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_brasilio_holdings` | 1 | 515.191 | 2026-07-10 |
 | `br_caixa_sinapi` | 1 | 2.258.550 | 2026-10-30 |
 | `br_caixa_sorteios` | 1 | 15.294 | 2026-07-05 |
-| `br_camara_dados_abertos` | 30 | 15.049.844 | 2026-10-30 |
+| `br_camara_dados_abertos` | 30 | 15.053.218 | 2026-11-11 |
 | `br_capes_bolsas` | 1 | 146.036 | 2026-10-07 |
 | `br_ce_fortaleza_sefin_iptu` | 1 | 68.932 | 2026-07-05 |
 | `br_cgu_beneficios_cidadao` | 6 | 3.321.211.133 | 2026-10-26 |
@@ -251,7 +251,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_senado_ceaps` | 1 | 398.027 | 2026-10-30 |
 | `br_senado_dados_abertos` | 18 | 612.356 | 2026-10-31 |
 | `br_senado_dados_abertos_administrativos` | 40 | 641.617 | 2026-10-09 |
-| `br_senado_dadosabertos` | 4 | 167.219 | 2026-11-11 |
+| `br_senado_dadosabertos` | 4 | 167.221 | 2026-11-11 |
 | `br_senatran_estatisticas` | 1 | 159.327 | 2026-10-07 |
 | `br_senatran_frota` | 1 | 20.223.786 | 2026-11-03 |
 | `br_sfb_cnfp` | 1 | 12.874 | 2026-10-25 |
@@ -266,7 +266,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_stf_corte_aberta` | 2 | 2.708.896 | 2026-10-09 |
 | `br_stj_dadosabertos` | 1 | 3.604.791 | 2026-10-21 |
 | `br_susep_dados_abertos` | 22 | 11.866.281 | 2026-10-25 |
-| `br_tce_es` | 5 | 13.080 | 2026-11-11 |
+| `br_tce_es` | 5 | 13.083 | 2026-11-11 |
 | `br_tce_pi` | 5 | 405 | 2026-10-21 |
 | `br_tce_rj` | 6 | 225.683 | 2026-10-21 |
 | `br_tce_sp` | 1 | 644 | 2026-10-07 |

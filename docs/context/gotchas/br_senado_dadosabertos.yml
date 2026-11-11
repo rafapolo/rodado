@@ -24,3 +24,12 @@ gotchas:
     colunas: [CodigoParlamentar, SiglaPartidoParlamentar, UfParlamentar]
     severidade: aviso
     verificado: "senadores: 81 linhas, 81 CodigoParlamentar distintos, 27 UfParlamentar — medido 2026-11-04"
+  - id: comissoes_fonte_retira_mpv_encerradas
+    resumo: "A fonte (comissao/lista/colegiados) retira as comissões mistas de medida provisória que já encerraram: em 2026-11-11 vieram 213 contra 216 no espelho (5 CMMPV sumiram, 2 novas) e o gate recusou o encolhimento. comissoes foi fundida com o espelho (218 linhas, chave Codigo), então inclui CMMPV já extintas (2835, 2854, 2855, 2856, 2857). Não leia 'comissão listada' como 'comissão ativa'."
+    detalhe: >
+      Valor não nulo da fonte nova vence; linhas só do espelho são mantidas.
+      Backup do parquet anterior em beelink ~/scrap_tmp/backup/br_senado_dadosabertos/comissoes/20261111-fusao-*.
+    tabelas: [comissoes]
+    colunas: [Codigo, Sigla, DataInicio]
+    severidade: aviso
+    verificado: "fonte 213, espelho 216, 5 só no espelho (CMMPV 1335, 1353, 1355, 1357, 1358/2026), 2 novas (2882, 2883), fundida 218 — medido 2026-11-11"

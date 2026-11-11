@@ -23,3 +23,18 @@ gotchas:
     colunas: [NumeroDocumentoResponsavel, EmpresaCNPJ, DataInicioObra, DiasAtrasada]
     severidade: silencioso
     verificado: "lista_responsaveis CPF 651 de 651 mascarados, CNPJ 83 sem máscara; obras_publicas EmpresaCNPJ com 'E+' em 246 de 250; DataInicioObra nn=0 — medido 2026-11-04"
+  - id: fonte_encolhe_e_obras_com_colunas_nulas
+    resumo: "A fonte do TCE-ES retira registros: em 2026-11-11 lista_responsaveis veio com 703 linhas contra 734 no espelho (34 sumiram, em geral inabilitações que venceram em 2026-10/11; 3 entraram) e o gate recusou. O espelho foi fundido com a fonte (737 linhas), não substituído: sanção que a fonte já retirou continua na tabela, então filtre por DataTermino se quiser só as vigentes. Em obras_publicas as colunas DataInicioObra e NecessidadeDeAtencaoEspecial chegam 100% nulas (CSV só com cabeçalho), o que o gate leu como schema novo (tipo NULL); o espelho tem os mesmos 250 registros e as mesmas duas colunas nulas, então nada mudou."
+    detalhe: >
+      Chave de fusão de lista_responsaveis: categoria, NumeroDocumentoResponsavel,
+      NumeroProcesso, AnoProcesso, NumeroDeliberacao, AnoDeliberacao, DataTransito
+      (única nas duas versões; o CPF é mascarado, por isso o resto da chave).
+      Jurisdicionado vem da fonte com a ordem dos órgãos trocada a cada
+      download: comparar como conjunto. LINTZ COMERCIO E SERVICOS DE PECAS
+      passou de EIRELI para LTDA na fonte e a versão nova venceu. Valor não nulo
+      da fonte nova vence; NULL nunca sobrescreve valor do espelho.
+      Backup do parquet anterior em beelink ~/scrap_tmp/backup/br_tce_es/lista_responsaveis/20261111-fusao-*.
+    tabelas: [lista_responsaveis, obras_publicas]
+    colunas: [DataTermino, DataInicioObra, NecessidadeDeAtencaoEspecial]
+    severidade: aviso
+    verificado: "lista_responsaveis fundida 734 + 3 novas = 737 (34 só no espelho mantidas, 1 renomeada); obras_publicas fonte nova == espelho nas 250 linhas depois de tipar, DataInicioObra e NecessidadeDeAtencaoEspecial nn=0 nas duas — medido 2026-11-11"
