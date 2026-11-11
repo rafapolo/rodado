@@ -74,3 +74,18 @@ Diferentes:
 e o compacta calcula o hash do original e do comprimido na mesma conexão, na mesma versão, então uma
 diferença de hash entre versões nem chegaria a ser comparada. A recompressão zstd 19 pela 2.0 deu
 tamanho 0,05% maior no arquivo testado (20.013.032 contra 20.003.275 bytes), sem importância.
+
+## Sort grande com escrita parquet no beelink (2026-11-11)
+
+`ORDER BY` de dezenas de milhões de linhas gravado com `COPY ... TO parquet` (4 GB de `memory_limit`, 14
+threads, despejo em disco) pode gerar parquet **corrompido ou com valores errados no beelink**, mesmo na
+2.0.0: no teste `~/duckdb_tmp/teste_sort/teste_sort.py 4GB 8 14` (ANS 2015, 165.937.249 linhas) a
+repetição 1 gravou um arquivo que o próprio DuckDB recusa ao reler (`Parquet file is likely corrupted,
+dictionary offset out of range`); na 1.5.5 a falha apareceu como hash diferente em 1 de ~8 repetições. O
+swap **não** é a causa provável: estava quase vazio (29 MB usados, 26 GB disponíveis) quando a 2.0.0 falhou.
+No Mac (arm64, 1.5.5) o mesmo teste deu 5 de 5 certas. A CPU do beelink chega a ~92 °C nesse tipo de carga,
+então hardware ainda não está descartado.
+
+Regra: depois de qualquer ordenação ou regravação grande no beelink, conferir `count(*)` e
+`sum(hash(t)::HUGEINT)` do resultado contra a origem **antes** de trocar o arquivo (o `ordena_tabela.py` já
+faz); preferir faixas pequenas direto da fonte (`WHERE ano=Y AND faixa`), que nunca falharam.
