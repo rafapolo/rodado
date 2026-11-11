@@ -564,6 +564,13 @@ describe("desktop", () => {
     await p.locator("#sql").focus();
     await p.keyboard.press("Tab");
     expect(await p.evaluate(() => document.activeElement?.id)).toBe("compartilha");
+    // #exporta fica no meio, mas só entra na ordem de foco depois de uma consulta que deu certo
+    // (desligado, o navegador o pula): depende do que os testes anteriores rodaram nesta página
+    const exportaLigado = await p.evaluate(() => !(document.getElementById("exporta") as HTMLButtonElement).disabled);
+    if (exportaLigado) {
+      await p.keyboard.press("Tab");
+      expect(await p.evaluate(() => document.activeElement?.id)).toBe("exporta");
+    }
     await p.keyboard.press("Tab");
     expect(await p.evaluate(() => document.activeElement?.id)).toBe("executa");
   });
