@@ -121,6 +121,14 @@ DESCRIBE_MAX_GOTCHAS = 8
 # Catalog loaders (loaded once at startup — small enough to hold in memory)
 # ---------------------------------------------------------------------------
 
+# Behind db.rodado.xyz's Caddy (MCP_HTTP_BEHIND_AUTH=1) the caller's IP and personal token
+# arrive as X-Rodado-Ip / X-Rodado-Token (or the rodado_token cookie); _RepassaIdentidade keeps
+# them here and every call to /query carries them on. Without that, /mcp reached /query as an
+# anonymous in-container caller and skipped every per-person limit (quota, rate) — a full
+# scraping bypass behind the same password, closed on 2026-11-11.
+_repasse: contextvars.ContextVar[dict | None] = contextvars.ContextVar("repasse", default=None)
+
+
 def _http_request(path: str, params: dict, body: bytes | None = None):
     params = dict(params)
     if os.environ.get("RODADO_TOKEN"):
@@ -129,6 +137,8 @@ def _http_request(path: str, params: dict, body: bytes | None = None):
     if os.environ.get("RODADO_SENHA"):
         cred = base64.b64encode(f"rodado:{os.environ['RODADO_SENHA']}".encode()).decode()
         req.add_header("Authorization", f"Basic {cred}")
+    for nome, valor in (_repasse.get() or {}).items():
+        req.add_header(nome, valor)
     return urllib.request.urlopen(req, timeout=HTTP_TIMEOUT)
 
 
@@ -2075,6 +2085,30 @@ class _BearerAuth:
         await send({"type": "http.response.body", "body": body})
 
 
+class _RepassaIdentidade:
+    """ASGI wrapper (MCP_HTTP_BEHIND_AUTH=1 only): reads who is calling from the headers the
+    Caddy in front sets (it deletes any the client sent) and stores them in `_repasse`, so the
+    /query calls this request makes are counted against that caller's quota and rate."""
+
+    def __init__(self, app):
+        self.app = app
+
+    async def __call__(self, scope, receive, send):
+        if scope["type"] == "http":
+            from http.cookies import SimpleCookie
+
+            h = {k.decode("latin-1").lower(): v.decode("latin-1") for k, v in scope["headers"]}
+            ip = h.get("x-rodado-ip", "").strip()
+            token = h.get("x-rodado-token", "").strip()
+            if not token:
+                try:
+                    token = SimpleCookie(h.get("cookie", ""))["rodado_token"].value
+                except (KeyError, Exception):  # noqa: BLE001 — malformed cookie: no token
+                    token = ""
+            _repasse.set({k: v for k, v in (("X-Rodado-Ip", ip), ("X-Rodado-Token", token)) if v})
+        return await self.app(scope, receive, send)
+
+
 def _http_app():
     from mcp.server.transport_security import TransportSecuritySettings
 
@@ -2099,7 +2133,7 @@ def _http_app():
         allowed_origins=[f"https://{h}" for h in public],
     )
     app = mcp.streamable_http_app()
-    return app if behind_auth else _BearerAuth(app, tokens)
+    return _RepassaIdentidade(app) if behind_auth else _BearerAuth(app, tokens)
 
 
 if __name__ == "__main__":

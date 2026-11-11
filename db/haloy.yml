@@ -38,6 +38,14 @@ env:
   # Limites contra raspagem (db/limites.py, plano tasks/plans/limites_abuso_db.md). Os valores
   # abaixo são os padrões do código; 0 desliga cada um. Descomente para mudar sem editar o código.
   # - {name: RODADO_COTA_DIA, value: "200000"}        # linhas devolvidas por token (ou IP) e dia
+  # - {name: RODADO_COTA_BYTES_DIA, value: "250000000"}   # bytes devolvidos por token (ou IP) e dia
+  # - {name: RODADO_RESPOSTA_MAX_BYTES, value: "25000000"}  # resposta maior que isto: 413
+  # - {name: RODADO_COTA_SENHA_DIA, value: "2000000"}  # linhas por dia, todo o tráfego sem token somado
+  # - {name: RODADO_COTA_SENHA_BYTES_DIA, value: "2500000000"}  # bytes, idem
+  # - {name: RODADO_PREFIXO_IPV6, value: "64"}        # IPv6 conta pela rede /64
+  # - {name: RODADO_TERMINAL_MAX_LINHAS, value: "200"}  # teto do .linhas do terminal
+  # - {name: RODADO_COTA_TERMINAL_DIA, value: "100000"}  # linhas exibidas, todas as abas somadas
+  # - {name: RODADO_COTA_TERMINAL_BYTES_DIA, value: "100000000"}  # bytes exibidos, idem
   # - {name: RODADO_POR_MINUTO, value: "30"}          # consultas por IP por minuto
   # - {name: RODADO_SIMULTANEAS_IP, value: "2"}       # consultas ao mesmo tempo por IP
   # - {name: RODADO_OFFSET_MAX, value: "100000"}      # OFFSET acima disto é recusado

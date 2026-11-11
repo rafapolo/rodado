@@ -28,6 +28,8 @@ os.environ.setdefault("PROMPT_TOOLKIT_NO_CPR", "1")
 
 import duckdb  # noqa: E402
 
+import limites  # noqa: E402
+
 import rodado_sql  # noqa: E402
 
 try:
@@ -64,7 +66,7 @@ Comandos (terminam em ;, podem ocupar várias linhas — Enter só envia depois 
 Atalhos:
   .datasets                    lista os datasets
   .tabelas <dataset>           lista as tabelas de um dataset
-  .linhas <n>                  quantas linhas mostrar (padrão 40)
+  .linhas <n>                  quantas linhas mostrar (padrão 40, máximo {m}; mais que isso, o botão de CSV)
   .ajuda   .sair
 Tab completa dataset, tabela e coluna. Ctrl-C interrompe a consulta ou limpa a linha.
 Só leitura; limite de {t} s por consulta. Filtre tabelas grandes por partição (ano, mes, sigla_uf).
@@ -210,12 +212,48 @@ def colore_tabela(texto):
     return "\n".join(saida)
 
 
+def _avisa_no_log(texto):
+    """Aviso de cota para o log do container (stdout do processo 1), não para a tela de quem usa."""
+    try:
+        with open("/proc/1/fd/1", "a") as f:
+            f.write(f"[terminal] AVISO {texto}\n")
+    except OSError:
+        pass
+
+
+# O terminal não sabe o IP de quem está na aba (o ttyd não repassa): o limite é um balde comum a
+# todas as abas, no mesmo SQLite das cotas do /query, mais o ritmo por aba e o teto de linhas por
+# consulta. Sem isso, `.linhas 10000000` + websocket automatizado era raspagem sem cota nenhuma.
+CFG = limites.Config.do_ambiente()
+LIMITES = limites.Limites(CFG, avisar=_avisa_no_log)
+
+
+def _cota_esgotada():
+    """Mensagem se o balde do terminal acabou hoje; senão None."""
+    l = LIMITES.restante(limites.BALDE_TERMINAL)
+    b = LIMITES.restante_bytes(limites.BALDE_TERMINAL)
+    if (l is not None and l <= 0) or (b is not None and b <= 0):
+        espera = limites.segundos_ate_meia_noite(time.time())
+        return (f"cota diária do terminal esgotada (todas as abas somadas); zera em {espera // 3600} h "
+                f"{espera % 3600 // 60} min — agregue (GROUP BY) ou use o /query com token pessoal")
+    return None
+
+
 def mostra(sql: str, linhas: int):
     """Roda e imprime cada comando; devolve o SQL do último se todos terminaram, senão None."""
     ultimo = None
     con = rodado_sql.conecta()
     try:
         for comando in rodado_sql.separa(con, sql):
+            # por comando, não por entrada: uma entrada com 5.000 `SELECT … LIMIT 200;` passava
+            # numa checagem só
+            if (msg := _cota_esgotada()):
+                avisa(VERMELHO, msg)
+                return None
+            if (recusa := LIMITES.admite("aba")):
+                avisa(PESSEGO, f"{recusa[1].replace('neste IP', 'nesta aba')}; tente de novo em {recusa[0]} s")
+                return None
+            LIMITES.libera("aba")
             inicio = time.monotonic()
             with rodado_sql.Cronometro(con) as crono, Girando():
                 try:
@@ -229,7 +267,11 @@ def mostra(sql: str, linhas: int):
                         rel.show(max_width=largura, max_rows=linhas)
                     finally:
                         sys.stdout = tela
-                    sys.stdout.write(colore_tabela(buf.getvalue()))
+                    tabela = buf.getvalue()
+                    # linhas do corpo da tabela (as que começam pela borda), e o tamanho do texto
+                    LIMITES.registra(limites.BALDE_TERMINAL, max(0, tabela.count("\n│") - 2),
+                                     bytes_=len(tabela.encode("utf-8")))
+                    sys.stdout.write(colore_tabela(tabela))
                 except (duckdb.InterruptException, KeyboardInterrupt):
                     avisa(PESSEGO, "tempo limite estourado" if crono.estourou else "interrompido")
                     return None
@@ -559,9 +601,12 @@ def main():
             if cmd in (".sair", ".exit", ".quit", ".q"):
                 return
             if cmd in (".ajuda", ".help"):
-                print(AJUDA.format(t=rodado_sql.TEMPO_LIMITE))
+                print(AJUDA.format(t=rodado_sql.TEMPO_LIMITE, m=CFG.terminal_max_linhas))
             elif cmd == ".linhas" and args and args[0].isdigit():
                 linhas = int(args[0])
+                if CFG.terminal_max_linhas and linhas > CFG.terminal_max_linhas:
+                    linhas = CFG.terminal_max_linhas
+                    avisa(PESSEGO, f"máximo de {linhas} linhas na tela; para baixar mais, o botão de CSV ao lado")
             elif cmd == ".datasets":
                 _roda(ATALHOS[".datasets"], 10_000)
             elif cmd in (".tabelas", ".tables") and args and args[0].isidentifier():

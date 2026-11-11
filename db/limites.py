@@ -1,12 +1,16 @@
 """Limites contra raspagem do /query (plano em tasks/plans/limites_abuso_db.md).
 
 Sem dependência de DuckDB nem de rede, para testar sozinho (`python3 db/testes/limites.py`).
-Quatro peças, todas configuráveis por variável de ambiente (valores em `Config.do_ambiente`):
+Peças, todas configuráveis por variável de ambiente (valores em `Config.do_ambiente`):
 
 - tokens por pessoa (`DB_TOKENS="nome:token,nome2:token2"`), que o Caddy valida e o app só
   usa para dar nome à consulta (cabeçalho `X-Rodado-Token`, posto pelo Caddy);
-- cota diária de linhas devolvidas, por token (ou por IP, sem token), num SQLite no volume;
-- janela deslizante de consultas por minuto e teto de consultas simultâneas, por IP;
+- cota diária de linhas **e de bytes** devolvidos, por token (ou por IP, sem token), num SQLite
+  no volume: só linhas deixava `to_json(list(...))` levar uma partição inteira numa linha;
+- um balde comum a todo o tráfego sem token (senha compartilhada, link /q): trocar de IP não
+  multiplica a cota; teto de bytes por resposta;
+- janela deslizante de consultas por minuto e teto de consultas simultâneas, por IP (IPv6 por
+  /64: quem tem uma /64 tem 2^64 endereços);
 - recusa do padrão de raspagem, lendo a árvore do `json_serialize_sql`: `OFFSET` alto e
   `SELECT *` sem filtro numa tabela grande.
 
@@ -17,6 +21,7 @@ Quatro peças, todas configuráveis por variável de ambiente (valores em `Confi
 import collections
 import dataclasses
 import datetime
+import ipaddress
 import math
 import os
 import re
@@ -30,6 +35,8 @@ NOME_OK = re.compile(r"^[A-Za-z0-9_.-]{1,32}$")
 # só estes caracteres: entram sem escape na regex do Caddy (e o `-` fora de classe é literal)
 TOKEN_OK = re.compile(r"^[A-Za-z0-9_-]{16,128}$")
 REGEX_NENHUM = "a^"     # RE2 válida que nunca casa; vazia casaria o token ausente
+BALDE_SENHA = "senha:todos"   # chave da cota comum de quem entra sem token pessoal
+BALDE_TERMINAL = "terminal:todos"   # cota comum a todas as abas do terminal (/tty), que não sabe o IP
 
 
 def _inteiro(nome, padrao):
@@ -42,6 +49,14 @@ def _inteiro(nome, padrao):
 @dataclasses.dataclass
 class Config:
     cota_dia: int = 200_000        # linhas devolvidas por chave e dia; 0 desliga
+    cota_bytes_dia: int = 250_000_000      # bytes devolvidos por chave e dia; 0 desliga
+    resposta_max_bytes: int = 25_000_000   # uma resposta acima disso é recusada (413); 0 desliga
+    cota_senha_dia: int = 2_000_000        # linhas por dia somando todo o tráfego sem token; 0 desliga
+    cota_senha_bytes_dia: int = 2_500_000_000   # bytes, idem; 0 desliga
+    prefixo_ipv6: int = 64         # IPv6 vira esta rede na chave de cota e ritmo
+    terminal_max_linhas: int = 200          # teto do `.linhas` do terminal; o resto sai pelo CSV (#exporta)
+    cota_terminal_dia: int = 100_000        # linhas exibidas por dia, todas as abas somadas; 0 desliga
+    cota_terminal_bytes_dia: int = 100_000_000   # bytes exibidos, idem; 0 desliga
     por_minuto: int = 30           # consultas por IP numa janela de 60 s; 0 desliga
     simultaneas_ip: int = 2        # consultas ao mesmo tempo por IP; 0 desliga
     offset_max: int = 100_000      # OFFSET acima disso é recusado; 0 desliga
@@ -58,6 +73,14 @@ class Config:
         e = os.environ.get
         return cls(
             cota_dia=_inteiro("RODADO_COTA_DIA", 200_000),
+            cota_bytes_dia=_inteiro("RODADO_COTA_BYTES_DIA", 250_000_000),
+            resposta_max_bytes=_inteiro("RODADO_RESPOSTA_MAX_BYTES", 25_000_000),
+            cota_senha_dia=_inteiro("RODADO_COTA_SENHA_DIA", 2_000_000),
+            cota_senha_bytes_dia=_inteiro("RODADO_COTA_SENHA_BYTES_DIA", 2_500_000_000),
+            prefixo_ipv6=_inteiro("RODADO_PREFIXO_IPV6", 64),
+            terminal_max_linhas=_inteiro("RODADO_TERMINAL_MAX_LINHAS", 200),
+            cota_terminal_dia=_inteiro("RODADO_COTA_TERMINAL_DIA", 100_000),
+            cota_terminal_bytes_dia=_inteiro("RODADO_COTA_TERMINAL_BYTES_DIA", 100_000_000),
             por_minuto=_inteiro("RODADO_POR_MINUTO", 30),
             simultaneas_ip=_inteiro("RODADO_SIMULTANEAS_IP", 2),
             offset_max=_inteiro("RODADO_OFFSET_MAX", 100_000),
@@ -191,6 +214,24 @@ def raspagem(arvore, linhas_da_tabela, limite_pedido, cfg):
 
 # ------------------------------------------------------------------ cota e ritmo
 
+def chave_ip(ip, prefixo6=64):
+    """O IP como chave de cota e ritmo: IPv6 agrupado na rede /prefixo6 (um cliente comum recebe
+    uma /64 inteira e troca de endereço à vontade), IPv4 mapeado em IPv6 volta a IPv4, e sem IP
+    (chamada de dentro do container que não repassou quem pediu) vira "interno", limitado também."""
+    ip = (ip or "").strip()
+    if not ip:
+        return "interno"
+    try:
+        end = ipaddress.ip_address(ip)
+    except ValueError:
+        return ip
+    if end.version == 6 and end.ipv4_mapped:
+        return str(end.ipv4_mapped)
+    if end.version == 6:
+        return str(ipaddress.ip_network(f"{end}/{prefixo6}", strict=False))
+    return str(end)
+
+
 def dia_de(agora):
     return datetime.datetime.fromtimestamp(agora, BRT).strftime("%Y-%m-%d")
 
@@ -217,12 +258,18 @@ class Limites:
     @staticmethod
     def _abre(arquivo):
         try:
-            db = sqlite3.connect(arquivo, check_same_thread=False)
+            # timeout: o terminal (uma instância por aba) e o consulta.py gravam no mesmo arquivo
+            db = sqlite3.connect(arquivo, check_same_thread=False, timeout=10)
         except sqlite3.Error:      # volume ausente: a cota vale até o reinício, o resto segue
             print(f"[limites] sem {arquivo}: cota só em memória", flush=True)
             db = sqlite3.connect(":memory:", check_same_thread=False)
         db.execute("CREATE TABLE IF NOT EXISTS cota (chave TEXT, dia TEXT, linhas INTEGER NOT NULL DEFAULT 0, "
-                   "PRIMARY KEY (chave, dia))")
+                   "bytes INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (chave, dia))")
+        if "bytes" not in {r[1] for r in db.execute("PRAGMA table_info(cota)")}:   # volume de antes dos bytes
+            try:
+                db.execute("ALTER TABLE cota ADD COLUMN bytes INTEGER NOT NULL DEFAULT 0")
+            except sqlite3.OperationalError:   # o terminal ou o consulta.py acabou de acrescentar
+                pass
         db.execute("CREATE TABLE IF NOT EXISTS avisos (chave TEXT, dia TEXT, tipo TEXT, PRIMARY KEY (chave, dia, tipo))")
         db.execute("CREATE TABLE IF NOT EXISTS ritmo (chave TEXT, dia TEXT, recusas INTEGER NOT NULL DEFAULT 0, "
                    "PRIMARY KEY (chave, dia))")
@@ -230,34 +277,59 @@ class Limites:
         return db
 
     # -- cota
+    def tetos(self, chave):
+        """(linhas, bytes) por dia da chave; 0 é sem teto. O balde da senha tem os seus."""
+        if chave == BALDE_SENHA:
+            return self.cfg.cota_senha_dia, self.cfg.cota_senha_bytes_dia
+        if chave == BALDE_TERMINAL:
+            return self.cfg.cota_terminal_dia, self.cfg.cota_terminal_bytes_dia
+        return self.cfg.cota_dia, self.cfg.cota_bytes_dia
+
     def usado(self, chave):
+        """(linhas, bytes) entregues hoje à chave."""
         with self._trava:
-            r = self._db.execute("SELECT linhas FROM cota WHERE chave = ? AND dia = ?",
+            r = self._db.execute("SELECT linhas, bytes FROM cota WHERE chave = ? AND dia = ?",
                                  (chave, dia_de(self.relogio()))).fetchone()
-        return r[0] if r else 0
+        return tuple(r) if r else (0, 0)
 
     def restante(self, chave, isento=False):
         """Linhas que a chave ainda pode receber hoje; None se não há cota."""
-        if isento or not self.cfg.cota_dia:
+        teto = self.tetos(chave)[0]
+        if isento or not teto:
             return None
-        return max(0, self.cfg.cota_dia - self.usado(chave))
+        return max(0, teto - self.usado(chave)[0])
 
-    def registra(self, chave, linhas, isento=False):
-        if isento or not self.cfg.cota_dia or linhas <= 0:
+    def restante_bytes(self, chave, isento=False):
+        """Bytes que a chave ainda pode receber hoje; None se não há cota."""
+        teto = self.tetos(chave)[1]
+        if isento or not teto:
+            return None
+        return max(0, teto - self.usado(chave)[1])
+
+    def registra(self, chave, linhas, isento=False, bytes_=0):
+        teto_l, teto_b = self.tetos(chave)
+        if isento or not (teto_l or teto_b) or (linhas <= 0 and bytes_ <= 0):
             return
         agora = self.relogio()
         dia = dia_de(agora)
+        linhas, bytes_ = max(0, linhas), max(0, bytes_)
         with self._trava:
-            self._db.execute("INSERT INTO cota (chave, dia, linhas) VALUES (?, ?, ?) "
-                             "ON CONFLICT (chave, dia) DO UPDATE SET linhas = linhas + excluded.linhas",
-                             (chave, dia, linhas))
+            self._db.execute("INSERT INTO cota (chave, dia, linhas, bytes) VALUES (?, ?, ?, ?) "
+                             "ON CONFLICT (chave, dia) DO UPDATE SET linhas = linhas + excluded.linhas, "
+                             "bytes = bytes + excluded.bytes", (chave, dia, linhas, bytes_))
             for t in ("cota", "avisos", "ritmo"):   # o histórico não serve a nada: só hoje conta
                 self._db.execute(f"DELETE FROM {t} WHERE dia < ?", (dia,))
             self._db.commit()
-            usado = self._db.execute("SELECT linhas FROM cota WHERE chave = ? AND dia = ?", (chave, dia)).fetchone()[0]
-        if self.cfg.aviso_pct and usado * 100 >= self.cfg.cota_dia * self.cfg.aviso_pct:
+            usado_l, usado_b = self._db.execute("SELECT linhas, bytes FROM cota WHERE chave = ? AND dia = ?",
+                                                (chave, dia)).fetchone()
+        if not self.cfg.aviso_pct:
+            return
+        if teto_l and usado_l * 100 >= teto_l * self.cfg.aviso_pct:
             self._avisa_uma_vez(chave, dia, "cota",
-                                f"{chave} usou {usado} de {self.cfg.cota_dia} linhas hoje ({usado * 100 // self.cfg.cota_dia}%)")
+                                f"{chave} usou {usado_l} de {teto_l} linhas hoje ({usado_l * 100 // teto_l}%)")
+        if teto_b and usado_b * 100 >= teto_b * self.cfg.aviso_pct:
+            self._avisa_uma_vez(chave, dia, "bytes",
+                                f"{chave} usou {usado_b} de {teto_b} bytes hoje ({usado_b * 100 // teto_b}%)")
 
     def _avisa_uma_vez(self, chave, dia, tipo, texto):
         with self._trava:

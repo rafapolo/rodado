@@ -240,7 +240,7 @@ def pede(sql, caminho="/query", ip=None, token=None, cookie=None, metodo="POST")
 def novo(**cfg):
     """Config e estado novos, só com os limites que o teste pede ligados."""
     base = dict(cota_dia=0, por_minuto=0, simultaneas_ip=0, offset_max=0, amplo_limite=0, aviso_pct=0, aviso_429=0,
-                arquivo=":memory:")
+                cota_bytes_dia=0, resposta_max_bytes=0, cota_senha_dia=0, cota_senha_bytes_dia=0, arquivo=":memory:")
     base.update(cfg)
     consulta.CFG = limites.Config(**base)
     consulta.LIMITES = limites.Limites(consulta.CFG, avisar=AVISOS.append)
@@ -252,11 +252,14 @@ N60 = "SELECT a FROM br_t.grande WHERE a < 60"
 
 
 @teste
-def interno_sem_cabecalho_fica_fora_dos_limites_por_pessoa():
-    novo(cota_dia=10, por_minuto=1)
-    for _ in range(4):
-        st, cab, _c = pede(N60)
-        assert st == 200 and "x-cota-restante" not in cab, (st, cab)   # é o MCP de dentro do container
+def sem_ip_nao_escapa_dos_limites():
+    # Era a isenção do MCP de dentro do container: /mcp (atrás da mesma senha) virava consulta sem
+    # limite nenhum. Agora o MCP repassa IP e token; quem chega sem IP cai num balde próprio, limitado.
+    novo(cota_dia=100, por_minuto=2)
+    st, cab, _c = pede(N60)
+    assert st == 200 and cab["x-cota-restante"] == "40", (st, cab)
+    assert pede(N60)[0] == 200
+    assert pede(N60)[0] == 429                                     # 2 por minuto, também sem IP
 
 
 @teste
@@ -320,7 +323,7 @@ def parquet_so_com_token_quando_ligado():
     st, cab, corpo = pede(N60, "/query?formato=parquet", ip="10.0.0.50")
     assert st == 403 and json.loads(corpo)["dica"]
     assert pede(N60, "/query?formato=parquet", ip="10.0.0.50", token=TOKEN_ANA)[0] == 200
-    assert pede(N60, "/query?formato=parquet")[0] == 200          # MCP de dentro não usa parquet, mas não quebra
+    assert pede(N60, "/query?formato=parquet")[0] == 403          # sem IP não é mais exceção
     assert pede(N60, "/query?formato=csv", ip="10.0.0.50")[0] == 200
     cfg.parquet_so_token = False
     assert pede(N60, "/query?formato=parquet", ip="10.0.0.50")[0] == 200   # desligado (padrão): como era
@@ -373,6 +376,7 @@ def uso_legitimo_segue_funcionando():
     assert st == 200
     st, _h, corpo = pede("", "/llm", metodo="GET")
     assert b"{cota_dia}" not in corpo and b"{por_minuto}" not in corpo and b"{offset_max}" not in corpo
+    assert not any(f"{{{k}}}".encode() in corpo for k in ("cota_mb", "resposta_mb", "cota_senha"))
     assert pede("", "/ping", ip="203.0.113.9", metodo="GET")[1]["x-seu-ip"] == "203.0.113.9"
 
 
@@ -397,6 +401,101 @@ def aviso_de_cota_via_query():
     pede("SELECT a FROM br_t.grande WHERE a < 30", ip="10.0.3.1", token=TOKEN_ANA)
     pede("SELECT a FROM br_t.grande WHERE a < 5", ip="10.0.3.1", token=TOKEN_ANA)
     assert len(AVISOS) == 1 and "token:ana" in AVISOS[0] and TOKEN_ANA not in AVISOS[0], AVISOS
+
+
+# ------------------------------------------------------------------ rodada de 2026-11-11: bypasses
+
+@teste
+def chave_ip_agrupa_ipv6_por_64():
+    assert limites.chave_ip("2001:db8:1:2::1") == limites.chave_ip("2001:db8:1:2:ffff::9") == "2001:db8:1:2::/64"
+    assert limites.chave_ip("2001:db8:1:3::1") != limites.chave_ip("2001:db8:1:2::1")
+    assert limites.chave_ip("10.0.0.1") == "10.0.0.1"
+    assert limites.chave_ip("::ffff:10.0.0.1") == "10.0.0.1"         # IPv4 mapeado em IPv6
+    assert limites.chave_ip("") == "interno" and limites.chave_ip("lixo") == "lixo"
+
+
+@teste
+def mesmo_64_divide_cota_e_ritmo():
+    novo(cota_dia=100, por_minuto=3)
+    assert pede(N60, ip="2001:db8:5:5::1")[1]["x-cota-restante"] == "40"
+    st, cab, _c = pede(N60, ip="2001:db8:5:5::beef")              # outro endereço, mesma /64
+    assert st == 200 and cab["x-linhas"] == "40" and cab["x-cota-restante"] == "0", cab
+    assert pede("SELECT 1", ip="2001:db8:5:5::cafe")[0] == 429     # 3ª da /64 no minuto... e cota esgotada
+    assert pede(N60, ip="2001:db8:5:6::1")[1]["x-cota-restante"] == "40"   # outra /64
+
+
+@teste
+def senha_tem_balde_comum_a_todos_os_ips():
+    # trocar de IP (proxy, VPN) multiplicava a cota de quem entra com a senha compartilhada
+    novo(cota_dia=1000, cota_senha_dia=100)
+    assert pede(N60, ip="10.9.0.1")[1]["x-cota-restante"] == "40"
+    st, cab, _c = pede(N60, ip="10.9.0.2")
+    assert st == 200 and cab["x-linhas"] == "40" and cab["x-cota-restante"] == "0", cab
+    st, cab, corpo = pede(N60, ip="10.9.0.3")
+    assert st == 429 and "senha" in json.loads(corpo)["erro"], corpo
+    st, cab, _c = pede(N60, ip="10.9.0.3", token=TOKEN_ANA)        # token pessoal tem a cota dele
+    assert st == 200 and cab["x-cota-restante"] == "940", cab
+
+
+EMPACOTADA = "SELECT to_json(list(a))::VARCHAR AS tudo FROM br_t.grande"
+
+
+@teste
+def empacotar_em_uma_linha_gasta_cota_em_bytes():
+    # list()/string_agg() numa linha só levavam a tabela inteira gastando 1 linha da cota
+    novo(cota_dia=1000, cota_bytes_dia=3000)
+    st, cab, corpo = pede(EMPACOTADA, ip="10.8.0.1")
+    assert st == 200 and cab["x-linhas"] == "1", cab
+    gasto = 3000 - int(cab["x-cota-bytes-restante"])
+    assert gasto >= len(corpo) - 200 and gasto > 1000, (gasto, len(corpo))
+    pede(EMPACOTADA, ip="10.8.0.1")
+    st, cab, corpo = pede(EMPACOTADA, ip="10.8.0.1")
+    assert st == 429 and "bytes" in json.loads(corpo)["erro"], (st, corpo)
+
+
+@teste
+def resposta_grande_demais_recusada():
+    novo(resposta_max_bytes=500)
+    st, cab, corpo = pede(EMPACOTADA, ip="10.8.0.2")
+    assert st == 413 and json.loads(corpo)["dica"], (st, corpo)
+    st, cab, corpo = pede(EMPACOTADA, "/query?formato=parquet", ip="10.8.0.2")
+    assert st == 413, (st, cab)
+    assert pede("SELECT a FROM br_t.pequena", ip="10.8.0.2")[0] == 200
+
+
+@teste
+def parquet_gasta_bytes_descomprimidos():
+    novo(cota_bytes_dia=10**9)
+    st, cab, corpo = pede("SELECT repeat(a::VARCHAR || 'x', 250) AS s FROM br_t.grande", "/query?formato=parquet", ip="10.8.0.3")
+    gasto = 10**9 - int(cab["x-cota-bytes-restante"])
+    assert st == 200 and gasto >= 300 * 500 > len(corpo), (gasto, len(corpo))   # zstd não esconde o volume
+
+
+@teste
+def exporta_do_terminal_segue_funcionando_com_os_padroes():
+    # o botão #exporta da página: POST /query?formato=csv&limite=1000&ciente=1 com o cookie (ou a
+    # senha) — o caminho sancionado de baixar dado, que tem de caber nos limites de produção
+    consulta.CFG = limites.Config(arquivo=":memory:")
+    consulta.LIMITES = limites.Limites(consulta.CFG, avisar=AVISOS.append)
+    for kw in ({"cookie": TOKEN_ANA}, {}):
+        st, cab, corpo = pede("SELECT * FROM br_t.grande", "/query?formato=csv&limite=1000&ciente=1", ip="10.7.0.1", **kw)
+        assert st == 200 and cab["x-linhas"] == "300" and corpo.startswith(b"a\n"), (kw, st, corpo[:200])
+        assert int(cab["x-cota-restante"]) > 0 and int(cab["x-cota-bytes-restante"]) > 0, cab
+
+
+@teste
+def volume_antigo_ganha_a_coluna_de_bytes():
+    # o /dados/limites.sqlite de produção tem `cota` sem `bytes`: abrir não pode derrubar o /query
+    import sqlite3
+    arq = os.path.join(TMP, "antigo.sqlite")
+    db = sqlite3.connect(arq)
+    db.execute("CREATE TABLE cota (chave TEXT, dia TEXT, linhas INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (chave, dia))")
+    db.execute("INSERT INTO cota VALUES ('token:ana', ?, 70)", (limites.dia_de(__import__("time").time()),))
+    db.commit(); db.close()
+    lim = limites.Limites(limites.Config(cota_dia=100, cota_bytes_dia=1000, aviso_pct=0, arquivo=arq))
+    limites.Limites(limites.Config(arquivo=arq))      # a segunda abertura (outro processo) não tenta de novo
+    lim.registra("token:ana", 10, bytes_=10)
+    assert lim.restante("token:ana") == 20 and lim.restante_bytes("token:ana") == 990
 
 
 if __name__ == "__main__":

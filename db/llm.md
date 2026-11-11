@@ -144,10 +144,13 @@ o corpo traz a armadilha e a `dica`; repita com `?ciente=1` depois de tratar del
   `glob`…) e `FROM 'caminho'` são recusadas: use as views.
 - {tempo} s por consulta e {simultaneas} consultas ao mesmo tempo no servidor inteiro. Seja sequencial.
 - **Limites de uso** (contra raspagem; agregar no servidor quase não gasta nada deles):
-  cota de **{cota_dia} linhas devolvidas por dia** por token pessoal (sem token, por IP; o cabeçalho
-  `X-Cota-Restante` diz quanto sobra e o `429` traz `Retry-After` com os segundos até zerar, à
-  meia-noite de Brasília); **{por_minuto} consultas por minuto** e 2 ao mesmo tempo por IP (`429` com
-  `Retry-After`). São recusados com `400` e uma `dica`: `OFFSET` acima de {offset_max} e a leitura
+  cota de **{cota_dia} linhas e {cota_mb} devolvidos por dia** por token pessoal (sem token, por
+  IP, e todo o tráfego sem token divide também um balde comum de {cota_senha} linhas; os cabeçalhos
+  `X-Cota-Restante` e `X-Cota-Bytes-Restante` dizem quanto sobra e o `429` traz `Retry-After` com os
+  segundos até zerar, à meia-noite de Brasília). Os bytes são o tamanho do corpo da resposta (no
+  parquet, descomprimido): empacotar linhas em `list()`/`string_agg()` conta pelo tamanho. Resposta
+  acima de {resposta_mb} é recusada com `413`. **{por_minuto} consultas por minuto** e 2 ao mesmo
+  tempo por IP (IPv6 conta pela rede /64; `429` com `Retry-After`). São recusados com `400` e uma `dica`: `OFFSET` acima de {offset_max} e a leitura
   inteira, sem `WHERE` nem `GROUP BY`, de tabela com mais de {amplo_linhas} linhas — a não ser com
   `LIMIT` (ou `limite=`) de até {amplo_limite}. O `POST /confere` avisa antes.
 - Tabela grande (dezenas de milhões de linhas ou mais) exige filtro na partição — as colunas
@@ -168,7 +171,7 @@ CNPJ vem inteiro.
 Cada requisição devolve no máximo {limite_maximo} linhas. Para mais que isso, agregue no servidor
 ou fatie por filtro (uma requisição por `ano`, `sigla_uf`… ou por chave: `WHERE id > <último visto>
 ORDER BY id LIMIT n`), sempre uma por vez. `OFFSET` fundo (acima de {offset_max}) é recusado, e
-tudo o que você baixa conta na cota diária ({cota_dia} linhas).
+tudo o que você baixa conta na cota diária ({cota_dia} linhas e {cota_mb}).
 
 - **CSV/TSV/Parquet direto**: `?formato=csv` (ou `tsv`, `parquet`) e `-o arquivo`:
   `curl $AUTH 'https://db.rodado.xyz/query?formato=parquet&limite=10000' --data-binary @q.sql -o r.parquet`

@@ -810,10 +810,14 @@ def _tamanho(con, tabelas, colunas, sql=""):
 
 
 def _linhas_do_parquet(arquivo):
-    """Linhas de um parquet pelo rodapé, numa instância à parte (a da consulta não lê arquivo)."""
+    """(linhas, bytes descomprimidos) de um parquet pelo rodapé, numa instância à parte (a da
+    consulta não lê arquivo). A cota cobra os descomprimidos: zstd não pode esconder o volume."""
     con = duckdb.connect(":memory:")
     try:
-        return con.execute("SELECT num_rows FROM parquet_file_metadata(?)", [arquivo]).fetchall()[0][0]
+        linhas = con.execute("SELECT num_rows FROM parquet_file_metadata(?)", [arquivo]).fetchall()[0][0]
+        bytes_ = con.execute("SELECT coalesce(sum(total_uncompressed_size), 0) FROM parquet_metadata(?)",
+                             [arquivo]).fetchall()[0][0]
+        return linhas, int(bytes_)
     finally:
         con.close()
 
@@ -916,8 +920,11 @@ class Handler(BaseHTTPRequestHandler):
 
     def _identidade(self):
         """Quem pede, pelos cabeçalhos que só o Caddy põe (ele os apaga antes: ver proxy/Caddyfile).
-        Sem X-Rodado-Ip a chamada veio de dentro do container (o MCP de /mcp), fora dos limites por
-        pessoa. O nome vem do token; o token nunca é guardado nem registrado."""
+        O MCP de /mcp repassa os mesmos cabeçalhos da requisição que recebeu (mcp_server.py); sem
+        X-Rodado-Ip a chamada cai na chave "interno", com os limites de todo mundo — até 2026-11-11
+        ela ficava fora deles, e /mcp era consulta sem cota atrás da mesma senha. Sem token pessoal,
+        a consulta gasta também o balde comum da senha (`limites.BALDE_SENHA`): trocar de IP não
+        multiplica a cota. O nome vem do token; o token nunca é guardado nem registrado."""
         ip = (self.headers.get("X-Rodado-Ip") or "").strip()
         token = (self.headers.get("X-Rodado-Token") or "").strip()
         if not token:
@@ -926,8 +933,10 @@ class Handler(BaseHTTPRequestHandler):
             except KeyError:
                 pass
         nome = TOKENS.get(token)
-        return {"ip": ip, "interno": not ip, "nome": nome,
-                "chave": f"token:{nome}" if nome else f"ip:{ip}",
+        ip_chave = limites.chave_ip(ip, CFG.prefixo_ipv6)
+        return {"ip": ip, "ip_chave": ip_chave, "interno": not ip, "nome": nome,
+                "chave": f"token:{nome}" if nome else f"ip:{ip_chave}",
+                "balde": None if nome else limites.BALDE_SENHA,
                 "isento": bool(nome and nome in CFG.isentos)}
 
     def _json(self, obj, status=200):
@@ -969,6 +978,10 @@ class Handler(BaseHTTPRequestHandler):
                     "cota_dia": _milhar(CFG.cota_dia) if CFG.cota_dia else "sem limite",
                     "por_minuto": CFG.por_minuto or "sem limite", "offset_max": _milhar(CFG.offset_max),
                     "amplo_linhas": _milhar(CFG.amplo_linhas), "amplo_limite": _milhar(CFG.amplo_limite),
+                    "cota_mb": f"{_milhar(CFG.cota_bytes_dia // 1_000_000)} MB" if CFG.cota_bytes_dia else "sem limite",
+                    "resposta_mb": f"{_milhar(CFG.resposta_max_bytes // 1_000_000)} MB"
+                                   if CFG.resposta_max_bytes else "sem limite",
+                    "cota_senha": _milhar(CFG.cota_senha_dia) if CFG.cota_senha_dia else "sem limite",
                     "gerado_contexto": CONTEXTO.get("gerado", "?"),
                 }
                 for chave, valor in valores.items():   # format() quebraria nas chaves do SQL do guia
@@ -1209,17 +1222,62 @@ class Handler(BaseHTTPRequestHandler):
             return self._confere(corpo)
         self._executa(corpo, params)
 
-    def _conta(self, quem, linhas, segundos, cota):
-        """Soma as linhas entregues à cota de quem pediu, registra a consulta (nome, nunca o token
-        nem o SQL) e devolve o cabeçalho X-Cota-Restante atualizado."""
-        if not quem["interno"]:
-            LIMITES.registra(quem["chave"], linhas, quem["isento"])
-            restante = LIMITES.restante(quem["chave"], quem["isento"])
-            if restante is not None:
-                cota = {"X-Cota-Restante": str(restante)}
-        print(f"[consulta] usuario={quem['nome'] or '-'} ip={quem['ip'] or 'interno'} linhas={linhas} "
-              f"segundos={segundos:.1f}" + (f" restante={cota['X-Cota-Restante']}" if cota else ""), flush=True)
+    @staticmethod
+    def _restantes(quem):
+        """(linhas, bytes, chave_que_aperta) que quem pede ainda pode receber hoje: o menor entre a
+        cota dele e a do balde da senha. None num eixo sem cota."""
+        if quem["isento"]:
+            return None, None, None
+        linhas = bytes_ = aperta = None
+        for chave in filter(None, (quem["chave"], quem["balde"])):
+            l, b = LIMITES.restante(chave), LIMITES.restante_bytes(chave)
+            if l is not None and (linhas is None or l < linhas):
+                linhas = l
+                aperta = chave if l <= 0 else aperta
+            if b is not None and (bytes_ is None or b < bytes_):
+                bytes_ = b
+                aperta = chave if b <= 0 else aperta
+        return linhas, bytes_, aperta
+
+    @staticmethod
+    def _cabecalhos_de_cota(quem, linhas, bytes_):
+        if quem["isento"]:
+            return {"X-Cota-Restante": "ilimitada", "X-Cota-Bytes-Restante": "ilimitada"}
+        cota = {}
+        if linhas is not None:
+            cota["X-Cota-Restante"] = str(linhas)
+        if bytes_ is not None:
+            cota["X-Cota-Bytes-Restante"] = str(bytes_)
         return cota
+
+    def _conta(self, quem, linhas, n_bytes, segundos):
+        """Soma linhas e bytes entregues à cota de quem pediu (e ao balde da senha), registra a
+        consulta (nome, nunca o token nem o SQL) e devolve os cabeçalhos de cota atualizados."""
+        for chave in filter(None, (quem["chave"], quem["balde"])):
+            LIMITES.registra(chave, linhas, quem["isento"], bytes_=n_bytes)
+        r_linhas, r_bytes, _ = self._restantes(quem)
+        cota = self._cabecalhos_de_cota(quem, r_linhas, r_bytes)
+        print(f"[consulta] usuario={quem['nome'] or '-'} ip={quem['ip'] or 'interno'} linhas={linhas} "
+              f"bytes={n_bytes} segundos={segundos:.1f}"
+              + (f" restante={cota['X-Cota-Restante']}" if "X-Cota-Restante" in cota else ""), flush=True)
+        return cota
+
+    def _cabe(self, quem, n_bytes, cota):
+        """None se uma resposta de n_bytes pode sair; senão a resposta de erro já enviada."""
+        if CFG.resposta_max_bytes and n_bytes > CFG.resposta_max_bytes:
+            return self._erro(413, f"resposta de {_milhar(n_bytes)} bytes passa do máximo de "
+                                   f"{_milhar(CFG.resposta_max_bytes)} por consulta", cabecalhos=cota,
+                              dica="agregue no servidor (GROUP BY) ou corte em fatias por partição (ano, mes, sigla_uf); "
+                                   "empacotar linhas em list()/string_agg() conta pelo tamanho, não pelas linhas")
+        _l, r_bytes, aperta = self._restantes(quem)
+        if r_bytes is not None and n_bytes > r_bytes:
+            espera = limites.segundos_ate_meia_noite(time.time())
+            return self._erro(429, f"a resposta ({_milhar(n_bytes)} bytes) passa do que resta da cota diária de bytes "
+                                   f"({_milhar(r_bytes)})" + (" — cota comum de quem entra com a senha"
+                                                             if aperta == limites.BALDE_SENHA else ""),
+                              cabecalhos={**cota, "Retry-After": str(espera)},
+                              dica="agregue no servidor (GROUP BY) ou peça menos colunas; um token pessoal tem cota própria")
+        return None
 
     def _executa(self, sql, params):
         # Sem `formato`, o JSON vem embrulhado com os avisos no corpo: o agente que só lê o corpo
@@ -1236,33 +1294,31 @@ class Handler(BaseHTTPRequestHandler):
 
         limite_pedido = limite
         quem = self._identidade()
-        if formato == "parquet" and CFG.parquet_so_token and not quem["nome"] and not quem["interno"]:
+        if formato == "parquet" and CFG.parquet_so_token and not quem["nome"]:
             return self._erro(403, "formato=parquet exige token pessoal",
                               dica="peça um token ao dono do serviço, ou use formato=json, csv ou tsv")
-        vaga_ip = False
-        cota = {}
-        if not quem["interno"]:   # o MCP de dentro do container fica fora dos limites por pessoa
-            restante = LIMITES.restante(quem["chave"], quem["isento"])
-            if quem["isento"]:
-                cota = {"X-Cota-Restante": "ilimitada"}
-            elif restante is not None:
-                cota = {"X-Cota-Restante": str(restante)}
-                if restante <= 0:
-                    espera = limites.segundos_ate_meia_noite(time.time())
-                    return self._erro(429, f"cota diária de {_milhar(CFG.cota_dia)} linhas esgotada",
-                                      cabecalhos={**cota, "Retry-After": str(espera)},
-                                      dica=f"zera em {espera // 3600} h {espera % 3600 // 60} min (meia-noite de Brasília); "
-                                           "agregue no servidor (GROUP BY) em vez de baixar linhas")
-                limite = min(limite, restante)
-            recusa = LIMITES.admite(quem["ip"])
-            if recusa:
-                espera, motivo = recusa
-                return self._erro(429, motivo, cabecalhos={**cota, "Retry-After": str(espera)},
-                                  dica=f"tente de novo em {espera} s; uma consulta de cada vez, agregada, rende mais")
-            vaga_ip = True
+        r_linhas, r_bytes, aperta = self._restantes(quem)
+        cota = self._cabecalhos_de_cota(quem, r_linhas, r_bytes)
+        if (r_linhas is not None and r_linhas <= 0) or (r_bytes is not None and r_bytes <= 0):
+            espera = limites.segundos_ate_meia_noite(time.time())
+            teto_l, teto_b = LIMITES.tetos(aperta)
+            qual = (f"{_milhar(teto_l)} linhas" if r_linhas is not None and r_linhas <= 0
+                    else f"{_milhar(teto_b)} bytes")
+            de_quem = " (comum a quem entra com a senha, sem token pessoal)" if aperta == limites.BALDE_SENHA else ""
+            return self._erro(429, f"cota diária de {qual}{de_quem} esgotada",
+                              cabecalhos={**cota, "Retry-After": str(espera)},
+                              dica=f"zera em {espera // 3600} h {espera % 3600 // 60} min (meia-noite de Brasília); "
+                                   "agregue no servidor (GROUP BY) em vez de baixar linhas")
+        if r_linhas is not None:
+            limite = min(limite, r_linhas)
+        recusa = LIMITES.admite(quem["ip_chave"])
+        if recusa:
+            espera, motivo = recusa
+            return self._erro(429, motivo, cabecalhos={**cota, "Retry-After": str(espera)},
+                              dica=f"tente de novo em {espera} s; uma consulta de cada vez, agregada, rende mais")
+        vaga_ip = True
         if not SIMULTANEAS.acquire(timeout=60):
-            if vaga_ip:
-                LIMITES.libera(quem["ip"])
+            LIMITES.libera(quem["ip_chave"])
             return self._erro(429, "muitas consultas ao mesmo tempo; tente de novo", cabecalhos=cota)
         inicio = time.monotonic()
         n_parquet = 0
@@ -1298,7 +1354,7 @@ class Handler(BaseHTTPRequestHandler):
                             arq = os.path.join(rodado_sql.TEMP, f"r_{uuid.uuid4().hex}.parquet")
                             try:
                                 rel.limit(limite).write_parquet(arq, compression="zstd")
-                                n_parquet = _linhas_do_parquet(arq)
+                                n_parquet, bytes_parquet = _linhas_do_parquet(arq)
                                 with open(arq, "rb") as f:
                                     dados = f.read()
                             finally:
@@ -1329,10 +1385,13 @@ class Handler(BaseHTTPRequestHandler):
         finally:
             SIMULTANEAS.release()
             if vaga_ip:
-                LIMITES.libera(quem["ip"])
+                LIMITES.libera(quem["ip_chave"])
 
         if linhas is None:
-            cota = self._conta(quem, n_parquet, time.monotonic() - inicio, cota)
+            n_bytes = max(len(dados), bytes_parquet)
+            if self._cabe(quem, n_bytes, cota) is not None:
+                return
+            cota = self._conta(quem, n_parquet, n_bytes, time.monotonic() - inicio)
             return self._responde(200, dados, "application/vnd.apache.parquet",
                                   {**_cabecalhos_de_aviso(tabelas, avisos), **cota,
                                    "X-Linhas": str(n_parquet),
@@ -1342,27 +1401,33 @@ class Handler(BaseHTTPRequestHandler):
                      medido_em=datetime.datetime.now(BRT).isoformat(timespec="seconds"))
         truncado = len(linhas) > limite
         linhas = linhas[:limite]
-        cota = self._conta(quem, len(linhas), time.monotonic() - inicio, cota)
-        extra = {
-            **_cabecalhos_de_aviso(tabelas, avisos), **cota,
-            "X-Linhas": str(len(linhas)),
-            "X-Truncado": "1" if truncado else "0",
-            "X-Segundos": f"{time.monotonic() - inicio:.3f}",
-        }
         if formato == "json":
             registros = [dict(zip(colunas, l)) for l in linhas]
             if embrulha:
                 registros = {"linhas": registros, "avisos": avisos,
                              "contexto": [f"/contexto?dataset={d}&tabela={t}" for d, t in tabelas],
                              "truncado": truncado}
-            corpo = json.dumps(registros, ensure_ascii=False, default=_json_valor) + "\n"
-            return self._responde(200, corpo, "application/json; charset=utf-8", extra)
-        saida = io.StringIO()
-        w = csv.writer(saida, delimiter="\t" if formato == "tsv" else ",", lineterminator="\n")
-        w.writerow(colunas)
-        w.writerows(linhas)
-        tipo = "text/tab-separated-values" if formato == "tsv" else "text/csv"
-        self._responde(200, saida.getvalue(), f"{tipo}; charset=utf-8", extra)
+            corpo = (json.dumps(registros, ensure_ascii=False, default=_json_valor) + "\n").encode("utf-8")
+            tipo = "application/json; charset=utf-8"
+        else:
+            saida = io.StringIO()
+            w = csv.writer(saida, delimiter="\t" if formato == "tsv" else ",", lineterminator="\n")
+            w.writerow(colunas)
+            w.writerows(linhas)
+            corpo = saida.getvalue().encode("utf-8")
+            tipo = ("text/tab-separated-values" if formato == "tsv" else "text/csv") + "; charset=utf-8"
+        # a cota cobra o tamanho do corpo, não só as linhas: `to_json(list(...))` numa linha só
+        # levava uma partição inteira gastando 1 linha
+        if self._cabe(quem, len(corpo), cota) is not None:
+            return
+        cota = self._conta(quem, len(linhas), len(corpo), time.monotonic() - inicio)
+        extra = {
+            **_cabecalhos_de_aviso(tabelas, avisos), **cota,
+            "X-Linhas": str(len(linhas)),
+            "X-Truncado": "1" if truncado else "0",
+            "X-Segundos": f"{time.monotonic() - inicio:.3f}",
+        }
+        self._responde(200, corpo, tipo, extra)
 
 
 if __name__ == "__main__":

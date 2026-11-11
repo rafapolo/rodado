@@ -102,7 +102,12 @@ variável de ambiente (descomentar no `haloy.yml`) e `0` o desliga.
 
 | O quê | Padrão | Variável | Resposta |
 |---|---|---|---|
-| Cota de linhas devolvidas por dia (meia-noite de Brasília), por token pessoal ou, sem ele, por IP; SQLite em `/dados/limites.sqlite` (sobrevive a deploy) | 200.000 | `RODADO_COTA_DIA` | `429` + `Retry-After` + `dica`; `X-Cota-Restante` em toda resposta de `/query`; a última consulta do dia é cortada no que sobra |
+| Cota de linhas devolvidas por dia (meia-noite de Brasília), por token pessoal ou, sem ele, por IP (IPv6 pela /64); SQLite em `/dados/limites.sqlite` (sobrevive a deploy) | 200.000 | `RODADO_COTA_DIA` | `429` + `Retry-After` + `dica`; `X-Cota-Restante` em toda resposta de `/query`; a última consulta do dia é cortada no que sobra |
+| Cota de **bytes** devolvidos por dia, mesma chave: o corpo da resposta (parquet: descomprimido). Sem ela, `to_json(list(t))` levava uma partição inteira gastando 1 linha | 250 MB | `RODADO_COTA_BYTES_DIA` | `429`; `X-Cota-Bytes-Restante`; resposta que não cabe no que sobra é recusada inteira |
+| Teto de bytes por resposta | 25 MB | `RODADO_RESPOSTA_MAX_BYTES` | `413` + `dica` |
+| Balde comum a todo o tráfego **sem token pessoal** (senha compartilhada, `DB_TOKEN` do dono, link `/q`): trocar de IP (proxy, VPN, IPv6) não multiplica a cota | 2.000.000 linhas, 2,5 GB | `RODADO_COTA_SENHA_DIA`, `RODADO_COTA_SENHA_BYTES_DIA` | `429` dizendo que é a cota comum da senha |
+| IPv6 agrupado nesta rede para cota e ritmo (um cliente comum tem uma /64 inteira) | /64 | `RODADO_PREFIXO_IPV6` | — |
+| Terminal (`/tty`): teto do `.linhas`; balde comum a todas as abas (o ttyd não sabe o IP), contado pelo texto exibido; ritmo por aba | 200 linhas; 100.000 linhas, 100 MB | `RODADO_TERMINAL_MAX_LINHAS`, `RODADO_COTA_TERMINAL_DIA`, `RODADO_COTA_TERMINAL_BYTES_DIA` | mensagem na tela; para baixar mais, o botão CSV (`#exporta`), que passa pelo `/query` |
 | Consultas por minuto por IP (janela deslizante) | 30 | `RODADO_POR_MINUTO` | `429` + `Retry-After` |
 | Consultas ao mesmo tempo por IP (as 4 vagas globais continuam) | 2 | `RODADO_SIMULTANEAS_IP` | `429`, `Retry-After: 5` |
 | `OFFSET` acima disto, em qualquer ponto da consulta (e `OFFSET` que não é literal) | 100.000 | `RODADO_OFFSET_MAX` | `400` + `dica` |
@@ -111,16 +116,23 @@ variável de ambiente (descomentar no `haloy.yml`) e `0` o desliga.
 | Nomes de token fora da cota | nenhum | `RODADO_ISENTOS="nome1,nome2"` | `X-Cota-Restante: ilimitada` |
 | Aviso (uma vez por chave e dia) ao passar de 80% da cota, ou de 20 recusas de ritmo no dia | 80 / 20 | `RODADO_AVISO_PCT`, `RODADO_AVISO_429` | linha `[limites] AVISO` no log do container |
 
-**Quem fica de fora.** O terminal do navegador (`terminal.py`) não passa pelo `/query` e não
-conta. O MCP de `/mcp` chama o `consulta.py` por dentro do container, sem passar pelo Caddy: sem
-`X-Rodado-Ip`, é tratado como interno e fica fora da cota e do ritmo (mas não das recusas de
-`OFFSET` e de tabela grande). `/llm`, `/contexto`, `/exemplos`, `/tabelas`, `/colunas`,
-`/confere`, `/ping` e o `/index` não têm cota nem ritmo. O botão CSV da página usa `limite=1000`,
-que passa pela regra da tabela grande.
+**Ninguém fica de fora** (desde 2026-11-11). Até então o MCP de `/mcp` chegava ao `consulta.py`
+sem `X-Rodado-Ip`, era tratado como interno e ficava fora de cota e ritmo — raspagem sem limite
+atrás da mesma senha —, e o terminal aceitava `.linhas 10000000` sem contar nada. Agora o
+`mcp_server.py` repassa ao `/query` o `X-Rodado-Ip` e o token (cabeçalho ou cookie) da requisição
+que recebeu (`_RepassaIdentidade`; teste em `db/testes/mcp_repasse.py`), quem chega sem IP cai na
+chave `ip:interno` com os limites de todo mundo, e o terminal tem teto e balde próprios (tabela
+acima). `/llm`, `/contexto`, `/exemplos`, `/tabelas`, `/colunas`, `/confere`, `/ping` e o `/index`
+não têm cota nem ritmo (são metadados). O botão CSV da página (`#exporta`) é o caminho para baixar
+dado pelo navegador: `formato=csv&limite=1000&ciente=1` pelo `/query`, com o cookie ou a senha, e
+cabe nos limites padrão (teste `exporta_do_terminal_segue_funcionando_com_os_padroes`).
+
+**O que segue aberto:** duas pendências registradas fora do git (`tasks/plans/limites_abuso_db.md`).
 
 **O que a recusa de tabela grande não pega** (só o comando de cima, de uma tabela, sem filtro):
 `WITH x AS (SELECT * FROM grande) SELECT * FROM x`, `row_number()` como paginação e `WHERE id > n`
-em laço. Isso a cota e o ritmo seguram: nenhum caminho passa de 200 mil linhas por dia e por chave.
+em laço, nem `WHERE true`. Isso a cota (linhas **e** bytes) e o ritmo seguram: o detector é dica para
+agente honesto, não a trava.
 
 ### Tokens por pessoa
 
@@ -140,7 +152,9 @@ HTTP Basic continuam valendo como antes.
 - **Criar:** `ssh finland` → `echo "ana:$(openssl rand -hex 24)" >> /root/rodado-db/.tokens` (arquivo
   com `chmod 600`, nunca no repositório) e redeploy com `DB_TOKENS="$(paste -sd, .tokens)"`. **Revogar:**
   apagar a linha e redeployar; o `401` vale só para aquele token e o cookie dele morre junto.
-- Dar a alguém `?token=` ou `Authorization` é dar a cota dele; sem token a cota é do IP.
+- Dar a alguém `?token=` ou `Authorization` é dar a cota dele; sem token a cota é do IP **e** do
+  balde comum da senha. O dono que não quiser dividir esse balde usa um token próprio de
+  `DB_TOKENS` (de preferência em `RODADO_ISENTOS`), não o `DB_TOKEN`.
 
 ### Conferir depois do deploy
 
@@ -156,7 +170,7 @@ ou fica fora de `private_ranges`: o limite por IP valeria para o mundo inteiro. 
 (`RODADO_POR_MINUTO=0`, `RODADO_SIMULTANEAS_IP=0`) e ajuste o `trusted_proxies` do Caddyfile.
 
 Testes (sem catálogo nem rede; um DuckDB em memória e o `Handler` de verdade): `python3 db/testes/limites.py`
-(22 casos) e `python3 db/testes/mascara_cpf.py` (11). A parte do Caddy (regex dos tokens, cabeçalhos
+(29 casos), `python3 db/testes/mcp_repasse.py` (3: o MCP de verdade em HTTP contra um `/query` falso) e `python3 db/testes/mascara_cpf.py` (11). A parte do Caddy (regex dos tokens, cabeçalhos
 forjados, cookie por pessoa) foi conferida à mão com o `caddy` local e um servidor de eco.
 
 ## Como funciona
