@@ -2,7 +2,7 @@
 
 **Gerado por `scripts/gera_catalog_md.py`, a partir de `_rodado_metadata/catalog.parquet` — não editar à mão.** Descrições vêm de `docs/context/dataset_descriptions.yaml`; a coluna Dado até vem de `docs/context/dataset_freshness.yaml` (curado, só ~6 datasets por enquanto — vazio não significa "sem gap", significa "não conferido ainda"). Editar os YAML e regenerar (`build_metadata_catalog.py` → `gera_catalog_md.py`), nunca este arquivo.
 
-**294 datasets, 1.758 tabelas, 33.729.903.868 linhas.** 32 dataset(s) sem descrição. 4 com data de frescor conferida (de 294).
+**295 datasets, 1.759 tabelas, 33.740.311.935 linhas.** 33 dataset(s) sem descrição. 4 com data de frescor conferida (de 295).
 
 | Dataset | Descrição | Tabelas | Linhas | Dado até | Fonte |
 |---|---|---:|---:|---|---|
@@ -25,7 +25,7 @@
 | `br_ans_operadoras` | ANS — operadoras de planos de saúde (cadastro, reclamações, penalidades, ressarcimento ao SUS, demonstrações contábeis) | 18 | 111.128.794 | — | ANS — pastas restantes da raiz PDA (SIP, IGR, histórico de planos, características dos produtos, painel de precificação, TISS dados de planos) |
 | `br_antt_dadosabertos` | ANTT — RNTRC (transportadores e veículos de carga), CIOT e acidentes nas rodovias federais concedidas | 4 | 18.909.325 | — | ANTT — RNTRC, veículos, CIOT, acidentes em rodovias concedidas |
 | `br_anvisa_cmed` | CMED/ANVISA — preços regulados de medicamentos | 1 | 53.388 | — | CMED (preços de medicamentos, ANVISA) |
-| `br_anvisa_consultas` | ANVISA — registros de agrotóxicos, alimentos e produtos regulados | 3 | 101.293 | — | ANVISA (consulta completa) |
+| `br_anvisa_consultas` | ANVISA — registros de agrotóxicos, alimentos e produtos regulados | 3 | 101.363 | — | ANVISA (consulta completa) |
 | `br_anvisa_medicamentos_industrializados` | ANVISA — medicamentos industrializados registrados | 1 | 10.000.000 | — | Base dos Dados |
 | `br_b3_cotacoes` | _(sem descrição)_ | 1 | 24.760.472 | — | B3 — cotações históricas diárias (COTAHIST) |
 | `br_ba_feiradesantana_camara_leis` | Câmara Municipal de Feira de Santana — leis municipais | 1 | 6.033 | — | Base dos Dados |
@@ -249,7 +249,7 @@
 | `br_senado_ceaps` | Senado Federal — Cota para Exercício da Atividade Parlamentar (CEAPS) | 1 | 398.027 | — | Senado CEAPS (cota parlamentar) |
 | `br_senado_dados_abertos` | Senado Federal — senadores, votações, discursos, comissões | 18 | 612.356 | — | Base dos Dados |
 | `br_senado_dados_abertos_administrativos` | Senado Federal — dados administrativos (CEAPS, remuneração de servidores) | 40 | 641.617 | — | Base dos Dados |
-| `br_senado_dadosabertos` | Senado Federal — comissões, matérias, senadores e votações (fonte alternativa) | 4 | 166.837 | — | Senado (geral) |
+| `br_senado_dadosabertos` | Senado Federal — comissões, matérias, senadores e votações (fonte alternativa) | 4 | 167.219 | — | Senado (geral) |
 | `br_senatran_estatisticas` | Frota de veículos por UF e tipo (SENATRAN, via Base dos Dados) | 1 | 159.327 | — | Base dos Dados |
 | `br_senatran_frota` | SENATRAN — frota de veículos por município e tipo, mensal desde 2013 | 1 | 20.223.786 | — | SENATRAN — frota de veículos por município e tipo |
 | `br_sfb_cnfp` | _(sem descrição)_ | 1 | 12.874 | — | SFB — Cadastro Nacional de Florestas Públicas 2025 |
@@ -264,7 +264,7 @@
 | `br_stf_corte_aberta` | STF — decisões do projeto Corte Aberta | 2 | 2.708.896 | — | Base dos Dados |
 | `br_stj_dadosabertos` | STJ — decisões monocráticas e acórdãos publicados em 2021 (só este ano) | 1 | 3.604.791 | — | STJ dados abertos |
 | `br_susep_dados_abertos` | _(sem descrição)_ | 22 | 11.866.281 | — | SUSEP — dados abertos pela API Olinda (cadastro, administradores, produtos, receitas, despesas, provisões, contábeis) |
-| `br_tce_es` | TCE-ES — fiscalização de contas de municípios e do estado | 5 | 13.065 | — | TCE-ES |
+| `br_tce_es` | TCE-ES — fiscalização de contas de municípios e do estado | 5 | 13.080 | — | TCE-ES |
 | `br_tce_pi` | TCE-PI — despesas, licitações e receitas de municípios | 5 | 405 | — | TCE-PI |
 | `br_tce_rj` | TCE-RJ — contratos, licitações, convênios e gastos com pessoal | 6 | 225.683 | — | TCE-RJ |
 | `br_tce_sp` | TCE-SP — municípios fiscalizados | 1 | 644 | — | TCE-SP |
@@ -294,6 +294,7 @@
 | `world_iea_pirls` | IEA PIRLS — avaliação internacional de leitura do 4º ano, 51 países, sem o Brasil nem outro país latino-americano (filtrar pirls_type = Normal) | 8 | 1.941.828 | — | Base dos Dados |
 | `world_iea_timss` | IEA TIMSS 2023 — matemática e ciências do 4º e 8º anos, 59 países, com o Brasil | 11 | 1.929.595 | — | Base dos Dados |
 | `world_imdb_movies` | IMDB — filmes mais bem avaliados por ano | 1 | 33.600 | — | Base dos Dados |
+| `world_noaa_etopo` | _(sem descrição)_ | 1 | 10.407.600 | — | Base dos Dados |
 | `world_oecd_pisa` | OCDE PISA — avaliação internacional de estudantes | 1 | 2.500.803 | — | Base dos Dados |
 | `world_oecd_public_finance` | OCDE — finanças públicas por país | 1 | 2.646 | — | Base dos Dados |
 | `world_olympedia_olympics` | Olympedia — atletas e resultados olímpicos históricos | 6 | 482.195 | — | Base dos Dados |

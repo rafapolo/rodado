@@ -4,7 +4,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 `last_update` é a data do parquet mais recente do dataset no beelink (para tabela nativa do
 `.duckdb`, sem parquet, o `scrape_date` do catálogo).
 
-294 datasets, 1758 tabelas.
+295 datasets, 1759 tabelas.
 
 | dataset | tabelas | linhas | last_update |
 |---|---:|---:|---|
@@ -27,7 +27,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_ans_operadoras` | 18 | 111.128.794 | 2026-10-25 |
 | `br_antt_dadosabertos` | 4 | 18.909.325 | 2026-10-28 |
 | `br_anvisa_cmed` | 1 | 53.388 | 2026-11-10 |
-| `br_anvisa_consultas` | 3 | 101.293 | 2026-10-30 |
+| `br_anvisa_consultas` | 3 | 101.363 | 2026-11-11 |
 | `br_anvisa_medicamentos_industrializados` | 1 | 10.000.000 | 2026-07-09 |
 | `br_b3_cotacoes` | 1 | 24.760.472 | 2026-10-31 |
 | `br_ba_feiradesantana_camara_leis` | 1 | 6.033 | 2026-07-05 |
@@ -251,7 +251,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_senado_ceaps` | 1 | 398.027 | 2026-10-30 |
 | `br_senado_dados_abertos` | 18 | 612.356 | 2026-10-31 |
 | `br_senado_dados_abertos_administrativos` | 40 | 641.617 | 2026-10-09 |
-| `br_senado_dadosabertos` | 4 | 166.837 | 2026-10-21 |
+| `br_senado_dadosabertos` | 4 | 167.219 | 2026-11-11 |
 | `br_senatran_estatisticas` | 1 | 159.327 | 2026-10-07 |
 | `br_senatran_frota` | 1 | 20.223.786 | 2026-11-03 |
 | `br_sfb_cnfp` | 1 | 12.874 | 2026-10-25 |
@@ -266,7 +266,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_stf_corte_aberta` | 2 | 2.708.896 | 2026-10-09 |
 | `br_stj_dadosabertos` | 1 | 3.604.791 | 2026-10-21 |
 | `br_susep_dados_abertos` | 22 | 11.866.281 | 2026-10-25 |
-| `br_tce_es` | 5 | 13.065 | 2026-11-02 |
+| `br_tce_es` | 5 | 13.080 | 2026-11-11 |
 | `br_tce_pi` | 5 | 405 | 2026-10-21 |
 | `br_tce_rj` | 6 | 225.683 | 2026-10-21 |
 | `br_tce_sp` | 1 | 644 | 2026-10-07 |
@@ -274,7 +274,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `br_tcu_dadosabertos` | 1 | 38.630 | 2026-11-02 |
 | `br_tcu_inidoneos` | 4 | 58.562 | 2026-10-30 |
 | `br_tesouro_capag` | 2 | 5.815 | 2026-10-07 |
-| `br_tesouro_cauc` | 3 | 5.674 | 2026-10-30 |
+| `br_tesouro_cauc` | 3 | 5.674 | 2026-11-11 |
 | `br_tesouro_transferencias` | 2 | 25.346.631 | 2026-10-31 |
 | `br_transferegov` | 3 | 30.346 | 2026-10-21 |
 | `br_transferegov_siconv` | 62 | 69.060.758 | 2026-10-21 |
@@ -296,6 +296,7 @@ Gerado por `scripts/build_metadata_catalog.py` a cada regeneração do catálogo
 | `world_iea_pirls` | 8 | 1.941.828 | 2026-07-09 |
 | `world_iea_timss` | 11 | 1.929.595 | 2026-07-09 |
 | `world_imdb_movies` | 1 | 33.600 | 2026-07-09 |
+| `world_noaa_etopo` | 1 | 10.407.600 | 2026-11-11 |
 | `world_oecd_pisa` | 1 | 2.500.803 | 2026-10-10 |
 | `world_oecd_public_finance` | 1 | 2.646 | 2026-07-09 |
 | `world_olympedia_olympics` | 6 | 482.195 | 2026-07-09 |
