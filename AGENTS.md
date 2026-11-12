@@ -42,12 +42,13 @@ O harness TS de apuração (pi + Gemma 4 local) vive no branch `harness-gemma`, 
 - `docs/context/` — a camada semântica do espelho: joins (`bridges.yaml`), métricas nomeadas (`metrics.yaml`), hierarquias (`hierarchies.yaml`), armadilhas por dataset (`gotchas/<dataset>.yml`), decode de código (`column_codes.yaml`, `dicionario_coverage.json`). **Leia `docs/context/README.md` antes de escrever join ou métrica à mão** — `resolve_join()`/`get_metric()`/`explain_column()` existem porque isso já saiu errado em produção (ver as 3 regras lá).
 - `docs/pesquisa/hipoteses/` — perguntas e respostas de pesquisa sobre o espelho, incluindo o espaço de trincas de família e o grafo de identificadores CNPJ/CPF. Ver `docs/pesquisa/hipoteses/README.md`.
 - `_rodado_metadata/catalog.parquet` — o catálogo de tabelas (linhas, status, procedência). Colunas e armadilhas conhecidas: `docs/mapa/metadata_catalog.md`.
-- `pages/atlas/` (rodado.xyz/atlas) — mapa navegável de tabelas e join keys. Como é construído: `docs/mapa/atlas.md`. Como ligar um dataset novo nele: `docs/tecnico/housekeeping.md`, item 9.
-- `docs/tecnico/housekeeping.md` — checklist a rodar depois de qualquer scrape novo (view existe? regen de metadados? atlas ligado? contagens no texto atualizadas?).
+- `pages/atlas/` (rodado.xyz/atlas) — mapa navegável de tabelas e join keys. Como é construído: `docs/mapa/atlas.md`. Como ligar um dataset novo nele: `docs/tecnico/housekeeping.md` (só local), item 9.
+- `docs/tecnico/housekeeping.md` (só local) — checklist a rodar depois de qualquer scrape novo (view existe? regen de metadados? atlas ligado? contagens no texto atualizadas?).
 - `docs/tecnico/beelink_duckdbrc.md` — tuning do `~/.duckdbrc` no beelink, toggle do llama-server, o que nunca fazer com `temp_directory`.
 
 ## O que é só local — fora do git
 
+- Desde 2026-11-12, também fora do git e do histórico, a pedido: `scripts/sync/`, `scripts/sync-with-source.md`, `scripts/checa_frescor_fontes.py`, `tests/test_bq_tipos.py`, `docs/tecnico/{housekeeping,auto_atualizacao,mes_novo_cnpj,mes_novo_cno}.md` e `docs/context/fonte_propria.yaml` — o pipeline de sincronização e os procedimentos de atualização. Existem só neste Mac (e cópias avulsas no beelink/finland); quem clona o repo consulta o espelho, não o reconstrói.
 - `scripts/scrap/` e `docs/context/privado/` (endpoints não documentados, contornos de WAF, proxy BR): fora do git desde 2026-10-07, a pedido — meses de trabalho para chegar a cada fonte, repositório é público. Histórico reescrito para tirá-los dos commits antigos também. Nada que dependa deles pode ser obrigatório no caminho de quem só consulta o espelho.
 - `tasks/`: gitignored desde 2026-09-24, sem histórico no git — **apagar um arquivo de lá é definitivo**. `tasks/README.md` é o índice único do que está em andamento. O que um arquivo ensinou vai para um lugar versionado (`docs/`) antes de ser removido.
 - `schemas.json` e `docs/context/rodado-schema.json`: fora do git (purgados do histórico em 2026-09-24) — um clone novo não os tem, e `mcp_server.py` só funciona depois de `gera_schemas.py` + `sync_mcp_schema.py`.
@@ -75,7 +76,7 @@ O harness TS de apuração (pi + Gemma 4 local) vive no branch `harness-gemma`, 
 
 **NUNCA consultar por S3/Hetzner diretamente fora do `db.rodado.xyz`.** O bucket `s3://baseldosdados` é a cópia do espelho que o beelink envia; desde 2026-10-11 o **único** consumidor que consulta por ele é `db.rodado.xyz` (`db/`, roda no finland, sem túnel para o beelink). Desde 2026-10-28 `mcp_server.py` pode chegar ao S3 **através** do db.rodado.xyz (`MCP_BACKEND=http`, manda a SQL ao `/query`, nunca abre o bucket ele mesmo). Todo o resto — agentes por SSH, harness, scripts, análises — consulta pelo beelink; toda view do DuckDB que ainda referencie `s3://baseldosdados` está obsoleta (use `read_parquet('~/rodado/<dataset>/<table>/*.parquet')` com o caminho local).
 
-Essa regra é sobre **servir consultas de dado** — nunca usar BigQuery pra isso, sem exceção. A única exceção (manutenção do espelho) e os seus limites estão em `docs/context/privado/bigquery_manutencao.md` (só local).
+Essa regra é sobre **servir consultas de dado** — nunca usar BigQuery pra isso, sem exceção. A única exceção (manutenção do espelho) e os seus limites estão em `docs/context/privado/bigquery_manutencao.md` (só local). Se o arquivo não existir na sua cópia, a exceção não vale para você.
 
 `mcp_server.py` (`MCP_BACKEND=ssh`, `_run_sql_ssh`) e `harness/beelink.ts` (branch `harness-gemma`) abrem cada sessão com `allowed_directories` restrito a `~/rodado` e `~/duckdb_tmp` (+ o prefixo `s3://healthbr-data/`), `enable_external_access=false` e `lock_configuration=true`: a SQL vem de um modelo, e um `SELECT * FROM read_text('~/.ssh/...')` passa pela checagem de somente-leitura. Ferramenta nova que leia fora de `~/rodado` precisa entrar na lista, não desligar a trava.
 

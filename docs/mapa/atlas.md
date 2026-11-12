@@ -38,7 +38,7 @@ python3 scripts/build_atlas.py /tmp/atlas.html   # também emite a cópia autoco
 
 Ligar um **dataset novo** no atlas (tema certo, chave de join reconhecida) é
 um passo separado, com os dois jeitos de falhar em silêncio — ver
-`docs/tecnico/housekeeping.md`, item 9.
+`docs/tecnico/housekeeping.md` (só local, fora do git), item 9.
 
 ## Modo Ontologia (`?mode=ontologia`)
 
