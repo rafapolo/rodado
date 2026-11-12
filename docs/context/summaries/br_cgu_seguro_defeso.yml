@@ -28,16 +28,16 @@ tabelas:
     verificado: "43.418.500 linhas; chave composta 25.144.850 distintos (não única); 124.868 valores negativos; 121 linhas sem UF/município — medido 2026-10-27. Ver gotchas contar_por_nis e agregue_pela_pagamento"
   seguro_defeso:
     ultima_data: "2026-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
-    grao: "view pagamento JOIN favorecido: uma parcela paga × (CPF, NIS, RGP, nome) do beneficiário; mesmo grão da pagamento"
-    chave: "nenhuma: mesmas 43.418.500 linhas da pagamento, que não tem chave única"
-    tempo: {natureza: serie_mensal, coluna: mes_referencia, cobertura: "201301–202608"}
-    territorio: {nivel: municipio, colunas: {uf: "UF (vazia em 121 linhas)", codigo_municipio_siafi: "código SIAFI de 4 dígitos", nome_municipio: "nome do município"}}
+    grao: "view pagamento JOIN favorecido: um pagamento de seguro-defeso (parcela ou estorno, com sinal) × (CPF, NIS, RGP, nome) do beneficiário num mês de referência; o mesmo pescador aparece em média 1,2 a 2,4 vezes por mês de referência; mesmo grão da pagamento"
+    chave: "nenhuma: mesmas 43.770.343 linhas da pagamento, que não tem chave única. (mes_referencia, favorecido_id) tem 25.361.661 combinações, 8.689.410 com mais de uma linha (até 74) e há linhas idênticas (só 25,98 milhões distintas em (mes_referencia, favorecido_id, município, valor))"
+    tempo: {"natureza": "serie_mensal", "coluna": "mes_referencia", "cobertura": "201301–202609 (texto aaaamm), 162 meses: faltam 202511, 202512 e 202601 (por dedução, fora do período de defeso); o ciclo concentra os meses de 202603 a 202609 (2026: 3,96 milhões de linhas, R$ 6,37 bi)"}
+    territorio: {"nivel": "municipio", "colunas": {"codigo_municipio_siafi": "código SIAFI de 4 dígitos (junta com o diretório como inteiro, gotcha contar_por_nis)", "nome_municipio": "nome do município", "uf": "UF; 27 UFs e vazia em 125 linhas; PA (12,2 milhões), MA (10,2) e BA (4,9) lideram"}}
     medidas:
-      - {coluna: valor_parcela, o_que: "valor da parcela paga", unidade: "R$", soma: sim}
+      - {coluna: "valor_parcela", o_que: "valor do pagamento em R$; 126.354 linhas são negativas (estornos, por dedução: soma R$ -132,5 mi, mínimo R$ -67.891) e 99.684 valem zero; a soma líquida é R$ 49,54 bi, a dos positivos R$ 49,68 bi", unidade: "R$", soma: "sim, mas decida se entram os negativos (líquido) ou só valor_parcela > 0 (bruto)"}
     filtros_tipicos:
       - "mes_referencia LIKE '2024%' — VARCHAR 'AAAAMM'"
+      - "valor_parcela > 0 quando a pergunta é quanto foi pago (os negativos são estornos)"
       - "regexp_full_match(cpf_favorecido, '[0-9]{11}') para só CPFs completos (gotcha cpf_completado)"
-    use_para: "consultas que precisam de NIS, CPF, RGP ou nome do pescador; contar pescadores por count(DISTINCT nis_favorecido)"
-    nao_use_para: "somas e contagens simples por mês/UF/município, que ficam ~9x mais rápidas na pagamento (gotcha agregue_pela_pagamento)"
-    rascunho: [use_para, nao_use_para]
-    verificado: "count(*) = 43.418.500, igual à pagamento — medido 2026-10-27"
+    use_para: "consultas que precisam de NIS, CPF, RGP ou nome do pescador; contar pescadores por count(DISTINCT nis_favorecido); valor pago por mês, UF e município (use a pagamento quando não precisar da pessoa)."
+    nao_use_para: "somas e contagens simples por mês/UF/município, que ficam ~9x mais rápidas na pagamento (gotcha agregue_pela_pagamento); contar pescadores por count(*) ou por (mes_referencia, favorecido_id) (a linha é pagamento, não pessoa; o mesmo mês repete a pessoa); somar valor_parcela sem decidir sobre os negativos; ler mes_referencia como o mês em que o dinheiro foi pago (a tabela só tem esse campo)."
+    verificado: "43.770.343 linhas, igual à pagamento (o cartão de 2026-10-27 tinha 43.418.500; a partir de 202609 o espelho ganhou 351.843 linhas); soma R$ 49.542.757.156 (positivos R$ 49,68 bi, negativos R$ -132,5 mi); 162 meses de 201301 a 202609, faltam 202511, 202512, 202601; pessoas-mês com 1 linha: 16.672.251, com 2: 3.245.146, com 4: 3.439.147, máximo 74; 25.984.545 distintos de (mes_referencia, favorecido_id, município, valor); valor_parcela de R$ -67.891 a R$ 7.204,06; UF vazia em 125 linhas, 27 UFs — medido 2026-10-27 e 2026-11-12"

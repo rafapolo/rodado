@@ -21,3 +21,17 @@ gotchas:
     colunas: [favorecido_id, valor_parcela]
     severidade: aviso
     verificado: "total por mês (162 meses, R$ 9,18 bi nos dois caminhos): 0,86 s pela view, 0,10 s na pagamento; 2.655.471 pares (2.642.402 NIS distintos) para 33.555.512 pagamentos — medido 2026-10-26"
+  - id: parcela_mudou_de_formato
+    resumo: "Em garantia_safra/pagamento a linha é uma parcela e o formato mudou: até 2020 o agricultor recebe de 2 a 7 parcelas mensais de R$ 140 a 170 por ano; de 2022 em diante, uma parcela só de R$ 850 (2021-23) ou R$ 1.200 (2024-26)."
+    detalhe: >
+      Contar linhas conta parcelas, não agricultores: 2013 tem 8.519.792 linhas para 1.142.122
+      pessoas (7,5 parcelas por pessoa), 2025 tem 674.609 para 674.451 (1,0). A série de count(*)
+      por ano cai 96% de 2013 a 2022 (8,5 milhões para 317 mil) sem que o programa tenha encolhido nessa proporção (os
+      agricultores caem de 1,14 milhão a 316 mil). Para pessoas, conte nis_favorecido distintos no
+      ano (na pagamento, favorecido_id conta pares NIS + nome, quase iguais: 2.655.471 contra 2.642.402 NIS); para valor, some valor_parcela
+      por ano (R$ 1.297 mi em 2013, R$ 275 mi em 2022, R$ 811 mi em 2025). Faltam os meses 201907,
+      202304 e 202401, e 2026 tem a maior parte do pagamento em 202603 (682 mil parcelas).
+    tabelas: [garantia_safra, pagamento]
+    colunas: [valor_parcela, mes_referencia, favorecido_id]
+    severidade: silencioso
+    verificado: "parcelas médias por pessoa no ano: 7,46 (2013), 3,23 (2015), 3,84 (2019), 2,07 (2020), 1,38 (2021), 1,00 (2022 a 2026); valor médio por pessoa-ano R$ 1.136 (2013), 735 (2020), 870 (2022), 1.202 (2025); parcela mais frequente R$ 170 (17,3 milhões), 140, 155, 1.200 (2,19 milhões), 850 (1,79 milhão); meses ausentes 201907, 202304, 202401 — medido 2026-11-12"

@@ -28,13 +28,16 @@ tabelas:
     verificado: "2.655.471 linhas = 2.655.471 favorecido_id distintos = 2.655.471 pares (NIS, nome) distintos — medido 2026-10-27"
   garantia_safra:
     ultima_data: "2026-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
-    grao: "uma parcela paga a um agricultor num mês (view: pagamento JOIN favorecido, com NIS e nome)"
-    chave: "mesma de pagamento"
-    tempo: {natureza: serie_mensal, coluna: mes_referencia, cobertura: "201301–202609"}
+    grao: "uma parcela do Garantia-Safra paga a um agricultor num mês de referência (view: pagamento JOIN favorecido, com NIS e nome); até 2020 o agricultor recebe várias parcelas mensais no ano, de 2022 em diante uma só"
+    chave: "(mes_referencia, nis_favorecido): 33.555.512 linhas = 33.555.512 distintos (igual a (mes_referencia, favorecido_id) em pagamento, que é a chave de lá)"
+    tempo: {"natureza": "serie_mensal", "coluna": "mes_referencia", "cobertura": "201301–202609 (texto aaaamm), 162 meses: faltam 201907, 202304 e 202401. Os pagamentos de 2026 se concentram em 202603 (682.009 parcelas, R$ 817 mi) e 202604"}
     territorio: {nivel: municipio, colunas: {uf: "UF", codigo_municipio_siafi: "código SIAFI com zero à esquerda", nome_municipio: "nome"}}
     medidas:
       - {coluna: valor_parcela, o_que: "valor da parcela", unidade: "R$", soma: sim}
-    use_para: "consultas que precisam do NIS ou nome junto da parcela."
-    nao_use_para: "somas e contagens sem pessoa: use pagamento, ~9x mais barato (gotcha agregue_pela_pagamento)."
-    rascunho: [use_para, nao_use_para]
-    verificado: "33.555.512 linhas (o perfil mostra 0 por ser view) — medido 2026-10-27"
+    use_para: "consultas que precisam do NIS ou do nome junto da parcela (cruzar agricultores com CadÚnico ou outros benefícios); valor pago e agricultores atendidos por município, UF (11 UFs, do semiárido: BA, CE, PE, PI, PB, RN, MG, AL, SE, MA, AM) e ano."
+    nao_use_para: "somas e contagens sem pessoa (use pagamento, ~9x mais barato); contar agricultores por count(*) (2013: 8,5 milhões de linhas para 1,14 milhão de pessoas); comparar valor_parcela ou número de parcelas entre anos sem olhar o formato (gotcha parcela_mudou_de_formato); série mensal contínua (três meses faltam)."
+    filtros_tipicos:
+      - "mes_referencia LIKE '2025%' (VARCHAR 'aaaamm')"
+      - "para contar agricultores no ano: count(DISTINCT nis_favorecido), nunca count(*) (a linha é parcela)"
+      - "somas e contagens sem pessoa vão na pagamento (gotcha agregue_pela_pagamento)"
+    verificado: "33.555.512 linhas (a view; o perfil mostra 0 por ser view), igual a pagamento; soma de valor_parcela R$ 9.184.840.190 nas duas; 162 meses de 201301 a 202609, faltam 201907, 202304, 202401; chave (mes_referencia, nis_favorecido) 33.555.512 distintos, (mes_referencia, favorecido_id) idem; valor_parcela de R$ 15 a R$ 7.750, nunca nulo nem não positivo; 11 UFs, nenhuma nula; codigo_municipio_siafi sempre de 4 caracteres, 1.327 municípios; agricultores por ano (NIS): 1.142.122 (2013), 487.326 (2019), 674.451 (2025), 866.969 (2026, até 202609) — medido 2026-10-27 e 2026-11-12"

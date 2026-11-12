@@ -10,7 +10,7 @@ gotchas:
       secoes_local_mudou_2026_2t (983 seções em 177 municípios, todas com
       local_1t diferente de local_2t) ou o recorte estrito
       mudanca_local_2turno_2026 (383 seções em 96 municípios; os dois recortes
-      não são o mesmo). As duas tabelas trazem zona e secao como INTEGER e
+      não são o mesmo: só 149 das 383 seções do estrito estão nas 983). As duas tabelas trazem zona e secao como INTEGER e
       secao_setor, como VARCHAR: junte com CAST(s.zona AS INT) e
       CAST(s.secao AS INT). Das 983, 830 estão em secao_setor 2026 e 817 têm
       setor; das 383, todas têm setor. Não existe ainda o setor do 2º turno
@@ -22,4 +22,4 @@ gotchas:
     tabelas: [secao_setor, secoes_local_mudou_2026_2t, mudanca_local_2turno_2026]
     colunas: [id_setor_censitario, zona, secao]
     severidade: silencioso
-    verificado: "ano=2026: secao_setor 517.179 linhas; mudanca_local_2turno_2026 383 seções (96 municípios), 383 com setor; secoes_local_mudou_2026_2t 983 (177 municípios), 830 achadas em secao_setor e 817 com setor, 738 com distancia_m > 0 — medido 2026-11-03"
+    verificado: "ano=2026: secao_setor 517.179 linhas; mudanca_local_2turno_2026 383 seções (96 municípios), 383 com setor; secoes_local_mudou_2026_2t 983 (177 municípios), 830 achadas em secao_setor e 817 com setor, 738 com distancia_m > 0 — medido 2026-11-03; 149 das 383 de mudanca_local_2turno_2026 estão em secoes_local_mudou_2026_2t — medido 2026-11-12"

@@ -115,28 +115,20 @@ tabelas:
     ultima_data: "2026-07-16"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um desembolso (ordem bancária) de recursos da União a um convênio
     chave: ID_DESEMBOLSO (378.212 linhas = 378.212 distintos. medido)
-    tempo:
-      natureza: serie_diaria
-      coluna: DATA_DESEMBOLSO
-      cobertura: 1900-06-24–2026-07-16; 1 linha com data anterior a 2008 (1900-06-24) é erro de digitação
-    territorio:
-      nivel: nenhum
-      colunas:
-        NR_CONVENIO: liga a siconv_convenio
+    tempo: {"natureza": "serie_diaria", "coluna": "DATA_DESEMBOLSO", "cobertura": "2008-01 a 2026-07-16; 1 linha de 1900-06-24 (R$ 274 mil) é data impossível. Nenhuma data futura"}
+    territorio: {"nivel": "nenhum", "colunas": {"NR_CONVENIO": "liga a siconv_convenio: os 187.286 convênios com desembolso casam 100% (de 285.743 convênios; os outros nunca receberam)"}}
     medidas:
     - coluna: VL_DESEMBOLSADO
       o_que: valor desembolsado; soma total R$ 150,246 bi = soma de VL_DESEMBOLSADO_CONV em siconv_convenio
       unidade: R$
       soma: sim
     filtros_tipicos:
-    - 'ANO_DESEMBOLSO = 2025 (INTEGER): 24.570 desembolsos e R$ 18,38 bi'
-    - 'QTD_DIAS_SEM_DESEMBOLSO e DT_ULT_DESEMBOLSO são atributos do convênio repetidos em cada linha: não some nem conte por linha'
-    use_para: série de dinheiro repassado por mês/ano e convênio.
-    nao_use_para: somar junto com VL_DESEMBOLSADO_CONV de siconv_convenio (é o mesmo dinheiro).
-    rascunho:
-    - use_para
-    - nao_use_para
-    verificado: '378.212 linhas. 378.212 distintos de ID_DESEMBOLSO; ANO_DESEMBOLSO=2025: 24.570 linhas, R$ 18.381.182.387,46 — medido 2026-10-27'
+      - "ANO_DESEMBOLSO = 2025 (INTEGER): 24.570 desembolsos e R$ 18,38 bi; ANO_DESEMBOLSO <> 1900 para tirar a linha de data impossível (R$ 274 mil, gotcha datas_fora_da_faixa)"
+      - "2026 só vai a 2026-07-16 (julho tem 1.928 desembolsos, R$ 1,29 bi, parcial): não compare o ano com os anteriores"
+      - "QTD_DIAS_SEM_DESEMBOLSO e DT_ULT_DESEMBOLSO são atributos do convênio repetidos em cada linha (um só valor de DT_ULT_DESEMBOLSO por convênio nos 187.286): não some nem conte por linha"
+    use_para: "série mensal ou anual do dinheiro da União efetivamente repassado a convênios; soma por convênio fecha exatamente com VL_DESEMBOLSADO_CONV de siconv_convenio, de onde vêm UF, convenente e órgão."
+    nao_use_para: "somar junto com VL_DESEMBOLSADO_CONV de siconv_convenio (é o mesmo dinheiro); território (sem UF nem município: junte com siconv_convenio por NR_CONVENIO); valor pactuado (VL_GLOBAL_CONV, em siconv_convenio) ou pago ao fornecedor (siconv_pagamento); contar convênios por linha."
+    verificado: "378.212 linhas = 378.212 distintos de ID_DESEMBOLSO; 187.286 convênios; soma de VL_DESEMBOLSADO R$ 150.246.327.793,04 contra soma de VL_DESEMBOLSADO_CONV em siconv_convenio R$ 150.246.327.793,04 (e, convênio a convênio, igual em 187.286 de 187.286 a menos de R$ 1); NR_CONVENIO casa 187.286 de 187.286 com siconv_convenio; DATA_DESEMBOLSO de 1900-06-24 a 2026-07-16; ANO_DESEMBOLSO=2025: 24.570 linhas, R$ 18.381.182.387,46; 2026: 15.415 linhas, R$ 10,37 bi; nenhum valor nulo, zero ou negativo; OBSERVACAO_DH nula em 456 — medido 2026-10-27 e 2026-11-12"
   siconv_empenho:
     ultima_data: "2026-07-16"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um empenho (nota de empenho, incluindo anulações e reforços) de um convênio

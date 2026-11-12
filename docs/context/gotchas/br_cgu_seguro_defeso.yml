@@ -39,3 +39,17 @@ gotchas:
     colunas: [nis_favorecido, codigo_municipio_siafi]
     severidade: aviso
     verificado: "2024: 1.112.240 pescadores (nis_favorecido) em 3.240 municípios; população 2024 do IBGE; MA 4,9% e PA 3,3% da população do estado — medido 2026-11-04"
+  - id: estorno_e_repeticao_no_mes
+    resumo: "valor_parcela tem 126 mil estornos negativos (R$ -132 mi) e 100 mil zeros, e o mesmo pescador aparece várias vezes no mesmo mes_referencia (até 74): nem a linha nem (mes, pessoa) é uma parcela única."
+    detalhe: >
+      A tabela só traz mes_referencia, sem mês de pagamento nem de competência. Em 2026,
+      3.334.175 combinações (mes_referencia, favorecido_id) têm em média 1,19 linhas; em 2018,
+      2,37. Somar valor_parcela devolve o líquido (R$ 49,54 bi em todo o período); a soma dos
+      positivos é R$ 49,68 bi. Para quanto foi pago a cada pescador num mês, some por
+      favorecido_id e mes_referencia e decida se o negativo entra; para contar pessoas, use
+      nis_favorecido distintos (gotcha contar_por_nis). Os estornos crescem com o programa: 3,4 mil
+      em 2013, 14,4 mil em 2024.
+    tabelas: [seguro_defeso, pagamento]
+    colunas: [valor_parcela, mes_referencia, favorecido_id]
+    severidade: silencioso
+    verificado: "43.770.343 linhas: 126.354 negativas (R$ -132.454.363, mínimo -67.891), 99.684 zeros; (mes_referencia, favorecido_id): 1 linha em 16.672.251 combinações, 4 em 3.439.147, máximo 74; só 25.984.545 distintos de (mes, favorecido_id, município, valor); meses 202511, 202512, 202601 ausentes — medido 2026-11-12"

@@ -40,3 +40,17 @@ gotchas:
     colunas: [CLASSI_FIN]
     severidade: silencioso
     verificado: "confirmados 2017 = 186, 2018 = 256; óbitos por agravo 67 e 95; comparação oficial não reconferida — medido 2026-11-04"
+  - id: local_de_infeccao
+    resumo: "O lugar do caso de febre amarela não é o município de residência: o local provável de infecção (COMUNINF/COUFINF) existe em só 9% das linhas e difere da residência em 15% dos confirmados."
+    detalhe: >
+      Febre amarela se pega no ambiente silvestre, muitas vezes fora do município onde a pessoa
+      mora. Dos 3.895 confirmados, 3.406 (87%) têm município provável de infecção (COMUNINF,
+      6 dígitos) e 526 desses (15%) são de município diferente do de residência (ID_MN_RESI);
+      558 têm COUFINF diferente de SG_UF. Nas 78.949 não confirmadas, só 4.061 têm o campo.
+      TPAUTOCTO (1 autóctone, 2 alóctone, 3 indeterminado, por dedução da ficha) está preenchido em
+      3.894 dos 3.895 confirmados. Para mapa de casos use COMUNINF nos confirmados e diga quantos
+      ficam de fora (13%); ID_MN_RESI e ID_MUNICIP medem onde a pessoa mora e onde foi notificada.
+    tabelas: [microdados_febre_amarela]
+    colunas: [COMUNINF, COUFINF, TPAUTOCTO, ID_MN_RESI, SG_UF]
+    severidade: silencioso
+    verificado: "confirmados 3.895; com COMUNINF 3.406; COMUNINF <> ID_MN_RESI em 526 deles; COUFINF <> SG_UF em 558; COUFINF/COMUNINF preenchido em 7.467 linhas de 82.844; TPAUTOCTO 1 = 7.484, 2 = 1.759, 3 = 1.286 — medido 2026-11-12"

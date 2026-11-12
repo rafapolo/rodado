@@ -216,30 +216,20 @@ tabelas:
   municipio_despesas_orcamentarias:
     ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta de despesa por natureza econômica (categoria, grupo, modalidade, elemento) de um município × estágio × ano
-    chave: ano, id_municipio, estagio, portaria, conta (única; medido em ano = 2025, 954.706 linhas)
-    tempo:
-      natureza: serie_anual
-      coluna: ano
-      cobertura: 1989–2025
-    territorio:
-      nivel: municipio
-      colunas:
-        id_municipio: município IBGE de 7 dígitos
-        sigla_uf: 'UF (o DF não aparece: não tem município)'
+    chave: "(ano, id_municipio, estagio, portaria, conta): única de 1989 a 1992, em 1994 e de 1998 em diante; em 1993 e 1995–1997 há 94 chaves repetidas (188 linhas, 83 com valores diferentes). 27.829.868 linhas, 27.829.774 chaves distintas"
+    tempo: {"natureza": "serie_anual", "coluna": "ano", "cobertura": "1989–2025 (BIGINT), mas só de 2013 em diante com os 5 estágios: 1989–2008 só 'Despesas Empenhadas'; 2009–2012 Empenhadas, Liquidadas e Pagas; 2013+ também as duas inscrições de restos a pagar. Antes de 1995 o valor é em moeda anterior ao Real, sem conversão (gotcha moeda_antiga_ate_1994). 2025 traz 5.447 municípios contra 5.544 em 2024 (incompleto). Linhas: 42 mil por ano em 1989, 0,7 a 0,9 milhão de 2004 em diante, 2,6 a 2,8 milhões em 2009–2012"}
+    territorio: {"nivel": "municipio", "colunas": {"id_municipio": "município IBGE de 7 dígitos; cobertura de 4.245 (1989) a 5.559 (2020); 2025 tem 5.447", "sigla_uf": "UF (o DF não aparece: não tem município)"}}
     medidas:
-    - *id001
+      - {coluna: "valor", o_que: "valor da conta no estágio (uma linha por estágio e por nível da hierarquia de contas): R$ 1.319,7 bi de Despesas Pagas em 2025, R$ 1.283,0 bi em 2024, R$ 244,5 bi (Empenhadas) em 2008", soma: "sim, depois de fixar UM estagio_bd e UM nível de id_conta_bd (ou de portaria); em R$ de 1995 em diante", unidade: "R$ (de 1995 em diante; antes, moeda da época)"}
     filtros_tipicos:
-    - 'ano = <ano>: tabela de 28 mi de linhas'
-    - estagio_bd = 'Despesas Pagas' etc.; não somar estágios
-    - 'id_conta_bd é '''' (vazio, não NULL) em 778.185 das 954.706 linhas de 2025; só 11 contas harmonizadas: ''2.0.0.00.00.00'' total de despesas orçamentárias, ''2.3.0.00.00.00'' despesas correntes, ''2.3.1.00.00.00''
-      pessoal e encargos, ''2.3.3.00.00.00'' outras despesas correntes; o resto se identifica por portaria (ex.: ''3.1.90.00.00'') e conta; a mesma conta ''Aplicações Diretas'' aparece com portarias diferentes
-      (''3.1.90.00.00'', ''3.3.90.00.00''): identifique pela portaria, não pelo nome'
-    use_para: despesa municipal por natureza econômica (pessoal, custeio, capital)
-    nao_use_para: somar níveis diferentes juntos, somar estágios, ou filtrar por id_conta_bd esperando cobrir todas as contas
-    rascunho:
-    - use_para
-    - nao_use_para
-    verificado: '27.829.868 linhas; 2025: 954.706 linhas = chaves; SP capital 2025 Pagas: total ''2.0.0.00.00.00'' R$ 116,80 bi, correntes R$ 104,93 bi — medido 2026-10-27'
+      - "ano = <ano>: tabela de 28 milhões de linhas"
+      - "estagio_bd = 'Despesas Pagas' (só de 2009 em diante), 'Despesas Empenhadas', 'Despesas Liquidadas'; não somar estágios (gotcha estagio_multiplica, que vale aqui também)"
+      - "id_conta_bd é '' (vazio, não NULL) em 778.185 das 954.706 linhas de 2025; só 9 contas harmonizadas ao todo: '2.0.0.00.00.00' Despesas Orçamentárias (total), '2.3.0.00.00.00' correntes, '2.3.1.00.00.00' pessoal e encargos, '2.3.2.00.00.00' juros e encargos da dívida, '2.3.3.00.00.00' outras correntes, '2.4.0.00.00.00' de capital, '2.4.4.00.00.00' investimentos, '2.4.5.00.00.00' inversões financeiras, '2.4.6.00.00.00' amortização da dívida; as filhas somam o pai (SP 2025 Pagas: 40,38 + 0,69 + 63,86 = 104,93 de correntes)"
+      - "o resto das contas se identifica por portaria e conta: a mesma conta 'Aplicações Diretas' aparece com portarias diferentes ('3.1.90.00.00', '3.3.90.00.00'); a portaria tem 12 caracteres ('3.3.90.26.00') em 2004–2012 e de 2018 em diante e 15 ('3.3.90.32.00.00') de 2013 a 2017 (gotcha portaria_em_dois_formatos); 1989–1998 não tem portaria"
+      - "valor = 0 em ~77% das linhas de 2004 a 2012 (plano de contas completo, com zeros) e em 0% de 2013 em diante: conte linhas com valor > 0"
+    use_para: "despesa municipal por natureza econômica (pessoal, juros, outras correntes, investimentos, amortização, inversões) e por elemento via portaria, num estágio fixo; total de despesas pagas por município e ano de 2009 em diante; série histórica de empenhado desde 1995."
+    nao_use_para: "somar níveis diferentes juntos (total + correntes + pessoal), somar estágios, ou filtrar por id_conta_bd esperando cobrir todas as contas; série em R$ antes de 1995; despesas pagas antes de 2009 (só empenhadas); 2025 como ano completo; despesa por função (use municipio_despesas_funcao); contar linhas como contas (77% são zeros em 2004–2012)."
+    verificado: "27.829.868 linhas; 27.829.774 chaves distintas (94 repetidas em 1993, 1995, 1996, 1997); 2025: 954.706 linhas = chaves, 5 estágios, 353 portarias; estágios por ano: 1 até 2008, 3 em 2009–2012, 5 de 2013 em diante; Despesas Pagas, conta '2.0.0.00.00.00', R$ bi: 243,7 (2009), 397,4 (2013), 581,5 (2018), 973,4 (2022), 1.111,2 (2023), 1.283,0 (2024), 1.319,7 (2025); Empenhadas 2008 R$ 244,5 bi, 1998 R$ 61,1 bi; municípios com Pagas: 5.005 (2012), 5.193 (2014), 5.446 (2025); 9 id_conta_bd distintos; SP capital 2025 Pagas: total R$ 116,80 bi, correntes 104,93, pessoal 40,38, capital 11,87; zero em 74,6% (2004) a 77,7% (2009) e 0% (2013) das linhas; valor nunca nulo — medido 2026-10-27 e 2026-11-12 (o cartão dizia 11 contas harmonizadas e cobertura 1989–2025 sem dizer que os estágios e a moeda mudam)"
   municipio_execucao_restos_pagar:
     ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta de despesa (natureza econômica) de um município × estágio de restos a pagar × ano

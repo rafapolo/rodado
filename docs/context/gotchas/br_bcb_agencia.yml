@@ -24,7 +24,7 @@ gotchas:
     detalhe: >
       municipio_ibge só existe de 2021-08 em diante e id_instalacao de 2020-05
       em diante: para série longa por município, case pelo nome do município
-      e a UF. coluna e coluna_2 estão 100% vazias (colunas sem título da
+      e a UF. segmentos (plural) traz o segmento só de 2007-10 a 2008-02 (37.009 linhas, com segmento nulo): use coalesce(segmento, segmentos). coluna e coluna_2 estão 100% vazias (colunas sem título da
       planilha). A série mensal tem buracos em 2024 (só 01, 05 e 11) e acaba
       em 2024-11: a fonte não publicou mais. Depois disso só existe o retrato
       do dia em agencia_olinda (1 coleta, 2026-10-15, sem id_instalacao).

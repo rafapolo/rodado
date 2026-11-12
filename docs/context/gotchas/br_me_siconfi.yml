@@ -23,3 +23,29 @@ gotchas:
     colunas: [estagio_bd, valor]
     severidade: silencioso
     verificado: "2023: os 5 estágios presentes na tabela — medido 2026-09-27"
+  - id: moeda_antiga_ate_1994
+    resumo: "Em municipio_despesas_orcamentarias, o valor de 1989 a 1994 está na moeda da época (cruzado, cruzeiro, URV), sem conversão: o total de despesas vai de 10,6 mil em 1989 a 19,9 bilhões em 1994."
+    detalhe: >
+      A conta total '2.0.0.00.00.00' soma 10.641 em 1989, 401.819 em 1990, 2,06 milhões em 1991,
+      21,7 milhões em 1992, 745 milhões em 1993, 19,9 bilhões em 1994 e 62,7 bilhões em 1995, quando
+      já é Real (1998: R$ 61,1 bi, 2000: R$ 82,5 bi). Qualquer série em R$ que comece antes de 1995 dá
+      um salto de 10 a 1.000 vezes por ano que não é gasto de verdade; 1994 mistura moedas (por dedução, o Real
+      entrou em julho) dentro do ano. De 1989 a 2008 só há o estágio 'Despesas Empenhadas'; as pagas começam em 2009 (3
+      estágios) e os 5 estágios em 2013. As contas até 1997 têm nomes curtos (PESSOAL, DESPCAPITAL) e
+      não têm portaria.
+    tabelas: [municipio_despesas_orcamentarias]
+    colunas: [valor, ano, estagio_bd]
+    severidade: silencioso
+    verificado: "conta '2.0.0.00.00.00', soma por ano: 1989 10.641; 1990 401.819; 1991 2.063.361; 1992 21.661.879; 1993 744.839.375; 1994 19.858.708.282; 1995 62.744.769.552; 1998 61.126.855.132; 2000 82.509.086.302 — medido 2026-11-12"
+  - id: portaria_em_dois_formatos
+    resumo: "A portaria (natureza da despesa) tem 12 caracteres ('3.3.90.26.00') em 2004–2012 e de 2018 em diante e 15 ('3.3.90.32.00.00') de 2013 a 2017: filtro por igualdade quebra no meio da série."
+    detalhe: >
+      Em 2004–2012, cerca de 77% das linhas são zeros do plano de contas completo (2013 em diante,
+      0%). A mesma conta 'Aplicações Diretas' aparece com portarias diferentes; compare séries
+      pelos 6 primeiros caracteres (categoria.grupo.modalidade, '3.3.90') ou use id_conta_bd quando
+      for uma das 9 contas harmonizadas. 2009–2012 têm 2,6 a 2,8 milhões de linhas por ano, 3 vezes
+      as de 2013, por causa dos zeros e do plano de contas completo.
+    tabelas: [municipio_despesas_orcamentarias]
+    colunas: [portaria, conta, id_conta_bd]
+    severidade: aviso
+    verificado: "comprimento de portaria: 12 em 2004, 2008–2012, 2018–2025; 15 em 2013 a 2017 (ex.: 2013 '3.3.90.32.00.00', 2012 '4.6.90.77.00'); valor = 0 em 74,6% (2004), 77,7% (2009), 0,0% (2013) e 0,1% (2025) das linhas — medido 2026-11-12"

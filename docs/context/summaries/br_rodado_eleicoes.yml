@@ -6,18 +6,17 @@ tabelas:
     ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma seção eleitoral × uma eleição (2022 ou 2026) com o local de votação, as coordenadas e o setor censitário do Censo 2022 em que cai o ponto"
     chave: "(ano, id_municipio_tse, zona, secao): 1.014.035 linhas e 1.014.035 distintos"
-    tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2022–2026 (apenas os anos 2022: 496.856 seções e 2026: 517.179)"}
-    territorio: {nivel: municipio, colunas: {id_municipio_tse: "código do município no TSE (5 dígitos, não IBGE)", id_municipio: "código IBGE de 7 dígitos (nulo em 0,5%, sigla_uf 'ZZ' = exterior por dedução)", id_setor_censitario: "setor do Censo 2022 (15 dígitos; nulo em 1,1%)", zona: "zona eleitoral"}}
+    tempo: {"natureza": "serie_de_periodos", "coluna": "ano", "cobertura": "duas eleições, 2022 (496.856 seções) e 2026 (517.179); 487.956 seções existem nas duas. Em 2026 o local, as coordenadas e o setor são os do 1º turno (gotcha secao_setor_2026_local_do_1_turno)"}
+    territorio: {"nivel": "municipio", "colunas": {"id_municipio_tse": "código do município no TSE, sem zero à esquerda (2 a 5 caracteres; não é IBGE)", "id_municipio": "código IBGE de 7 dígitos; nulo em 100% das seções do exterior (sigla_uf 'ZZ': 2.197 em 2022 e 2.715 em 2026, 0,44% e 0,52%) e em nenhuma outra. Em 2026 há um município a mais que em 2022 (5.571 contra 5.570: 5101837, MT)", "id_setor_censitario": "setor do Censo 2022 (15 dígitos); nulo em 1,1% (5.573 em 2022 e 5.661 em 2026), exatamente as seções com metodo_setor 'fora_do_municipio' ou 'sem_coordenada'", "zona": "zona eleitoral (texto)"}}
     medidas:
       - {coluna: eleitores_secao, o_que: "eleitores aptos na seção", unidade: "eleitores", soma: "sim dentro de um ano; nao entre 2022 e 2026 (mesmos eleitores em duas eleições): total 156.454.011 em 2022 e 158.745.463 em 2026"}
     filtros_tipicos:
       - "ano = 2026 (ou 2022); sempre fixe o ano"
       - "metodo_setor = 'ponto_no_setor' (2022: 491.283; 2026: 511.518), 'fora_do_municipio' (2.848 e 2.372) ou 'sem_coordenada' (2.725 e 3.289): só 'ponto_no_setor' tem setor confiável"
       - "zona e secao são texto (VARCHAR), compare com '1', não com 1"
-    use_para: "Ligar seções eleitorais a setores censitários (e coordenadas) para cruzar votos com Censo"
-    nao_use_para: "Resultados de votação (só há local e eleitores); somar eleitores entre anos"
-    rascunho: [use_para, nao_use_para]
-    verificado: "1.014.035 linhas; 1.014.035 distintos da chave; eleitores 2022 156.454.011, 2026 158.745.463; 5.751 municípios TSE em 2022 e 5.757 em 2026 — medido 2026-10-27"
+    use_para: "ligar seções eleitorais de 2022 ou 2026 a coordenadas e a setores do Censo 2022 (metodo_setor = 'ponto_no_setor'), para cruzar o perfil do eleitorado com o do setor; contar seções e eleitores por município ou setor num ano."
+    nao_use_para: "resultado de votação (só há local e eleitores_secao); somar eleitores entre 2022 e 2026; cruzar voto do 2º turno de 2026 com o setor sem tratar as 983 seções que mudaram de local; ler ZZ (exterior, 918.876 eleitores em 2026) como município; achar setor de seção com metodo_setor diferente de 'ponto_no_setor'."
+    verificado: "1.014.035 linhas = 1.014.035 distintos de (ano, id_municipio_tse, zona, secao); eleitores 2022 156.454.011 e 2026 158.745.463 (ZZ: 697.078 e 918.876); 5.751 e 5.757 municípios TSE (5.570 e 5.571 IBGE, fora ZZ); id_municipio nulo = sigla_uf 'ZZ' em 2.197 e 2.715 linhas, nenhum outro; id_setor_censitario nulo 5.573 (2022) e 5.661 (2026) = fora_do_municipio + sem_coordenada; todos de 15 caracteres; 487.956 seções nos dois anos — medido 2026-10-27 e 2026-11-12 (rascunho revisado em 2026-11-12; o cartão dizia 'ZZ = exterior por dedução' e 'id_municipio_tse de 5 dígitos')"
   setor_local:
     ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um setor censitário × um local de votação (ponto lat/lon) × ano, com a distância do ponto ao polígono do setor e um peso"
@@ -48,17 +47,20 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "383 linhas; 383 distintos da chave; 97 municípios — medido 2026-10-27"
   secoes_local_mudou_2026_2t:
-    grao: "uma seção eleitoral cujo local de votação mudou do 1º para o 2º turno de 2026, com votos do 1º turno e revisão manual (versão mais ampla que mudanca_local_2turno_2026)"
+    grao: "uma seção eleitoral de 2026 cujo local de votação mudou do 1º para o 2º turno (local_1t ≠ local_2t em todas), com os votos do 1º turno, a distância entre os dois locais e a revisão manual dos casos estranhos"
     chave: "(id_municipio_tse, zona, secao): 983 linhas e 983 distintos"
     tempo: {natureza: sem_tempo, coluna: "", cobertura: "eleição 2026, 1º e 2º turno"}
-    territorio: {nivel: municipio, colunas: {id_municipio: "IBGE de 7 dígitos (176 municípios)", id_municipio_tse: "código TSE"}}
+    territorio: {"nivel": "municipio", "colunas": {"id_municipio": "IBGE de 7 dígitos (177 municípios; 174 nomes, há homônimos)", "id_municipio_tse": "código TSE (177)"}}
     medidas:
       - {coluna: "eleitores_secao, votos_validos_1t, votos_lula_1t, votos_flavio_1t", o_que: "eleitores e votos do 1º turno na seção", unidade: "eleitores / votos", soma: sim}
-    filtros_tipicos: ["local_2t_novo = true (757) / false (226)", "local_1t_fechado = true (647) / false (336)"]
-    use_para: "Seções que trocaram de local entre os turnos de 2026 (983), com distância e flag de coordenada suspeita"
-    nao_use_para: "Resultado do 2º turno; juntar sem conferir a relação com mudanca_local_2turno_2026 (recortes diferentes, 383 vs 983 seções)"
-    rascunho: [use_para, nao_use_para, filtros_tipicos]
-    verificado: "983 linhas; 983 distintos da chave; 176 municípios (perfil: 177 nomes) — medido 2026-10-27"
+    filtros_tipicos:
+      - "local_2t_novo = true (757) / false (226): significado não confirmado na fonte (por dedução, o local do 2º turno é novo ou já existia)"
+      - "local_1t_fechado = true (647) / false (336): por dedução, o local do 1º turno deixou de funcionar"
+      - "distancia_m é nula em 236 linhas (24%), todas com motivo_suspeita preenchido (219 por 'sem coordenada no TSE'); coordenada_suspeita = true em só 15: filtre por motivo_suspeita IS NULL (747) para distâncias confiáveis"
+      - "coluna revisao: texto livre em 8 linhas (as demais, nulas)"
+    use_para: "medir quantas seções, quantos eleitores (291.861) e que votos do 1º turno (225.287 válidos) estão nas seções que trocaram de local no 2º turno de 2026, e a que distância; excluir essas seções de um cruzamento do 2º turno com setor censitário."
+    nao_use_para: "resultado do 2º turno (só há votos do 1º); tratar como superconjunto de mudanca_local_2turno_2026: só 149 das 383 seções dela estão aqui (as duas têm recortes e critérios diferentes: aqui local_1t ≠ local_2t; lá há o caso 'temporário só no 2º turno' (332), 'só no 1º turno' (32) e 'nos dois' (19)); somar sem o filtro de distância; usar pct_lula_1t ou pct_flavio_1t como soma."
+    verificado: "983 linhas = 983 distintos de (id_municipio_tse, zona, secao); 177 id_municipio (e 177 id_municipio_tse; 174 nomes); eleitores 291.861; votos válidos 1º turno 225.287 (Lula 118.503, Flávio 92.424; nenhuma seção com Lula + Flávio acima dos válidos); local_2t_novo 757, local_1t_fechado 647; distancia_m nula em 236 e igual a 0 em 9; coordenada_suspeita 15; 830 das 983 achadas em secao_setor 2026 (817 com setor); mudanca_local_2turno_2026: 383 seções, 96 municípios, 149 delas na ampla — medido 2026-11-12 (o cartão dizia 176 municípios e 'versão mais ampla que mudanca_local_2turno_2026', o que não vale como inclusão)"
   local_2026_coord_cnefe:
     grao: "um local de votação de 2026 sem coordenada do TSE, com a coordenada estimada pelo CNEFE"
     chave: "(id_municipio_tse, zona, numero): 235 linhas e 235 distintos (numero é o número do local)"

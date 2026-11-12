@@ -77,3 +77,17 @@ gotchas:
     colunas: [v01337, v01338, v00183, v00184]
     severidade: aviso
     verificado: "35.317.162 domicílios chefiados por mulher de 71.921.679 com responsável identificado (v00001 = 72.438.953) — medido 2026-11-04"
+  - id: alfabetizacao_sigilo_por_raca
+    resumo: "Em alfabetizacao_grupo_idade_sexo_raca, populacao é NULL em 32% das células, 69% nas de indígenas e 71% nas de amarelos: somar ou tirar taxa por cor/raça num recorte pequeno subestima e enviesa."
+    detalhe: >
+      A tabela é uma grade completa (5.570 municípios × 5 cores/raças × 2 sexos × 7 faixas × 2
+      situações = 779.800 linhas); a célula pequena demais vem com populacao NULL em vez de faltar.
+      Soma Brasil: 162.942.014 pessoas de 15 anos ou mais, 11.403.249 não alfabetizadas (7,0%).
+      A soma por raça só é completa para branca, parda e preta (4% a 13% de células nulas);
+      indígena (824.634) e amarela (753.926) perdem uma parte grande (por dedução, nos municípios
+      pequenos), e a taxa de não alfabetizadas que sai daí (16,1% e 2,5%) é a dos municípios
+      grandes.
+    tabelas: [alfabetizacao_grupo_idade_sexo_raca]
+    colunas: [populacao, cor_raca]
+    severidade: silencioso
+    verificado: "populacao NULL em 250.085 de 779.800 linhas; por cor/raça, de 155.960 cada: Indígena 107.324, Amarela 110.135, Preta 19.495, Branca 6.737, Parda 6.394; soma 162.942.014 — medido 2026-11-12"
