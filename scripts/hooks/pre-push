@@ -1,0 +1,33 @@
+#!/bin/sh
+# Recusa push de commit que traga de volta o que foi tirado do histórico.
+#
+# Por que existe: o repo é público e scripts/scrap/, docs/context/privado/ (2026-10-07) e o
+# pipeline de sync (2026-11-12, lista no .gitignore) foram purgados do histórico a pedido. Branches
+# locais criadas antes da reescrita (ask-web, openapi, worktree-agent-*, harness-gemma local)
+# ainda carregam os commits antigos: um merge ou push delas republicaria tudo.
+#
+# Para pular (só se tiver certeza): git push --no-verify
+
+PURGADOS='^(scripts/scrap/|docs/context/privado/|scripts/sync/|scripts/sync-with-source\.md$|scripts/checa_frescor_fontes\.py$|tests/test_bq_tipos\.py$|docs/(tecnico/)?housekeeping\.md$|docs/tecnico/(auto_atualizacao|mes_novo_cnpj|mes_novo_cno)\.md$|docs/context/fonte_propria\.yaml$|sync_bq_to_local\.py$)'
+ZERO=0000000000000000000000000000000000000000
+remoto="$1"
+falhou=0
+
+while read -r _ref_local sha_local _ref_remota sha_remoto; do
+    [ "$sha_local" = "$ZERO" ] && continue        # apagando branch remota
+    if [ "$sha_remoto" = "$ZERO" ]; then
+        faixa="$sha_local --not --remotes=$remoto"   # branch nova: só o que o remoto não tem
+    else
+        faixa="$sha_remoto..$sha_local"
+    fi
+    # shellcheck disable=SC2086
+    achados=$(git log --format= --name-only $faixa | grep -E "$PURGADOS" | sort -u)
+    if [ -n "$achados" ]; then
+        echo "pre-push: recusado — $_ref_local traz caminhos purgados do histórico:" >&2
+        echo "$achados" | head -20 | sed 's/^/  /' >&2
+        echo "Refaça a branch sobre o main novo (mapa de SHAs: .git/filter-repo/commit-map do clone da reescrita)." >&2
+        falhou=1
+    fi
+done
+
+exit $falhou

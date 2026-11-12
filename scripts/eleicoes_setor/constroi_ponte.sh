@@ -3,7 +3,7 @@
 # br_rodado_eleicoes.{secao_setor,setor_local}. Idempotente: sobrescreve os dois parquet.
 # Depois de rodar, se as views ainda não existirem:
 #   printf 'br_rodado_eleicoes/secao_setor\nbr_rodado_eleicoes/setor_local\n' > /tmp/l.txt
-#   python3 scripts/sync/cria_views_novas.py /tmp/l.txt
+#   python3 scripts/sync/cria_views_novas.py /tmp/l.txt   (só local, fora do git)
 set -euo pipefail
 BEELINK="${BEELINK_HOST:-beelink}"
 AQUI="$(cd "$(dirname "$0")" && pwd)"

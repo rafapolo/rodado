@@ -27,5 +27,5 @@ somente-leitura. Ferramenta nova que leia fora de `~/rodado` precisa entrar na
 lista, não desligar a trava.
 
 **View com nomes de coluna velhos** (parquet corrigido depois de criar a
-view) — procedimento completo e exemplos em `docs/tecnico/housekeeping.md`,
+view) — procedimento completo e exemplos em `docs/tecnico/housekeeping.md` (só local),
 item 10.

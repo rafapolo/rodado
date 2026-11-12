@@ -6,7 +6,7 @@ per dataset (description, tables, rows, source), human-readable.
     python3 scripts/gera_catalog_md.py         # catalog.parquet -> docs/mapa/catalog.md
 
 Generated file — edit docs/context/dataset_descriptions.yaml instead, never
-this output. See docs/tecnico/housekeeping.md item 7: run this every time
+this output. See docs/tecnico/housekeeping.md (local only, not in git) item 7: run this every time
 catalog.parquet changes, not just when descriptions change.
 """
 
