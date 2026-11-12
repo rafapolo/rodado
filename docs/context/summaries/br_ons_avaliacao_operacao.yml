@@ -13,10 +13,9 @@ tabelas:
     filtros_tipicos:
       - "tipo_usina IN ('HIDROELETRICA','TERMICA','EOLIELETRICA','FOTOVOLTAICA','NUCLEAR') (valores literais maiúsculos sem acento)"
       - "ano = <ano> (tabela de 71 milhões de linhas; sempre filtre partição)"
-    use_para: "geração horária por usina, fonte e UF; total por fonte no ano (soma de geracao/1e8 dá MWh)"
-    nao_use_para: "somar sem dividir por 1e8; contar usinas por (data, hora, usina) como chave"
-    rascunho: [use_para, nao_use_para]
-    verificado: "71.091.267 linhas; jun/2023: 479.016 linhas, 479.016 distintas na chave de 6 colunas; 2023 em TWh (geracao/1e8/1e6): hidro 437,2, térmica 58,6, nuclear 14,3, eólica 94,6, fotovoltaica 42,2 — medido 2026-10-27"
+    use_para: "geração horária por usina, fonte e UF de 2000 a 2024-02, dividindo geracao por 1e8 (2023 em TWh: hidro 437,2, eólica 94,6, térmica 58,6, solar 42,2, nuclear 14,3)."
+    nao_use_para: "qualquer período depois de 2024-02-29 (a tabela parou; a mesma série horária vai até 2026-11-01 em br_ons_dados_abertos.geracao_usina_2_ho, val_geracao já em MWmed, sem o fator 1e8: 2023 dá hidro 442,1, eólica 95,4, térmica 59,3, solar 43,0, nuclear 14,5 TWh); somar sem dividir por 1e8; contar usinas por (data, hora, usina) como chave."
+    verificado: "71.091.267 linhas; jun/2023: 479.016 linhas, 479.016 distintas na chave de 6 colunas; 2023 em TWh (geracao/1e8/1e6): hidro 437,2, térmica 58,6, nuclear 14,3, eólica 94,6, fotovoltaica 42,2 — medido 2026-10-27; max(data) = 2024-02-29; br_ons_dados_abertos.geracao_usina_2_ho: 87.506.438 linhas de 2000-01-01 a 2026-11-01 23:00, 2023 por nom_tipousina em TWh (sum(val_geracao)/1e6): 442,1 / 95,4 / 59,3 / 43,0 / 14,5, de 1% a 2% acima desta tabela — medido 2026-11-12"
   geracao_termica_motivo_despacho:
     ultima_data: "2024-02-29"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma usina térmica × hora × patamar (tipo_patamar)"

@@ -18,3 +18,15 @@ gotchas:
     colunas: [cod_inst, id_instituicao]
     severidade: erro
     verificado: "cadastro: Banco do Brasil = '00000000', Itaú prudencial = 'C0080099'; instituicao: Itaú prudencial id_instituicao = '1000080099' — medido 2026-09-25"
+  - id: resultado_acumulado_no_semestre
+    resumo: "O resultado do relatório 4 (e o Lucro Líquido do relatório 1) é acumulado no semestre, não no trimestre nem no ano: março e setembro trazem um trimestre, junho e dezembro trazem o semestre. Somar os 4 trimestres dá 1,5x o ano; pegar dezembro como anual dá só o 2º semestre."
+    detalhe: >
+      Lucro do ano = junho + dezembro. Trimestre isolado: março; junho −
+      março; setembro; dezembro − setembro. Vale nos dois layouts (antes e
+      depois de 202503) e nos tipos de instituição 1, 2 e 3. As contas de
+      balanço (relatórios 1 a 3, ativo, passivo, PL) são estoque na data e
+      não têm esse problema.
+    tabelas: [relatorio]
+    colunas: [saldo, numero_relatorio, ano_mes]
+    severidade: silencioso
+    verificado: "Despesas de Pessoal de C0080738 (tipo 1) 2024: 03 −8.044 mi, 06 −15.262, 09 −7.076, 12 −14.865; mesmo padrão em 2019, 2023, 2025 e 2026; Lucro Líquido 2025: 5.388 / 8.719 / 3.416 / 5.862 mi, iguais nos relatórios 1 e 4 — medido 2026-11-12"

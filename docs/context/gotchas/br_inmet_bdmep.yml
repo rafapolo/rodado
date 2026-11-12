@@ -24,4 +24,20 @@ gotchas:
     tabelas: [microdados]
     colunas: [ano, id_estacao, data, hora, precipitacao_total]
     severidade: silencioso
-    verificado: "ano = 2025 (2025-01-01 a 2025-12-31, ressincronizado da BD em 2026-10-28): 9.568.080 linhas, 5.020.248 chaves (2 linhas em 4.547.832, 1 em 472.416), 5.049.825 linhas distintas; sum(precipitacao_total) 829.179,9 bruto e 446.374,6 com max() por chave; ano = 2026 (até 2026-02-28): 871.824 linhas = chaves; antes da ressincronização (2025 até junho) eram 4.891.176 linhas e 2.452.104 chaves — medido 2026-10-28"
+    verificado: "ano = 2025 (2025-01-01 a 2025-12-31, ressincronizado da BD em 2026-10-28): 9.568.080 linhas, 5.020.248 chaves (2 linhas em 4.547.832, 1 em 472.416), 5.049.825 linhas distintas; sum(precipitacao_total) 829.179,9 bruto e 446.374,6 com max() por chave; ano = 2026 (até 2026-02-28): 871.824 linhas = chaves; antes da ressincronização (2025 até junho) eram 4.891.176 linhas e 2.452.104 chaves — medido 2026-10-28; reconferido sem mudança 2026-11-12"
+  - id: dezembro_2024_falta
+    resumo: "microdados não tem nenhuma linha de dezembro de 2024: o ano 2024 vai a 2024-11-30 e 2025 começa em 2025-01-01. Total anual ou série mensal que passe por 2024-12 sai baixa sem erro."
+    detalhe: >
+      Os outros 11 meses de 2024 estão completos (393 a 420 mil linhas por
+      mês). Não se conferiu se o buraco vem da fonte (zip anual do INMET ou
+      Base dos Dados) ou da coleta do espelho.
+    tabelas: [microdados]
+    colunas: [data, ano]
+    severidade: silencioso
+    verificado: "0 linhas com data entre 2024-12-01 e 2024-12-31; max(data) de ano = 2024 é 2024-11-30 — medido 2026-11-12"
+  - id: radiacao_acima_do_teto_fisico
+    resumo: "radiacao_global parece ser kJ/m² na hora (unidade não conferida na fonte); o teto físico fica perto de 4.900 (1.361 W/m² × 3.600 s), mas há valores até 8.209. Corte acima disso antes de somar ou tirar média."
+    tabelas: [microdados]
+    colunas: [radiacao_global]
+    severidade: silencioso
+    verificado: "2024: p99 3.702, máximo 8.209, 804 linhas acima de 4.900 — medido 2026-11-12"

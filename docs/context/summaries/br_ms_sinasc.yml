@@ -6,7 +6,7 @@ tabelas:
     ultima_data: "2026-05-29"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma declaração de nascido vivo (DN) do SINASC, uma linha por nascimento"
     chave: "(id_municipio_nascimento, sequencial_nascimento, data_nascimento) — único em ano = 2023; sequencial_nascimento sozinho NÃO é único (min 1, max 99999, repete entre municípios)"
-    tempo: {natureza: serie_anual, coluna: ano, cobertura: "1994–2026 (33 anos; 2023 a 2025 completos; 2026 parcial: data_nascimento vai só até 2026-05-29, 884.111 linhas)"}
+    tempo: {natureza: serie_anual, coluna: "ano, data_nascimento", cobertura: "1994–2026 (33 anos; 2023 a 2025 completos; 2026 parcial: data_nascimento vai só até 2026-05-29, 884.111 linhas)"}
     territorio:
       nivel: municipio
       colunas:

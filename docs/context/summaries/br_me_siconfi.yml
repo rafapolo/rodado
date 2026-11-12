@@ -252,12 +252,9 @@ tabelas:
     - 'use estagio (9 valores, ex.: ''Restos a Pagar Processados Pagos''); estagio_bd, id_conta_bd, conta_bd são '''' em 100% das linhas de 2025'
     - 'conta = ''Total Despesas'' dá o total do município; 2025, total nacional por estagio em R$ bi: NP inscritos 31/12 anterior 43,70; NP pagos 34,66; NP liquidados 35,52; P pagos 23,47; P cancelados
       2,91'
-    use_para: restos a pagar municipais por natureza de despesa e estágio
-    nao_use_para: usar estagio_bd (vazio) ou somar estágios
-    rascunho:
-    - use_para
-    - nao_use_para
-    verificado: '6.407.632 linhas; 2025: 616.990 = chaves, 6.402 municípios — medido 2026-10-27'
+    use_para: "restos a pagar municipais por natureza de despesa e estágio, de 2013 a 2025, escolhendo um estagio e uma conta (conta = 'Total Despesas' para o total do município)."
+    nao_use_para: "usar estagio_bd, id_conta_bd ou conta_bd (vazios em 2025); somar estágios (inscrito, liquidado, pago e cancelado são momentos do mesmo saldo); somar contas de níveis diferentes; supor todos os municípios (2013: 4.485; 2020: 5.364; 2025: 5.324 de 5.570)."
+    verificado: "6.407.632 linhas; 2025: 616.990 = chaves, 6.402 municípios — medido 2026-10-27; municípios distintos (id_municipio de 7 dígitos): 4.485 em 2013, 5.364 em 2020, 5.324 em 2025 (o cartão de 2026-10-27 dizia 6.402 em 2025) — medido 2026-11-12"
   municipio_execucao_restos_pagar_funcao:
     ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma função/subfunção de um município × estágio de restos a pagar × ano

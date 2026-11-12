@@ -23,3 +23,9 @@ gotchas:
     tabelas: [reclamacoes]
     severidade: aviso
     verificado: "curl com o UA do Chrome: 504 em 30 s com corpo 'Request Rejected' e support ID; Pool de _proxy_br: 'nenhum proxy BR abre' em 254 testados — medido 2026-11-11"
+  - id: finalizadas_sem_data_abertura
+    resumo: "Os 19 arquivos finalizadas_2025-03 a finalizadas_2026-09 (5.225.366 linhas) vêm sem Data Abertura: contar por ano de abertura faz 2025 parecer ter 231 mil reclamações e 2026 nenhuma. Para período recente, use Data Finalização."
+    tabelas: [reclamacoes]
+    colunas: ["Data Abertura", "Data Finalização", arquivo_origem]
+    severidade: silencioso
+    verificado: "Data Abertura nula em todas as 5.225.366 linhas de arquivo_origem LIKE 'finalizadas_%'; Data Finalização até 2026-09-30; por ano de abertura: 2024 1.431.961, 2025 231.659 — medido 2026-11-12"

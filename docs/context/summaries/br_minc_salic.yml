@@ -162,10 +162,9 @@ tabelas:
       - "proponente = 1 (54.526) ⇔ já propôs projeto (projetos_count > 0); 0 = 66.373; NULL = 96.744 (origem api_salic)"
       - "patrocinador = 1 (152.793) / 0 (64.850): significado não confirmado (column_codes: pendente)"
       - "empresa = 1 (53.422) / 0 (164.221): provável pessoa jurídica; não confirmado"
-    use_para: "cadastro de proponentes e patrocinadores com nome, CPF/CNPJ e UF."
-    nao_use_para: "contar pessoas por cnpjcpf (CPF mascarado, ver cpf_completado) ou somar incentivos_sum (agregado pré-calculado)."
-    rascunho: [use_para, nao_use_para, "significado de empresa e patrocinador"]
-    verificado: "217.643 linhas e ids; origem 120.899 dump_2017 + 96.744 api_salic (contadores só no dump) — medido 2026-10-27. Gotchas: cpf_completado, origem_e_retrato_2014"
+    use_para: "cadastro de proponentes e patrocinadores da Lei Rouanet com nome, CPF/CNPJ e UF; separar pessoa jurídica (empresa = 1, documento de 14 dígitos) de física (empresa = 0, 11 dígitos); achar quem já incentivou (patrocinador = 1) ou propôs projeto (proponente = 1)."
+    nao_use_para: "contar pessoas por cnpjcpf (não é único: 183.492 distintos em 217.643 linhas; CPF mascarado, ver cpf_completado); somar incentivos_sum ou projetos_sum (agregados pré-calculados, só na origem dump_2017); ler patrocinador = 1 como 'incentivou de fato' (só 56.049 dos 152.793 têm incentivos_count > 0); tratar proponente NULL como 0 (é a origem api_salic)."
+    verificado: "217.643 linhas e ids; origem 120.899 dump_2017 + 96.744 api_salic (contadores só no dump) — medido 2026-10-27. Gotchas: cpf_completado, origem_e_retrato_2014; empresa = 1 ⇔ documento de 14 dígitos (53.422 de 53.422) e empresa = 0 ⇔ 11 dígitos (164.221 de 164.221); patrocinador = 1: 152.793, dos quais 56.049 com incentivos_count > 0 e 314 também proponentes; patrocinador = 0: 64.850, nenhum com incentivo, 54.212 proponentes — medido 2026-11-12 (empresa = pessoa jurídica confirmado; patrocinador = cadastrado como incentivador, por dedução)"
   entidades_2014:
     ultima_data: "2014-02-08"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "mesmo grão de entidades, no retrato de 2014"

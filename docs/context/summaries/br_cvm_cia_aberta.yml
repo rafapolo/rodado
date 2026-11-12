@@ -557,16 +557,9 @@ tabelas:
     - 'ESCALA_MOEDA: ''MIL'' ou ''UNIDADE'' (multiplicar por 1000 quando ''MIL''; gotcha escala_moeda)'
     - ST_CONTA_FIXA = 'S' para as contas padrão CVM (comparáveis entre empresas); 'N' são subcontas específicas da empresa (significado de S/N não documentado, deduzido do perfil)
     - CNPJ_CIA vem pontuado (00.000.000/0001-91); CD_CVM é texto com zeros à esquerda (gotcha cnpj_pontuado)
-    use_para: série de demonstração do resultado por empresa e conta, anual (DFP, exercício fechado).
-    nao_use_para: somar contas diferentes entre si, somar sem filtrar ORDEM_EXERC, ou comparar empresas sem converter ESCALA_MOEDA.
-    rascunho:
-    - use_para
-    - nao_use_para
-    - ST_CONTA_FIXA
-    - hierarquia das contas fora das contas citadas
-    - natureza do ITR (trimestres)
-    - 'ITR: PENÚLTIMO = comparativo (bate com o visto na Petrobras)'
-    verificado: '451.028 linhas; chave CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC: 449.425 distintos; uma só VERSAO por (CNPJ_CIA, DT_REFER) na dfp_dre_con (6.328 documentos = 6.327 pares CNPJ×data) — medido 2026-10-27'
+    use_para: "demonstração do resultado consolidada anual (DFP, exercício fechado) por companhia e conta, de 2010 a 2025: receita (3.01), resultado bruto (3.03), lucro do período (3.11). Petrobras, 3.11, ÚLTIMO, em R$ mil: 189.005.000 (2022), 125.166.000 (2023), 37.009.000 (2024)."
+    nao_use_para: "somar contas diferentes entre si (hierárquicas: o nível é o número de pontos de CD_CONTA, 1 a 3); somar sem ORDEM_EXERC = 'ÚLTIMO'; usar o PENÚLTIMO como substituto do ÚLTIMO do ano anterior (em 3.01 difere em 629 de 5.596 pares: reapresentações); comparar empresas pelas contas com ST_CONTA_FIXA = 'N' (202 códigos próprios de cada companhia; as 88 contas 'S' são o plano padrão); trimestres (estão em itr_dre_con); comparar sem aplicar ESCALA_MOEDA."
+    verificado: "451.028 linhas; chave CNPJ_CIA, DT_REFER, ORDEM_EXERC, CD_CONTA, DT_INI_EXERC: 449.425 distintos; uma só VERSAO por (CNPJ_CIA, DT_REFER) na dfp_dre_con (6.328 documentos = 6.327 pares CNPJ×data) — medido 2026-10-27; ST_CONTA_FIXA 'S' 320.635 linhas e 88 CD_CONTA, 'N' 130.695 linhas e 202 CD_CONTA; profundidade de CD_CONTA de 1 a 3 pontos nas duas; Petrobras (33.000.167/0001-01) 3.11 ÚLTIMO 2022/2023/2024 = 189.005.000 / 125.166.000 / 37.009.000 mil e PENÚLTIMO de 2023 e 2024 igual ao ÚLTIMO do ano anterior; em 3.01, PENÚLTIMO difere do ÚLTIMO do ano anterior em 629 de 5.596 pares — medido 2026-11-12"
   dfp_dre_ind:
     ultima_data: "2026-06-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma conta contábil (CD_CONTA) da Demonstração do Resultado (individual (só a controladora, sem as controladas)) × companhia × data de referência (DT_REFER) × exercício (ORDEM_EXERC)

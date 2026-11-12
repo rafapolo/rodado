@@ -26,10 +26,9 @@ tabelas:
       - {coluna: proficiencia_saeb, o_que: "proficiência na escala Saeb; nula em 704.306 de 4.884.286 linhas em 2023", unidade: "pontos", soma: nao}
       - {coluna: peso_aluno, o_que: "peso amostral para agregar", unidade: "peso", soma: nao}
     filtros_tipicos: ["ano = 2023 (sempre uma partição)", "disciplina IN ('LP','MT'); anos antigos têm também 'C' (Ciências) no dicionário"]
-    use_para: "proficiência do 5º ano por escola ou município, com peso_aluno"
-    nao_use_para: "série histórica sem checar rede/localizacao: os códigos mudam por ano"
-    rascunho: [use_para, nao_use_para]
-    verificado: "ano = 2023: 4.884.286 linhas, chave confirmada; demais anos não medidos — medido 2026-10-27"
+    use_para: "proficiência do 5º ano em LP e MT por escola, município, UF ou Brasil, ponderada por peso_aluno: em 2023, Brasil LP 213,9 e MT 224,8 (soma dos pesos 2.701.761 por disciplina, perto da matrícula do 5º ano)."
+    nao_use_para: "média sem peso_aluno; série desde 1995 como se fosse a mesma pesquisa (1995–2005 amostral, de 24 a 115 mil linhas; de 2007 em diante censitária na rede pública, 4,6 a 6,2 milhões); série histórica sem checar rede/localizacao (os códigos mudam por ano); somar as duas disciplinas (cada aluno aparece uma vez em LP e outra em MT)."
+    verificado: "ano = 2023: 4.884.286 linhas, chave confirmada; demais anos não medidos — medido 2026-10-27; linhas por edição: 23.919 (1995), 70.445 (1997), 107.657 (1999), 114.512 (2001), 92.198 (2003), 83.929 (2005), 4.620.604 (2007), 6.226.190 (2009), 4.884.286 (2023); 2023: LP e MT com 2.442.143 linhas cada, soma de peso_aluno 2.701.761, proficiência ponderada LP 213,9 e MT 224,8 — medido 2026-11-12"
   aluno_ef_9ano:
     ultima_data: "2023"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um aluno do 9º ano do EF × disciplina numa edição do Saeb (microdado, 54 milhões de linhas)"

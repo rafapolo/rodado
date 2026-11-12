@@ -129,7 +129,9 @@ def perfil_tabela(ds, tb, linhas):
     except RuntimeError as e:
         # o SUMMARIZE estoura no desvio-padrão de double enorme, e sem memória em tabela larga:
         # refaz coluna a coluna, sem desvio, numa amostra menor
-        if "STDDEV" not in str(e) and "sem mensagem" not in str(e):
+        # e no DuckDB 2.0 o SUMMARIZE de TIME WITH TIME ZONE dá INTERNAL Error "FormatTwoDigits"
+        # (inmet microdados.hora, 2026-11-12); o min/max coluna a coluna funciona
+        if not any(s in str(e) for s in ("STDDEV", "sem mensagem", "FormatTwoDigits")):
             raise
         if "sem mensagem" in str(e):
             q, como = f"(SELECT * FROM {q} USING SAMPLE 200000 ROWS (reservoir, 42))", como + ", reduzida a 200 mil linhas (faltou memória)"

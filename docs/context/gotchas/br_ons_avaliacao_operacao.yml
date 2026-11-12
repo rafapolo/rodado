@@ -23,3 +23,9 @@ gotchas:
     colunas: [data, geracao_limitada]
     severidade: silencioso
     verificado: "max(data) = 2024-03-01; corte 1,29% em 2022 e 8,38% em 2023, contra 1,29% e 8,34% da tabela dados_abertos — medido 2026-11-04"
+  - id: geracao_usina_parou_em_2024_02
+    resumo: "geracao_usina acaba em 2024-02-29. A mesma série horária por usina segue até 2026-11-01 em br_ons_dados_abertos.geracao_usina_2_ho (val_geracao em MWmed, sem o fator 1e8). Para qualquer período depois de fevereiro de 2024, use aquela."
+    tabelas: [geracao_usina]
+    colunas: [data, geracao]
+    severidade: silencioso
+    verificado: "max(data) = 2024-02-29; geracao_usina_2_ho de 2000-01-01 a 2026-11-01 23:00 (87.506.438 linhas); 2023 por fonte de 1% a 2% acima de geracao_usina/1e8 (hidro 442,1 contra 437,2 TWh) — medido 2026-11-12"

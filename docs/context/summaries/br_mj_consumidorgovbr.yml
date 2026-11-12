@@ -3,10 +3,10 @@
 dataset: br_mj_consumidorgovbr
 tabelas:
   reclamacoes:
-    ultima_data: "2025-02-28"  # dado mais recente, gerado por scripts/gera_ultima_data.py
+    ultima_data: "2026-09-30"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma reclamação de consumidor contra uma empresa no Consumidor.gov.br (sem identificador na tabela)"
-    chave: "nenhuma: não há coluna de id; a tabela é a concatenação de arquivos (arquivo_origem, 94 valores) e não foi testada unicidade por conjunto de colunas"
-    tempo: {natureza: serie_de_periodos, coluna: "Data Abertura (DATE) ou Data Finalização (VARCHAR, dois formatos)", cobertura: "Data Abertura 2014–2025 (há 1 linha em 1970); Data Finalização 2014–2025, ver gotchas"}
+    chave: "nenhuma: não há coluna de id; 15.392.507 linhas e 15.278.795 linhas distintas (as 113.712 repetidas são dentro do mesmo arquivo_origem, não sobreposição entre arquivos: com e sem arquivo_origem o número de distintas é o mesmo)"
+    tempo: {natureza: serie_de_periodos, coluna: "Data Abertura (DATE) ou Data Finalização (VARCHAR, dois formatos)", cobertura: "Data Abertura 2014 a 2025-02 (há 1 linha em 1970; vazia em 2019 e de 2025-03 em diante); Data Finalização 2014 a 2026-09-30, ver gotchas 2019_sem_data_abertura e finalizadas_sem_data_abertura"}
     territorio:
       nivel: municipio
       colunas: {UF: "sigla da UF do consumidor", Cidade: "nome do município do consumidor (texto, com mojibake em acentos; sem código IBGE)", "Região": "região, com espaço sobrando em 'S ' e 'N '"}
@@ -20,7 +20,6 @@ tabelas:
       - "\"Avaliação Reclamação\" = 'Resolvida' ou 'Não Resolvida' (também existe 'Não Avaliada')"
       - "\"Grupo Problema\" = 'Cobrança / Contestação' (valor literal com espaços ao redor da barra)"
       - "ano pela Data Abertura (DATE): year(\"Data Abertura\"); Ano Abertura mistura '2020' e '2020.0'; arquivos de 2019 não têm Data Abertura (ver 2019_sem_data_abertura)"
-    use_para: "contar e caracterizar reclamações por empresa (Nome Fantasia), segmento, área, problema, UF e resultado (resolvida, nota)."
-    nao_use_para: "contagem por ano pela Data Abertura sem tratar 2019 e as linhas sem data, ou análise por município via código IBGE (só há nome de Cidade)."
-    rascunho: [chave, use_para, nao_use_para, "significado de Total"]
-    verificado: "15.392.507 linhas; Data Abertura nula em 6.005.545 (inclui 780.179 de 2019); linhas por ano da Data Abertura: 2020 1.342.805, 2021 1.607.240, 2023 1.530.486; amostra 1% (system, 42) com 135.482 linhas; valores literais de Situação, Respondida, Avaliação Reclamação e Grupo Problema conferidos no perfil (amostra de ~2 mi) — medido 2026-10-27. Gotchas: 2019_sem_data_abertura, data_finalizacao_dois_formatos, ano_abertura_com_ponto_zero"
+    use_para: "contar e caracterizar reclamações por empresa (Nome Fantasia), segmento, área, problema, UF e resultado (resolvida, nota), de 2014 a 2026-09; por mês de abertura até 2025-02 e por mês de finalização em todo o período."
+    nao_use_para: "contagem por ano pela Data Abertura: falta nos arquivos de 2019 e em todos os finalizadas_* de 2025-03 em diante (6.005.545 linhas sem data, 2025 aparece com 231.659 e 2026 com zero); use Data Finalização (dois formatos); análise por município via código IBGE (só há nome de Cidade); usar Total como contagem (só preenchido, = 1, nos 8 arquivos de 2014 a 2019-2º semestre)."
+    verificado: "15.392.507 linhas; Data Abertura nula em 6.005.545 (inclui 780.179 de 2019); linhas por ano da Data Abertura: 2020 1.342.805, 2021 1.607.240, 2023 1.530.486; amostra 1% (system, 42) com 135.482 linhas; valores literais de Situação, Respondida, Avaliação Reclamação e Grupo Problema conferidos no perfil (amostra de ~2 mi) — medido 2026-10-27. Gotchas: 2019_sem_data_abertura, data_finalizacao_dois_formatos, ano_abertura_com_ponto_zero; arquivo_origem: 81 com Total NULL e 8 (Dados Consumidor.gov.br - 2014 a 2019_2º Semestre) com Total = 1 em 2.556.198 linhas; 19 arquivos finalizadas_2025-03 a finalizadas_2026-09 (5.225.366 linhas) sem nenhuma Data Abertura, Data Finalização até 2026-09-30; linhas por ano de Data Abertura: 2014 43.987, 2018 680.708, 2019 46.145, 2024 1.431.961, 2025 231.659; 15.278.795 linhas distintas com ou sem arquivo_origem — medido 2026-11-12"

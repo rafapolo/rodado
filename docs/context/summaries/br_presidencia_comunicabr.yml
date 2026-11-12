@@ -14,10 +14,9 @@ tabelas:
       - "variavel = 'Famílias Beneficiadas' e programa = 'Bolsa Família' (QTD) ou variavel = 'Valor transferido - Bolsa Família' (R$): a quantidade e o valor estão em blocos diferentes (PROTEÇÃO SOCIAL e TRANSFERÊNCIAS AOS CIDADÃOS), ver gotcha quantidade_e_valor_em_blocos_diferentes"
       - "unidade = 'R$' para dinheiro, 'QTD' para contagens, '%' (fração, 0,4780 = 47,8%)"
       - "data_coleta = (SELECT max(data_coleta) ...) quando houver mais de uma coleta"
-    use_para: "Indicadores de programas federais (beneficiários, valores repassados) por município e ano"
-    nao_use_para: "Total estadual (use uf) e somar valor por programa sem escolher variavel"
-    rascunho: [use_para, nao_use_para]
-    verificado: "1.551.434 linhas; 1.551.434 distintos da chave; exemplo Nova Friburgo (3303401), Bolsa Família 2025: Famílias Beneficiadas 8.072, Valor transferido R$ 73.931.653 — medido 2026-10-27. Gotchas: uma_coleta_por_arquivo, total_e_partes_na_mesma_coluna, ano_corrente_parcial, percentual_em_fracao_e_acima_de_1"
+    use_para: "indicadores de programas federais (beneficiários, valores repassados, cobertura) por município e ano de 2023 a 2026, escolhendo uma variavel e conferindo a unidade; todos os 5.571 códigos casam com br_bd_diretorios_brasil.municipio."
+    nao_use_para: "total estadual ou nacional somando municípios sem escolher variavel e unidade (use uf); somar variáveis irmãs (total e partes) ou percentuais; comparar 2026 com ano fechado; supor que valor de um programa está no bloco do programa (quantidade e valor do Bolsa Família ficam em blocos diferentes)."
+    verificado: "1.551.434 linhas; 1.551.434 distintos da chave; exemplo Nova Friburgo (3303401), Bolsa Família 2025: Famílias Beneficiadas 8.072, Valor transferido R$ 73.931.653 — medido 2026-10-27. Gotchas: uma_coleta_por_arquivo, total_e_partes_na_mesma_coluna, ano_corrente_parcial, percentual_em_fracao_e_acima_de_1; 5.571 id_municipio distintos, todos de 7 dígitos e todos presentes em br_bd_diretorios_brasil.municipio (o distintos_aprox do perfil, 6.859, é estimativa) — medido 2026-11-12"
   uf:
     ultima_data: "2026"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "mesmo grão de municipio, mas por UF: um indicador × UF × ano"

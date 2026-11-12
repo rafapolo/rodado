@@ -42,12 +42,9 @@ tabelas:
     - presenca_redacao = '1' para redação válida ('Sem problemas'); '2','3','4','6','7','8','9' são anuladas/em branco/fuga ao tema etc. com nota 0 (dicionario varia por ano)
     - indicador_treineiro só preenchido em 2015–2022 (NULL nos demais anos); BOOLEAN
     - 'colunas cadastrais (cor_raca, tipo_escola, faixa_etaria, situacao_conclusao, ensino, estado_civil): códigos VARCHAR cujo significado varia por ano; consultar dicionario com cobertura_temporal'
-    use_para: Notas, presença e perfil dos inscritos do ENEM por edição de 1998 a 2023.
-    nao_use_para: 2024 e 2025 (estão em participantes e resultados); médias sem filtrar presença (NULL e 0 distorcem); comparar nota_objetiva (1998–2008) com notas por área (2009+).
-    rascunho:
-    - use_para
-    - nao_use_para
-    verificado: '108.132.056 linhas e 108.132.056 distintos (ano, id_inscricao); 2023: 3.933.955 linhas e distintos; nota_objetiva só em 1998–2008, notas por área só a partir de 2009 (2023: 2.692.427 nota_matematica), residência só 1998–2007, indicador_treineiro só 2015–2022; join com questionario_socioeconomico_2023 por id_inscricao casa 3.933.955 — medido 2026-10-27'
+    use_para: "notas, presença e perfil dos inscritos do ENEM por edição de 1998 a 2023 (média de matemática dos presentes: 498,4 em 2009, 523,1 em 2019, 533,8 em 2023), com o questionário socioeconômico do mesmo ano por id_inscricao."
+    nao_use_para: "2024 e 2025 (estão em participantes e resultados, 4.332.944 e 4.810.772 linhas); médias sem filtrar presença (NULL de ausente e 0 de presente: 16.638 zeros em matemática entre presentes em 2023); comparar nota_objetiva (1998–2008) com notas por área (2009+); contar candidatos de verdade em 2015–2022 sem tirar indicador_treineiro (512.732 em 2022); seguir uma pessoa entre anos (id_inscricao é por edição)."
+    verificado: "108.132.056 linhas e 108.132.056 distintos (ano, id_inscricao); 2023: 3.933.955 linhas e distintos; nota_objetiva só em 1998–2008, notas por área só a partir de 2009 (2023: 2.692.427 nota_matematica), residência só 1998–2007, indicador_treineiro só 2015–2022; join com questionario_socioeconomico_2023 por id_inscricao casa 3.933.955 — medido 2026-10-27; média de nota_matematica dos presentes: 498,4 (2009), 523,1 (2019), 520,6 (2020), 542,5 (2022), 533,8 (2023); nota_matematica preenchida 0 em 1998 e 2008; 2.441.496 em 2009; participantes e resultados só com 2024 (4.332.944) e 2025 (4.810.772); treineiros 2022: 512.732 de 3.476.105 — medido 2026-11-12"
   participantes:
     ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: um inscrito × ano do ENEM (2024–2025), dados cadastrais sem notas

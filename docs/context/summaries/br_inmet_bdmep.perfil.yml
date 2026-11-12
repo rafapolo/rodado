@@ -1,5 +1,5 @@
 dataset: br_inmet_bdmep
-gerado_em: '2026-10-27'
+gerado_em: '2026-11-12'
 gerado_por: scripts/gera_perfil.py — não edite à mão
 tabelas:
   estacao:
@@ -9,46 +9,42 @@ tabelas:
       altitude:
         tipo: DOUBLE
         nulos_pct: 0.16
-        distintos_aprox: 562
+        distintos_aprox: 607
         min: '0.0'
         max: '1790.38'
         media: 403.8992
         quartis: [113.8369, 337.0979, 618.2362]
-      data_fundacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 453, min: '2000-05-07', max: '2026-04-30'}
-      estacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 656, min: ABROLHOS, max: ZE DOCA}
-      geolocalizacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 593, min: POINT(-0.12527777 -67.06111111), max: POINT(3.81361111 -51.8625)}
-      id_estacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 707, min: A001, max: F501}
-      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 648, min: '1100023', max: '5300108'}
+      data_fundacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 512, min: '2000-05-07', max: '2026-04-30'}
+      estacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 641, min: ABROLHOS, max: ZE DOCA}
+      geolocalizacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 634, min: POINT(-0.12527777 -67.06111111), max: POINT(3.81361111 -51.8625)}
+      id_estacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 665, min: A001, max: F501}
+      id_municipio: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 588, min: '1100023', max: '5300108'}
   microdados:
-    linhas: 84514656
-    fonte_do_perfil: amostra de 40.89% da última partição (ano = 2025). ~2.000.000 linhas
+    linhas: 90063384
+    fonte_do_perfil: tabela inteira da última partição (ano = 2026)
     colunas:
       ano:
         tipo: BIGINT
         nulos_pct: 0
         distintos_aprox: 1
-        min: '2025'
-        max: '2025'
-        media: 2025
-        quartis: [2025, 2025, 2025]
+        min: '2026'
+        max: '2026'
+        media: 2026
+        quartis: [2026, 2026, 2026]
         top:
-        - ['2025', 2005822]
+        - ['2026', 871824]
       mes:
         tipo: BIGINT
         nulos_pct: 0
-        distintos_aprox: 6
+        distintos_aprox: 2
         min: '1'
-        max: '6'
-        media: 3.5112
-        quartis: [2, 4, 5]
+        max: '2'
+        media: 1.4788
+        quartis: [1, 1, 2]
         top:
-        - ['5', 344050]
-        - ['3', 343508]
-        - ['1', 343221]
-        - ['6', 333651]
-        - ['4', 332038]
-        - ['2', 309354]
-      data: {tipo: DATE, nulos_pct: 0, distintos_aprox: 170, min: '2025-01-01', max: '2025-06-30'}
+        - ['1', 454392]
+        - ['2', 417432]
+      data: {tipo: DATE, nulos_pct: 0, distintos_aprox: 58, min: '2026-01-01', max: '2026-02-28'}
       hora:
         tipo: TIME WITH TIME ZONE
         nulos_pct: 0
@@ -56,150 +52,150 @@ tabelas:
         min: 00:00:00+00
         max: 23:00:00+00
         top:
-        - ['09:00:00+00', 84208]
-        - ['11:00:00+00', 83930]
-        - ['16:00:00+00', 83898]
-        - ['15:00:00+00', 83856]
-        - ['05:00:00+00', 83841]
-        - ['21:00:00+00', 83823]
-        - ['10:00:00+00', 83792]
-        - ['06:00:00+00', 83739]
-        - ['19:00:00+00', 83731]
-        - ['20:00:00+00', 83706]
-      id_estacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 540, min: A001, max: F501}
+        - ['00:00:00+00', 36326]
+        - ['01:00:00+00', 36326]
+        - ['02:00:00+00', 36326]
+        - ['03:00:00+00', 36326]
+        - ['04:00:00+00', 36326]
+        - ['05:00:00+00', 36326]
+        - ['06:00:00+00', 36326]
+        - ['07:00:00+00', 36326]
+        - ['08:00:00+00', 36326]
+        - ['09:00:00+00', 36326]
+      id_estacao: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 659, min: A001, max: F501}
       precipitacao_total:
         tipo: DOUBLE
-        nulos_pct: 37.36
-        distintos_aprox: 255
+        nulos_pct: 43.7565
+        distintos_aprox: 349
         min: '0.0'
-        max: '87.8'
-        media: 0.1818
+        max: '88.2'
+        media: 0.2839
         quartis: [0, 0, 0]
       pressao_atm_hora:
         tipo: DOUBLE
-        nulos_pct: 25.92
-        distintos_aprox: 2072
-        min: '821.5'
-        max: '1045.3'
-        media: 963.6512
-        quartis: [936.4979, 966.7785, 995.7921]
+        nulos_pct: 35.0052
+        distintos_aprox: 2134
+        min: '818.3'
+        max: '1046.5'
+        media: 963.141
+        quartis: [935.9, 965.7, 995.7]
       pressao_atm_max:
         tipo: DOUBLE
-        nulos_pct: 26.04
-        distintos_aprox: 2067
-        min: '822.2'
-        max: '1046.6'
-        media: 963.9095
-        quartis: [936.6937, 967.0522, 996.0811]
+        nulos_pct: 35.0922
+        distintos_aprox: 2150
+        min: '818.3'
+        max: '1049.8'
+        media: 963.4283
+        quartis: [936.2, 966, 996]
       pressao_atm_min:
         tipo: DOUBLE
-        nulos_pct: 26.05
-        distintos_aprox: 2067
-        min: '821.5'
-        max: '1042.3'
-        media: 963.3447
-        quartis: [936.045, 966.4839, 995.4849]
+        nulos_pct: 35.1049
+        distintos_aprox: 2116
+        min: '818.2'
+        max: '1045.0'
+        media: 962.8526
+        quartis: [935.6, 965.4, 995.4]
       radiacao_global:
         tipo: DOUBLE
-        nulos_pct: 54.57
-        distintos_aprox: 39679
+        nulos_pct: 56.1469
+        distintos_aprox: 41028
         min: '0.0'
-        max: '7037.8'
-        media: 1186.2004
-        quartis: [87.9223, 907.983, 2094.6392]
+        max: '6661.5'
+        media: 1214.1997
+        quartis: [44.3, 834.6, 2188.8]
       temperatura_bulbo_hora:
         tipo: DOUBLE
-        nulos_pct: 26.67
-        distintos_aprox: 430
-        min: '-7.7'
-        max: '45.0'
-        media: 23.6041
-        quartis: [20.5703, 23.7782, 27.0764]
+        nulos_pct: 35.7677
+        distintos_aprox: 337
+        min: '0.0'
+        max: '41.4'
+        media: 24.6237
+        quartis: [21.8, 24.2, 27.4]
       temperatura_orvalho_hora:
         tipo: DOUBLE
-        nulos_pct: 32.55
-        distintos_aprox: 422
-        min: '-18.0'
-        max: '34.2'
-        media: 18.5781
-        quartis: [16.1963, 19.2578, 21.6954]
+        nulos_pct: 41.0217
+        distintos_aprox: 288
+        min: '0.0'
+        max: '32.5'
+        media: 19.9178
+        quartis: [18.3, 20.2, 22]
       temperatura_max:
         tipo: DOUBLE
-        nulos_pct: 26.81
-        distintos_aprox: 455
-        min: '-7.3'
-        max: '43.8'
-        media: 24.2531
-        quartis: [21.0525, 24.2946, 27.9501]
+        nulos_pct: 35.8852
+        distintos_aprox: 342
+        min: '6.2'
+        max: '42.2'
+        media: 25.2607
+        quartis: [22.2, 24.8, 28.3]
       temperatura_min:
         tipo: DOUBLE
-        nulos_pct: 26.81
-        distintos_aprox: 434
-        min: '-7.8'
-        max: '40.5'
-        media: 22.9878
-        quartis: [20.096, 23.2934, 26.2842]
+        nulos_pct: 35.899
+        distintos_aprox: 325
+        min: '5.6'
+        max: '40.1'
+        media: 24.0241
+        quartis: [21.4, 23.7, 26.6]
       temperatura_orvalho_max:
         tipo: DOUBLE
-        nulos_pct: 32.79
-        distintos_aprox: 411
-        min: '-16.1'
-        max: '35.8'
-        media: 19.1279
-        quartis: [16.7688, 19.804, 22.2103]
+        nulos_pct: 41.2405
+        distintos_aprox: 279
+        min: '-7.6'
+        max: '37.9'
+        media: 20.4875
+        quartis: [18.8, 20.8, 22.5]
       temperatura_orvalho_min:
         tipo: DOUBLE
-        nulos_pct: 32.82
-        distintos_aprox: 434
-        min: '-19.4'
-        max: '31.6'
-        media: 18.0456
-        quartis: [15.6461, 18.7276, 21.203]
+        nulos_pct: 41.409
+        distintos_aprox: 292
+        min: '-7.1'
+        max: '31.0'
+        media: 19.3773
+        quartis: [17.7, 19.7, 21.5]
       umidade_rel_max:
         tipo: DOUBLE
-        nulos_pct: 32.31
-        distintos_aprox: 127
+        nulos_pct: 40.5642
+        distintos_aprox: 94
         min: '7.0'
         max: '100.0'
-        media: 78.5492
-        quartis: [67.3219, 82.4532, 92.6322]
+        media: 80.1017
+        quartis: [70, 84, 93]
       umidade_rel_min:
         tipo: DOUBLE
-        nulos_pct: 32.25
-        distintos_aprox: 127
+        nulos_pct: 40.5047
+        distintos_aprox: 95
         min: '7.0'
         max: '100.0'
-        media: 72.7261
-        quartis: [58.7452, 75.7316, 88.9947]
+        media: 73.9627
+        quartis: [60, 77, 90]
       umidade_rel_hora:
         tipo: DOUBLE
-        nulos_pct: 32.05
-        distintos_aprox: 129
-        min: '7.0'
+        nulos_pct: 40.3469
+        distintos_aprox: 91
+        min: '9.0'
         max: '100.0'
-        media: 75.7072
-        quartis: [62.9026, 79.0365, 90.991]
+        media: 77.1234
+        quartis: [65, 81, 92]
       vento_direcao:
         tipo: DOUBLE
-        nulos_pct: 32.24
-        distintos_aprox: 377
-        min: '1.0'
+        nulos_pct: 41.0086
+        distintos_aprox: 359
+        min: '0.0'
         max: '360.0'
-        media: 156.1691
-        quartis: [77.9163, 135.1032, 232.7484]
+        media: 162.1509
+        quartis: [73, 140, 252]
       vento_rajada_max:
         tipo: DOUBLE
-        nulos_pct: 32.45
-        distintos_aprox: 279
+        nulos_pct: 41.1808
+        distintos_aprox: 244
         min: '0.0'
-        max: '39.0'
-        media: 4.4303
-        quartis: [2.3533, 4.1229, 6.1602]
+        max: '33.9'
+        media: 4.6304
+        quartis: [2.5, 4.3, 6.4]
       vento_velocidade:
         tipo: DOUBLE
-        nulos_pct: 32.29
-        distintos_aprox: 137
+        nulos_pct: 41.0146
+        distintos_aprox: 149
         min: '0.0'
-        max: '17.6'
-        media: 1.6906
-        quartis: [0.597, 1.4683, 2.51]
+        max: '25.6'
+        media: 1.836
+        quartis: [0.7, 1.5, 2.6]
