@@ -213,7 +213,7 @@ def _catalogo():
 
 
 BASE = _catalogo()
-rodado_sql.conecta = lambda: BASE.cursor()
+rodado_sql.conecta = lambda *a, **k: BASE.cursor()
 SERVIDOR = ThreadingHTTPServer(("127.0.0.1", 0), consulta.Handler)
 SERVIDOR.daemon_threads = True
 threading.Thread(target=SERVIDOR.serve_forever, daemon=True).start()

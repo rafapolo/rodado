@@ -31,8 +31,10 @@ import rodado_sql
 
 ORIGEM = rodado_sql.RAIZ + "_db/views.json"
 BANCO = rodado_sql.BANCO
+BANCO_ANON = rodado_sql.BANCO_ANON
 MARCA = BANCO + ".sha256"
 FONTES = BANCO + ".fontes.json"   # hash do SQL de cada view criada: o que remontar
+FONTES_ANON = BANCO_ANON + ".fontes.json"   # o que o catálogo anônimo guarda: ver monta_anonimo
 INTERVALO = int(os.environ.get("RODADO_CATALOGO_INTERVALO", "900"))
 PARALELO = int(os.environ.get("RODADO_CATALOGO_PARALELO", "8"))
 LOCAIS = ("'/home/polo/rodado/", "'~/rodado/")
@@ -69,6 +71,188 @@ def para_s3(sql: str) -> str:
 
 def _sha(sql: str) -> str:
     return hashlib.sha256(sql.encode()).hexdigest()
+
+
+# ------------------------------------------------------------------ catálogo anônimo
+# Quem consulta sem token pessoal lê um segundo arquivo, com o mesmo nome em cada view, onde toda
+# coluna de CPF já sai mascarada (`***.456.789-**`, o padrão da CGU) ANTES de qualquer WHERE, JOIN ou
+# GROUP BY: filtrar por CPF inteiro nunca casa, e juntar pelo mascarado (como nos dados do governo)
+# continua possível. O arquivo é cópia do inteiro em que só as views com coluna de CPF viram
+# `SELECT * REPLACE (rodado_cpf(col) AS col) FROM (<corpo original>)`; o resto não relê rodapé nenhum.
+# A máscara é SQL nativo, não UDF: roda em centenas de milhões de linhas e existe quando a view é criada.
+#
+# Regra (a mesma para coluna pura e mista): valor com `*` fica como está (já mascarado: idempotente);
+# o que tiver letra fica como está; com `minimo` a 11 dígitos (1 nas colunas de CPF, 10 nas de documento misto, onde
+# 6 dígitos são outro código) vira `***.DDD.DDD-**` pelos dígitos 4 a 9 do CPF
+# de 11 casas (zeros à esquerda refeitos); mais de 11 dígitos (CNPJ) fica inteiro.
+MACRO_CPF = r"""CREATE OR REPLACE MACRO rodado_cpf(s, minimo) AS
+  CASE WHEN s IS NULL THEN NULL
+       WHEN length(s) = 11 AND regexp_full_match(s, '[0-9]{11}')
+            THEN concat('***.', substr(s, 4, 3), '.', substr(s, 7, 3), '-**')
+       WHEN contains(s, '*') OR NOT regexp_full_match(s, '[0-9.\-/ ]*[0-9][0-9.\-/ ]*') THEN s
+       WHEN length(regexp_replace(s, '[^0-9]', '', 'g')) NOT BETWEEN minimo AND 11 THEN s
+       ELSE concat('***.', substr(lpad(regexp_replace(s, '[^0-9]', '', 'g'), 11, '0'), 4, 3), '.',
+                   substr(lpad(regexp_replace(s, '[^0-9]', '', 'g'), 11, '0'), 7, 3), '-**') END"""
+# colunas que carregam CPF: "cpf" no nome (cpf, cpf_cnpj, cgccpf, cnpjcpf, CPFCNPJ…) e as de documento
+# misto (CPF ou CNPJ) que não têm "cpf" no nome
+_DOCUMENTO_MISTO = {"documento", "documento_credor", "documento_contratado", "documento_emissor",
+                    "documento_responsavel", "individual_document"}
+VERSAO_MASCARA = _sha(MACRO_CPF + "|cpf|" + ",".join(sorted(_DOCUMENTO_MISTO)))[:16]
+_CABECALHO_VIEW = re.compile(r'^\s*CREATE\s+(?:OR\s+REPLACE\s+)?VIEW\s+(?:"[^"]*"|[^\s("]+)(?:\.(?:"[^"]*"|[^\s("]+))*\s+AS\s+',
+                             re.I)
+
+
+def coluna_de_cpf(nome: str) -> bool:
+    return "cpf" in nome.lower() or nome.lower() in _DOCUMENTO_MISTO
+
+
+def _aspas(nome: str) -> str:
+    return '"' + nome.replace('"', '""') + '"'
+
+
+def sql_anonimo(sql: str, colunas: list):
+    """O CREATE VIEW anônimo de uma view: None se nenhuma coluna carrega CPF (vale o original), o
+    SQL com as colunas de CPF mascaradas, ou False se há coluna de CPF e o SQL não pôde ser
+    reescrito (a view fica de fora do catálogo anônimo: nunca passa sem máscara)."""
+    sensiveis = [(c, t) for c, t in colunas if coluna_de_cpf(c)]
+    if not sensiveis:
+        return None
+    m = _CABECALHO_VIEW.match(sql or "")
+    if not m:
+        return False
+    corpo = sql[m.end():].strip().rstrip(";").strip()
+    trocas = []
+    for c, t in sensiveis:
+        t, minimo = t.upper(), (10 if c.lower() in _DOCUMENTO_MISTO else 1)
+        if t in ("VARCHAR", "JSON"):
+            e = f"rodado_cpf({_aspas(c)}, {minimo})"
+        elif t in ("VARCHAR[]", "JSON[]"):
+            e = f"list_transform({_aspas(c)}, lambda x: rodado_cpf(x, {minimo}))"
+        else:
+            e = f"rodado_cpf(CAST({_aspas(c)} AS VARCHAR), {minimo})"   # número, struct, blob…: vira texto mascarado
+        trocas.append(f"{e} AS {_aspas(c)}")
+    return sql[:m.end()] + f"SELECT * REPLACE ({', '.join(trocas)}) FROM ({corpo}) AS _original"
+
+
+def marca_do_cheio(fontes: dict) -> str:
+    return _sha(json.dumps(fontes, sort_keys=True))
+
+
+def anonimo_em_dia() -> bool:
+    """O catálogo anônimo existe e foi montado a partir do inteiro que está no ar."""
+    try:
+        reg = json.load(open(FONTES_ANON))
+        fontes = json.load(open(FONTES))
+    except (OSError, ValueError):
+        return False
+    return os.path.exists(BANCO_ANON) and reg.get("cheio") == marca_do_cheio(fontes) \
+        and reg.get("mascara") == VERSAO_MASCARA
+
+
+def monta_anonimo(cheio: str, fontes: dict):
+    """Monta o catálogo anônimo em BANCO_ANON.novo a partir do arquivo inteiro `cheio` (já pronto).
+
+    Incremental como o inteiro: parte do anônimo atual e só refaz a view cujo SQL, ou a lista de
+    colunas de CPF, mudou. Sem anônimo anterior, parte de uma cópia do inteiro e refaz as views com
+    CPF. Uma view com CPF que não pôde ser reescrita é apagada do arquivo: o anônimo nunca a serve
+    sem máscara. Devolve (caminho do .novo, registro a gravar em FONTES_ANON)."""
+    novo = BANCO_ANON + ".novo"
+    for resto in (novo, novo + ".wal"):
+        if os.path.exists(resto):
+            os.remove(resto)
+    try:
+        reg = json.load(open(FONTES_ANON)) if os.path.exists(BANCO_ANON) else None
+    except (OSError, ValueError):
+        reg = None
+    if reg and reg.get("mascara") == VERSAO_MASCARA:
+        anteriores = reg.get("views", {})
+        shutil.copyfile(BANCO_ANON, novo)
+    else:
+        anteriores = None          # cópia do inteiro: as views sem CPF já estão certas, as outras não
+        shutil.copyfile(cheio, novo)
+    lc = duckdb.connect(cheio, read_only=True)
+    try:
+        sqls = {f"{s}.{n}": (s, n, q) for s, n, q in lc.execute(
+            "SELECT schema_name, view_name, sql FROM duckdb_views() WHERE NOT internal").fetchall()}
+        colunas = {}
+        for s, t, c, tipo in lc.execute(
+                "SELECT schema_name, table_name, column_name, data_type FROM duckdb_columns() "
+                "ORDER BY schema_name, table_name, column_index").fetchall():
+            colunas.setdefault(f"{s}.{t}", []).append((c, tipo))
+    finally:
+        lc.close()
+    desejado, ausentes = {}, []
+    for nome, (s, n, q) in sqls.items():
+        r = sql_anonimo(q, colunas.get(nome, []))
+        if r is False:
+            ausentes.append(nome)
+        else:
+            desejado[nome] = (s, n, q if r is None else r, VERSAO_MASCARA if r is not None else "")
+    if anteriores is None:
+        anteriores = {nome: _sha(q) for nome, (s, n, q, v) in desejado.items()
+                      if sql_anonimo(sqls[nome][2], colunas.get(nome, [])) is None}
+    con = _conexao(novo)
+    falhas = []
+    try:
+        con.execute(MACRO_CPF)
+        existentes = {f"{s}.{n}" for s, n in con.execute(
+            "SELECT schema_name, view_name FROM duckdb_views() WHERE NOT internal").fetchall()}
+        for nome in sorted((existentes - desejado.keys()) | set(ausentes)):
+            d, t = nome.split(".", 1)
+            con.execute(f"DROP VIEW IF EXISTS {_aspas(d)}.{_aspas(t)}")
+            anteriores.pop(nome, None)
+        for nome in ausentes:
+            falhas.append(f"{nome}: tem coluna de CPF e o SQL não pôde ser reescrito")
+        mudaram = [(nome, item) for nome, item in desejado.items()
+                   if anteriores.get(nome) != _sha(item[2] + item[3]) or nome not in existentes]
+        log(f"anônimo: {len(mudaram)} de {len(desejado)} views para (re)criar")
+
+        def cria(par):
+            nome, (d, t, sql, _) = par
+            cur = con.cursor()
+            try:
+                cur.execute(f"DROP VIEW IF EXISTS {_aspas(d)}.{_aspas(t)}")
+                cur.execute(sql)
+                return None
+            except duckdb.Error as e:
+                return par, str(e).splitlines()[0]
+            finally:
+                cur.close()
+
+        repetir = []
+        with concurrent.futures.ThreadPoolExecutor(PARALELO) as ex:
+            for r in ex.map(cria, mudaram):
+                if r:
+                    repetir.append(r)
+        while repetir:    # conflito de escrita, ou view que cita outra ainda não criada
+            antes, repetir = len(repetir), [r for r in (cria(par) for par, _ in repetir) if r]
+            if len(repetir) == antes:
+                break
+        falhou = {nome for (nome, _), _e in repetir}
+        for (nome, (d, t, _, _v)), erro in repetir:
+            # falhou: a view não pode ficar com o SQL antigo (copiado do inteiro, sem máscara)
+            con.execute(f"DROP VIEW IF EXISTS {_aspas(d)}.{_aspas(t)}")
+            falhas.append(f"{nome}: {erro}")
+        for nome, (_, _, sql, v) in mudaram:
+            if nome in falhou:
+                anteriores.pop(nome, None)
+            else:
+                anteriores[nome] = _sha(sql + v)
+        con.execute("CHECKPOINT")
+        n_views = con.execute("SELECT count(*) FROM duckdb_views() WHERE NOT internal").fetchall()[0][0]
+    finally:
+        con.close()
+    for f in falhas:
+        log(f"fora do catálogo anônimo: {f}")
+    log(f"catálogo anônimo pronto: {n_views} views, {len(falhas)} fora")
+    return novo, {"cheio": marca_do_cheio(fontes), "mascara": VERSAO_MASCARA, "views": anteriores}
+
+
+def publica_anonimo(novo: str, reg: dict):
+    os.replace(novo, BANCO_ANON)
+    with open(FONTES_ANON + ".novo", "w") as f:
+        json.dump(reg, f)
+    os.replace(FONTES_ANON + ".novo", FONTES_ANON)
 
 
 def monta(conteudo):
@@ -155,10 +339,14 @@ def monta(conteudo):
         n_views = con.execute("SELECT count(*) FROM duckdb_views() WHERE NOT internal").fetchall()[0][0]
     finally:
         con.close()
+    # o anônimo sai do inteiro recém-montado e os dois entram juntos: se ele falhar, o inteiro
+    # também não troca (a falha aparece no log e a volta seguinte tenta de novo)
+    anon_novo, reg = monta_anonimo(novo, fontes)
     os.replace(novo, BANCO)
     with open(FONTES + ".novo", "w") as f:
         json.dump(fontes, f)
     os.replace(FONTES + ".novo", FONTES)
+    publica_anonimo(anon_novo, reg)
     for f in falhas:
         log(f"fora do catálogo: {f}")
     # timeout do bucket é passageiro: a view volta na próxima montagem (ver rodada)
@@ -212,6 +400,10 @@ def _rodada():
     if sha == atual and "--completo" not in sys.argv:
         if not os.path.exists(FONTES):
             semeia_fontes(json.loads(texto))
+        if not anonimo_em_dia():     # primeiro deploy com o anônimo, ou regra da máscara mudou
+            log("catálogo anônimo ausente ou defasado: montando")
+            publica_anonimo(*monta_anonimo(BANCO, json.load(open(FONTES))))
+            return True
         return False
     log(f"views.json ou cópias no SSD mudaram ({sha[:12]}): montando o catálogo")
     resumo, passageiras = monta(json.loads(texto))

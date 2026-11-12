@@ -937,6 +937,9 @@ class Handler(BaseHTTPRequestHandler):
         nome = TOKENS.get(token)
         ip_chave = limites.chave_ip(ip, CFG.prefixo_ipv6)
         return {"ip": ip, "ip_chave": ip_chave, "interno": not ip, "nome": nome,
+                # catálogo inteiro (CPF completo na view) só com token pessoal; senha, DB_TOKEN do dono,
+                # token de link e acesso aberto leem o anônimo, com o CPF já mascarado
+                "pessoal": bool(nome and nome != limites.NOME_LINK),
                 "chave": f"token:{nome}" if nome else f"ip:{ip_chave}",
                 "balde": None if nome else limites.BALDE_SENHA,
                 "isento": bool(nome and nome in CFG.isentos)}
@@ -1044,7 +1047,7 @@ class Handler(BaseHTTPRequestHandler):
         """Confere a SQL sem executar: tabelas que existem, tamanho, partição filtrada ou não,
         colunas que nenhuma tabela citada tem e os avisos medidos. Custa milissegundos."""
         try:
-            con = rodado_sql.conecta()
+            con = rodado_sql.conecta(pessoal=self._identidade()["pessoal"])
             try:
                 comandos = rodado_sql.separa(con, sql)
                 if len(comandos) != 1:
@@ -1081,7 +1084,7 @@ class Handler(BaseHTTPRequestHandler):
         partes = alvo.split(".")
         if len(partes) != 2 or not all(p.isidentifier() for p in partes):
             return self._json({"erro": "use dataset.tabela"}, 400)
-        con = rodado_sql.conecta()
+        con = rodado_sql.conecta(pessoal=self._identidade()["pessoal"])
         try:
             # duckdb_columns() lê os nomes e tipos guardados no catálogo quando a view foi criada;
             # DESCRIBE religaria a view e releria do S3 o rodapé de cada arquivo (4 mil no CNPJ)
@@ -1325,13 +1328,15 @@ class Handler(BaseHTTPRequestHandler):
         inicio = time.monotonic()
         n_parquet = 0
         try:
-            con = rodado_sql.conecta()
+            con = rodado_sql.conecta(pessoal=quem["pessoal"])
             try:
                 comandos = rodado_sql.separa(con, sql)
                 if len(comandos) != 1:
                     return self._erro(400, "um comando por requisição")
                 tabelas, colunas = _referencias(con, comandos[0].query)
                 avisos = _avisos(tabelas, colunas)
+                if not quem["pessoal"] and (a := rodado_sql.aviso_cpf_literal(comandos[0].query)):
+                    avisos = [a] + avisos
                 if (abuso := _raspagem(con, comandos[0].query, limite_pedido)):
                     return self._erro(400, "consulta recusada, parece raspagem: " + abuso[0], cabecalhos=cota,
                                       dica=abuso[1], avisos=avisos)

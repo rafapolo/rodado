@@ -49,7 +49,8 @@ resposta. Sem credencial, `POST /q` e `/index` respondem `401`; sem elas, mostre
 código. Nos exemplos abaixo, `$AUTH` é `-u rodado:$RODADO_SENHA` (pode omitir nas consultas).
 
 O token pode ser **pessoal** (um por pessoa ou agente, que o dono revoga sozinho): é ele que dá
-nome ao seu uso e conta a sua cota (sem token, a cota é do seu IP). Peça o seu a quem mantém o serviço.
+nome ao seu uso, conta a sua cota (sem token, a cota é do seu IP) e libera o CPF completo nas tabelas (seção
+4); sem token pessoal, o CPF já vem mascarado. Peça o seu a quem mantém o serviço.
 
 ## 2. O fluxo que funciona
 
@@ -167,15 +168,28 @@ o corpo traz a armadilha e a `dica`; repita com `?ciente=1` depois de tratar del
 
 ## 4. Exportar
 
-**CPF sai mascarado** (`***.456.789-**`) em todo resultado e mensagem de erro, também quando
-renomeado ou dentro de outro texto. A consulta vê o CPF inteiro: filtre e junte por ele
-normalmente (`WHERE cpf = '...'`, `JOIN ... USING (cpf)`), só não espere recebê-lo de volta.
-Coluna com "cpf" no nome só sai pura (mascarada), contada (`count(DISTINCT cpf)`) ou dentro de
-uma condição; transformá-la no `SELECT` (`CAST`, `substr`, `split`, `list`, `to_json`…) ou
-renomeá-la para um nome sem "cpf" é recusado com `400`. Em coluna mista (`cpf_cnpj`), a raiz do
-CNPJ sai assim: `CASE WHEN length(regexp_replace(col, '[^0-9]', '', 'g')) = 14 THEN
-substr(regexp_replace(col, '[^0-9]', '', 'g'), 1, 8) END`.
-CNPJ vem inteiro.
+**CPF vem mascarado já na tabela** (`***.456.789-**`, o padrão da CGU), para quem consulta sem token
+pessoal (o caso de agentes, do `/mcp` e de todo link): toda coluna com "cpf" no nome e as colunas
+`documento*` de CPF/CNPJ misto saem assim *antes* do `WHERE`, do `JOIN` e do `GROUP BY`. Consequências:
+
+- **Filtrar pelo CPF inteiro nunca casa** (`WHERE cpf = '52998224725'` devolve 0 linhas, sem erro, e
+  isso *não* quer dizer que a pessoa não exista). Filtre pelo mascarado (`WHERE cpf = '***.982.247-**'`),
+  que traz todos os CPFs com aqueles seis dígitos do meio, ou por nome e outras colunas.
+- **Junte pelo mascarado**: `JOIN ... USING (cpf)` entre tabelas funciona, como nos dados do governo, mas
+  duas pessoas diferentes podem ter os mesmos seis dígitos (falso casamento); confirme com nome, NIS ou
+  município. `count(DISTINCT cpf)` conta máscaras distintas e subconta em tabela grande (o teto é
+  ~1 milhão de máscaras).
+- `substr(cpf, 1, 3)` dá sempre `***`; CNPJ (14 dígitos) vem inteiro, e em coluna mista (`cpf_cnpj`) a
+  raiz do CNPJ sai assim: `CASE WHEN length(regexp_replace(col, '[^0-9]', '', 'g')) = 14 THEN
+  substr(regexp_replace(col, '[^0-9]', '', 'g'), 1, 8) END`.
+- Coluna numérica de CPF vira texto mascarado. A resposta traz um aviso quando a consulta cita um CPF
+  inteiro.
+
+Quem entra com token pessoal (seção 1) consulta o CPF completo: filtra e junta por ele normalmente. Em
+qualquer caso o **resultado** sai com o CPF mascarado, também em mensagem de erro e quando renomeado ou
+dentro de outro texto, e a coluna de CPF só sai pura, contada ou dentro de uma condição; transformá-la
+no `SELECT` (`CAST`, `substr`, `split`, `list`, `to_json`…) ou renomeá-la para um nome sem "cpf" é
+recusado com `400`.
 
 Cada requisição devolve no máximo {limite_maximo} linhas. Para mais que isso, agregue no servidor
 ou fatie por filtro (uma requisição por `ano`, `sigla_uf`… ou por chave: `WHERE id > <último visto>

@@ -26,7 +26,7 @@ base = duckdb.connect()
 base.create_function("_mascara_cpf", rodado_sql.mascara_texto, [sqltypes.VARCHAR], sqltypes.VARCHAR,
                      side_effects=False)
 base.execute("CREATE SCHEMA br_t; CREATE TABLE br_t.g AS SELECT range AS a FROM range(100000)")
-rodado_sql.conecta = lambda: base.cursor()
+rodado_sql.conecta = lambda *a, **k: base.cursor()
 
 import limites  # noqa: E402
 import terminal  # noqa: E402

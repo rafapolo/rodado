@@ -82,18 +82,45 @@ CREATE TABLE uf AS FROM rodado('FROM br_bd_diretorios_brasil.uf');  -- e junta c
 
 A consulta roda no finland, lendo do bucket; só o resultado atravessa (agregue lá, não traga tabela bruta).
 
-### CPF sai mascarado
+### CPF mascarado na tabela (desde 2026-11-12)
 
-Desde 2026-11-03, todo resultado sai com o CPF no padrão da CGU (`***.456.789-**`): o
-terminal, o `/query` em qualquer formato (e com ele o CSV do botão e o MCP) e as mensagens de
-erro, que podem citar um valor. A consulta continua vendo o CPF inteiro: filtrar, juntar e
-contar por ele funcionam como antes. A máscara (`mascara_cpf` em `rodado_sql.py`) olha o
-valor, não o nome da coluna, então pega `cpf AS x`, concatenação e o CPF no nome do MEI:
-11 dígitos soltos ou `000.000.000-00`, com dígito verificador válido. CNPJ passa inteiro. Um
-código público de 11 dígitos só é mascarado quando o verificador bate por acaso (~1 em 100).
-Não segura quem disfarça de propósito (`reverse(cpf)`, `substr` em pedaços, `cpf::BIGINT + 1`
-com outro nome): é proteção da saída comum, não controle de acesso. Teste:
-`python3 db/testes/mascara_cpf.py`.
+Dois catálogos com os mesmos nomes de view, um por tipo de acesso:
+
+| Quem | Catálogo | CPF na view |
+|---|---|---|
+| Sem token pessoal: acesso aberto, senha compartilhada, `DB_TOKEN` do dono, token de link (`/q`) | `/dados/catalogo_anon.duckdb` | já `***.456.789-**` (o padrão da CGU), **antes** de qualquer `WHERE`, `JOIN` ou `GROUP BY` |
+| Token pessoal (nomes de `DB_TOKENS`, fora o `link`) | `/dados/catalogo.duckdb` | inteiro |
+
+No anônimo, filtrar por CPF completo nunca casa (nem com os 1.000 candidatos que os seis dígitos do
+meio deixam), `substr(cpf, 1, 3)` só dá `***`, e juntar ou contar pelo mascarado funciona como nos
+dados do governo (`count(DISTINCT cpf)` conta máscaras distintas; duas pessoas podem dividir os mesmos
+seis dígitos). Vale para o terminal, o `/query` em todo formato, o `/mcp` (que repassa o token pessoal,
+se vier) e os links `/q`. A resposta traz um aviso quando o anônimo cita um CPF inteiro.
+
+- **Como é montado** (`catalogo.py`, `monta_anonimo`): o anônimo é cópia do inteiro em que só as views
+  com coluna de CPF viram `SELECT * REPLACE (rodado_cpf(col, minimo) AS col) FROM (<corpo original>)`
+  (as outras ~1.600 não relêem rodapé nenhum). Colunas: `cpf` em qualquer parte do nome e
+  `documento`, `documento_credor|contratado|emissor|responsavel`, `individual_document` (CPF ou CNPJ).
+  A macro `rodado_cpf` é SQL nativo: valor com `*` fica como está (já mascarado, idempotente), com letra
+  fica como está, de 1 a 11 dígitos (de 10 a 11 nas colunas de documento misto) vira `***.DDD.DDD-**` com
+  zeros à esquerda refeitos, e CNPJ (mais de 11 dígitos) fica inteiro; coluna numérica vira texto. É
+  incremental (guarda o hash do SQL de cada view em `catalogo_anon.duckdb.fontes.json`), sai do inteiro
+  recém-montado e os dois arquivos trocam juntos; view com coluna de CPF cujo SQL não dá para reescrever
+  fica fora do anônimo (nunca passa sem máscara). Primeira montagem: refaz só as ~160 views com CPF.
+- **Isolamento**: a instância anônima (`rodado_sql.conecta()`, o padrão) abre só o arquivo anônimo; o
+  inteiro nunca é anexado a ela, então não existe `catalogo.ds.t` para contornar a máscara. Sem o
+  arquivo anônimo a consulta falha ("catálogo sendo montado"); nunca cai no inteiro. O inteiro só abre
+  (`conecta(pessoal=True)`, teto de memória próprio `RODADO_MEMORIA_PESSOAL`) com token pessoal. No
+  terminal, o Caddy põe `pessoal` ou `anonimo` em `X-Rodado-Tty` (apagando o que o cliente mandou) e o
+  ttyd (`-H`) o entrega ao `terminal.py` como `TTYD_USER`.
+- **Camada extra, na saída**: todo resultado ainda sai com o CPF mascarado (`mascara_cpf` em
+  `rodado_sql.py`: terminal, `/query` em qualquer formato, MCP e mensagens de erro; olha o valor, não o
+  nome da coluna, e pega o CPF no nome do MEI; CNPJ passa inteiro) e `rodado_sql._confere_cpf` recusa
+  transformar ou renomear coluna com "cpf" no nome no que a consulta devolve (filtrar, juntar, agrupar e
+  contar seguem livres). Testes: `python3 db/testes/cpf_anonimo.py`, `cpf_saida.py`, `mascara_cpf.py`.
+- Limite conhecido: coluna de CPF que aparece num parquet reescrito sem mudar a lista de arquivos da
+  view só entra mascarada quando a view é refeita (o SQL muda, ou `catalogo.py --uma-vez --completo`);
+  a máscara de saída cobre o intervalo.
 
 ## Limites contra raspagem
 
@@ -198,7 +225,10 @@ ou fica fora de `private_ranges`: o limite por IP valeria para o mundo inteiro. 
 (`RODADO_POR_MINUTO=0`, `RODADO_SIMULTANEAS_IP=0`) e ajuste o `trusted_proxies` do Caddyfile.
 
 Testes (sem catálogo nem rede; um DuckDB em memória e o `Handler` de verdade): `python3 db/testes/limites.py`
-(29 casos), `python3 db/testes/mcp_repasse.py` (3: o MCP de verdade em HTTP contra um `/query` falso) e `python3 db/testes/mascara_cpf.py` (11). A parte do Caddy (regex dos tokens, cabeçalhos
+(31 casos), `python3 db/testes/mcp_repasse.py` (3: o MCP de verdade em HTTP contra um `/query` falso),
+`python3 db/testes/mascara_cpf.py` (11), `python3 db/testes/cpf_saida.py` (46) e
+`python3 db/testes/cpf_anonimo.py` (13: parquet local, catálogo inteiro e anônimo montados pelo código de
+verdade, `conecta()` sem monkeypatch). A parte do Caddy (regex dos tokens, cabeçalhos
 forjados, cookie por pessoa) foi conferida à mão com o `caddy` local e um servidor de eco.
 
 ## Como funciona
@@ -224,7 +254,7 @@ flowchart LR
 | `/contexto?dataset=X[&tabela=Y]`: armadilhas medidas, códigos de coluna, pontes de join e métricas do dataset, em markdown; `/contexto` sozinho traz as regras gerais. Vem de `contexto.json`, que `scripts/gera_contexto_db.py` gera de `docs/context/` (nunca de `privado/`) — regerar e redistribuir depois de editar gotchas, `bridges.yaml`, `metrics.yaml`, `column_codes.yaml` ou o atlas | container | `contexto.json`, `consulta.py` |
 | `POST /confere` (ou `GET ?q=`): ensaia a SQL sem executar — tabelas que existem, linhas, partição filtrada ou não (e aviso de tabela grande sem partição), colunas não achadas e os avisos medidos. Consulta que cita coluna de gotcha `[erro]` é recusada pelo `/query` com 400 e a armadilha no corpo, até vir `?ciente=1` (o CSV do terminal já manda). O `/query` devolve os mesmos avisos no cabeçalho `X-Avisos` (sem acento, `\|\|` entre eles) e `X-Contexto`; erro 400/504 traz `dica` e `avisos` no corpo | container | `consulta.py` |
 | `/exemplos?busca=`: os resultados conferidos de `docs/pesquisa/hipoteses/respostas.md` e as perguntas diretas de treino do harness mais parecidos com a busca (radicais + IDF). Os holdouts ficam fora: são a régua de `scripts/avalia_agente_cego.ts` | container | `contexto.json`, `consulta.py` |
-| Catálogo: as views do beelink com os caminhos trocados para o bucket | container, volume `rodado-db-dados` | `catalogo.py` |
+| Catálogo: as views do beelink com os caminhos trocados para o bucket, e o catálogo anônimo (mesmas views, CPF mascarado) | container, volume `rodado-db-dados` | `catalogo.py` |
 | Exporta o SQL das views para `~/rodado/_db/views.json` | beelink, antes de cada `s3_sync_rodado.sh` | `exporta_views.py` |
 | Sobe tudo, cada peça reiniciando sozinha; Caddy em primeiro plano | container | `inicia.sh`, `Dockerfile` |
 | Servidor MCP em `/mcp` (17 ferramentas, consulta o endpoint daqui de dentro) | container, 127.0.0.1:18082 | `mcp/mcp_server.py`, `inicia.sh` |

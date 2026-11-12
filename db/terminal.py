@@ -49,6 +49,11 @@ except ImportError:  # sem vendor/: entrada simples
 
 OCIOSO = 30 * 60  # fecha a sessão parada
 
+# Catálogo inteiro (CPF completo na view) só para a aba de quem entrou com token pessoal: o Caddy põe
+# "pessoal" no cabeçalho que o ttyd entrega como TTYD_USER (-H, inicia.sh), depois de apagar o que o
+# cliente mandou. Sem o cabeçalho, ou com qualquer outro valor, a aba lê o catálogo anônimo.
+PESSOAL = os.environ.get("TTYD_USER") == "pessoal"
+
 
 # Catppuccin Mocha em truecolor (https://catppuccin.com/palette).
 def _cor(hexa):
@@ -242,7 +247,7 @@ def _cota_esgotada():
 def mostra(sql: str, linhas: int):
     """Roda e imprime cada comando; devolve o SQL do último se todos terminaram, senão None."""
     ultimo = None
-    con = rodado_sql.conecta()
+    con = rodado_sql.conecta(PESSOAL)
     try:
         for comando in rodado_sql.separa(con, sql):
             # por comando, não por entrada: uma entrada com 5.000 `SELECT … LIMIT 200;` passava
@@ -305,7 +310,7 @@ def _roda(sql: str, linhas: int):
 
 
 def _consulta_simples(sql):
-    con = rodado_sql.conecta()
+    con = rodado_sql.conecta(PESSOAL)
     try:
         return con.sql(sql).fetchall()
     finally:

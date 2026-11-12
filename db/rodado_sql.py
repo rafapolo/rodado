@@ -21,6 +21,10 @@ import duckdb
 from duckdb import sqltypes
 
 BANCO = os.environ.get("RODADO_DB", "/dados/catalogo.duckdb")
+# O mesmo catálogo com o CPF já mascarado DENTRO da view (catalogo.py o monta a partir do de cima): é o
+# que consulta quem não tem token pessoal. A instância anônima só abre este arquivo; o de cima nunca é
+# anexado a ela, então não há `catalogo.ds.t` para contornar a máscara.
+BANCO_ANON = os.environ.get("RODADO_DB_ANON", os.path.splitext(BANCO)[0] + "_anon.duckdb")
 RAIZ = os.environ.get("RODADO_RAIZ", "s3://baseldosdados/")   # onde as views do catálogo leem
 # Gambiarra: tabela com cópia no SSD do finland (volume, /dados/local/<dataset>/<tabela>/) é
 # lida de lá e não do bucket; catalogo.py troca o caminho ao montar a view.
@@ -32,8 +36,12 @@ TEMP = os.environ.get("RODADO_TEMP", "/tmp/duckdb")
 # O finland tem 4 núcleos e 7 GB divididos com gitea, opengist e uqt. As threads passam
 # dos núcleos de propósito: ler do S3 é esperar requisição, não CPU (a mesma consulta caiu
 # de 23 s para 4 s indo de 4 para 16 threads).
+# Duas instâncias podem viver no mesmo processo (anônima e pessoal): a pessoal só abre quando
+# um token pessoal consulta, e leva um teto menor para as duas juntas caberem no container.
+_MEMORIA = os.environ.get("RODADO_MEMORIA", "1500MB")
+_MEMORIA_PESSOAL = os.environ.get("RODADO_MEMORIA_PESSOAL", "1000MB")
 _CONFIG = {
-    "memory_limit": os.environ.get("RODADO_MEMORIA", "1500MB"),
+    "memory_limit": _MEMORIA,
     "threads": int(os.environ.get("RODADO_THREADS", "16")),
     "temp_directory": TEMP,
     "max_temp_directory_size": os.environ.get("RODADO_TEMP_MAX", "3GB"),
@@ -126,10 +134,10 @@ class ConsultaRecusada(Exception):
     pass
 
 
-_instancia = {"con": None, "arquivo": None}
+_instancia = {False: {"con": None, "arquivo": None}, True: {"con": None, "arquivo": None}}   # chave: pessoal
 
 
-def _abre() -> duckdb.DuckDBPyConnection:
+def _abre(arquivo: str, memoria: str) -> duckdb.DuckDBPyConnection:
     """Abre e trava a instância. A ordem importa: extensão e segredo antes de desligar o
     acesso externo, allowed_directories antes disso, e a trava por último, para a própria
     consulta não poder desfazer nada. O temp_directory o DuckDB acrescenta sozinho à lista;
@@ -140,9 +148,9 @@ def _abre() -> duckdb.DuckDBPyConnection:
     # Instância :memory: nova + ATTACH, nunca duckdb.connect(BANCO): o DuckDB reaproveita a
     # instância viva do mesmo caminho, e depois que catalogo.py troca o arquivo isso devolvia
     # a antiga, já travada — todo SET daqui falhava e /catalogo.json dava 500 até reiniciar.
-    con = duckdb.connect(":memory:", config=_CONFIG)
+    con = duckdb.connect(":memory:", config={**_CONFIG, "memory_limit": memoria})
     try:
-        con.execute(f"ATTACH {_literal(BANCO)} AS catalogo (READ_ONLY)")
+        con.execute(f"ATTACH {_literal(arquivo)} AS catalogo (READ_ONLY)")
         con.execute("USE catalogo")
         con.execute("SET autoinstall_known_extensions=false")
         con.execute("SET autoload_known_extensions=false")
@@ -176,21 +184,31 @@ def segredo_s3(nome: str) -> str:
             f"SCOPE {_literal(RAIZ)})")
 
 
-def conecta() -> duckdb.DuckDBPyConnection:
+def conecta(pessoal: bool = False) -> duckdb.DuckDBPyConnection:
     """Um cursor da instância do processo; fechá-lo não fecha a instância.
 
-    Abre outra quando catalogo.py troca o arquivo (rename atômico: o inode muda). A
+    `pessoal=False` (o padrão) é o catálogo com o CPF mascarado na view; `pessoal=True`, só para quem
+    chegou com token pessoal, é o catálogo inteiro. Quem esquece o argumento fica no anônimo. Se o
+    arquivo anônimo ainda não existe, falha: nunca cai no inteiro.
+
+    Abre outra instância quando catalogo.py troca o arquivo (rename atômico: o inode muda). A
     instância antiga continua viva enquanto algum cursor dela não fechar.
     """
+    pessoal = bool(pessoal)
+    arquivo, memoria = (BANCO, _MEMORIA_PESSOAL) if pessoal else (BANCO_ANON, _MEMORIA)
     with _TRAVA:
-        st = os.stat(BANCO)
-        arquivo = (st.st_ino, st.st_mtime_ns)
-        if _instancia["con"] is None or _instancia["arquivo"] != arquivo:
-            _instancia["con"] = _abre()
-            _instancia["arquivo"] = arquivo
+        try:
+            st = os.stat(arquivo)
+        except FileNotFoundError:
+            raise ConsultaRecusada("o catálogo está sendo montado; tente de novo em alguns minutos") from None
+        marca = (st.st_ino, st.st_mtime_ns)
+        inst = _instancia[pessoal]
+        if inst["con"] is None or inst["arquivo"] != marca:
+            inst["con"] = _abre(arquivo, memoria)
+            inst["arquivo"] = marca
             global _macros_de_arquivo
             _macros_de_arquivo = None
-        base = _instancia["con"]
+        base = inst["con"]
     con = base.cursor()
     con.execute("USE catalogo")   # o USE vale por conexão: cada cursor nasce em memory
     externo, travado = con.execute(
@@ -526,6 +544,20 @@ def mascara_texto(s):
     if not isinstance(s, str) or not any(c.isdigit() for c in s):
         return s
     return _CPF.sub(_troca, s)
+
+
+def aviso_cpf_literal(sql: str):
+    """Aviso para quem consulta sem token pessoal e cita um CPF inteiro (11 dígitos com verificador
+    válido, ou 000.000.000-00) na consulta: lá a coluna de CPF já vem mascarada, o filtro não casa e
+    o resultado vazio não quer dizer que a pessoa não existe."""
+    for m in _CPF.finditer(sql or ""):
+        g = m.groups()
+        g = g[:7] if g[0] is not None else g[7:]
+        if _cpf_valido(g[0] + g[2] + g[4] + g[6]):
+            return ("a consulta cita um CPF inteiro, mas sem token pessoal a coluna de CPF já vem mascarada "
+                    "(***.456.789-**): filtrar ou juntar pelo CPF completo não casa; use o mascarado, e um "
+                    "resultado vazio não quer dizer que a pessoa não existe")
+    return None
 
 
 def mascara_cpf(rel):

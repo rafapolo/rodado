@@ -32,8 +32,10 @@ laco mcp env MCP_TRANSPORT=http MCP_BACKEND=http MCP_HTTP_BEHIND_AUTH=1 \
 # página (index.html injeta a fonte no iframe e troca a família depois que ela chega).
 # Fundo transparente (allowTransparency): o degradê radial vem do CSS que index.html injeta.
 TEMA='{"background":"#00000000","foreground":"#cdd6f4","cursor":"#f5e0dc","cursorAccent":"#1e1e2e","selectionBackground":"#585b70","black":"#45475a","red":"#f38ba8","green":"#a6e3a1","yellow":"#f9e2af","blue":"#89b4fa","magenta":"#f5c2e7","cyan":"#94e2d5","white":"#bac2de","brightBlack":"#585b70","brightRed":"#f38ba8","brightGreen":"#a6e3a1","brightYellow":"#f9e2af","brightBlue":"#89b4fa","brightMagenta":"#f5c2e7","brightCyan":"#94e2d5","brightWhite":"#a6adc8"}'
-# cada aba é um processo com sua instância do DuckDB (1,5 GB no máximo): 4 abas, não 12
-laco terminal espera ttyd -i 127.0.0.1 -p 18080 -b /tty -W -m 4 \
+# cada aba é um processo com sua instância do DuckDB (1,5 GB no máximo): 4 abas, não 12.
+# -H: o Caddy diz em X-Rodado-Tty se a aba é de token pessoal ("pessoal") ou não ("anonimo"); o ttyd
+# o entrega ao terminal.py como TTYD_USER. Sem o cabeçalho ele recusa a conexão (407).
+laco terminal espera ttyd -i 127.0.0.1 -p 18080 -b /tty -W -m 4 -H X-Rodado-Tty \
   -t titleFixed=rodado -t allowTransparency=true -t fontSize=12 -t lineHeight=1.15 \
   -t 'fontFamily="JetBrains Mono", Menlo, monospace' -t "theme=$TEMA" \
   python3 terminal.py &

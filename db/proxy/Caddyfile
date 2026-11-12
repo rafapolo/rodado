@@ -69,6 +69,12 @@
 	# Todo agente que chega aqui (inclusive no 401) recebe o caminho do guia no cabeçalho.
 	header Link `</llm>; rel="describedby"; type="text/markdown"`
 
+	# Qual catálogo a aba do terminal lê: o ttyd (-H X-Rodado-Tty, inicia.sh) entrega este cabeçalho ao
+	# terminal.py. Aqui o que o cliente mandou é apagado e vira "anonimo" (CPF mascarado na view); só os
+	# dois blocos de token pessoal abaixo o trocam por "pessoal" (CPF inteiro). Não mexer na ordem.
+	request_header -X-Rodado-Tty
+	request_header X-Rodado-Tty "anonimo"
+
 	# O 401 do basic_auth vinha vazio: um agente sem senha não sabia por onde seguir.
 	handle_errors 401 {
 		respond <<TXT
@@ -131,9 +137,11 @@
 		import com_token
 	}
 	handle @token_pessoa_url {
+		request_header X-Rodado-Tty "pessoal"
 		import com_token
 	}
 	handle @token_pessoa_cookie {
+		request_header X-Rodado-Tty "pessoal"
 		import com_token
 	}
 	handle @token_link {
