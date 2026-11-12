@@ -1,5 +1,5 @@
-# Proxy do db.rodado.xyz no finland: HTTPS fica com o haloy, a senha (ou o token) fica aqui
-# e vale para o terminal (/) e para o curl (/query). ttyd e consulta.py rodam no mesmo
+# Proxy do db.rodado.xyz no finland: HTTPS fica com o haloy; o acesso é aberto (2026-11-12), a senha
+# e o token só destravam POST /q, /index e a cota própria. ttyd e consulta.py rodam no mesmo
 # container (inicia.sh) e leem o dado do bucket s3://baseldosdados.
 {
 	admin off
@@ -106,37 +106,9 @@
 		reverse_proxy 127.0.0.1:18081
 	}
 
-	# Link curto /q/<id>: quem abre um link que existe (o SQL salvo em /dados/q/<id>.sql, no
-	# volume deste container) entra com o token DE LINK — terminal completo, a pedido — e a
-	# página executa o SQL. Um id que não existe cai na senha, como qualquer outra rota:
-	# sem a conferência do arquivo, qualquer /q/xxxxxxxx abriria o site.
-	# Até 2026-11-11 o cookie levava o DB_TOKEN do dono: quem recebia um link tinha acesso
-	# completo por 30 dias, mesmo com o token pessoal revogado. Agora leva o DB_TOKEN_LINK, que o
-	# consulta.py chama de "link" e põe numa cota própria e baixa; trocá-lo derruba todo cookie
-	# de link sem mexer no do dono. Sem DB_TOKEN_LINK, o link pede a senha.
-	@link_q {
-		path_regexp qid ^/q/([A-Za-z0-9_-]{8,16})$
-		expression `"{$DB_TOKEN_LINK}" != ""`
-	}
-	handle @link_q {
-		@existe file {
-			root /dados/q
-			try_files {re.qid.1}.sql
-		}
-		handle @existe {
-			header {
-				Set-Cookie "rodado_token={$DB_TOKEN_LINK}; Path=/; Max-Age=2592000; HttpOnly; Secure; SameSite=Lax"
-				Cache-Control "no-store"
-			}
-			import app
-		}
-		handle {
-			basic_auth {
-				{$DB_USUARIO} {$DB_SENHA_HASH}
-			}
-			import app
-		}
-	}
+	# Link curto /q/<id>: aberto como o resto (2026-11-12). Até então quem abria um link que existe
+	# ganhava o cookie do DB_TOKEN_LINK; com o acesso aberto o cookie não dá nada a mais (visitante de
+	# link cairia no balde comum e baixo do "link", pior que o do próprio IP), então não se grava mais.
 
 	# Quem tem o token entra sem a senha: ?token=<DB_TOKEN> em qualquer URL (link para
 	# terceiros, curl). O primeiro acesso grava o token num cookie HttpOnly, porque o
@@ -168,10 +140,32 @@
 		import com_token
 	}
 
-	handle {
+	# Criar link curto (POST /q: grava arquivo no volume e põe o SQL na fila de medição) e listar todos
+	# (/index) seguem com senha ou token: custo e disco sem cota por IP.
+	@escrita {
+		method POST
+		path /q /q/
+	}
+	@indice path /index /index/
+	handle @escrita {
 		basic_auth {
 			{$DB_USUARIO} {$DB_SENHA_HASH}
 		}
+		import app
+	}
+	handle @indice {
+		basic_auth {
+			{$DB_USUARIO} {$DB_SENHA_HASH}
+		}
+		import app
+	}
+
+	# Acesso ABERTO (decisão do dono, 2026-11-12): sem senha nem token, para o terminal, /query e /mcp.
+	# A proteção é por IP no app (cota diária, ritmo, recusa de raspagem; limites.py) e a regra do
+	# CPF na saída. Quem manda um token pessoal válido (acima) tem a cota dele; o isento do dono
+	# (RODADO_ISENTOS) não tem cota. Para voltar a pedir senha: trocar este bloco pelo basic_auth
+	# dos dois acima.
+	handle {
 		import app
 	}
 }

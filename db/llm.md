@@ -36,16 +36,20 @@ antes). Detalhes em `mcp/MCP.md`.
 
 ## 1. Credencial
 
-Toda rota além desta página pede **uma** destas, que quem te pediu a tarefa precisa te dar:
+`/query`, o terminal e o `/mcp` são **abertos, sem senha nem token**: a proteção é por IP (cota diária
+de linhas e bytes, ritmo por minuto, recusa de raspagem; seção 3). Mande só a consulta:
+`curl --data-binary 'SELECT ...' https://db.rodado.xyz/query`. Só salvar link (`POST /q`) e listar
+os links (`/index`) pedem credencial, que quem te pediu a tarefa precisa te dar:
 
 - usuário e senha (HTTP Basic): `curl -u rodado:$RODADO_SENHA ...`
 - token: `?token=$RODADO_TOKEN` em qualquer URL
 
 Guarde em variável de ambiente; nunca escreva a senha ou o token em arquivo, log, commit ou
-resposta. Sem credencial a resposta é `401`. Nos exemplos abaixo, `$AUTH` é `-u rodado:$RODADO_SENHA`.
+resposta. Sem credencial, `POST /q` e `/index` respondem `401`; sem elas, mostre a SQL em bloco de
+código. Nos exemplos abaixo, `$AUTH` é `-u rodado:$RODADO_SENHA` (pode omitir nas consultas).
 
 O token pode ser **pessoal** (um por pessoa ou agente, que o dono revoga sozinho): é ele que dá
-nome ao seu uso e conta a sua cota. Peça o seu a quem mantém o serviço.
+nome ao seu uso e conta a sua cota (sem token, a cota é do seu IP). Peça o seu a quem mantém o serviço.
 
 ## 2. O fluxo que funciona
 

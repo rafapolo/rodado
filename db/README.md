@@ -1,6 +1,8 @@
 # db.rodado.xyz — terminal SQL e endpoint para curl
 
-O espelho acessível pela web, com senha (HTTP basic auth), só leitura. Desde 2026-10-11 lê do
+O espelho acessível pela web, só leitura, **aberto sem senha** desde 2026-11-12 (terminal, `/query` e
+`/mcp`): quem protege é o limite por IP (seção "Limites contra raspagem"). Salvar link curto (`POST /q`)
+e listar links (`/index`) seguem com senha ou token. Desde 2026-10-11 lê do
 bucket `s3://baseldosdados` (Hetzner, Helsinque), a cópia que o beelink sincroniza — sem túnel
 nem dependência do beelink ligado.
 
@@ -164,10 +166,28 @@ HTTP Basic continuam valendo como antes.
   balde comum da senha. O dono que não quiser dividir esse balde usa um token próprio de
   `DB_TOKENS` (de preferência em `RODADO_ISENTOS`), não o `DB_TOKEN`.
 
+### Acesso aberto (desde 2026-11-12)
+
+O `handle` final do `proxy/Caddyfile` repassa ao app sem `basic_auth`; antes dele ficam, na ordem, os
+tokens (dono, por pessoa, cookie), `POST /q` e `/index` (com senha). Sem token, a cota é do IP e do
+balde comum de quem não tem token pessoal. Um token pessoal válido tem cota própria; os nomes em
+`RODADO_ISENTOS` (o `dono`, em `.tokens`) não têm cota. Token inválido é tratado como anônimo. O link
+curto `/q/<id>` não grava mais cookie. Para voltar a pedir senha, trocar o `handle` final por um
+`basic_auth` (como nos blocos `@escrita`/`@indice`) e redeployar.
+
+### Aviso no Telegram
+
+`avisos_telegram.py` roda **fora do container**, no cron do finland (a cada 5 min), lê as linhas
+`[limites] AVISO` do `docker logs` e as manda pelo bot do Telegram; o arquivo `avisos_vistos.txt` evita
+repetir. Token do bot e chat id ficam em `/root/rodado-db/.telegram` (`TELEGRAM_BOT=`, `TELEGRAM_CHAT_ID=`,
+`chmod 600`, nunca no repositório); sem o arquivo o script não faz nada. Instalar:
+`scp db/avisos_telegram.py finland:/root/rodado-db/` e a linha do cron
+`*/5 * * * * cd /root/rodado-db && python3 avisos_telegram.py >> avisos_telegram.log 2>&1`.
+
 ### Conferir depois do deploy
 
 ```bash
-curl -si -u rodado:SENHA https://db.rodado.xyz/ping | grep -i x-seu-ip   # de duas redes: IPs diferentes e públicos
+curl -si https://db.rodado.xyz/ping | grep -i x-seu-ip   # de duas redes: IPs diferentes e públicos
 curl -si "https://db.rodado.xyz/query?token=TOKEN_DA_ANA" --data-binary 'SELECT 1' | grep -i 'x-cota\|HTTP/'
 curl -s  -u rodado:SENHA https://db.rodado.xyz/query --data-binary 'SELECT * FROM br_me_cnpj.estabelecimentos LIMIT 10 OFFSET 200000'   # 400
 ssh finland 'docker logs --tail 20 $(docker ps -qf name=rodado-db) | grep consulta'
@@ -313,7 +333,7 @@ cookie) → 200, `/llm` e `/health` → 200.
 ssh finland 'docker logs --tail 50 $(docker ps -qf name=rodado-db)'
 
 # deploy: código para o finland e haloy deploy (o S3_KEY/S3_SECRET vêm de /root/rodado-db/.s3)
-scp db/{Dockerfile,haloy.yml,inicia.sh,rodado_sql.py,limites.py,consulta.py,terminal.py,catalogo.py,index.html,llm.md,contexto.json} finland:/root/rodado-db/
+scp db/{avisos_telegram.py,Dockerfile,haloy.yml,inicia.sh,rodado_sql.py,limites.py,consulta.py,terminal.py,catalogo.py,index.html,llm.md,contexto.json} finland:/root/rodado-db/
 scp db/proxy/{Caddyfile,og.html} finland:/root/rodado-db/proxy/
 # o MCP de /mcp: o servidor e a camada semântica que ele lê, arquivo por arquivo
 # (nunca docs/context/privado/); rodado-schema.json fica fora do git, gere antes
