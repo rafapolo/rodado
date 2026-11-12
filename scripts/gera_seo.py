@@ -14,6 +14,7 @@ Também gera robots.txt e sitemap.xml.
 não duplica nada.
 """
 
+import hashlib
 import html
 import json
 import re
@@ -234,7 +235,12 @@ def bloco(path: Path, titulo: str, descricao: str) -> str:
         # site no feed
         imagem = f"{BASE}/{secao}/img/og-{path.parent.name}.png"
     else:
-        imagem = f"{BASE}/assets/{'og-en.png' if en else 'og.png'}"
+        nome = 'og-en.png' if en else 'og.png'
+        # ?v=<hash do arquivo>: o LinkedIn guarda a imagem pela URL e não
+        # rebusca; uma busca que falhou deixou o cartão de /en em branco.
+        # O hash muda a URL sempre que gera_og_image.py redesenha o cartão.
+        versao = hashlib.sha1((PAGES / "assets" / nome).read_bytes()).hexdigest()[:8]
+        imagem = f"{BASE}/assets/{nome}?v={versao}"
     locale = "en_US" if en else "pt_BR"
     outra = contraparte(path)
 
