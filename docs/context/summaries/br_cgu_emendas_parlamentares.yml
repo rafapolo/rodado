@@ -21,7 +21,7 @@ tabelas:
     verificado: "94.627 linhas, 76.760 id_emenda distintos; soma empenhado R$ 342,53 bi, liquidado R$ 195,47 bi, pago R$ 193,58 bi; empenhado 2024 R$ 44,81 bi e 2025 R$ 47,08 bi — medido 2026-10-27"
   microdados:
     ultima_data: "2025"  # dado mais recente, gerado por scripts/gera_ultima_data.py
-    grao: "mesma estrutura da tabela emendas (emenda × classificação orçamentária × local do gasto), versão da Base dos Dados que termina em 2025"
+    grao: "mesma estrutura da tabela emendas (emenda × classificação orçamentária × local do gasto), versão da origem (Base dos Dados) que termina em 2025"
     chave: "nenhuma: 88.993 linhas (todas distintas) para 71.126 id_emenda; a combinação (id_emenda, função, subfunção, programa, ação, plano, município do gasto) dá 88.241"
     tempo: {natureza: serie_anual, coluna: ano_emenda, cobertura: "2014–2025"}
     territorio: {nivel: outro, colunas: {id_municipio_gasto: "IBGE do gasto, 89,7% do valor sem código de 7 dígitos", sigla_uf_gasto: "UF do gasto (nula em 6,55% das linhas)", localidade: "só preenchida quando o gasto é regional/nacional"}}
@@ -30,7 +30,7 @@ tabelas:
       - {coluna: valor_liquidado, o_que: "valor liquidado", unidade: "R$", soma: sim}
       - {coluna: valor_pago, o_que: "valor pago", unidade: "R$", soma: sim}
     filtros_tipicos: ["tipo_emenda LIKE 'Emenda Individual%': mesmos 5 tipos de emendas, coluna com nome diferente (tipo_emenda, não tipo_de_emenda)"]
-    use_para: "conferir ou repetir análises de emendas até 2025 com nomes de coluna da Base dos Dados."
+    use_para: "conferir ou repetir análises de emendas até 2025 com nomes de coluna da origem (Base dos Dados)."
     nao_use_para: "análise recente: prefira emendas, que vai até 2026 (gotcha emendas_mais_nova_que_microdados)."
     rascunho: [use_para, nao_use_para]
     verificado: "88.993 linhas, 71.126 id_emenda distintos, empenhado R$ 302,47 bi — medido 2026-10-27"

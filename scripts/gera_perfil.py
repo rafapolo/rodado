@@ -210,6 +210,7 @@ def main(args):
         return
     refaz = "--refaz" in args
     dsets = datasets() if "--todos" in args else [a for a in args if not a.startswith("--")]
+    feitos = []
     for ds in dsets:
         dest = SAIDA / f"{ds}.perfil.yml"
         if dest.exists() and not refaz:
@@ -225,6 +226,9 @@ def main(args):
                 doc["tabelas"][tb] = {"linhas": n, "erro": str(e).strip().splitlines()[-1][:300] if str(e).strip() else type(e).__name__}
         dest.write_text(yaml.safe_dump(doc, allow_unicode=True, sort_keys=False, width=140, default_flow_style=None))
         print(f"-> {dest.relative_to(RAIZ)}", flush=True)
+        feitos.append(ds)
+    if feitos:  # cartão × perfil dos que acabaram de mudar: só avisa, não falha
+        subprocess.run([sys.executable, str(RAIZ / "scripts" / "valida_cartao_perfil.py"), *feitos], check=False)
 
 
 if __name__ == "__main__":

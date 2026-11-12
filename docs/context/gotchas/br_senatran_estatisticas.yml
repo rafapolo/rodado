@@ -3,7 +3,7 @@ gotchas:
   - id: uf_tipo_mais_completa_que_a_origem
     resumo: "Em uf_tipo, 2026-04 a 2026-07 só existem no espelho: a origem recuou e ressincronizar a tabela apaga esses 4 meses."
     detalhe: >
-      Em 2026-10-31 a ressincronização pelo Base dos Dados devolveu uf_tipo sem
+      Em 2026-10-31 a ressincronização pela origem (Base dos Dados) devolveu uf_tipo sem
       2026-04 a 2026-07, com todo o resto idêntico. O espelho restaurou a versão
       anterior, que tem esses meses. Antes de ressincronizar esta tabela, compare
       o último mês da origem com o do disco; se a origem seguir atrás, não troque.

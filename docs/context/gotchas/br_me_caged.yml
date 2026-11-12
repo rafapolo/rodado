@@ -3,7 +3,7 @@ gotchas:
   - id: duas_origens_na_mesma_tabela
     resumo: "Até 2025-07 as três tabelas são espelho do Base dos Dados; de 2025-08 em diante vêm direto do MTE, no mesmo schema. Nada muda na consulta, mas id_municipio NULL tem outro peso depois da troca."
     detalhe: >
-      O Base dos Dados fecha os meses recentes; os arquivos mte_<aaaamm>.parquet são o
+      A origem (Base dos Dados) fecha os meses recentes; os arquivos mte_<aaaamm>.parquet são o
       CAGEDMOV, CAGEDFOR e CAGEDEXC de cada mês baixados do FTP do MTE e convertidos.
       Na conversão, código de município que o diretório do IBGE não conhece vira NULL
       (com sigla_uf preservada); some por sigla_uf se o município não for o recorte.

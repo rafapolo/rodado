@@ -31,7 +31,7 @@ gotchas:
       data_atualizacao_car saiu da identidade porque é metadado do retrato (constante por extração e UF); com ela dentro
       quase toda linha abriria período novo e o histórico não comprimiria. Foto de 2025-10-15 e retratos antigos têm
       outra safra que as demais tabelas do dataset. Retrato novo ainda não entra por --anexa (a coluna fora da identidade não é tratada):
-      não solte parquet em area_imovel/; os syncs da BD recusam a tabela.
+      não solte parquet em area_imovel/; os syncs da origem (Base dos Dados) recusam a tabela.
     tabelas: [area_imovel]
     severidade: silencioso
     verificado: "area_imovel 8.195.400 linhas (2025-10-15); area_imovel_historico 10.933.215 períodos (2.737.815 fechados + 8.195.400 vigentes), 8.186.217 id_imovel distintos; os 10 retratos reconstruídos pelo histórico = os 1.010 arquivos antigos em contagem e soma de hash (10/10), 79.325.829 linhas; foto 2025-10-15: 8.186.157 imóveis, 822,8 mi ha (715,8 sem cancelados, medido 2026-09-25) — medido 2026-11-10"

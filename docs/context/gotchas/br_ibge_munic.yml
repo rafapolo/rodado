@@ -1,7 +1,7 @@
 dataset: br_ibge_munic
 gotchas:
   - id: duas_familias_de_tabela
-    resumo: "O dataset tem dois formatos: as tabelas normalizadas da Base dos Dados (recursos_humanos, habitacao...), com edições até a década passada, e as base_<tema>_<ano> cruas do IBGE, de 2020 a 2024. As cruas têm coluna por código de variável, que muda a cada edição: MREH0111 em 2020–2023 é MREH011 em 2024. Traduza pelo dicionario_base, nunca pelo nome."
+    resumo: "O dataset tem dois formatos: as tabelas normalizadas da origem (Base dos Dados) (recursos_humanos, habitacao...), com edições até a década passada, e as base_<tema>_<ano> cruas do IBGE, de 2020 a 2024. As cruas têm coluna por código de variável, que muda a cada edição: MREH0111 em 2020–2023 é MREH011 em 2024. Traduza pelo dicionario_base, nunca pelo nome."
     tabelas: [dicionario_base, base_recursos_humanos_2024, base_recursos_humanos_2023]
     colunas: [coluna, pergunta, casamento]
     severidade: erro

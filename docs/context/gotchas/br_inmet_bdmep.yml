@@ -16,7 +16,7 @@ gotchas:
     resumo: "Em microdados, ano = 2025 tem quase toda observação duas vezes (9.568.080 linhas para 5.020.248 chaves id_estacao × data × hora); 2015, 2020, 2024 e 2026 têm uma por chave. Deduplique por (id_estacao, data, hora) antes de somar: a chuva de 2025 bruta (829.180 mm) é quase o dobro da deduplicada (446.375 mm)."
     detalhe: >
       4.547.832 chaves aparecem duas vezes e 472.416 uma só; nenhuma três.
-      O dobro vem da própria fonte (a Base dos Dados tem a mesma proporção).
+      O dobro vem da própria fonte (a origem (Base dos Dados) tem a mesma proporção).
       Parte dos pares não é idêntica (por exemplo, um valor preenchido e o
       outro nulo), então SELECT DISTINCT não basta (5.049.825 linhas
       distintas): agrupe pela chave e pegue max() ou any_value() de cada
@@ -24,7 +24,7 @@ gotchas:
     tabelas: [microdados]
     colunas: [ano, id_estacao, data, hora, precipitacao_total]
     severidade: silencioso
-    verificado: "ano = 2025 (2025-01-01 a 2025-12-31, ressincronizado da BD em 2026-10-28): 9.568.080 linhas, 5.020.248 chaves (2 linhas em 4.547.832, 1 em 472.416), 5.049.825 linhas distintas; sum(precipitacao_total) 829.179,9 bruto e 446.374,6 com max() por chave; ano = 2026 (até 2026-02-28): 871.824 linhas = chaves; antes da ressincronização (2025 até junho) eram 4.891.176 linhas e 2.452.104 chaves — medido 2026-10-28; reconferido sem mudança 2026-11-12"
+    verificado: "ano = 2025 (2025-01-01 a 2025-12-31, ressincronizado da origem (Base dos Dados) em 2026-10-28): 9.568.080 linhas, 5.020.248 chaves (2 linhas em 4.547.832, 1 em 472.416), 5.049.825 linhas distintas; sum(precipitacao_total) 829.179,9 bruto e 446.374,6 com max() por chave; ano = 2026 (até 2026-02-28): 871.824 linhas = chaves; antes da ressincronização (2025 até junho) eram 4.891.176 linhas e 2.452.104 chaves — medido 2026-10-28; reconferido sem mudança 2026-11-12"
   - id: dezembro_2024_falta
     resumo: "microdados não tem nenhuma linha de dezembro de 2024: o ano 2024 vai a 2024-11-30 e 2025 começa em 2025-01-01. Total anual ou série mensal que passe por 2024-12 sai baixa sem erro."
     detalhe: >

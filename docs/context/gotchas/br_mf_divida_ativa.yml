@@ -12,17 +12,17 @@ gotchas:
     severidade: silencioso
     verificado: "fgts 2020 tri 2 = tri 3 = 440.888 linhas e R$ 37,796 bi, 440.888 de 440.888 iguais em (numero_inscricao, cpf_cnpj, valor, situacao); previdenciario 2020 tri 2 = tri 3 = 5.047.884 linhas e R$ 550,359 bi — medido 2026-10-28"
   - id: previdenciario_2026_t3_da_pgfn
-    resumo: "Em previdenciario, 2026 tri 3 vem da própria PGFN (pgfn_2026_trimestre_03.parquet), convertido de br_pgfn_dividaativa.divida_trimestres; a BD não tinha publicado o trimestre."
+    resumo: "Em previdenciario, 2026 tri 3 vem da própria PGFN (pgfn_2026_trimestre_03.parquet), convertido de br_pgfn_dividaativa.divida_trimestres; a origem (Base dos Dados) não tinha publicado o trimestre."
     detalhe: >
-      A conversão usa as regras da BD: sigla_uf NULL quando UF_DEVEDOR não é uma
+      A conversão usa as regras da origem (Base dos Dados): sigla_uf NULL quando UF_DEVEDOR não é uma
       sigla de 2 letras maiúsculas ('Si', 797 linhas em tri 2) e data_inscricao
       NULL antes de 1900 (a fonte grava 01/01/1000). Conferida contra 2026 tri 1
-      e tri 2 da BD: soma de hash coluna a coluna idêntica nas 15 colunas. Uma
-      ressincronização da BD que traga tri 3 duplica o trimestre: apagar o
+      e tri 2 da origem (Base dos Dados): soma de hash coluna a coluna idêntica nas 15 colunas. Uma
+      ressincronização da origem (Base dos Dados) que traga tri 3 duplica o trimestre: apagar o
       pgfn_2026_trimestre_03.parquet no mesmo passo.
-      Desde 2026-11-03 os syncs da BD recusam a tabela enquanto ela estiver em
+      Desde 2026-11-03 os syncs da origem (Base dos Dados) recusam a tabela enquanto ela estiver em
       docs/context/fonte_propria.yaml (só local).
     tabelas: [previdenciario]
     colunas: [ano, trimestre, sigla_uf, data_inscricao]
     severidade: silencioso
-    verificado: "2026 tri 3 = 3.397.082 linhas, R$ 470,07 bi (tri 2 = 3.606.529, R$ 479,99 bi); tri 1 e tri 2 iguais à BD por sum(hash) — medido 2026-11-03"
+    verificado: "2026 tri 3 = 3.397.082 linhas, R$ 470,07 bi (tri 2 = 3.606.529, R$ 479,99 bi); tri 1 e tri 2 iguais à origem (Base dos Dados) por sum(hash) — medido 2026-11-03"
