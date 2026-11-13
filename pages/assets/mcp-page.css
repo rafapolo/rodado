@@ -9,8 +9,8 @@ body { background: var(--bg); }
 
 /* ── estrutura da página ── */
 
-.page-wrap { min-height: 100vh; background: var(--bg); color: var(--ink); font-family: 'Public Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; padding: 64px 32px 96px; }
-.container { max-width: 1180px; margin: 0 auto; }
+.page-wrap { min-height: 100vh; background: var(--bg); color: var(--ink); font-family: 'Public Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; padding: 64px 24px 96px; }
+.container { max-width: calc(1180px - 48px); margin: 0 auto; } /* largura do conteúdo do site.css */
 
 /* ── cabeçalho ── */
 
@@ -45,7 +45,7 @@ body { background: var(--bg); }
 }
 
 /* busca e categoria filtram os cards de tema: ficam colados neles, presos no topo ao rolar */
-.filters-bar { position: sticky; top: var(--nav-h, 0px); z-index: 5; margin: 0 -32px 24px; padding: 12px 32px; background: color-mix(in oklch, var(--bg) 92%, transparent); backdrop-filter: blur(6px); border-bottom: 1px solid var(--rule); }
+.filters-bar { position: sticky; top: var(--nav-h, 0px); z-index: 5; margin: 0 -24px 24px; padding: 12px 24px; background: color-mix(in oklch, var(--bg) 92%, transparent); backdrop-filter: blur(6px); border-bottom: 1px solid var(--rule); }
 .filters { display: flex; flex-wrap: wrap; gap: 10px; }
 .search-input, .category-select { font-family: 'Public Sans', system-ui, sans-serif; font-size: 15px; color: var(--ink); background: var(--card-bg); border: 1px solid var(--rule); border-radius: 10px; padding: 11px 16px; }
 .search-input { flex: 1 1 260px; min-width: 0; }
@@ -109,3 +109,6 @@ details.tools-panel > summary.tools-head:focus-visible { outline: 2px solid var(
 .footer-links a { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--accent); text-decoration: none; padding: 4px 0; }
 .footer-links .ext { font-size: 9px; color: var(--ink-faint); }
 .footer-note { max-width: 80ch; margin: 0; padding-top: 24px; border-top: 1px solid var(--bg-raised); font-size: 12.5px; line-height: 1.6; color: var(--ink-faint); }
+
+/* abaixo de 600px o site.css usa 1.2rem de margem lateral; a página acompanha */
+@media (max-width: 600px) { .page-wrap { padding-left: 1.2rem; padding-right: 1.2rem; } .filters-bar { margin-left: -1.2rem; margin-right: -1.2rem; padding-left: 1.2rem; padding-right: 1.2rem; } }

@@ -113,8 +113,10 @@ a:hover { color: var(--accent-soft); }
 /* ── topo ── */
 
 .site-nav {
+  /* mesma margem lateral do main: a marca alinha com a borda do conteúdo */
+  --gutter: 1.5rem;
   border-bottom: 1px solid var(--rule);
-  padding: 1.1rem 1.5rem;
+  padding: 1.1rem var(--gutter);
   /* menu fixo no topo; a altura real vai para --nav-h (theme-toggle.js) */
   position: sticky;
   top: 0;
@@ -127,8 +129,10 @@ a:hover { color: var(--accent-soft); }
 /* âncora (#secao) não para escondida debaixo do menu fixo */
 html { scroll-padding-top: calc(var(--nav-h, 64px) + 0.75rem); }
 
+/* 1180px é a caixa do main com o padding dentro (border-box); o menu
+   usa a largura do conteúdo, sem o padding */
 .site-nav .nav-inner {
-  max-width: 1180px;
+  max-width: calc(1180px - 3rem);
   margin: 0 auto;
   display: flex;
   align-items: baseline;
@@ -364,13 +368,6 @@ tr:last-child td { border-bottom: 1px solid var(--rule); }
 
 /* ── teaser dataviz (ミ.xyz) ── */
 
-.teaser-nota {
-  font-family: var(--sans);
-  font-size: 0.88rem;
-  color: var(--ink-soft);
-  margin: 2rem 0 0.9rem;
-}
-
 /* flex + max-width em vez de grid: grid auto-fill não tem como centralizar só
    a última linha quando o nº de tiles não é múltiplo do nº de colunas — com
    flex-wrap, linhas cheias esticam até o teto (max-width) e preenchem a
@@ -471,11 +468,13 @@ tr:last-child td { border-bottom: 1px solid var(--rule); }
   padding-top: 0.5rem;
 }
 
+/* subtítulo de toda seção da home: a margem negativa se soma ao 1rem de
+   baixo do h2 (margens colapsam) e deixa o texto colado no título */
 .secao-dek {
   font-family: var(--sans);
   font-size: 0.92rem;
   color: var(--ink-soft);
-  margin: 0.2rem 0 1rem;
+  margin: -0.4rem 0 1rem;
 }
 
 .secao-mais {
@@ -583,7 +582,7 @@ footer .footer-by { margin-left: auto; }
 @media (max-width: 720px) {
   /* topo em duas linhas: marca + idioma/tema em cima, links numa faixa que
      rola de lado embaixo — todos os itens ficam visíveis, sem menu escondido */
-  .site-nav { padding: 0.8rem 1.2rem 0; }
+  .site-nav { padding: 0.8rem var(--gutter) 0; }
   .site-nav .nav-inner { flex-wrap: wrap; align-items: center; gap: 0.5rem 1rem; }
   .site-nav .nav-right { display: contents; }
   .site-nav .brand { order: 1; }
@@ -591,7 +590,7 @@ footer .footer-by { margin-left: auto; }
   .site-nav .links {
     order: 3; flex: 1 0 100%; flex-wrap: nowrap; gap: 1.25rem;
     overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch;
-    margin: 0 -1.2rem; padding: 0.55rem 1.2rem 0.75rem;
+    margin: 0 calc(-1 * var(--gutter)); padding: 0.55rem var(--gutter) 0.75rem;
     font-size: 0.9rem; white-space: nowrap;
     -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 2rem), transparent);
     mask-image: linear-gradient(to right, #000 calc(100% - 2rem), transparent);
@@ -603,6 +602,7 @@ footer .footer-by { margin-left: auto; }
   body { font-size: 17px; }
   h1 { font-size: 1.8rem; }
   main { padding: 2rem 1.2rem 3.5rem; }
+  .site-nav { --gutter: 1.2rem; }
   /* rodapé empilhado; o crédito fecha a lista, separado por um filete */
   footer { padding: 1.8rem 1.2rem 2.4rem; }
   footer .footer-inner { flex-direction: column; gap: 0.6rem; }

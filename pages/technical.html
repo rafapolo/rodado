@@ -3,23 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Technical appendix — rodado</title>
-<meta name="description" content="Engineering architecture behind rodado: ontology, semantic layer, MCP query interface, and an explicit Palantir Foundry component mapping.">
+<title>Technical reference — rodado</title>
+<meta name="description" content="How rodado is built: a local Parquet mirror of 1,759 Brazilian public tables, a semantic layer of joins, metrics and per-dataset warnings, and read-only SQL and MCP access on top.">
 <!-- seo:start (gerado por scripts/gera_seo.py — não editar à mão) -->
 <link rel="canonical" href="https://rodado.xyz/technical.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="rodado">
 <meta property="og:locale" content="en_US">
 <meta property="og:url" content="https://rodado.xyz/technical.html">
-<meta property="og:title" content="Technical appendix">
-<meta property="og:description" content="Engineering architecture behind rodado: ontology, semantic layer, MCP query interface, and an explicit Palantir Foundry component mapping.">
+<meta property="og:title" content="Technical reference">
+<meta property="og:description" content="How rodado is built: a local Parquet mirror of 1,759 Brazilian public tables, a semantic layer of joins, metrics and per-dataset warnings, and read-only SQL and MCP access on top.">
 <meta property="og:image" content="https://rodado.xyz/assets/og-en.png?v=a38de6c3">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Technical appendix — rodado">
+<meta property="og:image:alt" content="Technical reference — rodado">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Technical appendix">
-<meta name="twitter:description" content="Engineering architecture behind rodado: ontology, semantic layer, MCP query interface, and an explicit Palantir Foundry component mapping.">
+<meta name="twitter:title" content="Technical reference">
+<meta name="twitter:description" content="How rodado is built: a local Parquet mirror of 1,759 Brazilian public tables, a semantic layer of joins, metrics and per-dataset warnings, and read-only SQL and MCP access on top.">
 <meta name="twitter:image" content="https://rodado.xyz/assets/og-en.png?v=a38de6c3">
 <link rel="icon" href="assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
@@ -37,20 +37,7 @@
 <!-- head:end -->
 <style>
   /* extensão do design system só para o conteúdo técnico denso desta página */
-  .grid-cards { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); margin: 0 0 2rem; }
-  .card { background: var(--bg-raised); border: 1px solid var(--rule); border-radius: 4px; padding: 1.1rem 1.3rem; font-family: var(--sans); }
-  .card .label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); margin-bottom: 0.4rem; }
-  .card p { font-size: 0.86rem; color: var(--ink-soft); margin: 0; line-height: 1.5; }
   pre { background: var(--bg-raised); border: 1px solid var(--rule); border-radius: 4px; padding: 0.9rem 1.1rem; overflow-x: auto; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.82rem; line-height: 1.6; margin: 0 0 1.2rem; }
-  .pills { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0 0 1rem; font-family: var(--sans); }
-  .pill { font-size: 0.78rem; padding: 0.25rem 0.7rem; border-radius: 20px; background: var(--bg-raised); border: 1px solid var(--rule); color: var(--ink-soft); }
-  .case { border: 1px solid var(--rule); border-radius: 4px; margin-bottom: 1.5rem; overflow: hidden; }
-  .case-head { padding: 1rem 1.3rem; border-bottom: 1px solid var(--rule); font-family: var(--sans); }
-  .case-head .domain { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); display: block; margin-bottom: 0.3rem; }
-  .case-head .title { font-weight: 700; font-family: var(--serif); font-size: 1.05rem; }
-  .case-body { padding: 1.1rem 1.3rem; font-family: var(--sans); font-size: 0.9rem; }
-  .case-body p { font-size: 0.9rem; }
-  .outcome { background: var(--bg); border-left: 3px solid var(--accent); padding: 0.6rem 0.9rem; font-size: 0.86rem; color: var(--ink-soft); }
 </style>
 </head>
 <body>
@@ -81,76 +68,75 @@
 
 <main class="wide">
 
-  <p class="eyebrow">Technical appendix</p>
-  <h1>Engineering behind rodado</h1>
-  <p class="dek">The public-facing site is a sociological reading of Brazilian public data. This page is the engineering appendix for readers interested in how the platform behind it is built — ingestion, ontology, semantic layer, MCP query interface, and a direct comparison to how the same architecture maps onto Palantir Foundry.</p>
+  <p class="eyebrow">Technical reference · updated November 2026</p>
+  <h1>How rodado is built</h1>
+  <p class="dek">The analyses on this site all come from one place: a local mirror of Brazilian public data, plus a semantic layer that says how the tables join and where they mislead. This page describes both, and the read-only ways in.</p>
 
-  <h2>Engineering competencies demonstrated</h2>
-  <p>Each capability below is backed by a concrete, deployed piece of this project — not a claim, a running system.</p>
-  <div class="grid-cards">
-    <div class="card"><div class="label">End-to-end delivery</div><p>Scraping and mirroring pipelines + semantic layer + 17-tool MCP interface, in daily use as a single-engineer project.</p></div>
-    <div class="card"><div class="label">Data engineering</div><p>1,758 tables · 294 datasets · 140 sources · 521 GB (33.73 billion rows) — 901 mirrored from Base dos Dados, 857 scraped independently — with a canonical join-key graph and partition-aware query patterns.</p></div>
-    <div class="card"><div class="label">Ontology design</div><p>8 business object types (Municipality, Company, Person, Contract…) with typed relationships, 60 documented join concepts and 21 catalogued false friends.</p></div>
-    <div class="card"><div class="label">Application development</div><p><code>mcp_server.py</code> — 17 MCP tools over stdio for schema browsing, join resolution, named metrics and read-only SQL.</p></div>
-    <div class="card"><div class="label">AI / ML enablement</div><p>Table discovery by a compact dataset catalog placed in the model's prompt — 88% of questions land on the right dataset, against ~53% for the embedding search it replaced.</p></div>
-    <div class="card"><div class="label">Read-only enforcement</div><p>Statement guard in <code>mcp_server.py</code> before any SSH call, and every DuckDB session opened with <code>-readonly</code>.</p></div>
-    <div class="card"><div class="label">Operational durability</div><p>Resumable, checkpointed scrapers. A metadata catalog records rows, source and provenance for every table, and schemas are regenerated after each sync.</p></div>
-    <div class="card"><div class="label">Sensitive data handling</div><p>CPF (individual) and CNPJ (company) tax IDs — read-only access, no PII export endpoints, masking documented source by source.</p></div>
+  <h2>The mirror</h2>
+  <p>1,759 tables in 295 datasets from 140 sources, 521 GB and 33.7 billion rows as of 11 November 2026. 1,216 tables mirror <a href="https://basedosdados.org" target="_blank" rel="noopener">Base dos Dados</a>; the other 543 are scraped from the original publishers to fill its gaps: sanctions lists, SICAF, SINAN microdata, consumer complaints, CGU payments and more. Each table is a directory of Parquet files compressed with zstd, and DuckDB reads the files directly, with nothing imported into a database.</p>
+  <p>A metadata catalog records rows, size, source URL, collection date, status and provenance for every table. It is rebuilt after each update, and it is what the SQL terminal shows when a table is opened.</p>
+
+  <h2>Architecture</h2>
+  <div class="data-table-wrap">
+    <table>
+      <thead><tr><th>Layer</th><th>What runs there</th></tr></thead>
+      <tbody>
+        <tr><td>Storage</td><td>Local disk on a home server: <code>~/rodado/&lt;dataset&gt;/&lt;table&gt;/*.parquet</code>. Add-only backup to a second disk every 6 hours.</td></tr>
+        <tr><td>Public copy</td><td>The same files synced to object storage (Hetzner, Helsinki) after each update. Every file is fully read and validated before it is copied.</td></tr>
+        <tr><td>Public access</td><td><a href="https://db.rodado.xyz/" target="_blank" rel="noopener">db.rodado.xyz</a>: a container that reads the public copy. It offers a browser SQL terminal, <code>POST /query</code> for curl and the MCP server over HTTP. Open and read-only, with per-IP rate limits and a daily row quota.</td></tr>
+        <tr><td>Agent access</td><td><code>mcp/mcp_server.py</code>: 17 read-only MCP tools, served locally over stdio (queries go to the home server over SSH) or remotely at <code>https://db.rodado.xyz/mcp</code>. Setup: <a href="mcp-en.html">MCP</a>.</td></tr>
+        <tr><td>Semantic layer</td><td>YAML files versioned in the repository (next section), read by the MCP tools at query time.</td></tr>
+        <tr><td>Site</td><td>Static pages on GitHub Pages. The home page, the <a href="/plataformas/en.html">platforms</a> index and the <a href="/atlas/">Atlas</a> of tables and join keys are generated from the catalog and the semantic layer.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Every session is opened read-only, with the readable directories allow-listed and the configuration locked. The SQL comes from a model or from a stranger, and a query that only reads can still read the wrong file.</p>
+
+  <h2>Semantic layer</h2>
+  <p>Table and column names are not enough to query 1,759 tables correctly. The same code means different things in different years, and two columns with the same name can hold different quantities. The semantic layer records this once, measured on the real data and dated, so a query does not have to rediscover it.</p>
+  <div class="data-table-wrap">
+    <table>
+      <thead><tr><th>Piece</th><th>Size</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td>Join concepts</td><td>68</td><td><code>resolve_join(a, b)</code> returns a ready <code>ON</code> clause, including key normalization such as unpadded CNPJs.</td></tr>
+        <tr><td>False friends</td><td>21</td><td>Same column name, different meaning: a column named just <code>valor</code> appears in 153 tables.</td></tr>
+        <tr><td>Coded differently</td><td>13</td><td>Concepts such as sex and race whose codes change by dataset and year.</td></tr>
+        <tr><td>Named metrics</td><td>16</td><td>Per-capita values, rates and ratios with verified units. <code>get_metric()</code> comes before any hand-written formula.</td></tr>
+        <tr><td>Hierarchies</td><td>3</td><td>Territorial, CNAE and CID-10 rollups.</td></tr>
+        <tr><td>Gotchas</td><td>290 datasets</td><td>Per-dataset warnings returned by <code>describe_table</code>: snapshot-only tables, empty years, masked identifiers.</td></tr>
+        <tr><td>Ontology</td><td>87 classes · 137 relations</td><td>The domain model across 13 domains: municipality, company, person, contract, health event and so on.</td></tr>
+        <tr><td>Theme overviews</td><td>47</td><td>Short summaries per theme, used as context by agents.</td></tr>
+      </tbody>
+    </table>
   </div>
 
-  <h2>Delivered case studies</h2>
-  <p>Five shipped applications over Brazilian public data — each with a stakeholder problem, a data model, an application built, and a measurable outcome.</p>
-
-  <div class="case">
-    <div class="case-head"><span class="domain">Corporate compliance</span><span class="title">Beneficial ownership & conflict-of-interest network</span></div>
-    <div class="case-body">
-      <p>Investigators needed to trace beneficial ownership chains and detect undisclosed conflicts of interest across thousands of interconnected companies and individuals — previously weeks of manual registry lookups.</p>
-      <p><strong>Data model:</strong> Company (CNPJ) ↔ Person (CPF) via <code>br_me_cnpj.socios</code> — multi-hop graph traversal across ownership layers. <strong>Application:</strong> interactive force-directed network, nodes as entities, edges as relationships.</p>
-      <div class="outcome">Outcome: multi-hop ownership chains surfaced in seconds; undisclosed cross-entity links between politically exposed persons and public procurement winners confirmed.</div>
-    </div>
+  <h3>Join keys</h3>
+  <div class="data-table-wrap">
+    <table>
+      <thead><tr><th>Key</th><th>Tables</th><th>Object</th></tr></thead>
+      <tbody>
+        <tr><td><code>ano</code></td><td>658</td><td>Year (partition)</td></tr>
+        <tr><td><code>sigla_uf</code></td><td>510</td><td>State</td></tr>
+        <tr><td><code>id_municipio</code></td><td>401</td><td>Municipality</td></tr>
+        <tr><td><code>mes</code></td><td>173</td><td>Month (partition)</td></tr>
+        <tr><td><code>cnpj</code> / <code>cnpj_basico</code></td><td>59</td><td>Company</td></tr>
+        <tr><td><code>id_setor_censitario</code></td><td>39</td><td>Census tract</td></tr>
+        <tr><td><code>id_municipio_tse</code></td><td>29</td><td>Municipality (electoral code)</td></tr>
+        <tr><td><code>cpf</code></td><td>26</td><td>Person</td></tr>
+        <tr><td><code>cbo_2002</code></td><td>8</td><td>Occupation</td></tr>
+        <tr><td><code>cnae_2_subclasse</code></td><td>7</td><td>Economic activity</td></tr>
+      </tbody>
+    </table>
   </div>
 
-  <div class="case">
-    <div class="case-head"><span class="domain">Geospatial operations</span><span class="title">Rio de Janeiro — common operating picture of formal economy</span></div>
-    <div class="case-body">
-      <p>A public administration team needed a real-time operational picture of formal economic activity across Rio's 96 neighborhoods. <a href="https://xn--2dk.xyz/dataviz/rio/ibge" target="_blank">Live map ↗</a></p>
-      <p><strong>Data model:</strong> 1M+ CNPJ establishments joined to IBGE geocodes → spatial index → tile-rendered point layer per CNAE sector. Rendered client-side with sub-100ms pan/zoom.</p>
-      <div class="outcome">Outcome: immediate visual identification of economic voids in the North Zone vs. commercial density in the South Zone; used to prioritize infrastructure investment in 3 municipal districts.</div>
-    </div>
-  </div>
+  <h2>Table selection</h2>
+  <p>With 1,759 tables, the hard step is choosing the few worth reading before any SQL is written. A wrong choice there produces joins that look valid and are not. The local harness puts the whole dataset catalog in the prompt (about 2,000 tokens, cached after the first question) and lands on the right dataset 88% of the time. An embedding index over about eight synthetic questions per table scored around 53% on the same test and was removed. Agents then narrow down with <code>list_datasets</code> → <code>list_tables</code> → <code>describe_table</code>.</p>
 
-  <div class="case">
-    <div class="case-head"><span class="domain">Cross-border entity analysis</span><span class="title">Swiss corporate presence in Brazil</span></div>
-    <div class="case-body">
-      <p>Regulators and investors needed to map Swiss corporate presence across Brazil — subsidiary structures, holding layers, undisclosed connections. <a href="https://tinyurl.com/swiss-brazilian-network" target="_blank">Live network ↗</a></p>
-      <p><strong>Data model:</strong> CNPJ country-of-origin codes → Swiss-linked Company objects → director Person nodes → subsidiary chains via <code>cnpj_basico</code>.</p>
-      <div class="outcome">Outcome: 1,200+ Swiss-linked entities mapped; 34 holding structures with 5+ ownership layers identified, several with shared directors across nominally independent subsidiaries.</div>
-    </div>
-  </div>
+  <h2>Example queries</h2>
+  <p>Three questions answered with the mirror. All three run as written against the current schema (checked on 13 November 2026).</p>
 
-  <div class="case">
-    <div class="case-head"><span class="domain">Operational timeline analysis</span><span class="title">Pandemic business closure sequencing by sector</span></div>
-    <div class="case-body">
-      <p>A regional economic development agency needed to know which sectors closed first and which survived longest during COVID-19 lockdowns.</p>
-      <p><strong>Data model:</strong> CNPJ open/close event timestamps × CNAE codes → temporal event stream partitioned by sector and municipality. <strong>Application:</strong> sequential closure heatmap.</p>
-      <div class="outcome">Outcome: garment industry (Nova Friburgo hub) showed a bimodal closure pattern; 60% of closures across 3 CNAE sectors happened within the first 45 days, informing municipal support disbursement sequencing.</div>
-    </div>
-  </div>
-
-  <div class="case">
-    <div class="case-head"><span class="domain">Political risk & governance</span><span class="title">Senator corporate network — conflict of interest mapping</span></div>
-    <div class="case-body">
-      <p>A governance team needed to map a senator's full corporate network to identify conflicts between business interests and public budget votes, regulatory decisions, and contract awards.</p>
-      <p><strong>Data model:</strong> TSE <code>candidatos</code> (CPF) → CNPJ <code>socios</code> → CNPJ empresas → CGU <code>contratos</code> — four-entity join across electoral, corporate, and procurement registries.</p>
-      <div class="outcome">Outcome: 47 companies, 3 holding layers, and R$12M in contracts with entities linked to the senator's network identified — several involving simultaneous directorship and budget committee membership.</div>
-    </div>
-  </div>
-
-  <h2>User workflows</h2>
-  <p>Three analyst scenarios showing the full data → insight → decision arc.</p>
-
-  <h3>Compliance — contracts signed with sanctioned suppliers</h3>
-  <p>A compliance team checks which federal contracts were signed with companies while they were listed in CGU's sanctions register (CEIS).</p>
+  <h3>Federal contracts signed with sanctioned suppliers</h3>
+  <p>Contracts signed while the supplier was listed in CGU's sanctions register (CEIS).</p>
   <pre>SELECT c.cpf_cnpj_contratado,
        any_value(c.nome_contratado)  AS contractor,
        COUNT(DISTINCT c.id_contrato) AS contracts,
@@ -165,10 +151,10 @@ WHERE c.ano = 2024
 GROUP BY 1
 ORDER BY total_brl DESC
 LIMIT 20</pre>
-  <p>Decision: check each sanction's scope (<code>abrangencia_sancao</code>) — a suspension may bind only the sanctioning agency — then route the remaining cases to procurement governance.</p>
+  <p>A sanction's scope (<code>abrangencia_sancao</code>) matters: a suspension may bind only the agency that imposed it.</p>
 
-  <h3>Policy — infrastructure gap prioritization</h3>
-  <p>A state health secretariat identifies municipalities with critically low SUS hospital bed coverage to prioritize federal budget allocation.</p>
+  <h3>Municipalities with the fewest SUS hospital beds</h3>
+  <p>SUS beds per thousand residents in municipalities above 50,000 inhabitants, next to the early-years IDEB score.</p>
   <pre>SELECT m.nome, m.sigla_uf, pop.populacao,
        ROUND(cnes.leitos_sus * 1000.0 / NULLIF(pop.populacao, 0), 2) AS leitos_sus_por_mil,
        ideb.ideb AS ideb_anos_iniciais
@@ -188,10 +174,9 @@ JOIN br_inep_ideb.municipio ideb
 WHERE pop.populacao &gt; 50000
 ORDER BY leitos_sus_por_mil ASC, ideb_anos_iniciais ASC
 LIMIT 50</pre>
-  <p>Decision: ranked shortlist delivered to the budget committee; the top 10 flagged for emergency transfer.</p>
 
-  <h3>Investigation — campaign suppliers that later won federal contracts</h3>
-  <p>An investigative journalist checks which 2022 campaign suppliers went on to win federal contracts. The CPF in the company-partner register is masked, so the link goes through the supplier's CNPJ rather than the candidate's CPF.</p>
+  <h3>Campaign suppliers that later won federal contracts</h3>
+  <p>CPFs in the company-partner register are masked, so the link goes through the supplier's CNPJ rather than the candidate's CPF.</p>
   <pre>WITH fornecedores AS (
   SELECT d.cpf_cnpj_fornecedor, c.nome, c.sigla_partido, c.cargo,
          SUM(d.valor_despesa) AS pago_na_campanha
@@ -216,121 +201,31 @@ JOIN ( SELECT cpf_cnpj_contratado, SUM(valor_final_compra) AS valor_federal
 GROUP BY 1, 2, 3
 HAVING contratos_federais_2023_2025 &gt; 1000000
 ORDER BY contratos_federais_2023_2025 DESC</pre>
-  <p>Decision: the minimum-payment filter matters — without it, national telecom and utility suppliers paid a few reais by hundreds of campaigns dominate the ranking. The shortlist goes to the editorial team with source data for verification.</p>
+  <p>The minimum-payment filter matters: without it, national telecom and utility suppliers paid a few reais by hundreds of campaigns dominate the ranking.</p>
 
-  <h2>Domain ontology</h2>
-  <p>Brazilian public data modeled as typed entities with explicit join keys.</p>
+  <h2>Data quality</h2>
   <div class="data-table-wrap">
     <table>
-      <thead><tr><th>Join key</th><th>Tables</th><th>Object</th></tr></thead>
       <tbody>
-        <tr><td><code>id_municipio</code></td><td>271</td><td>Municipality</td></tr>
-        <tr><td><code>sigla_uf</code></td><td>336</td><td>State</td></tr>
-        <tr><td><code>cnpj</code> / <code>cnpj_basico</code></td><td>23</td><td>Company</td></tr>
-        <tr><td><code>cpf</code></td><td>26</td><td>Person</td></tr>
-        <tr><td><code>id_setor_censitario</code></td><td>27</td><td>CensusSector</td></tr>
-        <tr><td><code>id_municipio_tse</code></td><td>23</td><td>ElectoralZone</td></tr>
-        <tr><td><code>cbo_2002</code></td><td>8</td><td>OccupationClass</td></tr>
-        <tr><td><code>cnae_2_subclasse</code></td><td>6</td><td>EconomicActivity</td></tr>
-        <tr><td><code>ano</code></td><td>423</td><td>Temporal partition</td></tr>
+        <tr><td>Partitions</td><td>Large tables need <code>ano</code>, <code>mes</code> or <code>sigla_uf</code> filters.</td></tr>
+        <tr><td>Identifiers</td><td>CPF and CNPJ are read-only and never exported in bulk. Masking varies by source, so masked CPFs from different sources cannot be joined to each other.</td></tr>
+        <tr><td>Freshness</td><td>Varies by source: CNPJ monthly, health data 12–18 months behind, the census in 2010 and 2022. The CNPJ tables hold only the latest snapshot; history is in the <code>*_historico</code> tables.</td></tr>
+        <tr><td>When a source shrinks</td><td>Publishers sometimes drop columns or years in a new release. The mirror merges instead of replacing, so what only the mirror still has is kept.</td></tr>
+        <tr><td>Before reporting a number</td><td>State the expected order of magnitude, flag rows above it and check the count two independent ways.</td></tr>
       </tbody>
     </table>
-  </div>
-
-  <h2>Architecture</h2>
-  <p>Everything is local: partitioned Parquet on one machine, queried on demand by DuckDB over SSH. No live web service, no cloud object storage.</p>
-  <div class="grid-cards">
-    <div class="card"><div class="label">Users</div><p>Analysts · policy teams · researchers · journalists</p></div>
-    <div class="card"><div class="label">Agent</div><p>Claude Desktop / Claude Code · <code>mcp/mcp_server.py</code> over stdio · 17 tools: schema browsing, join resolution, named metrics, read-only SQL, per-theme lookups</p></div>
-    <div class="card"><div class="label">Semantic</div><p><code>rodado-schema.json</code> (1,758 tables) · <code>bridges.yaml</code> + <code>join_keys.md</code> · 12 named metrics · 3 rollup hierarchies · 47 domain overviews</p></div>
-    <div class="card"><div class="label">Query</div><p><code>ssh beelink '~/bin/duckdb -readonly'</code> · no persistent server process · statement guard before every call</p></div>
-    <div class="card"><div class="label">Storage</div><p>Local disk · Parquet + zstd · 1,758 tables · 521 GB · DuckDB reads the files directly, no import</p></div>
-    <div class="card"><div class="label">Catalog</div><p><code>_rodado_metadata</code> view: rows, source, status and provenance for every table, rebuilt after each sync</p></div>
-  </div>
-
-  <h2>Table selection</h2>
-  <p>With 1,758 tables, the hard step is picking the handful worth reading before any SQL is written — the step that keeps a large schema from producing hallucinated joins. The local harness puts the whole dataset catalog in the prompt (~2k tokens, cached after the first question) and lands on the right dataset 88% of the time. An embedding index over ~8 synthetic questions per table scored ~53% on the same measure and was removed.</p>
-  <div class="pills">
-    <span class="pill">catalog in prompt</span>
-    <span class="pill">88% dataset hit rate</span>
-    <span class="pill">list_datasets → list_tables → describe_table</span>
-  </div>
-
-  <h2>Palantir Foundry mapping</h2>
-  <p>Not a Foundry deployment. rodado is an open-source system built around the same idea: datasets alone are not enough. You need a typed semantic layer that says what the data <em>means</em>, and tools that act on that meaning instead of on table names. The table translates each layer for readers who know Foundry.</p>
-  <div class="data-table-wrap">
-    <table>
-      <thead><tr><th>Foundry layer</th><th>Foundry primitive</th><th>rodado counterpart</th></tr></thead>
-      <tbody>
-        <tr><td>Data integration</td><td>Data Connection sources &amp; syncs</td><td>Base dos Dados mirror sync + independent scrapers (309 tables), resumable and checkpointed</td></tr>
-        <tr><td></td><td>Datasets</td><td>One Parquet+zstd directory per table, 1,758 tables. No dataset versions or transactions</td></tr>
-        <tr><td></td><td>Data Lineage &amp; metadata</td><td><code>_rodado_metadata</code> catalog: rows, size, source URL, scrape date, status, provenance</td></tr>
-        <tr><td></td><td>Pipeline schedules</td><td>An ordered regeneration chain, run by hand after each sync</td></tr>
-        <tr><td>Ontology</td><td>Object types</td><td>61 hub concepts in <code>bridges.yaml</code>: municipality, state, company, person, station… Objects stay virtual (rows, not an indexed object store)</td></tr>
-        <tr><td></td><td>Link types</td><td><code>resolve_join(a, b)</code> returns a ready <code>ON</code> clause, including the key normalization (e.g. un-padded CNPJ) that Foundry would push into a transform</td></tr>
-        <tr><td></td><td>Interfaces</td><td>Anything carrying <code>id_municipio</code> rolls up to state and region, a natural <code>HasMunicipality</code> interface</td></tr>
-        <tr><td></td><td>Shared property / value types</td><td>13 <code>coded_differently</code> concepts (sex, race codes change by dataset and year), column code books and per-dataset decode dictionaries</td></tr>
-        <tr><td></td><td>—</td><td>21 catalogued <em>false friends</em>: same column name, different meaning (<code>valor</code> in 91 tables). A guard against links that only look valid</td></tr>
-        <tr><td></td><td>Functions</td><td>15 named metrics and CNAE / CID-10 / territorial rollups, each with a dated <code>verified</code> measurement</td></tr>
-        <tr><td></td><td>Object Views</td><td><code>describe_table</code>: columns, decodable codes, gotchas and coded-value warnings in one call, built for an agent reader</td></tr>
-        <tr><td>Data quality</td><td>Data Expectations &amp; Health Checks</td><td>Per-dataset gotchas (26 datasets), each measured on real data. Returned to the agent, not enforced at build time</td></tr>
-        <tr><td>AIP</td><td>Ontology MCP / AIP Agent tools</td><td><code>mcp_server.py</code>: 17 read-only MCP tools. An external agent reads through the semantic layer, not raw tables</td></tr>
-        <tr><td></td><td>AIP Evals</td><td>Local evaluation harness (Gemma 4): 88% dataset hit rate vs ~53% for the embedding search it replaced. Each failure becomes a bridge or a note, not a prompt rule</td></tr>
-        <tr><td>Governance</td><td>Markings / restricted views</td><td>Read-only sessions, statement guard, allow-listed directories, locked configuration. Applies to the whole session, not per row</td></tr>
-        <tr><td>Applications</td><td>Vertex</td><td><a href="/atlas/">Atlas</a>: bipartite table↔key graph (2,151 edges instead of 89,598 table pairs)</td></tr>
-        <tr><td></td><td>Workshop / Notepad / Contour</td><td>Published analyses and FDR-corrected research runs. Reports, not operational apps</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <h3>Solved by hand here, by construction in Foundry</h3>
-  <div class="grid-cards">
-    <div class="card"><div class="label">Keys at query time</div><p>Sources are mirrored as they come, so key cleaning lives in the bridge: <code>resolve_join</code> replaces the naive <code>a.cnpj = b.cnpj</code> instead of competing with it.</p></div>
-    <div class="card"><div class="label">Semantic drift</div><p>The same code means different things in different datasets or years. rodado warns about this at query time; Foundry would fix it once, in a transform.</p></div>
-    <div class="card"><div class="label">Every claim measured</div><p>Bridges, metrics, hierarchies and gotchas each record what matched on the real data, with a date. This plays the role of Data Expectations, but a failure shows up as a warning, not a failed build.</p></div>
-  </div>
-
-  <h3>What a Foundry deployment would add</h3>
-  <div class="grid-cards">
-    <div class="card"><div class="label">Action types</div><p>rodado is read-only by design. A compliance workflow (flag a supplier for review) needs write-back, an inbox and an audit trail.</p></div>
-    <div class="card"><div class="label">Materialized objects</div><p>Indexed object storage, so a single company or municipality can be fetched without scanning tables.</p></div>
-    <div class="card"><div class="label">Orchestration</div><p>Scheduled, incremental builds with staleness tracking, instead of a manual regeneration chain.</p></div>
-    <div class="card"><div class="label">Granular security</div><p>Markings and row-level policies for CPF-bearing data, plus branching for ontology changes.</p></div>
-  </div>
-
-  <h3>Porting sketch</h3>
-  <ol>
-    <li>Sync the Parquet tables as datasets through Data Connection.</li>
-    <li>Write transforms that apply each bridge normalization and emit clean keys. Turn each gotcha into a Data Expectation.</li>
-    <li>Ontology: object types for the hub concepts (Municipality, Company, Person [marked], Establishment, PublicContract, HealthEvent), link types from the bridges, and an interface for anything located in a municipality.</li>
-    <li>Turn the named metrics into functions, each tested against its recorded measurement. Move the harness cases into AIP Evals.</li>
-    <li>Build a Workshop app for the supplier integrity check, with an action type that routes a flagged company to review.</li>
-  </ol>
-
-  <h2>Data quality &amp; governance</h2>
-  <div class="grid-cards">
-    <div class="card"><div class="label">Partition requirements</div><p>Large tables (100M+ rows) require <code>ano</code>, <code>sigla_uf</code>, or <code>mes</code> filters. <code>ano</code> appears in 423 tables, <code>sigla_uf</code> in 336, <code>mes</code> in 133.</p></div>
-    <div class="card"><div class="label">Sensitive identifiers</div><p><code>cpf</code> (individual), <code>cnpj</code> (company) — read-only, no PII export endpoints. Masking varies by source, so masked CPFs from different sources cannot be joined to each other.</p></div>
-    <div class="card"><div class="label">Known limitations</div><p>Data freshness varies (CNPJ monthly, census 2010/2022, health 12–18 month lag). Codes for the same concept (sex, race) differ across datasets and years.</p></div>
-    <div class="card"><div class="label">Sanity protocol</div><p>State expected order of magnitude, flag outliers, verify counts two independent ways before reporting.</p></div>
   </div>
 
   <h2>Stack</h2>
-  <div class="pills">
-    <span class="pill">DuckDB</span><span class="pill">Parquet + zstd</span><span class="pill">Python</span>
-    <span class="pill">Bun + TypeScript</span><span class="pill">MCP</span><span class="pill">SSH</span>
-    <span class="pill">YAML semantic layer</span>
-  </div>
+  <p>DuckDB · Parquet + zstd · Python and Bun/TypeScript · MCP · YAML for the semantic layer · Caddy and a container on Hetzner for db.rodado.xyz · GitHub Pages for the site.</p>
 
-  <p>An earlier version served live queries from <code>db.xn--2dk.xyz</code>: a BigQuery → GCS → Hetzner Object Storage pipeline with httpfs reads, a Caddy + HMAC auth layer, a browser SQL shell and a Rust NL→SQL TUI. All of it has been retired in favor of the local setup described above.</p>
-
-  <p>Full engineering reference (environment, MCP setup, regeneration order): see docs/tecnico/TECHNICAL.md in the repository.</p>
+  <p>Full engineering reference (environment, MCP setup, regeneration order): <a href="https://github.com/rafapolo/rodado/blob/main/docs/tecnico/TECHNICAL.md" target="_blank" rel="noopener">docs/tecnico/TECHNICAL.md</a> in the repository.</p>
 </main>
 
 <footer>
   <div class="footer-inner">
     <a href="/temas/">Índice temático</a>
-    <span>1,758 tables · 521 GB · DuckDB + Parquet</span>
+    <span>1,759 tables · 521 GB · DuckDB + Parquet</span>
     <span class="footer-by">by <a href="https://extrapolo.com" target="_blank" rel="noopener">extrapolo.com</a></span>
   </div>
 </footer>
