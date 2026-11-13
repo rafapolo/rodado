@@ -101,7 +101,10 @@ def bloco_analises(itens: list[dict], lang: str) -> str:
     escolhidas = escolhidas[:N_ANALISES]
     if not escolhidas:
         return ""
-    linhas = [f'  <h2 id="analises">{t["analises_h2"]}</h2>',
+    # total no título: PT conta todas (sem as traduções), EN só as escritas em inglês
+    n = (sum(1 for i in itens if i.get("lang") == "en") if en
+         else sum(1 for i in itens if not (i.get("par") and i.get("lang") == "en")))
+    linhas = [f'  <h2 id="analises">{t["analises_h2"]} ({n})</h2>',
               '  <div class="noticias carrossel">']
     for it in escolhidas:
         href = href_relativo(it.get("url") or f"/analises/{it['slug']}/")
@@ -130,7 +133,7 @@ def bloco_plataformas(itens: list[dict], lang: str) -> str:
     def campo(it: dict, k: str) -> str:
         return (en and it.get(f"{k}_en")) or it.get(k) or ""
 
-    linhas = [f'  <h2 id="plataformas">{t["plataformas_h2"]}</h2>',
+    linhas = [f'  <h2 id="plataformas">{t["plataformas_h2"]} ({len(itens)})</h2>',
               f'  <p class="secao-dek">{t["plataformas_dek"]}</p>',
               '  <div class="teaser vitrine carrossel">']
     por_slug = {it["slug"]: it for it in itens}
