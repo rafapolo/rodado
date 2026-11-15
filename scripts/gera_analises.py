@@ -135,6 +135,10 @@ def main() -> None:
     for item in itens:
         slug = item["slug"]
         slugs.add(slug)
+        # item com "url" é página hospedada fora (ex.: ibge13 no github.io): só
+        # aparece na home, não tem results/<slug>.md nem página gerada aqui
+        if item.get("url"):
+            continue
         md = ANALISES / "results" / f"{slug}.md"
         if not md.exists():
             print(f"  ! {slug}: sem results/{slug}.md, pulando")
@@ -158,9 +162,16 @@ def main() -> None:
         )
         print(f"  pages/analises/{slug}/index.html")
 
+    # análises que viraram plataforma ficam no ar fora do manifest (gera_seo.py
+    # as lista no sitemap); a pasta é intencional, não merece aviso
+    conhecidos = set(slugs)
+    plataformas = ANALISES.parent / "plataformas" / "plataformas.json"
+    if plataformas.exists():
+        conhecidos |= {p["slug"] for p in json.loads(plataformas.read_text(encoding="utf-8"))}
+
     # pastas de análises que sairam do manifest viram 404 silencioso se ficarem
     for sub in ANALISES.iterdir():
-        if sub.is_dir() and sub.name not in {"img", "results"} and sub.name not in slugs:
+        if sub.is_dir() and sub.name not in {"img", "results"} and sub.name not in conhecidos:
             gerado = (sub / "index.html").exists() and AVISO in (
                 sub / "index.html").read_text(encoding="utf-8")
             if gerado:
