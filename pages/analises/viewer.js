@@ -17,7 +17,8 @@
              new URLSearchParams(location.search).get('doc') ||
              (location.hash ? location.hash.slice(1) : '');
 
-  marked.setOptions({ gfm: true, breaks: false });
+  // página de análise gerada já vem com o corpo pronto e não carrega o marked
+  if (window.marked) marked.setOptions({ gfm: true, breaks: false });
 
   function fetchText(url) {
     return fetch(url).then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); });
@@ -188,14 +189,22 @@
   }
 
   function renderDoc(name) {
-    return fetchText(base + 'results/' + name + '.md').then(function (md) {
-      docEl.innerHTML = marked.parse(md);
-      // gráficos abaixo do primeiro só baixam perto da tela; o markdown não
-      // carrega width/height, então isso é o que segura o peso inicial
-      docEl.querySelectorAll('img').forEach(function (img, i) {
-        img.decoding = 'async';
-        if (i > 0) img.loading = 'lazy';
-      });
+    // a página gerada já traz o corpo pronto (gera_analises.py renderiza o .md com o
+    // mesmo marked): sem buscar nada, só os enfeites. O .md via fetch fica para o
+    // ?doc=<slug> antigo e para página gerada antes do corpo estático
+    var corpo = docEl.hasAttribute('data-pronto')
+      ? Promise.resolve(null)
+      : fetchText(base + 'results/' + name + '.md');
+    return corpo.then(function (md) {
+      if (md !== null) {
+        docEl.innerHTML = marked.parse(md);
+        // gráficos abaixo do primeiro só baixam perto da tela; o markdown não
+        // carrega width/height, então isso é o que segura o peso inicial
+        docEl.querySelectorAll('img').forEach(function (img, i) {
+          img.decoding = 'async';
+          if (i > 0) img.loading = 'lazy';
+        });
+      }
       enhance();
       var h1 = docEl.querySelector('h1');
       if (h1) {
@@ -203,8 +212,9 @@
         eyebrow.innerHTML = '<a href="' + (base || './') + '" ' +
           'style="color:inherit;text-decoration:none">Análises</a> ／ ' + name;
       }
-      // hash de capítulo manda; sem ele, começa do topo
-      if (!vaiProHash()) window.scrollTo(0, 0);
+      // hash de capítulo manda; sem ele, começa do topo (só quando o corpo acabou
+      // de entrar: com ele já na página, o navegador pode ter restaurado a rolagem)
+      if (!vaiProHash() && md !== null) window.scrollTo(0, 0);
       return leiaTambem(name);
     }).catch(function () {
       docEl.innerHTML = '<h1>Análise não encontrada</h1>' +

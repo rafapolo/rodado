@@ -67,7 +67,9 @@ MODELO = """<!doctype html>
 <main>
   <p class="eyebrow" id="eyebrow">{eyebrow}</p>
   {capa}<p class="meta">{rodado_rot} {rodado_em}</p>
-  <div id="doc" data-slug="{slug}" data-base="../"><p class="doc-msg">Carregando…</p></div>
+  <div id="doc" data-slug="{slug}" data-base="../" data-pronto>
+{corpo}
+  </div>
 </main>
 
 <footer>
@@ -78,7 +80,6 @@ MODELO = """<!doctype html>
   </div>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js" integrity="sha384-/TQbtLCAerC3jgaim+N78RZSDYV7ryeoBCVqTuzRrFec2akfBkHS7ACQ3PQhvMVi" crossorigin="anonymous"></script>
 <script src="../viewer.js"></script>
 <script src="../../assets/theme-toggle.js"></script>
 </body>
@@ -131,6 +132,14 @@ def main() -> None:
     print("$ gera_capas.ts")
     subprocess.run(["bun", str(RAIZ / "scripts" / "gera_capas.ts")], check=True)
 
+    # corpo de cada análise renderizado aqui, com o mesmo marked do navegador:
+    # vai pronto dentro de #doc (data-pronto), e o viewer.js só o enfeita
+    com_md = [i["slug"] for i in itens
+              if not i.get("url") and (ANALISES / "results" / f"{i['slug']}.md").exists()]
+    corpos = json.loads(subprocess.run(
+        ["bun", str(RAIZ / "scripts" / "renderiza_analises.ts"), *com_md],
+        check=True, capture_output=True, text=True).stdout)
+
     slugs = set()
     for item in itens:
         slug = item["slug"]
@@ -156,10 +165,15 @@ def main() -> None:
                       'width="1680" height="240" decoding="async">\n  '
                       if (ANALISES / "img" / f"capa-{slug}.webp").exists() else ""),
                 lang=item.get("lang", "pt-br"),
+                # chaves literais no corpo não podem passar pelo .format(); entram depois
+                corpo="{corpo}",
                 **idioma(item),
             ),
             encoding="utf-8",
         )
+        pagina = destino / "index.html"
+        pagina.write_text(pagina.read_text(encoding="utf-8").replace("{corpo}", corpos[slug].strip(), 1),
+                          encoding="utf-8")
         print(f"  pages/analises/{slug}/index.html")
 
     # análises que viraram plataforma ficam no ar fora do manifest (gera_seo.py
