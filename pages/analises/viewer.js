@@ -205,10 +205,59 @@
       }
       // hash de capítulo manda; sem ele, começa do topo
       if (!vaiProHash()) window.scrollTo(0, 0);
+      return leiaTambem(name);
     }).catch(function () {
       docEl.innerHTML = '<h1>Análise não encontrada</h1>' +
         '<p class="doc-msg">Nenhuma análise com esse nome em <code>results/</code>. ' +
         '<a href="' + (base || './') + '">Ver todas &rarr;</a></p>';
+    });
+  }
+
+  // --- "Leia também" ---------------------------------------------------------
+  // 3 análises relacionadas ao fim do corpo: pontua por órgão de fonte em comum
+  // (texto antes do " · " em tags), desempata pela data mais recente. Nunca a
+  // própria, nem o par de tradução; mesma língua. Sem órgão em comum, as mais
+  // recentes completam.
+  function orgaos(it) {
+    return (it.tags || []).map(function (t) { return t.split(' · ')[0].trim(); });
+  }
+  function chaveData(it) {
+    var d = it.rodado_em;
+    if (d && /^\d{2}-\d{2}-\d{4}$/.test(d)) return d.slice(6) + d.slice(3, 5) + d.slice(0, 2);
+    return (it.date || '').replace(/-/g, '') + '00';
+  }
+  function relacionadas(items, atual, n) {
+    var lang = atual.lang || 'pt-br', meus = orgaos(atual);
+    return items.filter(function (it) {
+      return it.slug !== atual.slug && it.slug !== atual.par && it.par !== atual.slug &&
+        (it.lang || 'pt-br') === lang;
+    }).map(function (it) {
+      var o = orgaos(it);
+      var comuns = meus.filter(function (x, i) { return o.indexOf(x) >= 0 && meus.indexOf(x) === i; }).length;
+      return { it: it, pontos: comuns, data: chaveData(it) };
+    }).sort(function (a, b) {
+      return b.pontos - a.pontos || (a.data < b.data ? 1 : a.data > b.data ? -1 : 0);
+    }).slice(0, n).map(function (x) { return x.it; });
+  }
+  function leiaTambem(slugAtual) {
+    return fetchJSON(base + 'results/manifest.json').then(function (items) {
+      var atual = items.filter(function (it) { return it.slug === slugAtual; })[0];
+      if (!atual) return;
+      var rel = relacionadas(items, atual, 3);
+      if (!rel.length) return;
+      var en = (atual.lang || 'pt-br') !== 'pt-br';
+      var html = '<aside class="leia-tambem"><h2>' + (en ? 'Read also' : 'Leia também') +
+        '</h2><div class="noticias idx-cartoes">';
+      rel.forEach(function (it) {
+        var href = it.url || (base + encodeURIComponent(it.slug) + '/');
+        html += '<a class="noticia" href="' + href + '">' +
+          '<img class="noticia-capa" src="' + base + 'img/capa-' + encodeURIComponent(it.slug) +
+          '.webp" alt="" width="1680" height="240" loading="lazy" decoding="async" ' +
+          'onerror="this.remove()">' +
+          '<span class="noticia-data">' + dataBr(it) + '</span>' +
+          '<span class="noticia-titulo">' + it.title + '</span></a>';
+      });
+      docEl.insertAdjacentHTML('beforeend', html + '</div></aside>');
     });
   }
 

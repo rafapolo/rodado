@@ -131,3 +131,8 @@ main > .capa { display: block; width: 100%; max-width: none; height: 120px;
     scrollbar-width: thin; }
   .fonte-chip { flex: none; }
 }
+/* "Leia também": 3 cartões compactos ao fim da análise (viewer.js, leiaTambem) */
+#doc .leia-tambem { margin-top: 2rem; }
+#doc .leia-tambem .noticias { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 640px) { #doc .leia-tambem .noticias { grid-template-columns: 1fr; } }
+#doc .leia-tambem h2 { margin-top: 0; }
