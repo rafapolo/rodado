@@ -485,15 +485,16 @@ def urls_externas() -> list[str]:
     """URLs de rodado.xyz que não saem de um HTML de pages/ na hora deste
     script, mas existem no ar e precisam ser achadas por busca.
 
-    - /atlas/: o index.html é gerado por build_atlas.py, com as próprias
-      metatags (fora de alvos() de propósito, ver alvos_head);
+    - /atlas/ e /atlas/en: index.html e en.html são gerados por
+      build_atlas.py, com as próprias metatags (fora de alvos() de propósito,
+      ver alvos_head); o par entra no sitemap com hreflang (ATLAS_IDIOMAS);
     - as plataformas hospedadas em /plataformas/<pasta>/: vêm de outros
       repositórios, montadas pelo .github/workflows/pages.yml só no deploy
       (o cartão OG delas é injetado ali, por scripts/og_plataformas.py).
     A lista de plataformas sai do plataformas.json — plataforma nova entra
     sozinha. As hospedadas fora (xn--2dk.xyz, github.io) ficam de fora: o
     sitemap só pode listar URLs do próprio host."""
-    urls = [f"{BASE}/atlas/"]
+    urls = [f"{BASE}/atlas/", f"{BASE}/atlas/en"]
     # análises que saíram do manifest.json (viraram plataforma em 706da4f3)
     # mas seguem no ar e recebem link: bens-dos-candidatos é o texto para o
     # qual o painel /plataformas/patrimonio/ manda o leitor de volta
@@ -504,6 +505,10 @@ def urls_externas() -> list[str]:
         if url.startswith(prefixo) and url not in urls:
             urls.append(url)
     return urls
+
+
+# /atlas/ e /atlas/en são o mesmo atlas em duas línguas (build_atlas.py)
+ATLAS_IDIOMAS = {f"{BASE}/atlas/": "pt-br", f"{BASE}/atlas/en": "en"}
 
 
 def gera_sitemap(arquivos: list[Path]) -> None:
@@ -535,9 +540,14 @@ def gera_sitemap(arquivos: list[Path]) -> None:
     for url in urls_externas():
         if url in ja:
             continue
+        alt = [
+            f'    <xhtml:link rel="alternate" hreflang="{lg}" href="{html.escape(u)}"/>'
+            for u, lg in ATLAS_IDIOMAS.items()
+        ] if url in ATLAS_IDIOMAS else []
         linhas += [
             "  <url>",
             f"    <loc>{html.escape(url)}</loc>",
+            *alt,
             f"    <lastmod>{hoje}</lastmod>",
             "    <priority>0.6</priority>",
             "  </url>",

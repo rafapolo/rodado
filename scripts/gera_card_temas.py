@@ -79,6 +79,7 @@ def dataset_de(nome: str, ds: dict[str, str], soltos: dict[str, str]) -> str | N
 
 def adapta(cartao: str, pasta: str, origem: str, ds: dict[str, str], soltos: dict[str, str]) -> str:
     rot, abrir, catalogo = TEXTOS[pasta]
+    atlas = "/atlas/en" if pasta.endswith("-en") else "/atlas/"
     nomes = re.findall(r'<code class="card-id">([^<]*)</code>', cartao)
     desc = re.search(r'<p class="card-desc">.*?</p>', cartao, re.S)
     if desc:
@@ -93,7 +94,7 @@ def adapta(cartao: str, pasta: str, origem: str, ds: dict[str, str], soltos: dic
         if d not in vistos:
             vistos.append(d)
     tags = "".join(
-        f'<li><a class="card-tag" href="/atlas/?db={d}" title="{H.escape(ds[d] or abrir.format(n=d))}"'
+        f'<li><a class="card-tag" href="{atlas}?db={d}" title="{H.escape(ds[d] or abrir.format(n=d))}"'
         f' aria-label="{H.escape(abrir.format(n=d))}">{d}</a></li>'
         for d in vistos)
     bloco = (f'<div class="card-tags-block"><div class="card-cruz-heading">{rot}'

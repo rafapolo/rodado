@@ -440,7 +440,7 @@ canvas.drag { cursor: grabbing; }
         <div class="lang-switch">
           <span class="lang-current">PT</span>
           <span class="lang-sep">/</span>
-          <a href="/en" class="lang-link">EN</a>
+          <a href="/atlas/en" class="lang-link">EN</a>
         </div>
         <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema claro/escuro" type="button"><i class="fa-solid fa-moon"></i></button>
       </div>
@@ -538,6 +538,13 @@ canvas.drag { cursor: grabbing; }
 
 <script>
 "use strict";
+/* Idioma: scripts/build_atlas.py troca o marcador por "pt" (/atlas/) ou "en"
+   (/atlas/en). Os rótulos da interface vão em pares tr(pt, en) no próprio
+   ponto de uso; o texto livre dos dados (descrição de dataset, cartão,
+   armadilha) só existe em pt-BR e aparece assim nas duas versões. */
+const EN = "__ATLAS_LANG__" === "en";
+const tr = (pt, en) => EN ? en : pt;
+const dec = s => EN ? String(s) : String(s).replace(".", ",");
 /* The graph travels one of two ways. Published as an Artifact the page must be
    self-contained, so it is inlined above; served from rodado.xyz it is fetched
    beside the page, which keeps a 630 KB blob out of every commit. */
@@ -550,23 +557,40 @@ canvas.drag { cursor: grabbing; }
     return r.json();
   }).then(boot).catch(err => {
     document.getElementById("stage").innerHTML =
-      '<p style="padding:40px;max-width:34em;line-height:1.6">Não consegui carregar ' +
-      '<code>schema_graph.json</code> (' + err.message + '). O arquivo precisa estar ' +
-      'na mesma pasta desta página.</p>';
+      '<p style="padding:40px;max-width:34em;line-height:1.6">' + tr("Não consegui carregar ", "Could not load ") +
+      '<code>schema_graph.json</code> (' + err.message + '). ' +
+      tr("O arquivo precisa estar na mesma pasta desta página.", "The file must sit in the same folder as this page.") + '</p>';
   });
 }
 
 function boot(G) {
 const DS = G.datasets, KS = G.keys, TB = G.tables;
+if (EN) {
+  // nomes de tema e de categoria de chave chegam em pt-BR no schema_graph.json
+  Object.assign(G.domains, {
+    governo: "Government and Public Finance", economia: "Economy", educacao: "Education",
+    seguranca: "Security, Crime, Violence and Conflict", saude: "Health", meio_ambiente: "Environment",
+    infraestrutura: "Infrastructure and Transportation", politica: "Politics", populacao: "Population",
+    territorio: "Territorial Organization", cultura_arte: "Culture and Art", outros: "Other",
+  });
+  Object.assign(G.cats, {
+    municipio: "Municipality", uf: "State (UF)", geo: "Other geography", tempo: "Time",
+    empresa: "Company (CNPJ)", pessoa: "Person (CPF)", educacao: "Education", saude: "Health",
+    governo: "Government", politica: "Politics", classificacao: "Classification",
+    outros: "Other shared columns",
+  });
+}
 
 /* Três vistas do mesmo espelho. `ontologia` (a padrão) sobe um nível: as
    entidades que as chaves identificam. `temas` põe cada tabela no campo como
    um corpo, dentro do território do seu tema; `3d` é o grafo dataset↔chave em
    três dimensões. (A `grade`, cartões de dataset empacotados, saiu a pedido.) */
 const MODES = [
-  ["ontologia", "Ontologia", "um nível acima: as entidades que as chaves identificam e como se ligam"],
-  ["temas", "Temas", "um território por tema; as chaves flutuam entre os que ligam"],
-  ["3d", "3D", "o mesmo grafo dataset↔chave, em três dimensões"],
+  ["ontologia", tr("Ontologia", "Ontology"), tr("um nível acima: as entidades que as chaves identificam e como se ligam",
+    "one level up: the entities the keys identify and how they connect")],
+  ["temas", tr("Temas", "Themes"), tr("um território por tema; as chaves flutuam entre os que ligam",
+    "one territory per theme; keys float between the ones they link")],
+  ["3d", "3D", tr("o mesmo grafo dataset↔chave, em três dimensões", "the same dataset↔key graph, in three dimensions")],
 ];
 const DEFAULT_MODE = "ontologia";
 let mode = "temas";          // o canvas monta em Temas; o boot troca para a padrão
@@ -583,7 +607,14 @@ const THEMES = [
   "infraestrutura", "politica", "populacao", "territorio",
   "cultura_arte", "outros",
 ];
-const THEME_SHORT = {
+const THEME_SHORT = EN ? {
+  governo: "Government", economia: "Economy", educacao: "Education",
+  seguranca: "Security", saude: "Health", meio_ambiente: "Environment",
+  infraestrutura: "Infrastructure", politica: "Politics",
+  populacao: "Population", territorio: "Territory",
+  cultura_arte: "Culture and Art",
+  outros: "Other",
+} : {
   governo: "Governo", economia: "Economia", educacao: "Educação",
   seguranca: "Segurança", saude: "Saúde", meio_ambiente: "Meio Ambiente",
   infraestrutura: "Infraestrutura", politica: "Política",
@@ -799,7 +830,7 @@ const toWorld = (px, py) => [(px - tx) / k, (py - ty) / k];
 // Zoom is the interface: the same layout answers a different question at each
 // depth, so nothing is hidden behind a click.
 const LOD = () => k < 0.9 ? 0 : 1;
-const LOD_NAME = ["chaves", "tabelas"];
+const LOD_NAME = [tr("chaves", "keys"), tr("tabelas", "tables")];
 
 /* ── highlight sets ──────────────────────────────────────────────── */
 function activeSet() {
@@ -818,18 +849,18 @@ function activeSet() {
 }
 
 /* ── drawing ─────────────────────────────────────────────────────── */
-const fmt = n => n.toLocaleString("pt-BR");
+const fmt = n => n.toLocaleString(EN ? "en-US" : "pt-BR");
 function human(n) {
-  if (n >= 1e9) return (n / 1e9).toFixed(n >= 1e10 ? 0 : 1).replace(".", ",") + " bi";
-  if (n >= 1e6) return (n / 1e6).toFixed(n >= 1e7 ? 0 : 1).replace(".", ",") + " mi";
-  if (n >= 1e3) return (n / 1e3).toFixed(0) + " mil";
+  if (n >= 1e9) return dec((n / 1e9).toFixed(n >= 1e10 ? 0 : 1)) + tr(" bi", " bn");
+  if (n >= 1e6) return dec((n / 1e6).toFixed(n >= 1e7 ? 0 : 1)) + tr(" mi", " M");
+  if (n >= 1e3) return (n / 1e3).toFixed(0) + tr(" mil", "k");
   return String(n);
 }
 function bytes(n) {
   if (!n) return "—";
   const u = ["B", "KB", "MB", "GB", "TB"];
   let i = 0; while (n >= 1024 && i < u.length - 1) { n /= 1024; i++; }
-  return n.toFixed(n >= 100 || i === 0 ? 0 : 1).replace(".", ",") + " " + u[i];
+  return dec(n.toFixed(n >= 100 || i === 0 ? 0 : 1)) + " " + u[i];
 }
 function roundRect(x, y, w, h, r) {
   ctx.beginPath();
@@ -988,7 +1019,7 @@ function drawDiscs(act) {
     if (inside && r > 42) {
       ctx.font = `500 ${fs * 0.62}px "IBM Plex Sans", sans-serif`;
       ctx.globalAlpha = (lit ? 1 : 0.2) * 0.8;
-      ctx.fillText(KS[ki].t + " tabelas", x, y + fs * 0.95);
+      ctx.fillText(KS[ki].t + tr(" tabelas", " tables"), x, y + fs * 0.95);
     }
   }
 
@@ -1077,9 +1108,9 @@ const tip = document.getElementById("tip");
 function showTip(h, x, y) {
   if (!h) return hideTip();
   let html = "";
-  if (h.type === "key") html = `${KS[h.i].n} <em>· ${KS[h.i].t} tabelas</em>`;
-  else if (h.type === "ds") html = `${DS[h.i].n} <em>· ${DS[h.i].t} tabelas</em>`;
-  else html = `${DS[TB[h.i].ds].n}.${TB[h.i].n} <em>· ${human(TB[h.i].r)} linhas</em>`;
+  if (h.type === "key") html = `${KS[h.i].n} <em>· ${KS[h.i].t} ${tr("tabelas", "tables")}</em>`;
+  else if (h.type === "ds") html = `${DS[h.i].n} <em>· ${DS[h.i].t} ${tr("tabelas", "tables")}</em>`;
+  else html = `${DS[TB[h.i].ds].n}.${TB[h.i].n} <em>· ${human(TB[h.i].r)} ${tr("linhas", "rows")}</em>`;
   tip.innerHTML = html;
   tip.classList.add("on");
   const w = tip.offsetWidth, hh = tip.offsetHeight;
@@ -1132,24 +1163,27 @@ const fact = (v, l) => `<div class="fact"><b>${v}</b><span>${l}</span></div>`;
 
 /* "dados até": a data do dado mais recente, do mesmo jeito que a página do MCP
    (2026 · ago/2026 · 21/09/2026) */
-const MESES = "jan fev mar abr mai jun jul ago set out nov dez".split(" ");
+const MESES = (EN ? "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec" : "jan fev mar abr mai jun jul ago set out nov dez").split(" ");
 function quando(s) {
   const m = /^(\d{4})(?:-(\d{2})(?:-(\d{2}))?)?$/.exec(s || "");
   if (!m) return s || "";
   if (!m[2]) return m[1];
+  if (EN) return m[3] ? `${MESES[+m[2] - 1]} ${+m[3]}, ${m[1]}` : `${MESES[+m[2] - 1]} ${m[1]}`;
   return m[3] ? `${m[3]}/${m[2]}/${m[1]}` : `${MESES[+m[2] - 1]}/${m[1]}`;
 }
 function fonteDs(D) {
   const nome = D.fn ? esc(D.fn) : "";
   const fonte = D.fn ? (D.fu ? `<a href="${esc(D.fu)}" target="_blank" rel="noopener">${nome}</a>` : nome) : "";
-  const partes = [fonte, D.ate ? "dados até " + quando(D.ate) : ""].filter(Boolean);
+  const partes = [fonte, D.ate ? tr("dados até ", "data through ") + quando(D.ate) : ""].filter(Boolean);
   return partes.length ? `<p class="note-src">${partes.join(" · ")}</p>` : "";
 }
 
 /* cartão da tabela (grão, chave, tempo, medidas, uso): o mesmo JSON que a página
    do MCP carrega, buscado só quando a tabela é aberta */
 const cartoes = {};
-const NATUREZA = { retrato_atual: "retrato atual", serie_anual: "série anual", serie_mensal: "série mensal",
+const NATUREZA = EN ? { retrato_atual: "current snapshot", serie_anual: "annual series", serie_mensal: "monthly series",
+  serie_diaria: "daily series", serie_de_periodos: "series of periods", sem_tempo: "no time dimension", soma_de_retratos: "stack of snapshots" }
+  : { retrato_atual: "retrato atual", serie_anual: "série anual", serie_mensal: "série mensal",
   serie_diaria: "série diária", serie_de_periodos: "série de períodos", sem_tempo: "sem tempo", soma_de_retratos: "soma de retratos" };
 function cartaoDe(ds) {
   if (!cartoes[ds]) cartoes[ds] = fetch(`/assets/summaries/${encodeURIComponent(ds)}.json`)
@@ -1159,17 +1193,17 @@ function cartaoDe(ds) {
 }
 function cartaoHtml(c) {
   let h = "";
-  if (c.g) h += `<p class="sec">Uma linha é</p><p>${esc(c.g)}</p>`;
+  if (c.g) h += `<p class="sec">${tr("Uma linha é", "One row is")}</p><p>${esc(c.g)}</p>`;
   const meta = [];
-  if (c.c) meta.push(`<li>chave: ${esc(c.c)}</li>`);
+  if (c.c) meta.push(`<li>${tr("chave", "key")}: ${esc(c.c)}</li>`);
   if (c.tp) meta.push(`<li>${esc(NATUREZA[c.tp[0]] || c.tp[0])}${c.tp[2] ? ", " + esc(c.tp[2]) : ""}</li>`);
   if (meta.length) h += `<ul>${meta.join("")}</ul>`;
-  if (c.m) h += `<p class="sec">Medidas</p><ul>${c.m.map(m => {
-    const extra = [m[1], m[2] ? "unidade: " + m[2] : "", m[3] ? "não some" : ""].filter(Boolean).join("; ");
+  if (c.m) h += `<p class="sec">${tr("Medidas", "Measures")}</p><ul>${c.m.map(m => {
+    const extra = [m[1], m[2] ? tr("unidade: ", "unit: ") + m[2] : "", m[3] ? tr("não some", "do not sum") : ""].filter(Boolean).join("; ");
     return `<li>${m[0] ? `<code>${esc(m[0])}</code>` : ""}${extra ? " — " + esc(extra) : ""}</li>`;
   }).join("")}</ul>`;
-  if (c.u) h += `<p class="sec">Use para</p><p>${esc(c.u)}</p>`;
-  if (c.nu) h += `<p class="sec">Não use para</p><p>${esc(c.nu)}</p>`;
+  if (c.u) h += `<p class="sec">${tr("Use para", "Use for")}</p><p>${esc(c.u)}</p>`;
+  if (c.nu) h += `<p class="sec">${tr("Não use para", "Do not use for")}</p><p>${esc(c.nu)}</p>`;
   return h ? `<div class="card">${h}</div>` : "";
 }
 
@@ -1181,11 +1215,14 @@ function detalhesDe(ds) {
     .then(r => r.ok ? r.json() : {}).catch(() => ({}));
   return detalhes[ds];
 }
-const SEV = { silencioso: "silencioso", erro: "dá erro", aviso: "aviso" };
+const SEV = EN ? { silencioso: "silent", erro: "errors out", aviso: "warning" } : { silencioso: "silencioso", erro: "dá erro", aviso: "aviso" };
 const gotchaHtml = g => `<details class="gt ${esc(g.severidade || "")}"><summary><span class="sev">${esc(SEV[g.severidade] || g.severidade || "")}</span>${esc(g.resumo || g.id)}</summary>${
-  g.detalhe ? `<p>${esc(g.detalhe)}</p>` : ""}${g.colunas ? `<p>colunas: ${g.colunas.map(c => `<code>${esc(c)}</code>`).join(", ")}</p>` : ""}${
-  g.verificado ? `<p class="ver">medido: ${esc(g.verificado)}</p>` : ""}</details>`;
-const MARCA = { dic: ["dic", "tem dicionário: o significado dos códigos está em <dataset>.dicionario"],
+  g.detalhe ? `<p>${esc(g.detalhe)}</p>` : ""}${g.colunas ? `<p>${tr("colunas", "columns")}: ${g.colunas.map(c => `<code>${esc(c)}</code>`).join(", ")}</p>` : ""}${
+  g.verificado ? `<p class="ver">${tr("medido", "measured")}: ${esc(g.verificado)}</p>` : ""}</details>`;
+const MARCA = EN ? { dic: ["dic", "has a dictionary: the meaning of the codes is in <dataset>.dicionario"],
+  div: ["varies", "this column's code changes from one dataset to another"],
+  cod: ["code", "meaning of the codes researched (column_codes.yaml)"] }
+  : { dic: ["dic", "tem dicionário: o significado dos códigos está em <dataset>.dicionario"],
   div: ["varia", "o código desta coluna muda de um dataset para outro"],
   cod: ["cód", "significado dos códigos pesquisado (column_codes.yaml)"] };
 function marcas(info) {
@@ -1194,33 +1231,36 @@ function marcas(info) {
 }
 function colinfoHtml(info) {
   let h = "";
-  if (info.cod) h += `<div>${info.cod.status === "pendente" ? "<b>pesquisado, não confirmado:</b> " : ""}${esc(info.cod.significado || "")}</div>${info.cod.valores ? `<table>${
+  if (info.cod) h += `<div>${info.cod.status === "pendente" ? `<b>${tr("pesquisado, não confirmado", "researched, not confirmed")}:</b> ` : ""}${esc(info.cod.significado || "")}</div>${info.cod.valores ? `<table>${
     Object.entries(info.cod.valores).map(([k, v]) => `<tr><td>${esc(k === "" ? "''" : k)}</td><td>${esc(v)}</td></tr>`).join("")}</table>` : ""}${
     info.cod.nota ? `<div>${esc(info.cod.nota)}</div>` : ""}`;
   if (info.div) h += `<div>${esc(info.div)}</div>`;
-  if (info.dic) h += `<div>decodifique com <code>dicionario</code> desta tabela, filtrando <code>nome_coluna</code>.</div>`;
-  if (info.nul) h += `<div>${String(info.nul).replace(".", ",")}% nulos</div>`;
-  if (info.top) h += `<div>mais frequentes (na amostra do perfil):</div><table>${
+  if (info.dic) h += tr(`<div>decodifique com <code>dicionario</code> desta tabela, filtrando <code>nome_coluna</code>.</div>`,
+    `<div>decode with this table's <code>dicionario</code>, filtering on <code>nome_coluna</code>.</div>`);
+  if (info.nul) h += `<div>${dec(info.nul)}% ${tr("nulos", "null")}</div>`;
+  if (info.top) h += `<div>${tr("mais frequentes (na amostra do perfil)", "most frequent (in the profile sample)")}:</div><table>${
     info.top.map(([v, n]) => `<tr><td>${esc(v === null ? "NULL" : v)}</td><td class="n">${fmt(n)}</td></tr>`).join("")}</table>`;
   return h;
 }
 function detalheTblHtml(x, T) {
   let h = "";
-  if (x.gotchas) h += `<p class="sec">Armadilhas</p>${x.gotchas.map(gotchaHtml).join("")}`;
-  if (x.busca) h += `<p class="sec">Busca rápida</p><p class="note">Ordenada por <code>${esc(x.busca.coluna)}</code>${
-    x.busca.por_ano ? " dentro de cada <code>ano</code>" : ""}: filtrar por ela responde em segundos no db.rodado.xyz.${
-    x.busca.por_ano ? " Filtre também por <code>ano</code>." : ""}</p>`;
-  if (x.metricas) h += `<p class="sec">Métricas prontas</p><div class="card"><ul>${x.metricas.map(m =>
+  if (x.gotchas) h += `<p class="sec">${tr("Armadilhas", "Pitfalls")}</p>${x.gotchas.map(gotchaHtml).join("")}`;
+  if (x.busca) h += `<p class="sec">${tr("Busca rápida", "Fast lookup")}</p><p class="note">${tr("Ordenada por", "Sorted by")} <code>${esc(x.busca.coluna)}</code>${
+    x.busca.por_ano ? tr(" dentro de cada <code>ano</code>", " within each <code>ano</code>") : ""}${
+    tr(": filtrar por ela responde em segundos no db.rodado.xyz.", ": filtering on it answers in seconds on db.rodado.xyz.")}${
+    x.busca.por_ano ? tr(" Filtre também por <code>ano</code>.", " Filter on <code>ano</code> too.") : ""}</p>`;
+  if (x.metricas) h += `<p class="sec">${tr("Métricas prontas", "Ready-made metrics")}</p><div class="card"><ul>${x.metricas.map(m =>
     `<li><code>${esc(m.nome)}</code> — ${esc(m.description || "")}${m.unit ? ` (${esc(m.unit)})` : ""}: <code>${esc(m.expression || "")}</code>${
-      m.required_filters ? `; filtre por ${m.required_filters.map(f => `<code>${esc(f)}</code>`).join(", ")}` : ""}</li>`).join("")}</ul></div>`;
+      m.required_filters ? `; ${tr("filtre por", "filter on")} ${m.required_filters.map(f => `<code>${esc(f)}</code>`).join(", ")}` : ""}</li>`).join("")}</ul></div>`;
   const cols = Object.entries(x.cols || {}).filter(([, i]) => i.dic || i.div || i.cod);
   if (cols.length) {
     const ordem = i => i.div ? 0 : i.cod ? 1 : 2;
     cols.sort((a, b) => ordem(a[1]) - ordem(b[1]));
     const mostra = cols.slice(0, 15);
-    h += `<p class="sec">Colunas com código · ${fmt(cols.length)}</p><div class="cols">${mostra.map(([n, i]) =>
+    h += `<p class="sec">${tr("Colunas com código", "Coded columns")} · ${fmt(cols.length)}</p><div class="cols">${mostra.map(([n, i]) =>
       `<div class="col tem" data-col="${esc(n)}"><span>${esc(n)}</span><span class="ty">${marcas(i)}</span></div>`).join("")}</div>${
-      cols.length > mostra.length ? `<p class="note">e mais ${fmt(cols.length - mostra.length)}; as marcas aparecem também na lista de colunas.</p>` : ""}`;
+      cols.length > mostra.length ? `<p class="note">${tr(`e mais ${fmt(cols.length - mostra.length)}; as marcas aparecem também na lista de colunas.`,
+      `and ${fmt(cols.length - mostra.length)} more; the marks also show in the column list.`)}</p>` : ""}`;
   }
   return h;
 }
@@ -1232,20 +1272,21 @@ function abreColuna(el, info) {
 
 function renderTheme(th) {
   const ts = themeTables[th];
-  iKind.textContent = "Tema";
+  iKind.textContent = tr("Tema", "Theme");
   iName.textContent = G.domains[th] || th;
   setDesc("");
   const ks = [...themeKeys[th]].sort((a, b) => KS[a].t - KS[b].t);
   const dss = [...new Set(ts.map(ti => TB[ti].ds))].sort((a, b) => DS[b].r - DS[a].r);
   const orphans = ts.filter(ti => !TB[ti].k.length).length;
   iBody.innerHTML = `<div class="facts">
-      ${fact(fmt(ts.length), "tabelas")}
+      ${fact(fmt(ts.length), tr("tabelas", "tables"))}
       ${fact(fmt(dss.length), "datasets")}
-      ${fact(human(themeRows[th]), "linhas")}
-      ${fact(fmt(ks.length), "chaves")}
+      ${fact(human(themeRows[th]), tr("linhas", "rows"))}
+      ${fact(fmt(ks.length), tr("chaves", "keys"))}
     </div>
-    ${orphans ? `<p class="note">${orphans} destas tabelas não compartilham coluna com nada — não dá pra cruzá-las com o resto do espelho.</p>` : ""}
-    <p class="sec">Chaves mais específicas deste tema</p>
+    ${orphans ? `<p class="note">${orphans} ${tr("destas tabelas não compartilham coluna com nada — não dá pra cruzá-las com o resto do espelho.",
+      "of these tables share no column with anything — they can't be joined with the rest of the mirror.")}</p>` : ""}
+    <p class="sec">${tr("Chaves mais específicas deste tema", "Most specific keys of this theme")}</p>
     <div class="chips">${ks.slice(0, 14).map(ki =>
       `<button class="chip" data-k="${ki}"><i style="background:var(--hub)"></i>${esc(KS[ki].n)}</button>`).join("")}</div>
     <p class="sec">Datasets</p>
@@ -1256,20 +1297,20 @@ function renderTheme(th) {
 
 function renderKey(ki) {
   const K = KS[ki];
-  iKind.textContent = "Chave de junção · " + (G.cats[K.cat] || K.cat);
+  iKind.textContent = tr("Chave de junção · ", "Join key · ") + (G.cats[K.cat] || K.cat);
   iName.textContent = K.n;
   setDesc("");
   const tabs = keyTables[ki].slice().sort((a, b) => TB[b].r - TB[a].r);
   let h = `<div class="facts">
-      ${fact(fmt(K.t), "tabelas")}
+      ${fact(fmt(K.t), tr("tabelas", "tables"))}
       ${fact(fmt(K.d), "datasets")}
-      ${fact(esc(G.cats[K.cat] || K.cat), "categoria")}
-      ${fact(esc(K.ty.join(" / ")), "tipo")}
+      ${fact(esc(G.cats[K.cat] || K.cat), tr("categoria", "category"))}
+      ${fact(esc(K.ty.join(" / ")), tr("tipo", "type"))}
     </div>`;
-  if (K.desc) h += `<p class="note-src">Referência de join${K.ref ? " · " + esc(K.ref) : ""}</p><p class="note">${esc(K.desc)}</p>`;
+  if (K.desc) h += `<p class="note-src">${tr("Referência de join", "Join reference")}${K.ref ? " · " + esc(K.ref) : ""}</p><p class="note">${esc(K.desc)}</p>`;
   if (K.sp && K.sp.length > 1)
-    h += `<p class="sec">Grafias no espelho</p><div class="chips">${K.sp.map(s => `<span class="chip">${esc(s)}</span>`).join("")}</div>`;
-  h += `<p class="sec">Tabelas que carregam esta chave</p><div class="tlist">${
+    h += `<p class="sec">${tr("Grafias no espelho", "Spellings in the mirror")}</p><div class="chips">${K.sp.map(s => `<span class="chip">${esc(s)}</span>`).join("")}</div>`;
+  h += `<p class="sec">${tr("Tabelas que carregam esta chave", "Tables that carry this key")}</p><div class="tlist">${
     tabs.map(ti => `<button data-t="${ti}" title="${esc(DS[TB[ti].ds].n)}.${esc(TB[ti].n)}"><span class="t">${esc(DS[TB[ti].ds].n)}.${esc(TB[ti].n)}</span><span class="r">${human(TB[ti].r)}</span></button>`).join("")
   }</div>`;
   iBody.innerHTML = h;
@@ -1283,17 +1324,18 @@ function renderDs(d) {
   setDesc(D.de);
   const ks = [...dsKeys[d]].sort((a, b) => KS[a].t - KS[b].t);
   iBody.innerHTML = `<div class="facts">
-      ${fact(fmt(D.t), "tabelas")}
-      ${fact(human(D.r), "linhas")}
-      ${fact(fmt(ks.length), "chaves")}
-      ${fact(bytes(dsTables[d].reduce((s, i) => s + TB[i].b, 0)), "em disco")}
+      ${fact(fmt(D.t), tr("tabelas", "tables"))}
+      ${fact(human(D.r), tr("linhas", "rows"))}
+      ${fact(fmt(ks.length), tr("chaves", "keys"))}
+      ${fact(bytes(dsTables[d].reduce((s, i) => s + TB[i].b, 0)), tr("em disco", "on disk"))}
     </div>
     ${fonteDs(D)}
-    <p class="sec">Chaves deste dataset</p>
+    <p class="sec">${tr("Chaves deste dataset", "Keys of this dataset")}</p>
     <div class="chips">${ks.length ? ks.map(ki =>
       `<button class="chip" data-k="${ki}"><i style="background:var(--hub)"></i>${esc(KS[ki].n)}</button>`).join("")
-      : '<span class="note">Nenhuma coluna deste dataset é compartilhada com outro. Ele não liga em nada.</span>'}</div>
-    <p class="sec">Tabelas</p>
+      : `<span class="note">${tr("Nenhuma coluna deste dataset é compartilhada com outro. Ele não liga em nada.",
+        "No column of this dataset is shared with another. It links to nothing.")}</span>`}</div>
+    <p class="sec">${tr("Tabelas", "Tables")}</p>
     <div class="tlist">${dsTables[d].slice().sort((a, b) => TB[b].r - TB[a].r).map(ti =>
       `<button data-t="${ti}" title="${esc(TB[ti].n)}"><span class="t">${esc(TB[ti].n)}</span><span class="r">${human(TB[ti].r)}${TB[ti].ate ? " · " + quando(TB[ti].ate) : ""}</span></button>`).join("")}</div>
     <div id="i-det"></div>`;
@@ -1303,30 +1345,30 @@ function renderDs(d) {
     if (!alvo || !sel || sel.type !== "ds" || sel.i !== d) return;
     const vistos = new Map();
     Object.values(x).forEach(t => (t.gotchas || []).forEach(g => vistos.set(g.id || g.resumo, g)));
-    if (vistos.size) alvo.innerHTML = `<p class="sec">Armadilhas · ${vistos.size}</p>${[...vistos.values()].map(gotchaHtml).join("")}`;
+    if (vistos.size) alvo.innerHTML = `<p class="sec">${tr("Armadilhas", "Pitfalls")} · ${vistos.size}</p>${[...vistos.values()].map(gotchaHtml).join("")}`;
   });
 }
 
 function renderTbl(ti) {
   const T = TB[ti], keys = new Set(T.k.map(x => KS[x].n.toLowerCase()));
-  iKind.textContent = (THEME_SHORT[DS[T.ds].dom] || "Tabela") + " · " + DS[T.ds].n;
+  iKind.textContent = (THEME_SHORT[DS[T.ds].dom] || tr("Tabela", "Table")) + " · " + DS[T.ds].n;
   iName.textContent = T.n;
   setDesc(DS[T.ds].de);
   const kbyname = {};
   T.k.forEach(x => kbyname[KS[x].n.toLowerCase()] = x);
   let h = `<div class="facts">
-      ${fact(human(T.r), "linhas")}
-      ${fact(fmt(T.nc), "colunas")}
-      ${fact(fmt(T.k.length), "chaves")}
-      ${fact(bytes(T.b), "em disco")}
+      ${fact(human(T.r), tr("linhas", "rows"))}
+      ${fact(fmt(T.nc), tr("colunas", "columns"))}
+      ${fact(fmt(T.k.length), tr("chaves", "keys"))}
+      ${fact(bytes(T.b), tr("em disco", "on disk"))}
     </div>`;
-  if (T.ate) h += `<p class="note-src">dados até ${quando(T.ate)}</p>`;
+  if (T.ate) h += `<p class="note-src">${tr("dados até", "data through")} ${quando(T.ate)}</p>`;
   h += `<div id="i-card"></div>`;
-  h += `<p class="sec">Chaves</p><div class="chips">${T.k.length
+  h += `<p class="sec">${tr("Chaves", "Keys")}</p><div class="chips">${T.k.length
     ? T.k.slice().sort((a, b) => KS[a].t - KS[b].t).map(ki =>
         `<button class="chip" data-k="${ki}"><i style="background:var(--hub)"></i>${esc(KS[ki].n)}</button>`).join("")
-    : '<span class="note">Nenhuma. Nada no espelho compartilha coluna com esta tabela.</span>'}</div>`;
-  h += `<p class="sec">Colunas${T.nc > T.c.length ? ` · primeiras ${T.c.length} de ${fmt(T.nc)}` : ""}</p><div class="cols">${
+    : `<span class="note">${tr("Nenhuma. Nada no espelho compartilha coluna com esta tabela.", "None. Nothing in the mirror shares a column with this table.")}</span>`}</div>`;
+  h += `<p class="sec">${tr("Colunas", "Columns")}${T.nc > T.c.length ? tr(` · primeiras ${T.c.length} de ${fmt(T.nc)}`, ` · first ${T.c.length} of ${fmt(T.nc)}`) : ""}</p><div class="cols">${
     T.c.map(([n, ty]) => {
       const ki = kbyname[n.toLowerCase()];
       const isK = ki !== undefined;
@@ -1347,7 +1389,7 @@ function renderTbl(ti) {
       const i = (x.cols[n] = x.cols[n] || {});
       i.cod = c;
     }));
-    alvo.innerHTML = (x.coleta ? `<p class="note-src">coletada em ${quando(x.coleta)}</p>` : "") + detalheTblHtml(x, T);
+    alvo.innerHTML = (x.coleta ? `<p class="note-src">${tr("coletada em", "collected on")} ${quando(x.coleta)}</p>` : "") + detalheTblHtml(x, T);
     // marca as colunas da lista e abre, ao clicar, o código, os nulos e os valores mais frequentes
     iBody.querySelectorAll(".cols .col").forEach(el => {
       const n = el.dataset.col || el.querySelector("span").textContent, info = (x.cols || {})[n];
@@ -1441,7 +1483,7 @@ function ensure3D(cb) {
     const s = document.createElement("script");
     s.src = scripts[i];
     s.onload = () => loadNext(i + 1);
-    s.onerror = () => { document.getElementById("cv3dLoading").textContent = "Falha ao carregar bibliotecas 3D."; };
+    s.onerror = () => { document.getElementById("cv3dLoading").textContent = tr("Falha ao carregar bibliotecas 3D.", "Failed to load the 3D libraries."); };
     document.head.appendChild(s);
   })(0);
 }
@@ -1590,8 +1632,8 @@ function init3D() {
     .backgroundColor(C.ground)
     .nodeId("id")
     .nodeLabel(n => n.kind === "ds"
-      ? `${esc(n.name)} <i>· ${n.tables} tabelas · ${human(n.rows)} linhas</i>`
-      : `${esc(n.name)} <i>· ${n.tables} tabelas · ${n.datasets} datasets</i>`)
+      ? `${esc(n.name)} <i>· ${n.tables} ${tr("tabelas", "tables")} · ${human(n.rows)} ${tr("linhas", "rows")}</i>`
+      : `${esc(n.name)} <i>· ${n.tables} ${tr("tabelas", "tables")} · ${n.datasets} datasets</i>`)
     .nodeVal(n => n.val)
     .nodeRelSize(1.6)
     .nodeColor(n => n.kind === "ds" ? dcol(n.i) : C.hub)
@@ -1715,7 +1757,17 @@ const oPending = [];
 let oNodes = [], oEdges = [], oAnch = {};
 let oT = { x: 0, y: 0, k: 1 }, oAlpha = 1, oRaf = 0;
 const ontoCor = d => O ? `var(--t-${O.dominios[d].cor})` : "var(--hub)";
-const tipoLeg = t => t.replace(/_/g, " ");
+const TIPO_EN = {};
+const tipoLeg = t => (EN && TIPO_EN[t]) || t.replace(/_/g, " ");
+/* /atlas/en: os rótulos em inglês vêm no próprio ontologia.json (nome_en,
+   desc_en, via_en, tipo_en, de docs/context/ontologia.en.yaml); trocam os pt
+   uma vez, na carga. O nome pt fica em nome_pt para a busca achar os dois. */
+function localizaOnto(o) {
+  if (!EN) return;
+  for (const d of Object.values(o.dominios)) if (d.nome_en) d.nome = d.nome_en;
+  for (const c of o.classes) { c.nome_pt = c.nome; c.nome = c.nome_en || c.nome; c.desc = c.desc_en || c.desc; }
+  for (const r of o.relacoes) { r.via = r.via_en || r.via; if (r.tipo_en) TIPO_EN[r.tipo] = r.tipo_en; }
+}
 
 function ensureOnto(cb) {
   if (O) { cb(); return; }
@@ -1727,13 +1779,14 @@ function ensureOnto(cb) {
     ? Promise.resolve(JSON.parse(inline))
     : fetch("ontologia.json", { cache: "no-cache" }).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
   got.then(data => {
+    localizaOnto(data);
     O = data;
     initOnto();
     renderList(document.getElementById("q").value);
     oPending.splice(0).forEach(f => f());
   }).catch(err => {
     oLoading = false;
-    ontoEl.innerHTML = `<text x="40" y="60" fill="var(--ink-2)">Não consegui carregar ontologia.json (${esc(String(err))}).</text>`;
+    ontoEl.innerHTML = `<text x="40" y="60" fill="var(--ink-2)">${tr("Não consegui carregar", "Could not load")} ontologia.json (${esc(String(err))}).</text>`;
   });
 }
 
@@ -1797,7 +1850,7 @@ function initOnto() {
     lines.forEach((ln, j) => {
       svgEl("tspan", { x: 0, dy: j === 0 ? -((lines.length - 1) * fs * 1.1) / 2 + fs * .35 : fs * 1.1 }, t).textContent = ln;
     });
-    svgEl("title", {}, g).textContent = `${n.nome} — ${fmt(n.tabelas)} tabelas, ${n.ds.length} datasets`;
+    svgEl("title", {}, g).textContent = `${n.nome} — ${fmt(n.tabelas)} ${tr("tabelas", "tables")}, ${n.ds.length} datasets`;
     n.g = g;
     ontoDrag(n);
   }
@@ -2012,33 +2065,33 @@ function ontoHighlight() {
 // inspetor: classe e relação, no mesmo painel que dataset e chave usam
 function renderCls(ci) {
   const c = O.classes[ci];
-  iKind.textContent = (c.fato ? "Fato · " : "Entidade · ") + O.dominios[c.dom].nome;
+  iKind.textContent = (c.fato ? tr("Fato · ", "Fact · ") : tr("Entidade · ", "Entity · ")) + O.dominios[c.dom].nome;
   iName.textContent = c.nome;
   setDesc(c.desc);
   const out = oEdges.filter(e => e.de === ci), inn = oEdges.filter(e => e.para === ci && e.de !== ci);
   const rel = (e, dir) => `<button data-or="${e.i}" title="${esc(e.via)}"><span class="t">${dir === "out"
-      ? `${esc(tipoLeg(e.tipo))} → ${esc(e.t.nome)}` : `${esc(e.s.nome)} → ${esc(tipoLeg(e.tipo))}`}</span><span class="r">${e.conceito ? "fora do espelho · " : ""}${esc(e.via)}</span></button>`;
+      ? `${esc(tipoLeg(e.tipo))} → ${esc(e.t.nome)}` : `${esc(e.s.nome)} → ${esc(tipoLeg(e.tipo))}`}</span><span class="r">${e.conceito ? tr("fora do espelho · ", "outside the mirror · ") : ""}${esc(e.via)}</span></button>`;
   let h = `<div class="facts">
-      ${fact(fmt(c.tabelas), "tabelas")}
+      ${fact(fmt(c.tabelas), tr("tabelas", "tables"))}
       ${fact(fmt(c.ds.length), "datasets")}
-      ${fact(human(c.linhas), "linhas")}
-      ${fact(fmt(c.chaves.length), "colunas")}
+      ${fact(human(c.linhas), tr("linhas", "rows"))}
+      ${fact(fmt(c.chaves.length), tr("colunas", "columns"))}
     </div>`;
   if (out.length || inn.length)
-    h += `<p class="sec">Relações</p><div class="tlist rels">${out.map(e => rel(e, "out")).join("")}${inn.map(e => rel(e, "in")).join("")}</div>`;
+    h += `<p class="sec">${tr("Relações", "Relations")}</p><div class="tlist rels">${out.map(e => rel(e, "out")).join("")}${inn.map(e => rel(e, "in")).join("")}</div>`;
   if (c.conceitos.length)
-    h += `<p class="sec">Conceitos de join (bridges.yaml)</p><div class="chips">${c.conceitos.map(([k, t]) =>
+    h += `<p class="sec">${tr("Conceitos de join", "Join concepts")} (bridges.yaml)</p><div class="chips">${c.conceitos.map(([k, t]) =>
       `<span class="chip" title="${esc(t)}">${esc(k)}</span>`).join("")}</div>`;
   // [coluna, nº de tabelas, índice da chave no atlas ou -1]: só as chaves do atlas
   // têm corpo em Temas, as outras ficam como etiqueta
   if (c.chaves.length)
-    h += `<p class="sec">Colunas no espelho · as marcadas abrem em Temas</p><div class="chips">${c.chaves.slice(0, 80).map(([col, n, ki]) =>
-      ki >= 0 ? `<button class="chip" data-k="${ki}" title="${n} tabela${n > 1 ? "s" : ""}"><i style="background:${ontoCor(c.dom)}"></i>${esc(col)}</button>`
-              : `<span class="chip" title="${n} tabela${n > 1 ? "s" : ""}">${esc(col)}</span>`).join("")}</div>
-      ${c.chaves.length > 80 ? `<p class="note">+ ${c.chaves.length - 80} colunas</p>` : ""}`;
+    h += `<p class="sec">${tr("Colunas no espelho · as marcadas abrem em Temas", "Columns in the mirror · the marked ones open in Themes")}</p><div class="chips">${c.chaves.slice(0, 80).map(([col, n, ki]) =>
+      ki >= 0 ? `<button class="chip" data-k="${ki}" title="${n} ${tr("tabela", "table")}${n > 1 ? "s" : ""}"><i style="background:${ontoCor(c.dom)}"></i>${esc(col)}</button>`
+              : `<span class="chip" title="${n} ${tr("tabela", "table")}${n > 1 ? "s" : ""}">${esc(col)}</span>`).join("")}</div>
+      ${c.chaves.length > 80 ? `<p class="note">+ ${c.chaves.length - 80} ${tr("colunas", "columns")}</p>` : ""}`;
   if (c.ds.length)
-    h += `<p class="sec">Datasets que a medem</p><div class="tlist">${c.ds.map(([di, n]) =>
-      `<button data-d="${di}" title="${esc(DS[di].de || "")}"><span class="t">${esc(DS[di].n)}</span><span class="r">${n} tab.</span></button>`).join("")}</div>`;
+    h += `<p class="sec">${tr("Datasets que a medem", "Datasets that measure it")}</p><div class="tlist">${c.ds.map(([di, n]) =>
+      `<button data-d="${di}" title="${esc(DS[di].de || "")}"><span class="t">${esc(DS[di].n)}</span><span class="r">${n} ${tr("tab.", "tbl.")}</span></button>`).join("")}</div>`;
   iBody.innerHTML = h;
   wire();
   iBody.querySelectorAll("[data-or]").forEach(b => b.onclick = () => {
@@ -2049,13 +2102,14 @@ function renderCls(ci) {
 }
 function renderRel(ri) {
   const e = oEdges[ri];
-  iKind.textContent = "Relação" + (e.conceito ? " · fora do espelho" : "");
+  iKind.textContent = tr("Relação", "Relation") + (e.conceito ? tr(" · fora do espelho", " · outside the mirror") : "");
   iName.textContent = `${e.s.nome} — ${tipoLeg(e.tipo)} → ${e.t.nome}`;
   setDesc("");
-  iBody.innerHTML = `<p class="sec">Por onde passa</p><p class="note">${esc(e.via)}</p>
-    ${e.conceito ? '<p class="note">A ligação existe no mundo, mas o dado público não deixa fazê-la: CPF mascarado, microdado desidentificado ou texto livre.</p>' : ""}
-    <p class="sec">Classes</p>
-    <div class="tlist">${[e.s, e.t].map(n => `<button data-oc="${n.i}"><span class="t">${esc(n.nome)}</span><span class="r">${fmt(n.tabelas)} tab.</span></button>`).join("")}</div>`;
+  iBody.innerHTML = `<p class="sec">${tr("Por onde passa", "Where it goes through")}</p><p class="note">${esc(e.via)}</p>
+    ${e.conceito ? `<p class="note">${tr("A ligação existe no mundo, mas o dado público não deixa fazê-la: CPF mascarado, microdado desidentificado ou texto livre.",
+      "The link exists in the world, but the public data does not allow it: masked CPF, de-identified microdata or free text.")}</p>` : ""}
+    <p class="sec">${tr("Classes", "Classes")}</p>
+    <div class="tlist">${[e.s, e.t].map(n => `<button data-oc="${n.i}"><span class="t">${esc(n.nome)}</span><span class="r">${fmt(n.tabelas)} ${tr("tab.", "tbl.")}</span></button>`).join("")}</div>`;
   iBody.querySelectorAll("[data-oc]").forEach(b => b.onclick = () => {
     const n = oNodes[+b.dataset.oc]; select({ type: "cls", i: n.i }); ontoCenter(n);
   });
@@ -2082,9 +2136,14 @@ function syncUrl() {
     if (mode !== DEFAULT_MODE) { u.searchParams.set("mode", mode); changed = true; }
     else if (u.searchParams.has("mode")) { u.searchParams.delete("mode"); changed = true; }
 
-    if (!changed) return;
-    history.replaceState(null, "", u.pathname + u.search + u.hash);
+    if (changed) history.replaceState(null, "", u.pathname + u.search + u.hash);
   } catch (e) { /* sem origem navegável: o atlas funciona, o link é que não */ }
+  linkIdioma();
+}
+/* PT/EN no menu leva junto o que está na tela (?db, ?mode, ?classe) */
+function linkIdioma() {
+  const a = document.querySelector(".lang-switch .lang-link");
+  if (a) a.setAttribute("href", (EN ? "/atlas/" : "/atlas/en") + location.search);
 }
 function openFromUrl() {
   const params = new URLSearchParams(location.search);
@@ -2132,7 +2191,7 @@ const listT = document.getElementById("list-t");
 function renderList(q) {
   q = (q || "").trim().toLowerCase();
   if (!q && mode === "ontologia" && O) {
-    listT.textContent = "Classes";
+    listT.textContent = tr("Classes", "Classes");
     const maxT = Math.max(...O.classes.map(c => c.tabelas));
     listEl.innerHTML = Object.keys(O.dominios).map(d => O.classes.map((c, i) => [c, i]).filter(([c]) => c.dom === d)
       .sort((a, b) => b[0].tabelas - a[0].tabelas).map(([c, i]) =>
@@ -2142,7 +2201,7 @@ function renderList(q) {
         <span class="bar"><i style="width:${Math.max(4, Math.round(c.tabelas / maxT * 100))}%;background:${ontoCor(d)}"></i></span>
         <span class="ct">${c.tabelas}</span></button>`).join("")).join("");
   } else if (!q) {
-    listT.textContent = "Temas";
+    listT.textContent = tr("Temas", "Themes");
     listEl.innerHTML = themeList.map(th => {
       const n = themeTables[th].length;
       const pct = Math.round(n / THEME_MAX * 100);
@@ -2154,20 +2213,20 @@ function renderList(q) {
     }).join("");
   } else {
     const hits = [];
-    if (O) O.classes.forEach((c, i) => { if (c.nome.toLowerCase().includes(q) || c.id.includes(q)) hits.push(["cls", i, c.nome, c.tabelas]); });
+    if (O) O.classes.forEach((c, i) => { if (c.nome.toLowerCase().includes(q) || (c.nome_pt || "").toLowerCase().includes(q) || c.id.includes(q)) hits.push(["cls", i, c.nome, c.tabelas]); });
     KS.forEach((kk, i) => { if (kk.n.toLowerCase().includes(q)) hits.push(["key", i, kk.n, kk.t]); });
     DS.forEach((d, i) => { if (d.n.toLowerCase().includes(q)) hits.push(["ds", i, d.n, d.t]); });
     TB.forEach((t, i) => {
       const full = DS[t.ds].n + "." + t.n;
       if (full.toLowerCase().includes(q)) hits.push(["tbl", i, full, t.k.length]);
     });
-    listT.textContent = hits.length ? `${hits.length} resultado${hits.length > 1 ? "s" : ""}` : "Nada encontrado";
+    listT.textContent = hits.length ? `${hits.length} ${tr("resultado", "result")}${hits.length > 1 ? "s" : ""}` : tr("Nada encontrado", "Nothing found");
     listEl.innerHTML = hits.length ? hits.slice(0, 300).map(([ty, i, label, n]) =>
       `<button class="row" data-${ty === "key" ? "k" : ty === "ds" ? "d" : ty === "cls" ? "oc" : "t"}="${i}">
         <span class="dot" style="background:${ty === "cls" ? ontoCor(O.classes[i].dom) : ty === "key" ? "var(--hub)"
           : ty === "ds" ? `var(--t-${DS[i].dom})` : `var(--t-${DS[TB[i].ds].dom})`}"></span>
         <span class="nm">${esc(label)}</span><span class="ct">${n}</span></button>`).join("")
-      : '<p class="empty">Nenhuma chave, dataset ou tabela com esse nome.</p>';
+      : `<p class="empty">${tr("Nenhuma chave, dataset ou tabela com esse nome.", "No key, dataset or table by that name.")}</p>`;
   }
   listEl.querySelectorAll(".row").forEach(r => {
     r.onclick = () => {
@@ -2250,6 +2309,7 @@ measure();
 resize();
 home(false);
 openFromUrl();
+linkIdioma();
 // canvas text needs the webfont resolved, or the first paint silently falls back
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
 

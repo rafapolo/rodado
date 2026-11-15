@@ -1,0 +1,2352 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Navigable map of the tables in the rodado mirror of Brazilian public data and the join columns that connect them.">
+<link rel="canonical" href="https://rodado.xyz/atlas/en">
+<link rel="alternate" hreflang="pt-br" href="https://rodado.xyz/atlas/">
+<link rel="alternate" hreflang="en" href="https://rodado.xyz/atlas/en">
+<link rel="alternate" hreflang="x-default" href="https://rodado.xyz/atlas/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="rodado">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="https://rodado.xyz/atlas/en">
+<meta property="og:title" content="rodado Atlas: the tables and the keys that link them">
+<meta property="og:description" content="Navigable map of the tables in the rodado mirror of Brazilian public data and the join columns that connect them.">
+<meta property="og:image" content="https://rodado.xyz/assets/og-atlas.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="rodado Atlas">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="rodado Atlas: the tables and the keys that link them">
+<meta name="twitter:description" content="Navigable map of the tables in the rodado mirror of Brazilian public data and the join columns that connect them.">
+<meta name="twitter:image" content="https://rodado.xyz/assets/og-atlas.png">
+<link rel="icon" href="/assets/favicon.ico" sizes="any">
+<link rel="icon" href="/assets/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<script defer src="https://cloud.umami.is/script.js" data-website-id="d2597bf7-73e0-4e7e-b353-1202d9f72b7d"></script>
+<title>Rodado Atlas</title>
+<link rel="preload" href="../assets/fonts/ibm-plex-sans-latin-400-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/site-nav.css">
+
+<style>
+/* IBM Plex servida do próprio site (pages/assets/fonts), não do Google Fonts:
+   o <link> externo bloqueava a renderização. Na cópia autocontida que o
+   build_atlas.py gera para Artifact os caminhos relativos não resolvem e o
+   texto cai para a fonte do sistema — o atlas continua legível. */
+@font-face { font-family: 'IBM Plex Mono'; font-style: normal; font-weight: 400; font-display: swap; src: url(../assets/fonts/ibm-plex-mono-latin-ext-400.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'IBM Plex Mono'; font-style: normal; font-weight: 400; font-display: swap; src: url(../assets/fonts/ibm-plex-mono-latin-400.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'IBM Plex Mono'; font-style: normal; font-weight: 500; font-display: swap; src: url(../assets/fonts/ibm-plex-mono-latin-ext-500.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'IBM Plex Mono'; font-style: normal; font-weight: 500; font-display: swap; src: url(../assets/fonts/ibm-plex-mono-latin-500.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'IBM Plex Mono'; font-style: normal; font-weight: 600; font-display: swap; src: url(../assets/fonts/ibm-plex-mono-latin-ext-600.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'IBM Plex Mono'; font-style: normal; font-weight: 600; font-display: swap; src: url(../assets/fonts/ibm-plex-mono-latin-600.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'IBM Plex Sans'; font-style: normal; font-weight: 400 700; font-display: swap; src: url(../assets/fonts/ibm-plex-sans-latin-ext-400-700.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'IBM Plex Sans'; font-style: normal; font-weight: 400 700; font-display: swap; src: url(../assets/fonts/ibm-plex-sans-latin-400-700.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+:root {
+  color-scheme: light;
+  --ground:  #f4f6f9;
+  --rail:    #ffffff;
+  --card:    #ffffff;
+  --card-2:  #eef1f6;
+  --ink:     #0e1319;
+  --ink-2:   #5a6473;
+  --ink-3:   #8a93a3;
+  --line:    #dfe4ec;
+  --line-2:  #c6cede;
+  --shadow:  0 1px 2px rgba(14,19,25,.06), 0 8px 24px rgba(14,19,25,.07);
+
+  /* Themes. Twelve subjects plus "outros". The eight hues from the site's
+     default categorical palette carry the eight biggest/most central themes
+     (kept from the palette's original eight-domain version — same hues,
+     relabelled); four supplementary muted hues fill the gaps between them
+     for the newer, smaller themes, and outros stays neutral grey. Only the
+     first few clear the all-pairs CVD gate at this count, so the theme
+     layout gives each one a labelled territory and any theme can be
+     isolated in one click — colour reinforces identity here, it never
+     carries it alone. */
+  --t-governo:        #eda100;
+  --t-economia:       #1baf7a;
+  --t-educacao:       #2a78d6;
+  --t-seguranca:      #4a3aa7;
+  --t-saude:          #e34948;
+  --t-meio_ambiente:  #7a9c1e;
+  --t-infraestrutura: #4a5fc4;
+  --t-politica:       #008300;
+  --t-populacao:      #eb6834;
+  --t-territorio:     #e87ba4;
+  --t-cultura_arte:   #9c3fa3;
+  --t-outros:         #b3bcc9;
+  --hub:     #5a6473;
+  --focus:   #2a78d6;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --ground:  #0e1116;
+    --rail:    #12161d;
+    --card:    #171c24;
+    --card-2:  #1e242e;
+    --ink:     #e6eaf1;
+    --ink-2:   #98a2b2;
+    --ink-3:   #6b7484;
+    --line:    #242a34;
+    --line-2:  #39414f;
+    --shadow:  0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+    --t-governo:        #c98500;
+    --t-economia:       #199e70;
+    --t-educacao:       #3987e5;
+    --t-seguranca:      #9085e9;
+    --t-saude:          #e66767;
+    --t-meio_ambiente:  #96b83a;
+    --t-infraestrutura: #7086dd;
+    --t-politica:       #008300;
+    --t-populacao:      #d95926;
+    --t-territorio:     #d55181;
+    --t-cultura_arte:   #c063c7;
+    --t-outros:         #49515e;
+    --hub:     #98a2b2;
+    --focus:   #3987e5;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --ground:  #0e1116;
+  --rail:    #12161d;
+  --card:    #171c24;
+  --card-2:  #1e242e;
+  --ink:     #e6eaf1;
+  --ink-2:   #98a2b2;
+  --ink-3:   #6b7484;
+  --line:    #242a34;
+  --line-2:  #39414f;
+  --shadow:  0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+  --t-governo:        #c98500;
+  --t-economia:       #199e70;
+  --t-educacao:       #3987e5;
+  --t-seguranca:      #9085e9;
+  --t-saude:          #e66767;
+  --t-meio_ambiente:  #96b83a;
+  --t-infraestrutura: #7086dd;
+  --t-politica:       #008300;
+  --t-populacao:      #d95926;
+  --t-territorio:     #d55181;
+  --t-cultura_arte:   #c063c7;
+  --t-outros:         #49515e;
+  --hub:     #98a2b2;
+  --focus:   #3987e5;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: "IBM Plex Sans", -apple-system, "Segoe UI", Arial, sans-serif;
+  font-size: 14px;
+  height: 100dvh;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 296px 1fr;
+  /* o menu do site (assets/site-nav.css) em cima, ocupando as duas colunas */
+  grid-template-rows: auto minmax(0, 1fr);
+}
+body > .site-nav { grid-column: 1 / -1; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 3px; }
+
+/* ── rail ────────────────────────────────────────────────────────── */
+.rail {
+  background: var(--rail);
+  border-right: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  z-index: 3;
+}
+.rail-head { padding: 14px 18px 14px; border-bottom: 1px solid var(--line); }
+.rail-head h1 {
+  margin: 0 0 3px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -.01em;
+}
+.sub { margin: 0; font-size: 12px; color: var(--ink-2); line-height: 1.5; }
+
+.stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); border-bottom: 1px solid var(--line); }
+.stat { background: var(--rail); padding: 10px 18px 11px; text-align: center; }
+.stat b {
+  display: block;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 16px; font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.02em;
+}
+.stat span { font-size: 10.5px; color: var(--ink-3); text-transform: uppercase; letter-spacing: .07em; }
+
+.searchbox { padding: 12px 14px; border-bottom: 1px solid var(--line); }
+#q {
+  width: 100%; padding: 8px 10px;
+  font: 500 13px "IBM Plex Mono", ui-monospace, monospace;
+  color: var(--ink);
+  background: var(--card-2);
+  border: 1px solid var(--line-2);
+  border-radius: 6px;
+}
+#q::placeholder { color: var(--ink-3); font-weight: 400; }
+
+.legend { padding: 13px 18px 14px; border-bottom: 1px solid var(--line); }
+.legend-t, .list-t {
+  font-size: 10.5px; text-transform: uppercase; letter-spacing: .07em;
+  color: var(--ink-3); margin: 0 0 9px;
+}
+.modes { display: flex; flex-direction: row; gap: 6px; }
+.modes button {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  flex: 1 1 0; min-width: 0; text-align: center; cursor: pointer;
+  background: none; border: 1px solid var(--line); border-radius: 6px;
+  padding: 9px 6px; line-height: 1.35;
+}
+.modes button:hover { border-color: var(--line-2); }
+.modes button[aria-pressed="true"] { border-color: var(--focus); background: var(--card-2); }
+.modes svg { width: 17px; height: 17px; flex: none; color: var(--ink-3); }
+.modes button[aria-pressed="true"] svg { color: var(--focus); }
+.modes .nm { display: block; font-size: 12px; font-weight: 500; }
+
+.dot { width: 9px; height: 9px; border-radius: 2.5px; flex: none; }
+
+.list-wrap { flex: 1; min-height: 0; overflow-y: auto; padding: 13px 0 24px; }
+.list-t { padding: 0 18px; }
+.row {
+  display: flex; align-items: center; gap: 8px;
+  width: 100%; background: none; border: 0; cursor: pointer;
+  padding: 4px 18px; text-align: left;
+}
+.row:hover, .row.on { background: var(--card-2); }
+.row .nm {
+  font-family: "IBM Plex Mono", monospace; font-size: 11.5px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.row .bar { margin-left: auto; width: 46px; height: 4px; border-radius: 2px; background: var(--line); flex: none; overflow: hidden; }
+.row .bar i { display: block; height: 100%; border-radius: 2px; }
+.row .ct {
+  font-family: "IBM Plex Mono", monospace; font-size: 10.5px;
+  font-variant-numeric: tabular-nums; color: var(--ink-3);
+  width: 30px; text-align: right; flex: none;
+}
+.empty { padding: 10px 18px; font-size: 12px; color: var(--ink-3); }
+
+/* ── stage ───────────────────────────────────────────────────────── */
+.stage { position: relative; min-width: 0; overflow: hidden; }
+canvas { display: block; width: 100%; height: 100%; cursor: grab; }
+canvas.drag { cursor: grabbing; }
+.cv3d { position: absolute; inset: 0; display: none; cursor: grab; }
+.cv3d canvas { width: 100%; height: 100%; }
+/* modo Ontologia: um SVG próprio no palco, como o 3D tem o seu WebGL */
+.cvonto { position: absolute; inset: 0; width: 100%; height: 100%; display: none; cursor: grab; touch-action: none; user-select: none; }
+.cvonto.panning { cursor: grabbing; }
+.cvonto .oe path { fill: none; stroke: var(--line-2); stroke-width: 1.4; }
+.cvonto .oe.conceito path { stroke-dasharray: 5 4; }
+.cvonto .oe text {
+  font: 500 9.5px "IBM Plex Mono", ui-monospace, monospace; letter-spacing: .02em; fill: var(--ink-2); cursor: pointer;
+  paint-order: stroke; stroke: var(--ground); stroke-width: 4px; stroke-linejoin: round;
+}
+.cvonto .oe.on path { stroke: var(--focus); stroke-width: 2; }
+.cvonto .oe.on text { fill: var(--ink); font-weight: 600; }
+.cvonto .on-arrow { fill: var(--focus); }
+.cvonto .off-arrow { fill: var(--line-2); }
+.cvonto .onode { cursor: pointer; }
+.cvonto .onode circle { stroke-width: 2.5; }
+.cvonto .onode text { fill: #fff; font-weight: 600; font-family: "IBM Plex Sans", sans-serif; text-anchor: middle; pointer-events: none; }
+.cvonto .onode.fato circle { stroke-width: 3.5; }
+.cvonto .onode.sel circle { stroke: var(--ink) !important; stroke-width: 4; }
+.cvonto .onode.pinned circle { stroke-dasharray: 3 2; }
+.cvonto .dim { opacity: .12; }
+.cvonto .gone { display: none; }
+.cv3d-loading {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  color: var(--ink-3); font: 500 13px "IBM Plex Sans", sans-serif; background: var(--ground);
+}
+
+.d3panel { padding: 13px 18px 14px; border-bottom: 1px solid var(--line); }
+.d3toggles { display: flex; gap: 5px; margin-bottom: 13px; }
+.d3toggles button { flex: 1 1 0; }
+.d3toggles button {
+  display: flex; align-items: center; justify-content: center;
+  font: 500 11px "IBM Plex Sans", sans-serif; color: var(--ink-2);
+  background: none; border: 1px solid var(--line); border-radius: 6px;
+  padding: 6px 5px; cursor: pointer; text-align: center;
+}
+.d3toggles button:hover { border-color: var(--line-2); }
+.d3toggles button[aria-pressed="true"] { border-color: var(--focus); background: var(--card-2); color: var(--ink); }
+.slider-row + .slider-row { margin-top: 10px; }
+.slider-row .rl { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+.slider-row label {
+  font-size: 10px; color: var(--ink-3); text-transform: uppercase; letter-spacing: .05em;
+}
+.slider-row .val {
+  font-family: "IBM Plex Mono", monospace; font-size: 11px; color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+.slider-row input[type="range"] { width: 100%; accent-color: var(--focus); display: block; }
+
+.hud {
+  position: absolute; left: 14px; bottom: 14px;
+  display: flex; align-items: stretch; gap: 1px;
+  background: var(--line); border: 1px solid var(--line);
+  border-radius: 7px; overflow: hidden; box-shadow: var(--shadow);
+}
+.hud > * {
+  background: var(--rail); border: 0; padding: 6px 11px;
+  font-family: "IBM Plex Mono", monospace; font-size: 11px;
+  font-variant-numeric: tabular-nums; color: var(--ink-2);
+  display: flex; align-items: center;
+}
+.hud button { cursor: pointer; }
+.hud button:hover { background: var(--card-2); color: var(--ink); }
+#lod { color: var(--ink); font-weight: 500; }
+
+.hint3d {
+  position: absolute; right: 14px; bottom: 14px; z-index: 2;
+  background: var(--rail); border: 1px solid var(--line); border-radius: 7px;
+  box-shadow: var(--shadow); padding: 7px 11px;
+  font-family: "IBM Plex Mono", monospace; font-size: 10.5px; line-height: 1.7;
+  color: var(--ink-2); text-align: right; pointer-events: none;
+}
+
+.tip {
+  position: absolute; pointer-events: none; z-index: 5;
+  background: var(--rail); border: 1px solid var(--line-2);
+  border-radius: 6px; padding: 6px 9px; box-shadow: var(--shadow);
+  font-family: "IBM Plex Mono", monospace; font-size: 11.5px;
+  white-space: nowrap; opacity: 0; transition: opacity .1s;
+}
+.tip.on { opacity: 1; }
+.tip em { font-style: normal; color: var(--ink-3); }
+
+/* ── inspector ───────────────────────────────────────────────────── */
+.insp {
+  position: absolute; top: 0; right: 0; bottom: 0; width: 340px;
+  background: var(--rail); border-left: 1px solid var(--line);
+  display: flex; flex-direction: column;
+  transform: translateX(100%); transition: transform .22s cubic-bezier(.4,0,.2,1);
+  z-index: 4;
+}
+.insp.on { transform: none; }
+.insp-head { padding: 15px 16px 13px; border-bottom: 1px solid var(--line); display: flex; gap: 10px; align-items: flex-start; }
+.insp-head .kind { font-size: 10.5px; text-transform: uppercase; letter-spacing: .07em; color: var(--ink-3); display: block; margin-bottom: 4px; }
+.insp-head h2 {
+  margin: 0; font-family: "IBM Plex Mono", monospace;
+  font-size: 14px; font-weight: 600; line-height: 1.35; word-break: break-word;
+}
+.insp-head > div { min-width: 0; }
+.insp-head .desc {
+  margin: 5px 0 0; font-size: 12px; line-height: 1.45; color: var(--ink-2);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer;
+}
+.insp-head .desc.full { white-space: normal; cursor: auto; }
+.insp-head .desc:empty { display: none; }
+.close { background: none; border: 0; cursor: pointer; font-size: 17px; line-height: 1; color: var(--ink-3); padding: 2px 3px; margin-left: auto; }
+.close:hover { color: var(--ink); }
+.insp-body { flex: 1; overflow-y: auto; padding: 14px 16px 28px; }
+.facts { display: grid; grid-template-columns: 1fr 1fr; gap: 11px 12px; margin-bottom: 15px; }
+.fact b {
+  display: block; font-family: "IBM Plex Mono", monospace;
+  font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums;
+}
+.fact span { font-size: 10.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); }
+.note { font-size: 12.5px; line-height: 1.55; color: var(--ink-2); margin: 0 0 14px; }
+.note-src { font-size: 10.5px; color: var(--ink-3); text-transform: uppercase; letter-spacing: .06em; margin: 0 0 5px; }
+.sec { font-size: 10.5px; text-transform: uppercase; letter-spacing: .07em; color: var(--ink-3); margin: 16px 0 8px; }
+.note-src a { color: inherit; }
+.card { font-size: 12.5px; line-height: 1.55; color: var(--ink-2); }
+.card ul { margin: 0 0 12px; padding-left: 17px; }
+.card li { margin-bottom: 3px; }
+.card code { font-family: "IBM Plex Mono", monospace; font-size: 11.5px; color: var(--ink); }
+/* armadilhas, busca rápida, métricas e marcas de coluna (pages/atlas/detalhes/) */
+.gt { border: 1px solid var(--line); border-left: 3px solid var(--ink-3); border-radius: 6px;
+  padding: 7px 10px; margin-bottom: 7px; font-size: 12.5px; line-height: 1.5; color: var(--ink-2); }
+.gt.silencioso { border-left-color: var(--t-saude); }
+.gt.erro { border-left-color: var(--t-governo); }
+.gt summary { cursor: pointer; color: var(--ink); }
+.gt .sev { font-size: 10px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); margin-right: 6px; }
+.gt p { margin: 6px 0 0; }
+.gt .ver { font-size: 11px; color: var(--ink-3); }
+.mk { font-family: "IBM Plex Mono", monospace; font-size: 9.5px; padding: 0 4px; border-radius: 3px;
+  border: 1px solid var(--line-2); color: var(--ink-2); margin-left: 4px; white-space: nowrap; }
+.mk.div { border-color: var(--t-saude); color: var(--t-saude); }
+.col.tem { cursor: pointer; }
+.col > span:not(.ty):not(.mk) { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.col .ty { flex-shrink: 0; }
+.col.tem:hover { background: var(--card-2); }
+.colinfo { padding: 6px 9px 8px 20px; font-size: 11.5px; line-height: 1.5; color: var(--ink-2);
+  border-bottom: 1px solid var(--line); background: var(--card-2); }
+.colinfo table { border-collapse: collapse; margin-top: 4px; font-family: "IBM Plex Mono", monospace; font-size: 11px; }
+.colinfo td { padding: 1px 10px 1px 0; vertical-align: top; }
+.colinfo td.n { text-align: right; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.cols { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.col {
+  display: flex; align-items: baseline; gap: 8px; padding: 4px 9px;
+  font-family: "IBM Plex Mono", monospace; font-size: 11.5px;
+  border-bottom: 1px solid var(--line);
+}
+.col:last-child { border-bottom: 0; }
+.col.key { background: var(--card-2); }
+.col .ty { margin-left: auto; font-size: 10px; color: var(--ink-3); }
+.col .kd { width: 7px; height: 7px; border-radius: 2px; flex: none; align-self: center; }
+.chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: var(--card-2); border: 1px solid var(--line);
+  border-radius: 5px; padding: 3px 7px; cursor: pointer;
+  font-family: "IBM Plex Mono", monospace; font-size: 11px;
+}
+.chip:hover { border-color: var(--line-2); }
+.chip i { width: 7px; height: 7px; border-radius: 2px; display: block; }
+.tlist { display: flex; flex-direction: column; }
+.tlist button {
+  display: flex; gap: 10px; align-items: baseline;
+  background: none; border: 0; border-bottom: 1px solid var(--line);
+  padding: 5px 2px; cursor: pointer; text-align: left; width: 100%;
+  font-family: "IBM Plex Mono", monospace; font-size: 11.5px;
+}
+.tlist button:hover { color: var(--focus); }
+/* relações da ontologia: o tipo em cima, a coluna por onde passa embaixo */
+.tlist.rels button { flex-direction: column; gap: 2px; align-items: stretch; }
+.tlist.rels .t { white-space: normal; }
+.tlist.rels .r { margin-left: 0; white-space: normal; font-family: "IBM Plex Sans", sans-serif; font-size: 11.5px; }
+.tlist .t { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tlist .r {
+  margin-left: auto; flex: none; white-space: nowrap;
+  font-size: 10.5px; color: var(--ink-3); font-variant-numeric: tabular-nums;
+}
+
+.rail-toggle { display: none; }
+
+@media (max-width: 860px) {
+  body { grid-template-columns: 1fr; }
+  .rail {
+    position: absolute; inset: var(--nav-h, 0px) auto 0 0; width: 296px;  /* abaixo do menu do site */
+    transform: translateX(-100%); transition: transform .22s cubic-bezier(.4,0,.2,1);
+    box-shadow: var(--shadow);
+  }
+  /* Stacking on a narrow screen: the inspector is nearly full width, so both
+     the drawer and its toggle have to sit above it or they become unreachable
+     the moment anything is selected. */
+  .rail { z-index: 5; }
+  .rail.on { transform: none; }
+  /* the toggle sits at the far left, which is under the open drawer */
+  body:has(.rail.on) .rail-toggle { left: 310px; }
+  .insp { top: 54px; }
+  .rail-toggle {
+    display: flex; position: absolute; top: 12px; left: 14px; z-index: 6;
+    background: var(--rail); border: 1px solid var(--line); border-radius: 7px;
+    padding: 7px 12px; cursor: pointer; box-shadow: var(--shadow);
+    font-size: 12px; font-weight: 500;
+  }
+  .insp { width: min(340px, 88vw); }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition-duration: 0s !important; }
+}
+</style>
+</head>
+<body>
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="brand" href="/en">rodado</a>
+    <div class="nav-right">
+      <div class="links">
+        <a href="/analises/">Analyses</a>
+        <a href="/plataformas/en">Platforms</a>
+        <a href="https://xn--2dk.xyz/dataviz/">DataViz</a>
+        <a href="/temas-en/">Topics</a>
+        <a href="/atlas/en">Atlas</a>
+        <a class="mcp-link" href="/mcp-en">MCP</a>
+      </div>
+      <div class="nav-controls">
+        <div class="lang-switch">
+          <a href="/atlas/" class="lang-link">PT</a>
+          <span class="lang-sep">/</span>
+          <span class="lang-current">EN</span>
+        </div>
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle light/dark theme" type="button"><i class="fa-solid fa-moon"></i></button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<aside class="rail" id="rail">
+  <div class="rail-head">
+    <h1>Rodado Atlas</h1>
+    <p class="sub">The tables do not come connected. What links them are columns that hold the same information under different names — a CNPJ, a municipality, a date. Each label marks one of those common points. Dataset descriptions, table cards and pitfalls come from the sources and are in Portuguese.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><b id="s-t">—</b><span>tables</span></div>
+    <div class="stat"><b id="s-d">—</b><span>datasets</span></div>
+    <div class="stat"><b id="s-k">—</b><span>keys</span></div>
+    <div class="stat"><b id="s-e">—</b><span>links</span></div>
+  </div>
+
+  <div class="searchbox">
+    <input id="q" type="search" placeholder="search table, dataset or key" autocomplete="off" spellcheck="false" aria-label="Search">
+  </div>
+
+  <div class="legend">
+    <p class="legend-t">Layout</p>
+    <div class="modes" id="modes"></div>
+  </div>
+
+  <div class="d3panel" id="d3panel" style="display:none">
+    <p class="legend-t">3D graph</p>
+    <div class="d3toggles">
+      <button id="d3-shownodes" aria-pressed="true">show nodes</button>
+    </div>
+    <div class="slider-row">
+      <div class="rl"><label for="d3-width">link thickness</label><span class="val" id="d3-width-v">55</span></div>
+      <input type="range" id="d3-width" min="20" max="260" value="55">
+    </div>
+    <div class="slider-row">
+      <div class="rl"><label for="d3-expand">graph spread</label><span class="val" id="d3-expand-v">220</span></div>
+      <input type="range" id="d3-expand" min="55" max="300" value="220">
+    </div>
+  </div>
+
+  <div class="list-wrap">
+    <p class="list-t" id="list-t">Themes</p>
+    <div id="list"></div>
+  </div>
+</aside>
+
+<div class="stage" id="stage">
+  <button class="rail-toggle" id="railToggle" aria-expanded="false">Panel</button>
+  <canvas id="cv"></canvas>
+  <div id="cv3d" class="cv3d"></div>
+  <div id="cv3dLoading" class="cv3d-loading" style="display:none">loading 3D…</div>
+  <svg id="cvOnto" class="cvonto" aria-label="Ontology: entity classes and relations">
+    <defs>
+      <marker id="oa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="off-arrow" d="M0,0 L10,5 L0,10 z"/></marker>
+      <marker id="oa-on" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="on-arrow" d="M0,0 L10,5 L0,10 z"/></marker>
+    </defs>
+    <g id="oView"><g id="oEdges"></g><g id="oNodes"></g></g>
+  </svg>
+  <div class="tip" id="tip"></div>
+
+  <div class="hud">
+    <button id="zout" title="Zoom out" aria-label="Zoom out">−</button>
+    <div id="zlvl">100%</div>
+    <button id="zin" title="Zoom in" aria-label="Zoom in">+</button>
+    <div id="lod">datasets</div>
+    <button id="reset" title="Show everything">all</button>
+    <button id="home" title="Back to the starting point">home</button>
+  </div>
+
+  <div class="hint3d" id="hint3d" style="display:none">
+    left click + drag → rotate<br>
+    right click + drag → pan<br>
+    scroll → zoom · click a sphere → focus
+  </div>
+
+  <aside class="insp" id="insp" aria-live="polite">
+    <div class="insp-head">
+      <div>
+        <span class="kind" id="i-kind"></span>
+        <h2 id="i-name"></h2>
+        <p class="desc" id="i-desc"></p>
+      </div>
+      <button class="close" id="i-close" aria-label="Close">✕</button>
+    </div>
+    <div class="insp-body" id="i-body"></div>
+  </aside>
+</div>
+
+<script type="application/json" id="graph"></script>
+<script type="application/json" id="ontojson"></script>
+
+<script>
+"use strict";
+/* Idioma: scripts/build_atlas.py troca o marcador por "pt" (/atlas/) ou "en"
+   (/atlas/en). Os rótulos da interface vão em pares tr(pt, en) no próprio
+   ponto de uso; o texto livre dos dados (descrição de dataset, cartão,
+   armadilha) só existe em pt-BR e aparece assim nas duas versões. */
+const EN = "en" === "en";
+const tr = (pt, en) => EN ? en : pt;
+const dec = s => EN ? String(s) : String(s).replace(".", ",");
+/* The graph travels one of two ways. Published as an Artifact the page must be
+   self-contained, so it is inlined above; served from rodado.xyz it is fetched
+   beside the page, which keeps a 630 KB blob out of every commit. */
+{
+  const el = document.getElementById("graph");
+  const inline = el.textContent.trim();
+  if (inline && inline !== "__GRAPH" + "_JSON__") boot(JSON.parse(inline));
+  else fetch("schema_graph.json").then(r => {
+    if (!r.ok) throw new Error(r.status);
+    return r.json();
+  }).then(boot).catch(err => {
+    document.getElementById("stage").innerHTML =
+      '<p style="padding:40px;max-width:34em;line-height:1.6">' + tr("Não consegui carregar ", "Could not load ") +
+      '<code>schema_graph.json</code> (' + err.message + '). ' +
+      tr("O arquivo precisa estar na mesma pasta desta página.", "The file must sit in the same folder as this page.") + '</p>';
+  });
+}
+
+function boot(G) {
+const DS = G.datasets, KS = G.keys, TB = G.tables;
+if (EN) {
+  // nomes de tema e de categoria de chave chegam em pt-BR no schema_graph.json
+  Object.assign(G.domains, {
+    governo: "Government and Public Finance", economia: "Economy", educacao: "Education",
+    seguranca: "Security, Crime, Violence and Conflict", saude: "Health", meio_ambiente: "Environment",
+    infraestrutura: "Infrastructure and Transportation", politica: "Politics", populacao: "Population",
+    territorio: "Territorial Organization", cultura_arte: "Culture and Art", outros: "Other",
+  });
+  Object.assign(G.cats, {
+    municipio: "Municipality", uf: "State (UF)", geo: "Other geography", tempo: "Time",
+    empresa: "Company (CNPJ)", pessoa: "Person (CPF)", educacao: "Education", saude: "Health",
+    governo: "Government", politica: "Politics", classificacao: "Classification",
+    outros: "Other shared columns",
+  });
+}
+
+/* Três vistas do mesmo espelho. `ontologia` (a padrão) sobe um nível: as
+   entidades que as chaves identificam. `temas` põe cada tabela no campo como
+   um corpo, dentro do território do seu tema; `3d` é o grafo dataset↔chave em
+   três dimensões. (A `grade`, cartões de dataset empacotados, saiu a pedido.) */
+const MODES = [
+  ["ontologia", tr("Ontologia", "Ontology"), tr("um nível acima: as entidades que as chaves identificam e como se ligam",
+    "one level up: the entities the keys identify and how they connect")],
+  ["temas", tr("Temas", "Themes"), tr("um território por tema; as chaves flutuam entre os que ligam",
+    "one territory per theme; keys float between the ones they link")],
+  ["3d", "3D", tr("o mesmo grafo dataset↔chave, em três dimensões", "the same dataset↔key graph, in three dimensions")],
+];
+const DEFAULT_MODE = "ontologia";
+let mode = "temas";          // o canvas monta em Temas; o boot troca para a padrão
+const isDisc = () => true;   // o canvas só desenha Temas agora
+let L = G.layout.temas;
+
+/* Themes, in fixed hue order by size (biggest first — matches
+   ATLAS_THEME_ORDER in gera_schema_graph.py); "outros" is neutral on
+   purpose, the one catch-all bucket. THEME_SHORT is the compact label used
+   in tight chrome (map labels, kind badges); G.domains carries the full
+   name (e.g. "Governo e Finanças Públicas") for tooltips and titles. */
+const THEMES = [
+  "governo", "economia", "educacao", "seguranca", "saude", "meio_ambiente",
+  "infraestrutura", "politica", "populacao", "territorio",
+  "cultura_arte", "outros",
+];
+const THEME_SHORT = EN ? {
+  governo: "Government", economia: "Economy", educacao: "Education",
+  seguranca: "Security", saude: "Health", meio_ambiente: "Environment",
+  infraestrutura: "Infrastructure", politica: "Politics",
+  populacao: "Population", territorio: "Territory",
+  cultura_arte: "Culture and Art",
+  outros: "Other",
+} : {
+  governo: "Governo", economia: "Economia", educacao: "Educação",
+  seguranca: "Segurança", saude: "Saúde", meio_ambiente: "Meio Ambiente",
+  infraestrutura: "Infraestrutura", politica: "Política",
+  populacao: "População", territorio: "Território",
+  cultura_arte: "Cultura e Arte",
+  outros: "Outros",
+};
+const themeOf = ti => DS[TB[ti].ds].dom;
+
+/* ── derived indexes ─────────────────────────────────────────────── */
+const dsTables = DS.map(() => []);
+TB.forEach((t, i) => dsTables[t.ds].push(i));
+const keyTables = KS.map(() => []);
+TB.forEach((t, i) => t.k.forEach(k => keyTables[k].push(i)));
+const keyDatasets = KS.map(() => new Set());
+TB.forEach(t => t.k.forEach(k => keyDatasets[k].add(t.ds)));
+
+// dataset -> key edges, deduped: at low zoom the card is the unit
+const dsEdges = [];
+{
+  const seen = new Set();
+  for (const t of TB) for (const k of t.k) {
+    const id = t.ds * 100000 + k;
+    if (!seen.has(id)) { seen.add(id); dsEdges.push([t.ds, k]); }
+  }
+}
+const dsKeys = DS.map(() => new Set());
+dsEdges.forEach(([d, k]) => dsKeys[d].add(k));
+
+// Full-strength theme colour reads as too loud filling a whole card header or
+// disc; a pale wash used to lose the hue entirely (saúde/população/território
+// collapsed to the same pink). This is the middle point for the table bodies.
+const THEME_TONE = 0.62;
+
+/* Edge weight. `ano` reaches 389 tables and `id_escola` 14; letting them draw
+   the same line would say they join equally well. Width and alpha both fall
+   off with reach, so the generic axes read as ghosts. */
+const REACH_MAX = Math.max(...KS.map(k => k.t));
+const weight = k => 1 / Math.sqrt(KS[k].t);
+const W_MIN = Math.min(...KS.map((_, i) => weight(i)));
+const W_MAX = Math.max(...KS.map((_, i) => weight(i)));
+const wNorm = k => (weight(k) - W_MIN) / (W_MAX - W_MIN || 1);
+
+/* ── theme index ─────────────────────────────────────────────────── */
+const themeTables = {}, themeDatasets = {}, themeRows = {};
+TB.forEach((t, i) => {
+  const th = DS[t.ds].dom;
+  (themeTables[th] = themeTables[th] || []).push(i);
+  themeRows[th] = (themeRows[th] || 0) + t.r;
+});
+DS.forEach(d => (themeDatasets[d.dom] = themeDatasets[d.dom] || new Set()).add(d.n));
+const themeList = THEMES.filter(th => themeTables[th])
+  .sort((a, b) => themeTables[b].length - themeTables[a].length);
+const THEME_MAX = Math.max(...themeList.map(th => themeTables[th].length));
+const themeKeys = {};
+themeList.forEach(th => {
+  const set = new Set();
+  themeTables[th].forEach(ti => TB[ti].k.forEach(ki => set.add(ki)));
+  themeKeys[th] = set;
+});
+
+/* ── canvas state ────────────────────────────────────────────────── */
+const cv = document.getElementById("cv");
+const ctx = cv.getContext("2d");
+const stage = document.getElementById("stage");
+const cv3dEl = document.getElementById("cv3d");
+let W = 0, H = 0, dpr = 1;
+let k = 1, tx = 0, ty = 0;
+let hover = null, sel = null;            // {type:"ds"|"key"|"tbl", i, cell?}
+let C = {};
+
+/* ── 3D mode: a third distribution, same dataset↔chave graph, force-laid out
+   in three.js instead of the flat canvas. Lazily loaded — nothing downloaded
+   or built until the visitor actually clicks it. Nodes/links stay fully lit
+   (no dimming, no glassy panels) so it reads as one more view of the same
+   atlas, not a separate dark demo. */
+let graph3d = null, G3 = null, d3Ready = false, d3Loading = false;
+let adj3d = null;   // node id -> Set(neighbour ids), built alongside G3
+const d3Pending = [];
+const d3NodeByDs = new Map(), d3NodeByKey = new Map();
+let edgeWidthMul3d = 0.55, expansion3d = 2.2;
+let firstFit3d = true;
+let expectingRefit3d = false;
+
+function readColors() {
+  const s = getComputedStyle(document.documentElement);
+  const g = n => s.getPropertyValue(n).trim();
+  C = {
+    ground: g("--ground"), card: g("--card"), card2: g("--card-2"),
+    ink: g("--ink"), ink2: g("--ink-2"), ink3: g("--ink-3"),
+    line: g("--line"), line2: g("--line-2"), focus: g("--focus"),
+    hub: g("--hub"),
+  };
+  C.t = {};
+  THEMES.forEach(th => C.t[th] = g("--t-" + th));
+}
+const tcol = ti => C.t[themeOf(ti)] || C.t.outros;
+const dcol = di => C.t[DS[di].dom] || C.t.outros;
+// a key spans themes, so it is drawn as structure, not as a category
+const gcol = () => C.hub;
+
+function resize() {
+  dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const r = stage.getBoundingClientRect();
+  W = r.width; H = r.height;
+  cv.width = Math.round(W * dpr);
+  cv.height = Math.round(H * dpr);
+  if (graph3d) graph3d.width(W).height(H);
+  draw();
+}
+
+/* ── world bounds & view ─────────────────────────────────────────── */
+let bounds = null;
+function measure() {
+  let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+  const add = (x, y, w, h) => {
+    x0 = Math.min(x0, x - w / 2); y0 = Math.min(y0, y - h / 2);
+    x1 = Math.max(x1, x + w / 2); y1 = Math.max(y1, y + h / 2);
+  };
+  P.tb.forEach(([x, y, r]) => add(x, y, r * 2, r * 2));
+  P.keys.forEach(([x, y, r]) => add(x, y, r * 2, r * 2));
+  const m = 80;
+  bounds = { x0: x0 - m, y0: y0 - m, x1: x1 + m, y1: y1 + m };
+}
+
+function fit(animate) {
+  const kk = Math.min(W / (bounds.x1 - bounds.x0), H / (bounds.y1 - bounds.y0)) * 0.96;
+  goTo((bounds.x0 + bounds.x1) / 2, (bounds.y0 + bounds.y1) / 2, kk, animate);
+}
+/* O ponto de partida é o espelho inteiro; o zoom é que desce às tabelas. */
+function home(animate) {
+  return fit(animate);
+}
+function goTo(cx, cy, kk, animate) {
+  kk = Math.max(0.06, Math.min(9, kk));
+  const nx = W / 2 - cx * kk, ny = H / 2 - cy * kk;
+  if (!animate || reduced()) { k = kk; tx = nx; ty = ny; draw(); return; }
+  const k0 = k, x0 = tx, y0 = ty, t0 = performance.now(), D = 480;
+  (function step(now) {
+    const p = Math.min(1, (now - t0) / D);
+    const e = ease(p);
+    k = k0 + (kk - k0) * e; tx = x0 + (nx - x0) * e; ty = y0 + (ny - y0) * e;
+    draw();
+    if (p < 1) requestAnimationFrame(step);
+  })(t0);
+}
+const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+const ease = p => p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+
+/* ── mode switching ────────────────────────────────────────────────── */
+let P = { tb: [], keys: [] };   // live positions in the table-body layout
+let fade = 1;
+
+function setMode(next) {
+  if (next === mode) return;
+  const goingTo3D = next === "3d", leaving3D = mode === "3d";
+  const goingToOnto = next === "ontologia", leavingOnto = mode === "ontologia";
+  if (leavingOnto && sel && (sel.type === "cls" || sel.type === "rel")) { sel = null; insp.classList.remove("on"); }
+  mode = next;
+  syncUrl();
+  renderList(document.getElementById("q").value);
+  document.querySelectorAll("[data-mode]").forEach(b =>
+    b.setAttribute("aria-pressed", String(b.dataset.mode === mode)));
+  document.getElementById("d3panel").style.display = goingTo3D ? "" : "none";
+  document.getElementById("hint3d").style.display = goingTo3D ? "block" : "none";
+  document.getElementById("zlvl").style.display = goingTo3D || goingToOnto ? "none" : "";
+  document.getElementById("lod").style.display = goingTo3D || goingToOnto ? "none" : "";
+
+  // Ontologia: outra camada, como o 3D — o canvas some, o SVG aparece
+  if (leavingOnto) { ontoEl.style.display = "none"; ontoStop(); }
+  if (goingToOnto) {
+    cv.style.display = "none";
+    cv3dEl.style.display = "none";
+    if (graph3d) graph3d.pauseAnimation();
+    ontoEl.style.display = "block";
+    ensureOnto(() => { ontoFit(); ontoHighlight(); });
+    return;
+  }
+
+  // Grade/Temas redraw the same flat canvas; 3D is a whole other renderer
+  // living in its own layer — swap which one is visible and stop there.
+  // 3d-force-graph runs its own rAF loop regardless of visibility, so it is
+  // explicitly paused/resumed too — otherwise it burns CPU/battery hidden
+  // behind the 2D canvas for as long as the tab stays open.
+  if (goingTo3D) {
+    cv.style.display = "none";
+    cv3dEl.style.display = "block";
+    ensure3D(() => { init3D(); if (graph3d) graph3d.resumeAnimation(); });
+    return;
+  }
+  if (leaving3D || leavingOnto) {
+    cv3dEl.style.display = "none";
+    cv.style.display = "block";
+    if (graph3d) graph3d.pauseAnimation();
+  }
+
+  // back on the flat canvas: cross-fade and reframe
+  measure();
+  if (reduced()) { fade = 1; home(false); return; }
+  fade = 0;
+  home(false);
+  const t0 = performance.now();
+  (function step(now) {
+    fade = Math.min(1, (now - t0) / 260);
+    draw();
+    if (fade < 1) requestAnimationFrame(step);
+  })(t0);
+}
+
+const toWorld = (px, py) => [(px - tx) / k, (py - ty) / k];
+
+/* ── level of detail ─────────────────────────────────────────────── */
+// Zoom is the interface: the same layout answers a different question at each
+// depth, so nothing is hidden behind a click.
+const LOD = () => k < 0.9 ? 0 : 1;
+const LOD_NAME = [tr("chaves", "keys"), tr("tabelas", "tables")];
+
+/* ── highlight sets ──────────────────────────────────────────────── */
+function activeSet() {
+  const a = sel || hover;
+  if (!a) return null;
+  if (a.type === "theme") {
+    const tbls = new Set(themeTables[a.th]);
+    const dss = new Set();
+    themeTables[a.th].forEach(ti => dss.add(TB[ti].ds));
+    return { keys: themeKeys[a.th], tbls, dss };
+  }
+  if (a.type === "key") return { keys: new Set([a.i]), tbls: new Set(keyTables[a.i]), dss: keyDatasets[a.i] };
+  if (a.type === "ds") return { keys: dsKeys[a.i], tbls: new Set(dsTables[a.i]), dss: new Set([a.i]) };
+  const t = TB[a.i];
+  return { keys: new Set(t.k), tbls: new Set([a.i]), dss: new Set([t.ds]) };
+}
+
+/* ── drawing ─────────────────────────────────────────────────────── */
+const fmt = n => n.toLocaleString(EN ? "en-US" : "pt-BR");
+function human(n) {
+  if (n >= 1e9) return dec((n / 1e9).toFixed(n >= 1e10 ? 0 : 1)) + tr(" bi", " bn");
+  if (n >= 1e6) return dec((n / 1e6).toFixed(n >= 1e7 ? 0 : 1)) + tr(" mi", " M");
+  if (n >= 1e3) return (n / 1e3).toFixed(0) + tr(" mil", "k");
+  return String(n);
+}
+function bytes(n) {
+  if (!n) return "—";
+  const u = ["B", "KB", "MB", "GB", "TB"];
+  let i = 0; while (n >= 1024 && i < u.length - 1) { n /= 1024; i++; }
+  return dec(n.toFixed(n >= 100 || i === 0 ? 0 : 1)) + " " + u[i];
+}
+function roundRect(x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+// clip a centre-to-centre segment at the card border so connectors touch, not cross
+function edgePoint(cx, cy, w, h, tx2, ty2) {
+  const dx = tx2 - cx, dy = ty2 - cy;
+  if (!dx && !dy) return [cx, cy];
+  const sx = dx ? (w / 2) / Math.abs(dx) : Infinity;
+  const sy = dy ? (h / 2) / Math.abs(dy) : Infinity;
+  const s = Math.min(sx, sy);
+  return [cx + dx * s, cy + dy * s];
+}
+
+function draw() {
+  if (mode === "3d" || mode === "ontologia") return;   // these layers render themselves
+  const act = activeSet();
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.fillStyle = C.ground;
+  ctx.fillRect(0, 0, W, H);
+  ctx.save();
+  ctx.globalAlpha = fade;
+  ctx.translate(tx, ty);
+  ctx.scale(k, k);
+  drawDiscs(act);
+  ctx.restore();
+
+  document.getElementById("zlvl").textContent = Math.round(k * 100) + "%";
+  document.getElementById("lod").textContent =
+    LOD_NAME[LOD()];
+}
+
+/* ── disc layouts: every table is a body ─────────────────────────────
+   Radius is log(rows) — row counts run from 0 to 6,6 bilhões, so a linear
+   radius would draw all but a handful of tables as the same dot. */
+function drawDiscs(act) {
+  const vx0 = -tx / k, vy0 = -ty / k, vx1 = (W - tx) / k, vy1 = (H - ty) / k;
+  const near = (x, y, r) => x + r > vx0 && x - r < vx1 && y + r > vy0 && y - r < vy1;
+
+  /* edges */
+  ctx.lineCap = "round";
+  for (let ti = 0; ti < TB.length; ti++) {
+    const t = TB[ti];
+    if (!t.k.length) continue;
+    const [ax, ay] = P.tb[ti];
+    for (const ki of t.k) {
+      const [bx, by] = P.keys[ki];
+      if (!near((ax + bx) / 2, (ay + by) / 2, Math.hypot(bx - ax, by - ay) / 2)) continue;
+      const lit = !!act && act.tbls.has(ti) && act.keys.has(ki);
+      const w = wNorm(ki);
+      ctx.strokeStyle = lit ? tcol(ti) : C.line2;
+      ctx.globalAlpha = lit ? (0.55 + 0.4 * w) : (act ? 0.045 : 0.09 + 0.4 * w);
+      ctx.lineWidth = ((lit ? 1.4 : 0.7) + 1.4 * w) / k;
+      ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(bx, by); ctx.stroke();
+    }
+  }
+  ctx.globalAlpha = 1;
+
+  /* tables */
+  for (let ti = 0; ti < TB.length; ti++) {
+    const [x, y, r] = P.tb[ti];
+    if (!near(x, y, r + 2)) continue;
+    const lit = !act || act.tbls.has(ti);
+    const isSel = sel && sel.type === "tbl" && sel.i === ti;
+    ctx.globalAlpha = lit ? THEME_TONE : 0.16;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, 6.2832);
+    if (TB[ti].k.length) { ctx.fillStyle = tcol(ti); ctx.fill(); }
+    else {
+      // joins nothing: hollow, so the gap in the structure stays visible
+      ctx.fillStyle = C.card; ctx.fill();
+      ctx.strokeStyle = tcol(ti); ctx.lineWidth = 1.6 / k; ctx.stroke();
+    }
+    if (isSel) { ctx.strokeStyle = C.ink; ctx.lineWidth = 2.5 / k; ctx.stroke(); }
+  }
+  ctx.globalAlpha = 1;
+
+  /* key hubs, on top of what they hold together */
+  for (let ki = 0; ki < KS.length; ki++) {
+    const [x, y, r] = P.keys[ki];
+    if (!near(x, y, r)) continue;
+    const lit = !act || act.keys.has(ki);
+    const isSel = sel && sel.type === "key" && sel.i === ki;
+    ctx.globalAlpha = lit ? 1 : 0.2;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, 6.2832);
+    ctx.fillStyle = C.hub;
+    ctx.fill();
+    ctx.strokeStyle = isSel ? C.ink : C.ground;
+    ctx.lineWidth = (isSel ? 3 : 1.6) / k;
+    ctx.stroke();
+  }
+  ctx.globalAlpha = 1;
+
+  /* Territory names first — in the theme layout they are the primary label,
+     so they claim their space before any key or table can take it. */
+  if (mode === "temas" && L.themes) {
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    for (const th of themeList) {
+      const box = L.themes[th];
+      if (!box) continue;
+      const [x, y, r] = box;
+      if (!near(x, y, r)) continue;
+      const lit = !act || (sel && sel.type === "theme" && sel.th === th) ||
+                  (hover && hover.type === "theme" && hover.th === th);
+      const fs = Math.max(15, Math.min(46, r * 0.24));
+      if (fs * k < 7) continue;
+      ctx.font = `700 ${fs}px "IBM Plex Sans", sans-serif`;
+      ctx.globalAlpha = lit ? 0.5 : 0.16;
+      ctx.fillStyle = C.t[th] || C.t.outros;
+      ctx.fillText((THEME_SHORT[th] || th).toUpperCase(), x, y - r - fs * 0.75);
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  /* Labels last, and only where one fits. In the dense core a dozen key names
+     land on the same 40 world px; drawn blindly they overprint into noise.
+     Claim space in priority order instead — highlighted first, then by reach,
+     then the tables — and drop whatever no longer has room. */
+  const taken = [];
+  const claim = (x, y, w, h) => {
+    for (const b of taken)
+      if (Math.abs(x - b[0]) * 2 < w + b[2] && Math.abs(y - b[1]) * 2 < h + b[3]) return false;
+    taken.push([x, y, w, h]);
+    return true;
+  };
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+
+  const keyOrder = KS.map((_, i) => i)
+    .filter(ki => near(P.keys[ki][0], P.keys[ki][1], P.keys[ki][2] + 30))
+    .sort((a, b) => ((act && act.keys.has(b)) - (act && act.keys.has(a))) || KS[b].t - KS[a].t);
+
+  for (const ki of keyOrder) {
+    const [x, y, r] = P.keys[ki];
+    const lit = !act || act.keys.has(ki);
+    const inside = r > 26;
+    const fs = inside ? Math.min(15, r * 0.42) : 11;
+    if (fs * k < 4.5) continue;
+    ctx.font = `600 ${fs}px "IBM Plex Mono", monospace`;
+    const tw = ctx.measureText(KS[ki].n).width;
+    const ly = inside ? y : y + r + 9;
+    // a label inside its own disc never collides with anything
+    if (!inside && !claim(x, ly, tw + 6, fs + 4)) continue;
+    if (inside) taken.push([x, ly, tw + 6, fs + 4]);
+    ctx.globalAlpha = lit ? 1 : 0.2;
+    ctx.fillStyle = inside ? C.ground : C.ink;
+    ctx.fillText(KS[ki].n, x, ly);
+    if (inside && r > 42) {
+      ctx.font = `500 ${fs * 0.62}px "IBM Plex Sans", sans-serif`;
+      ctx.globalAlpha = (lit ? 1 : 0.2) * 0.8;
+      ctx.fillText(KS[ki].t + tr(" tabelas", " tables"), x, y + fs * 0.95);
+    }
+  }
+
+  if (LOD() >= 1) {
+    ctx.font = '500 9px "IBM Plex Mono", monospace';
+    const tblOrder = TB.map((_, i) => i)
+      .filter(ti => near(P.tb[ti][0], P.tb[ti][1], P.tb[ti][2] + 40))
+      .sort((a, b) => ((act && act.tbls.has(b)) - (act && act.tbls.has(a))) || TB[b].r - TB[a].r);
+    for (const ti of tblOrder) {
+      const [x, y, r] = P.tb[ti];
+      const tw = ctx.measureText(TB[ti].n).width;
+      const ly = y + r + 7;
+      if (!claim(x, ly, tw + 5, 12)) continue;
+      const lit = !act || act.tbls.has(ti);
+      ctx.globalAlpha = lit ? (act ? 1 : 0.75) : 0.12;
+      ctx.fillStyle = C.ink2;
+      ctx.fillText(TB[ti].n, x, ly);
+    }
+  }
+  ctx.globalAlpha = 1;
+  ctx.textAlign = "left";
+}
+
+/* ── hit testing ─────────────────────────────────────────────────── */
+function hit(px, py) {
+  const [wx, wy] = toWorld(px, py);
+  // keys first: they are drawn on top, so they win the click
+  let best = null, bd = Infinity;
+  for (let ki = 0; ki < KS.length; ki++) {
+    const [x, y, r] = P.keys[ki];
+    const d = Math.hypot(wx - x, wy - y);
+    if (d <= r && d < bd) { bd = d; best = { type: "key", i: ki }; }
+  }
+  if (best) return best;
+  bd = Infinity;
+  for (let ti = 0; ti < TB.length; ti++) {
+    const [x, y, r] = P.tb[ti];
+    // a generous target: the smallest discs are 3px in world units
+    const d = Math.hypot(wx - x, wy - y);
+    if (d <= Math.max(r, 7 / k) && d < bd) { bd = d; best = { type: "tbl", i: ti }; }
+  }
+  return best;
+}
+
+/* ── interaction ─────────────────────────────────────────────────── */
+let dragging = false, moved = false, lx = 0, ly = 0;
+cv.addEventListener("pointerdown", e => {
+  dragging = true; moved = false; lx = e.clientX; ly = e.clientY;
+  cv.setPointerCapture(e.pointerId); cv.classList.add("drag");
+});
+cv.addEventListener("pointermove", e => {
+  const r = cv.getBoundingClientRect();
+  if (dragging) {
+    const dx = e.clientX - lx, dy = e.clientY - ly;
+    if (Math.abs(dx) + Math.abs(dy) > 3) moved = true;
+    tx += dx; ty += dy; lx = e.clientX; ly = e.clientY;
+    draw();
+    return;
+  }
+  const h = hit(e.clientX - r.left, e.clientY - r.top);
+  const same = h && hover && h.type === hover.type && h.i === hover.i;
+  if (!same) { hover = h; draw(); }
+  showTip(h, e.clientX - r.left, e.clientY - r.top);
+});
+cv.addEventListener("pointerup", e => {
+  dragging = false; cv.classList.remove("drag");
+  if (moved) return;
+  const r = cv.getBoundingClientRect();
+  const h = hit(e.clientX - r.left, e.clientY - r.top);
+  select(h);
+});
+cv.addEventListener("pointerleave", () => { hover = null; hideTip(); draw(); });
+cv.addEventListener("wheel", e => {
+  e.preventDefault();
+  const r = cv.getBoundingClientRect();
+  const mx = e.clientX - r.left, my = e.clientY - r.top;
+  const f = Math.exp(-e.deltaY * (e.ctrlKey ? 0.01 : 0.0022));
+  const nk = Math.max(0.06, Math.min(9, k * f));
+  tx = mx - (mx - tx) * (nk / k);
+  ty = my - (my - ty) * (nk / k);
+  k = nk;
+  draw();
+}, { passive: false });
+
+const tip = document.getElementById("tip");
+function showTip(h, x, y) {
+  if (!h) return hideTip();
+  let html = "";
+  if (h.type === "key") html = `${KS[h.i].n} <em>· ${KS[h.i].t} ${tr("tabelas", "tables")}</em>`;
+  else if (h.type === "ds") html = `${DS[h.i].n} <em>· ${DS[h.i].t} ${tr("tabelas", "tables")}</em>`;
+  else html = `${DS[TB[h.i].ds].n}.${TB[h.i].n} <em>· ${human(TB[h.i].r)} ${tr("linhas", "rows")}</em>`;
+  tip.innerHTML = html;
+  tip.classList.add("on");
+  const w = tip.offsetWidth, hh = tip.offsetHeight;
+  tip.style.left = Math.min(W - w - 8, Math.max(8, x + 14)) + "px";
+  tip.style.top = Math.max(8, y - hh - 10) + "px";
+}
+const hideTip = () => tip.classList.remove("on");
+
+/* ── inspector ───────────────────────────────────────────────────── */
+const insp = document.getElementById("insp");
+const iKind = document.getElementById("i-kind");
+const iName = document.getElementById("i-name");
+const iBody = document.getElementById("i-body");
+const iDesc = document.getElementById("i-desc");
+iDesc.addEventListener("click", () => iDesc.classList.add("full"));
+/* uma linha de descrição sob o nome; o clique mostra o texto inteiro */
+function setDesc(t) {
+  iDesc.textContent = t || "";
+  iDesc.title = t || "";
+  iDesc.classList.remove("full");
+}
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+function select(h) {
+  sel = h;
+  syncUrl();
+  if (mode === "3d") {
+    if (!h) clearSelect3D();
+    else if (h.type === "ds") selectNode3D(d3NodeByDs.get(h.i));
+    else if (h.type === "key") selectNode3D(d3NodeByKey.get(h.i));
+    else if (h.type === "tbl") selectNode3D(d3NodeByDs.get(TB[h.i].ds));
+    else clearSelect3D();   // theme: no single 3D node stands for it
+  }
+  if (mode === "ontologia") ontoHighlight();
+  if (!h) { insp.classList.remove("on"); draw(); return; }
+  if (h.type === "theme") renderTheme(h.th);
+  else if (h.type === "cls") renderCls(h.i);
+  else if (h.type === "rel") renderRel(h.i);
+  else if (h.type === "key") renderKey(h.i);
+  else if (h.type === "ds") renderDs(h.i);
+  else renderTbl(h.i);
+  insp.classList.add("on");
+  document.querySelectorAll(".row").forEach(r => r.classList.toggle("on",
+    (h.type === "theme" && r.dataset.th === h.th) ||
+    (h.type === "key" && +r.dataset.k === h.i) ||
+    (h.type === "cls" && +r.dataset.oc === h.i)));
+  draw();
+}
+const fact = (v, l) => `<div class="fact"><b>${v}</b><span>${l}</span></div>`;
+
+/* "dados até": a data do dado mais recente, do mesmo jeito que a página do MCP
+   (2026 · ago/2026 · 21/09/2026) */
+const MESES = (EN ? "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec" : "jan fev mar abr mai jun jul ago set out nov dez").split(" ");
+function quando(s) {
+  const m = /^(\d{4})(?:-(\d{2})(?:-(\d{2}))?)?$/.exec(s || "");
+  if (!m) return s || "";
+  if (!m[2]) return m[1];
+  if (EN) return m[3] ? `${MESES[+m[2] - 1]} ${+m[3]}, ${m[1]}` : `${MESES[+m[2] - 1]} ${m[1]}`;
+  return m[3] ? `${m[3]}/${m[2]}/${m[1]}` : `${MESES[+m[2] - 1]}/${m[1]}`;
+}
+function fonteDs(D) {
+  const nome = D.fn ? esc(D.fn) : "";
+  const fonte = D.fn ? (D.fu ? `<a href="${esc(D.fu)}" target="_blank" rel="noopener">${nome}</a>` : nome) : "";
+  const partes = [fonte, D.ate ? tr("dados até ", "data through ") + quando(D.ate) : ""].filter(Boolean);
+  return partes.length ? `<p class="note-src">${partes.join(" · ")}</p>` : "";
+}
+
+/* cartão da tabela (grão, chave, tempo, medidas, uso): o mesmo JSON que a página
+   do MCP carrega, buscado só quando a tabela é aberta */
+const cartoes = {};
+const NATUREZA = EN ? { retrato_atual: "current snapshot", serie_anual: "annual series", serie_mensal: "monthly series",
+  serie_diaria: "daily series", serie_de_periodos: "series of periods", sem_tempo: "no time dimension", soma_de_retratos: "stack of snapshots" }
+  : { retrato_atual: "retrato atual", serie_anual: "série anual", serie_mensal: "série mensal",
+  serie_diaria: "série diária", serie_de_periodos: "série de períodos", sem_tempo: "sem tempo", soma_de_retratos: "soma de retratos" };
+function cartaoDe(ds) {
+  if (!cartoes[ds]) cartoes[ds] = fetch(`/assets/summaries/${encodeURIComponent(ds)}.json`)
+    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .catch(e => { delete cartoes[ds]; throw e; });
+  return cartoes[ds];
+}
+function cartaoHtml(c) {
+  let h = "";
+  if (c.g) h += `<p class="sec">${tr("Uma linha é", "One row is")}</p><p>${esc(c.g)}</p>`;
+  const meta = [];
+  if (c.c) meta.push(`<li>${tr("chave", "key")}: ${esc(c.c)}</li>`);
+  if (c.tp) meta.push(`<li>${esc(NATUREZA[c.tp[0]] || c.tp[0])}${c.tp[2] ? ", " + esc(c.tp[2]) : ""}</li>`);
+  if (meta.length) h += `<ul>${meta.join("")}</ul>`;
+  if (c.m) h += `<p class="sec">${tr("Medidas", "Measures")}</p><ul>${c.m.map(m => {
+    const extra = [m[1], m[2] ? tr("unidade: ", "unit: ") + m[2] : "", m[3] ? tr("não some", "do not sum") : ""].filter(Boolean).join("; ");
+    return `<li>${m[0] ? `<code>${esc(m[0])}</code>` : ""}${extra ? " — " + esc(extra) : ""}</li>`;
+  }).join("")}</ul>`;
+  if (c.u) h += `<p class="sec">${tr("Use para", "Use for")}</p><p>${esc(c.u)}</p>`;
+  if (c.nu) h += `<p class="sec">${tr("Não use para", "Do not use for")}</p><p>${esc(c.nu)}</p>`;
+  return h ? `<div class="card">${h}</div>` : "";
+}
+
+/* o que describe_table do MCP diz da tabela: gerado por gera_schema_graph.py em
+   detalhes/<dataset>.json, buscado quando o painel abre */
+const detalhes = {};
+function detalhesDe(ds) {
+  if (!detalhes[ds]) detalhes[ds] = fetch(`detalhes/${encodeURIComponent(ds)}.json`)
+    .then(r => r.ok ? r.json() : {}).catch(() => ({}));
+  return detalhes[ds];
+}
+const SEV = EN ? { silencioso: "silent", erro: "errors out", aviso: "warning" } : { silencioso: "silencioso", erro: "dá erro", aviso: "aviso" };
+const gotchaHtml = g => `<details class="gt ${esc(g.severidade || "")}"><summary><span class="sev">${esc(SEV[g.severidade] || g.severidade || "")}</span>${esc(g.resumo || g.id)}</summary>${
+  g.detalhe ? `<p>${esc(g.detalhe)}</p>` : ""}${g.colunas ? `<p>${tr("colunas", "columns")}: ${g.colunas.map(c => `<code>${esc(c)}</code>`).join(", ")}</p>` : ""}${
+  g.verificado ? `<p class="ver">${tr("medido", "measured")}: ${esc(g.verificado)}</p>` : ""}</details>`;
+const MARCA = EN ? { dic: ["dic", "has a dictionary: the meaning of the codes is in <dataset>.dicionario"],
+  div: ["varies", "this column's code changes from one dataset to another"],
+  cod: ["code", "meaning of the codes researched (column_codes.yaml)"] }
+  : { dic: ["dic", "tem dicionário: o significado dos códigos está em <dataset>.dicionario"],
+  div: ["varia", "o código desta coluna muda de um dataset para outro"],
+  cod: ["cód", "significado dos códigos pesquisado (column_codes.yaml)"] };
+function marcas(info) {
+  return ["dic", "cod", "div"].filter(k => info[k]).map(k =>
+    `<span class="mk ${k}" title="${esc(MARCA[k][1])}">${MARCA[k][0]}</span>`).join("");
+}
+function colinfoHtml(info) {
+  let h = "";
+  if (info.cod) h += `<div>${info.cod.status === "pendente" ? `<b>${tr("pesquisado, não confirmado", "researched, not confirmed")}:</b> ` : ""}${esc(info.cod.significado || "")}</div>${info.cod.valores ? `<table>${
+    Object.entries(info.cod.valores).map(([k, v]) => `<tr><td>${esc(k === "" ? "''" : k)}</td><td>${esc(v)}</td></tr>`).join("")}</table>` : ""}${
+    info.cod.nota ? `<div>${esc(info.cod.nota)}</div>` : ""}`;
+  if (info.div) h += `<div>${esc(info.div)}</div>`;
+  if (info.dic) h += tr(`<div>decodifique com <code>dicionario</code> desta tabela, filtrando <code>nome_coluna</code>.</div>`,
+    `<div>decode with this table's <code>dicionario</code>, filtering on <code>nome_coluna</code>.</div>`);
+  if (info.nul) h += `<div>${dec(info.nul)}% ${tr("nulos", "null")}</div>`;
+  if (info.top) h += `<div>${tr("mais frequentes (na amostra do perfil)", "most frequent (in the profile sample)")}:</div><table>${
+    info.top.map(([v, n]) => `<tr><td>${esc(v === null ? "NULL" : v)}</td><td class="n">${fmt(n)}</td></tr>`).join("")}</table>`;
+  return h;
+}
+function detalheTblHtml(x, T) {
+  let h = "";
+  if (x.gotchas) h += `<p class="sec">${tr("Armadilhas", "Pitfalls")}</p>${x.gotchas.map(gotchaHtml).join("")}`;
+  if (x.busca) h += `<p class="sec">${tr("Busca rápida", "Fast lookup")}</p><p class="note">${tr("Ordenada por", "Sorted by")} <code>${esc(x.busca.coluna)}</code>${
+    x.busca.por_ano ? tr(" dentro de cada <code>ano</code>", " within each <code>ano</code>") : ""}${
+    tr(": filtrar por ela responde em segundos no db.rodado.xyz.", ": filtering on it answers in seconds on db.rodado.xyz.")}${
+    x.busca.por_ano ? tr(" Filtre também por <code>ano</code>.", " Filter on <code>ano</code> too.") : ""}</p>`;
+  if (x.metricas) h += `<p class="sec">${tr("Métricas prontas", "Ready-made metrics")}</p><div class="card"><ul>${x.metricas.map(m =>
+    `<li><code>${esc(m.nome)}</code> — ${esc(m.description || "")}${m.unit ? ` (${esc(m.unit)})` : ""}: <code>${esc(m.expression || "")}</code>${
+      m.required_filters ? `; ${tr("filtre por", "filter on")} ${m.required_filters.map(f => `<code>${esc(f)}</code>`).join(", ")}` : ""}</li>`).join("")}</ul></div>`;
+  const cols = Object.entries(x.cols || {}).filter(([, i]) => i.dic || i.div || i.cod);
+  if (cols.length) {
+    const ordem = i => i.div ? 0 : i.cod ? 1 : 2;
+    cols.sort((a, b) => ordem(a[1]) - ordem(b[1]));
+    const mostra = cols.slice(0, 15);
+    h += `<p class="sec">${tr("Colunas com código", "Coded columns")} · ${fmt(cols.length)}</p><div class="cols">${mostra.map(([n, i]) =>
+      `<div class="col tem" data-col="${esc(n)}"><span>${esc(n)}</span><span class="ty">${marcas(i)}</span></div>`).join("")}</div>${
+      cols.length > mostra.length ? `<p class="note">${tr(`e mais ${fmt(cols.length - mostra.length)}; as marcas aparecem também na lista de colunas.`,
+      `and ${fmt(cols.length - mostra.length)} more; the marks also show in the column list.`)}</p>` : ""}`;
+  }
+  return h;
+}
+function abreColuna(el, info) {
+  const prox = el.nextElementSibling;
+  if (prox && prox.classList.contains("colinfo")) { prox.remove(); return; }
+  el.insertAdjacentHTML("afterend", `<div class="colinfo">${colinfoHtml(info)}</div>`);
+}
+
+function renderTheme(th) {
+  const ts = themeTables[th];
+  iKind.textContent = tr("Tema", "Theme");
+  iName.textContent = G.domains[th] || th;
+  setDesc("");
+  const ks = [...themeKeys[th]].sort((a, b) => KS[a].t - KS[b].t);
+  const dss = [...new Set(ts.map(ti => TB[ti].ds))].sort((a, b) => DS[b].r - DS[a].r);
+  const orphans = ts.filter(ti => !TB[ti].k.length).length;
+  iBody.innerHTML = `<div class="facts">
+      ${fact(fmt(ts.length), tr("tabelas", "tables"))}
+      ${fact(fmt(dss.length), "datasets")}
+      ${fact(human(themeRows[th]), tr("linhas", "rows"))}
+      ${fact(fmt(ks.length), tr("chaves", "keys"))}
+    </div>
+    ${orphans ? `<p class="note">${orphans} ${tr("destas tabelas não compartilham coluna com nada — não dá pra cruzá-las com o resto do espelho.",
+      "of these tables share no column with anything — they can't be joined with the rest of the mirror.")}</p>` : ""}
+    <p class="sec">${tr("Chaves mais específicas deste tema", "Most specific keys of this theme")}</p>
+    <div class="chips">${ks.slice(0, 14).map(ki =>
+      `<button class="chip" data-k="${ki}"><i style="background:var(--hub)"></i>${esc(KS[ki].n)}</button>`).join("")}</div>
+    <p class="sec">Datasets</p>
+    <div class="tlist">${dss.map(di =>
+      `<button data-d="${di}" title="${esc(DS[di].n)}"><span class="t">${esc(DS[di].n)}</span><span class="r">${DS[di].t} · ${human(DS[di].r)}</span></button>`).join("")}</div>`;
+  wire();
+}
+
+function renderKey(ki) {
+  const K = KS[ki];
+  iKind.textContent = tr("Chave de junção · ", "Join key · ") + (G.cats[K.cat] || K.cat);
+  iName.textContent = K.n;
+  setDesc("");
+  const tabs = keyTables[ki].slice().sort((a, b) => TB[b].r - TB[a].r);
+  let h = `<div class="facts">
+      ${fact(fmt(K.t), tr("tabelas", "tables"))}
+      ${fact(fmt(K.d), "datasets")}
+      ${fact(esc(G.cats[K.cat] || K.cat), tr("categoria", "category"))}
+      ${fact(esc(K.ty.join(" / ")), tr("tipo", "type"))}
+    </div>`;
+  if (K.desc) h += `<p class="note-src">${tr("Referência de join", "Join reference")}${K.ref ? " · " + esc(K.ref) : ""}</p><p class="note">${esc(K.desc)}</p>`;
+  if (K.sp && K.sp.length > 1)
+    h += `<p class="sec">${tr("Grafias no espelho", "Spellings in the mirror")}</p><div class="chips">${K.sp.map(s => `<span class="chip">${esc(s)}</span>`).join("")}</div>`;
+  h += `<p class="sec">${tr("Tabelas que carregam esta chave", "Tables that carry this key")}</p><div class="tlist">${
+    tabs.map(ti => `<button data-t="${ti}" title="${esc(DS[TB[ti].ds].n)}.${esc(TB[ti].n)}"><span class="t">${esc(DS[TB[ti].ds].n)}.${esc(TB[ti].n)}</span><span class="r">${human(TB[ti].r)}</span></button>`).join("")
+  }</div>`;
+  iBody.innerHTML = h;
+  wire();
+}
+
+function renderDs(d) {
+  const D = DS[d];
+  iKind.textContent = "Dataset · " + (THEME_SHORT[D.dom] || D.dom);
+  iName.textContent = D.n;
+  setDesc(D.de);
+  const ks = [...dsKeys[d]].sort((a, b) => KS[a].t - KS[b].t);
+  iBody.innerHTML = `<div class="facts">
+      ${fact(fmt(D.t), tr("tabelas", "tables"))}
+      ${fact(human(D.r), tr("linhas", "rows"))}
+      ${fact(fmt(ks.length), tr("chaves", "keys"))}
+      ${fact(bytes(dsTables[d].reduce((s, i) => s + TB[i].b, 0)), tr("em disco", "on disk"))}
+    </div>
+    ${fonteDs(D)}
+    <p class="sec">${tr("Chaves deste dataset", "Keys of this dataset")}</p>
+    <div class="chips">${ks.length ? ks.map(ki =>
+      `<button class="chip" data-k="${ki}"><i style="background:var(--hub)"></i>${esc(KS[ki].n)}</button>`).join("")
+      : `<span class="note">${tr("Nenhuma coluna deste dataset é compartilhada com outro. Ele não liga em nada.",
+        "No column of this dataset is shared with another. It links to nothing.")}</span>`}</div>
+    <p class="sec">${tr("Tabelas", "Tables")}</p>
+    <div class="tlist">${dsTables[d].slice().sort((a, b) => TB[b].r - TB[a].r).map(ti =>
+      `<button data-t="${ti}" title="${esc(TB[ti].n)}"><span class="t">${esc(TB[ti].n)}</span><span class="r">${human(TB[ti].r)}${TB[ti].ate ? " · " + quando(TB[ti].ate) : ""}</span></button>`).join("")}</div>
+    <div id="i-det"></div>`;
+  wire();
+  detalhesDe(D.n).then(x => {
+    const alvo = document.getElementById("i-det");
+    if (!alvo || !sel || sel.type !== "ds" || sel.i !== d) return;
+    const vistos = new Map();
+    Object.values(x).forEach(t => (t.gotchas || []).forEach(g => vistos.set(g.id || g.resumo, g)));
+    if (vistos.size) alvo.innerHTML = `<p class="sec">${tr("Armadilhas", "Pitfalls")} · ${vistos.size}</p>${[...vistos.values()].map(gotchaHtml).join("")}`;
+  });
+}
+
+function renderTbl(ti) {
+  const T = TB[ti], keys = new Set(T.k.map(x => KS[x].n.toLowerCase()));
+  iKind.textContent = (THEME_SHORT[DS[T.ds].dom] || tr("Tabela", "Table")) + " · " + DS[T.ds].n;
+  iName.textContent = T.n;
+  setDesc(DS[T.ds].de);
+  const kbyname = {};
+  T.k.forEach(x => kbyname[KS[x].n.toLowerCase()] = x);
+  let h = `<div class="facts">
+      ${fact(human(T.r), tr("linhas", "rows"))}
+      ${fact(fmt(T.nc), tr("colunas", "columns"))}
+      ${fact(fmt(T.k.length), tr("chaves", "keys"))}
+      ${fact(bytes(T.b), tr("em disco", "on disk"))}
+    </div>`;
+  if (T.ate) h += `<p class="note-src">${tr("dados até", "data through")} ${quando(T.ate)}</p>`;
+  h += `<div id="i-card"></div>`;
+  h += `<p class="sec">${tr("Chaves", "Keys")}</p><div class="chips">${T.k.length
+    ? T.k.slice().sort((a, b) => KS[a].t - KS[b].t).map(ki =>
+        `<button class="chip" data-k="${ki}"><i style="background:var(--hub)"></i>${esc(KS[ki].n)}</button>`).join("")
+    : `<span class="note">${tr("Nenhuma. Nada no espelho compartilha coluna com esta tabela.", "None. Nothing in the mirror shares a column with this table.")}</span>`}</div>`;
+  h += `<p class="sec">${tr("Colunas", "Columns")}${T.nc > T.c.length ? tr(` · primeiras ${T.c.length} de ${fmt(T.nc)}`, ` · first ${T.c.length} of ${fmt(T.nc)}`) : ""}</p><div class="cols">${
+    T.c.map(([n, ty]) => {
+      const ki = kbyname[n.toLowerCase()];
+      const isK = ki !== undefined;
+      return `<div class="col${isK ? " key" : ""}">${isK ? `<i class="kd" style="background:var(--hub)"></i>` : ""}<span>${esc(n)}</span><span class="ty">${esc(ty)}</span></div>`;
+    }).join("")}</div>`;
+  h += `<div id="i-det"></div>`;   // armadilhas e procedência ficam no fim do painel
+  iBody.innerHTML = h;
+  wire();
+  cartaoDe(DS[T.ds].n).then(d => {
+    const c = (d.t || []).find(x => x.n === T.n), alvo = document.getElementById("i-card");
+    if (c && alvo && sel && sel.type === "tbl" && sel.i === ti) alvo.innerHTML = cartaoHtml(c);
+  }, () => {});   // dataset sem cartão, ou atlas aberto fora do site: fica sem
+  detalhesDe(DS[T.ds].n).then(todos => {
+    const x = todos[T.n], alvo = document.getElementById("i-det");
+    if (!x || !alvo || !sel || sel.type !== "tbl" || sel.i !== ti) return;
+    (x.codigos || []).forEach(c => (c.colunas || []).forEach(n => {
+      x.cols = x.cols || {};
+      const i = (x.cols[n] = x.cols[n] || {});
+      i.cod = c;
+    }));
+    alvo.innerHTML = (x.coleta ? `<p class="note-src">${tr("coletada em", "collected on")} ${quando(x.coleta)}</p>` : "") + detalheTblHtml(x, T);
+    // marca as colunas da lista e abre, ao clicar, o código, os nulos e os valores mais frequentes
+    iBody.querySelectorAll(".cols .col").forEach(el => {
+      const n = el.dataset.col || el.querySelector("span").textContent, info = (x.cols || {})[n];
+      if (!info || !(info.dic || info.div || info.cod || info.top || info.nul)) return;
+      el.classList.add("tem");
+      if (!el.dataset.col) el.querySelector(".ty").insertAdjacentHTML("beforebegin", marcas(info));
+      el.onclick = () => abreColuna(el, info);
+    });
+  });
+}
+
+function wire() {
+  iBody.querySelectorAll("[data-k]").forEach(b =>
+    b.onclick = () => { const ki = +b.dataset.k; select({ type: "key", i: ki }); flyKey(ki); });
+  iBody.querySelectorAll("[data-t]").forEach(b =>
+    b.onclick = () => { const ti = +b.dataset.t; select({ type: "tbl", i: ti }); flyTbl(ti); });
+  iBody.querySelectorAll("[data-d]").forEach(b =>
+    b.onclick = () => { const di = +b.dataset.d; select({ type: "ds", i: di }); flyDs(di); });
+}
+document.getElementById("i-close").onclick = () => select(null);
+addEventListener("keydown", e => { if (e.key === "Escape") select(null); });
+
+function flyKey(ki) {
+  if (mode === "ontologia") setMode("temas");   // descer da ontologia ao mapa físico
+  if (mode === "3d") { fly3D(d3NodeByKey.get(ki)); return; }
+  const [x, y] = P.keys[ki];
+  goTo(x, y, Math.max(k, 0.55), true);
+}
+function flyTbl(ti) {
+  if (mode === "ontologia") setMode("temas");   // descer da ontologia ao mapa físico
+  if (mode === "3d") { fly3D(d3NodeByDs.get(TB[ti].ds)); return; }
+  const [x, y] = P.tb[ti];
+  goTo(x, y, Math.max(k, 1.1), true);
+}
+function flyTheme(th) {
+  if (mode === "ontologia") setMode("temas");   // descer da ontologia ao mapa físico
+  const ts = themeTables[th];
+  if (mode === "3d") {
+    let x = 0, y = 0, z = 0, n = 0;
+    const seen = new Set();
+    ts.forEach(ti => {
+      const di = TB[ti].ds;
+      if (seen.has(di)) return;
+      seen.add(di);
+      const nd = d3NodeByDs.get(di);
+      if (nd && nd.x !== undefined) { x += nd.x; y += nd.y; z += nd.z; n++; }
+    });
+    if (!n || !graph3d) return;
+    x /= n; y /= n; z /= n;
+    const dist = 220, ratio = 1 + dist / Math.hypot(x || 1e-6, y || 1e-6, z || 1e-6);
+    graph3d.cameraPosition({ x: x * ratio, y: y * ratio, z: z * ratio }, { x, y, z }, 1200);
+    return;
+  }
+  if (mode === "temas" && L.themes && L.themes[th]) {
+    const [x, y, r] = L.themes[th];
+    goTo(x, y, Math.min(9, Math.max(0.3, Math.min(W, H) / (r * 4.5))), true);
+    return;
+  }
+  let x = 0, y = 0;
+  ts.forEach(ti => { x += P.tb[ti][0]; y += P.tb[ti][1]; });
+  goTo(x / ts.length, y / ts.length, Math.max(k, 0.5), true);
+}
+function flyDs(d, animate = true) {
+  if (mode === "ontologia") setMode("temas");   // descer da ontologia ao mapa físico
+  if (mode === "3d") { fly3D(d3NodeByDs.get(d)); return; }
+  const ts = dsTables[d];               // no dataset body — frame its tables
+  let x = 0, y = 0;
+  ts.forEach(ti => { x += P.tb[ti][0]; y += P.tb[ti][1]; });
+  goTo(x / ts.length, y / ts.length, Math.max(k, 0.9), animate);
+}
+
+/* ── 3D mode ─────────────────────────────────────────────────────── */
+function ensure3D(cb) {
+  if (d3Ready) { cb(); return; }
+  d3Pending.push(cb);
+  if (d3Loading) return;
+  d3Loading = true;
+  document.getElementById("cv3dLoading").style.display = "flex";
+  const scripts = [
+    "https://unpkg.com/three@0.160.0/build/three.min.js",
+    "https://unpkg.com/three-spritetext@1.8.2/dist/three-spritetext.min.js",
+    "https://unpkg.com/3d-force-graph@1.73.3/dist/3d-force-graph.min.js",
+  ];
+  (function loadNext(i) {
+    if (i >= scripts.length) {
+      d3Ready = true; d3Loading = false;
+      document.getElementById("cv3dLoading").style.display = "none";
+      d3Pending.splice(0).forEach(fn => fn());
+      return;
+    }
+    const s = document.createElement("script");
+    s.src = scripts[i];
+    s.onload = () => loadNext(i + 1);
+    s.onerror = () => { document.getElementById("cv3dLoading").textContent = tr("Falha ao carregar bibliotecas 3D.", "Failed to load the 3D libraries."); };
+    document.head.appendChild(s);
+  })(0);
+}
+
+// Same dataset↔chave bipartite graph the Grade/Temas edges already draw —
+// just built once here in the shape 3d-force-graph wants. Datasets that share
+// no key with anything (dsKeys empty) are left out: nothing to connect them.
+function build3DGraph() {
+  const nodes = [], links = [];
+  DS.forEach((d, i) => {
+    if (!dsKeys[i].size) return;
+    nodes.push({ id: "d" + i, kind: "ds", i, name: d.n, val: 2.4 + Math.log10(Math.max(d.r, 1)) * 0.85, tables: d.t, rows: d.r });
+  });
+  KS.forEach((kk, i) => {
+    if (!keyDatasets[i].size) return;
+    nodes.push({ id: "k" + i, kind: "key", i, name: kk.n, val: 1.5 + Math.log10(Math.max(kk.t, 1)) * 0.7, tables: kk.t, datasets: kk.d });
+  });
+  dsEdges.forEach(([d, ki]) => {
+    links.push({ source: "d" + d, target: "k" + ki, name: KS[ki].n, dsIndex: d, wn: wNorm(ki), lbl: KS[ki].t <= 8 });
+  });
+  nodes.forEach(n => (n.kind === "ds" ? d3NodeByDs : d3NodeByKey).set(n.i, n));
+  adj3d = new Map();
+  links.forEach(l => {
+    if (!adj3d.has(l.source)) adj3d.set(l.source, new Set());
+    if (!adj3d.has(l.target)) adj3d.set(l.target, new Set());
+    adj3d.get(l.source).add(l.target);
+    adj3d.get(l.target).add(l.source);
+  });
+  return { nodes, links };
+}
+
+function fly3D(node) {
+  if (!node || node.x === undefined || !graph3d) return;
+  const dist = 90, ratio = 1 + dist / Math.hypot(node.x || 1e-6, node.y || 1e-6, node.z || 1e-6);
+  graph3d.cameraPosition({ x: node.x * ratio, y: node.y * ratio, z: node.z * ratio }, node, 1200);
+}
+
+function dollyCamera3D(factor) {
+  const p = graph3d.camera().position;
+  graph3d.cameraPosition({ x: p.x * factor, y: p.y * factor, z: p.z * factor }, undefined, 400);
+}
+
+// Hovering a theme row dims everything outside it, same instinct as the
+// hover highlight Grade/Temas already do on the flat canvas — this is a
+// momentary UI cue, not the old always-on transparency that was removed.
+//
+// This dims by fading the COLOR toward the background, not by lowering
+// opacity. 3d-force-graph caches node/link materials keyed only by colour —
+// two requests for the same colour hex at different opacities collide, and
+// the second is silently dropped, so nothing visibly dims. A faded colour is
+// a distinct cache key, so it always gets its own material.
+//
+// refresh() also purges and rebuilds the custom label sprites (they are in
+// its own purge list), so the label's dim state has to be read by the
+// factory when it (re)builds the sprite — mutating an existing sprite right
+// before calling refresh() would just get thrown away by the rebuild.
+let hoverThemeId = null;
+// Clicking a node pins the same dim treatment to it and its direct
+// neighbours, until the background (or i-close/Escape/reset) clears it via
+// select(null). Theme hover, being momentary, takes priority while active.
+let selectedNode3D = null;   // node id ("d"+i / "k"+i), or null
+const EMPTY_SET = new Set();
+const nodeDimmed = n => {
+  if (hoverThemeId) return !(n.kind === "ds" ? DS[n.i].dom === hoverThemeId : themeKeys[hoverThemeId] && themeKeys[hoverThemeId].has(n.i));
+  if (selectedNode3D) return !(n.id === selectedNode3D || (adj3d.get(selectedNode3D) || EMPTY_SET).has(n.id));
+  return false;
+};
+// Shared by applyDim3D (link colour) and the link-label sprite (link opacity).
+const linkOn3D = l => {
+  if (hoverThemeId) return DS[l.dsIndex].dom === hoverThemeId;
+  if (selectedNode3D) {
+    const sid = typeof l.source === "object" ? l.source.id : l.source;
+    const tid = typeof l.target === "object" ? l.target.id : l.target;
+    const near = id => id === selectedNode3D || (adj3d.get(selectedNode3D) || EMPTY_SET).has(id);
+    return near(sid) && near(tid);
+  }
+  return true;
+};
+function fadeToward(hex, bg, ratio) {
+  const h = hex.replace("#", ""), b = bg.replace("#", "");
+  const mix = (i) => Math.round(parseInt(h.substr(i, 2), 16) + (parseInt(b.substr(i, 2), 16) - parseInt(h.substr(i, 2), 16)) * ratio)
+    .toString(16).padStart(2, "0");
+  return "#" + mix(0) + mix(2) + mix(4);
+}
+
+// Single place that paints node/link colour from whichever of the two dim
+// sources (theme hover, node selection) is currently active — so clearing
+// one correctly falls back to the other instead of wiping both.
+function applyDim3D() {
+  if (!graph3d || !G3) return;
+  graph3d.nodeColor(n => {
+    const base = n.kind === "ds" ? dcol(n.i) : C.hub;
+    return nodeDimmed(n) ? fadeToward(base, C.ground, 0.88) : base;
+  });
+  graph3d.linkColor(l => linkOn3D(l) ? dcol(l.dsIndex) : fadeToward(dcol(l.dsIndex), C.ground, 0.9));
+  refreshGraph3D();
+}
+
+function selectNode3D(node) {
+  if (!node) return;
+  selectedNode3D = node.id;
+  hoverThemeId = null;
+  applyDim3D();
+}
+function clearSelect3D() {
+  if (!selectedNode3D) return;
+  selectedNode3D = null;
+  applyDim3D();
+}
+function hoverTheme3D(th) {
+  hoverThemeId = th;
+  applyDim3D();
+}
+function clearHover3D() {
+  if (!hoverThemeId) return;
+  hoverThemeId = null;
+  applyDim3D();
+}
+
+// refresh() applies changed accessors (colour, curvature, width) by purging
+// and rebuilding the three.js objects — which is also, incidentally, enough
+// to make the physics engine report itself "stopped" again, refiring
+// onEngineStop. That handler is guarded by expectingRefit3d for exactly this
+// reason: without it, hovering a theme row would silently re-trigger a
+// zoomToFit and visibly dolly the camera. refresh() itself doesn't move the
+// camera; it just wakes up code that otherwise would.
+let nodesVisible3d = true;
+function refreshGraph3D() {
+  if (!graph3d) return;
+  graph3d.refresh();
+  applyNodeVisibility3D();
+}
+function applyNodeVisibility3D() {
+  if (!G3) return;
+  G3.nodes.forEach(n => {
+    if (n.__threeObj && n.__threeObj.material) n.__threeObj.material.opacity = nodesVisible3d ? 1 : 0;
+  });
+}
+
+function init3D() {
+  if (graph3d) { graph3d.width(W).height(H); return; }
+  G3 = build3DGraph();
+  graph3d = ForceGraph3D()(cv3dEl)
+    .width(W).height(H)
+    .graphData(G3)
+    .backgroundColor(C.ground)
+    .nodeId("id")
+    .nodeLabel(n => n.kind === "ds"
+      ? `${esc(n.name)} <i>· ${n.tables} ${tr("tabelas", "tables")} · ${human(n.rows)} ${tr("linhas", "rows")}</i>`
+      : `${esc(n.name)} <i>· ${n.tables} ${tr("tabelas", "tables")} · ${n.datasets} datasets</i>`)
+    .nodeVal(n => n.val)
+    .nodeRelSize(1.6)
+    .nodeColor(n => n.kind === "ds" ? dcol(n.i) : C.hub)
+    .nodeOpacity(1)
+    // A per-node function here silently breaks the sphere geometry: unlike
+    // nodeVal/nodeColor, this field isn't passed through the library's
+    // accessor-normalizer, so a function gets used directly as the segment
+    // count for THREE.SphereGeometry — producing a degenerate, zero-vertex
+    // (invisible) sphere. Must stay a constant.
+    .nodeResolution(12)
+    .linkColor(l => dcol(l.dsIndex))
+    .linkOpacity(1)
+    .linkWidth(l => (0.35 + 1.8 * l.wn) * edgeWidthMul3d)
+    .linkCurvature(0.28)
+    .warmupTicks(40)
+    .cooldownTime(6000)
+    .showNavInfo(false)
+    .onNodeClick(node => {
+      select(node.kind === "ds" ? { type: "ds", i: node.i } : { type: "key", i: node.i });
+      fly3D(node);
+    })
+    .onBackgroundClick(() => select(null))
+    .onNodeHover(node => { cv3dEl.style.cursor = node ? "pointer" : "grab"; });
+
+  graph3d.d3Force("charge").strength(-34 * expansion3d).distanceMax(240 * expansion3d);
+  graph3d.d3Force("link").distance(l => (14 + 34 * (1 - l.wn)) * expansion3d);
+
+  // node label sprites — dark ink on the light ground, a light halo (not a
+  // dark one) so text still pops where lines cross behind it
+  graph3d.nodeThreeObject(node => {
+    const isDs = node.kind === "ds";
+    const sprite = new SpriteText(node.name);
+    sprite.color = isDs ? C.ink : C.ink2;
+    sprite.fontFace = "IBM Plex Mono, monospace";
+    sprite.fontWeight = isDs ? "600" : "500";
+    sprite.textHeight = isDs ? Math.min(3.6, 1.9 + node.val * 0.22) : 1.55;
+    sprite.strokeWidth = isDs ? 0.35 : 0.22;
+    sprite.strokeColor = C.ground;
+    sprite.position.y = Math.cbrt(node.val) * 3.4 + (isDs ? 3 : 2);
+    sprite.material.transparent = true;
+    sprite.material.opacity = nodeDimmed(node) ? 0.12 : 1;
+    node.__label = sprite;
+    return sprite;
+  }).nodeThreeObjectExtend(true);
+
+  graph3d.linkThreeObjectExtend(true);
+  graph3d.linkThreeObject(link => {
+    if (!link.lbl) return null;
+    const sprite = new SpriteText(link.name);
+    sprite.color = C.ink3;
+    sprite.fontFace = "IBM Plex Mono, monospace";
+    sprite.textHeight = 1.15;
+    sprite.material.transparent = true;
+    sprite.material.opacity = linkOn3D(link) ? 1 : 0.05;
+    link.__label = sprite;
+    return sprite;
+  });
+  graph3d.linkPositionUpdate((sprite, { start, end }) => {
+    if (!sprite) return;
+    sprite.position.x = (start.x + end.x) / 2;
+    sprite.position.y = (start.y + end.y) / 2;
+    sprite.position.z = (start.z + end.z) / 2;
+  });
+
+  // First settle lands the camera inside the cluster; an explicit reheat
+  // (the expansion slider) fits the whole shape afterward, since that is the
+  // point. onEngineStop refires on its own any time refresh() purges/rebuilds
+  // objects — colour hover, the curve toggle, the width slider all call it —
+  // so it can't unconditionally zoomToFit every time it fires, or hovering a
+  // theme row would visibly dolly the camera. expectingRefit is only raised
+  // right before a genuine d3ReheatSimulation() call.
+  graph3d.onEngineStop(() => {
+    if (firstFit3d) {
+      firstFit3d = false;
+      graph3d.zoomToFit(0, 40);
+      const cam = graph3d.camera(), dist = cam.position.length() * 0.55;
+      const dir = cam.position.clone().normalize();
+      graph3d.cameraPosition({ x: dir.x * dist, y: dir.y * dist, z: dir.z * dist }, { x: 0, y: 0, z: 0 }, 900);
+    } else if (expectingRefit3d) {
+      expectingRefit3d = false;
+      graph3d.zoomToFit(700, 40);
+    }
+  });
+
+  const controls3d = graph3d.controls();
+  controls3d.autoRotate = false;
+  controls3d.autoRotateSpeed = 0.55;
+
+  document.getElementById("d3-shownodes").onclick = e => {
+    nodesVisible3d = !nodesVisible3d;
+    e.currentTarget.setAttribute("aria-pressed", String(nodesVisible3d));
+    applyNodeVisibility3D();
+  };
+  document.getElementById("d3-width").oninput = e => {
+    edgeWidthMul3d = +e.target.value / 100;
+    document.getElementById("d3-width-v").textContent = e.target.value;
+    refreshGraph3D();
+  };
+  document.getElementById("d3-expand").oninput = e => {
+    expansion3d = +e.target.value / 100;
+    document.getElementById("d3-expand-v").textContent = e.target.value;
+    graph3d.d3Force("charge").strength(-34 * expansion3d).distanceMax(240 * expansion3d);
+    graph3d.d3Force("link").distance(l => (14 + 34 * (1 - l.wn)) * expansion3d);
+    expectingRefit3d = true;
+    graph3d.d3ReheatSimulation();
+  };
+}
+
+/* ── modo Ontologia ──────────────────────────────────────────────────
+   Um nível acima das outras três distribuições: em vez de tabela → chave,
+   as CLASSES de entidade que as chaves identificam (Município,
+   Estabelecimento, Pessoa, Licitação…) e as relações entre elas, num grafo
+   de forças no estilo Neo4j. Fonte: docs/context/ontologia.yaml, gerado por
+   scripts/gera_ontologia.ts em ontologia.json — carregado só no primeiro
+   clique, como o 3D. Chaves e datasets vêm como índices do schema_graph, então
+   clicar numa coluna ou num dataset desce direto para Temas. */
+const ontoEl = document.getElementById("cvOnto");
+const oView = document.getElementById("oView");
+let O = null, oLoading = false;
+const oPending = [];
+let oNodes = [], oEdges = [], oAnch = {};
+let oT = { x: 0, y: 0, k: 1 }, oAlpha = 1, oRaf = 0;
+const ontoCor = d => O ? `var(--t-${O.dominios[d].cor})` : "var(--hub)";
+const TIPO_EN = {};
+const tipoLeg = t => (EN && TIPO_EN[t]) || t.replace(/_/g, " ");
+/* /atlas/en: os rótulos em inglês vêm no próprio ontologia.json (nome_en,
+   desc_en, via_en, tipo_en, de docs/context/ontologia.en.yaml); trocam os pt
+   uma vez, na carga. O nome pt fica em nome_pt para a busca achar os dois. */
+function localizaOnto(o) {
+  if (!EN) return;
+  for (const d of Object.values(o.dominios)) if (d.nome_en) d.nome = d.nome_en;
+  for (const c of o.classes) { c.nome_pt = c.nome; c.nome = c.nome_en || c.nome; c.desc = c.desc_en || c.desc; }
+  for (const r of o.relacoes) { r.via = r.via_en || r.via; if (r.tipo_en) TIPO_EN[r.tipo] = r.tipo_en; }
+}
+
+function ensureOnto(cb) {
+  if (O) { cb(); return; }
+  oPending.push(cb);
+  if (oLoading) return;
+  oLoading = true;
+  const inline = document.getElementById("ontojson").textContent.trim();
+  const got = inline && inline !== "__ONTO" + "_JSON__"
+    ? Promise.resolve(JSON.parse(inline))
+    : fetch("ontologia.json", { cache: "no-cache" }).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
+  got.then(data => {
+    localizaOnto(data);
+    O = data;
+    initOnto();
+    renderList(document.getElementById("q").value);
+    oPending.splice(0).forEach(f => f());
+  }).catch(err => {
+    oLoading = false;
+    ontoEl.innerHTML = `<text x="40" y="60" fill="var(--ink-2)">${tr("Não consegui carregar", "Could not load")} ontologia.json (${esc(String(err))}).</text>`;
+  });
+}
+
+function openCls(ci) {
+  if (mode !== "ontologia") setMode("ontologia");
+  ensureOnto(() => { select({ type: "cls", i: ci }); ontoCenter(oNodes[ci]); });
+  if (innerWidth <= 860) rail.classList.remove("on");
+}
+
+const svgEl = (tag, attrs, parent) => {
+  const e = document.createElementNS("http://www.w3.org/2000/svg", tag);
+  for (const a in attrs) e.setAttribute(a, attrs[a]);
+  if (parent) parent.appendChild(e);
+  return e;
+};
+
+function initOnto() {
+  const doms = Object.keys(O.dominios);
+  const maxT = Math.max(...O.classes.map(c => c.tabelas));
+  // fato tem raio mínimo maior: o SIM são 6 tabelas, mas é o registro de todo óbito do país
+  oNodes = O.classes.map((c, i) => ({ ...c, i, kind: "c", r: Math.max(c.fato ? 30 : 20, 20 + 42 * Math.sqrt(c.tabelas / maxT)),
+    x: 0, y: 0, vx: 0, vy: 0, fx: null, fy: null }));
+  oEdges = O.relacoes.map((r, i) => ({ ...r, i, s: oNodes[r.de], t: oNodes[r.para] }));
+  const pares = {};
+  for (const e of oEdges) (pares[[Math.min(e.de, e.para), Math.max(e.de, e.para)]] ??= []).push(e);
+  for (const k in pares) pares[k].forEach((e, j, a) => { e.curva = a.length > 1 ? (j - (a.length - 1) / 2) * 34 : 0; });
+
+  // território no meio; pessoas e empresas em lados opostos da dobradiça
+  // "CPF ou CNPJ", cada uma perto de quem conta a sua história
+  oAnch = {
+    territorio: [0, 0], empresa: [430, -230], titular: [620, 20], pessoa: [430, 270],
+    estado: [900, -150], politica: [820, 330], classificacao: [140, -430], infraestrutura: [330, 520],
+    educacao: [-450, -260], saude: [-480, 230], seguranca: [-60, 520], meio_ambiente: [-780, -10],
+  };
+  // com 86 classes as âncoras precisam de folga: o território ocupa o meio sozinho
+  // esticadas na vertical: os domínios se espalham mais em x, e o palco é quase quadrado
+  for (const d of doms) { const a = oAnch[d] || [0, 0]; oAnch[d] = { x: a[0] * 1.1, y: a[1] * 1.75 }; }
+  // grau de cada nó: a mola de um hub (Município, UF) é mais fraca, como no d3,
+  // senão ele puxa o grafo inteiro para um novelo no centro
+  for (const n of oNodes) n.grau = 0;
+  for (const e of oEdges) { e.s.grau++; e.t.grau++; }
+
+  const gE = document.getElementById("oEdges"), gN = document.getElementById("oNodes");
+  for (const e of oEdges) {
+    const g = svgEl("g", { class: "oe" + (e.conceito ? " conceito" : "") }, gE);
+    e.path = svgEl("path", { "marker-end": "url(#oa)" }, g);
+    e.label = svgEl("text", { dy: "-3", "text-anchor": "middle" }, g);
+    e.label.textContent = tipoLeg(e.tipo);
+    e.label.addEventListener("pointerdown", ev => ev.stopPropagation());
+    e.label.addEventListener("click", ev => { ev.stopPropagation(); select({ type: "rel", i: e.i }); });
+    svgEl("title", {}, g).textContent = `${e.s.nome} — ${tipoLeg(e.tipo)} → ${e.t.nome}\n${e.via}`;
+    e.g = g;
+  }
+  for (const n of oNodes) {
+    const g = svgEl("g", { class: "onode" }, gN);
+    // entidade = disco cheio; fato (óbito, ocorrência, nota…) = anel vazado
+    if (n.fato) g.classList.add("fato");
+    svgEl("circle", { r: n.r, fill: n.fato ? "var(--ground)" : ontoCor(n.dom), stroke: ontoCor(n.dom) }, g);
+    const lines = quebra(n.nome, n.r), fs = Math.max(9, Math.min(15, n.r / 3.4));
+    const t = svgEl("text", { style: `font-size:${fs}px` + (n.fato ? `;fill:${ontoCor(n.dom)}` : "") }, g);
+    lines.forEach((ln, j) => {
+      svgEl("tspan", { x: 0, dy: j === 0 ? -((lines.length - 1) * fs * 1.1) / 2 + fs * .35 : fs * 1.1 }, t).textContent = ln;
+    });
+    svgEl("title", {}, g).textContent = `${n.nome} — ${fmt(n.tabelas)} ${tr("tabelas", "tables")}, ${n.ds.length} datasets`;
+    n.g = g;
+    ontoDrag(n);
+  }
+
+  // pan e zoom; clique no fundo (sem arrastar) limpa a seleção
+  ontoEl.addEventListener("wheel", ev => {
+    ev.preventDefault();
+    const r = ontoEl.getBoundingClientRect();
+    ontoZoom(Math.exp(-ev.deltaY * .0015), ev.clientX - r.left, ev.clientY - r.top);
+  }, { passive: false });
+  let pan = null;
+  ontoEl.addEventListener("pointerdown", ev => {
+    pan = { x: ev.clientX - oT.x, y: ev.clientY - oT.y, moved: false };
+    ontoEl.classList.add("panning"); ontoEl.setPointerCapture(ev.pointerId);
+  });
+  ontoEl.addEventListener("pointermove", ev => {
+    if (!pan) return;
+    if (Math.abs(ev.clientX - pan.x - oT.x) + Math.abs(ev.clientY - pan.y - oT.y) > 2) pan.moved = true;
+    oT.x = ev.clientX - pan.x; oT.y = ev.clientY - pan.y; ontoApplyT();
+  });
+  ontoEl.addEventListener("pointerup", () => {
+    if (pan && !pan.moved) select(null);
+    pan = null; ontoEl.classList.remove("panning");
+  });
+  // ao mudar o tamanho do palco: com classe selecionada, mantém ela no centro
+  new ResizeObserver(() => {
+    if (mode !== "ontologia") return;
+    if (sel && sel.type === "cls") ontoCenter(oNodes[sel.i], false); else ontoFit();
+  }).observe(ontoEl);
+
+  ontoSeed();
+  for (let i = 0; i < 400; i++) ontoTick();
+  ontoRender();
+}
+
+function quebra(nome, r) {
+  const max = Math.max(6, Math.floor(r / 3.6)), out = [];
+  let cur = "";
+  for (const w of nome.split(" ")) {
+    if ((cur + " " + w).trim().length > max && cur) { out.push(cur); cur = w; }
+    else cur = (cur + " " + w).trim();
+  }
+  out.push(cur);
+  return out.slice(0, 3);
+}
+
+function ontoSeed() {
+  for (const n of oNodes) {
+    const a = oAnch[n.dom];
+    n.x = a.x + (Math.random() - .5) * 160; n.y = a.y + (Math.random() - .5) * 160;
+    n.vx = n.vy = 0; n.fx = n.fy = null; n.g.classList.remove("pinned");
+  }
+}
+
+function ontoTick() {
+  const live = oNodes, k = oAlpha;   // só classes: a camada de datasets saiu a pedido
+  for (let i = 0; i < live.length; i++) {
+    const a = live[i];
+    for (let j = i + 1; j < live.length; j++) {
+      const b = live[j];
+      let dx = b.x - a.x, dy = b.y - a.y;
+      const d2 = dx * dx + dy * dy || .01, both = a.kind === "c" && b.kind === "c";
+      if (!both && d2 > 90000) continue;
+      const str = both ? 20000 : (a.kind === "d" && b.kind === "d" ? 60 : 500);
+      const d = Math.sqrt(d2), f = str / d2 * k;
+      dx /= d; dy /= d;
+      a.vx -= dx * f; a.vy -= dy * f; b.vx += dx * f; b.vy += dy * f;
+      const min = a.r + b.r + (both ? 34 : 2);
+      if (d < min) { const p = (min - d) / 2; a.x -= dx * p; a.y -= dy * p; b.x += dx * p; b.y += dy * p; }
+    }
+  }
+  for (const e of oEdges) {
+    if (e.s === e.t) continue;
+    const dx = e.t.x - e.s.x, dy = e.t.y - e.s.y, d = Math.hypot(dx, dy) || 1;
+    const f = (d - (e.s.r + e.t.r + 120)) * .03 * k / Math.sqrt(Math.min(e.s.grau, e.t.grau) || 1);
+    e.s.vx += dx / d * f; e.s.vy += dy / d * f; e.t.vx -= dx / d * f; e.t.vy -= dy / d * f;
+  }
+  for (const n of oNodes) {
+    const a = oAnch[n.dom];
+    n.vx += (a.x - n.x) * .004 * k; n.vy += (a.y - n.y) * .004 * k;
+  }
+  for (const n of live) {
+    if (n.fx != null) { n.x = n.fx; n.y = n.fy; n.vx = n.vy = 0; continue; }
+    n.vx *= .6; n.vy *= .6; n.x += n.vx; n.y += n.vy;
+  }
+  oAlpha *= .985;
+}
+
+function ontoRender() {
+  for (const n of oNodes) n.g.setAttribute("transform", `translate(${n.x.toFixed(1)},${n.y.toFixed(1)})`);
+  for (const e of oEdges) {
+    let d, lx, ly, ang = 0;
+    if (e.s === e.t) {
+      const { x, y, r } = e.s;
+      d = `M${x + r * .7},${y - r * .7} C${x + r * 2.6},${y - r * 2.6} ${x - r * 2.6},${y - r * 2.6} ${x - r * .7},${y - r * .75}`;
+      lx = x; ly = y - r * 2.05;
+    } else {
+      const dx = e.t.x - e.s.x, dy = e.t.y - e.s.y, len = Math.hypot(dx, dy) || 1;
+      const mx = (e.s.x + e.t.x) / 2 - dy / len * e.curva, my = (e.s.y + e.t.y) / 2 + dx / len * e.curva;
+      const a0 = Math.atan2(my - e.s.y, mx - e.s.x), a1 = Math.atan2(my - e.t.y, mx - e.t.x);
+      const x0 = e.s.x + Math.cos(a0) * e.s.r, y0 = e.s.y + Math.sin(a0) * e.s.r;
+      const x1 = e.t.x + Math.cos(a1) * (e.t.r + 2), y1 = e.t.y + Math.sin(a1) * (e.t.r + 2);
+      d = e.curva ? `M${x0},${y0} Q${mx},${my} ${x1},${y1}` : `M${x0},${y0} L${x1},${y1}`;
+      lx = e.curva ? (x0 + 2 * mx + x1) / 4 : (x0 + x1) / 2;
+      ly = e.curva ? (y0 + 2 * my + y1) / 4 : (y0 + y1) / 2;
+      ang = Math.atan2(y1 - y0, x1 - x0) * 180 / Math.PI;
+      if (ang > 90 || ang < -90) ang += 180;
+    }
+    e.path.setAttribute("d", d);
+    e.label.setAttribute("transform", `translate(${lx.toFixed(1)},${ly.toFixed(1)}) rotate(${ang.toFixed(1)})`);
+  }
+}
+
+function ontoHeat(a) {
+  oAlpha = Math.max(oAlpha, a);
+  if (!oRaf) oRaf = requestAnimationFrame(ontoLoop);
+}
+function ontoLoop() {
+  ontoTick(); ontoRender();
+  oRaf = oAlpha > .02 && mode === "ontologia" ? requestAnimationFrame(ontoLoop) : 0;
+}
+function ontoStop() { if (oRaf) cancelAnimationFrame(oRaf); oRaf = 0; }
+
+const ontoApplyT = () => oView.setAttribute("transform", `translate(${oT.x},${oT.y}) scale(${oT.k})`);
+function ontoFit() {
+  if (!O) return;
+  const vis = oNodes;
+  if (!vis.length) return;
+  const xs = vis.map(n => n.x), ys = vis.map(n => n.y);
+  const x0 = Math.min(...xs) - 80, x1 = Math.max(...xs) + 80, y0 = Math.min(...ys) - 80, y1 = Math.max(...ys) + 80;
+  const { width, height } = ontoEl.getBoundingClientRect();
+  if (!width || !height) return;
+  oT.k = Math.min(width / (x1 - x0), height / (y1 - y0), 1.4);
+  oT.x = width / 2 - oT.k * (x0 + x1) / 2; oT.y = height / 2 - oT.k * (y0 + y1) / 2;
+  ontoApplyT();
+}
+function ontoZoom(f, px, py) {
+  const { width, height } = ontoEl.getBoundingClientRect();
+  if (px === undefined) { px = width / 2; py = height / 2; }
+  const k2 = Math.min(4, Math.max(.15, oT.k * f));
+  oT.x = px - (px - oT.x) * k2 / oT.k; oT.y = py - (py - oT.y) * k2 / oT.k; oT.k = k2;
+  ontoApplyT();
+}
+let oPanRaf = 0;
+function ontoCenter(n, animate = true) {
+  const { width, height } = ontoEl.getBoundingClientRect();
+  // o inspetor cobre a direita do palco: centra na parte que sobra à vista
+  const livre = width - (insp.classList.contains("on") ? insp.offsetWidth : 0);
+  const nx = livre / 2 - n.x * oT.k, ny = height / 2 - n.y * oT.k;
+  if (oPanRaf) { cancelAnimationFrame(oPanRaf); oPanRaf = 0; }
+  if (!animate || reduced()) { oT.x = nx; oT.y = ny; ontoApplyT(); return; }
+  // desliza até o nó, como o goTo do canvas: o grafo não salta
+  const x0 = oT.x, y0 = oT.y, t0 = performance.now(), D = 520;
+  (function step(now) {
+    const p = Math.min(1, (now - t0) / D), e = ease(p);
+    oT.x = x0 + (nx - x0) * e; oT.y = y0 + (ny - y0) * e; ontoApplyT();
+    oPanRaf = p < 1 ? requestAnimationFrame(step) : 0;
+  })(t0);
+}
+
+function ontoDrag(n) {
+  let drag = null;
+  n.g.addEventListener("pointerdown", ev => {
+    ev.stopPropagation();
+    const r = ontoEl.getBoundingClientRect();
+    const px = (ev.clientX - r.left - oT.x) / oT.k, py = (ev.clientY - r.top - oT.y) / oT.k;
+    drag = { dx: n.x - px, dy: n.y - py, moved: false };
+    n.g.setPointerCapture(ev.pointerId);
+  });
+  n.g.addEventListener("pointermove", ev => {
+    if (!drag) return;
+    const r = ontoEl.getBoundingClientRect();
+    n.fx = (ev.clientX - r.left - oT.x) / oT.k + drag.dx; n.fy = (ev.clientY - r.top - oT.y) / oT.k + drag.dy;
+    drag.moved = true;
+    n.g.classList.add("pinned");
+    ontoHeat(.3);
+  });
+  n.g.addEventListener("pointerup", () => {
+    if (drag && !drag.moved) select({ type: "cls", i: n.i });
+    drag = null;
+  });
+  n.g.addEventListener("dblclick", ev => {
+    ev.stopPropagation(); n.fx = n.fy = null; n.g.classList.remove("pinned"); ontoHeat(.3);
+  });
+}
+
+// acende a vizinhança do que está selecionado; o resto apaga
+function ontoHighlight() {
+  if (!O) return;
+  let ns = null, es = null;
+  oNodes.forEach(n => n.g.classList.toggle("sel", !!sel && sel.type === "cls" && sel.i === n.i));
+  if (sel && sel.type === "cls") {
+    const n = oNodes[sel.i];
+    es = new Set(oEdges.filter(e => e.s === n || e.t === n));
+    ns = new Set([n]);
+    for (const e of es) { ns.add(e.s); ns.add(e.t); }
+  } else if (sel && sel.type === "rel") {
+    const e = oEdges[sel.i];
+    es = new Set([e]); ns = new Set([e.s, e.t]);
+  } else if (sel && sel.type === "ds") {
+    ns = new Set(O.datasets[sel.i].map(([ci]) => oNodes[ci])); es = new Set();
+  }
+  for (const n of oNodes) n.g.classList.toggle("dim", !!ns && !ns.has(n));
+  for (const e of oEdges) {
+    const on = !!es && es.has(e);
+    e.g.classList.toggle("dim", !!es && !on);
+    e.g.classList.toggle("on", on);
+    e.path.setAttribute("marker-end", on ? "url(#oa-on)" : "url(#oa)");
+  }
+}
+
+// inspetor: classe e relação, no mesmo painel que dataset e chave usam
+function renderCls(ci) {
+  const c = O.classes[ci];
+  iKind.textContent = (c.fato ? tr("Fato · ", "Fact · ") : tr("Entidade · ", "Entity · ")) + O.dominios[c.dom].nome;
+  iName.textContent = c.nome;
+  setDesc(c.desc);
+  const out = oEdges.filter(e => e.de === ci), inn = oEdges.filter(e => e.para === ci && e.de !== ci);
+  const rel = (e, dir) => `<button data-or="${e.i}" title="${esc(e.via)}"><span class="t">${dir === "out"
+      ? `${esc(tipoLeg(e.tipo))} → ${esc(e.t.nome)}` : `${esc(e.s.nome)} → ${esc(tipoLeg(e.tipo))}`}</span><span class="r">${e.conceito ? tr("fora do espelho · ", "outside the mirror · ") : ""}${esc(e.via)}</span></button>`;
+  let h = `<div class="facts">
+      ${fact(fmt(c.tabelas), tr("tabelas", "tables"))}
+      ${fact(fmt(c.ds.length), "datasets")}
+      ${fact(human(c.linhas), tr("linhas", "rows"))}
+      ${fact(fmt(c.chaves.length), tr("colunas", "columns"))}
+    </div>`;
+  if (out.length || inn.length)
+    h += `<p class="sec">${tr("Relações", "Relations")}</p><div class="tlist rels">${out.map(e => rel(e, "out")).join("")}${inn.map(e => rel(e, "in")).join("")}</div>`;
+  if (c.conceitos.length)
+    h += `<p class="sec">${tr("Conceitos de join", "Join concepts")} (bridges.yaml)</p><div class="chips">${c.conceitos.map(([k, t]) =>
+      `<span class="chip" title="${esc(t)}">${esc(k)}</span>`).join("")}</div>`;
+  // [coluna, nº de tabelas, índice da chave no atlas ou -1]: só as chaves do atlas
+  // têm corpo em Temas, as outras ficam como etiqueta
+  if (c.chaves.length)
+    h += `<p class="sec">${tr("Colunas no espelho · as marcadas abrem em Temas", "Columns in the mirror · the marked ones open in Themes")}</p><div class="chips">${c.chaves.slice(0, 80).map(([col, n, ki]) =>
+      ki >= 0 ? `<button class="chip" data-k="${ki}" title="${n} ${tr("tabela", "table")}${n > 1 ? "s" : ""}"><i style="background:${ontoCor(c.dom)}"></i>${esc(col)}</button>`
+              : `<span class="chip" title="${n} ${tr("tabela", "table")}${n > 1 ? "s" : ""}">${esc(col)}</span>`).join("")}</div>
+      ${c.chaves.length > 80 ? `<p class="note">+ ${c.chaves.length - 80} ${tr("colunas", "columns")}</p>` : ""}`;
+  if (c.ds.length)
+    h += `<p class="sec">${tr("Datasets que a medem", "Datasets that measure it")}</p><div class="tlist">${c.ds.map(([di, n]) =>
+      `<button data-d="${di}" title="${esc(DS[di].de || "")}"><span class="t">${esc(DS[di].n)}</span><span class="r">${n} ${tr("tab.", "tbl.")}</span></button>`).join("")}</div>`;
+  iBody.innerHTML = h;
+  wire();
+  iBody.querySelectorAll("[data-or]").forEach(b => b.onclick = () => {
+    const e = oEdges[+b.dataset.or];
+    const other = e.s.i === ci ? e.t : e.s;
+    select({ type: "cls", i: other.i }); ontoCenter(other);
+  });
+}
+function renderRel(ri) {
+  const e = oEdges[ri];
+  iKind.textContent = tr("Relação", "Relation") + (e.conceito ? tr(" · fora do espelho", " · outside the mirror") : "");
+  iName.textContent = `${e.s.nome} — ${tipoLeg(e.tipo)} → ${e.t.nome}`;
+  setDesc("");
+  iBody.innerHTML = `<p class="sec">${tr("Por onde passa", "Where it goes through")}</p><p class="note">${esc(e.via)}</p>
+    ${e.conceito ? `<p class="note">${tr("A ligação existe no mundo, mas o dado público não deixa fazê-la: CPF mascarado, microdado desidentificado ou texto livre.",
+      "The link exists in the world, but the public data does not allow it: masked CPF, de-identified microdata or free text.")}</p>` : ""}
+    <p class="sec">${tr("Classes", "Classes")}</p>
+    <div class="tlist">${[e.s, e.t].map(n => `<button data-oc="${n.i}"><span class="t">${esc(n.nome)}</span><span class="r">${fmt(n.tabelas)} ${tr("tab.", "tbl.")}</span></button>`).join("")}</div>`;
+  iBody.querySelectorAll("[data-oc]").forEach(b => b.onclick = () => {
+    const n = oNodes[+b.dataset.oc]; select({ type: "cls", i: n.i }); ontoCenter(n);
+  });
+}
+
+/* ── link direto ──────────────────────────────────────────────────
+   `?db=br_me_rais` abre o atlas já centrado naquele dataset, com o painel
+   aberto; `?mode=3d` (ou `temas`) abre já na distribuição escolhida — os dois
+   parâmetros acompanham a tela, então a barra de endereço é sempre um link
+   pro que está nela — `replaceState`, não `pushState`: clicar de dataset em
+   dataset, ou trocar de modo, não deve encher o botão voltar. Num contexto
+   sem origem (um `file://` aberto à mão) a History API lança — daí o try. */
+const dsByName = new Map(DS.map((d, i) => [d.n.toLowerCase(), i]));
+function syncUrl() {
+  try {
+    const u = new URL(location.href);
+    let changed = false;
+    if (sel && sel.type === "ds") { u.searchParams.set("db", DS[sel.i].n); changed = true; }
+    else if (u.searchParams.has("db")) { u.searchParams.delete("db"); changed = true; }
+
+    if (sel && sel.type === "cls" && O) { u.searchParams.set("classe", O.classes[sel.i].id); changed = true; }
+    else if (u.searchParams.has("classe")) { u.searchParams.delete("classe"); changed = true; }
+
+    if (mode !== DEFAULT_MODE) { u.searchParams.set("mode", mode); changed = true; }
+    else if (u.searchParams.has("mode")) { u.searchParams.delete("mode"); changed = true; }
+
+    if (changed) history.replaceState(null, "", u.pathname + u.search + u.hash);
+  } catch (e) { /* sem origem navegável: o atlas funciona, o link é que não */ }
+  linkIdioma();
+}
+/* PT/EN no menu leva junto o que está na tela (?db, ?mode, ?classe) */
+function linkIdioma() {
+  const a = document.querySelector(".lang-switch .lang-link");
+  if (a) a.setAttribute("href", (EN ? "/atlas/" : "/atlas/en") + location.search);
+}
+function openFromUrl() {
+  const params = new URLSearchParams(location.search);
+  const m = params.get("mode");
+  // sem ?mode abre na Ontologia; um ?db= antigo (da grade) cai em Temas, onde o dataset tem corpo
+  const alvo = m && MODES.some(([id]) => id === m) ? m : params.get("db") ? "temas" : DEFAULT_MODE;
+  if (alvo !== mode) setMode(alvo);
+
+  const c = params.get("classe");
+  if (c) ensureOnto(() => {
+    const ci = O.classes.findIndex(x => x.id === c);
+    if (ci >= 0) openCls(ci);
+  });
+
+  const q = params.get("db");
+  if (!q) return;
+  const d = dsByName.get(q.trim().toLowerCase());
+  if (d === undefined) return;
+  select({ type: "ds", i: d });
+  flyDs(d, false);                     // no primeiro quadro, já enquadrado
+}
+
+/* ── rail ────────────────────────────────────────────────────────── */
+document.getElementById("s-t").textContent = fmt(G.meta.tables);
+document.getElementById("s-d").textContent = fmt(G.meta.datasets);
+document.getElementById("s-k").textContent = fmt(G.meta.keys);
+document.getElementById("s-e").textContent = fmt(G.meta.edges);
+
+// temas: territories of clustered bodies. 3d: the
+// same dataset↔chave graph in a force layout, lazily loaded on first visit.
+const MODE_ICON = {
+  temas: '<svg viewBox="0 0 16 16" fill="currentColor"><circle cx="4.5" cy="4.5" r="3"/><circle cx="12" cy="4" r="2"/><circle cx="5" cy="12" r="2.3"/><circle cx="12.5" cy="11.5" r="1.6"/></svg>',
+  "3d": '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 1.3 14 4.6v6.8L8 14.7 2 11.4V4.6Z"/><path d="M8 1.3v6.7m0 0L2 4.6m6 3.4 6-3.4m-6 3.4v6.7"/></svg>',
+  ontologia: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M5 10.5 11 4.5M5 10.5l7 2"/><circle cx="4.5" cy="10.5" r="3" fill="currentColor"/><circle cx="11.5" cy="4" r="2.2"/><circle cx="12.5" cy="12.7" r="1.8"/></svg>',
+};
+const modesEl = document.getElementById("modes");
+modesEl.innerHTML = MODES.map(([id, name, desc]) =>
+  `<button data-mode="${id}" aria-pressed="${id === mode}" title="${esc(desc)}">
+     ${MODE_ICON[id] || ""}
+     <span class="nm">${name}</span></button>`).join("");
+modesEl.querySelectorAll("button").forEach(b => b.onclick = () => setMode(b.dataset.mode));
+
+const listEl = document.getElementById("list");
+const listT = document.getElementById("list-t");
+function renderList(q) {
+  q = (q || "").trim().toLowerCase();
+  if (!q && mode === "ontologia" && O) {
+    listT.textContent = tr("Classes", "Classes");
+    const maxT = Math.max(...O.classes.map(c => c.tabelas));
+    listEl.innerHTML = Object.keys(O.dominios).map(d => O.classes.map((c, i) => [c, i]).filter(([c]) => c.dom === d)
+      .sort((a, b) => b[0].tabelas - a[0].tabelas).map(([c, i]) =>
+      `<button class="row" data-oc="${i}" title="${esc(O.dominios[d].nome)}">
+        <span class="dot" style="background:${ontoCor(d)}"></span>
+        <span class="nm">${esc(c.nome)}</span>
+        <span class="bar"><i style="width:${Math.max(4, Math.round(c.tabelas / maxT * 100))}%;background:${ontoCor(d)}"></i></span>
+        <span class="ct">${c.tabelas}</span></button>`).join("")).join("");
+  } else if (!q) {
+    listT.textContent = tr("Temas", "Themes");
+    listEl.innerHTML = themeList.map(th => {
+      const n = themeTables[th].length;
+      const pct = Math.round(n / THEME_MAX * 100);
+      return `<button class="row" data-th="${th}" title="${esc(G.domains[th] || th)}">
+        <span class="dot" style="background:var(--t-${th})"></span>
+        <span class="nm">${esc(THEME_SHORT[th] || th)}</span>
+        <span class="bar"><i style="width:${Math.max(4, pct)}%;background:var(--t-${th})"></i></span>
+        <span class="ct">${n}</span></button>`;
+    }).join("");
+  } else {
+    const hits = [];
+    if (O) O.classes.forEach((c, i) => { if (c.nome.toLowerCase().includes(q) || (c.nome_pt || "").toLowerCase().includes(q) || c.id.includes(q)) hits.push(["cls", i, c.nome, c.tabelas]); });
+    KS.forEach((kk, i) => { if (kk.n.toLowerCase().includes(q)) hits.push(["key", i, kk.n, kk.t]); });
+    DS.forEach((d, i) => { if (d.n.toLowerCase().includes(q)) hits.push(["ds", i, d.n, d.t]); });
+    TB.forEach((t, i) => {
+      const full = DS[t.ds].n + "." + t.n;
+      if (full.toLowerCase().includes(q)) hits.push(["tbl", i, full, t.k.length]);
+    });
+    listT.textContent = hits.length ? `${hits.length} ${tr("resultado", "result")}${hits.length > 1 ? "s" : ""}` : tr("Nada encontrado", "Nothing found");
+    listEl.innerHTML = hits.length ? hits.slice(0, 300).map(([ty, i, label, n]) =>
+      `<button class="row" data-${ty === "key" ? "k" : ty === "ds" ? "d" : ty === "cls" ? "oc" : "t"}="${i}">
+        <span class="dot" style="background:${ty === "cls" ? ontoCor(O.classes[i].dom) : ty === "key" ? "var(--hub)"
+          : ty === "ds" ? `var(--t-${DS[i].dom})` : `var(--t-${DS[TB[i].ds].dom})`}"></span>
+        <span class="nm">${esc(label)}</span><span class="ct">${n}</span></button>`).join("")
+      : `<p class="empty">${tr("Nenhuma chave, dataset ou tabela com esse nome.", "No key, dataset or table by that name.")}</p>`;
+  }
+  listEl.querySelectorAll(".row").forEach(r => {
+    r.onclick = () => {
+      if (r.dataset.th !== undefined) { select({ type: "theme", th: r.dataset.th }); flyTheme(r.dataset.th); }
+      else if (r.dataset.k !== undefined) { const i = +r.dataset.k; select({ type: "key", i }); flyKey(i); }
+      else if (r.dataset.d !== undefined) { const i = +r.dataset.d; select({ type: "ds", i }); flyDs(i); }
+      else if (r.dataset.oc !== undefined) openCls(+r.dataset.oc);
+      else { const i = +r.dataset.t; select({ type: "tbl", i }); flyTbl(i); }
+      if (innerWidth <= 860) rail.classList.remove("on");
+    };
+    r.onmouseenter = () => {
+      if (r.dataset.th !== undefined) {
+        hover = { type: "theme", th: r.dataset.th };
+        if (mode === "3d") hoverTheme3D(r.dataset.th);
+      } else if (r.dataset.k !== undefined) {
+        hover = { type: "key", i: +r.dataset.k };
+      } else return;
+      draw();
+    };
+    r.onmouseleave = () => {
+      if (mode === "3d" && hover && hover.type === "theme") clearHover3D();
+      if (hover) { hover = null; draw(); }
+    };
+  });
+}
+document.getElementById("q").addEventListener("input", e => renderList(e.target.value));
+
+document.getElementById("zin").onclick = () => {
+  if (mode === "ontologia") { ontoZoom(1.4); return; }
+  if (mode === "3d") { if (graph3d) dollyCamera3D(1 / 1.4); return; }
+  goTo((W / 2 - tx) / k, (H / 2 - ty) / k, k * 1.5, true);
+};
+document.getElementById("zout").onclick = () => {
+  if (mode === "ontologia") { ontoZoom(1 / 1.4); return; }
+  if (mode === "3d") { if (graph3d) dollyCamera3D(1.4); return; }
+  goTo((W / 2 - tx) / k, (H / 2 - ty) / k, k / 1.5, true);
+};
+document.getElementById("reset").onclick = () => {
+  select(null);
+  if (mode === "ontologia") { ontoFit(); return; }
+  if (mode === "3d") { if (graph3d) graph3d.zoomToFit(600, 40); return; }
+  fit(true);
+};
+document.getElementById("home").onclick = () => {
+  select(null);
+  if (mode === "ontologia") { ontoFit(); return; }
+  if (mode === "3d") { if (graph3d) graph3d.zoomToFit(600, 40); return; }
+  home(true);
+};
+
+const rail = document.getElementById("rail");
+document.getElementById("railToggle").onclick = e => {
+  rail.classList.toggle("on");
+  e.currentTarget.setAttribute("aria-expanded", String(rail.classList.contains("on")));
+};
+
+/* ── boot ────────────────────────────────────────────────────────── */
+function themeChanged() {
+  readColors();
+  renderList(document.getElementById("q").value);
+  draw();
+  if (graph3d) {
+    graph3d.backgroundColor(C.ground).refresh();
+    G3.nodes.forEach(n => {
+      if (!n.__label) return;
+      n.__label.color = n.kind === "ds" ? C.ink : C.ink2;
+    });
+    G3.links.forEach(l => { if (l.__label) l.__label.color = C.ink3; });
+  }
+}
+new MutationObserver(themeChanged).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", themeChanged);
+addEventListener("resize", resize);
+
+readColors();
+renderList("");
+P = { tb: G.layout.temas.tb.map(a => a.slice()),
+      keys: G.layout.temas.keys.map(a => a.slice()) };
+measure();
+resize();
+home(false);
+openFromUrl();
+linkIdioma();
+// canvas text needs the webfont resolved, or the first paint silently falls back
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
+
+// handles for the layout probes in scripts/build_atlas.py
+Object.assign(window, { G, DS, KS, TB, L, P, select, goTo, flyKey, flyDs, flyTheme, draw, setMode,
+  getGraph3D: () => graph3d, getG3: () => G3, hoverTheme3D, clearHover3D });
+}
+</script>
+<script src="../assets/theme-toggle.js"></script>
+</body>
+</html>

@@ -13,11 +13,16 @@
  * Recusa o build se um conceito de bridges.yaml ficar sem classe ou cair em
  * duas, se uma classe citar conceito inexistente ou se uma relação apontar
  * para classe inexistente — os três jeitos de a ontologia mentir em silêncio.
+ *
+ * Os rótulos em inglês (atlas em rodado.xyz/atlas/en) vêm de
+ * docs/context/ontologia.en.yaml; o build também recusa domínio, classe, tipo
+ * de relação ou `via` sem tradução lá, e tradução que sobrou.
  */
 import { join } from "node:path";
 
 const REPO = join(import.meta.dir, "..");
 const ONTO = join(REPO, "docs/context/ontologia.yaml");
+const ONTO_EN = join(REPO, "docs/context/ontologia.en.yaml");
 const BRIDGES = join(REPO, "docs/context/bridges.yaml");
 const GRAPH = join(REPO, "pages/atlas/schema_graph.json");
 // todas as colunas de todas as tabelas — o schema_graph só traz as chaves do
@@ -48,8 +53,27 @@ const bridges = JSON.parse(
   concepts: Record<string, { category: string; canonical_table?: string }>;
 };
 const g = await Bun.file(GRAPH).json();
+const en = Bun.YAML.parse(await Bun.file(ONTO_EN).text()) as {
+  dominios: Record<string, string>;
+  classes: Record<string, { nome: string; desc: string }>;
+  tipos: Record<string, string>;
+  vias: Record<string, string>;
+};
 
 const erros: string[] = [];
+
+// ── tradução: tudo que a ontologia mostra tem versão em inglês, nada sobra ──
+const confere = (o_que: string, precisa: Iterable<string>, tem: Record<string, unknown>) => {
+  const set = new Set(precisa);
+  for (const k of set) if (!tem?.[k]) erros.push(`ontologia.en.yaml: falta ${o_que} ${JSON.stringify(k)}`);
+  for (const k of Object.keys(tem ?? {})) if (!set.has(k)) erros.push(`ontologia.en.yaml: ${o_que} ${JSON.stringify(k)} sobrou`);
+};
+confere("domínio", Object.keys(onto.dominios), en.dominios);
+confere("classe", Object.keys(onto.classes), en.classes);
+confere("tipo", onto.relacoes.map((r) => r.tipo), en.tipos);
+confere("via", onto.relacoes.map((r) => r.via), en.vias);
+for (const [id, c] of Object.entries(en.classes ?? {}))
+  if (!c?.nome || !c?.desc) erros.push(`ontologia.en.yaml: classe ${id} sem nome ou desc`);
 
 // ── conceitos: cada um em exatamente uma classe ─────────────────────────
 const dono = new Map<string, string>();
@@ -158,16 +182,19 @@ const out = {
     tabelas_com_classe: tabelasComClasse,
     datasets: g.datasets.length,
   },
-  dominios: Object.fromEntries(Object.entries(onto.dominios).filter(([d]) => domsVis.has(d))),
+  dominios: Object.fromEntries(Object.entries(onto.dominios).filter(([d]) => domsVis.has(d))
+    .map(([d, v]) => [d, { ...v, nome_en: en.dominios[d] }])),
   classes: vis.map((id) => {
     const c = onto.classes[id];
     const p = porClasse[idx.get(id)!];
     return {
       id,
       nome: c.nome,
+      nome_en: en.classes[id].nome,
       dom: c.dominio,
       fato: c.tipo === "fato" ? 1 : 0,
       desc: c.desc,
+      desc_en: en.classes[id].desc,
       conceitos: (c.conceitos ?? []).map((k) => [k, bridges.concepts[k].canonical_table ?? ""]),
       // [coluna, nº de tabelas, índice da chave no atlas ou -1]
       chaves: [...p.cols].sort((a, b) => b[1] - a[1]).map(([col, n]) => [col, n, keyIdx.get(col) ?? -1]),
@@ -180,7 +207,9 @@ const out = {
     de: novo.get(idx.get(r.de)!),
     para: novo.get(idx.get(r.para)!),
     tipo: r.tipo,
+    tipo_en: en.tipos[r.tipo],
     via: r.via,
+    via_en: en.vias[r.via],
     conceito: r.ligacao === "conceito" ? 1 : 0,
   })),
   datasets: dsClasses.map((m) => [...m].filter(([ci]) => novo.has(ci)).map(([ci, n]) => [novo.get(ci)!, n]).sort((a, b) => b[1] - a[1])),

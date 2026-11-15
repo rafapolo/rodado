@@ -1,0 +1,497 @@
+# Versão em inglês dos rótulos de `ontologia.yaml`, usada pelo atlas em
+# rodado.xyz/atlas/en. `scripts/gera_ontologia.ts` recusa o build se um
+# domínio, classe, tipo de relação ou `via` de ontologia.yaml não tiver
+# tradução aqui — classe nova, relação nova ou `via` reescrito pede a linha
+# correspondente. Traduções que sobram (de algo que saiu) também barram.
+#
+#   dominios  id do domínio → nome
+#   classes   id da classe → {nome, desc}
+#   tipos     tipo da relação → rótulo (lido de `de` para `para`)
+#   vias      texto de `via` em pt-BR, exatamente como em ontologia.yaml → inglês
+
+dominios:
+  territorio: Territory
+  tempo: Time
+  pessoa: People
+  empresa: Companies
+  titular: CPF or CNPJ
+  classificacao: Classifications
+  educacao: Education
+  saude: Health
+  estado: State and procurement
+  seguranca: Public safety
+  meio_ambiente: Environment
+  politica: Politics
+  infraestrutura: Infrastructure
+
+classes:
+  municipio:
+    nome: Municipality
+    desc: The axis of the mirror. 7-digit IBGE code; every other municipality code (TSE, Receita, SIAFI, BCB, DATASUS's 6 digits) converts to it.
+  uf:
+    nome: State (UF)
+    desc: Federative unit, by abbreviation (SP) or IBGE code (35). The most shared column in the mirror.
+  regiao:
+    nome: Macro-region
+    desc: North, Northeast, Southeast, South, Center-West.
+  regiao_ibge:
+    nome: Geographic region
+    desc: IBGE divisions between state and municipality — meso- and microregions (until 2017), intermediate and immediate regions (after).
+  regiao_metropolitana:
+    nome: Metropolitan region
+    desc: Metropolitan region and urban concentration — groups of municipalities.
+  regiao_saude:
+    nome: Health region
+    desc: The unit in which SUS plans health policy; groups municipalities.
+  distrito:
+    nome: District
+    desc: Subdivision of a municipality (and sub-district, one level below). The boundaries change with every census.
+  setor_censitario:
+    nome: Census tract
+    desc: The finest geography in the mirror — 15 digits, the first 7 are the municipality.
+  cep:
+    nome: Postal code (CEP)
+    desc: Postal code; the directory maps each CEP to a municipality.
+  pais:
+    nome: Country
+    desc: Country codes (M49, ISO3…) — foreign trade and the world_* datasets.
+  imovel_rural:
+    nome: Rural property
+    desc: Rural property in CAR, SNCR/INCRA or the Receita (NIRF) — three registries that only partly link.
+  tempo:
+    nome: Period
+    desc: Year, month, quarter, date. It is in almost every table and is the partition to filter first — so it draws no edges, it just exists.
+  empresa:
+    nome: Company
+    desc: The legal entity, by the first 8 digits of the CNPJ — no branches.
+  estabelecimento:
+    nome: Establishment
+    desc: Head office or branch, full 14-digit CNPJ. The mirror has 60 million in br_me_cnpj.
+  companhia_aberta:
+    nome: Listed company
+    desc: Company with shares on B3, registered with the CVM. The ticker carries no CNPJ; the link is the CVM filing.
+  fundo:
+    nome: Investment fund
+    desc: Fund registered with the CVM, with its own CNPJ. A class with no concept in bridges.yaml — it comes only from the keys.
+  pessoa:
+    nome: Person
+    desc: Individual, by CPF — almost always masked in public data, which makes the date of birth the tie-breaker.
+  titular:
+    nome: CPF or CNPJ
+    desc: A single column holding either a CPF or a CNPJ — payee, supplier, donor, sanctioned party. The length of the value makes it a Person or an Establishment.
+  cnae:
+    nome: CNAE
+    desc: Economic activity. Subclass → class → group → division → section, by the code itself.
+  cbo:
+    nome: CBO
+    desc: Occupation (CBO 2002; the 1994 version in older RAIS files).
+  cid:
+    nome: ICD-10
+    desc: Disease and cause of death. Category (3 characters) → chapter.
+  ncm:
+    nome: NCM
+    desc: Product in foreign trade, 8 digits.
+  sh:
+    nome: Harmonized System
+    desc: The level above NCM (HS4 = the first 4 digits).
+  natureza_juridica:
+    nome: Legal nature
+    desc: Whether the CNPJ is a limited company, a foundation, a municipality, an agency… Separates public from private.
+  escola:
+    nome: School
+    desc: 8-digit INEP code — school census, IDEB, SAEB.
+  turma:
+    nome: Class
+    desc: School class in the school census.
+  aluno:
+    nome: Student
+    desc: Student within one survey edition — does not carry across years.
+  ies:
+    nome: Higher education institution
+    desc: University, university center or college.
+  curso:
+    nome: Undergraduate course
+    desc: Undergraduate course at an HEI.
+  enem:
+    nome: ENEM participant
+    desc: ENEM registration; links the microdata to the same year's socioeconomic questionnaire.
+  cnes:
+    nome: Health facility
+    desc: CNES code, 7 digits — the backbone of SUS data.
+  equipe:
+    nome: Health team
+    desc: Primary care team registered in CNES.
+  orgao:
+    nome: Government body
+    desc: Government body; in procurement, it rolls up to the parent body.
+  unidade_gestora:
+    nome: Management unit
+    desc: The budget level that spending is attributed to (UG).
+  licitacao:
+    nome: Tender
+    desc: The bidding process; links items, bidders, commitments and contracts.
+  contrato:
+    nome: Contract
+    desc: Procurement contract, with items, amendments and annotations.
+  empenho:
+    nome: Budget commitment
+    desc: Budget reservation (empenho) — the link between the tender and the money actually committed, settled and paid.
+  contratacao_pncp:
+    nome: PNCP procurement
+    desc: Procurement published on the National Public Procurement Portal (PNCP).
+  processo:
+    nome: Administrative case
+    desc: Case number — free text across sources; normalize the digits before joining.
+  acordao_tcu:
+    nome: TCU ruling
+    desc: Federal Court of Accounts ruling — links the decision to the person or company declared unfit or barred.
+  partido:
+    nome: Party
+    desc: Party abbreviation — results, membership and Chamber votes.
+  candidatura:
+    nome: Candidacy
+    desc: A candidacy at the TSE (sequential id) — assets, revenue, expenses, social media.
+  parlamentar:
+    nome: Legislator
+    desc: Deputy or senator — expenses, votes, committees.
+  usina:
+    nome: Power plant
+    desc: Generation project at ANEEL, by CEG.
+  obra:
+    nome: Construction work
+    desc: Construction project in the Receita's National Registry of Works (CNO).
+  obito:
+    nome: Death
+    desc: Death certificate in SIM — cause (ICD), place, age, race.
+  nascimento:
+    nome: Birth
+    desc: Live birth certificate in SINASC — prenatal care, delivery, weight.
+  internacao:
+    nome: Hospitalization
+    desc: SUS hospital admission authorization (SIH) — diagnosis, procedure, amount.
+  atendimento:
+    nome: SUS outpatient care
+    desc: Outpatient and primary care output — visits, tests, procedures.
+  notificacao:
+    nome: Notifiable disease report
+    desc: Case reported to SINAN — dengue, zika, malaria, domestic and sexual violence.
+  vacinacao:
+    nome: Vaccination
+    desc: Doses given and vaccine coverage (SI-PNI, immunizations, covid-19).
+  ocorrencia:
+    nome: Crime record
+    desc: Homicide, robbery, femicide, seizure — recorded by the police (SINESP, SSP-SP, ISP-RJ, Public Safety Forum).
+  acidente:
+    nome: Traffic accident
+    desc: Accident on federal highways (PRF) — victims, cause, stretch; and the traffic violations issued.
+  prisao:
+    nome: Prisoner or wanted person
+    desc: Prison population by facility (SISDEPEN) and open arrest warrants.
+  avaliacao:
+    nome: Test score
+    desc: Exam score — ENEM, SAEB, IDEB, literacy, and the international comparisons (PISA, TIMSS, PIRLS).
+  vinculo:
+    nome: Employment contract
+    desc: Formal job declared in RAIS and the CAGED hires and separations.
+  beneficio:
+    nome: Social benefit
+    desc: Payment to a person or family — Bolsa Família, BPC, Pé-de-Meia, Seguro-Defeso, Garantia-Safra, Bolsa Verde, INSS benefits.
+  credito:
+    nome: Credit and financing
+    desc: Loans and financing — BNDES, rural credit (SICOR), bank portfolios (ESTBAN, SCR).
+  reclamacao:
+    nome: Consumer complaint
+    desc: Complaint filed on consumidor.gov.br and with Procons against a company.
+  sancao:
+    nome: Sanction
+    desc: Company or person punished — unfit, suspended, misconduct, slave labor, international sanctions.
+  divida:
+    nome: Federal tax debt
+    desc: Debt enrolled in the Union's active debt roll (PGFN) — tax, social security, FGTS.
+  despesa:
+    nome: Public spending
+    desc: Money going out — payment to a payee, corporate card, travel, amendment, transfer, parliamentary allowance.
+  voto:
+    nome: Election result
+    desc: Votes by candidate, polling section and municipality; electorate profile.
+  doacao:
+    nome: Campaign donation
+    desc: Revenue of a candidate, committee or party — who gave and how much.
+  votacao:
+    nome: Congressional vote
+    desc: A deputy's or senator's vote on a bill, on the floor or in committee.
+  infracao_ambiental:
+    nome: Environmental violation
+    desc: Violation notice and embargoed area — IBAMA, ICMBio, state agencies.
+  desmatamento:
+    nome: Deforestation and fire
+    desc: Deforested area (PRODES, DETER), fire hotspot, land cover transition (MapBiomas), greenhouse gas emissions (SEEG).
+  subsistema:
+    nome: Power subsystem
+    desc: Southeast/Center-West, South, Northeast, North — the four regions in which ONS runs the interconnected grid.
+  convenio:
+    nome: Grant agreement
+    desc: Proposal and agreement for a voluntary federal transfer (SICONV/TransfereGov) — the route of much of the budget amendments.
+  programa:
+    nome: Government program
+    desc: Budget program and action — the "what for" of spending.
+  domicilio:
+    nome: Household
+    desc: Dwelling counted or interviewed — the CNEFE address, the household in the Census, PNAD and POF.
+  conta:
+    nome: Chart of accounts
+    desc: Accounting and budget account — the line of the balance sheet, revenue and expenditure (SICONFI, CVM, ANS).
+  operadora:
+    nome: Health insurer
+    desc: Health plan operator registered with ANS.
+  estacao:
+    nome: Monitoring station
+    desc: Weather (INMET) or hydrological (ANA) station — the point where rain, flow and temperature are measured.
+  projeto_cultural:
+    nome: Cultural project
+    desc: Lei Rouanet project (PRONAC) — proponent, sponsor, supplier.
+  processo_minerario:
+    nome: Mining case
+    desc: Title and application at ANM — exploration, mining, licensing — and the CFEM royalties mining pays.
+  especie:
+    nome: Threatened species
+    desc: Fauna and flora on the national list of species threatened with extinction.
+  energia:
+    nome: Power generation and load
+    desc: Grid operation — generation by plant, load, reservoirs, marginal cost, distributor continuity and tariffs, consumption.
+  pesquisa_domiciliar:
+    nome: Census and household survey
+    desc: What IBGE asks at home — 2010 and 2022 Census, Continuous PNAD, PNAD Covid, POF, PNS.
+  financas:
+    nome: Government finances
+    desc: Revenue, spending and balance sheets of the Union, states and municipalities — SICONFI, SIOP, federal tax collection, CAPAG, CAUC, SIOPS, Fundeb.
+  plano_saude:
+    nome: Health plan
+    desc: Beneficiary, plan, complaint and reimbursement to SUS in private health insurance (ANS).
+  medicao:
+    nome: Hydro-meteorological measurement
+    desc: Rainfall, river flow, river level, reservoir volume, temperature and air quality.
+  legislativo:
+    nome: Legislative activity
+    desc: Bill, speech, committee, caucus, event — the work of Congress beyond voting.
+  decisao_judicial:
+    nome: Court decision
+    desc: STF decision, STJ document, misconduct conviction, CNJ statistics.
+  preco:
+    nome: Price and index
+    desc: Inflation (IPCA, INPC, IGP, IPP), exchange rate, retail fuel prices, drug prices, car prices and construction input prices.
+  transporte:
+    nome: Transportation
+    desc: Flights and aircraft (ANAC), freight carriers and freight (ANTT), vehicle fleet (SENATRAN).
+  cadeia_commodity:
+    nome: Commodity supply chain
+    desc: Soy and beef from the producing municipality to the port and the buyer (TRASE) — slaughterhouse, crusher, warehouse.
+
+tipos:
+  ABRANGE: COVERS
+  ADMINISTRADO_POR: MANAGED BY
+  AGRAVO: CONDITION
+  ATIVIDADE: ACTIVITY
+  ATUA_EM: OPERATES IN
+  AUTUA: FINES
+  CAUSA: CAUSE
+  CLASSIFICADA_EM: CLASSIFIED AS
+  COMERCIA_COM: TRADES WITH
+  CONCEDIDO_POR: GRANTED BY
+  CONDENA: CONVICTS
+  CONTRA: AGAINST
+  CONTRATADO: CONTRACTOR
+  CONTRATANTE: CONTRACTING PARTY
+  DA_ESCOLA: OF SCHOOL
+  DE: OF
+  DESTINO: DESTINATION
+  DEVIDA_POR: OWED BY
+  DIAGNOSTICO: DIAGNOSIS
+  DISPUTA_EM: RUNS IN
+  DISTRIBUIDA_POR: DISTRIBUTED BY
+  DOOU_PARA: DONATED TO
+  ELEITO_POR: ELECTED BY
+  EM: IN
+  EMPENHA: COMMITS
+  ENVOLVE: INVOLVES
+  ESTUDOU_EM: STUDIED AT
+  EXPORTA: EXPORTS
+  EXPORTADA_POR: EXPORTED BY
+  E_UM: IS A
+  E_UMA: IS A
+  FAVORECE: PAYS
+  FEZ_PROVA_EM: TOOK TEST IN
+  FICA_EM: LOCATED IN
+  FILIADA_A: AFFILIATED TO
+  FILIADO_A: MEMBER OF
+  FILIAL_DE: BRANCH OF
+  FINANCIA: FINANCES
+  FORNECEU_PARA: SUPPLIED TO
+  MANTIDA_POR: RUN BY
+  MATRICULADO_EM: ENROLLED IN
+  MORA_EM: LIVES IN
+  NATUREZA: LEGAL NATURE
+  OCORRE_EM: HAPPENS IN
+  OCUPACAO: OCCUPATION
+  OFERECIDO_POR: OFFERED BY
+  OPERADO_POR: OPERATED BY
+  ORIGEM: ORIGIN
+  ORIGINA: ORIGINATES
+  PAGA_POR: PAID BY
+  PAGO_A: PAID TO
+  PARA: FOR
+  PARTICIPANTE: BIDDER
+  PATROCINADO_POR: SPONSORED BY
+  PERTENCE_A: BELONGS TO
+  PREVISTA_EM: PROVIDED FOR IN
+  PREVISTO_EM: PROVIDED FOR IN
+  PROPOSTO_POR: PROPOSED BY
+  REALIZADA_POR: CARRIED OUT BY
+  RECEBIDO_POR: RECEIVED BY
+  RESPONSAVEL: RESPONSIBLE
+  RESULTA_DE: RESULTS FROM
+  SANCIONA: SANCTIONS
+  SOBRE: ABOUT
+  SOCIO_DE: PARTNER IN
+  SUBCLASSE_DE: SUBCLASS OF
+  SUBORDINADO_A: REPORTS TO
+  TITULAR: HOLDER
+  TOMADO_POR: TAKEN BY
+  TRABALHA_EM: WORKS AT
+  VINCULADA_A: LINKED TO
+
+vias:
+  'id_uf = 2 primeiros dígitos do id_municipio': 'id_uf = first 2 digits of id_municipio'
+  'nome_regiao no diretório da UF': 'nome_regiao in the state directory'
+  'colunas id_* do diretório de municípios': 'id_* columns of the municipality directory'
+  'id_regiao_metropolitana no diretório': 'id_regiao_metropolitana in the directory'
+  'id_regiao_saude no diretório': 'id_regiao_saude in the directory'
+  'diretório de municípios': 'municipality directory'
+  '7 primeiros dígitos do id_distrito': 'first 7 digits of id_distrito'
+  'id_distrito/id_subdistrito no diretório de setores': 'id_distrito/id_subdistrito in the tract directory'
+  'br_bd_diretorios_brasil.cep': 'br_bd_diretorios_brasil.cep'
+  'o id_imovel_car carrega o IBGE7 (UF-IBGE7-HASH)': 'id_imovel_car carries the IBGE7 code (UF-IBGE7-HASH)'
+  'cnpj_basico = 8 primeiros dígitos do cnpj': 'cnpj_basico = first 8 digits of the cnpj'
+  'id_municipio_rf → id_municipio (diretório)': 'id_municipio_rf → id_municipio (directory)'
+  'cnae_fiscal_principal / secundária': 'cnae_fiscal_principal / secondary'
+  'id_natureza_juridica em br_me_cnpj.empresas': 'id_natureza_juridica in br_me_cnpj.empresas'
+  'br_me_cnpj.socios — CPF do sócio vem mascarado': 'br_me_cnpj.socios — the partner''s CPF is masked'
+  'RAIS/CAGED públicos são desidentificados': 'public RAIS/CAGED are de-identified'
+  'cbo_2002 no vínculo da RAIS/CAGED': 'cbo_2002 on the RAIS/CAGED job record'
+  'valor com 11 dígitos': 'value with 11 digits'
+  'valor com 14 dígitos': 'value with 14 digits'
+  'CNPJ_CIA / CNPJ_Companhia → cnpj_basico': 'CNPJ_CIA / CNPJ_Companhia → cnpj_basico'
+  'cnpj_admin / cnpj_custodiante': 'cnpj_admin / cnpj_custodiante'
+  '4 primeiros dígitos da NCM': 'first 4 digits of the NCM'
+  'br_me_comex_stat': 'br_me_comex_stat'
+  'br_me_comex_stat (id_pais / sigla_pais_iso3)': 'br_me_comex_stat (id_pais / sigla_pais_iso3)'
+  'SIM/SIH/SINAN: o evento tem CID, mas não CPF': 'SIM/SIH/SINAN: the event has an ICD code but no CPF'
+  'id_municipio no diretório de escolas': 'id_municipio in the school directory'
+  'id_escola no censo escolar': 'id_escola in the school census'
+  'id_turma no censo escolar': 'id_turma in the school census'
+  'id_ies': 'id_ies'
+  'cnpj_mantenedora': 'cnpj_mantenedora'
+  'id_municipio_prova': 'id_municipio_prova'
+  'id_escola no microdado do ENEM': 'id_escola in the ENEM microdata'
+  'id_municipio (6 dígitos no DATASUS)': 'id_municipio (6 digits in DATASUS)'
+  'cnpj do mantenedor no CNES': 'operator''s cnpj in CNES'
+  'id_estabelecimento_cnes em br_ms_cnes.equipe': 'id_estabelecimento_cnes in br_ms_cnes.equipe'
+  'id_orgao_superior': 'id_orgao_superior'
+  'cnpj_orgao': 'cnpj_orgao'
+  'id_orgao': 'id_orgao'
+  'id_unidade_gestora': 'id_unidade_gestora'
+  'licitacao_participante (cpf_cnpj)': 'licitacao_participante (cpf_cnpj)'
+  'id_licitacao em contrato_compra': 'id_licitacao in contrato_compra'
+  'cpf_cnpj_fornecedor': 'cpf_cnpj_fornecedor'
+  'licitacao_empenho': 'licitacao_empenho'
+  'favorecido do pagamento': 'payee of the payment'
+  'numero_processo, texto livre entre fontes': 'numero_processo, free text across sources'
+  'cnpj do órgão': 'cnpj of the body'
+  'ni_fornecedor (CPF ou CNPJ)': 'ni_fornecedor (CPF or CNPJ)'
+  'cpf_cnpj do responsável': 'cpf_cnpj of the responsible party'
+  'cpf do candidato no TSE': 'candidate''s cpf at the TSE'
+  'sigla_partido': 'sigla_partido'
+  'id_municipio_tse → id_municipio': 'id_municipio_tse → id_municipio'
+  'cpf_cnpj_doador nas receitas': 'cpf_cnpj_doador in campaign revenue'
+  'cpf_cnpj_fornecedor nas despesas': 'cpf_cnpj_fornecedor in campaign expenses'
+  'sigla_uf': 'sigla_uf'
+  'código IBGE do empreendimento': 'IBGE code of the project'
+  'CNPJ do agente proprietário': 'CNPJ of the owning agent'
+  'município da obra no CNO': 'municipality of the work in CNO'
+  'CNPJ responsável no CNO': 'responsible CNPJ in CNO'
+  'município de ocorrência e de residência': 'municipality of occurrence and of residence'
+  'causa básica (CID-10)': 'underlying cause (ICD-10)'
+  'município de nascimento e de residência da mãe': 'municipality of birth and of the mother''s residence'
+  'estabelecimento do parto (CNES)': 'facility of delivery (CNES)'
+  'hospital da AIH (CNES)': 'AIH hospital (CNES)'
+  'diagnóstico principal (CID-10)': 'principal diagnosis (ICD-10)'
+  'estabelecimento que produziu (CNES)': 'facility that delivered the care (CNES)'
+  'agravo notificado (CID-10)': 'reported condition (ICD-10)'
+  'município de notificação e de residência': 'municipality of report and of residence'
+  'município de aplicação': 'municipality where the dose was given'
+  'município ou UF do registro': 'municipality or state of the record'
+  'município do trecho da rodovia': 'municipality of the highway stretch'
+  'UF da unidade prisional': 'state of the prison facility'
+  'dado agregado ou sem CPF': 'aggregated data or no CPF'
+  'nota por inscrição no microdado do ENEM': 'score per registration in the ENEM microdata'
+  'id_escola no SAEB e no IDEB': 'id_escola in SAEB and IDEB'
+  'IDEB e SAEB por município': 'IDEB and SAEB by municipality'
+  'CNPJ do empregador na RAIS identificada; desidentificado no microdado público': 'employer CNPJ in the identified RAIS; de-identified in the public microdata'
+  'trabalhador sem CPF no dado público': 'worker without CPF in the public data'
+  'cbo_2002 do vínculo': 'cbo_2002 of the job record'
+  'CPF mascarado e nome do favorecido': 'masked CPF and the payee''s name'
+  'município do favorecido': 'municipality of the payee'
+  'CNPJ/CPF do cliente (BNDES) ou só o município (SICOR, ESTBAN)': 'client CNPJ/CPF (BNDES) or only the municipality (SICOR, ESTBAN)'
+  'município do cliente ou da agência': 'municipality of the client or of the branch'
+  'CNPJ da empresa reclamada': 'CNPJ of the company complained about'
+  'CPF/CNPJ do sancionado': 'CPF/CNPJ of the sanctioned party'
+  'acórdão que declarou a inidoneidade': 'ruling that declared the party unfit'
+  'CPF/CNPJ do devedor': 'CPF/CNPJ of the debtor'
+  'CPF/CNPJ do favorecido': 'CPF/CNPJ of the payee'
+  'órgão e unidade gestora pagadores': 'paying body and management unit'
+  'sequencial do candidato': 'candidate sequential id'
+  'sequencial do candidato que recebeu': 'sequential id of the receiving candidate'
+  'cpf_cnpj_doador': 'cpf_cnpj_doador'
+  'id_deputado / id_senador': 'id_deputado / id_senador'
+  'CPF/CNPJ do autuado': 'CPF/CNPJ of the offender'
+  'município da infração': 'municipality of the violation'
+  'município do polígono ou do foco': 'municipality of the polygon or hotspot'
+  'id_subsistema na geração por usina (ONS)': 'id_subsistema in generation by plant (ONS)'
+  'sigla_uf das usinas e da carga': 'sigla_uf of plants and load'
+  'id_subsistema': 'id_subsistema'
+  'id_ons / id_empreendimento_aneel': 'id_ons / id_empreendimento_aneel'
+  'CNPJ da distribuidora (ANEEL)': 'CNPJ of the distributor (ANEEL)'
+  'órgão concedente': 'granting body'
+  'CNPJ do convenente (prefeitura, OSC)': 'CNPJ of the grantee (city hall, NGO)'
+  'município do convenente': 'municipality of the grantee'
+  'contratos e obras do convênio': 'contracts and works of the agreement'
+  'ID_PROGRAMA': 'ID_PROGRAMA'
+  'programa e ação orçamentária': 'budget program and action'
+  'id_setor_censitario do endereço': 'id_setor_censitario of the address'
+  'id_pessoa dentro do id_domicilio, sem CPF': 'id_pessoa within id_domicilio, no CPF'
+  'id_domicilio (PNAD, POF); agregado por setor no Censo': 'id_domicilio (PNAD, POF); aggregated by tract in the Census'
+  'agregados do Censo por município': 'Census aggregates by municipality'
+  'id_municipio (SICONFI, CAPAG, SIOPS)': 'id_municipio (SICONFI, CAPAG, SIOPS)'
+  'id_conta_bd / conta': 'id_conta_bd / conta'
+  'CNPJ da operadora': 'CNPJ of the insurer'
+  'registro ANS': 'ANS registration'
+  'beneficiários por município': 'beneficiaries by municipality'
+  'id_municipio da estação': 'id_municipio of the station'
+  'código da estação': 'station code'
+  'proponente_cgccpf': 'proponente_cgccpf'
+  'doador_cgccpf / patrocinador_cnpjcpf': 'doador_cgccpf / patrocinador_cnpjcpf'
+  'município do projeto': 'municipality of the project'
+  'cpf_cnpj_do_titular': 'cpf_cnpj_do_titular'
+  'municipio_s (texto) e código na CFEM': 'municipio_s (text) and code in CFEM'
+  'espécime no auto do IBAMA, por nome científico': 'specimen in the IBAMA notice, by scientific name'
+  'autor da proposição, orador, membro': 'bill author, speaker, member'
+  'proposição votada': 'bill voted on'
+  'número do processo': 'case number'
+  'condenado por improbidade (CNJ)': 'convicted of misconduct (CNJ)'
+  'IPCA e INPC por região metropolitana': 'IPCA and INPC by metropolitan region'
+  'CNPJ do posto (ANP)': 'CNPJ of the gas station (ANP)'
+  'CPF/CNPJ do transportador (RNTRC)': 'CPF/CNPJ of the carrier (RNTRC)'
+  'origem e destino do frete; frota por município': 'freight origin and destination; fleet by municipality'
+  'município produtor': 'producing municipality'
+  'CNPJ do exportador': 'CNPJ of the exporter'
+  'país importador': 'importing country'

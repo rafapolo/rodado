@@ -11,6 +11,23 @@ python3 scripts/build_atlas.py /tmp/atlas.html   # também emite a cópia autoco
 ```
 
 - `_page.html` é a **única fonte**; `index.html` é gerado — não edite o gerado.
+- **Duas línguas, uma fonte**: o build grava `index.html` (`/atlas/`, pt-BR) e
+  `en.html` (`/atlas/en`, inglês), lado a lado para que os `fetch` relativos
+  (`schema_graph.json`, `ontologia.json`, `detalhes/`) valham nos dois.
+  - rótulos do JS: pares `tr(pt, en)` no `_page.html`, chaveados pelo marcador
+    `__ATLAS_LANG__`; nomes de tema e de categoria de chave em inglês ficam no
+    `boot()`;
+  - HTML estático (menu, cabeçalho, botões, `aria-label`): `STATIC_EN` em
+    `scripts/build_atlas.py`, troca exata — texto do `_page.html` que mudar sem
+    mudar lá **para o build**;
+  - ontologia: `docs/context/ontologia.en.yaml` (domínio, classe, tipo de
+    relação, `via`); `gera_ontologia.ts` recusa o que faltar ou sobrar;
+  - texto livre dos dados (descrição de dataset, cartão, armadilha) só existe
+    em pt-BR e aparece assim no `/atlas/en`, com aviso no cabeçalho;
+  - o PT/EN do menu leva junto `?db`/`?mode`/`?classe`; páginas em inglês
+    (`en.html`, `mcp-en.html`, `technical.html`, `plataformas/en.html`,
+    `temas-en/`) apontam para `/atlas/en`; o sitemap traz o par com hreflang
+    (`ATLAS_IDIOMAS` em `gera_seo.py`).
 - O grafo é **bipartido**: tabela→chave, nunca tabela→tabela. Par a par seriam
   89.598 arestas (novelo); pela chave são 2.151.
 - Três vistas: Ontologia (padrão, ver abaixo), `temas` (um território por
@@ -62,3 +79,5 @@ numa coluna ou dataset no inspetor desce para Temas.
 - O build recusa conceito de `bridges.yaml` sem classe ou em duas, e relação
   para classe inexistente — conceito novo em `bridges.yaml` exige classe aqui.
 - Ordem: `gera_schema_graph.py` → `gera_ontologia.ts` → `build_atlas.py`.
+- Classe, relação ou `via` novos em `ontologia.yaml` pedem a linha em inglês
+  em `ontologia.en.yaml`, senão o build para.
