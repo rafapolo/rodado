@@ -114,3 +114,20 @@ main > .capa { display: block; width: 100%; max-width: none; height: 120px;
    inverter os dois, a pílula some debaixo do cursor */
 #doc .teaser-tile:hover .tag { background: var(--bg); }
 .doc-msg { color: var(--ink-soft); }
+
+/* filtro por fonte na lista: fileira de chips, mesma pílula das .tag */
+.fonte-filtro { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0 0 1.1rem; }
+.fonte-chip { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem;
+  line-height: 1.5; color: var(--ink-soft); background: var(--bg-raised);
+  border: 1px solid var(--rule); border-radius: 999px; padding: 0.12rem 0.65rem;
+  white-space: nowrap; cursor: pointer; }
+.fonte-chip span { opacity: 0.65; margin-left: 0.15rem; }
+.fonte-chip:hover { color: var(--ink); }
+.fonte-chip:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.fonte-chip[aria-pressed="true"] { color: var(--bg); background: var(--ink); border-color: var(--ink); }
+.noticia[hidden] { display: none; }
+@media (max-width: 640px) {
+  .fonte-filtro { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 0.4rem;
+    scrollbar-width: thin; }
+  .fonte-chip { flex: none; }
+}

@@ -240,6 +240,7 @@
       '<p class="mod-sub">Cada uma abre com o achado e leva a tabela de ' +
       'evidência junto — número, fonte oficial e a data em que foi rodada, ' +
       'para conferir, não só ler.</p>' +
+      '<div class="fonte-filtro" id="fonte-filtro"></div>' +
       '<div class="noticias idx-cartoes">';
     // os mesmos cartões .noticia da home (site.css), em grade com todas
     items.forEach(function (it) {
@@ -248,7 +249,7 @@
       var href = it.url || (encodeURIComponent(it.slug) + '/');
       var fonte = (it.tags || [])[0];
       // capa abstrata (scripts/gera_capas.ts); se faltar, a imagem some sozinha
-      html += '<a class="noticia" href="' + href + '">' +
+      html += '<a class="noticia" href="' + href + '" data-fontes="' + esc(fontesDe(it).join('|')) + '">' +
         '<img class="noticia-capa" src="' + base + 'img/capa-' + encodeURIComponent(it.slug) +
         '.webp" alt="" width="1680" height="240" loading="lazy" decoding="async" ' +
         'onerror="this.remove()">' +
@@ -260,6 +261,57 @@
     });
     docEl.innerHTML = html + '</div>';
     document.title = 'Análises de dados públicos — rodado';
+    filtroFonte(items);
+  }
+
+  // --- filtro por fonte (órgão = texto antes de " · " em cada tag) ----------
+  function esc(t) { return String(t).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
+  function fontesDe(it) {
+    var out = [];
+    (it.tags || []).forEach(function (t) {
+      var o = t.split(' · ')[0].trim();
+      if (o && out.indexOf(o) < 0) out.push(o);
+    });
+    return out;
+  }
+  function filtroFonte(items) {
+    var box = document.getElementById('fonte-filtro');
+    var cards = docEl.querySelectorAll('.noticia[data-fontes]');
+    if (!box) return;
+    var cont = {};
+    items.forEach(function (it) { fontesDe(it).forEach(function (o) { cont[o] = (cont[o] || 0) + 1; }); });
+    var orgaos = Object.keys(cont).sort(function (a, b) { return cont[b] - cont[a] || a.localeCompare(b, 'pt'); });
+    var h = '<button type="button" class="fonte-chip" data-fonte="">Todas <span>' + items.length + '</span></button>';
+    orgaos.forEach(function (o) {
+      h += '<button type="button" class="fonte-chip" data-fonte="' + esc(o) + '">' + esc(o) + ' <span>' + cont[o] + '</span></button>';
+    });
+    box.setAttribute('role', 'group');
+    box.setAttribute('aria-label', 'Filtrar por fonte');
+    box.innerHTML = h;
+    var chips = box.querySelectorAll('.fonte-chip');
+
+    function aplica() {
+      var f = new URLSearchParams(location.search).get('fonte') || '';
+      if (f && !cont[f]) f = '';
+      chips.forEach(function (c) { c.setAttribute('aria-pressed', c.dataset.fonte === f ? 'true' : 'false'); });
+      var n = 0;
+      cards.forEach(function (a) {
+        var ok = !f || a.dataset.fontes.split('|').indexOf(f) >= 0;
+        a.hidden = !ok;
+        if (ok) n++;
+      });
+      eyebrow.textContent = f ? n + ' de ' + items.length + ' análises' : items.length + ' análises';
+    }
+    box.addEventListener('click', function (e) {
+      var c = e.target.closest('.fonte-chip');
+      if (!c) return;
+      var u = new URL(location.href);
+      if (c.dataset.fonte) u.searchParams.set('fonte', c.dataset.fonte); else u.searchParams.delete('fonte');
+      history.pushState(null, '', u.pathname + u.search + u.hash);
+      aplica();
+    });
+    window.addEventListener('popstate', aplica);
+    aplica();
   }
 
   // ?doc=<slug> é a forma antiga: não tem metadados próprios, então mandamos
