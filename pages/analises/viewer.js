@@ -230,9 +230,12 @@
       'contas de campanha, óbitos do SUS — registros públicos cruzados uns com ' +
       'os outros até aparecer o que nenhum deles mostra sozinho.</p>' +
       // ponte pro módulo irmão: mesmo espelho de dados, uso diferente
-      '<p class="lede">Cada uma sai do mesmo espelho local de 1.071 tabelas ' +
-      'públicas — RAIS, SIM, TSE, CGU, IBGE, Receita Federal e outras, mais ' +
-      'de 77 raspadas de forma independente — consultado sob demanda por ' +
+      // números do espelho: AGENTS.md (1.759 tabelas · 295 datasets · 140 fontes,
+      // 2026-11-11). A home e plataformas.js também os têm em texto fixo.
+      '<p class="lede">Cada uma sai do mesmo espelho local de 1.759 tabelas ' +
+      'públicas, em 295 datasets e 140 fontes — RAIS, SIM, TSE, CGU, IBGE, ' +
+      'Receita Federal e outras, além de fontes raspadas de forma ' +
+      'independente — consultado sob demanda por ' +
       'DuckDB, e fecha uma pergunta com um número. Quem quiser o dado ' +
       'inteiro pra navegar, não só a conclusão, encontra em ' +
       '<a href="/plataformas/">Plataformas</a>.</p>' +
