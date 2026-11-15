@@ -85,3 +85,14 @@ Os três são servidos ao assistente como ferramentas, não como texto para ele 
 O [atlas](https://rodado.xyz/atlas/) mostra o espelho inteiro em três vistas. A **Ontologia**, que abre por padrão, sobe um nível acima das tabelas: as 54 entidades que as chaves identificam — município, estabelecimento, pessoa, domicílio, licitação, convênio, escola, candidatura —, os 32 fatos que o espelho registra sobre elas — óbito, internação, ocorrência criminal, nota de prova, vínculo de emprego, benefício, sanção, voto, finanças do ente, geração de energia, desmatamento — e as 137 relações entre umas e outros, cada uma com a coluna por onde passa. Entidades são discos cheios; fatos, anéis. Pessoas e empresas ficam em lados opostos, ligadas pela coluna que guarda CPF ou CNPJ; as relações que existem no mundo mas que o dado público não deixa fazer (CPF mascarado, microdado desidentificado) aparecem tracejadas. **Temas** espalha as tabelas pelo território do seu assunto, e **3D** mostra o mesmo grafo de datasets e chaves em três dimensões.
 
 A ontologia é curada em [`docs/context/ontologia.yaml`](docs/context/ontologia.yaml), que agrupa os 68 conceitos de `bridges.yaml` em classes; a versão em diagrama está em [`docs/mapa/ONTOLOGIA.md`](docs/mapa/ONTOLOGIA.md).
+
+## Prévia local do site
+
+Os links internos não levam `.html` (`/mcp`, `/analises/`), e o GitHub Pages resolve isso; o `python -m http.server` não. Para conferir o site como ele vai ao ar:
+
+```bash
+bun scripts/serve.ts            # http://localhost:8765/
+bun scripts/serve.ts --port 9000
+```
+
+O script (Bun, sem dependências) serve `pages/` com as regras do Pages: `/x` abre `x.html`, `/pasta/` abre `pasta/index.html` e o que não existe devolve 404 (usa `pages/404.html` se houver).

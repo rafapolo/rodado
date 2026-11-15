@@ -15,7 +15,8 @@ Regras:
 - #âncora e ?consulta são preservadas.
 
 Prévia local: python -m http.server não resolve /mcp → mcp.html. Para conferir
-os links limpos, usar um servidor que tente .html (ex.: `bunx serve pages`).
+os links limpos, usar `bun scripts/serve.ts` (porta 8765, `--port N`), que imita o
+Pages: /x → x.html, /pasta/ → pasta/index.html.
 
 Uso: python3 scripts/limpa_links_html.py   (idempotente)
 """
