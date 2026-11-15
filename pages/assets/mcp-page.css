@@ -5,7 +5,8 @@
 
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
-body { background: var(--bg); }
+/* só a cor: o atalho `background:` zerava a textura (--texture) que o site.css põe no body */
+body { background-color: var(--bg); }
 
 /* ── estrutura da página ── */
 
@@ -49,9 +50,16 @@ body { background: var(--bg); }
 .filters { display: flex; flex-wrap: wrap; gap: 10px; }
 .search-input, .category-select { font-family: 'Public Sans', system-ui, sans-serif; font-size: 15px; color: var(--ink); background: var(--card-bg); border: 1px solid var(--rule); border-radius: 10px; padding: 11px 16px; }
 .search-input { flex: 1 1 260px; min-width: 0; }
-.category-select { flex: 0 1 auto; max-width: 100%; font-weight: 600; }
+:root { --chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 6l4.5 4.5L12.5 6' fill='none' stroke='%234a443a' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+:root[data-theme="dark"] { --chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 6l4.5 4.5L12.5 6' fill='none' stroke='%23c7bfab' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+/* um só chevron (16px) no select e no painel de ferramentas, no lugar do nativo
+   do sistema e do ▸ de 15px — os dois controles abrem coisa, e agora se parecem */
+.category-select { flex: 0 1 auto; max-width: 100%; font-weight: 600; cursor: pointer;
+  appearance: none; -webkit-appearance: none; padding-right: 42px;
+  background-image: var(--chevron); background-repeat: no-repeat;
+  background-position: right 14px center; background-size: 16px; }
 .search-input:focus-visible, .category-select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
-@media (max-width: 520px) { .filters { flex-wrap: nowrap; gap: 8px; } .search-input { flex-basis: 0; } .category-select { max-width: 45%; text-overflow: ellipsis; } .search-input, .category-select { font-size: 14px; padding: 10px 12px; } }
+@media (max-width: 520px) { .filters { flex-wrap: nowrap; gap: 8px; } .search-input { flex-basis: 0; } .category-select { max-width: 45%; text-overflow: ellipsis; } .search-input, .category-select { font-size: 14px; padding: 10px 12px; } .category-select { padding-right: 34px; background-position: right 10px center; } }
 
 /* ── painel de ferramentas MCP ── */
 
@@ -62,9 +70,10 @@ body { background: var(--bg); }
 details.tools-panel > summary.tools-head { cursor: pointer; list-style: none; margin-bottom: 0; }
 details.tools-panel > summary.tools-head::-webkit-details-marker { display: none; }
 details.tools-panel > summary.tools-head .tools-title { border-top: 0; padding-top: 0; }
-details.tools-panel > summary.tools-head::after { content: "▸"; margin-left: auto; font-size: 15px; color: var(--ink-soft); transition: transform .15s; }
+details.tools-panel > summary.tools-head::after { content: ""; flex: none; width: 16px; height: 16px; margin-left: auto; background: var(--chevron) center / 16px no-repeat; transition: transform .15s; }
 details.tools-panel[open] > summary.tools-head { margin-bottom: 6px; }
-details.tools-panel[open] > summary.tools-head::after { transform: rotate(90deg); }
+details.tools-panel[open] > summary.tools-head::after { transform: rotate(180deg); }
+details.tools-panel > summary.tools-head:hover .tools-title { color: var(--accent); }
 details.tools-panel > summary.tools-head:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
 .tools-desc { font-size: 13px; line-height: 1.6; color: var(--ink-soft); margin: 0 0 18px; max-width: 80ch; }
 .tools-list { list-style: none; margin: 0; padding: 0; font-size: 12.5px; line-height: 1.6; color: var(--ink-soft); columns: 2 320px; column-gap: 32px; }
