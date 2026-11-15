@@ -218,8 +218,22 @@
   // (texto antes do " · " em tags), desempata pela data mais recente. Nunca a
   // própria, nem o par de tradução; mesma língua. Sem órgão em comum, as mais
   // recentes completam.
+  // o manifest escreve o mesmo órgão de jeitos diferentes (PT/EN, sigla ou
+  // nome); filtro e "leia também" comparam pelo nome canônico daqui
+  var SINONIMOS = {
+    'Federal Revenue': 'Receita Federal', 'ANA': 'Agência Nacional de Águas',
+    'Tribunal Superior Eleitoral': 'TSE', 'Central Bank': 'Banco Central',
+    'Concla/IBGE': 'IBGE', 'Ministry of Health / DATASUS': 'DataSUS',
+    'National Supplementary Health Agency (ANS)': 'ANS',
+    'Transparency Portal and CGU': 'CGU', 'Portal da Transparência e CGU': 'CGU',
+    'Portal da Transparência/TransfereGov': 'CGU'
+  };
+  function orgao(tag) {
+    var o = tag.split(' · ')[0].trim();
+    return SINONIMOS[o] || o;
+  }
   function orgaos(it) {
-    return (it.tags || []).map(function (t) { return t.split(' · ')[0].trim(); });
+    return (it.tags || []).map(orgao);
   }
   function chaveData(it) {
     var d = it.rodado_em;
@@ -281,10 +295,10 @@
       'contas de campanha, óbitos do SUS — registros públicos cruzados uns com ' +
       'os outros até aparecer o que nenhum deles mostra sozinho.</p>' +
       // ponte pro módulo irmão: mesmo espelho de dados, uso diferente
-      // números do espelho: AGENTS.md (1.759 tabelas · 295 datasets · 140 fontes,
-      // 2026-11-11). A home e plataformas.js também os têm em texto fixo.
-      '<p class="lede">Cada uma sai do mesmo espelho local de 1.759 tabelas ' +
-      'públicas, em 295 datasets e 140 fontes — RAIS, SIM, TSE, CGU, IBGE, ' +
+      // números do espelho: os mesmos da home (index.html, eyebrow "1.758 tabelas ·
+      // 294 datasets · 140 fontes"), que é texto fixo — atualizar os dois juntos
+      '<p class="lede">Cada uma sai do mesmo espelho local de 1.758 tabelas ' +
+      'públicas, em 294 datasets e 140 fontes — RAIS, SIM, TSE, CGU, IBGE, ' +
       'Receita Federal e outras, além de fontes raspadas de forma ' +
       'independente — consultado sob demanda por ' +
       'DuckDB, e fecha uma pergunta com um número. Quem quiser o dado ' +
@@ -323,7 +337,7 @@
   function fontesDe(it) {
     var out = [];
     (it.tags || []).forEach(function (t) {
-      var o = t.split(' · ')[0].trim();
+      var o = orgao(t);
       if (o && out.indexOf(o) < 0) out.push(o);
     });
     return out;
@@ -333,30 +347,57 @@
     var cards = docEl.querySelectorAll('.noticia[data-fontes]');
     if (!box) return;
     var cont = {};
-    items.forEach(function (it) { fontesDe(it).forEach(function (o) { cont[o] = (cont[o] || 0) + 1; }); });
-    var orgaos = Object.keys(cont).sort(function (a, b) { return cont[b] - cont[a] || a.localeCompare(b, 'pt'); });
-    var h = '<button type="button" class="fonte-chip" data-fonte="">Todas <span>' + items.length + '</span></button>';
-    orgaos.forEach(function (o) {
-      h += '<button type="button" class="fonte-chip" data-fonte="' + esc(o) + '">' + esc(o) + ' <span>' + cont[o] + '</span></button>';
+    items.forEach(function (it) {
+      if (it.par && it.lang === 'en') return; // tradução não soma no chip
+      fontesDe(it).forEach(function (o) { cont[o] = (cont[o] || 0) + 1; });
     });
+    var lista = Object.keys(cont).sort(function (a, b) { return cont[b] - cont[a] || a.localeCompare(b, 'pt'); });
+    // tradução não conta como análise a mais (mesma regra do eyebrow e da home)
+    var traducao = items.map(function (i) { return !!(i.par && i.lang === 'en'); });
+    var total = traducao.filter(function (t) { return !t; }).length;
+    var chip = function (o, extra) {
+      return '<button type="button" class="fonte-chip' + (extra ? ' fonte-extra' : '') + '" data-fonte="' + esc(o) + '">' +
+        esc(o) + ' <span>' + cont[o] + '</span></button>';
+    };
+    // órgão de uma análise só fica atrás do "+N": sem isso eram 4 linhas de chips
+    var h = '<button type="button" class="fonte-chip" data-fonte="">Todas <span>' + total + '</span></button>';
+    var raros = lista.filter(function (o) { return cont[o] < 2; });
+    lista.forEach(function (o) { if (cont[o] >= 2) h += chip(o); });
+    raros.forEach(function (o) { h += chip(o, true); });
+    var rotMais = '+' + raros.length + ' fontes';
+    if (raros.length) h += '<button type="button" class="fonte-mais" aria-expanded="false">' + rotMais + '</button>';
     box.setAttribute('role', 'group');
     box.setAttribute('aria-label', 'Filtrar por fonte');
     box.innerHTML = h;
     var chips = box.querySelectorAll('.fonte-chip');
 
+    function marcaMais(b) {
+      var aberto = box.classList.contains('aberto');
+      b.setAttribute('aria-expanded', aberto ? 'true' : 'false');
+      b.textContent = aberto ? 'menos fontes' : rotMais;
+    }
     function aplica() {
       var f = new URLSearchParams(location.search).get('fonte') || '';
       if (f && !cont[f]) f = '';
       chips.forEach(function (c) { c.setAttribute('aria-pressed', c.dataset.fonte === f ? 'true' : 'false'); });
+      // fonte rara escolhida (ou vinda pela URL) abre o "+N" para o chip aparecer
+      if (f && cont[f] < 2) box.classList.add('aberto');
       var n = 0;
-      cards.forEach(function (a) {
+      cards.forEach(function (a, i) {
         var ok = !f || a.dataset.fontes.split('|').indexOf(f) >= 0;
         a.hidden = !ok;
-        if (ok) n++;
+        if (ok && !traducao[i]) n++;
       });
-      eyebrow.textContent = f ? n + ' de ' + items.length + ' análises' : items.length + ' análises';
+      eyebrow.textContent = f ? n + ' de ' + total + ' análises' : total + ' análises';
+      var mais = box.querySelector('.fonte-mais');
+      if (mais) marcaMais(mais);
     }
     box.addEventListener('click', function (e) {
+      if (e.target.closest('.fonte-mais')) {
+        box.classList.toggle('aberto');
+        marcaMais(e.target.closest('.fonte-mais'));
+        return;
+      }
       var c = e.target.closest('.fonte-chip');
       if (!c) return;
       var u = new URL(location.href);

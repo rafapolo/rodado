@@ -125,11 +125,17 @@ main > .capa { display: block; width: 100%; max-width: none; height: 120px;
 .fonte-chip:hover { color: var(--ink); }
 .fonte-chip:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 .fonte-chip[aria-pressed="true"] { color: var(--bg); background: var(--ink); border-color: var(--ink); }
+.fonte-filtro:not(.aberto) .fonte-extra { display: none; }
+.fonte-mais { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; line-height: 1.5;
+  color: var(--accent); background: none; border: 1px dashed var(--rule); border-radius: 999px;
+  padding: 0.12rem 0.65rem; white-space: nowrap; cursor: pointer; }
+.fonte-mais:hover { border-color: var(--accent); }
+.fonte-filtro.aberto .fonte-mais { order: 99; }
 .noticia[hidden] { display: none; }
 @media (max-width: 640px) {
   .fonte-filtro { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 0.4rem;
     scrollbar-width: thin; }
-  .fonte-chip { flex: none; }
+  .fonte-chip, .fonte-mais { flex: none; }
 }
 /* "Leia também": 3 cartões compactos ao fim da análise (viewer.js, leiaTambem) */
 #doc .leia-tambem { margin-top: 2rem; }
