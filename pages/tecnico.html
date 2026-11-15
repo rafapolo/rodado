@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Referência técnica — rodado</title>
+<meta name="description" content="Como o rodado é feito: um espelho local em Parquet de 1.759 tabelas públicas brasileiras, uma camada semântica de joins, métricas e alertas por dataset, e acesso somente-leitura por SQL e MCP.">
+<!-- seo:start (gerado por scripts/gera_seo.py — não editar à mão) -->
+<link rel="canonical" href="https://rodado.xyz/tecnico">
+<link rel="alternate" hreflang="pt-br" href="https://rodado.xyz/tecnico">
+<link rel="alternate" hreflang="en" href="https://rodado.xyz/technical">
+<link rel="alternate" hreflang="x-default" href="https://rodado.xyz/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="rodado">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:url" content="https://rodado.xyz/tecnico">
+<meta property="og:title" content="Referência técnica">
+<meta property="og:description" content="Como o rodado é feito: um espelho local em Parquet de 1.759 tabelas públicas brasileiras, uma camada semântica de joins, métricas e alertas por dataset, e acesso somente-leitura por SQL e MCP.">
+<meta property="og:image" content="https://rodado.xyz/assets/og.png?v=62dfe68a">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Referência técnica — rodado">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Referência técnica">
+<meta name="twitter:description" content="Como o rodado é feito: um espelho local em Parquet de 1.759 tabelas públicas brasileiras, uma camada semântica de joins, métricas e alertas por dataset, e acesso somente-leitura por SQL e MCP.">
+<meta name="twitter:image" content="https://rodado.xyz/assets/og.png?v=62dfe68a">
+<link rel="icon" href="assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="manifest" href="https://rodado.xyz/site.webmanifest">
+<meta name="theme-color" content="#f9f8f5">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<!-- seo:end -->
+<!-- head:start (gerado por scripts/gera_seo.py — não editar à mão) -->
+<link rel="preload" href="assets/fonts/public-sans-latin-400-800.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="assets/mcp-theme.css">
+<script defer src="https://cloud.umami.is/script.js" data-website-id="d2597bf7-73e0-4e7e-b353-1202d9f72b7d"></script>
+<!-- head:end -->
+<style>
+  /* extensão do design system só para o conteúdo técnico denso desta página */
+  pre { background: var(--bg-raised); border: 1px solid var(--rule); border-radius: 4px; padding: 0.9rem 1.1rem; overflow-x: auto; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.82rem; line-height: 1.6; margin: 0 0 1.2rem; }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="brand" href="/">rodado</a>
+    <div class="nav-right">
+      <div class="links">
+        <a href="/analises/">Análises</a>
+        <a href="/plataformas/">Plataformas</a>
+        <a href="https://xn--2dk.xyz/">DataViz</a>
+        <a href="/temas/">Temas</a>
+        <a href="/atlas/">Atlas</a>
+        <a class="mcp-link" href="/mcp">MCP</a>
+      </div>
+      <div class="nav-controls">
+        <div class="lang-switch">
+          <span class="lang-current">PT</span>
+          <span class="lang-sep">/</span>
+          <a href="/technical" class="lang-link">EN</a>
+        </div>
+        <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema claro/escuro" type="button"><i class="fa-solid fa-moon"></i></button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main class="wide">
+
+  <p class="eyebrow">Referência técnica · atualizada em novembro de 2026</p>
+  <h1>Como o rodado é feito</h1>
+  <p class="dek">As análises deste site saem todas de um lugar só: um espelho local de dados públicos brasileiros, mais uma camada semântica que diz como as tabelas se ligam e onde elas enganam. Esta página descreve os dois, e os caminhos de acesso somente-leitura.</p>
+
+  <h2>O espelho</h2>
+  <p>1.759 tabelas em 295 datasets de 140 fontes, 521 GB e 33,7 bilhões de linhas em 11 de novembro de 2026. 1.216 tabelas espelham a <a href="https://basedosdados.org" target="_blank" rel="noopener">Base dos Dados</a>; as outras 543 são raspadas direto de quem publica, para cobrir as lacunas: listas de sanções, SICAF, microdados do SINAN, reclamações de consumidor, pagamentos da CGU e outras. Cada tabela é uma pasta de arquivos Parquet comprimidos com zstd, e o DuckDB lê os arquivos direto, sem importar nada para um banco.</p>
+  <p>Um catálogo de metadados registra linhas, tamanho, URL da fonte, data da coleta, status e procedência de cada tabela. Ele é refeito a cada atualização, e é o que o terminal SQL mostra quando uma tabela é aberta.</p>
+
+  <h2>Arquitetura</h2>
+  <div class="data-table-wrap">
+    <table>
+      <thead><tr><th>Camada</th><th>O que roda ali</th></tr></thead>
+      <tbody>
+        <tr><td>Armazenamento</td><td>Disco local num servidor doméstico: <code>~/rodado/&lt;dataset&gt;/&lt;tabela&gt;/*.parquet</code>. Backup só de acréscimo num segundo disco a cada 6 horas.</td></tr>
+        <tr><td>Cópia pública</td><td>Os mesmos arquivos sincronizados num armazenamento de objetos (Hetzner, Helsinque) depois de cada atualização. Cada arquivo é lido inteiro e validado antes de ser copiado.</td></tr>
+        <tr><td>Acesso público</td><td><a href="https://db.rodado.xyz/" target="_blank" rel="noopener">db.rodado.xyz</a>: um contêiner que lê a cópia pública. Oferece um terminal SQL no navegador, <code>POST /query</code> para curl e o servidor MCP por HTTP. Aberto e somente-leitura, com limite de requisições por IP e cota diária de linhas.</td></tr>
+        <tr><td>Acesso por agentes</td><td><code>mcp/mcp_server.py</code>: 17 ferramentas MCP somente-leitura, servidas localmente por stdio (as consultas vão ao servidor doméstico por SSH) ou remotamente em <code>https://db.rodado.xyz/mcp</code>. Configuração: <a href="/mcp">MCP</a>.</td></tr>
+        <tr><td>Camada semântica</td><td>Arquivos YAML versionados no repositório (próxima seção), lidos pelas ferramentas MCP na hora da consulta.</td></tr>
+        <tr><td>Site</td><td>Páginas estáticas no GitHub Pages. A página inicial, o índice de <a href="/plataformas/">plataformas</a> e o <a href="/atlas/">Atlas</a> de tabelas e chaves de join são gerados a partir do catálogo e da camada semântica.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Toda sessão abre em modo somente-leitura, com os diretórios legíveis numa lista fechada e a configuração travada. A SQL vem de um modelo ou de um desconhecido, e uma consulta que só lê ainda pode ler o arquivo errado.</p>
+
+  <h2>Camada semântica</h2>
+  <p>Nome de tabela e de coluna não basta para consultar 1.759 tabelas direito. O mesmo código significa coisas diferentes em anos diferentes, e duas colunas de mesmo nome podem guardar grandezas diferentes. A camada semântica registra isso uma vez, medido no dado real e datado, para que a consulta não precise redescobrir.</p>
+  <div class="data-table-wrap">
+    <table>
+      <thead><tr><th>Peça</th><th>Tamanho</th><th>O que faz</th></tr></thead>
+      <tbody>
+        <tr><td>Conceitos de join</td><td>68</td><td><code>resolve_join(a, b)</code> devolve uma cláusula <code>ON</code> pronta, incluindo a normalização da chave, como CNPJ sem zeros à esquerda.</td></tr>
+        <tr><td>Falsos amigos</td><td>21</td><td>Mesmo nome de coluna, significado diferente: uma coluna chamada só <code>valor</code> aparece em 153 tabelas.</td></tr>
+        <tr><td>Codificados de outro jeito</td><td>13</td><td>Conceitos como sexo e raça cujos códigos mudam por dataset e por ano.</td></tr>
+        <tr><td>Métricas nomeadas</td><td>16</td><td>Valores per capita, taxas e razões com unidade verificada. <code>get_metric()</code> vem antes de qualquer fórmula escrita à mão.</td></tr>
+        <tr><td>Hierarquias</td><td>3</td><td>Agregações territoriais, de CNAE e de CID-10.</td></tr>
+        <tr><td>Armadilhas</td><td>290 datasets</td><td>Alertas por dataset devolvidos por <code>describe_table</code>: tabelas só com o último retrato, anos vazios, identificadores mascarados.</td></tr>
+        <tr><td>Ontologia</td><td>87 classes · 137 relações</td><td>O modelo de domínio em 13 domínios: município, empresa, pessoa, contrato, evento de saúde e assim por diante.</td></tr>
+        <tr><td>Panoramas por tema</td><td>47</td><td>Resumos curtos por tema, usados como contexto pelos agentes.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Chaves de join</h3>
+  <div class="data-table-wrap">
+    <table>
+      <thead><tr><th>Chave</th><th>Tabelas</th><th>Objeto</th></tr></thead>
+      <tbody>
+        <tr><td><code>ano</code></td><td>658</td><td>Ano (partição)</td></tr>
+        <tr><td><code>sigla_uf</code></td><td>510</td><td>UF</td></tr>
+        <tr><td><code>id_municipio</code></td><td>401</td><td>Município</td></tr>
+        <tr><td><code>mes</code></td><td>173</td><td>Mês (partição)</td></tr>
+        <tr><td><code>cnpj</code> / <code>cnpj_basico</code></td><td>59</td><td>Empresa</td></tr>
+        <tr><td><code>id_setor_censitario</code></td><td>39</td><td>Setor censitário</td></tr>
+        <tr><td><code>id_municipio_tse</code></td><td>29</td><td>Município (código eleitoral)</td></tr>
+        <tr><td><code>cpf</code></td><td>26</td><td>Pessoa</td></tr>
+        <tr><td><code>cbo_2002</code></td><td>8</td><td>Ocupação</td></tr>
+        <tr><td><code>cnae_2_subclasse</code></td><td>7</td><td>Atividade econômica</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Escolha das tabelas</h2>
+  <p>Com 1.759 tabelas, o passo difícil é escolher as poucas que valem a leitura antes de escrever qualquer SQL. Uma escolha errada ali produz joins que parecem válidos e não são. O harness local põe o catálogo inteiro de datasets no prompt (cerca de 2.000 tokens, em cache depois da primeira pergunta) e acerta o dataset em 88% das vezes. Um índice de embeddings sobre cerca de oito perguntas sintéticas por tabela ficou perto de 53% no mesmo teste e foi removido. Os agentes então afunilam com <code>list_datasets</code> → <code>list_tables</code> → <code>describe_table</code>.</p>
+
+  <h2>Consultas de exemplo</h2>
+  <p>Três perguntas respondidas com o espelho. As três rodam como estão escritas no esquema atual (conferido em 13 de novembro de 2026).</p>
+
+  <h3>Contratos federais assinados com fornecedores sancionados</h3>
+  <p>Contratos assinados enquanto o fornecedor estava no cadastro de sanções da CGU (CEIS).</p>
+  <pre>SELECT c.cpf_cnpj_contratado,
+       any_value(c.nome_contratado)  AS contratado,
+       COUNT(DISTINCT c.id_contrato) AS contratos,
+       SUM(c.valor_final_compra)     AS total_brl,
+       any_value(s.categoria_sancao) AS sancao
+FROM br_cgu_licitacao_contrato.contrato_compra c
+JOIN br_cgu_sancoes.ceis s
+  ON s.cpf_cnpj_sancionado = c.cpf_cnpj_contratado
+ AND c.data_assinatura_contrato &gt;= s.data_inicio_sancao
+ AND (s.data_final_sancao IS NULL OR c.data_assinatura_contrato &lt;= s.data_final_sancao)
+WHERE c.ano = 2024
+GROUP BY 1
+ORDER BY total_brl DESC
+LIMIT 20</pre>
+  <p>A abrangência da sanção (<code>abrangencia_sancao</code>) importa: uma suspensão pode valer só para o órgão que a aplicou.</p>
+
+  <h3>Municípios com menos leitos hospitalares do SUS</h3>
+  <p>Leitos do SUS por mil habitantes nos municípios com mais de 50 mil habitantes, ao lado do IDEB dos anos iniciais.</p>
+  <pre>SELECT m.nome, m.sigla_uf, pop.populacao,
+       ROUND(cnes.leitos_sus * 1000.0 / NULLIF(pop.populacao, 0), 2) AS leitos_sus_por_mil,
+       ideb.ideb AS ideb_anos_iniciais
+FROM br_bd_diretorios_brasil.municipio m
+JOIN br_ibge_populacao.municipio pop
+     ON m.id_municipio = pop.id_municipio AND pop.ano = 2024
+JOIN ( SELECT id_municipio,
+              SUM(quantidade_leito_cirurgico + quantidade_leito_clinico
+                  + quantidade_leito_complementar) AS leitos_sus
+       FROM br_ms_cnes.estabelecimento
+       WHERE ano = 2024 AND mes = 12 AND indicador_vinculo_sus = 1
+       GROUP BY id_municipio ) cnes ON m.id_municipio = cnes.id_municipio
+JOIN br_inep_ideb.municipio ideb
+     ON m.id_municipio = ideb.id_municipio AND ideb.ano = 2023
+    AND ideb.rede = 'publica' AND ideb.ensino = 'fundamental'
+    AND ideb.anos_escolares = 'iniciais (1-5)'
+WHERE pop.populacao &gt; 50000
+ORDER BY leitos_sus_por_mil ASC, ideb_anos_iniciais ASC
+LIMIT 50</pre>
+
+  <h3>Fornecedores de campanha que depois ganharam contratos federais</h3>
+  <p>O CPF no cadastro de sócios vem mascarado, então a ligação passa pelo CNPJ do fornecedor, e não pelo CPF do candidato.</p>
+  <pre>WITH fornecedores AS (
+  SELECT d.cpf_cnpj_fornecedor, c.nome, c.sigla_partido, c.cargo,
+         SUM(d.valor_despesa) AS pago_na_campanha
+  FROM br_tse_eleicoes.despesas_candidato d
+  JOIN br_tse_eleicoes.candidatos c
+    ON c.ano = d.ano AND c.sigla_uf = d.sigla_uf
+   AND c.sequencial = d.sequencial_candidato
+  WHERE d.ano = 2022 AND d.sigla_uf = 'SP'
+    AND length(d.cpf_cnpj_fornecedor) = 14
+  GROUP BY 1, 2, 3, 4
+  HAVING SUM(d.valor_despesa) &gt;= 50000
+)
+SELECT f.nome, f.sigla_partido, f.cargo,
+       COUNT(DISTINCT f.cpf_cnpj_fornecedor) AS fornecedores_contratados,
+       SUM(f.pago_na_campanha)               AS pago_na_campanha,
+       SUM(k.valor_federal)                  AS contratos_federais_2023_2025
+FROM fornecedores f
+JOIN ( SELECT cpf_cnpj_contratado, SUM(valor_final_compra) AS valor_federal
+       FROM br_cgu_licitacao_contrato.contrato_compra
+       WHERE ano BETWEEN 2023 AND 2025
+       GROUP BY 1 ) k ON k.cpf_cnpj_contratado = f.cpf_cnpj_fornecedor
+GROUP BY 1, 2, 3
+HAVING contratos_federais_2023_2025 &gt; 1000000
+ORDER BY contratos_federais_2023_2025 DESC</pre>
+  <p>O filtro de pagamento mínimo importa: sem ele, fornecedores nacionais de telefonia e de serviços públicos, pagos com poucos reais por centenas de campanhas, dominam o ranking.</p>
+
+  <h2>Qualidade do dado</h2>
+  <div class="data-table-wrap">
+    <table>
+      <tbody>
+        <tr><td>Partições</td><td>Tabelas grandes pedem filtro por <code>ano</code>, <code>mes</code> ou <code>sigla_uf</code>.</td></tr>
+        <tr><td>Identificadores</td><td>CPF e CNPJ são só para leitura e nunca exportados em massa. O mascaramento varia por fonte, então CPFs mascarados de fontes diferentes não se ligam entre si.</td></tr>
+        <tr><td>Atualidade</td><td>Varia por fonte: CNPJ mensal, dados de saúde com 12 a 18 meses de atraso, o censo em 2010 e 2022. As tabelas do CNPJ guardam só o último retrato; o histórico fica nas tabelas <code>*_historico</code>.</td></tr>
+        <tr><td>Quando a fonte encolhe</td><td>Quem publica às vezes tira colunas ou anos numa nova versão. O espelho funde em vez de substituir, então o que só o espelho ainda tem fica guardado.</td></tr>
+        <tr><td>Antes de publicar um número</td><td>Dizer a ordem de grandeza esperada, marcar as linhas acima dela e conferir a contagem por dois caminhos independentes.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Ferramentas</h2>
+  <p>DuckDB · Parquet + zstd · Python e Bun/TypeScript · MCP · YAML na camada semântica · Caddy e um contêiner na Hetzner para o db.rodado.xyz · GitHub Pages para o site.</p>
+
+  <p>Referência de engenharia completa (ambiente, configuração do MCP, ordem de regeneração): <a href="https://github.com/rafapolo/rodado/blob/main/docs/tecnico/TECHNICAL.md" target="_blank" rel="noopener">docs/tecnico/TECHNICAL.md</a> no repositório.</p>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <a href="/temas/">Índice temático</a>
+    <span>1.759 tabelas · 521 GB · DuckDB + Parquet</span>
+    <span class="footer-by">por <a href="https://extrapolo.com" target="_blank" rel="noopener">extrapolo.com</a></span>
+  </div>
+</footer>
+
+<script src="assets/theme-toggle.js"></script>
+</body>
+</html>

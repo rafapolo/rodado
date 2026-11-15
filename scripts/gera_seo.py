@@ -140,6 +140,8 @@ def contraparte(path: Path) -> Path | None:
         "mcp-en.html": "mcp.html",
         INDICE_PLATAFORMAS: INDICE_PLATAFORMAS_EN,
         INDICE_PLATAFORMAS_EN: INDICE_PLATAFORMAS,
+        "tecnico.html": "technical.html",
+        "technical.html": "tecnico.html",
     }
     if rel in mapa:
         alvo = PAGES / mapa[rel]
