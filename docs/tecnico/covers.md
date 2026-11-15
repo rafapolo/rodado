@@ -32,7 +32,7 @@ certa é a que puxa o assunto.
 
 Referência: as ilustrações de podcast do Exposing the Invisible
 (exposingtheinvisible.org/en/listen/) — mandalas radiais pintadas à mão,
-cores saturadas, anéis finos soltos e uma linha pontilhada horizontal tipo
+cores saturadas (aqui trocadas pela paleta cartográfica), anéis finos soltos e uma linha pontilhada horizontal tipo
 onda sonora cortando tudo.
 
 Cada capa empilha, de baixo para cima:
@@ -72,26 +72,30 @@ repintar — a home tem 8 cartões num carrossel arrastável.
 
 ### Paletas
 
-Cada uma é `[fundo, fundo2, anel, raio A, raio B, miolo/traço claro, traço escuro]`.
+Direção **cartográfica** (mapa antigo), escolhida em 2026-11-15 no lugar das
+paletas saturadas do começo, carnavalescas demais para o resto do site. São
+cinco cores — cobalto `#2e4a7d`, óxido `#8b3a2b`, areia `#c9a66b`, verde-relevo
+`#6b8f71`, siena `#b5835a` — sobre papel cru `#ecdfc4` e tinta sépia `#2d2418`.
+Cada paleta é a mesma roda começando de uma cor diferente:
+`[fundo, fundo escurecido, anel, raio A, raio B, papel, tinta]`.
 
-| paleta | clima | usada em |
-|---|---|---|
-| `turquesa` | céu, dinheiro público, neutro-vivo | gastos da União, doador único |
-| `solar` | eleição, calor, tensão política | vira-casacas, salário, religião × polarização |
-| `violeta` | rede, mídia, poder | corresponsáveis, três cidades |
-| `floresta` | país, território, retrato geral | o Brasil que os dados revelam (PT e EN) |
-| `rubro` | alerta, conflito de interesse | emenda que pagou a própria empresa, escritório |
-| `aurora` | saúde, cruzamento de cadastros | câncer, cinco cadastros |
-| `oceano` | água, saúde em massa, censo | outorgas, dados de saúde, judeus no censo |
-| `terra` | indústria, dívida, moradia | poluentes, devedora/fornecedora, ibge13 |
+| paleta | fundo | clima | usada em |
+|---|---|---|---|
+| `cobalto` | azul | dinheiro público, água, cruzamento | gastos da União, cinco cadastros, outorgas, doador único |
+| `oxido` | vermelho-ferrugem | eleição, mídia, alerta | vira-casacas, três cidades, escritório |
+| `areia` | ocre claro | rede, indústria, território social | corresponsáveis, devedora/fornecedora, poluentes, religião × polarização |
+| `relevo` | verde | país, saúde em massa, população | o Brasil que os dados revelam (PT e EN), dados de saúde, judeus no censo |
+| `siena` | terra | dinheiro privado, doença, moradia | emenda, salário, câncer, ibge13 |
 
-Critério: primeiro o assunto (água → `oceano`, eleição → `solar`), depois
-variar em relação às capas vizinhas na home — duas análises seguidas com a
-mesma paleta ficam com cara de repetição no carrossel.
+Critério: primeiro o assunto (água → `cobalto`), depois variar em relação às
+vizinhas na ordem da home — duas seguidas com o mesmo fundo parecem repetição
+no carrossel.
 
-As cores precisam funcionar sobre o fundo claro (`#f6f2ea`) e o escuro
-(`#1b1811`) do site, já que a imagem não lê as variáveis de tema. As paletas
-saturadas de hoje passam nos dois.
+Cor nova fora da roda só como exceção pontual: esquerda/direita em `virada` e
+`dividido` usam óxido e cobalto um tom acima (`ESQ` `#b5523a`, `DIR`
+`#3f6aa8`); a gota de `agua` é sempre azul `#7a9cc6`. Antes de pôr uma cor
+saturada nova, lembrar que a mudança de 2026-11-15 foi justamente para tirar
+isso.
 
 ### Motivos
 
@@ -118,9 +122,6 @@ a forma do achado (um → muitos, laço, divisão, crescimento), não o objeto.
 | `hexagonos` | treliça hexagonal | censo, composição de população |
 | `dividido` | campo partido, pontos vermelhos e azuis | polarização |
 | `casas` | casinhas em fila | moradia, série histórica |
-
-Vermelho `#d8322a` e azul `#2f5fc0` fixos (fora da paleta) marcam
-esquerda/direita em `virada` e `dividido`.
 
 ### Motivo novo
 

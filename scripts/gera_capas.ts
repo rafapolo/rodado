@@ -31,16 +31,20 @@ const MANIFEST = join(ANALISES, "results", "manifest.json");
 const W = 1680, H = 240, CX = W / 2, CY = H / 2;
 
 // ── paletas: [fundo, fundo2, anel, raio A, raio B, miolo, traço] ──
+// direção "cartográfica" (mapa antigo): cobalto, óxido de ferro, areia, verde-relevo
+// e siena sobre papel cru e tinta sépia — escolhida em 2026-11-15 no lugar das
+// saturadas do começo, carnavalescas demais para o resto do site. Cada paleta é a
+// mesma roda de cinco cores começando de um ponto diferente.
 const PALETAS: Record<string, string[]> = {
-  turquesa: ["#2aa3c4", "#1d6f9e", "#e8392b", "#f39c1f", "#f7cf2a", "#fbe7c4", "#163a7a"],
-  solar: ["#f2b31c", "#e8721f", "#d62f2a", "#3a8fd0", "#f6dd6a", "#fff4d6", "#7a1f1a"],
-  violeta: ["#4b2a8c", "#7e2fa3", "#f0a21d", "#e8452c", "#f8d244", "#fff0c9", "#1f164f"],
-  floresta: ["#1f8a5a", "#0f5c4a", "#e8452c", "#9bd14a", "#f2c53b", "#eaf6d6", "#0b3328"],
-  rubro: ["#d8322a", "#9e1f2b", "#2aa3c4", "#f39c1f", "#f7cf2a", "#fde9d6", "#3a0f14"],
-  aurora: ["#e85a8a", "#7d3fb0", "#2fb3c9", "#f6a23a", "#fbe36a", "#fff0f3", "#2a174d"],
-  oceano: ["#1e4fa8", "#0f2f72", "#2fc1d6", "#f2b31c", "#e85a3a", "#e3f6fb", "#081a44"],
-  terra: ["#c8662a", "#7c3a1d", "#2a9a8a", "#f2b31c", "#e8d27a", "#fbecd6", "#3a1a0c"],
+  cobalto: ["#2e4a7d", "#2e3f5f", "#8b3a2b", "#c9a66b", "#6b8f71", "#ecdfc4", "#2d2418"],
+  oxido: ["#8b3a2b", "#6f3325", "#c9a66b", "#6b8f71", "#b5835a", "#ecdfc4", "#2d2418"],
+  areia: ["#c9a66b", "#9a7f52", "#6b8f71", "#b5835a", "#2e4a7d", "#ecdfc4", "#2d2418"],
+  relevo: ["#6b8f71", "#586f56", "#b5835a", "#2e4a7d", "#8b3a2b", "#ecdfc4", "#2d2418"],
+  siena: ["#b5835a", "#8c6746", "#2e4a7d", "#8b3a2b", "#c9a66b", "#ecdfc4", "#2d2418"],
 };
+// esquerda/direita em `virada` e `dividido`: óxido e cobalto, um tom acima para
+// destacar do fundo
+const ESQ = "#b5523a", DIR = "#3f6aa8";
 
 type Motivo = (rng: () => number, p: string[]) => string;
 
@@ -134,8 +138,8 @@ const MOTIVOS: Record<string, Motivo> = {
   // virada: disco partido em duas cores e seta girando
   virada: (rng, p) => {
     const r = 70;
-    return `<path d="M${CX},${CY - r} A${r},${r} 0 0 0 ${CX},${CY + r} Z" fill="#d8322a"/>` +
-      `<path d="M${CX},${CY - r} A${r},${r} 0 0 1 ${CX},${CY + r} Z" fill="#2f5fc0"/>` +
+    return `<path d="M${CX},${CY - r} A${r},${r} 0 0 0 ${CX},${CY + r} Z" fill="${ESQ}"/>` +
+      `<path d="M${CX},${CY - r} A${r},${r} 0 0 1 ${CX},${CY + r} Z" fill="${DIR}"/>` +
       `<path d="M${CX - 95},${CY - 30} A100,100 0 0 1 ${CX + 90},${CY - 40}" ${LINHA(p, 5)}/>` +
       `<path d="M${CX + 70},${CY - 58} L${CX + 92},${CY - 38} L${CX + 66},${CY - 22}" ${LINHA(p, 5)}/>`;
   },
@@ -203,7 +207,7 @@ const MOTIVOS: Record<string, Motivo> = {
   },
   // água: gota e ondas
   agua: (rng, p) => {
-    let s = `<path d="M${CX},${CY - 80} C${CX + 20},${CY - 40} ${CX + 52},${CY - 5} ${CX + 52},${CY + 22} A52,52 0 0 1 ${CX - 52},${CY + 22} C${CX - 52},${CY - 5} ${CX - 20},${CY - 40} ${CX},${CY - 80} Z" fill="${p[2]}" stroke="${p[5]}" stroke-width="4"/>`;
+    let s = `<path d="M${CX},${CY - 80} C${CX + 20},${CY - 40} ${CX + 52},${CY - 5} ${CX + 52},${CY + 22} A52,52 0 0 1 ${CX - 52},${CY + 22} C${CX - 52},${CY - 5} ${CX - 20},${CY - 40} ${CX},${CY - 80} Z" fill="#7a9cc6" stroke="${p[5]}" stroke-width="4"/>`; // água é sempre azul, qualquer que seja a paleta
     for (let k = 0; k < 3; k++) {
       const y = CY + 10 + k * 18;
       s += `<path d="M${CX - 150},${y} q25,-14 50,0 t50,0 t50,0 t50,0 t50,0 t50,0" ${LINHA(p, 3)} opacity="0.8"/>`;
@@ -261,7 +265,7 @@ const MOTIVOS: Record<string, Motivo> = {
     let s = `<line x1="${CX}" x2="${CX}" y1="${CY - 100}" y2="${CY + 100}" stroke="${p[5]}" stroke-width="4"/>`;
     for (let i = 0; i < 70; i++) {
       const [x, y] = pol(CX, CY, rng() * 100, rng() * Math.PI * 2);
-      const lado = x < CX ? "#d8322a" : "#2f5fc0";
+      const lado = x < CX ? ESQ : DIR;
       s += circ(x, y, 3 + rng() * 5, `fill="${rng() < 0.75 ? lado : p[5]}" stroke="${p[5]}" stroke-width="1"`);
     }
     return s;
@@ -289,25 +293,25 @@ const MOTIVOS: Record<string, Motivo> = {
 
 // tema de cada análise: paleta + motivo (o par PT/EN compartilha a mesma capa)
 const TEMAS: Record<string, [string, string]> = {
-  "para-onde-vai-o-dinheiro-da-uniao": ["turquesa", "sankey"],
-  corresponsaveis: ["violeta", "rede"],
-  "os-vira-casacas-de-lula-para-bozo": ["solar", "virada"],
-  "brazil-public-real-world-data": ["oceano", "matriz"],
-  "emenda-que-pagou-a-propria-empresa": ["rubro", "laco"],
-  "devedora-antes-fornecedora-depois": ["terra", "divida"],
-  "cinco-cadastros-as-mesmas-empresas": ["aurora", "venn"],
-  "o-brasil-que-os-dados-revelam": ["floresta", "grade"],
-  "what-the-data-reveals-about-brazil": ["floresta", "grade"],
-  "poluentes-do-ar-em-nova-friburgo": ["terra", "fumaca"],
-  "tres-cidades-tres-comunicacoes": ["violeta", "ondas"],
-  "duas-outorgas-mais-agua-que-a-copasa": ["oceano", "agua"],
-  "o-salario-nao-explica": ["solar", "barras"],
-  "nao-era-um-doador-era-um-escritorio": ["rubro", "escritorio"],
-  "o-unico-doador-do-negao": ["turquesa", "leque"],
-  "cancer-mata-interna": ["aurora", "saude"],
-  "censo-judeus-brasil": ["oceano", "hexagonos"],
-  "religiao-x-polarizacao": ["solar", "dividido"],
-  ibge13: ["terra", "casas"],
+  "para-onde-vai-o-dinheiro-da-uniao": ["cobalto", "sankey"],
+  corresponsaveis: ["areia", "rede"],
+  "os-vira-casacas-de-lula-para-bozo": ["oxido", "virada"],
+  "brazil-public-real-world-data": ["relevo", "matriz"],
+  "emenda-que-pagou-a-propria-empresa": ["siena", "laco"],
+  "devedora-antes-fornecedora-depois": ["areia", "divida"],
+  "cinco-cadastros-as-mesmas-empresas": ["cobalto", "venn"],
+  "o-brasil-que-os-dados-revelam": ["relevo", "grade"],
+  "what-the-data-reveals-about-brazil": ["relevo", "grade"],
+  "poluentes-do-ar-em-nova-friburgo": ["areia", "fumaca"],
+  "tres-cidades-tres-comunicacoes": ["oxido", "ondas"],
+  "duas-outorgas-mais-agua-que-a-copasa": ["cobalto", "agua"],
+  "o-salario-nao-explica": ["siena", "barras"],
+  "nao-era-um-doador-era-um-escritorio": ["oxido", "escritorio"],
+  "o-unico-doador-do-negao": ["cobalto", "leque"],
+  "cancer-mata-interna": ["siena", "saude"],
+  "censo-judeus-brasil": ["relevo", "hexagonos"],
+  "religiao-x-polarizacao": ["areia", "dividido"],
+  ibge13: ["siena", "casas"],
 };
 
 function capa(slug: string): string {
