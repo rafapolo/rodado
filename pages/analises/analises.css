@@ -48,6 +48,9 @@ main:not(.wide) #doc ul, main:not(.wide) #doc ol { max-width: var(--measure); }
    sem a moldura/cursor de zoom que #doc img aplica às figuras de análise */
 #doc .teaser-tile img { border: none; cursor: pointer; }
 #doc .teaser-tile img:hover { border-color: transparent; }
+/* capa dos cartões da lista: vale o .noticia-capa do site.css, não a figura */
+#doc .noticia-capa { width: calc(100% + 2.4rem); height: 120px;
+  margin: -1.1rem -1.2rem 0.35rem; border: none; border-radius: 0; cursor: pointer; }
 
 /* subtítulo de módulo (índice): a voz da .secao-dek do site.css, colada no h2 */
 #doc .mod-sub { font-family: var(--sans); font-size: 0.88rem;
@@ -84,6 +87,9 @@ main:not(.wide) #doc ul, main:not(.wide) #doc ol { max-width: var(--measure); }
 /* na página de uma análise, fica acima de #doc — quando o markdown carrega
    por baixo, tira a dúvida de "isso é de quando" sem esperar o corpo render */
 main > .meta { margin: 0 0 1rem; }
+/* capa abstrata da análise, acima da data (scripts/gera_capas.ts) */
+main > .capa { display: block; width: 100%; max-width: none; height: 120px;
+  object-fit: cover; border-radius: 4px; margin: 0 0 0.9rem; }
 /* fontes do dado de cada trabalho: etiquetas discretas, abaixo do resumo na
    lista e abaixo da legenda no cartão de plataforma (nenhum markdown de análise
    usa .tags, então escopar em #doc não pega nada além destes dois) */

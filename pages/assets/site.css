@@ -437,6 +437,18 @@ tr:last-child td { border-bottom: 1px solid var(--rule); }
   color: var(--ink);
 }
 
+/* capa abstrata (scripts/gera_capas.ts): sangra até as bordas do cartão,
+   logo abaixo do filete de cor do topo; a margem negativa é o padding do .noticia */
+.noticia-capa {
+  display: block;
+  width: calc(100% + 2.4rem);
+  max-width: none;
+  height: 120px;
+  margin: -1.1rem -1.2rem 0.35rem;
+  object-fit: cover;
+  object-position: center;
+}
+
 .noticia:hover { background: var(--bg-raised); }
 .noticia:hover .noticia-titulo { color: var(--accent); }
 

@@ -109,8 +109,13 @@ def bloco_analises(itens: list[dict], lang: str) -> str:
     for it in escolhidas:
         href = href_relativo(it.get("url") or f"/analises/{it['slug']}/")
         fonte = (it.get("tags") or [""])[0]
+        # capa abstrata (scripts/gera_capas.ts); sem o arquivo, o cartão sai sem ela
+        capa = PAGES / "analises" / "img" / f"capa-{it['slug']}.webp"
+        img = (f'<img class="noticia-capa" src="/analises/img/{capa.name}" alt="" '
+               'width="1680" height="240" loading="lazy" decoding="async">'
+               if capa.exists() else "")
         linhas.append(
-            f'    <a class="noticia" href="{e(href)}">'
+            f'    <a class="noticia" href="{e(href)}">{img}'
             f'<span class="noticia-data">{e(data_br(it, en))}</span>'
             f'<span class="noticia-titulo">{e(it["title"])}</span>'
             f'<span class="noticia-dek">{e(primeira_frase(it["dek"]))}</span>'

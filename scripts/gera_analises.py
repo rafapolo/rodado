@@ -10,7 +10,7 @@ viewer continua montando o corpo depois, pro leitor.
 O ?doc=<slug> segue funcionando (links assim já circulam); a URL limpa é a
 canônica.
 
-Ordem: este script escreve os shells, refaz os blocos da home (gera_home.py),
+Ordem: este script gera as capas (gera_capas.ts), escreve os shells, refaz os blocos da home (gera_home.py),
 gera os cartões e chama o gera_seo.py, que
 injeta o bloco de SEO/head e refaz o sitemap.
 """
@@ -66,7 +66,7 @@ MODELO = """<!doctype html>
 
 <main>
   <p class="eyebrow" id="eyebrow">{eyebrow}</p>
-  <p class="meta">{rodado_rot} {rodado_em}</p>
+  {capa}<p class="meta">{rodado_rot} {rodado_em}</p>
   <div id="doc" data-slug="{slug}" data-base="../"><p class="doc-msg">Carregando…</p></div>
 </main>
 
@@ -127,6 +127,10 @@ def main() -> None:
         sys.exit(f"manifest não encontrado: {MANIFEST}")
     itens = json.loads(MANIFEST.read_text(encoding="utf-8"))
 
+    # capas antes das páginas e da home, que só as incluem se o arquivo existir
+    print("$ gera_capas.ts")
+    subprocess.run(["bun", str(RAIZ / "scripts" / "gera_capas.ts")], check=True)
+
     slugs = set()
     for item in itens:
         slug = item["slug"]
@@ -144,6 +148,9 @@ def main() -> None:
                 dek=escapa(item["dek"]),
                 slug=escapa(slug),
                 rodado_em=escapa(item.get("rodado_em", "")),
+                capa=(f'<img class="capa" src="../img/capa-{escapa(slug)}.webp" alt="" '
+                      'width="1680" height="240" decoding="async">\n  '
+                      if (ANALISES / "img" / f"capa-{slug}.webp").exists() else ""),
                 lang=item.get("lang", "pt-br"),
                 **idioma(item),
             ),

@@ -246,7 +246,11 @@
       // externos, checados out em pages/analises/ no deploy)
       var href = it.url || (encodeURIComponent(it.slug) + '/');
       var fonte = (it.tags || [])[0];
+      // capa abstrata (scripts/gera_capas.ts); se faltar, a imagem some sozinha
       html += '<a class="noticia" href="' + href + '">' +
+        '<img class="noticia-capa" src="' + base + 'img/capa-' + encodeURIComponent(it.slug) +
+        '.webp" alt="" width="1680" height="240" loading="lazy" decoding="async" ' +
+        'onerror="this.remove()">' +
         '<span class="noticia-data">' + dataBr(it) + '</span>' +
         '<span class="noticia-titulo">' + it.title + '</span>' +
         (it.dek ? '<span class="noticia-dek">' + it.dek + '</span>' : '') +
