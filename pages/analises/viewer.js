@@ -224,7 +224,9 @@
       docEl.innerHTML = '<h1>Análises</h1><p class="doc-msg">Nenhuma análise publicada ainda.</p>';
       return;
     }
-    eyebrow.textContent = items.length + ' análises';
+    // tradução ("par" + "lang": "en") não conta como análise a mais (regra gêmea: bloco_analises em scripts/gera_home.py)
+    var total = items.filter(function (i) { return !(i.par && i.lang === 'en'); }).length;
+    eyebrow.textContent = total + ' análises';
     var html = '<h1>Análises</h1>' +
       '<p class="dek">Emendas parlamentares, dívida ativa, outorgas de água, ' +
       'contas de campanha, óbitos do SUS — registros públicos cruzados uns com ' +
