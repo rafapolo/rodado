@@ -7,7 +7,8 @@ Saída:
   pages/assets/og.png, og-en.png          o cartão do site
   pages/assets/og-db.png                  o cartão do terminal db.rodado.xyz (escuro, logo ASCII)
   pages/assets/og-llm.png                 o cartão do guia para agentes db.rodado.xyz/llm, na mesma moldura
-  pages/analises/img/og-<slug>.png        um cartão por análise, do manifest.json
+  pages/analises/img/og-<slug>.png        um cartão por análise, do manifest.json: faixa da capa
+                                          (capa-<slug>.webp) no topo, título e marca embaixo
 
 As figuras das análises não servem como cartão: são gráficos de 1:1 a 1,5:1 que o
 Twitter/WhatsApp cortam em 1,91:1, decapitando título e eixos. O cartão editorial
@@ -210,6 +211,53 @@ def spec_da_analise(item: dict) -> dict:
     }
 
 
+# Cartão das análises: a faixa da capa (centro do webp 1680x240, onde fica o motivo)
+# no topo, e abaixo título, sobretítulo e marca sobre papel cartográfico.
+CAPA_PAPEL = "#ecdfc4"
+CAPA_TINTA = "#2d2418"
+CAPA_OXIDO = "#8b3a2b"
+CAPA_SOFT = "#6b5a40"
+CAPA_REGUA = "#c9a66b"
+FAIXA_H = 240
+
+
+def build_analise(item: dict, capa: Path) -> Image.Image:
+    img = Image.new("RGB", (W, H), CAPA_PAPEL)
+    d = ImageDraw.Draw(img)
+
+    if capa.exists():
+        c = Image.open(capa).convert("RGB")
+        if c.height != FAIXA_H:
+            c = c.resize((round(c.width * FAIXA_H / c.height), FAIXA_H), Image.LANCZOS)
+        x0 = max(0, (c.width - W) // 2)
+        img.paste(c.crop((x0, 0, x0 + W, FAIXA_H)).resize((W, FAIXA_H)), (0, 0))
+    d.rectangle([0, FAIXA_H, W, FAIXA_H + 7], fill=CAPA_OXIDO)
+
+    titulo = sanitiza(item["title"])
+    for tamanho, leading, max_linhas in ((76, 86, 2), (64, 74, 3), (54, 64, 3)):
+        f_head = load(CHARTER, tamanho, index=3)
+        linhas = quebra(titulo, f_head, LARGURA_UTIL)
+        if len(linhas) <= max_linhas:
+            break
+    linhas = corta(linhas, max_linhas)
+
+    f_eyebrow = load(SANS_BOLD, 20)
+    y = FAIXA_H + 7 + 30
+    tracked(d, (PAD, y), eyebrow_de(item), f_eyebrow, CAPA_OXIDO, 2.6)
+    y += 44
+    for linha in linhas:
+        d.text((PAD, y), linha, font=f_head, fill=CAPA_TINTA)
+        y += leading
+
+    fy = H - 58
+    d.line([PAD, fy, W - PAD, fy], fill=CAPA_REGUA, width=2)
+    f_brand = load(CHARTER, 32, index=3)
+    d.text((PAD, fy + 8), "rodado", font=f_brand, fill=CAPA_OXIDO)
+    brand_w = d.textlength("rodado", font=f_brand)
+    d.text((PAD + brand_w + 16, fy + 15), "rodado.xyz", font=load(SANS, 22), fill=CAPA_SOFT)
+    return img
+
+
 def gera_analises(raiz: Path) -> int:
     manifest = raiz / "pages" / "analises" / "results" / "manifest.json"
     if not manifest.exists():
@@ -220,7 +268,10 @@ def gera_analises(raiz: Path) -> int:
     n = 0
     for item in json.loads(manifest.read_text(encoding="utf-8")):
         path = destino / f"og-{item['slug']}.png"
-        build(spec_da_analise(item)).save(path, "PNG", optimize=True)
+        capa = destino / f"capa-{item['slug']}.webp"
+        # paleta adaptativa: capa e papel têm poucas cores, o PNG fica leve
+        img = build_analise(item, capa).quantize(colors=256, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE)
+        img.save(path, "PNG", optimize=True)
         print(f"{path}  {path.stat().st_size // 1024} KB")
         n += 1
     return n
