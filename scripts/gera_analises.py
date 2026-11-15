@@ -78,7 +78,7 @@ MODELO = """<!doctype html>
   </div>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js" integrity="sha384-/TQbtLCAerC3jgaim+N78RZSDYV7ryeoBCVqTuzRrFec2akfBkHS7ACQ3PQhvMVi" crossorigin="anonymous"></script>
 <script src="../viewer.js"></script>
 <script src="../../assets/theme-toggle.js"></script>
 </body>
