@@ -114,3 +114,9 @@ main > .capa { display: block; width: 100%; max-width: none; height: 120px;
    inverter os dois, a pílula some debaixo do cursor */
 #doc .teaser-tile:hover .tag { background: var(--bg); }
 .doc-msg { color: var(--ink-soft); }
+
+/* "Leia também": 3 cartões compactos ao fim da análise (viewer.js, leiaTambem) */
+#doc .leia-tambem { margin-top: 2rem; }
+#doc .leia-tambem .noticias { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 640px) { #doc .leia-tambem .noticias { grid-template-columns: 1fr; } }
+#doc .leia-tambem h2 { margin-top: 0; }
