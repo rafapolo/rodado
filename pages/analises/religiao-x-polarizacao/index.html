@@ -72,7 +72,768 @@
   <p class="eyebrow" id="eyebrow">Análises</p>
   <img class="capa" src="../img/capa-religiao-x-polarizacao.webp" alt="" width="1680" height="240" decoding="async">
   <p class="meta">rodado em 27-07-2026</p>
-  <div id="doc" data-slug="religiao-x-polarizacao" data-base="../"><p class="doc-msg">Carregando…</p></div>
+  <div id="doc" data-slug="religiao-x-polarizacao" data-base="../" data-pronto>
+<h1>Religião × Polarização política nos municípios (2024 × Censo 2022)</h1>
+<p>Cruzamento do mapa de <strong>inclinação/polarização das prefeituras 2024</strong> (1º turno, TSE, voto
+ponderado pela nota ideológica do partido de cada candidato) com o <strong>perfil religioso do
+Censo 2022</strong> (IBGE). Junção por <code>UF + nome normalizado</code>: <strong>5.546 de 5.557</strong> municípios
+casaram (11 perdidos por grafia).</p>
+<p><img decoding="async" src="/analises/img/religiao-x-polarizacao-mapas.jpg" alt="Lado a lado: inclinação ideológica do voto para prefeito em 2024 (esquerda) e perfil religioso dos municípios no Censo 2022 (direita)"></p>
+<p>Os dois mapas lado a lado: à esquerda, cada município colorido pela inclinação ideológica do
+voto para prefeito (vermelho = esquerda, azul = direita); à direita, o mesmo território
+colorido pelo perfil religioso declarado no Censo (amarelo = mais católico, roxo = mais
+evangélico). O Nordeste amarelo-e-avermelhado e o Sul azul são o que sustenta — e o que
+limita — toda a análise abaixo.</p>
+<p><strong>Mapas interativos:</strong>
+<a href="https://xn--2dk.xyz/dataviz/eleicoes">Prefeitos 2024 — Esquerda × Direita</a> ·
+<a href="https://xn--2dk.xyz/dataviz/religioes">Perfil Religioso dos Municípios</a> ·
+<a href="https://xn--2dk.xyz/dataviz/religioes/igrejas">Igrejas Geolocalizadas</a></p>
+<blockquote>
+<p><strong>Nota de versão.</strong> As notas ideológicas usam o survey de especialistas de Bolognesi,
+Ribeiro &amp; Codato, com <strong>um override</strong>: o <strong>PL → 8,5</strong> (mais à direita que o NOVO, 8,2),
+porque o survey é de 2018, antes de o PL virar a legenda do bolsonarismo. Como o PL é o
+maior partido em votos (15,6M), esse ajuste desloca perceptivelmente a cauda direita.
+Detalhes em <code>../metodologia.md</code>.</p>
+</blockquote>
+<hr>
+<h2>1. Religião prediz o <em>lado</em>, não a <em>intensidade</em></h2>
+<p>A composição religiosa se correlaciona com <strong>para onde</strong> o município pende — mas <strong>não</strong> com
+o quão dividido/polarizado ele é.</p>
+<table>
+<thead>
+<tr>
+<th>correlação (n=5.546)</th>
+<th align="right">com <strong>inclinação</strong> (dir+)</th>
+<th align="right">com <strong>polarização</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>% evangélica</strong></td>
+<td align="right"><strong>+0,214</strong></td>
+<td align="right">−0,01</td>
+</tr>
+<tr>
+<td><strong>% católica</strong></td>
+<td align="right"><strong>−0,180</strong></td>
+<td align="right">−0,01</td>
+</tr>
+<tr>
+<td>% espírita</td>
+<td align="right">+0,074</td>
+<td align="right">—</td>
+</tr>
+<tr>
+<td>% sem religião</td>
+<td align="right">+0,033</td>
+<td align="right">+0,06</td>
+</tr>
+<tr>
+<td>% umbanda/candomblé</td>
+<td align="right">−0,005</td>
+<td align="right">—</td>
+</tr>
+</tbody></table>
+<p>Mais evangélicos → mais à direita; mais católicos → mais à esquerda. Mas <strong>nenhuma</strong>
+religião prevê polarização (todos os <code>r</code> ≈ 0). <strong>A religião move o eixo esquerda↔direita,
+não o grau de racha ideológico</strong> — o achado &quot;negativo&quot; mais limpo do conjunto (ver §6 para
+o que <em>de fato</em> move a polarização).</p>
+<h2>2. O gradiente: a esquerda some antes de a direita crescer</h2>
+<p>Municípios ordenados por % evangélica, em quintis:</p>
+<table>
+<thead>
+<tr>
+<th>faixa evangélica</th>
+<th align="right">evang. média</th>
+<th align="right">inclinação</th>
+<th align="right">% voto <strong>direita</strong></th>
+<th align="right">% voto <strong>esquerda</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1–13%</td>
+<td align="right">10,0%</td>
+<td align="right">5,64</td>
+<td align="right">34,2%</td>
+<td align="right"><strong>23,8%</strong></td>
+</tr>
+<tr>
+<td>13–19%</td>
+<td align="right">16,3%</td>
+<td align="right">5,82</td>
+<td align="right">36,5%</td>
+<td align="right">19,0%</td>
+</tr>
+<tr>
+<td>19–25%</td>
+<td align="right">21,7%</td>
+<td align="right">6,02</td>
+<td align="right">40,2%</td>
+<td align="right">14,6%</td>
+</tr>
+<tr>
+<td>25–31%</td>
+<td align="right">27,9%</td>
+<td align="right">6,23</td>
+<td align="right">46,7%</td>
+<td align="right">10,9%</td>
+</tr>
+<tr>
+<td><strong>31–89%</strong></td>
+<td align="right">38,4%</td>
+<td align="right">6,28</td>
+<td align="right"><strong>49,8%</strong></td>
+<td align="right"><strong>11,0%</strong></td>
+</tr>
+</tbody></table>
+<p>Do quintil menos ao mais evangélico, o voto de direita sobe +16pp (34→50%) e o de esquerda
+<strong>cai pela metade</strong> (24→11%). O efeito é mais um <strong>recuo da esquerda</strong> em território
+evangélico do que uma explosão da direita (que já era maioria em quase todo lugar).</p>
+<p><img decoding="async" loading="lazy" src="/analises/img/religiao-x-polarizacao-heatmap.png" alt="Heatmap do cruzamento entre % evangélica e inclinação ideológica, com painéis por região"></p>
+<p>O mesmo gradiente visto como distribuição conjunta. <strong>A cor não é contagem de municípios</strong> —
+é o resíduo padronizado, o quanto cada célula foge do esperado se religião e voto fossem
+independentes; um heatmap de densidade crua só mostraria que quase todo município fica entre
+5,5 e 6,5. O número dentro da célula é o dado literal (% da faixa evangélica, cada linha
+soma 100). Células com |z| &lt; 1,3 ficam cinza: é ruído amostral, não associação.</p>
+<p>Duas coisas que a tabela acima não mostra. Primeiro, a <strong>assimetria</strong> do §2 aparece na
+intensidade: o canto inferior-esquerdo (pouco evangélico, esquerda dura) é a célula mais
+saturada do painel — z = +9,0, de longe o maior desvio da grade —, enquanto o canto
+direito cresce de forma bem mais modesta. O que a religião prevê com força é a <strong>presença da
+esquerda</strong>, não a da direita. Segundo, os painéis regionais são o §3 renderizado: a diagonal
+sobrevive no <strong>Nordeste</strong> e no <strong>Sudeste</strong> e <strong>some por completo no Sul e no Centro-Oeste</strong>,
+que saem cinza. Os cinco painéis dividem uma escala de cor fixa — um painel sem cor é
+ausência de associação, não falta de dados.</p>
+<h2>3. Metade disso é geografia (mas não toda)</h2>
+<p>Confundidor: o <strong>Nordeste</strong> é ao mesmo tempo mais católico e mais à esquerda (redutos do
+PT); <strong>Norte/Centro-Oeste</strong> são mais evangélicos e mais à direita. Testando a correlação
+evangélico→direita <strong>dentro</strong> de cada região:</p>
+<table>
+<thead>
+<tr>
+<th>região</th>
+<th align="right">r(evang, lean)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Nordeste</strong></td>
+<td align="right"><strong>+0,159</strong></td>
+</tr>
+<tr>
+<td>Sudeste</td>
+<td align="right">+0,112</td>
+</tr>
+<tr>
+<td>Norte</td>
+<td align="right">+0,088</td>
+</tr>
+<tr>
+<td>Centro-Oeste</td>
+<td align="right">+0,032</td>
+</tr>
+<tr>
+<td>Sul</td>
+<td align="right">+0,032</td>
+</tr>
+</tbody></table>
+<p>O <code>r</code> nacional (+0,214) não só encolhe dentro das regiões — ele <strong>desaparece no Sul e no
+Centro-Oeste</strong>, e o sinal do católico chega a <strong>inverter</strong> (r=+0,03): lá o município é ao
+mesmo tempo muito católico (72,6% no Sul) <em>e</em> de direita (lean 6,17). A clivagem
+religião↔política é, na prática, um <strong>fenômeno do Nordeste</strong> (e em parte do Sudeste), onde a
+base católica popular sustenta o PT; <strong>não é uma lei nacional</strong>. No Sul, católico
+colonial-conservador (herança ítalo-alemã) e evangélico votam igualmente à direita.</p>
+<h3>3b. Não é o <em>tipo</em> de evangélico (teste da hipótese luterana)</h3>
+<p>Hipótese natural para o Sul: seus evangélicos seriam mais <strong>históricos/de missão</strong>
+(luteranos IECLB) e menos pentecostais, logo menos bolsonaristas. Os dados de templos
+geolocalizados (mapa de igrejas, ~574k templos classificados por vertente) <strong>não sustentam</strong>:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th align="right">r(<strong>fração pentecostal</strong> dos templos, lean)</th>
+<th align="right">r(% evang, lean)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Brasil</td>
+<td align="right"><strong>−0,02</strong></td>
+<td align="right">+0,24</td>
+</tr>
+<tr>
+<td>Nordeste</td>
+<td align="right">−0,11</td>
+<td align="right">+0,17</td>
+</tr>
+<tr>
+<td>Sul</td>
+<td align="right">−0,09</td>
+<td align="right">+0,03</td>
+</tr>
+<tr>
+<td>Sudeste</td>
+<td align="right">+0,00</td>
+<td align="right">+0,13</td>
+</tr>
+</tbody></table>
+<ul>
+<li><strong>O Sul não é distintamente &quot;de missão&quot;:</strong> 16,7% dos templos evangélicos são de missão vs
+71,3% pentecostais — praticamente igual ao resto do país (o Nordeste é o <em>mais</em> de missão,
+20,3%).</li>
+<li><strong>A fração pentecostal não prevê voto de direita em lugar nenhum</strong> (r≈−0,02, até levemente
+negativo). O que correlaciona (fracamente) é a <em>quantidade</em> de evangélicos, não o <em>tipo</em>.</li>
+</ul>
+<p><em>Ressalva:</em> isso conta <strong>templos, não fiéis</strong>. Igreja luterana é grande e escassa; pentecostal
+é pequena e numerosa — então a contagem de templos subestima o peso luterano no Sul. Não é
+uma rejeição definitiva, mas a explicação mais econômica não é o tipo de evangélico, e sim
+que <strong>o Sul vota à direita em bloco, independentemente de religião</strong> — provavelmente um
+contraste de <em>tipo de católico</em> (nordestino popular vs sulista colonial-conservador).</p>
+<h2>4. Perfil por região</h2>
+<table>
+<thead>
+<tr>
+<th>região</th>
+<th align="right">n</th>
+<th align="right">pop %</th>
+<th align="right">evang.</th>
+<th align="right">catól.</th>
+<th align="right">sem rel.</th>
+<th align="right">inclin.</th>
+<th align="right">polariz.</th>
+<th align="right">% dir</th>
+<th align="right">% esq</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Norte</td>
+<td align="right">449</td>
+<td align="right">8%</td>
+<td align="right">34,1%</td>
+<td align="right">55,8%</td>
+<td align="right">7,0%</td>
+<td align="right">6,30</td>
+<td align="right">0,79</td>
+<td align="right">55%</td>
+<td align="right">8%</td>
+</tr>
+<tr>
+<td>Nordeste</td>
+<td align="right">1.779</td>
+<td align="right">27%</td>
+<td align="right">17,5%</td>
+<td align="right">73,9%</td>
+<td align="right">6,2%</td>
+<td align="right"><strong>5,51</strong></td>
+<td align="right">0,99</td>
+<td align="right">32%</td>
+<td align="right"><strong>27%</strong></td>
+</tr>
+<tr>
+<td>Centro-Oeste</td>
+<td align="right">464</td>
+<td align="right">7%</td>
+<td align="right">29,5%</td>
+<td align="right">59,2%</td>
+<td align="right">7,1%</td>
+<td align="right"><strong>6,48</strong></td>
+<td align="right">0,80</td>
+<td align="right">58%</td>
+<td align="right">8%</td>
+</tr>
+<tr>
+<td>Sudeste</td>
+<td align="right">1.664</td>
+<td align="right">43%</td>
+<td align="right">24,9%</td>
+<td align="right">65,1%</td>
+<td align="right">5,6%</td>
+<td align="right">6,18</td>
+<td align="right">0,92</td>
+<td align="right">42%</td>
+<td align="right">10%</td>
+</tr>
+<tr>
+<td>Sul</td>
+<td align="right">1.190</td>
+<td align="right">15%</td>
+<td align="right">21,3%</td>
+<td align="right">72,6%</td>
+<td align="right"><strong>3,2%</strong></td>
+<td align="right">6,17</td>
+<td align="right"><strong>1,01</strong></td>
+<td align="right">44%</td>
+<td align="right">14%</td>
+</tr>
+</tbody></table>
+<p>O Nordeste é a única região à esquerda do centro (5,51) e a única onde o voto de esquerda
+(27%) rivaliza com o de direita. Centro-Oeste é o mais à direita (6,48). O Sul combina
+alta religiosidade católica, baixíssima secularização (3,2%) e a maior polarização média.</p>
+<h2>5. Nos redutos evangélicos, a esquerda quase não existe</h2>
+<p>Nos <strong>345 municípios com &gt;40% de evangélicos</strong>: inclinação média 6,35, voto de direita
+52,6%, <strong>voto de esquerda só 10,1%</strong>. Prefeitos eleitos:</p>
+<blockquote>
+<p>MDB 70 · PP 56 · União 52 · PL 48 · PSD 31 · Republicanos 27 — quase tudo centrão/direita.</p>
+</blockquote>
+<p>Espelho: onde a <strong>esquerda venceu a prefeitura</strong> (752 municípios), a população é mais
+<strong>católica</strong> (72,8% vs 67,6%) e menos <strong>evangélica</strong> (19,4% vs 23,4%) que a média.</p>
+<h2>6. O que <em>realmente</em> move a polarização: cidade, não igreja</h2>
+<p>A polarização ideológica não tem a ver com religião — é <strong>estrutural e urbana</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>correlação com <strong>polarização</strong></th>
+<th align="right">r</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>nº de candidatos</td>
+<td align="right"><strong>+0,319</strong></td>
+</tr>
+<tr>
+<td>margem 1º–2º</td>
+<td align="right"><strong>−0,267</strong></td>
+</tr>
+<tr>
+<td>população (log)</td>
+<td align="right"><strong>+0,237</strong></td>
+</tr>
+<tr>
+<td>% evangélica</td>
+<td align="right">−0,012</td>
+</tr>
+<tr>
+<td>% sem religião</td>
+<td align="right">+0,059</td>
+</tr>
+</tbody></table>
+<p>Mecânica clara pelo nº de candidatos: <strong>1 candidato → 0,00 · 2 → 0,86 · 3 → 1,04 · 4 → 1,16
+· 5 → 1,32 · 6+ → 1,46.</strong> Mais candidatos (e mais eleitores) abrem espaço para nomes em
+pontos distintos do espectro. Onde há dois nomes do mesmo campo, a disputa pode ser
+acirrada (margem baixa) sem ser ideologicamente polarizada.</p>
+<p><strong>Capitais polarizam quase o dobro do interior (1,79 vs 0,94)</strong> — e pendem levemente mais à
+esquerda (5,90 vs 6,00). A metrópole racha; o interior consolida.</p>
+<p><img decoding="async" loading="lazy" src="/analises/img/religiao-x-polarizacao-heatmap-nulo.png" alt="Heatmap do cruzamento entre % evangélica e polarização, sem padrão visível"></p>
+<p>O painel de controle, para o §1: exatamente o mesmo cruzamento e a mesma escala de cor,
+trocando o eixo horizontal de <em>para onde o município pende</em> para <em>o quanto ele está
+dividido</em>. A diagonal desaparece — sobram células isoladas, sem gradiente e sem canto
+saturado. Vale como leitura negativa da figura do §2: aquela diagonal é sinal, não um
+artefato do método de binagem ou da escala de cor, porque o mesmo método aplicado a uma
+variável sem associação produz cinza.</p>
+<table>
+<thead>
+<tr>
+<th>capital</th>
+<th align="right">inclin.</th>
+<th align="right">polariz.</th>
+<th align="right">evang.</th>
+<th>venceu</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Recife/PE</td>
+<td align="right">4,38</td>
+<td align="right">1,82</td>
+<td align="right">28%</td>
+<td>PSB</td>
+</tr>
+<tr>
+<td>Porto Alegre/RS</td>
+<td align="right">4,46</td>
+<td align="right">1,63</td>
+<td align="right">13%</td>
+<td>MDB</td>
+</tr>
+<tr>
+<td>Florianópolis/SC</td>
+<td align="right">4,76</td>
+<td align="right">2,04</td>
+<td align="right">14%</td>
+<td>PSD</td>
+</tr>
+<tr>
+<td>São Paulo/SP</td>
+<td align="right">4,90</td>
+<td align="right"><strong>2,65</strong></td>
+<td align="right">23%</td>
+<td>MDB</td>
+</tr>
+<tr>
+<td>Fortaleza/CE</td>
+<td align="right">5,57</td>
+<td align="right"><strong>2,78</strong></td>
+<td align="right">26%</td>
+<td>PL</td>
+</tr>
+<tr>
+<td>Rio de Janeiro/RJ</td>
+<td align="right">6,54</td>
+<td align="right">1,65</td>
+<td align="right">25%</td>
+<td>PSD</td>
+</tr>
+<tr>
+<td>Belo Horizonte/MG</td>
+<td align="right">6,61</td>
+<td align="right">1,79</td>
+<td align="right">27%</td>
+<td>PL</td>
+</tr>
+<tr>
+<td>Rio Branco/AC</td>
+<td align="right">7,35</td>
+<td align="right">1,47</td>
+<td align="right">47%</td>
+<td>PL</td>
+</tr>
+<tr>
+<td>Maceió/AL</td>
+<td align="right"><strong>7,91</strong></td>
+<td align="right">1,48</td>
+<td align="right">30%</td>
+<td>PL</td>
+</tr>
+</tbody></table>
+<p><em>(26 capitais casadas; recorte acima ilustra os extremos.)</em> Fortaleza e São Paulo são as
+mais rachadas do país entre grandes cidades; Maceió e Rio Branco, as mais à direita.</p>
+<h2>7. O que pesa é o <em>nível</em>, não a <em>velocidade</em> de conversão</h2>
+<p>O crescimento evangélico 2010→2022 mal se correlaciona com inclinação (≈+0,05) e é até
+levemente negativo com polarização (≈−0,06): municípios que <strong>mais</strong> se converteram na
+década não são mais à direita nem mais divididos. O que alinha com a direita é já <strong>ser</strong>
+evangélico, não estar virando.</p>
+<h2>8. Extremos nomeados</h2>
+<ul>
+<li><strong>Mais à direita (lean 8,5):</strong> dezenas de municípios com candidatura única do <strong>PL</strong> e
+100% dos votos (ex.: Bom Jesus de Goiás/GO, Chácara/MG, Bela Vista do Paraíso/PR).</li>
+<li><strong>Mais à esquerda (lean 2,5):</strong> municípios com PT único (ex.: Rio Doce/MG, Bela Vista do
+Piauí/PI, vários no interior gaúcho católico).</li>
+<li><strong>Mais polarizados:</strong> Pedro do Rosário/MA (3,20), Santo Antônio dos Lopes/MA (3,12),
+Gentil/RS (3,00) — disputas com muitos candidatos de campos opostos.</li>
+</ul>
+<hr>
+<h2>9. O terreno religioso de cada partido</h2>
+<p>Tudo acima trata a eleição como escalar contínuo (<code>lean</code>). Mas o dado tem uma dimensão
+categórica que as figuras anteriores ignoram: <strong>qual partido efetivamente ganhou a
+prefeitura</strong>. Trocando o eixo, a pergunta vira <em>em que terreno religioso cada sigla vence</em>.</p>
+<p><img decoding="async" loading="lazy" src="/analises/img/religiao-x-partido-amplitude.png" alt="Faixa de % evangélica dos municípios onde cada partido elegeu prefeito em 2024, ordenada pela mediana"></p>
+<p>O gradiente é limpo e cobre <strong>dez pontos percentuais</strong>: o PT elege prefeito onde os
+evangélicos são <strong>15,8%</strong> da população; o UNIÃO, onde são <strong>25,9%</strong>. No meio, a ordem
+acompanha de perto a escala esquerda-direita — a correlação entre a nota ideológica do
+partido e a mediana evangélica do seu território é de <strong>+0,70</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>partido</th>
+<th align="right">prefeituras</th>
+<th align="right">mediana evangélica</th>
+<th align="right">p10–p90</th>
+<th align="right">nota ideológica</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>PT</td>
+<td align="right">252</td>
+<td align="right">15,8%</td>
+<td align="right">8,6–28,0%</td>
+<td align="right">2,5</td>
+</tr>
+<tr>
+<td>PSB</td>
+<td align="right">312</td>
+<td align="right">17,0%</td>
+<td align="right">9,4–34,7%</td>
+<td align="right">3,7</td>
+</tr>
+<tr>
+<td>PDT</td>
+<td align="right">151</td>
+<td align="right">21,0%</td>
+<td align="right">11,9–36,2%</td>
+<td align="right">3,3</td>
+</tr>
+<tr>
+<td>MDB</td>
+<td align="right">860</td>
+<td align="right">21,1%</td>
+<td align="right">9,4–38,6%</td>
+<td align="right">5,7</td>
+</tr>
+<tr>
+<td>PSD</td>
+<td align="right">884</td>
+<td align="right">21,2%</td>
+<td align="right">10,7–33,4%</td>
+<td align="right">5,9</td>
+</tr>
+<tr>
+<td>PP</td>
+<td align="right">751</td>
+<td align="right">21,8%</td>
+<td align="right">9,6–37,3%</td>
+<td align="right">7,0</td>
+</tr>
+<tr>
+<td>PSDB</td>
+<td align="right">275</td>
+<td align="right">22,5%</td>
+<td align="right">11,2–35,8%</td>
+<td align="right">6,0</td>
+</tr>
+<tr>
+<td>REPUBLICANOS</td>
+<td align="right">437</td>
+<td align="right">23,6%</td>
+<td align="right">10,8–36,4%</td>
+<td align="right">7,2</td>
+</tr>
+<tr>
+<td>PODE</td>
+<td align="right">126</td>
+<td align="right">24,4%</td>
+<td align="right">12,6–38,4%</td>
+<td align="right">5,7</td>
+</tr>
+<tr>
+<td><strong>PL</strong></td>
+<td align="right">519</td>
+<td align="right"><strong>25,1%</strong></td>
+<td align="right">11,6–38,9%</td>
+<td align="right">8,5</td>
+</tr>
+<tr>
+<td><strong>UNIÃO</strong></td>
+<td align="right">587</td>
+<td align="right"><strong>25,9%</strong></td>
+<td align="right">12,4–39,4%</td>
+<td align="right">6,9</td>
+</tr>
+</tbody></table>
+<p><em>(as 11 siglas com mais de 100 prefeituras; a figura traz as 18 com 15 ou mais)</em></p>
+<p>Mas repare na coluna <code>p10–p90</code>: as faixas se sobrepõem quase inteiramente. <strong>Nenhum partido
+tem território religioso exclusivo</strong> — todos vencem em municípios de quase todo tipo de
+perfil. A diferença está em onde cada um se concentra.</p>
+<p><img decoding="async" loading="lazy" src="/analises/img/religiao-x-partido-perfil.png" alt="Mapa de calor: fatia das prefeituras de cada partido por faixa de % evangélica, cada linha somando 100%"></p>
+<p>Normalizando cada linha em 100%, aparece o que a mediana esconde: o que separa as pontas
+não é só a posição da mancha, é a <strong>cauda</strong>. <strong>9,2%</strong> das prefeituras do PL e <strong>8,9%</strong> das
+do UNIÃO estão em municípios com 40% ou mais de evangélicos, contra <strong>2,0%</strong> das do PT.</p>
+<h2>10. E, de novo, é quase tudo geografia</h2>
+<p>O §3 mostrou que metade da associação municipal entre religião e voto é efeito regional. Com
+o partido no eixo, o diagnóstico é ainda mais duro. Basta trocar a % evangélica bruta pelo
+<strong>excedente regional</strong> — quanto o município tem de evangélicos acima ou abaixo da mediana da
+sua própria região — para o gradiente desabar.</p>
+<p><img decoding="async" loading="lazy" src="/analises/img/religiao-x-partido-excedente.png" alt="Excedente regional de evangélicos por partido: % do município menos a mediana da sua região"></p>
+<p>O PT ganha onde há poucos evangélicos porque <strong>ganha no Nordeste</strong> (67% das suas
+prefeituras), a região menos evangélica do país — mediana de 15,9%. O UNIÃO ganha onde há
+muitos porque ganha no Norte e no Centro-Oeste (34,2% e 29,7%). Medidos contra os vizinhos,
+os dez pontos de gradiente viram <strong>dois</strong>, e a correlação com a escala ideológica cai de
+<strong>+0,70 para +0,15</strong>.</p>
+<p>Não é zero, porém, e não troca de sinal: <strong>dentro de cada uma das cinco regiões</strong> a
+correlação segue positiva — Norte +0,35 · Nordeste +0,48 · Centro-Oeste +0,63 ·
+Sudeste +0,22 · Sul +0,39. E sobra um resíduo nomeável: o <strong>PL é o único partido claramente
+acima da própria região</strong> (+1,9 p.p.) e, entre os grandes, o <strong>PT é o mais abaixo dela</strong>
+(−2,5 p.p.). Os dois partidos que a eleição nacional opõe são também os dois que sobram
+depois do controle geográfico.</p>
+<p>O §7 se confirma por este novo corte: a <strong>velocidade</strong> de conversão não separa os partidos.
+A mediana do crescimento evangélico 2010→2022 fica entre 4,7 e 6,4 p.p. em <em>todos</em> os 18 —
+o PT (5,4) e o PL (4,9) inclusive. O que distingue é o nível, e mesmo esse é quase todo
+geografia.</p>
+<h2>11. Não é quem vence, é quem estava no páreo</h2>
+<p>Até aqui o vencedor foi tratado sozinho. Mas cada município produz um <em>par</em> — quem ficou em
+1º e quem ficou em 2º. Tomando o par como unidade (não ordenado: interessa quem estava em
+campo, não quem levou), o sinal fica <strong>mais forte</strong> do que com o vencedor isolado.</p>
+<p><img decoding="async" loading="lazy" src="/analises/img/religiao-x-partido-confrontos.png" alt="Matriz partido × partido: mediana de % evangélica dos municípios onde cada par disputou o 1º e o 2º lugar"></p>
+<p>A correlação entre a <strong>nota ideológica média do par</strong> e o terreno do confronto é de
+<strong>+0,73</strong>, contra +0,70 do vencedor sozinho. E a matriz tem estrutura de canto: <strong>PSB × PT</strong>
+é disputa de município católico (14,0% de evangélicos), <strong>PL × UNIÃO</strong> é disputa de
+município evangélico (30,7%) — 17 pontos entre os dois cantos, contra os 10 pontos que
+separavam os partidos individualmente.</p>
+<p>O ponto forte é o seguinte: <strong>fixado o vencedor, o adversário ainda move o terreno em 8 a 12
+pontos</strong>. Lendo a linha do MDB, o adversário ordena o terreno quase perfeitamente pela
+própria nota ideológica:</p>
+<table>
+<thead>
+<tr>
+<th>MDB vence contra</th>
+<th align="right">prefeituras</th>
+<th align="right">% evangélica típica</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>PSB</td>
+<td align="right">42</td>
+<td align="right">16,6%</td>
+</tr>
+<tr>
+<td>PT</td>
+<td align="right">81</td>
+<td align="right">17,0%</td>
+</tr>
+<tr>
+<td>PDT</td>
+<td align="right">36</td>
+<td align="right">17,6%</td>
+</tr>
+<tr>
+<td>PSDB</td>
+<td align="right">56</td>
+<td align="right">18,6%</td>
+</tr>
+<tr>
+<td>PSD</td>
+<td align="right">107</td>
+<td align="right">19,5%</td>
+</tr>
+<tr>
+<td>PP</td>
+<td align="right">120</td>
+<td align="right">19,8%</td>
+</tr>
+<tr>
+<td>REPUBLICANOS</td>
+<td align="right">59</td>
+<td align="right">20,6%</td>
+</tr>
+<tr>
+<td>UNIÃO</td>
+<td align="right">92</td>
+<td align="right">24,9%</td>
+</tr>
+<tr>
+<td>PL</td>
+<td align="right">107</td>
+<td align="right">25,1%</td>
+</tr>
+</tbody></table>
+<p>O mesmo MDB, o mesmo cargo, o mesmo ano — e oito pontos e meio de diferença no perfil
+religioso do município conforme quem ele derrotou. Vale para PSD (+8,9 p.p.), PP (+9,9),
+UNIÃO (+9,4) e PL (+10,4). <strong>Saber quem ganhou diz menos sobre o município do que saber
+contra quem.</strong> É um lembrete de que o partido do prefeito é um resumo pobre: o que localiza
+o município no mapa religioso é a composição da disputa inteira.</p>
+<h2>12. A mesma lógica não sobe para governador — e é aí que ela fica nítida</h2>
+<p>Vale perguntar por que toda esta análise para no nível municipal. A resposta é que <strong>para
+governador ela é estruturalmente impossível</strong>: a unidade eleitoral é o estado, então
+geografia e unidade de análise coincidem. Não há &quot;excedente regional&quot; a calcular — cada
+governador <em>é</em> a sua região — e 27 observações não sustentam nada parecido com o corte por
+partido dos §9 a §11. O que os §9–§11 fazem só é possível porque a eleição de prefeito
+oferece 5.546 unidades.</p>
+<p>Mas a eleição de governador oferece em troca algo que a de prefeito não pode dar. A
+<code>metodologia.md</code> lista como ressalva que &quot;município ≠ candidato&quot;: na disputa municipal cada
+município tem uma oferta de candidatos diferente, e a correlação entre religião e voto
+mistura o <strong>eleitorado</strong> com a <strong>oferta</strong>. Na disputa estadual, todos os municípios de um
+estado escolhem entre os <strong>mesmos</strong> nomes. Comparar municípios dentro de um estado isola o
+eleitorado com os candidatos mantidos constantes.</p>
+<p>O resultado corrige a leitura do §1. Nacionalmente, os dois pleitos se parecem — r de
++0,214 com a inclinação da eleição de prefeito, +0,234 com a de governador. Mas <em>dentro de
+cada estado</em>, a mediana do r salta de <strong>+0,086 na disputa de prefeito para +0,215 na de
+governador</strong>: mantendo os candidatos constantes, o sinal religioso mais que dobra. Boa parte
+da fraqueza do número nacional era o ruído de 5.546 disputas locais distintas, não ausência
+de relação. O que muda é a <strong>intensidade</strong>, não a abrangência: o número de estados com r
+positivo é praticamente o mesmo (18 de 24, contra 19 na disputa de prefeito). Onde o efeito
+existe ele fica mais forte; onde não existia, fica mais claramente negativo.</p>
+<p>O que ele <strong>não</strong> corrige é o §3. Medida com candidatos constantes, a associação continua
+sendo um fenômeno regional, e do mesmo jeito:</p>
+<table>
+<thead>
+<tr>
+<th>região</th>
+<th align="right">mediana do r intraestadual (governador)</th>
+<th align="right">UFs</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Nordeste</td>
+<td align="right"><strong>+0,478</strong></td>
+<td align="right">9</td>
+</tr>
+<tr>
+<td>Norte</td>
+<td align="right">+0,269</td>
+<td align="right">5</td>
+</tr>
+<tr>
+<td>Sudeste</td>
+<td align="right">+0,131</td>
+<td align="right">4</td>
+</tr>
+<tr>
+<td>Sul</td>
+<td align="right">+0,079</td>
+<td align="right">3</td>
+</tr>
+<tr>
+<td>Centro-Oeste</td>
+<td align="right">−0,036</td>
+<td align="right">3</td>
+</tr>
+</tbody></table>
+<p>Na Bahia (+0,536), no Ceará (+0,621), na Paraíba (+0,520) e em Pernambuco (+0,524) o perfil
+religioso do município prevê bem a inclinação do voto para governador. Em São Paulo
+(−0,104), no Rio Grande do Sul (−0,121) e em Goiás (−0,202) ele prevê o contrário, ou nada.
+Ou seja: o desenho mais limpo torna o efeito <strong>mais forte onde ele já existia</strong> e não o faz
+aparecer onde não existia. &quot;Católico = esquerda&quot; segue sendo um fenômeno nordestino — agora
+com um teste que não pode ser atribuído a quem apareceu na cédula.</p>
+<p><em>Ressalvas próprias desta seção:</em> são pleitos de anos e naturezas diferentes — governador em
+2022, ano presidencial e eleição nacionalizada; prefeito em 2024, disputa local. AP, RR e DF
+ficam de fora por terem menos de 20 municípios. E a falácia ecológica continua valendo:
+municípios mais evangélicos votarem mais à direita não é o mesmo que evangélicos votarem
+mais à direita.</p>
+<hr>
+<h2>Síntese</h2>
+<ol>
+<li><strong>Existe</strong> clivagem religião↔política real e na direção esperada (evangélico↔direita,
+católico↔esquerda), de <strong>magnitude modesta</strong> — longe de determinística.</li>
+<li>O efeito é <strong>regional, não nacional</strong>: existe no Nordeste (e em parte no Sudeste) e
+<strong>some no Sul e Centro-Oeste</strong>, onde católicos e evangélicos votam igualmente à direita.
+Não é o <em>tipo</em> de evangélico (a fração pentecostal não prevê o voto — §3b); é que o Sul é
+politicamente homogêneo à direita. &quot;Católico = esquerda&quot; é fenômeno nordestino.</li>
+<li><strong>Religião não gera polarização.</strong> Ela desloca o município no espectro; o racha
+ideológico é dirigido por <strong>número de candidatos, população e competitividade</strong> — é um
+fenômeno de <strong>cidade grande</strong>, não de igreja.</li>
+<li><strong>Os partidos vencem em terrenos religiosos distintos</strong> (PT 15,8% de evangélicos, UNIÃO
+25,9%), mas descontada a região o gradiente encolhe de dez pontos para dois (§10). O
+partido é sobretudo um marcador de <strong>onde</strong> se ganha. A exceção que resiste ao controle
+é o <strong>PL</strong>, o único claramente mais evangélico que a própria vizinhança.</li>
+<li><strong>O confronto informa mais que o vencedor</strong> (§11). Fixado quem ganhou, o terreno ainda
+muda 8 a 12 pontos conforme quem foi o segundo colocado — e o par tem correlação maior
+com a religião (+0,73) do que o vencedor sozinho (+0,70). O partido do prefeito é um
+resumo pobre da disputa.</li>
+<li><strong>Com os candidatos constantes, o sinal dobra — mas só onde já havia</strong> (§12). Na eleição
+de governador, onde todo o estado escolhe entre os mesmos nomes, o r intraestadual mediano
+sobe de +0,086 para +0,215. O número nacional fraco era em parte ruído das 5.546 disputas
+locais. Ainda assim, o efeito segue concentrado no Nordeste (+0,478) e ausente no
+Centro-Oeste (−0,036): o desenho mais limpo reforça o §3 em vez de derrubá-lo.</li>
+</ol>
+<h2>Ressalvas</h2>
+<ul>
+<li><strong>Falácia ecológica:</strong> correlação entre agregados municipais ≠ comportamento individual.
+Não se conclui daqui &quot;o evangélico vota à direita&quot; — só que <em>municípios</em> mais evangélicos
+<em>tendem</em> a votar mais à direita.</li>
+<li><strong>Notas de especialistas</strong>, não verdade objetiva; herdadas do partido, não do candidato.
+Prefeitura é eleição personalista → sinal ruidoso por construção. O override do PL (§nota)
+é uma escolha editorial explícita e auditável.</li>
+<li><strong>Janelas temporais</strong> próximas mas distintas: Censo 2022, eleição 2024.</li>
+<li>Correlações são de força <strong>fraca a moderada</strong> (|r| ≤ 0,3); descrevem tendência, não
+poder preditivo forte.</li>
+<li><strong>O +0,70 do §9 não é comparável ao +0,214 do §1.</strong> Aquele é a correlação entre <strong>18
+medianas partidárias</strong>; este, entre 5.546 municípios. Agregar remove ruído e <strong>infla <code>r</code>
+por construção</strong> — tomar o número maior como &quot;efeito mais forte&quot; seria falácia ecológica
+de segunda ordem. O §10 existe justamente para impedir essa leitura: é o mesmo efeito
+fraco, só que suavizado pela média, e a maior parte dele é geografia.</li>
+<li><strong>Partidos pequenos são anedota.</strong> Siglas com poucas prefeituras (NOVO 18, PC do B 19,
+MOBILIZA 21) têm percentis instáveis, e no mapa de calor suas linhas parecem mais
+concentradas só porque cada município vale uma fatia maior. O corte mínimo é de 15
+prefeituras; leia as siglas grandes.</li>
+</ul>
+<hr>
+<p><em>Fontes: TSE <code>br_tse_eleicoes.resultados_candidato_municipio</code> (2024, prefeito, 1º turno);
+IBGE Censo 2022 (perfil religioso); centroides <code>br_bd_diretorios_brasil.municipio</code>.
+<a href="https://github.com/rafapolo/xyz/blob/main/dataviz/eleicoes/dados/query.sql">Query</a> e
+<a href="https://github.com/rafapolo/xyz/blob/main/dataviz/eleicoes/metodologia.md">notas partidárias</a>
+reprodutíveis. A junção, as correlações deste relatório e os dois heatmaps saem de
+<a href="https://github.com/rafapolo/xyz/blob/main/dataviz/eleicoes/heatmap_religiao_x_lean.py"><code>heatmap_religiao_x_lean.py</code></a>,
+que imprime os <code>r</code> de §1, §3 e §6 para conferência. As três figuras de §9 e §10 saem de
+<a href="https://github.com/rafapolo/xyz/blob/main/dataviz/eleicoes/perfil_religioso_partidos.py"><code>perfil_religioso_partidos.py</code></a>,
+que reaproveita aquela junção e imprime a tabela por partido, os dois <code>r</code>, as correlações
+intrarregionais e a matriz de confrontos de §11. Os números de §12 saem do mesmo script,
+sobre <code>dados/governador_2022_raw.json</code>, gerado por
+<a href="https://github.com/rafapolo/xyz/blob/main/dataviz/eleicoes/dados/query_governador.sql"><code>query_governador.sql</code></a>.</em></p>
+  </div>
 </main>
 
 <footer>
@@ -83,7 +844,6 @@
   </div>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js" integrity="sha384-/TQbtLCAerC3jgaim+N78RZSDYV7ryeoBCVqTuzRrFec2akfBkHS7ACQ3PQhvMVi" crossorigin="anonymous"></script>
 <script src="../viewer.js"></script>
 <script src="../../assets/theme-toggle.js"></script>
 </body>

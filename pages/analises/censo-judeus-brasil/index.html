@@ -72,7 +72,986 @@
   <p class="eyebrow" id="eyebrow">Análises</p>
   <img class="capa" src="../img/capa-censo-judeus-brasil.webp" alt="" width="1680" height="240" decoding="async">
   <p class="meta">rodado em 28-07-2026</p>
-  <div id="doc" data-slug="censo-judeus-brasil" data-base="../"><p class="doc-msg">Carregando…</p></div>
+  <div id="doc" data-slug="censo-judeus-brasil" data-base="../" data-pronto>
+<h1>Judeus no Censo Brasileiro</h1>
+<p>Pense num judeu brasileiro. É bem provável que você tenha imaginado alguém branco, morando
+em São Paulo, descendente de europeus que fugiram do nazismo. O Censo 2010 diz que você
+acertou — na maior parte das vezes. Mas erra numa fatia que quase ninguém conhece: <strong>um em
+cada nove judeus do país não se declara branco</strong>, e no Norte eles são quase metade.</p>
+<p>Esta é a história do que 6.304 registros do Censo Demográfico do IBGE mostram sobre renda,
+escolaridade, cor e geografia da população judaica brasileira — e de tudo aquilo que esse
+dado, por mais que a gente insista, não consegue responder.</p>
+<hr>
+<h2>1. Procurando 107 mil pessoas que o Censo não nomeia</h2>
+<p>Aqui começa o primeiro problema. O Censo pergunta religião, não etnia. E nos microdados as
+religiões aparecem numeradas, sem rótulo — uma lista de códigos que ninguém traduziu. Qual
+número corresponde ao judaísmo simplesmente não está documentado.</p>
+<p>A saída foi checar por três caminhos independentes, antes de olhar para qualquer resultado.</p>
+<p>O primeiro é o mais direto: aplicar o mesmo critério a outras religiões e ver se os números
+batem com o que o IBGE publicou. Bateram, com erro abaixo de 1% em todas.</p>
+<table>
+<thead>
+<tr>
+<th>Religião</th>
+<th align="right">Calculado</th>
+<th align="right">Publicado IBGE</th>
+<th align="right">Erro</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Católica</td>
+<td align="right">122.682.929</td>
+<td align="right">123.280.172</td>
+<td align="right">0,5%</td>
+</tr>
+<tr>
+<td>Espírita</td>
+<td align="right">3.844.732</td>
+<td align="right">3.848.876</td>
+<td align="right">0,1%</td>
+</tr>
+<tr>
+<td>Umbanda</td>
+<td align="right">407.354</td>
+<td align="right">407.331</td>
+<td align="right">0,0%</td>
+</tr>
+<tr>
+<td>Candomblé</td>
+<td align="right">167.119</td>
+<td align="right">167.363</td>
+<td align="right">0,1%</td>
+</tr>
+<tr>
+<td>Agnóstico</td>
+<td align="right">124.300</td>
+<td align="right">124.436</td>
+<td align="right">0,1%</td>
+</tr>
+<tr>
+<td>Ateu</td>
+<td align="right">615.242</td>
+<td align="right">615.096</td>
+<td align="right">0,0%</td>
+</tr>
+<tr>
+<td><strong>Judaísmo</strong></td>
+<td align="right"><strong>106.425</strong></td>
+<td align="right"><strong>107.329</strong></td>
+<td align="right"><strong>0,8%</strong></td>
+</tr>
+</tbody></table>
+<p>O segundo caminho é geográfico, e é onde a coisa fica interessante. A distribuição que
+aparece no dado reproduz exatamente o mapa histórico das comunidades judaicas do país: São
+Paulo com 48%, Rio com 23%, e então Rio Grande do Sul, Pernambuco e Pará muito acima do que
+sua população justificaria.</p>
+<p>Não é coincidência. Cada um desses núcleos veio de uma migração diferente, e o mapa é a
+soma delas.</p>
+<p><strong>Recife</strong> é o mais antigo e o mais interrompido. A Kahal Zur Israel, fundada por volta de
+1636 sob domínio holandês, foi a primeira sinagoga das Américas. Durou pouco: com a retomada
+portuguesa de Pernambuco, em 1654, a comunidade se dispersou — e um grupo foi parar em Nova
+Amsterdã, onde fundou a primeira congregação judaica da América do Norte. Traduzindo: a
+comunidade judaica de Nova York começou como refugiada de Recife. A comunidade recifense de
+hoje não é continuação daquela; é do século XX, sobre um substrato colonial de cristãos-novos.</p>
+<p>O <strong>Rio Grande do Sul</strong> nasceu de um projeto de mesa. A Jewish Colonization Association, do
+barão Maurice de Hirsch, comprou terras e assentou judeus do Leste Europeu em colônias
+agrícolas — Philippson em 1904, Quatro Irmãos em 1912. Judeus virando lavradores no interior
+gaúcho. A experiência não vingou como agricultura, e as famílias acabaram migrando em massa
+para Porto Alegre.</p>
+<p><strong>Belém e Manaus</strong> são o caso que ocupa metade deste texto. Ficam para a seção 4.</p>
+<p>E o eixo <strong>São Paulo–Rio</strong>, que sozinho concentra 71% dos judeus do país, é sobretudo a
+grande onda asquenazita do início do século XX, com pico nos anos 1920 e 1930, somada a
+sefarditas do Oriente Médio e a refugiados do pós-guerra. Foi também a onda que bateu de
+frente com a política imigratória do Estado Novo — inclusive a Circular Secreta 1.127, de
+1937, que instruía o corpo diplomático brasileiro a negar visto a judeus.</p>
+<p>O terceiro caminho de checagem foi repetir o procedimento em censos antigos. Em 1980 o
+cálculo dá <strong>91.795</strong> judeus. O número publicado pelo IBGE naquele ano: 91.795. Exato.</p>
+<hr>
+<h2>2. A fama tem base</h2>
+<p>Existe uma afirmação que circula com frequência: judeus brasileiros ganham mais e estudam
+mais que cristãos brancos. O Censo confirma, e a distância não é sutil.</p>
+<table>
+<thead>
+<tr>
+<th>Grupo</th>
+<th align="right">n amostral</th>
+<th align="right">Renda pessoal</th>
+<th align="right">Renda domiciliar</th>
+<th align="right">Per capita (SM)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Judeus</strong></td>
+<td align="right">6.304</td>
+<td align="right"><strong>R$ 4.699</strong></td>
+<td align="right"><strong>R$ 11.774</strong></td>
+<td align="right"><strong>8,04</strong></td>
+</tr>
+<tr>
+<td>Brancos católicos</td>
+<td align="right">6.777.876</td>
+<td align="right">R$ 1.251</td>
+<td align="right">R$ 3.544</td>
+<td align="right">2,14</td>
+</tr>
+<tr>
+<td>Brancos evangélicos</td>
+<td align="right">1.977.630</td>
+<td align="right">R$ 902</td>
+<td align="right">R$ 2.751</td>
+<td align="right">1,56</td>
+</tr>
+<tr>
+<td>Pretos e pardos</td>
+<td align="right">10.603.690</td>
+<td align="right">R$ 586</td>
+<td align="right">R$ 1.818</td>
+<td align="right">0,97</td>
+</tr>
+<tr>
+<td>Indígenas</td>
+<td align="right">111.816</td>
+<td align="right">R$ 412</td>
+<td align="right">R$ 1.181</td>
+<td align="right">0,57</td>
+</tr>
+</tbody></table>
+<p>Valores de 2010, quando o salário mínimo era R$ 510.</p>
+<p>Na escolaridade o contraste é ainda mais brutal. Entre pessoas de 25 anos ou mais, <strong>62,1%
+dos judeus têm diploma universitário</strong>. Entre brancos católicos, 16,6%. Entre pretos e
+pardos, 5,6%.</p>
+<table>
+<thead>
+<tr>
+<th>Grupo</th>
+<th align="right">Superior completo</th>
+<th align="right">Até fundamental incompleto</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Judeus</strong></td>
+<td align="right"><strong>62,1%</strong></td>
+<td align="right">8,7%</td>
+</tr>
+<tr>
+<td>Brancos católicos</td>
+<td align="right">16,6%</td>
+<td align="right">43,2%</td>
+</tr>
+<tr>
+<td>Brancos evangélicos</td>
+<td align="right">11,0%</td>
+<td align="right">43,7%</td>
+</tr>
+<tr>
+<td>Pretos e pardos</td>
+<td align="right">5,6%</td>
+<td align="right">57,1%</td>
+</tr>
+</tbody></table>
+<p>Seis em cada dez de um lado. Um em cada seis do outro.</p>
+<hr>
+<h2>3. Mas espera: comparando gente parecida</h2>
+<p>Aqui vale desconfiar do número fácil. Aquela diferença de 3,76 vezes na renda compara um
+grupo com <strong>idade média de 40,8 anos</strong>, concentrado em regiões metropolitanas ricas e com
+diploma, contra uma população de 34,2 anos espalhada pelo país inteiro. Renda cresce com
+idade. Renda cresce com diploma. Renda cresce em São Paulo.</p>
+<p>Então vamos emparelhar: só São Paulo e Rio, só gente de 25 a 64 anos, comparando dentro da
+mesma faixa de escolaridade.</p>
+<table>
+<thead>
+<tr>
+<th>Grupo</th>
+<th align="right">Médio completo</th>
+<th align="right">Superior completo</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Judeus</strong></td>
+<td align="right"><strong>R$ 3.719</strong></td>
+<td align="right"><strong>R$ 8.107</strong></td>
+</tr>
+<tr>
+<td>Brancos católicos</td>
+<td align="right">R$ 1.674</td>
+<td align="right">R$ 5.382</td>
+</tr>
+<tr>
+<td>Brancos evangélicos</td>
+<td align="right">R$ 1.271</td>
+<td align="right">R$ 3.719</td>
+</tr>
+<tr>
+<td>Pretos e pardos</td>
+<td align="right">R$ 1.075</td>
+<td align="right">R$ 3.029</td>
+</tr>
+</tbody></table>
+<p>A vantagem encolhe de <strong>3,76x para 1,51x</strong>. Ou seja: a maior parte daquele abismo inicial
+era composição — idade, cidade, diploma. Mas não tudo. Mesmo comparando dois universitários
+da mesma idade morando na mesma região metropolitana, sobra uma diferença real.</p>
+<hr>
+<h2>4. Os judeus que ninguém imagina</h2>
+<p>Agora a parte que costuma surpreender até quem conhece o assunto.</p>
+<p><strong>11,7% dos judeus brasileiros não se declaram brancos.</strong> São cerca de 12,5 mil pessoas. E a
+desigualdade dentro do grupo é violenta.</p>
+<table>
+<thead>
+<tr>
+<th>Cor/raça</th>
+<th align="right">Participação</th>
+<th align="right">População</th>
+<th align="right">Renda pessoal</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Branca</td>
+<td align="right">88,3%</td>
+<td align="right">93.958</td>
+<td align="right">R$ 5.037</td>
+</tr>
+<tr>
+<td><strong>Parda</strong></td>
+<td align="right">9,6%</td>
+<td align="right">10.183</td>
+<td align="right"><strong>R$ 1.568</strong></td>
+</tr>
+<tr>
+<td>Preta</td>
+<td align="right">1,6%</td>
+<td align="right">1.681</td>
+<td align="right">R$ 4.154</td>
+</tr>
+<tr>
+<td>Amarela</td>
+<td align="right">0,5%</td>
+<td align="right">492</td>
+<td align="right">R$ 3.991</td>
+</tr>
+<tr>
+<td>Indígena</td>
+<td align="right">0,1%</td>
+<td align="right">111</td>
+<td align="right">R$ 269</td>
+</tr>
+</tbody></table>
+<p>Mesma religião declarada, <strong>renda 3,2 vezes menor</strong>. Para comparar: entre brancos católicos
+e pretos e pardos na população geral, a diferença é de 2,1 vezes. O fosso racial dentro da
+população judaica é maior que o fosso racial do Brasil.</p>
+<h3>Onde eles estão</h3>
+<p>Essas duas populações não dividem o mesmo território.</p>
+<table>
+<thead>
+<tr>
+<th>UF</th>
+<th align="right">Brancos</th>
+<th align="right">Pretos e pardos</th>
+<th align="right">% não branca</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Bahia</td>
+<td align="right">1.006</td>
+<td align="right">1.244</td>
+<td align="right"><strong>54,8%</strong></td>
+</tr>
+<tr>
+<td>Pará</td>
+<td align="right">932</td>
+<td align="right">1.036</td>
+<td align="right"><strong>52,7%</strong></td>
+</tr>
+<tr>
+<td>Amazonas</td>
+<td align="right">802</td>
+<td align="right">864</td>
+<td align="right"><strong>50,9%</strong></td>
+</tr>
+<tr>
+<td>Minas Gerais</td>
+<td align="right">2.187</td>
+<td align="right">1.167</td>
+<td align="right">34,8%</td>
+</tr>
+<tr>
+<td>Pernambuco</td>
+<td align="right">1.753</td>
+<td align="right">655</td>
+<td align="right">27,2%</td>
+</tr>
+<tr>
+<td>Paraná</td>
+<td align="right">3.747</td>
+<td align="right">341</td>
+<td align="right">8,3%</td>
+</tr>
+<tr>
+<td>Rio de Janeiro</td>
+<td align="right">22.943</td>
+<td align="right">1.334</td>
+<td align="right">5,5%</td>
+</tr>
+<tr>
+<td>São Paulo</td>
+<td align="right">48.749</td>
+<td align="right">1.947</td>
+<td align="right">3,8%</td>
+</tr>
+<tr>
+<td>Rio Grande do Sul</td>
+<td align="right">7.373</td>
+<td align="right">131</td>
+<td align="right">1,7%</td>
+</tr>
+</tbody></table>
+<p>No Norte e na Bahia, cerca de metade dos judeus é preta ou parda. Em São Paulo, menos de
+quatro em cem. E quando se desce ao nível dos municípios, o padrão aponta para um lugar
+específico: o rio.</p>
+<table>
+<thead>
+<tr>
+<th>Município</th>
+<th align="right">n amostral</th>
+<th align="right">Judeus</th>
+<th align="right">% não branca</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Belém (PA)</td>
+<td align="right">61</td>
+<td align="right">1.346</td>
+<td align="right">39,6%</td>
+</tr>
+<tr>
+<td>Manaus (AM)</td>
+<td align="right">60</td>
+<td align="right">1.183</td>
+<td align="right">42,7%</td>
+</tr>
+<tr>
+<td>Macapá (AP)</td>
+<td align="right">18</td>
+<td align="right">217</td>
+<td align="right">40,1%</td>
+</tr>
+<tr>
+<td>Benjamin Constant (AM)</td>
+<td align="right">17</td>
+<td align="right">203</td>
+<td align="right">72,2%</td>
+</tr>
+<tr>
+<td>Santarém (PA)</td>
+<td align="right">9</td>
+<td align="right">93</td>
+<td align="right">100%</td>
+</tr>
+<tr>
+<td>Tabatinga (AM)</td>
+<td align="right">9</td>
+<td align="right">92</td>
+<td align="right">88,9%</td>
+</tr>
+</tbody></table>
+<p>Quanto mais Amazonas adentro, mais escura fica a comunidade. Vale registrar que as cidades
+ribeirinhas aparecem com 9 a 17 registros na amostra — os percentuais delas indicam direção,
+não medida.</p>
+<h3>Antes de comemorar o achado: um contra-argumento</h3>
+<p>Existe uma explicação chata que precisa ser descartada antes de qualquer outra. O Pará
+inteiro é 77% preto e pardo. Se os judeus de lá são 53%, eles não são mais mestiços que o
+entorno — são <strong>mais brancos</strong>.</p>
+<p>E isso vale para o Brasil todo:</p>
+<table>
+<thead>
+<tr>
+<th>UF</th>
+<th align="right">População geral</th>
+<th align="right">Judeus</th>
+<th align="right">Razão</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Pará</td>
+<td align="right">77,0%</td>
+<td align="right">52,7%</td>
+<td align="right">0,68</td>
+</tr>
+<tr>
+<td>Bahia</td>
+<td align="right">76,4%</td>
+<td align="right">54,8%</td>
+<td align="right">0,72</td>
+</tr>
+<tr>
+<td>Amazonas</td>
+<td align="right">73,1%</td>
+<td align="right">50,9%</td>
+<td align="right">0,70</td>
+</tr>
+<tr>
+<td>Pernambuco</td>
+<td align="right">62,0%</td>
+<td align="right">27,2%</td>
+<td align="right">0,44</td>
+</tr>
+<tr>
+<td>Rio de Janeiro</td>
+<td align="right">51,7%</td>
+<td align="right">5,5%</td>
+<td align="right">0,11</td>
+</tr>
+<tr>
+<td>São Paulo</td>
+<td align="right">34,8%</td>
+<td align="right">3,8%</td>
+<td align="right">0,11</td>
+</tr>
+<tr>
+<td>Rio Grande do Sul</td>
+<td align="right">16,1%</td>
+<td align="right">1,7%</td>
+<td align="right">0,11</td>
+</tr>
+</tbody></table>
+<p>Em todo estado do país, judeus são mais brancos que seus vizinhos. Sempre.</p>
+<p>Mas olhe a última coluna. Em São Paulo, Rio e Rio Grande do Sul, um judeu tem <strong>nove vezes
+menos chance</strong> de se declarar pardo que a pessoa da casa ao lado. No Pará, na Bahia e no
+Amazonas, apenas 1,4 vez menos. Essa é a diferença real, e ela é enorme: a comunidade judaica
+amazônica é demograficamente quase indistinguível do lugar onde vive. A paulista é um mundo à
+parte.</p>
+<p>É isso que precisa de explicação. E a explicação tem duzentos anos.</p>
+<h3>Os marroquinos do Amazonas</h3>
+<p><strong>Por que saíram.</strong> No norte do Marrocos, judeus viviam confinados aos <em>mellahs</em>, os bairros
+judaicos, sob o estatuto de <em>dhimmi</em> — condição legal subordinada, com imposto próprio e
+restrições impostas a não muçulmanos. Some-se pobreza, fome e violência periódica: a guerra
+hispano-marroquina de 1859-60 atingiu Tetuán em cheio e provocou uma das ondas de saída. Os
+pontos de partida eram Tânger, Tetuán e Casablanca, além de Rabat, Fez e Marrakesh.</p>
+<p><strong>Por que o Brasil.</strong> A abertura dos portos em 1808 e a garantia constitucional de culto
+privado a não católicos, em 1824, destrancaram a porta. Mas o ímã foi outro: a borracha. Entre
+1879 e 1912, a explosão da demanda industrial por látex atraiu gente do mundo inteiro para a
+Amazônia. Não era só fuga — era uma economia em expansão oferecendo a mobilidade que o
+Marrocos negava por lei.</p>
+<p><strong>Quantos e quando.</strong> Cerca de <strong>mil famílias entre 1810 e 1910</strong>. Um século de fluxo, não
+uma leva. A primeira sinagoga da Amazônia, a Essel Avraham, foi inaugurada em <strong>Belém, em
+1824</strong>; o primeiro cemitério judaico da cidade, em <strong>1842</strong>. É a mais antiga comunidade
+judaica em atividade contínua no Brasil — um século inteiro antes das comunidades paulistas.</p>
+<p>De Belém, subiram o rio. Muitos viraram <strong>regatões</strong>: comerciantes itinerantes que percorriam
+o Amazonas e seus afluentes vendendo mercadoria e comprando produto da floresta. O comércio
+fixou famílias em Cametá, Baião, Gurupá, Breves, Macapá, Altamira, Santarém, Óbidos, Alenquer,
+Faro, Oriximiná, Itaituba, Boim, Aveiros — e seguiu até Iquitos, no Peru.</p>
+<p>Daí vêm as duas marcas que o Censo registra dois séculos depois. A primeira é a <strong>dispersão</strong>:
+comunidades de meia dúzia de famílias espalhadas por dezenas de povoados que nenhum mapa das
+comunidades judaicas do país costuma registrar. A segunda decorre da primeira — núcleos
+daquele tamanho não sustentam casamento interno por gerações. A descendência seguiu se declarando judia sem
+corresponder à branquitude que o país associa a judeus.</p>
+<h3>O buraco entre a história e o dado</h3>
+<p>Estimativas de divulgação falam em dezenas de milhares de descendentes já no fim do século
+XIX. O Censo 2010 encontra cerca de <strong>3.600 judeus no Pará e no Amazonas somados</strong>.</p>
+<p>Os dois números não se contradizem — medem coisas diferentes. O Censo enxerga quem <strong>declara
+judaísmo como religião</strong>. Quem descende, mas não pratica, ou se identifica de outro jeito, é
+invisível para ele. Duzentos anos de miscigenação produziram uma população que a pergunta do
+Censo não alcança.</p>
+<p>Ainda assim, Belém tem hoje população judaica declarada equivalente à de Belo Horizonte —
+1.346 contra 1.300, diferença dentro do erro amostral — e Manaus vem logo atrás. Comunidades
+com dois séculos de presença ininterrupta, quatro em cada dez de seus membros se declarando
+pretos ou pardos, mais antigas que a imigração que definiu a imagem pública do judeu no Brasil.</p>
+<blockquote>
+<p>Fontes do bloco histórico: <a href="https://conib.org.br/noticias/todas-as-noticias/a-historia-dos-mais-de-200-anos-da-imigracao-judaica-na-amazonia.html">CONIB</a>,
+<a href="https://portalamazonia.com/historias-da-amazonia/judeus-amazonia-terceira-geracao/">Portal Amazônia</a>,
+<a href="https://www.morasha.com.br/hoje-no-brasil/los-nuestros-os-marroquinos-na-amazonia.html">Morashá</a> e
+<a href="https://museudainquisicao.org.br/artigos/duzentos-anos-de-miscigenacao-judaica-na-amazonia/">Museu da Inquisição</a>.
+A obra de referência é <em>Eretz Amazônia: os judeus na Amazônia</em>, de Samuel Benchimol (1998).</p>
+</blockquote>
+<h3>E o que isso faz com a renda</h3>
+<p>Volte à tabela da seção 2. Aquela média de R$ 4.699 descreve, principalmente, uma população
+branca, metropolitana e de imigração recente. Ela apaga uma minoria interna cuja renda se
+parece com a do resto do Norte do país.</p>
+<p>Mesma religião declarada, renda 3,2 vezes menor conforme a cor. O que governa a posição
+socioeconômica aqui, ao que tudo indica, é raça — não religião.</p>
+<hr>
+<h2>5. O que este dado não pode fazer</h2>
+<p>Toda análise tem um perímetro. Este é o desta.</p>
+<p><strong>Religião declarada não é etnia.</strong> Judeu secular ou cultural que respondeu &quot;sem religião&quot;
+sumiu da conta. Estimativas comunitárias de judeus étnicos no Brasil ficam entre 120 e 150
+mil, contra os 107 mil por religião. Há subcontagem de tamanho desconhecido, e não dá para
+saber se os ausentes se parecem com os presentes.</p>
+<p><strong>A amostra é pequena onde mais interessa.</strong> São 6.304 registros, e apenas 1.382 na célula
+que sustenta a seção 3. Os municípios amazônicos do interior aparecem com 9 a 17 registros:
+dá para apontar um padrão coerente com a história conhecida, não para quantificá-lo.</p>
+<p><strong>A identificação foi inferida.</strong> Qual código corresponde ao judaísmo em 2010 foi estabelecido
+por batimento com totais publicados e coerência geográfica — não por documentação oficial do
+IBGE. As checagens são fortes, mas são checagens.</p>
+<p><strong>2010 é o dado mais recente possível.</strong> O Censo 2022 dilui o judaísmo dentro de &quot;Outras
+religiosidades&quot;, sem desagregação. O de 2000 não traz a pergunta em forma utilizável, e o de
+1970 tampouco. Não há como atualizar nada disso.</p>
+<p><strong>E o principal: renda não decide a questão de fundo.</strong> Renda e escolaridade medem posição
+socioeconômica, e há quem use esse tipo de número para argumentar que um grupo próspero não
+sofre discriminação estrutural. O problema é que a história está cheia de contraexemplos —
+judeus da Europa Central tinham escolaridade e renda acima da média das populações em que
+viviam às vésperas dos pogroms e do genocídio. Vantagem material agregada e ausência de
+perseguição são coisas diferentes, e uma não demonstra a outra.</p>
+<p>Este documento estabelece fatos de renda, escolaridade e cor. O que eles provam é outra
+conversa.</p>
+<hr>
+<h2>6. Outro dado, outra pergunta: o que essas empresas fazem</h2>
+<p>O Censo mede pessoas que declaram uma religião. Existe um segundo cadastro público que mede
+outra coisa inteiramente — o CNPJ da Receita Federal, onde é possível localizar 785 empresas
+com vínculo israelense: 394 registradas com país de origem Israel e 391 empresas brasileiras
+com ao menos um sócio israelense. Dados de abril de 2026.</p>
+<p>São universos diferentes e não se sobrepõem: um mede religião declarada por indivíduos, o
+outro mede nacionalidade registrada em atos societários. Empresa israelense não é empresa de
+judeu brasileiro, e a esmagadora maioria dos 107 mil judeus do Censo não aparece aqui. Mas o
+segundo cadastro responde uma pergunta que o primeiro não alcança: <strong>em que setores esse
+capital opera.</strong></p>
+<h3>A base se parte em duas</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Empresas israelenses (ativas)</th>
+<th>Empresas BR c/ sócio israelense (ativas)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>n</td>
+<td>193</td>
+<td>223</td>
+</tr>
+<tr>
+<td>CNAE mais frequente</td>
+<td>Holdings — <strong>57%</strong></td>
+<td>Holdings — 13,9%</td>
+</tr>
+<tr>
+<td>Domicílio</td>
+<td>99% no exterior (UF = &quot;EX&quot;)</td>
+<td>Brasil</td>
+</tr>
+<tr>
+<td>Natureza</td>
+<td>veículo societário</td>
+<td>operação real</td>
+</tr>
+</tbody></table>
+<p>A leitura muda conforme o lado. As &quot;empresas israelenses&quot; são majoritariamente entidades
+estrangeiras cadastradas na Receita porque figuram como sócias de alguma coisa aqui — não são
+atividade econômica, são estrutura de propriedade. A atividade real está do lado brasileiro.</p>
+<p>São 416 empresas ativas ao todo, somando <strong>R$ 1,77 bilhão</strong> de capital social declarado.</p>
+<h3>Setores, por empresas ativas</h3>
+<table>
+<thead>
+<tr>
+<th>Setor</th>
+<th align="right">Emp.</th>
+<th align="right">%</th>
+<th align="right">Capital (R$)</th>
+<th align="right">% cap</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Holdings e participações</td>
+<td align="right">161</td>
+<td align="right">38,7%</td>
+<td align="right">126.399.818</td>
+<td align="right">7,1%</td>
+</tr>
+<tr>
+<td>Comércio (atacado/importação)</td>
+<td align="right">53</td>
+<td align="right">12,7%</td>
+<td align="right">513.995.339</td>
+<td align="right">29,0%</td>
+</tr>
+<tr>
+<td>TI e software</td>
+<td align="right">48</td>
+<td align="right">11,5%</td>
+<td align="right">131.832.505</td>
+<td align="right">7,4%</td>
+</tr>
+<tr>
+<td>Serviços profissionais</td>
+<td align="right">44</td>
+<td align="right">10,6%</td>
+<td align="right">213.855.681</td>
+<td align="right">12,1%</td>
+</tr>
+<tr>
+<td>Imobiliário e construção</td>
+<td align="right">38</td>
+<td align="right">9,1%</td>
+<td align="right">79.284.785</td>
+<td align="right">4,5%</td>
+</tr>
+<tr>
+<td>Indústria</td>
+<td align="right">32</td>
+<td align="right">7,7%</td>
+<td align="right">648.615.015</td>
+<td align="right">36,6%</td>
+</tr>
+<tr>
+<td>Saúde e educação</td>
+<td align="right">10</td>
+<td align="right">2,4%</td>
+<td align="right">7.835.000</td>
+<td align="right">0,4%</td>
+</tr>
+<tr>
+<td>Turismo/alimentação</td>
+<td align="right">8</td>
+<td align="right">1,9%</td>
+<td align="right">5.469.500</td>
+<td align="right">0,3%</td>
+</tr>
+</tbody></table>
+<p>As duas colunas de porcentagem discordam, e é aí que está a informação. Holdings são 39% das
+empresas e 7% do capital. Indústria é 8% das empresas e 37% do capital. São dois fenômenos
+distintos empilhados no mesmo cadastro: uma camada larga e rasa de veículos societários, e um
+punhado de operações industriais grandes.</p>
+<h3>Os dez CNAEs que concentram o capital</h3>
+<table>
+<thead>
+<tr>
+<th align="right">#</th>
+<th>CNAE</th>
+<th>Atividade</th>
+<th align="right">Emp.</th>
+<th align="right">Capital (R$)</th>
+<th align="right">%</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">1</td>
+<td>1099602</td>
+<td>Fabricação de pós alimentícios</td>
+<td align="right">1</td>
+<td align="right">297.949.004</td>
+<td align="right">16,8%</td>
+</tr>
+<tr>
+<td align="right">2</td>
+<td>4681801</td>
+<td>Atacado de álcool carburante, biodiesel, gasolina</td>
+<td align="right">1</td>
+<td align="right">203.210.000</td>
+<td align="right">11,5%</td>
+</tr>
+<tr>
+<td align="right">3</td>
+<td>2833000</td>
+<td>Máquinas e equipamentos para agricultura</td>
+<td align="right">2</td>
+<td align="right">156.292.468</td>
+<td align="right">8,8%</td>
+</tr>
+<tr>
+<td align="right">4</td>
+<td>6462000</td>
+<td>Holdings de instituições não-financeiras</td>
+<td align="right">141</td>
+<td align="right">111.710.424</td>
+<td align="right">6,3%</td>
+</tr>
+<tr>
+<td align="right">5</td>
+<td>2832100</td>
+<td>Equipamentos para irrigação agrícola</td>
+<td align="right">4</td>
+<td align="right">108.639.776</td>
+<td align="right">6,1%</td>
+</tr>
+<tr>
+<td align="right">6</td>
+<td>4643502</td>
+<td>Atacado de bolsas, malas e artigos de viagem</td>
+<td align="right">1</td>
+<td align="right">95.119.729</td>
+<td align="right">5,4%</td>
+</tr>
+<tr>
+<td align="right">7</td>
+<td>7490199</td>
+<td>Outras ativ. profissionais, científicas e técnicas</td>
+<td align="right">3</td>
+<td align="right">85.012.583</td>
+<td align="right">4,8%</td>
+</tr>
+<tr>
+<td align="right">8</td>
+<td>8299799</td>
+<td>Outras ativ. de serviços prestados às empresas</td>
+<td align="right">3</td>
+<td align="right">77.122.237</td>
+<td align="right">4,3%</td>
+</tr>
+<tr>
+<td align="right">9</td>
+<td>4689399</td>
+<td>Atacado de outros produtos intermediários</td>
+<td align="right">3</td>
+<td align="right">72.702.334</td>
+<td align="right">4,1%</td>
+</tr>
+<tr>
+<td align="right">10</td>
+<td>6203100</td>
+<td>Desenvolvimento e licenciamento de software</td>
+<td align="right">12</td>
+<td align="right">54.381.322</td>
+<td align="right">3,1%</td>
+</tr>
+<tr>
+<td align="right"></td>
+<td></td>
+<td><strong>Soma top 10</strong></td>
+<td align="right"><strong>171</strong></td>
+<td align="right"><strong>1.262.139.877</strong></td>
+<td align="right"><strong>71,2%</strong></td>
+</tr>
+<tr>
+<td align="right"></td>
+<td></td>
+<td>Demais 105 CNAEs</td>
+<td align="right">245</td>
+<td align="right">511.438.447</td>
+<td align="right">28,8%</td>
+</tr>
+<tr>
+<td align="right"></td>
+<td></td>
+<td><strong>Total geral</strong></td>
+<td align="right"><strong>416</strong></td>
+<td align="right"><strong>1.773.578.325</strong></td>
+<td align="right"><strong>100%</strong></td>
+</tr>
+</tbody></table>
+<p>Dez CNAEs entre 115 concentram 71% do capital — e <strong>quatro empresas sozinhas respondem por
+43% dele</strong>. Os três primeiros lugares são ocupados por uma única empresa cada.</p>
+<h3>As maiores</h3>
+<table>
+<thead>
+<tr>
+<th align="right">#</th>
+<th>Empresa</th>
+<th align="center">UF</th>
+<th>Atividade</th>
+<th align="right">Capital (R$)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">1</td>
+<td>Frutarom do Brasil</td>
+<td align="center">MG</td>
+<td>Pós alimentícios</td>
+<td align="right">297.949.004</td>
+</tr>
+<tr>
+<td align="right">2</td>
+<td>International Brazilian Trading</td>
+<td align="center">AM</td>
+<td>Combustíveis (atacado)</td>
+<td align="right">203.210.000</td>
+</tr>
+<tr>
+<td align="right">3</td>
+<td>Plasson do Brasil</td>
+<td align="center">SC</td>
+<td>Máquinas agrícolas</td>
+<td align="right">156.292.468</td>
+</tr>
+<tr>
+<td align="right">4</td>
+<td>Sestini Mercantil</td>
+<td align="center">SP</td>
+<td>Bolsas e artigos de viagem</td>
+<td align="right">95.119.729</td>
+</tr>
+<tr>
+<td align="right">5</td>
+<td>PowerFleet Brasil</td>
+<td align="center">SP</td>
+<td>Serviços técnicos</td>
+<td align="right">84.972.583</td>
+</tr>
+<tr>
+<td align="right">6</td>
+<td>Rapyd Brazil Soluções de Pagamento</td>
+<td align="center">SP</td>
+<td>Serviços às empresas</td>
+<td align="right">77.122.237</td>
+</tr>
+<tr>
+<td align="right">7</td>
+<td>Verifone do Brasil</td>
+<td align="center">SP</td>
+<td>Produtos intermediários</td>
+<td align="right">72.045.129</td>
+</tr>
+<tr>
+<td align="right">8</td>
+<td>Netafim Brasil</td>
+<td align="center">SP</td>
+<td>Irrigação agrícola</td>
+<td align="right">54.689.734</td>
+</tr>
+<tr>
+<td align="right">9</td>
+<td>Rivulis Plastro Irrigação</td>
+<td align="center">MG</td>
+<td>Irrigação agrícola</td>
+<td align="right">53.950.042</td>
+</tr>
+<tr>
+<td align="right">10</td>
+<td>VM Tecnologia</td>
+<td align="center">PR</td>
+<td>Software</td>
+<td align="right">41.113.000</td>
+</tr>
+</tbody></table>
+<p>A Frutarom é a maior da base inteira, 47% acima da segunda. Faz aromas e ingredientes
+industriais — &quot;pós alimentícios&quot;, no vocabulário da Receita — e foi comprada pela americana
+IFF em 2018.</p>
+<h3>O que essas empresas de fato fazem</h3>
+<p><strong>Tecnologia é o maior cluster real por número.</strong> Somando software, TI, atacado de
+informática, componentes eletrônicos e equipamentos de comunicação: <strong>65 empresas ativas,
+R$ 196 milhões</strong>. Não domina nenhum ranking isolado porque aparece fragmentado em seis CNAEs
+diferentes. Rapyd, Verifone, Telit Wireless, RAD, Taranis, VM Tecnologia.</p>
+<p><strong>Agronegócio de precisão: pouca empresa, muito capital.</strong> Quatorze ativas, <strong>R$ 299
+milhões</strong> — média de R$ 21 milhões contra R$ 4,3 milhões da base. É a assinatura mais
+reconhecível: irrigação por gotejamento (Netafim, Rivulis, Bermad, Aquestia), máquinas
+agrícolas (Plasson), fertilizantes (Haifa Química), defensivos (Stockton), nutrição animal
+(Phibro).</p>
+<p><strong>Imobiliário é investimento passivo.</strong> Trinta e sete ativas em aluguel, compra e venda,
+incorporação e administração de imóveis, com capital médio de R$ 2,1 milhões. Perfil de
+alocação patrimonial de pessoa física, não de incorporadora.</p>
+<p><strong>O comércio atacadista é importação das próprias tecnologias</strong>, com duas exceções que
+sozinhas explicam a maior parte dos 29% de capital do setor: a trading de combustíveis no
+Amazonas e a Sestini.</p>
+<p><strong>As holdings não são atividade.</strong> São 141 ativas, mediana de capital <strong>zero</strong> entre todas —
+e R$ 720 mil entre as 31 registradas no Brasil. Veículo societário vazio, não empresa.</p>
+<p>O padrão de conjunto não é imigração empresarial difusa. São subsidiárias de multinacionais
+israelenses em nichos específicos — tecnologia agrícola, pagamentos, telecom — mais uma
+camada grande de holdings e imóveis que é gestão patrimonial familiar, não operação.</p>
+<h3>Onde essas empresas estão — e onde não estão</h3>
+<p>Das 416 ativas, 225 têm domicílio no Brasil (as demais estão no exterior). E a concentração é
+severa:</p>
+<table>
+<thead>
+<tr>
+<th>UF</th>
+<th align="right">Empresas</th>
+<th align="right">%</th>
+<th align="right">Capital (R$)</th>
+<th align="right">% cap</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>São Paulo</td>
+<td align="right">156</td>
+<td align="right"><strong>69,3%</strong></td>
+<td align="right">918.910.008</td>
+<td align="right">51,8%</td>
+</tr>
+<tr>
+<td>Rio de Janeiro</td>
+<td align="right">13</td>
+<td align="right">5,8%</td>
+<td align="right">14.114.761</td>
+<td align="right">0,8%</td>
+</tr>
+<tr>
+<td>Paraná</td>
+<td align="right">12</td>
+<td align="right">5,3%</td>
+<td align="right">56.790.715</td>
+<td align="right">3,2%</td>
+</tr>
+<tr>
+<td>Santa Catarina</td>
+<td align="right">10</td>
+<td align="right">4,4%</td>
+<td align="right">162.952.308</td>
+<td align="right">9,2%</td>
+</tr>
+<tr>
+<td>Minas Gerais</td>
+<td align="right">10</td>
+<td align="right">4,4%</td>
+<td align="right">356.940.294</td>
+<td align="right">20,1%</td>
+</tr>
+<tr>
+<td>Rio Grande do Sul</td>
+<td align="right">8</td>
+<td align="right">3,6%</td>
+<td align="right">14.704.414</td>
+<td align="right">0,8%</td>
+</tr>
+<tr>
+<td>Bahia</td>
+<td align="right">4</td>
+<td align="right">1,8%</td>
+<td align="right">32.909.205</td>
+<td align="right">1,9%</td>
+</tr>
+<tr>
+<td>Pará</td>
+<td align="right">3</td>
+<td align="right">1,3%</td>
+<td align="right">8.061.620</td>
+<td align="right">0,5%</td>
+</tr>
+<tr>
+<td>Amazonas</td>
+<td align="right">1</td>
+<td align="right">0,4%</td>
+<td align="right">203.210.000</td>
+<td align="right">11,5%</td>
+</tr>
+<tr>
+<td>Demais 6 UFs</td>
+<td align="right">8</td>
+<td align="right">3,6%</td>
+<td align="right">4.985.000</td>
+<td align="right">0,3%</td>
+</tr>
+</tbody></table>
+<p>Sete em cada dez empresas estão em São Paulo. Minas e Santa Catarina aparecem grandes em
+capital por uma empresa cada — Frutarom e Plasson.</p>
+<p><strong>E aqui é preciso ser explícito para não induzir a leitura errada:</strong> este mapa não tem
+relação com o das seções 4 e 5. <strong>No Norte inteiro há quatro empresas</strong> — uma no Amazonas,
+três no Pará, sendo duas delas holdings e a terceira uma corretora de aluguel de imóveis. O
+capital amazonense da tabela é uma única trading de combustíveis em Manaus, operação de zona
+franca sem qualquer vínculo com as comunidades da região.</p>
+<p>Os dois cadastros apontam para direções opostas. O Censo mostra o Norte como o lugar onde a
+população judaica é mais antiga, mais dispersa e majoritariamente parda — herança de dois
+séculos de migração marroquina pelo rio. O CNPJ mostra o Norte como praticamente ausente do
+capital israelense, que é um fenômeno recente, corporativo e paulista.</p>
+<p>Compare o eixo Rio–São Paulo e fica ainda mais claro que são coisas diferentes: o Rio tem 23%
+dos judeus do país e <strong>0,8%</strong> do capital israelense. São Paulo tem 48% dos judeus e 69% das
+empresas. Se os dois mapas medissem a mesma coisa, o Rio não desapareceria.</p>
+<p>Nada nesta seção descreve empresas de judeus brasileiros. Descreve empresas com vínculo
+societário registrado a Israel — na maioria, subsidiárias de multinacionais que chegaram nas
+últimas décadas ao mercado consumidor e ao agronegócio do Sudeste e do Sul.</p>
+<h3>O perímetro deste dado também</h3>
+<p><strong>Capital social só existe para o lado brasileiro.</strong> Das 394 empresas israelenses, apenas 2
+têm o campo preenchido. Todas as tabelas de capital acima descrevem, na prática, as empresas
+registradas no Brasil.</p>
+<p><strong>Capital social não é faturamento nem investimento.</strong> É um valor declarado no contrato
+social, que pode estar desatualizado em décadas e não guarda relação necessária com o tamanho
+da operação.</p>
+<p><strong>Nacionalidade no cadastro não é etnia, nem religião.</strong> O código de país 383 identifica
+Israel; identifica um vínculo formal, não a identidade de quem está por trás. Nada aqui se
+conecta, nem deveria, aos 107 mil judeus contados pelo Censo.</p>
+<hr>
+<p><strong>Projeto relacionado:</strong></p>
+<p><a href="/plataformas/shutafut/"><img decoding="async" src="/plataformas/shutafut/demo.jpg" alt="Shutafut — rede de empresas israelenses no Brasil"></a></p>
+<p><a href="/plataformas/shutafut/"><strong>Shutafut — Empresas Israelenses no Brasil</strong></a> · visualização em rede
+de 394 empresas israelenses e 391 brasileiras operando no país, com seus sócios, estruturas
+de propriedade e atividades econômicas, navegável por CNAE e por linha do tempo.</p>
+  </div>
 </main>
 
 <footer>
@@ -83,7 +1062,6 @@
   </div>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js" integrity="sha384-/TQbtLCAerC3jgaim+N78RZSDYV7ryeoBCVqTuzRrFec2akfBkHS7ACQ3PQhvMVi" crossorigin="anonymous"></script>
 <script src="../viewer.js"></script>
 <script src="../../assets/theme-toggle.js"></script>
 </body>

@@ -72,7 +72,295 @@
   <p class="eyebrow" id="eyebrow">Analysis</p>
   <img class="capa" src="../img/capa-brazil-public-real-world-data.webp" alt="" width="1680" height="240" decoding="async">
   <p class="meta">run on 05-10-2026</p>
-  <div id="doc" data-slug="brazil-public-real-world-data" data-base="../"><p class="doc-msg">Carregando…</p></div>
+  <div id="doc" data-slug="brazil-public-real-world-data" data-base="../" data-pronto>
+<h1>Brazil&#39;s public real-world data: what it covers, how it links, what it can and can&#39;t answer</h1>
+<p>Brazil runs one of the largest single-payer health systems in the world, the SUS, and
+publishes the administrative trail of almost everything it does: every public hospital
+admission, every outpatient procedure it pays for, every death certificate, every live
+birth, every case of a notifiable disease. Most of it is record-level, national and free.
+For anyone who works with real-world data (RWD) in pharma, that is an unusual resource: a
+population of 213 million, three decades deep, with no licence fee.</p>
+<p>It is also unusual in what it lacks. There is no patient identifier in any public file, so
+nothing links at person level. Coverage, coding and completeness change from source to
+source and from year to year. This piece maps what is there, measures how the pieces fit,
+and is explicit about what the data can and cannot support. Everything below was measured
+on a local copy of the official files in October 2026.</p>
+<p><img decoding="async" src="/analises/img/rwd-coverage-timeline.png" alt="Heat strip: rows per year in each Brazilian public health data source, 1994–2026"></p>
+<h2>The inventory</h2>
+<p>Twenty-four tables, 13 billion rows. Grouped by what they would be called in a pharma RWD
+team:</p>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Years</th>
+<th>Records</th>
+<th>Unit of record</th>
+<th>Pharma analogue</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>SIH</strong>, hospital admissions</td>
+<td>2009–2025</td>
+<td>200 M</td>
+<td>one admission paid by SUS: ICD-10, dates, procedures, ICU days, amount paid, death in hospital</td>
+<td>inpatient claims, single public payer</td>
+</tr>
+<tr>
+<td><strong>SIH</strong>, professional services</td>
+<td>2008–2025</td>
+<td>2.4 B</td>
+<td>one billed professional act within an admission</td>
+<td>claims line items</td>
+</tr>
+<tr>
+<td><strong>SIA</strong>, outpatient production</td>
+<td>2008–2025</td>
+<td>6.2 B</td>
+<td>one outpatient procedure line; individual records (APAC) carry ICD-10 and cover oncology, dialysis, high-cost drugs</td>
+<td>outpatient and specialty-pharmacy claims</td>
+</tr>
+<tr>
+<td><strong>SIA</strong>, psychosocial care</td>
+<td>2012–2025</td>
+<td>138 M</td>
+<td>one month of community mental-health care</td>
+<td>outpatient episode records</td>
+</tr>
+<tr>
+<td><strong>SIM</strong>, deaths</td>
+<td>1996–2022</td>
+<td>31 M</td>
+<td>one death certificate: underlying and contributing causes (ICD-10), place, age, sex, race</td>
+<td>national death index</td>
+</tr>
+<tr>
+<td><strong>SINASC</strong>, live births</td>
+<td>1994–2023</td>
+<td>86 M</td>
+<td>one live-birth declaration: gestational age, birth weight, mother&#39;s age and education, congenital anomalies</td>
+<td>birth registry</td>
+</tr>
+<tr>
+<td><strong>SINAN</strong>, notifiable diseases</td>
+<td>2000–2026</td>
+<td>46 M</td>
+<td>one case report form: dengue, chikungunya, zika, yellow fever, malaria, severe acute respiratory infection, violence</td>
+<td>disease surveillance registries</td>
+</tr>
+<tr>
+<td><strong>SISVAN</strong>, nutrition</td>
+<td>2008–2023</td>
+<td>406 M</td>
+<td>one anthropometric visit in primary care</td>
+<td>EHR extract (vitals only)</td>
+</tr>
+<tr>
+<td><strong>SI-PNI</strong>, vaccination</td>
+<td>1994–2019; 2020 microdata</td>
+<td>94 M + 102 M</td>
+<td>doses by vaccine and municipality; one dose per record in the 2020 microdata</td>
+<td>immunisation registry</td>
+</tr>
+<tr>
+<td><strong>CNES</strong>, providers</td>
+<td>2005–2025</td>
+<td>950 M</td>
+<td>facility, bed and professional, monthly</td>
+<td>provider master file</td>
+</tr>
+<tr>
+<td><strong>ANS</strong>, private insurance</td>
+<td>2014–2025</td>
+<td>2.3 B</td>
+<td>beneficiary counts by plan type, municipality and month</td>
+<td>enrolment / eligibility file, aggregated</td>
+</tr>
+<tr>
+<td><strong>SNGPC</strong>, controlled drugs</td>
+<td>2014–2021</td>
+<td>10 M</td>
+<td>one pharmacy sale of a controlled drug, with prescriber state and ICD-10</td>
+<td>pharmacy dispensing (partial copy)</td>
+</tr>
+<tr>
+<td>Population</td>
+<td>2000–2025</td>
+<td>4.9 M</td>
+<td>residents by municipality, sex and age</td>
+<td>denominators</td>
+</tr>
+</tbody></table>
+<p>A few observations come straight out of the timeline. The registries are the oldest, from
+the mid-1990s. Billing data start in 2008–09. Each source closes at a different year:
+deaths at 2022, births at 2023, hospital billing at mid-2025, surveillance into 2026. A
+study period that needs all of them ends in 2022. The billing tables are the volume: 6.2
+billion outpatient lines and 2.4 billion professional acts.</p>
+<p>The copy of the controlled-drug sales file stops at exactly 10 million rows, with 2021
+truncated. It is useful for exploring, not for counting.</p>
+<p><img decoding="async" loading="lazy" src="/analises/img/rwd-linkage-map.png" alt="Matrix: share of 2022 records whose municipality, facility and ICD-10 codes match the reference lists, by source"></p>
+<h2>How it links: place, facility, diagnosis, time</h2>
+<p>No public file carries a patient identifier. SUS has one, the national health card
+number, but it is stripped before publication. Every cross-source analysis therefore
+links on four shared keys:</p>
+<ul>
+<li><strong>Municipality</strong> (IBGE code), present in every source. It matches the official list for
+99.6–100% of 2022 records.</li>
+<li><strong>Facility</strong> (CNES code), present in every source except where care happens at home. It
+matches the facility registry for 98–100% of records, and for 72% of death certificates
+(deaths at home have no facility).</li>
+<li><strong>Diagnosis</strong> (ICD-10), in hospital, outpatient and death records. Valid codes in
+99.99% of admissions and deaths. Notification forms are disease-specific and need none.</li>
+<li><strong>Time</strong>: date of admission, death or birth; epidemiological week in surveillance;
+billing month in claims.</li>
+</ul>
+<p>So linkage is <strong>ecological</strong> (municipality × period × diagnosis) or <strong>facility-level</strong>
+(what happens in a given hospital), never person-level. That rules out cohorts that follow
+a patient from diagnosis to death across systems. It still allows most descriptive and
+ecological designs, and facility-level studies of quality and volume.</p>
+<p>The second lesson is less obvious: <strong>the same concept is coded differently in every
+system, and nothing fails when it is mixed up.</strong> Measured on 2022 records:</p>
+<ul>
+<li><strong>Sex</strong> is the word &quot;Feminino&quot; or &quot;Masculino&quot; in hospital admissions, the codes 1 and 2
+in death and birth records, and F or M in outpatient, surveillance and nutrition files.
+In the severe-acute-respiratory-infection file it is empty for every record, 2009–2022.</li>
+<li><strong>Race/colour</strong> &quot;parda&quot; (mixed) is code 3 in outpatient billing and code 4 in deaths,
+births, surveillance and nutrition, where 3 means &quot;amarela&quot; (East Asian). Joining the two
+by code silently swaps the largest group in the country with one of the smallest.</li>
+<li><strong>Diagnosis</strong> in hospital admissions is stored in a 3-character field <em>or</em> a
+4-character field, never both: 89% of admissions have only the 4-character code. Filtering
+on the 3-character field alone loses nine admissions in ten.</li>
+<li><strong>Municipality</strong> has 7 digits in deaths and births and 6 (no check digit) in hospital and
+outpatient billing. In outpatient billing the patient&#39;s municipality sits in a field
+labelled as a patient ID.</li>
+<li><strong>Facility code</strong> on death certificates is stored as a decimal (&quot;2000733.0&quot;) and matches
+nothing until it is cleaned.</li>
+</ul>
+<p>None of these raises an error. Each produces a result that looks plausible.</p>
+<p><img decoding="async" loading="lazy" src="/analises/img/rwd-completeness-2022.png" alt="Heatmap: share of 2022 records with a usable value in each key field, by source"></p>
+<h2>Fit for purpose, measured</h2>
+<p>In FDA and EMA terms, the question is not whether the data are good but whether they are
+good enough for a given question. Five dimensions, measured.</p>
+<p><strong>Completeness.</strong> Place, date, age and sex are close to complete in every source, with the
+exception noted above. Race/colour is the weak field: 75% in outpatient records, 80–85% in
+admissions, dengue notifications and nutrition records, 96–98% in deaths and births. Only a
+third of individual outpatient records carry an ICD-10 code. The bulk of outpatient
+production is reported in consolidated form, with no patient at all.</p>
+<p><img decoding="async" loading="lazy" src="/analises/img/rwd-ill-defined-deaths-1996-2022.png" alt="Heatmap: share of deaths with an ill-defined cause by state, 1996–2022"></p>
+<p><strong>Cause-of-death quality.</strong> In 1996, 15.1% of deaths had an ill-defined underlying cause
+(ICD-10 R00–R99). By 2022 it was 6.1%, after a sharp fall in 2004–07 as northern and
+northeastern states set up death-investigation services. The fall was uneven: Rio de
+Janeiro went from 9.6% to 9.4% and is now third-worst. A cause-specific mortality
+comparison across states or decades that ignores this is partly measuring coding.</p>
+<p><img decoding="async" loading="lazy" src="/analises/img/rwd-private-coverage-2024.png" alt="Bar chart: share of residents with a private medical plan by state, 2024"></p>
+<p><strong>Coverage.</strong> The registries (deaths, births, notifications) cover everyone. The billing
+data cover only care paid by SUS. In December 2024, 52.2 million people, 24.6% of the
+population, held a private medical plan, from 4% in Roraima to 40% in São Paulo. Their
+admissions are invisible to the hospital data. Any hospital-based rate is therefore biased
+by state, and in the same direction as income. Private plan enrolment is published only as
+counts, so it can correct denominators but not identify patients.</p>
+<p><strong>Timeliness and lag.</strong> Billing data are processed monthly and arrive within months. An
+admission is billed in the month of discharge or later, so the billing year is not the
+year of care. Death-certificate microdata are released as final about two years after the year of
+death, and the latest year in this copy is 2022. Surveillance records are notified a median of 3
+days after symptom onset, but the case is closed weeks later: the median time from
+notification to closure for dengue fell from 31 days in 2014 to 14 in 2025.</p>
+<p><strong>Stability over time.</strong> Classifications change under the analyst&#39;s feet. Dengue moved to
+the WHO 2009 case definitions in 2014, with new codes. From 2022 the public dengue file
+no longer includes discarded notifications, so &quot;all notifications&quot; means something
+different before and after. Comorbidity fields on the dengue form were blank until 2015
+and usable from 2017. One state, Espírito Santo, reported dengue in its own system in
+2021–2024 and almost disappears from the national file, while its hospitals kept billing
+dengue admissions.</p>
+<p><strong>Privacy.</strong> Hospital and surveillance records include date of birth, sex, municipality
+and, in hospital data, postcode. Combined, they can single out individuals in small
+municipalities. Everything published here is aggregated, and cells with fewer than 10
+events are suppressed.</p>
+<h2>Worked example 1: infant mortality from two registries</h2>
+<p><img decoding="async" loading="lazy" src="/analises/img/rwd-infant-mortality-1996-2022.png" alt="Infant and neonatal mortality in Brazil 1996–2022 and by state in 2022"></p>
+<p>The infant mortality rate needs two registries: deaths under one year (SIM) divided by live
+births (SINASC). They share no identifier, but they share the residence municipality and
+the year, and that is enough for the rate. The direct ratio fell from 26.4 per 1,000 in
+1996 to 11.6 in 2022. Neonatal deaths, in the first 28 days, depend more on hospital care.
+They fell by about half and are now two thirds of the total. Sergipe (16.8) and Amapá
+(16.5) are almost twice the Federal District (8.7).</p>
+<p>The check is part of the example. In 2022 the death file has 30,791 records with age under
+one, 29,764 after removing 1,006 impossible negative ages and 21 records with no
+municipality. A second count by dates of birth and death gives 30,668. Where registration
+is weaker the direct ratio undercounts, which is why official estimates for the North and
+Northeast are corrected upward.</p>
+<h2>Worked example 2: dengue, from notification to hospital to death</h2>
+<p><img decoding="async" loading="lazy" src="/analises/img/dengue-funnel-2014-2024.png" alt="Probable dengue cases, SUS admissions and deaths by year, 2014–2024"></p>
+<p>Dengue crosses three systems: notified in SINAN, admitted in SIH, certified in SIM.
+Between 2014 and 2024 surveillance recorded 16.7 million probable cases and 12,788 deaths.
+SUS hospitals billed 567,723 admissions for R$ 231.7 million. 2024 was off the scale:
+6.4 million probable cases, 3.8 times the previous record, with 158,910 admissions and
+6,270 deaths.</p>
+<p>The series also shows how the hospital picture changed. In 2014 there was one SUS admission
+for every 16 probable cases; in 2024, one for every 40. In-hospital mortality among those
+admitted rose from 0.45% to 1.58%. Fewer patients reach a public bed, and those who do are
+sicker. That fits outpatient hydration of milder cases. It also fits more admissions moving
+to private hospitals, which SIH does not see. The data alone can&#39;t separate the two.</p>
+<p><img decoding="async" loading="lazy" src="/analises/img/dengue-deaths-by-source-2014-2024.png" alt="Deaths from dengue as recorded by surveillance, death certificates and SUS hospitals, 2014–2024"></p>
+<p>Three systems, three death counts. For 2014–2022, surveillance closed 5,422 cases as
+deaths, death certificates named dengue 5,925 times, and SUS hospitals recorded 2,755
+in-hospital deaths. Each counts a different event, and without a patient identifier they
+cannot be reconciled one by one. A study that needs &quot;dengue deaths&quot; has to choose a
+definition and say which.</p>
+<p>Within SINAN, which is record-level, risk factors can be read directly. In 2024 case
+fatality rose from 0.21 per 1,000 among children to 15.3 per 1,000 over age 80, and
+diabetic patients aged 60–79 died 2.9 times as often as non-diabetic ones of the same age.
+That comes with a caveat: comorbidity is recorded more carefully in severe cases.</p>
+<h2>What it can and can&#39;t answer</h2>
+<p><strong>Good fit:</strong></p>
+<ul>
+<li>Burden, trends and geography of hospitalised disease, deaths, births and notifiable
+diseases, nationally and down to the municipality.</li>
+<li>Health-care use and cost in the public system: admissions, length of stay, ICU use,
+outpatient high-cost procedures and drugs (APAC), amounts paid.</li>
+<li>Ecological studies that join health outcomes to social and environmental data by
+municipality, which Brazil publishes for every municipality.</li>
+<li>Facility-level analyses of volume, capacity (beds, equipment, staff) and outcomes.</li>
+<li>Record-level risk factors <em>within</em> one system: age, sex, comorbidities and severity in
+surveillance; birth weight and gestational age in births.</li>
+</ul>
+<p><strong>Poor fit, or only with care:</strong></p>
+<ul>
+<li>Anything that follows a patient across systems or over time: treatment sequences,
+persistence, time-to-event from diagnosis to death. This needs restricted access to
+identified data.</li>
+<li>Anything in the private sector, a quarter of the population, unevenly distributed.</li>
+<li>Outpatient diagnosis, which is mostly absent outside high-complexity procedures.</li>
+<li>Prescriptions and dispensing outside the controlled-drug file.</li>
+<li>Comparisons across long periods without checking for coding and classification changes.</li>
+</ul>
+<h2>Method</h2>
+<ul>
+<li><strong>Sources.</strong> Ministry of Health / DATASUS: SIH (reduced admission records and
+professional services), SIA (outpatient production and psychosocial care), SIM, SINASC,
+SINAN (dengue, chikungunya, zika, yellow fever, extra-Amazon malaria, severe acute
+respiratory infection, violence), SISVAN, SI-PNI, CNES. National Supplementary Health
+Agency (ANS). Anvisa (SNGPC). IBGE (population, municipality directory). Official ICD-10
+table. SI-PNI read from a public third-party mirror of the official files.</li>
+<li><strong>Counts</strong> are records as published, by the year stored in each file. Rows are not
+people.</li>
+<li><strong>Completeness</strong> uses 2022 records; outpatient individual records (BPA-I, APAC, RAAS) and
+nutrition records use June 2022. A field counts as usable when it is not blank and not
+coded as unknown.</li>
+<li><strong>Linkage</strong> match rates compare each key with the official reference list: IBGE
+municipalities (7- or 6-digit), the CNES facility registry for the same year, and valid
+3- and 4-character ICD-10 codes.</li>
+<li><strong>Ill-defined causes</strong> use the underlying cause of death; the state comes from the
+municipality-of-residence code, keeping deaths with a known state and unknown
+municipality. The 1996 national total (908,883 deaths) matches the official figure.</li>
+<li><strong>Private coverage</strong> counts active beneficiaries of medical-hospital plans in December,
+using only the latest data load for each month. The December 2022 total (50.0 million)
+is within 2% of the figure published by ANS.</li>
+<li><strong>Dengue</strong> probable cases are notifications not classified as discarded; admissions have
+principal diagnosis A90–A91; certificate deaths have underlying cause A90–A91.</li>
+</ul>
+<p><em>Data run on 5 October 2026.</em></p>
+  </div>
 </main>
 
 <footer>
@@ -83,7 +371,6 @@
   </div>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js" integrity="sha384-/TQbtLCAerC3jgaim+N78RZSDYV7ryeoBCVqTuzRrFec2akfBkHS7ACQ3PQhvMVi" crossorigin="anonymous"></script>
 <script src="../viewer.js"></script>
 <script src="../../assets/theme-toggle.js"></script>
 </body>
