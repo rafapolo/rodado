@@ -54,3 +54,14 @@ gotchas:
     colunas: [id_acao, id_unidade_orcamentaria]
     severidade: silencioso
     verificado: "341.269 linhas, 307.286 chaves distintas — medido 2026-11-04"
+  - id: ano_2025_carga_antes_do_fechamento
+    resumo: "2025 parece fechado, mas a carga parou antes de dezembro: realizado R$ 4.589 bi contra R$ 4.868 bi pagos no exercício em br_cgu_despesas_publicas.execucao (que bate com esta tabela em 2022-2024). Para 2025 use a execução."
+    detalhe: >
+      O empenhado de 2025 é igual nas duas (R$ 5.188 bi), mas o realizado fica R$ 280 bi
+      abaixo; pessoal (grupo 1) dá R$ 292,7 bi aqui contra R$ 319,9 bi pagos na execução,
+      falta ao menos a folha de dezembro. A execução tem os 12 meses de 2025 com o padrão
+      de 2024 (dezembro com mais linhas, rolagem concentrada em janeiro).
+    tabelas: [orcamento]
+    colunas: [orcamento_realizado, ano_exercicio]
+    severidade: silencioso
+    verificado: "realizado = pago no exercício: 2022 3.927/3.925, 2023 4.141/4.141, 2024 4.491/4.491, 2025 4.589/4.868 (R$ bi) — medido 2026-11-15"

@@ -94,3 +94,15 @@ gotchas:
     colunas: [codigo_orgao_siafi, nome_orgao, valor_transferido]
     severidade: aviso
     verificado: "4 meses comparados em beelink, staging _recusados_transferencias_20261110: 0 chaves exclusivas de um lado, 0 chaves com soma diferente — medido 2026-11-10"
+  - id: fpm_sem_parcelas_extras_de_1_porcento
+    resumo: "A ação 0045 (FPM) aqui soma R$ 171,6 bi em 2025 contra R$ 198,0 bi pagos na execução do orçamento: faltam as parcelas extras de 1% do FPM de julho, setembro e dezembro. Para o FPM anual, use br_cgu_despesas_publicas.execucao."
+    detalhe: >
+      Mês a mês as duas fontes batem, exceto em julho (10,29 contra 19,45 bi), setembro
+      (10,96 contra 18,79) e dezembro (17,72 contra 27,18): R$ 26 bi no ano, os meses dos
+      adicionais de 1% (EC 55/2007, 84/2014 e 112/2021). Janeiro tem o inverso, porque a
+      execução põe o pago de dezembro anterior em restos a pagar. Totais por município e
+      per capita a partir desta tabela ficam abaixo do real para as prefeituras.
+    tabelas: [transferencias]
+    colunas: [acao, valor_transferido, mes]
+    severidade: silencioso
+    verificado: "2025, ação 0045: transferências R$ 171,6 bi, execução (valor_pago_r) R$ 198,0 bi; diferença concentrada em jul/set/dez — medido 2026-11-15"
