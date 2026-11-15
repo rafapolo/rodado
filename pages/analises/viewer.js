@@ -6,7 +6,8 @@
         analises/             → índice (lê results/manifest.json); se houver só
                                 uma análise, abre direto.
    Adicionar uma análise = soltar o .md em results/, uma linha no manifest.json
-   e rodar scripts/gera_analises.py (que também chama o gera_seo). */
+   e rodar scripts/gera_analises.py (que também chama o gera_seo). A capa
+   precisa de uma linha em TEMAS de scripts/gera_capas.ts: docs/tecnico/covers.md. */
 (function () {
   var docEl = document.getElementById('doc');
   var eyebrow = document.getElementById('eyebrow');

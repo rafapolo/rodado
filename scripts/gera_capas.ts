@@ -16,6 +16,9 @@
  *
  * Uso: bun scripts/gera_capas.ts [slug...]   (sem argumento: todo o manifest)
  * Análise nova sem entrada em TEMAS ganha paleta e motivo sorteados pelo slug.
+ *
+ * Lógica da estética, paletas, motivos e o passo a passo de análise nova:
+ * docs/tecnico/covers.md — atualizar lá ao mudar algo aqui.
  */
 import { readFileSync, writeFileSync, mkdtempSync, rmSync } from "node:fs";
 import { join, resolve } from "node:path";
