@@ -18,6 +18,8 @@ import hashlib
 import html
 import json
 import re
+import sys
+import subprocess
 from datetime import date
 from pathlib import Path
 
@@ -116,6 +118,10 @@ def rel_url(path: Path) -> str:
     # pages/analises/<slug>/index.html é "/analises/<slug>/"
     if rel.endswith("index.html"):
         rel = rel[: -len("index.html")]
+    # e as outras saem sem .html (o Pages serve /mcp a partir de mcp.html),
+    # igual aos links que o limpa_links_html.py reescreve
+    elif rel.endswith(".html"):
+        rel = rel[: -len(".html")]
     return f"/{rel}"
 
 
@@ -556,6 +562,9 @@ def main() -> None:
     c = sum(injeta_comum(p) for p in alvos_head())
     gera_sitemap(arquivos)
     gera_robots()
+    # por último: links internos sem .html em todas as páginas (o que os
+    # geradores acima escreveram também)
+    subprocess.run([sys.executable, str(Path(__file__).with_name("limpa_links_html.py"))], check=True)
     print(f"{n} páginas com metadados")
     print(f"{c} páginas com head comum")
     print(f"sitemap.xml com {len(arquivos) + len(urls_externas())} URLs")

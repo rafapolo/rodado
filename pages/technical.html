@@ -6,11 +6,11 @@
 <title>Technical reference — rodado</title>
 <meta name="description" content="How rodado is built: a local Parquet mirror of 1,759 Brazilian public tables, a semantic layer of joins, metrics and per-dataset warnings, and read-only SQL and MCP access on top.">
 <!-- seo:start (gerado por scripts/gera_seo.py — não editar à mão) -->
-<link rel="canonical" href="https://rodado.xyz/technical.html">
+<link rel="canonical" href="https://rodado.xyz/technical">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="rodado">
 <meta property="og:locale" content="en_US">
-<meta property="og:url" content="https://rodado.xyz/technical.html">
+<meta property="og:url" content="https://rodado.xyz/technical">
 <meta property="og:title" content="Technical reference">
 <meta property="og:description" content="How rodado is built: a local Parquet mirror of 1,759 Brazilian public tables, a semantic layer of joins, metrics and per-dataset warnings, and read-only SQL and MCP access on top.">
 <meta property="og:image" content="https://rodado.xyz/assets/og-en.png?v=a38de6c3">
@@ -44,15 +44,15 @@
 
 <nav class="site-nav">
   <div class="nav-inner">
-    <a class="brand" href="/en.html">rodado</a>
+    <a class="brand" href="/en">rodado</a>
     <div class="nav-right">
       <div class="links">
         <a href="/analises/">Analyses</a>
-        <a href="/plataformas/en.html">Platforms</a>
+        <a href="/plataformas/en">Platforms</a>
         <a href="https://xn--2dk.xyz/dataviz/">DataViz</a>
         <a href="/temas-en/">Topics</a>
         <a href="/atlas/">Atlas</a>
-        <a class="mcp-link" href="/mcp-en.html">MCP</a>
+        <a class="mcp-link" href="/mcp-en">MCP</a>
       </div>
       <div class="nav-controls">
         <div class="lang-switch">
@@ -84,9 +84,9 @@
         <tr><td>Storage</td><td>Local disk on a home server: <code>~/rodado/&lt;dataset&gt;/&lt;table&gt;/*.parquet</code>. Add-only backup to a second disk every 6 hours.</td></tr>
         <tr><td>Public copy</td><td>The same files synced to object storage (Hetzner, Helsinki) after each update. Every file is fully read and validated before it is copied.</td></tr>
         <tr><td>Public access</td><td><a href="https://db.rodado.xyz/" target="_blank" rel="noopener">db.rodado.xyz</a>: a container that reads the public copy. It offers a browser SQL terminal, <code>POST /query</code> for curl and the MCP server over HTTP. Open and read-only, with per-IP rate limits and a daily row quota.</td></tr>
-        <tr><td>Agent access</td><td><code>mcp/mcp_server.py</code>: 17 read-only MCP tools, served locally over stdio (queries go to the home server over SSH) or remotely at <code>https://db.rodado.xyz/mcp</code>. Setup: <a href="mcp-en.html">MCP</a>.</td></tr>
+        <tr><td>Agent access</td><td><code>mcp/mcp_server.py</code>: 17 read-only MCP tools, served locally over stdio (queries go to the home server over SSH) or remotely at <code>https://db.rodado.xyz/mcp</code>. Setup: <a href="mcp-en">MCP</a>.</td></tr>
         <tr><td>Semantic layer</td><td>YAML files versioned in the repository (next section), read by the MCP tools at query time.</td></tr>
-        <tr><td>Site</td><td>Static pages on GitHub Pages. The home page, the <a href="/plataformas/en.html">platforms</a> index and the <a href="/atlas/">Atlas</a> of tables and join keys are generated from the catalog and the semantic layer.</td></tr>
+        <tr><td>Site</td><td>Static pages on GitHub Pages. The home page, the <a href="/plataformas/en">platforms</a> index and the <a href="/atlas/">Atlas</a> of tables and join keys are generated from the catalog and the semantic layer.</td></tr>
       </tbody>
     </table>
   </div>

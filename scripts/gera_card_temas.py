@@ -3,7 +3,7 @@
     python scripts/gera_card_temas.py
 
 mcp.html → pages/temas/NN-*.html e mcp-en.html → pages/temas-en/NN-*.html. O
-cartão é achado pelo link do título (href="temas/NN-....html") e entra logo
+cartão é achado pelo link do título (href="temas/NN-..." com ou sem .html) e entra logo
 depois da abertura (p.lede ou p.dek), entre marcadores — no celular fica no alto; rodar de novo substitui o bloco, então editar o
 cartão no mcp.html e rodar este script é o caminho para manter os dois iguais.
 O estilo está em assets/server-card.css (o mesmo que o mcp.html usa).
@@ -112,10 +112,11 @@ def main() -> None:
         html = (PAGES / origem).read_text()
         cartoes = re.findall(r'[ \t]*<section class="server-card".*?</section>', html, re.S)
         for cartao in cartoes:
-            m = re.search(rf'href="{pasta}/([^"]+\.html)"', cartao)
+            # o link pode estar com ou sem .html (limpa_links_html.py tira)
+            m = re.search(rf'href="{pasta}/([^"#?]+?)(?:\.html)?"', cartao)
             if not m:
                 raise SystemExit(f"{origem}: cartão sem link para {pasta}/")
-            alvo = PAGES / pasta / m.group(1)
+            alvo = PAGES / pasta / f"{m.group(1)}.html"
             if not alvo.exists():
                 raise SystemExit(f"{origem}: {alvo} não existe")
             c = adapta(cartao, pasta, origem, ds, soltos).strip()
