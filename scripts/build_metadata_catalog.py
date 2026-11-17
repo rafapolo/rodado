@@ -504,6 +504,27 @@ def _probe_freshness_dates(freshness_map):
 # Merge and write
 # ---------------------------------------------------------------------------
 
+def load_fontes_bd() -> dict:
+    """docs/context/privado/fontes_originais_bd.json (só local, fora do git): {dataset: {tabelas, fontes: [{url, tabelas|None}]}}."""
+    path = REPO_ROOT / "docs" / "context" / "privado" / "fontes_originais_bd.json"
+    return json.loads(path.read_text()) if path.exists() else {}
+
+
+def fonte_original_bd(fontes_bd: dict, ds: str, tabela: str) -> str:
+    """A primeira fonte declarada para a tabela; a ligada à tabela vence a do dataset todo."""
+    d = fontes_bd.get(ds)
+    if not d or tabela not in d.get("tabelas", []):
+        return ""
+    fs = d.get("fontes", [])
+    for f in fs:
+        if f.get("tabelas") and tabela in f["tabelas"]:
+            return f["url"]
+    for f in fs:
+        if not f.get("tabelas"):
+            return f["url"]
+    return ""
+
+
 def load_fontes() -> dict:
     """{(dataset, tabela): url} e {(dataset, None): url} do campo `fonte` de
     docs/context/privado/source_freshness_checks.yaml — a fonte original de onde o dado é
@@ -543,6 +564,7 @@ def build_catalog():
             break
     ddl_tables = parse_ddl_tables(REPO_ROOT / "docs" / "context" / "schema_ddl.sql")
     fontes = load_fontes()
+    fontes_bd = load_fontes_bd()
     beelink_tables = get_tables_from_beelink()
 
     if not beelink_tables:
@@ -575,6 +597,7 @@ def build_catalog():
         ("provenance_notes", pa.string()),
         ("source", pa.string()),
         ("updated_at", pa.string()),
+        ("original_source_url", pa.string()),
     ])
 
     with open(DATASET_DESCRIPTIONS_PATH) as f:
@@ -668,6 +691,9 @@ def build_catalog():
         # data da regeneração do catálogo, igual em todas as linhas. Sem parquet
         # (tabela nativa do .duckdb), o scrape_date.
         arrays["updated_at"].append(t.get("mtime") or info.get("scrape_date", "") or "")
+        # de onde a BD diz que o dado vem, para tabela que também existe na BD
+        # (docs/context/privado/fontes_originais_bd.json, só local, gerado por scripts/gera_fontes_bd.ts)
+        arrays["original_source_url"].append(fonte_original_bd(fontes_bd, ds, t["table"]))
 
     print(f"  {n_bd} tables attributed to {BD_SOURCE_NAME}", file=sys.stderr)
     if missing_descriptions:
