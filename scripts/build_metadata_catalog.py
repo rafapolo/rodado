@@ -84,6 +84,7 @@ SCRAP_LAYOUTS = {
         {"dataset": 2, "source_type": None, "status": None, "date": None, "notes": 7},
 }
 
+SEP_RE = re.compile(r"^\|[\s:|-]*-[\s:|-]*\|?$")
 URL_RE = re.compile(r"(?:https?|ftp)://[^\s)`|,;]+")
 # Most notes name the endpoint as a bare backticked host rather than a full URL
 # (`dadosabertos.compras.gov.br`); accept those as a fallback.
@@ -143,26 +144,21 @@ def parse_markdown_table(path: Path) -> dict[str, dict]:
     with open(path) as f:
         lines = f.readlines()
 
-    for line in lines:
-        line = line.strip()
-        if not line:
-            # Some tables are visually split by a blank line — that is still
-            # the same table, so do not drop the layout here.
-            continue
-        if not line.startswith("|"):
-            cols = None
-            continue
-        if line.startswith("|---"):
+    lines = [l.strip() for l in lines]
+    for i, line in enumerate(lines):
+        # Blank lines and loose paragraphs do not end a table: a note written
+        # between two rows (datasets_to_scrap_done.md had one at line 63) used to
+        # drop every row after it until the next header. Only a header row —
+        # the one right above a |---| separator — switches the layout.
+        if not line.startswith("|") or SEP_RE.match(line):
             continue
 
         cells = split_row(line)
         # cells[0] is the empty string before the leading pipe
         header = tuple(c for c in cells[1:] if c)
-        if header in SCRAP_LAYOUTS:
-            cols = SCRAP_LAYOUTS[header]
-            continue
-        if header[:1] == ("Source",) or header[:1] == ("Dataset",):
-            cols = None  # a table layout we do not read
+        nxt = next((l for l in lines[i + 1:] if l), "")
+        if SEP_RE.match(nxt):
+            cols = SCRAP_LAYOUTS.get(header)  # None: a table layout we do not read
             continue
         if cols is None or len(cells) <= cols["notes"]:
             continue
@@ -200,9 +196,15 @@ def parse_markdown_table(path: Path) -> dict[str, dict]:
         if dates:
             info["scrape_date"] = dates[-1]
 
-        # Store by dataset name (first path segment)
-        ds = beelink_path.split("/")[0]
-        scraped[ds] = info
+        # Store by dataset name (first path segment). The cell may list several
+        # paths (`a/x`, `b/y`) and brace a set of datasets (`br_ibge_{lspa,pia}/t`).
+        caminhos = re.findall(r"`([^`]+)`", cells[cols["dataset"]]) or [beelink_path]
+        for caminho in caminhos:
+            seg = caminho.split("/")[0]
+            m = re.fullmatch(r"([a-z0-9_]*)\{([a-z0-9_,]+)\}([a-z0-9_]*)", seg)
+            for ds in ([m.group(1) + x + m.group(3) for x in m.group(2).split(",")] if m else [seg]):
+                if re.fullmatch(r"[a-z_][a-z0-9_]+", ds):
+                    scraped[ds] = info
 
     return scraped
 
@@ -510,6 +512,11 @@ def load_fontes_bd() -> dict:
     return json.loads(path.read_text()) if path.exists() else {}
 
 
+def _na_bd(fontes_bd: dict, ds: str, tabela: str) -> bool:
+    """A tabela existe no Base dos Dados? Pelo JSON da API; vale só com o JSON presente."""
+    return tabela in fontes_bd.get(ds, {}).get("tabelas", [])
+
+
 def fonte_original_bd(fontes_bd: dict, ds: str, tabela: str) -> str:
     """A primeira fonte declarada para a tabela; a ligada à tabela vence a do dataset todo."""
     d = fontes_bd.get(ds)
@@ -623,6 +630,22 @@ def build_catalog():
         # confirmed in the Base dos Dados snapshot stays mirrored.
         if (ds, t["table"]) in ddl_tables:
             info = None
+
+        if (info is None and fontes_bd and not _na_bd(fontes_bd, ds, t["table"])
+                and (ds, t["table"]) not in ddl_tables):
+            # Nem linha no done/ nem tabela na BD (pela API de metadados): ou é nossa
+            # (os *_historico, br_rodado_*) ou a BD a tirou do ar. Antes caía como
+            # espelho da BD, que é a única coisa que se sabe que ela não é hoje.
+            info = {
+                "source_name": "Sem procedência registrada",
+                "source_url": "",
+                "source_type": "desconhecido",
+                "status": "sem_procedencia",
+                "scrape_date": t.get("mtime", "")[:10],
+                "notes": ("Não existe hoje no Base dos Dados (API de metadados) nem tem linha em "
+                          "tasks/done/datasets_to_scrap_done.md: tabela nossa sem registro ou "
+                          "tirada da BD depois de espelhada. Registrar a fonte lá."),
+            }
 
         if info is None:
             # Not independently scraped => mirrored from Base dos Dados.

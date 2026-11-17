@@ -12,7 +12,7 @@ descrições) é gerado a partir deste parquet por `scripts/gera_catalog_md.py`.
 | `source_name` / `source_url` / `source_type` | procedência. `Base dos Dados` + `mirror` para o espelho; nome do órgão + formato para o que o projeto raspa |
 | `rows`, `num_files`, `size_bytes` | medidos via `parquet_metadata`, incluindo tabelas particionadas; para `duckdb_native` o `rows` vem de um `count(*)` no DuckDB |
 | `scrape_date` | data do `done/datasets_to_scrap_done.md`, ou o mtime do parquet mais recente |
-| `status` | `mirrored`, `done`, `blocked → mcp-todo`, `view_orfa`… |
+| `status` | `mirrored`, `done`, `blocked → mcp-todo`, `view_orfa`, `sem_procedencia` (nem no Base dos Dados pela API de metadados nem com linha no `done/`: tabela nossa sem registro ou tirada da BD; só aparece com `docs/context/privado/fontes_originais_bd.json` presente)… |
 | `source` | `disk` (parquet local, contado por `parquet_metadata`), `duckdb_native` (sem parquet, mas a view lê tabela nativa dentro do `.duckdb` — contado pelo próprio DuckDB) ou `view_only` (sem parquet **e** sem linhas) |
 | `provenance_notes` | notas do `done/datasets_to_scrap_done.md`, truncadas em 500 chars |
 | `original_source_url` | para tabela que também existe no Base dos Dados: a fonte original que a BD declara (com as nossas correções), de `docs/context/privado/fontes_originais_bd.json` (só local) — gerado por `scripts/gera_fontes_bd.ts`; num clone sem `privado/` fica vazio. Vazio para o que só nós temos. Costuma ser a página do conjunto de dados, não o arquivo |
