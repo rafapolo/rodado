@@ -44,16 +44,7 @@ MODELO = """<!doctype html>
 
 <nav class="site-nav">
   <div class="nav-inner">
-    <a class="brand" href="/">rodado</a>
-    <div class="nav-right">
-      <div class="links">
-        <a href="/analises/">Análises</a>
-        <a href="/plataformas/">Plataformas</a>
-        <a href="https://xn--2dk.xyz/">DataViz</a>
-        <a href="/temas/">Temas</a>
-        <a href="/atlas/">Atlas</a>
-        <a class="mcp-link" href="/mcp.html">MCP</a>
-      </div>
+{nav}
       <div class="nav-controls">
         <div class="lang-switch">
           {lang_switch}
@@ -93,11 +84,31 @@ IDIOMA = {
     "pt-br": dict(
         lang_switch='<span class="lang-current">PT</span>\n          <span class="lang-sep">/</span>\n'
                     '          <a href="/en.html" class="lang-link">EN</a>',
-        eyebrow="Análises", rodado_rot="rodado em"),
+        eyebrow="Análises", rodado_rot="rodado em",
+        nav='''    <a class="brand" href="/">rodado</a>
+    <div class="nav-right">
+      <div class="links">
+        <a href="/analises/">Análises</a>
+        <a href="/plataformas/">Plataformas</a>
+        <a href="https://xn--2dk.xyz/">DataViz</a>
+        <a href="/temas/">Temas</a>
+        <a href="/atlas/">Atlas</a>
+        <a class="mcp-link" href="/mcp.html">MCP</a>
+      </div>'''),
     "en": dict(
         lang_switch='<a href="/analises/" class="lang-link">PT</a>\n          <span class="lang-sep">/</span>\n'
                     '          <span class="lang-current">EN</span>',
-        eyebrow="Analysis", rodado_rot="run on"),
+        eyebrow="Analysis", rodado_rot="run on",
+        nav='''    <a class="brand" href="/en">rodado</a>
+    <div class="nav-right">
+      <div class="links">
+        <a href="/analises/en">Analyses</a>
+        <a href="/plataformas/en">Platforms</a>
+        <a href="https://xn--2dk.xyz/dataviz/">DataViz</a>
+        <a href="/temas-en/">Topics</a>
+        <a href="/atlas/en">Atlas</a>
+        <a class="mcp-link" href="/mcp-en">MCP</a>
+      </div>'''),
 }
 
 

@@ -44,7 +44,7 @@ TEXTO = {
     },
     "en": {
         "analises_h2": "Analyses in English",
-        "analises_todas": "All analyses (mostly in Portuguese) →",
+        "analises_todas": "All {n} analyses in English →",
         "plataformas_h2": "Platforms",
         "plataformas_dek": "<a href=\"/plataformas/en.html\">Dashboards, maps and networks</a> to explore the whole "
                            "data, not just the slice an analysis used. The "
@@ -122,9 +122,12 @@ def bloco_analises(itens: list[dict], lang: str) -> str:
             + (f'<span class="noticia-fonte">{e(fonte)}</span>' if fonte else "")
             + "</a>"
         )
-    # o "ver todas" é o último cartão do carrossel (assets/carrossel.js)
-    n = sum(1 for i in itens if not (i.get("par") and i.get("lang") == "en"))
-    linhas.append('    <a class="noticia ver-todas" href="/analises/">'
+    # o "ver todas" é o último cartão do carrossel (assets/carrossel.js); na
+    # home EN leva ao índice só com as em inglês (analises/en.html) e conta essas
+    if not en:
+        n = sum(1 for i in itens if not (i.get("par") and i.get("lang") == "en"))
+    todas = "/analises/en" if en else "/analises/"
+    linhas.append(f'    <a class="noticia ver-todas" href="{todas}">'
                   '<span class="ver-todas-seta" aria-hidden="true">→</span>'
                   f'<span class="noticia-titulo">{t["analises_todas"].format(n=n).rstrip(" →")}</span></a>')
     linhas.append("  </div>")

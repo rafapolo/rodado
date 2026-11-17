@@ -5,6 +5,8 @@
                                 porque links assim já circulam por aí
         analises/             → índice (lê results/manifest.json); se houver só
                                 uma análise, abre direto.
+        analises/en           → índice em inglês (en.html, data-lang="en"): só
+                                as análises com "lang": "en" no manifest.
    Adicionar uma análise = soltar o .md em results/, uma linha no manifest.json
    e rodar scripts/gera_analises.py (que também chama o gera_seo). A capa
    precisa de uma linha em TEMAS de scripts/gera_capas.ts: docs/tecnico/covers.md. */
@@ -13,6 +15,21 @@
   var eyebrow = document.getElementById('eyebrow');
   // nas páginas próprias o conteúdo fica um nível abaixo de analises/
   var base = docEl.dataset.base || '';
+  // índice em inglês (analises/en.html): só as análises com "lang": "en"
+  var EN = docEl.dataset.lang === 'en';
+  var T = EN ? {
+    todas: 'All', analises: 'analyses', de: 'of', mais: '+{n} sources',
+    menos: 'fewer sources', filtrar: 'Filter by source',
+    vazio: 'No analysis published yet.'
+  } : {
+    todas: 'Todas', analises: 'análises', de: 'de', mais: '+{n} fontes',
+    menos: 'menos fontes', filtrar: 'Filtrar por fonte',
+    vazio: 'Nenhuma análise publicada ainda.'
+  };
+  // conta como análise a mais? No índice PT, a tradução ("par" + "lang": "en")
+  // não conta (regra gêmea: bloco_analises em scripts/gera_home.py); no EN só
+  // aparecem as em inglês, e todas contam
+  function conta(it) { return EN || !(it.par && it.lang === 'en'); }
   var slug = docEl.dataset.slug ||
              new URLSearchParams(location.search).get('doc') ||
              (location.hash ? location.hash.slice(1) : '');
@@ -288,19 +305,35 @@
   // rodado_em é DD-MM-AAAA; sem ele, cai no ano-mês de "date" (igual a gera_home.py)
   function dataBr(it) {
     var d = it.rodado_em;
-    if (d && /^\d{2}-\d{2}-\d{4}$/.test(d)) return d.replace(/-/g, '/');
+    if (d && /^\d{2}-\d{2}-\d{4}$/.test(d)) {
+      // EN no formato ISO, como os cartões da home em inglês (gera_home.data_br)
+      if (EN) return d.slice(6) + '-' + d.slice(3, 5) + '-' + d.slice(0, 2);
+      return d.replace(/-/g, '/');
+    }
     return it.date || '';
   }
 
   function renderIndex(items) {
+    if (EN) items = items.filter(function (i) { return i.lang === 'en'; });
     if (!items.length) {
-      docEl.innerHTML = '<h1>Análises</h1><p class="doc-msg">Nenhuma análise publicada ainda.</p>';
+      docEl.innerHTML = '<h1>' + (EN ? 'Analyses' : 'Análises') + '</h1><p class="doc-msg">' + T.vazio + '</p>';
       return;
     }
-    // tradução ("par" + "lang": "en") não conta como análise a mais (regra gêmea: bloco_analises em scripts/gera_home.py)
-    var total = items.filter(function (i) { return !(i.par && i.lang === 'en'); }).length;
-    eyebrow.textContent = total + ' análises';
-    var html = '<h1>Análises</h1>' +
+    var total = items.filter(conta).length;
+    eyebrow.textContent = total + ' ' + T.analises;
+    // o 1,758 do lede EN segue os números do lede PT logo abaixo (atualizar juntos)
+    var html = EN ? '<h1>Analyses</h1>' +
+      '<p class="dek">Public health data, federal spending, congressional ' +
+      'earmarks — Brazilian public records cross-referenced until they show ' +
+      'what none of them shows alone.</p>' +
+      '<p class="lede">These are the analyses written in English. Most of ' +
+      'rodado\'s work is in Portuguese: the <a href="./">full list</a> has ' +
+      'every one, all from the same local mirror of 1,758 public tables, ' +
+      'queried on demand. For the whole data to explore, not just a ' +
+      'conclusion, see <a href="/plataformas/en">Platforms</a>.</p>' +
+      '<div class="fonte-filtro" id="fonte-filtro"></div>' +
+      '<div class="noticias idx-cartoes">'
+      : '<h1>Análises</h1>' +
       '<p class="dek">Emendas parlamentares, dívida ativa, outorgas de água, ' +
       'contas de campanha, óbitos do SUS — registros públicos cruzados uns com ' +
       'os outros até aparecer o que nenhum deles mostra sozinho.</p>' +
@@ -338,7 +371,7 @@
         '</a>';
     });
     docEl.innerHTML = html + '</div>';
-    document.title = 'Análises de dados públicos — rodado';
+    document.title = EN ? 'Brazilian public data analyses — rodado' : 'Análises de dados públicos — rodado';
     filtroFonte(items);
   }
 
@@ -358,33 +391,33 @@
     if (!box) return;
     var cont = {};
     items.forEach(function (it) {
-      if (it.par && it.lang === 'en') return; // tradução não soma no chip
+      if (!conta(it)) return; // tradução não soma no chip
       fontesDe(it).forEach(function (o) { cont[o] = (cont[o] || 0) + 1; });
     });
     var lista = Object.keys(cont).sort(function (a, b) { return cont[b] - cont[a] || a.localeCompare(b, 'pt'); });
     // tradução não conta como análise a mais (mesma regra do eyebrow e da home)
-    var traducao = items.map(function (i) { return !!(i.par && i.lang === 'en'); });
+    var traducao = items.map(function (i) { return !conta(i); });
     var total = traducao.filter(function (t) { return !t; }).length;
     var chip = function (o, extra) {
       return '<button type="button" class="fonte-chip' + (extra ? ' fonte-extra' : '') + '" data-fonte="' + esc(o) + '">' +
         esc(o) + ' <span>' + cont[o] + '</span></button>';
     };
     // órgão de uma análise só fica atrás do "+N": sem isso eram 4 linhas de chips
-    var h = '<button type="button" class="fonte-chip" data-fonte="">Todas <span>' + total + '</span></button>';
+    var h = '<button type="button" class="fonte-chip" data-fonte="">' + T.todas + ' <span>' + total + '</span></button>';
     var raros = lista.filter(function (o) { return cont[o] < 2; });
     lista.forEach(function (o) { if (cont[o] >= 2) h += chip(o); });
     raros.forEach(function (o) { h += chip(o, true); });
-    var rotMais = '+' + raros.length + ' fontes';
+    var rotMais = T.mais.replace('{n}', raros.length);
     if (raros.length) h += '<button type="button" class="fonte-mais" aria-expanded="false">' + rotMais + '</button>';
     box.setAttribute('role', 'group');
-    box.setAttribute('aria-label', 'Filtrar por fonte');
+    box.setAttribute('aria-label', T.filtrar);
     box.innerHTML = h;
     var chips = box.querySelectorAll('.fonte-chip');
 
     function marcaMais(b) {
       var aberto = box.classList.contains('aberto');
       b.setAttribute('aria-expanded', aberto ? 'true' : 'false');
-      b.textContent = aberto ? 'menos fontes' : rotMais;
+      b.textContent = aberto ? T.menos : rotMais;
     }
     function aplica() {
       var f = new URLSearchParams(location.search).get('fonte') || '';
@@ -398,7 +431,7 @@
         a.hidden = !ok;
         if (ok && !traducao[i]) n++;
       });
-      eyebrow.textContent = f ? n + ' de ' + total + ' análises' : total + ' análises';
+      eyebrow.textContent = (f ? n + ' ' + T.de + ' ' : '') + total + ' ' + T.analises;
       var mais = box.querySelector('.fonte-mais');
       if (mais) marcaMais(mais);
     }

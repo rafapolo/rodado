@@ -77,6 +77,11 @@ DESCRICOES = {
         "campanha, óbitos do SUS — registros públicos brasileiros cruzados uns "
         "com os outros até aparecer o que nenhum deles mostra sozinho."
     ),
+    "analises/en.html": (
+        "Public health data, federal spending, congressional earmarks — "
+        "Brazilian public records cross-referenced until they show what none "
+        "of them shows alone."
+    ),
     "temas/index.html": (
         "Os 43 temas do rodado: desigualdade racial, educação, saúde, trabalho, "
         "política, violência, orçamento e mais — cada um uma narrativa "
@@ -99,14 +104,16 @@ DESCRICOES = {
     ),
 }
 
-# os índices de analises/ e plataformas/: hub, não artigo. Só o de plataformas
-# tem gêmea em inglês (en.html, na mesma pasta: divide o JSON, o CSS e as imagens)
+# os índices de analises/ e plataformas/: hub, não artigo. Os dois têm gêmea em
+# inglês (en.html, na mesma pasta: divide o JSON, o CSS e as imagens); o de
+# análises EN lista só as escritas em inglês
 INDICE_ANALISES = "analises/index.html"
+INDICE_ANALISES_EN = "analises/en.html"
 INDICE_PLATAFORMAS = "plataformas/index.html"
 INDICE_PLATAFORMAS_EN = "plataformas/en.html"
 INDICE_TEMAS = "temas/index.html"
 INDICE_TEMAS_EN = "temas-en/index.html"
-INDICES = (INDICE_ANALISES, INDICE_PLATAFORMAS, INDICE_PLATAFORMAS_EN,
+INDICES = (INDICE_ANALISES, INDICE_ANALISES_EN, INDICE_PLATAFORMAS, INDICE_PLATAFORMAS_EN,
            INDICE_TEMAS, INDICE_TEMAS_EN)
 
 SITE_NAME = "rodado"
@@ -138,6 +145,8 @@ def contraparte(path: Path) -> Path | None:
         "en.html": "index.html",
         "mcp.html": "mcp-en.html",
         "mcp-en.html": "mcp.html",
+        INDICE_ANALISES: INDICE_ANALISES_EN,
+        INDICE_ANALISES_EN: INDICE_ANALISES,
         INDICE_PLATAFORMAS: INDICE_PLATAFORMAS_EN,
         INDICE_PLATAFORMAS_EN: INDICE_PLATAFORMAS,
         "tecnico.html": "technical.html",
@@ -179,7 +188,8 @@ def _analises_en() -> set[str]:
 def is_en(path: Path) -> bool:
     rel = path.relative_to(PAGES).as_posix()
     return (
-        rel in {"en.html", "mcp-en.html", "technical.html", INDICE_PLATAFORMAS_EN}
+        rel in {"en.html", "mcp-en.html", "technical.html", INDICE_PLATAFORMAS_EN,
+                INDICE_ANALISES_EN}
         or rel.startswith("temas-en/")
         or rel in _analises_en()
     )
@@ -339,7 +349,7 @@ def bloco(path: Path, titulo: str, descricao: str) -> str:
             '{"@context":"https://schema.org","@type":"Article",'
             f'"headline":"{e(social)}","description":"{e(descricao)}",'
             f'"url":"{e(url)}","image":"{e(imagem)}"{publicado},'
-            '"inLanguage":"pt-BR",'
+            f'"inLanguage":"{"en" if en else "pt-BR"}",'
             f'"author":{{"@type":"Organization","name":"{SITE_NAME}"}},'
             f'"isPartOf":{{"@type":"WebSite","name":"{SITE_NAME}","url":"{BASE}/"}}}}'
             "</script>"
@@ -459,8 +469,8 @@ def alvos() -> list[Path]:
     # slugs removidos, que só o commit de quem removeu devia limpar.
     for secao in ("analises", "plataformas"):
         arquivos.append(PAGES / secao / "index.html")
-        if secao == "plataformas":
-            arquivos.append(PAGES / INDICE_PLATAFORMAS_EN)
+        arquivos.append(PAGES / (INDICE_PLATAFORMAS_EN if secao == "plataformas"
+                                 else INDICE_ANALISES_EN))
         slugs = {item["slug"] for item in manifest_da_secao(secao)}
         arquivos += sorted(
             p for p in (PAGES / secao).glob("*/index.html")

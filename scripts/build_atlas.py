@@ -123,7 +123,7 @@ NAV_EN = """<nav class="site-nav">
     <a class="brand" href="/en">rodado</a>
     <div class="nav-right">
       <div class="links">
-        <a href="/analises/">Analyses</a>
+        <a href="/analises/en">Analyses</a>
         <a href="/plataformas/en">Platforms</a>
         <a href="https://xn--2dk.xyz/dataviz/">DataViz</a>
         <a href="/temas-en/">Topics</a>
