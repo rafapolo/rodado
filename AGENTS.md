@@ -49,7 +49,7 @@ O harness TS de apuração (pi + Gemma 4 local) vive no branch `harness-gemma`, 
 ## O que é só local — fora do git
 
 - Desde 2026-11-12, também fora do git e do histórico, a pedido: `scripts/sync/`, `scripts/sync-with-source.md`, `scripts/checa_frescor_fontes.py`, `tests/test_bq_tipos.py`, `docs/tecnico/{housekeeping,auto_atualizacao,mes_novo_cnpj,mes_novo_cno}.md` e `docs/context/fonte_propria.yaml` — o pipeline de sincronização e os procedimentos de atualização. Existem só neste Mac (e cópias avulsas no beelink/finland); quem clona o repo consulta o espelho, não o reconstrói.
-- `scripts/scrap/` e `docs/context/privado/` (endpoints não documentados, contornos de WAF, proxy BR): fora do git desde 2026-10-07, a pedido — meses de trabalho para chegar a cada fonte, repositório é público. Histórico reescrito para tirá-los dos commits antigos também. Nada que dependa deles pode ser obrigatório no caminho de quem só consulta o espelho.
+- `scripts/scrap/` e `docs/context/privado/`: fora do git desde 2026-10-07, a pedido. Histórico reescrito para tirá-los dos commits antigos também. Nada que dependa deles pode ser obrigatório no caminho de quem só consulta o espelho.
 - `tasks/`: gitignored desde 2026-09-24, sem histórico no git — **apagar um arquivo de lá é definitivo**. `tasks/README.md` é o índice único do que está em andamento. O que um arquivo ensinou vai para um lugar versionado (`docs/`) antes de ser removido.
 - `schemas.json` e `docs/context/rodado-schema.json`: fora do git (purgados do histórico em 2026-09-24) — um clone novo não os tem, e `mcp_server.py` só funciona depois de `gera_schemas.py` + `sync_mcp_schema.py`.
 - `join_keys.md` e `metrics.json` são **gerados** — editar o YAML de origem, nunca a saída.

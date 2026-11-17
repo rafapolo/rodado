@@ -18,11 +18,11 @@ gotchas:
     colunas: ["Ano Abertura"]
     severidade: silencioso
     verificado: "2020 e 2021 aparecem nas duas grafias — medido 2026-09-25"
-  - id: waf_bloqueia_lista_de_publicacoes
-    resumo: "Em 2026-11-11 publicacoes.json do consumidor.gov.br respondeu 504 'The requested URL was rejected' (WAF F5) à Mac em três tentativas espaçadas, e nenhum dos 254 proxies BR do pool abriu: a tabela parou em finalizadas_2026-09 e a atualização ficou pendente (falta finalizadas_2026-10)."
+  - id: atualizacao_parada_em_2026_09
+    resumo: "A tabela vai até finalizadas_2026-09: em 2026-11-11 a fonte não entregou a lista de publicações e a atualização ficou pendente (falta finalizadas_2026-10). Para meses depois de setembro de 2026, o dado não está no espelho."
     tabelas: [reclamacoes]
     severidade: aviso
-    verificado: "curl com o UA do Chrome: 504 em 30 s com corpo 'Request Rejected' e support ID; Pool de _proxy_br: 'nenhum proxy BR abre' em 254 testados — medido 2026-11-11"
+    verificado: "último arquivo_origem = finalizadas_2026-09 — medido 2026-11-11"
   - id: finalizadas_sem_data_abertura
     resumo: "Os 19 arquivos finalizadas_2025-03 a finalizadas_2026-09 (5.225.366 linhas) vêm sem Data Abertura: contar por ano de abertura faz 2025 parecer ter 231 mil reclamações e 2026 nenhuma. Para período recente, use Data Finalização."
     tabelas: [reclamacoes]
