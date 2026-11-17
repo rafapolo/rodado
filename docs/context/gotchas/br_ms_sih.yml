@@ -26,12 +26,12 @@ gotchas:
       AIH de internação em dezembro é paga em janeiro ou depois. Filtrar ano =
       2024 perde as internações de 2024 cobradas em 2025 e inclui as de 2023
       cobradas em 2024. Para uma série por ano de internação, filtre um ano de
-      competência a mais e agrupe por year(data_internacao). O espelho tem 2025
-      só até junho (competência).
+      competência a mais e agrupe por year(data_internacao). O espelho vai até a
+      competência 2026-07 (2026-11-17); a mais recente fica atrás da internação.
     tabelas: [aihs_reduzidas]
     colunas: [ano, mes, data_internacao]
     severidade: silencioso
-    verificado: "CID A90-A91, competência 2024: 157.500 internadas em 2024 + 1.831 em 2023; competência 2025 vai de mes 1 a 6 — medido 2026-10-05"
+    verificado: "CID A90-A91, competência 2024: 157.500 internadas em 2024 + 1.831 em 2023; competência 2025 ia de mes 1 a 6 — medido 2026-10-05; desde 2026-11-17 vai até 2026-07"
   - id: cid_categoria_ou_subcategoria
     resumo: "Em aihs_reduzidas, o CID principal está em cid_principal_categoria OU em cid_principal_subcategoria, nunca nos dois: use coalesce."
     detalhe: >
@@ -66,3 +66,18 @@ gotchas:
     colunas: [razao_social_estabelecimento, id_estabelecimento_cnes]
     severidade: aviso
     verificado: "12.266.824 de 14.530.237 linhas de 2025-2026 com razão social (84,4%), mapa de 3.565 CNES — medido 2026-11-01"
+  - id: origem_mista_bd_e_datasus
+    resumo: "Desde a competência 2026-02 (e nas UFs AC, RR e AP que faltavam em 14 meses de 2024-2026 e em 2009-09) as linhas vêm direto do FTP do DATASUS, não da cópia do Base dos Dados: arquivos datasus_*.parquet."
+    detalhe: >
+      A cópia da BD perdeu Acre, Roraima e Amapá em 14 meses entre 2024-07 e 2026-01, e
+      2009-09 do Acre: uma série por UF caía a zero nesses meses. Foram completados com o
+      RD<UF><AAMM>.dbc do FTP (arquivos datasus_<aaaamm>_complemento.parquet). Os meses de
+      2026-02 em diante vêm inteiros do FTP (datasus_<aaaamm>.parquet), convertidos pela
+      mesma regra do modelo dbt da BD. O FTP é republicado com AIH atrasada: o mesmo mês
+      tem ~1,3% mais linhas no FTP que na cópia antiga da BD, então o salto entre 2026-01 e
+      2026-02 tem um pedaço de artefato. Os meses do FTP ainda não estão ordenados por
+      id_estabelecimento_cnes.
+    tabelas: [aihs_reduzidas]
+    colunas: [ano, mes, id_municipio_estabelecimento]
+    severidade: aviso
+    verificado: "competência 2026-01, AM + SP: 255.874 AIH casadas por id_aih, colunas iguais salvo 14 razões sociais e 2 motivo_saida; FTP 259.592 x BD 256.309 linhas. Total 208.076.913 + 7.497.011 (2026-02..07) + 100.265 (complementos) = 215.674.189 pela view — medido 2026-11-17"
