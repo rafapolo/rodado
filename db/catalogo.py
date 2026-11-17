@@ -27,6 +27,7 @@ import time
 
 import duckdb
 
+import metadados
 import rodado_sql
 
 ORIGEM = rodado_sql.RAIZ + "_db/views.json"
@@ -39,6 +40,10 @@ INTERVALO = int(os.environ.get("RODADO_CATALOGO_INTERVALO", "900"))
 PARALELO = int(os.environ.get("RODADO_CATALOGO_PARALELO", "8"))
 LOCAIS = ("'/home/polo/rodado/", "'~/rodado/")
 _NO_BUCKET = re.compile("'" + re.escape(rodado_sql.RAIZ) + "([^']+)'")
+# main._rodado_metadata e main._rodado_datasets (o catalog.parquet, com source_url de cada tabela)
+# ficam fora do SQL público desde 2026-11-17: o que o servidor precisa dele vai para o metadados.json
+FORA_DO_PUBLICO = re.compile(r"^main\._rodado_")
+CATALOGO_PARQUET = "_rodado_metadata/catalog.parquet"
 
 
 def log(msg):
@@ -277,6 +282,8 @@ def monta(conteudo):
         validas = {}
         for v in views:
             sql = v["sql"] or ""
+            if FORA_DO_PUBLICO.match(f"{v['dataset']}.{v['tabela']}"):
+                continue    # cai em existentes - validas: a view antiga é apagada
             if "s3://" in sql:
                 falhas.append(f"{v['dataset']}.{v['tabela']}: outro bucket")
                 continue
@@ -373,6 +380,31 @@ def semeia_fontes(conteudo):
     log(f"registro das views semeado a partir do catálogo atual: {len(fontes)} views")
 
 
+def _tem_view_fora_do_publico() -> bool:
+    """Catálogo montado antes de FORA_DO_PUBLICO ainda tem as views: força uma montagem."""
+    if not os.path.exists(BANCO):
+        return False
+    con = duckdb.connect(BANCO, read_only=True)
+    try:
+        return any(FORA_DO_PUBLICO.match(f"{d}.{t}") for d, t in con.execute(
+            "SELECT schema_name, view_name FROM duckdb_views() WHERE NOT internal").fetchall())
+    finally:
+        con.close()
+
+
+def grava_metadados():
+    """O catalog.parquet sem source_url, para metadados.py (ver lá por quê)."""
+    local = rodado_sql.LOCAL + CATALOGO_PARQUET
+    origem = local if os.path.isfile(local) else rodado_sql.RAIZ + CATALOGO_PARQUET
+    con = _conexao()
+    try:
+        rel = con.execute(metadados.SQL_LEITURA, [origem])
+        cols = [d[0] for d in rel.description]
+        metadados.grava([dict(zip(cols, l)) for l in rel.fetchall()])
+    finally:
+        con.close()
+
+
 def copias_locais() -> str:
     """Os parquet completos em /dados/local (sem os .parcial de uma cópia em andamento):
     copiar ou apagar um deles muda a marca e remonta o catálogo na volta seguinte."""
@@ -394,10 +426,14 @@ def rodada():
 
 
 def _rodada():
+    try:
+        grava_metadados()
+    except duckdb.Error as e:   # sem ele o servidor segue, só sem contagens: tenta na próxima volta
+        log(f"metadados.json não atualizado: {str(e).splitlines()[0]}")
     texto, sha_views = baixa_views()
     sha = hashlib.sha256((sha_views + "\n" + copias_locais()).encode()).hexdigest()
     atual = open(MARCA).read().strip() if os.path.exists(MARCA) and os.path.exists(BANCO) else ""
-    if sha == atual and "--completo" not in sys.argv:
+    if sha == atual and not _tem_view_fora_do_publico() and "--completo" not in sys.argv:
         if not os.path.exists(FONTES):
             semeia_fontes(json.loads(texto))
         if not anonimo_em_dia():     # primeiro deploy com o anônimo, ou regra da máscara mudou

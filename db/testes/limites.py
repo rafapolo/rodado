@@ -21,7 +21,7 @@ from http.server import ThreadingHTTPServer
 TMP = tempfile.mkdtemp(prefix="limites_teste_")
 os.environ.update({
     "RODADO_LIMITES_DB": os.path.join(TMP, "limites.sqlite"), "RODADO_TEMP": os.path.join(TMP, "duck"),
-    "RODADO_DIR_Q": os.path.join(TMP, "q"),
+    "RODADO_DIR_Q": os.path.join(TMP, "q"), "RODADO_METADADOS": os.path.join(TMP, "metadados.json"),
     "DB_TOKENS": "ana:anaanaanaanaana1234 bia:biabiabiabiabia5678,polo:pelopelopelopelo9999",
     "DB_TOKEN_LINK": "linklinklinklink4321",
 })
@@ -33,6 +33,7 @@ from duckdb import sqltypes  # noqa: E402
 
 import consulta  # noqa: E402
 import limites  # noqa: E402
+import metadados  # noqa: E402
 import rodado_sql  # noqa: E402
 
 TOKEN_ANA, TOKEN_BIA = "anaanaanaanaana1234", "biabiabiabiabia5678"
@@ -196,7 +197,7 @@ def meia_noite_de_brasilia():
 # ------------------------------------------------------------------ o servidor de verdade
 
 def _catalogo():
-    """DuckDB em memória que faz as vezes do catálogo: duas tabelas e a _rodado_metadata."""
+    """DuckDB em memória que faz as vezes do catálogo (duas tabelas) e o metadados.json delas."""
     base = duckdb.connect(":memory:")
     base.create_function("_mascara_cpf", rodado_sql.mascara_texto, [sqltypes.VARCHAR], sqltypes.VARCHAR,
                          side_effects=False)
@@ -204,11 +205,13 @@ def _catalogo():
         CREATE SCHEMA br_t;
         CREATE TABLE br_t.pequena AS SELECT range AS a FROM range(10);
         CREATE TABLE br_t.grande AS SELECT range AS a FROM range(300);
-        CREATE TABLE _rodado_metadata(dataset VARCHAR, "table" VARCHAR, rows BIGINT, size_bytes BIGINT, source VARCHAR,
-          source_name VARCHAR, description VARCHAR, source_url VARCHAR, scrape_date VARCHAR, num_files INT);
-        INSERT INTO _rodado_metadata VALUES ('br_t', 'pequena', 10, 1, 'x', 's', 'd', '', '', 1),
-                                            ('br_t', 'grande', 5000000, 1, 'x', 's', 'd', '', '', 1);
     """)
+    # as contagens vêm do metadados.json, não de SQL (o _rodado_metadata saiu do catálogo público)
+    metadados.grava([
+        {"dataset": "br_t", "table": "pequena", "rows": 10, "size_bytes": 1, "source": "x", "source_name": "s",
+         "description": "d", "scrape_date": "", "num_files": 1},
+        {"dataset": "br_t", "table": "grande", "rows": 5000000, "size_bytes": 1, "source": "x", "source_name": "s",
+         "description": "d", "scrape_date": "", "num_files": 1}])
     return base
 
 

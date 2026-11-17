@@ -1003,7 +1003,7 @@ def list_datasets() -> dict:
     plus independently-scraped sources filling gaps Base dos Dados doesn't
     cover (SICAF, SINAN Violência, EU/UN Sanctions, Consumidor.gov.br and
     more). Each table's provenance is in `_rodado_metadata` (`source_name`,
-    `source_url`, `scrape_date`). Use this to get oriented before drilling into a
+    `scrape_date`; beelink backend only, db.rodado.xyz does not expose it). Use this to get oriented before drilling into a
     specific dataset with list_tables().
     """
     return {

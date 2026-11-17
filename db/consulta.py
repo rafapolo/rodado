@@ -31,6 +31,7 @@ from urllib.parse import parse_qs, urlparse
 import duckdb
 
 import limites
+import metadados
 import rodado_sql
 
 PAGINA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "index.html")
@@ -402,38 +403,27 @@ _guia_trava = threading.Lock()
 # mesma —, sem a fonte que abre a frase ("IBGE — PIB municipal"), sem url, data nem arquivos.
 _tabelas = {"em": 0.0, "linhas": []}
 _tabelas_trava = threading.Lock()
-SQL_TABELAS = r"""
-SELECT dataset, max(CASE WHEN contains(description, ' — ') THEN split_part(description, ' — ', 2)
-                         ELSE description END) AS descricao,
-       list({'t': "table", 'n': coalesce(rows, 0)} ORDER BY "table") AS tabelas
-FROM _rodado_metadata WHERE source <> 'view_only' AND dataset NOT LIKE '\_%' ESCAPE '\'
-GROUP BY 1 ORDER BY 1
-"""
-
-SQL_GUIA_RESUMO = """
-SELECT count(*), count(DISTINCT dataset), coalesce(sum(size_bytes), 0), count(DISTINCT source_name)
-FROM _rodado_metadata WHERE source <> 'view_only'
-"""
-SQL_GUIA_DATASETS = """
-SELECT dataset, count(*), coalesce(sum(rows), 0), mode(source_name)
-FROM _rodado_metadata WHERE source <> 'view_only'
-GROUP BY 1 ORDER BY 1
-"""
-
-SQL_CATALOGO = r"""
-SELECT v.schema_name AS dataset, v.view_name AS tabela, m.rows AS linhas,
-       coalesce(m.description, CASE WHEN v.schema_name = 'main' AND v.view_name LIKE '\_rodado\_%' ESCAPE '\'
-         THEN 'catálogo do espelho: _rodado_metadata tem uma linha por tabela (linhas, fonte, data, status, '
-           || 'procedência), _rodado_datasets uma por dataset' END) AS descricao,
-       m.source_name AS fonte, nullif(m.source_url, '') AS url,
-       nullif(m.scrape_date, '') AS atualizado, m.num_files AS arquivos,
-       -- a view lê do SSD do finland (cópia em /dados/local, ver catalogo.py) ou do bucket
-       contains(v.sql, '{LOCAL}') AS ssd
-FROM duckdb_views() v
-LEFT JOIN _rodado_metadata m ON m.dataset = v.schema_name AND m."table" = v.view_name
-WHERE NOT v.internal AND v.schema_name NOT LIKE '\_%' ESCAPE '\'
-ORDER BY v.schema_name <> 'main', 1, 2  -- o catálogo (main._rodado_*) primeiro na árvore
+# Contagens, fonte e descrição vêm do metadados.json (metadados.py), não de SQL: desde 2026-11-17
+# o _rodado_metadata (com source_url) não é mais view do catálogo público.
+SQL_VIEWS = r"""
+SELECT schema_name, view_name, contains(sql, '{LOCAL}') AS ssd
+FROM duckdb_views()
+WHERE NOT internal AND schema_name NOT LIKE '\_%' ESCAPE '\'
+ORDER BY schema_name <> 'main', 1, 2
 """.replace("{LOCAL}", rodado_sql.LOCAL.replace("'", "''"))
+
+
+def _linhas_catalogo(views):
+    """A árvore da página: uma entrada por view, com o que o metadados.json sabe dela."""
+    dados = []
+    for ds, t, ssd in views:
+        m = metadados.da_tabela(ds, t) or {}
+        # a view lê do SSD do finland (cópia em /dados/local, ver catalogo.py) ou do bucket
+        dados.append({"dataset": ds, "tabela": t, "linhas": m.get("rows"), "descricao": m.get("description"),
+                      "fonte": m.get("source_name"), "atualizado": m.get("scrape_date") or None,
+                      "arquivos": m.get("num_files"), "ssd": ssd})
+    return dados
+
 
 PORTA = int(os.environ.get("RODADO_PORTA_CONSULTA", "18081"))
 LIMITE_PADRAO = 10_000
@@ -779,10 +769,8 @@ def _tamanho(con, tabelas, colunas, sql=""):
     nenhum filtro poupa leitura (`sigla_uf = 'SP'` no SIM, 36 mi linhas, levou 73 s)."""
     itens, problemas, avisos = [], [], []
     for ds, t in tabelas:
-        linhas = con.execute('SELECT rows FROM _rodado_metadata WHERE dataset = ? AND "table" = ?',
-                             [ds, t]).fetchall()
         part = _particoes(con, ds, t)
-        item = {"tabela": f"{ds}.{t}", "linhas": linhas[0][0] if linhas else None,
+        item = {"tabela": f"{ds}.{t}", "linhas": metadados.n_linhas(ds, t),
                 "particoes": sorted(part), "filtra_particao": bool(part & colunas)}
         n = item["linhas"] or 0
         if part and not item["filtra_particao"] and n > 50_000_000:
@@ -832,10 +820,7 @@ def _raspagem(con, sql, limite_pedido):
     except (duckdb.Error, TypeError, ValueError):
         return None
 
-    def linhas(ds, t):
-        r = con.execute('SELECT rows FROM _rodado_metadata WHERE dataset = ? AND "table" = ?', [ds, t]).fetchall()
-        return r[0][0] if r else None
-    return limites.raspagem(arvore, linhas, limite_pedido, CFG)
+    return limites.raspagem(arvore, metadados.n_linhas, limite_pedido, CFG)
 
 
 def _ascii(texto):
@@ -953,9 +938,7 @@ class Handler(BaseHTTPRequestHandler):
             if time.time() - _catalogo["em"] > 600:
                 con = rodado_sql.conecta()
                 try:
-                    rel = con.sql(SQL_CATALOGO)
-                    cols = rel.columns
-                    dados = [dict(zip(cols, l)) for l in rel.fetchall()]
+                    dados = _linhas_catalogo(con.sql(SQL_VIEWS).fetchall())
                 finally:
                     con.close()
                 _catalogo["json"] = json.dumps(dados, ensure_ascii=False, default=_json_valor).encode()
@@ -965,12 +948,8 @@ class Handler(BaseHTTPRequestHandler):
     def _guia(self):
         with _guia_trava:
             if time.time() - _guia["em"] > 600:
-                con = rodado_sql.conecta()
-                try:
-                    tab, ds, tamanho, fontes = con.sql(SQL_GUIA_RESUMO).fetchall()[0]
-                    datasets = con.sql(SQL_GUIA_DATASETS).fetchall()
-                finally:
-                    con.close()
+                tab, ds, tamanho, fontes = metadados.resumo()
+                datasets = metadados.por_dataset()
                 with open(GUIA, encoding="utf-8") as f:
                     modelo = f.read()
                 valores = {
@@ -998,11 +977,7 @@ class Handler(BaseHTTPRequestHandler):
     def _lista_tabelas(self, params):
         with _tabelas_trava:
             if time.time() - _tabelas["em"] > 600:
-                con = rodado_sql.conecta()
-                try:
-                    dados = con.sql(SQL_TABELAS).fetchall()
-                finally:
-                    con.close()
+                dados = metadados.tabelas_por_dataset()
                 _tabelas["linhas"] = [
                     (ds, f"{ds} — {desc or '?'}: " + ", ".join(f"{t['t']} ({_curto(t['n'])})" for t in tabs))
                     for ds, desc, tabs in dados]

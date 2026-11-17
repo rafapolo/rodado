@@ -29,6 +29,7 @@ os.environ.setdefault("PROMPT_TOOLKIT_NO_CPR", "1")
 import duckdb  # noqa: E402
 
 import limites  # noqa: E402
+import metadados  # noqa: E402
 
 import rodado_sql  # noqa: E402
 
@@ -466,12 +467,6 @@ LOGO = r"""
 # Mauve -> rosa -> pêssego, uma cor por linha do logo
 DEGRADE = [_cor(c) for c in ("cba6f7", "d9a4e8", "f5c2e7", "f2b8b5", "fab387")]
 
-# Lido do _rodado_metadata (o catalog.parquet do build_metadata_catalog.py), já contado:
-# nada de varrer as views a cada sessão. Fora o que é só view sem dado, como no AGENTS.md.
-SQL_RESUMO = """
-SELECT count(*), count(DISTINCT dataset), coalesce(sum(size_bytes), 0), count(DISTINCT source_name)
-FROM _rodado_metadata WHERE source <> 'view_only'
-"""
 
 
 ATLAS = "https://rodado.xyz/atlas/?mode=temas"
@@ -550,9 +545,12 @@ def _abertura():
         if resultado:
             return
         try:
-            resultado.extend(_consulta_simples(SQL_RESUMO))
-            _guarda_resumo(resultado[0])
-        except (duckdb.Error, OSError):
+            # metadados.json (o catalog.parquet já contado, sem as views sem dado): nada de varrer as views
+            r = metadados.resumo()
+            if r[0]:    # sem o arquivo (catálogo ainda montando): não guarda zeros
+                resultado.append(r)
+                _guarda_resumo(r)
+        except (OSError, ValueError):
             pass  # sem números: o terminal abre do mesmo jeito
 
     busca = threading.Thread(target=conta, daemon=True)

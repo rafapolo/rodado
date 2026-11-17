@@ -57,7 +57,8 @@ nome ao seu uso, conta a sua cota (sem token, a cota é do seu IP) e libera o CP
 1. **Descobrir** — texto, um dataset por linha, com a descrição e as tabelas com o número de
    linhas: `curl $AUTH 'https://db.rodado.xyz/tabelas?tema=saude'`,
    `?busca=vacina` (palavras no nome ou na descrição, sem acento) ou `?dataset=br_me_cnpj`.
-   A procedência de cada tabela está em `FROM _rodado_metadata`.
+   A fonte de cada tabela (o órgão que publica) está no campo `fonte` de
+   `curl $AUTH 'https://db.rodado.xyz/catalogo.json'`.
 2. **Ler o schema** de uma tabela — colunas, tipos e quais são partição:
    `curl $AUTH 'https://db.rodado.xyz/colunas?t=br_me_cnpj.empresas'`
    → `[{"coluna": "...", "tipo": "VARCHAR", "particao": false}, ...]`.
@@ -116,7 +117,7 @@ resposta:
    e se a série muda de método no meio (estimativa × Censo, CAGED antigo × Novo CAGED).
 7. **Se o dado não existe no espelho, diga isso.** Não troque silenciosamente por outra fonte
    ou outro ano; diga qual seria a fonte certa e o que foi usado no lugar.
-8. **Na resposta**: o número, a fonte original (`_rodado_metadata.source_name`), o recorte
+8. **Na resposta**: o número, a fonte original (campo `fonte` do `/catalogo.json`), o recorte
    (período, território, filtros), as ressalvas do `/contexto` que se aplicaram e o **link
    `/q/<id>` da consulta que gerou o número** (seção 4b), para quem lê conferir e refazer.
 
@@ -257,8 +258,8 @@ As gerais; as de cada dataset estão em `/contexto?dataset=`.
 - **Mesmo nome, coisas diferentes**: `valor` aparece em dezenas de tabelas com sentidos
   diferentes; nunca junte por ele. `sexo` e `raca_cor` têm códigos que mudam entre datasets.
 - **Valores monetários** em reais inteiros, salvo indicação; desconfie de total na casa do trilhão.
-- **Procedência**: `_rodado_metadata` diz de onde veio cada tabela (`source_name`, `source_url`,
-  `scrape_date`). Cite a fonte original, não "o rodado".
+- **Procedência**: o `/catalogo.json` diz de onde veio cada tabela (`fonte`, `atualizado`).
+  Cite a fonte original, não "o rodado".
 
 ## 6. Temas
 
