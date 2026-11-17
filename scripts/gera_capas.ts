@@ -293,6 +293,7 @@ const MOTIVOS: Record<string, Motivo> = {
 
 // tema de cada análise: paleta + motivo (o par PT/EN compartilha a mesma capa)
 const TEMAS: Record<string, [string, string]> = {
+  "o-ouro-as-terras-e-os-yanomami": ["oxido", "agua"],
   "para-onde-vai-o-dinheiro-da-uniao": ["cobalto", "sankey"],
   "where-does-the-federal-money-go": ["cobalto", "sankey"],
   corresponsaveis: ["areia", "rede"],
