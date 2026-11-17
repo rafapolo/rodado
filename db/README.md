@@ -363,7 +363,7 @@ cookie) → 200, `/llm` e `/health` → 200.
 ssh finland 'docker logs --tail 50 $(docker ps -qf name=rodado-db)'
 
 # deploy: código para o finland e haloy deploy (o S3_KEY/S3_SECRET vêm de /root/rodado-db/.s3)
-scp db/{avisos_telegram.py,Dockerfile,haloy.yml,inicia.sh,rodado_sql.py,limites.py,consulta.py,terminal.py,catalogo.py,index.html,llm.md,contexto.json} finland:/root/rodado-db/
+scp db/{avisos_telegram.py,Dockerfile,haloy.yml,inicia.sh,rodado_sql.py,limites.py,metadados.py,consulta.py,terminal.py,catalogo.py,index.html,llm.md,contexto.json} finland:/root/rodado-db/
 scp db/proxy/{Caddyfile,og.html} finland:/root/rodado-db/proxy/
 # o MCP de /mcp: o servidor e a camada semântica que ele lê, arquivo por arquivo
 # (nunca docs/context/privado/); rodado-schema.json fica fora do git, gere antes
