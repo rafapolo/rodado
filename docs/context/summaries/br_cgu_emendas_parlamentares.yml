@@ -50,13 +50,16 @@ tabelas:
   por_favorecido:
     ultima_data: "2026-09"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um pagamento mensal de uma emenda a um favorecido (CPF/CNPJ), com mês e município do favorecido"
-    chave: "nenhuma: 826.056 linhas (todas distintas), mas só 824.356 combinações (id_emenda, ano_mes, documento_favorecido)"
-    tempo: {natureza: serie_mensal, coluna: ano_mes, cobertura: "201406–202609 (texto AAAAMM; ano e mes inteiros coincidem com ano_mes em todas as linhas)"}
+    chave: "nenhuma: 826.056 linhas; (id_emenda, ano_mes, documento_favorecido) repete em 1.700 linhas (826.047 linhas distintas contando valor, nome e município: só 9 são cópias exatas), então o mesmo favorecido recebe mais de um pagamento da mesma emenda no mês"
+    tempo: {natureza: serie_mensal, coluna: ano_mes, cobertura: "201406–202609 (texto AAAAMM; ano e mes inteiros coincidem com ano_mes em todas as linhas); 2014 só 7 meses (1.694 linhas) e 2026 só jan–set"}
     territorio: {nivel: municipio, colunas: {id_municipio: "IBGE do município do favorecido, casado por nome + UF (nulo em 1,18%)", sigla_uf_favorecido: "UF do favorecido", municipio_favorecido: "nome do município do favorecido"}}
     medidas:
-      - {coluna: valor_recebido, o_que: "valor recebido pelo favorecido no mês; pode ser negativo (estorno)", unidade: "R$", soma: sim}
-    filtros_tipicos: ["regexp_matches(natureza_juridica_favorecido, '^Munic|Municipal'): só prefeituras e fundos municipais (gotcha banco_mandatario_infla_brasilia)", "ano = 2024: inteiro (e mes inteiro 1–12)", "tipo_emenda LIKE 'Emenda Individual%'"]
-    use_para: "ver quem recebeu o dinheiro das emendas e quanto chegou a cada município."
-    nao_use_para: "somar por id_municipio sem filtrar a natureza jurídica: o Banco do Brasil mandatário infla Brasília (gotcha banco_mandatario_infla_brasilia)."
-    rascunho: [use_para, nao_use_para]
-    verificado: "826.056 linhas; valor_recebido total R$ 280,82 bi; ano_mes = ano*100+mes em todas — medido 2026-10-27"
+      - {coluna: valor_recebido, o_que: "valor recebido pelo favorecido no mês, que fecha com o PAGO da emenda mais os restos a pagar pagos: por emenda, valor_recebido = emendas.valor_pago + emendas.valor_restos_a_pagar_pagos em 63.559 de 76.760 emendas (R$ 280,77 bi contra 287,05 bi), e = só valor_pago em apenas 25.760 (R$ 193,58 bi); pode ser negativo (988 estornos) ou zero (3.921)", unidade: "R$", soma: sim}
+    filtros_tipicos:
+      - "regexp_matches(natureza_juridica_favorecido, '^Munic|Municipal'): só prefeituras e fundos municipais (R$ 110 bi: Município 61,4 e Fundo Público Municipal 48,9); sem o filtro, 'Sociedade de Economia Mista' (BB e Caixa como mandatárias) soma R$ 94 bi e infla Brasília (gotcha banco_mandatario_infla_brasilia)"
+      - "ano = 2024: inteiro (e mes inteiro 1–12)"
+      - "tipo_emenda LIKE 'Emenda Individual%' (R$ 143,8 bi: Finalidade Definida 111,7 e Transferências Especiais/Pix 32,2); as outras são Bancada 56,8, Relator 52,3 e Comissão 27,9"
+      - "tipo_favorecido = 'Pessoa Jurídica' (636.457 linhas, R$ 268,7 bi); 'Inscrição Genérica' (R$ 10,8 bi) não é município: R$ 9,4 bi são uma agência operadora do Bolsa Família na Caixa em 4 linhas, e o resto folha de pagamento e empresas estrangeiras de defesa"
+    use_para: "ver quem recebeu o dinheiro pago das emendas e quanto chegou a cada município, por mês, tipo de emenda e natureza do favorecido; o destino municipal só existe aqui (gotcha destino_municipal_so_em_por_favorecido)."
+    nao_use_para: "somar por id_municipio sem filtrar a natureza jurídica (o Banco do Brasil mandatário infla Brasília: gotcha banco_mandatario_infla_brasilia); comparar com valor_pago de emendas sem somar os restos a pagar pagos; contar favorecidos pelo documento sem separar CPF (181.007 linhas de pessoa física: 135.706 com CPF completo e 45.301 mascarados como ***.999.999-**, que repetem entre pessoas; gotcha cpf_completado)."
+    verificado: "826.056 linhas; valor_recebido total R$ 280.823.299.773; ano_mes = ano*100+mes em todas; 70.341 id_emenda distintos (70.339 em emendas; 13.944 linhas de 2 ids, 13.941 da emenda de relator 202081000199, não existem em emendas); id_municipio nulo em 9.753 linhas; tipo_emenda: Individual Finalidade Definida 414.901 linhas e R$ 111,67 bi, Bancada 107.896 e 56,81, Relator 207.268 e 52,33, Individual Transferências Especiais 52.144 e 32,15, Comissão 43.847 e 27,86; valor por ano de R$ 2,36 bi (2015) a R$ 43,51 bi (2025); emendas tem 94.627 linhas para 76.760 id_emenda (valor_pago R$ 193,58 bi, restos a pagar pagos R$ 93,47 bi, empenhado R$ 342,53 bi) — medido 2026-11-18"

@@ -24,3 +24,10 @@ gotchas:
     colunas: [taxa_ocupacao]
     severidade: silencioso
     verificado: "média das UFs 1,4 em 2025-2, máximo 2,24; capacidade_total 679.763 vs populacao_total 960.976 — medido 2026-11-04"
+  - id: quantidade_rdd_repetida_por_linha
+    resumo: "Em populacao_prisional, quantidade_rdd é o mesmo valor em todas as linhas da unidade no semestre: somar multiplica por até 36 e não dá pessoas em RDD."
+    detalhe: "O valor é constante por (ano, semestre, id_unidade) nas 28.825 combinações, só 579 têm valor maior que zero, e em 10.065 linhas passa de quantidade (a mesma célula aparece em linhas de qualquer situação, regime, esfera e sexo). Em 2025/2 a soma por unidade é 318 (30 unidades) e a soma das linhas, 11.448. O sentido não é documentado: se for preciso, use max por unidade e semestre."
+    tabelas: [populacao_prisional]
+    colunas: [quantidade_rdd, quantidade]
+    severidade: silencioso
+    verificado: "2025/2: 1.532 unidades, 30 com valor > 0, soma por unidade 318, soma por linha 11.448; nenhuma das 28.825 combinações ano x semestre x unidade tem dois valores; 2019/1 soma 117.468 por linha — medido 2026-11-18"

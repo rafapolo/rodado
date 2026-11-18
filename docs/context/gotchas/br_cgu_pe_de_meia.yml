@@ -39,3 +39,10 @@ gotchas:
     colunas: [beneficiario_id, nis_beneficiario, valor_parcela]
     severidade: silencioso
     verificado: "86.125.204 parcelas e R$ 22.631.280.225: o maior beneficiario_id tem 67.484.961 parcelas (78,4%) e R$ 17.036.797.950 (75,3%), com NIS e CPF vazios e nome mascarado; o segundo maior tem 27 parcelas (R$ 5.650); 3.310.985 ids e 2.892.735 NIS sem ele — medido 2026-10-28"
+  - id: pagamento_sazonal_por_tipo
+    resumo: "Em pagamento, o valor mensal não é comparável entre meses: Conclusão e Enem saem em fevereiro (R$ 3,2 bi em 202502, 2,8 bi em 202602) e a Matrícula em março; a Frequência é a base de R$ 0,5 a 0,9 bi por mês."
+    detalhe: "Compare o mesmo tipo (codigo_tipo_incentivo) entre meses, ou o mesmo mês entre anos. Em 202502, a Conclusão tem 3.037.316 parcelas de R$ 1.000; em 202503, a Matrícula 3.640.338 de R$ 200. 202501 é parcial (542.377 linhas, R$ 0,1 bi) e faltam 202407 e 202601."
+    tabelas: [pagamento, pe_de_meia]
+    colunas: [mes_folha, codigo_tipo_incentivo, valor_parcela]
+    severidade: silencioso
+    verificado: "202502: Conclusão R$ 3.037 mi, Enem 90, Frequência 26, Matrícula 5; 202602: Conclusão 2.734; 202503 e 202603: Matrícula R$ 728 mi — medido 2026-11-18"

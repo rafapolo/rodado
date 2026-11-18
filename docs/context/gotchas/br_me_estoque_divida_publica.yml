@@ -6,3 +6,10 @@ gotchas:
     colunas: [classe_carteira, valor_estoque]
     severidade: silencioso
     verificado: "out/2022: Mercado R$ 5,78 tri (interna 5,53 + externa 0,25), Banco Central R$ 2,07 tri, soma R$ 7,85 tri — medido 2026-10-20"
+  - id: quantidade_nao_soma_entre_titulos
+    resumo: "quantidade_estoque é número de títulos, e o título tem face diferente (um LFT vale 13 vezes uma LTN): não some entre tipos; valor_estoque / quantidade_estoque é o preço unitário."
+    detalhe: "Em out/2022: LFT R$ 12.347, NTN-B R$ 4.101, LTN R$ 938; Global (dívida externa, em dólares) R$ 5.332 por título, cerca de US$ 1.000. Some quantidade só dentro do mesmo id_divida; 1.198 linhas têm quantidade zero, 1.200 valor zero."
+    tabelas: [microdados]
+    colunas: [quantidade_estoque, valor_estoque]
+    severidade: silencioso
+    verificado: "out/2022: LFT 010923 23.153.056 títulos, R$ 285,9 bi; LTN 010124 280.908.663, R$ 263,5 bi; Global 2025A 4.300.000, R$ 22,9 bi — medido 2026-11-18"

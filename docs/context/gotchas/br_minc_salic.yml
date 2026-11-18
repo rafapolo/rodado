@@ -30,7 +30,7 @@ gotchas:
     resumo: "projetos/entidades juntam dois mundos (origem = dump_2017 | api_salic); projetos_2014/entidades_2014 são o retrato de 2014-02-12, não um ano de fluxo."
     detalhe: >
       dump_2017 é o banco legado (projetos até 2016, incentivos e recibos só
-      dele); api_salic são os projetos 2024-2026 da API do SALIC, sem
+      dele); api_salic são os projetos de PRONAC 2019–2026 da API do SALIC (3.508 de 2019 a 15.415 de 2025, mais 1 de 2016 e 1 de 2018; o legado vai até 2016), sem
       captação (incentivos/recibos não os cobrem) — somar captação por ano
       depois de 2016 dá zero, não queda. Os *_2014 são o mesmo cadastro
       visto em fevereiro de 2014: sirva-se deles para o estado anterior de
@@ -86,3 +86,10 @@ gotchas:
     colunas: [data_pagamento, nm_arquivo]
     severidade: silencioso
     verificado: "618 antes de 2018, 1.287 depois de 2026-10-25; 540.755 nm_arquivo com 'Ã' — medido 2026-10-25"
+  - id: apoiado_muda_de_sentido_por_origem
+    resumo: "Em projetos, apoiado é o total de incentivos recebidos no legado (dump_2017) e outra coisa em api_salic: não some a coluna entre as origens nem use como captação."
+    detalhe: "No legado (153.748 projetos), apoiado é 0 em 82% das linhas e, onde há incentivo, iguala sum(incentivos.valor) do projeto em 94% (19.984 de 21.180). Em api_salic (60.282 projetos de 2019–2026) iguala projetos_api.valor_projeto em 71% e valor_captado em só 28%. Para o captado de 2019 em diante use projetos_api.valor_captado ou captacoes (fecham entre si, gotcha captacoes_fecham_com_valor_captado)."
+    tabelas: [projetos]
+    colunas: [apoiado, origem]
+    severidade: silencioso
+    verificado: "legado: soma R$ 11,9 bi, zero em 125.788 de 153.748; api_salic: soma R$ 60,4 bi, = valor_projeto 43.055, = valor_captado 16.870 de 60.282 — medido 2026-11-18"

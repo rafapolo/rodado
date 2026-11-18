@@ -5,17 +5,21 @@ tabelas:
   pagamento:
     ultima_data: "2026-06"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma parcela do Pé-de-Meia (matrícula, frequência, conclusão ou Enem) paga a um beneficiário numa folha mensal; estornos aparecem como valor negativo"
-    chave: "nenhuma: em mes_folha = 202603, 4.355.234 linhas para 931.930 combinações (beneficiario, incentivo, período) porque 3.420.328 linhas apontam para um único beneficiario_id placeholder (ver surpresa em medidas)"
+    chave: "nenhuma: sem identificador da parcela. A combinação (beneficiario_id, incentivo, período, mes_folha, data, valor, responsavel_id, etapa) tem 4.047.939 valores em 4.107.937 linhas de 202606 (1,5% repetidas) e 4.290.769 em 4.355.234 de 202603; 78% das linhas apontam para um único beneficiario_id placeholder (ver nao_use_para)"
     tempo: {natureza: serie_mensal, coluna: mes_folha, cobertura: "202403–202606 (inteiro AAAAMM; 26 meses, faltam 202407 e 202601); data_do_pagamento de 2024-03-26 a 2026-07-06"}
     territorio: {nivel: municipio, colunas: {uf: "UF", codigo_municipio_siafi: "código SIAFI de 4 dígitos, não é IBGE", nome_municipio: "nome do município"}}
     medidas:
-      - {coluna: valor_parcela, o_que: "valor da parcela; valores vistos em 202603: 200, 225, 1000 e -1000 (estorno da conclusão)", unidade: "R$", soma: sim}
-      - {expressao: "count(*)", o_que: "parcelas pagas", unidade: "parcelas", soma: sim}
-    filtros_tipicos: ["mes_folha = 202603: INTEIRO aqui, mas mes_referencia é texto ('202603') e as duas colunas são iguais; a tabela tem 86 milhões de linhas", "codigo_tipo_incentivo = '01' (Matrícula, R$ 200), '02' (Frequência, R$ 200 ou 225), '03' (Conclusão, R$ 1.000), '04' (Enem, R$ 200): texto com zero à esquerda, rótulo em tipo_incentivo", "valor_parcela > 0: tira os 62 estornos de 202603 (-R$ 62.000)"]
-    use_para: "somar o valor pago e contar parcelas por mês, UF, município, tipo de incentivo ou etapa de ensino (gotcha agregue_pela_pagamento: sem identificação vá direto aqui)."
-    nao_use_para: "contar estudantes: 67,5 milhões das 86,1 milhões de parcelas (R$ 17,0 bi de R$ 22,6 bi) apontam para beneficiario_id = 2964869, cujo NIS e CPF são vazios e o nome é mascarado; count(DISTINCT beneficiario_id) subconta muito (gotcha beneficiario_sem_identificacao_concentra_pagamentos)."
-    rascunho: [use_para, nao_use_para]
-    verificado: "86.125.204 linhas, 26 meses, R$ 22.631.280.225; em 202603: 4.355.234 linhas, 744.190 beneficiario_id distintos, 3.420.328 no placeholder 2964869, R$ 1.260.325.950; chave candidata (beneficiario_id, incentivo, período, mes_folha, data, valor, responsavel_id, etapa) tem 4.290.769 distintos nesse mês — medido 2026-10-27"
+      - {coluna: valor_parcela, o_que: "valor da parcela: Matrícula R$ 200; Frequência R$ 200 ou R$ 225 (167.589 parcelas de 225 em 202603 e 202606); Conclusão R$ 1.000; Enem R$ 200; estornos negativos de R$ 1.000 na Conclusão (48.730 linhas em 10 meses, R$ -48,7 mi; 62 em 202603)", unidade: "R$", soma: sim}
+      - {expressao: "count(*)", o_que: "parcelas pagas (não estudantes: o mesmo estudante tem várias parcelas, de tipos e meses diferentes)", unidade: parcelas, soma: sim}
+    filtros_tipicos:
+      - "mes_folha = 202603: INTEIRO aqui, mas mes_referencia é texto ('202603') e as duas colunas são iguais em 100% das linhas; a tabela tem 86 milhões de linhas"
+      - "codigo_tipo_incentivo = '01' (Matrícula, 12,1 milhões de parcelas, R$ 2,43 bi), '02' (Frequência, 66,1 milhões, R$ 13,27 bi), '03' (Conclusão, 6,8 milhões, R$ 6,72 bi), '04' (Enem, 1,1 milhão, R$ 0,21 bi): texto com zero à esquerda, rótulo em tipo_incentivo"
+      - "periodo_incentivo: 'Ano letivo AAAA' nos tipos 01, 03 e 04, e o mês de frequência ('Abril 2024', 'Julho/Agosto 2024') no 02; o mês de pagamento é mes_folha, não o período"
+      - "valor_parcela > 0: tira os estornos (62 em 202603, 8.494 em 202606)"
+      - "um mês isolado não representa a série: Conclusão e Enem são pagos em fevereiro (202502: R$ 3.159 mi, 202602: R$ 2.829 mi, contra R$ 0,5 a 1,3 bi nos outros meses, exceto 202501 com 0,1) e a Matrícula em março (3,64 milhões de parcelas em 202503 e em 202603)"
+    use_para: "somar o valor pago e contar parcelas por mês de folha, UF, município (código SIAFI), tipo de incentivo e etapa de ensino, sem identificar estudante (gotcha agregue_pela_pagamento: sem identificação vá direto aqui)."
+    nao_use_para: "contar estudantes: 67,5 milhões das 86,1 milhões de parcelas (78%; R$ 17,0 bi de R$ 22,6 bi) apontam para beneficiario_id = 2964869, cujo NIS e CPF são vazios e o nome é mascarado, em todos os 26 meses (Matrícula 84%, Frequência 80%, Conclusão 65%, Enem 23%); count(DISTINCT beneficiario_id) dá 3.310.986, com ele dentro (gotcha beneficiario_sem_identificacao_concentra_pagamentos). Também não: comparar um mês com o outro sem olhar o tipo (fevereiro e março têm sazonalidade); ler codigo_municipio_siafi (5.562 códigos, 4 dígitos) como IBGE."
+    verificado: "86.125.204 linhas, 26 meses (202403 a 202606; faltam 202407 e 202601), R$ 22.631.280.225; beneficiario_id 3.310.986 distintos e responsavel_id 8.545.194; placeholder 2964869 em 67.484.961 linhas e R$ 17,04 bi (Matrícula 10,2 de 12,1 milhões de parcelas, Frequência 52,6 de 66,1, Conclusão 4,4 de 6,8, Enem 0,25 de 1,07); sem UF, código de município, beneficiario_id, responsavel_id ou data_do_pagamento nulos; data_do_pagamento de 2024-03-26 a 2026-07-06; em 202603: 4.355.234 linhas, 744.190 beneficiario_id distintos, R$ 1.260.325.950 — medido 2026-11-18"
   beneficiario:
     grao: "um trio (NIS, CPF, nome) de beneficiário, com identificador inteiro beneficiario_id"
     chave: "beneficiario_id"

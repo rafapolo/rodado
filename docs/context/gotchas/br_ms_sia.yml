@@ -80,3 +80,10 @@ gotchas:
     colunas: [ano, mes]
     severidade: silencioso
     verificado: "APAC 0304/0604: max(count(DISTINCT mes)) = 7 em 2025, 12 em 2014–2024 — medido 2026-11-18"
+  - id: linhas_identicas_sao_registros
+    resumo: "Em producao_ambulatorial, linha idêntica não é cópia de carga: 28% das linhas de uma partição repetem outra por inteiro. Não use SELECT DISTINCT nem count(DISTINCT *): some quantidade_aprovada_procedimento."
+    detalhe: "O BPA-I, o BPA-C e a RAAS não trazem o número do atendimento, então dois registros iguais são dois atendimentos; só a APAC (P e S) não repete. Em 2024-06 AC, 148.900 linhas viram 107.129 com DISTINCT (BPA-I 111.004 para 74.076, BPA-C 27.131 para 23.074, RAAS 2.696 para 1.910, APAC 6.309 e 1.760 sem repetição). Deduplicar subconta procedimentos e valor."
+    tabelas: [producao_ambulatorial]
+    colunas: [instrumento_registro, quantidade_aprovada_procedimento]
+    severidade: silencioso
+    verificado: "ano = 2024, mes = 6, sigla_uf = AC: 148.900 linhas, 107.129 distintas — medido 2026-11-18"

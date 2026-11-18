@@ -1,0 +1,9 @@
+dataset: br_antt_dadosabertos
+gotchas:
+  - id: cpf_do_tac_mascarado
+    resumo: "Em rntrc, o CPF do TAC (autônomo) vem mascarado (999.***.***-99): count(DISTINCT cpfcnpjtransportador) dá 405.352 para 1.189.325 registros e não conta transportadores. Conte numero_rntrc."
+    detalhe: "Só ETC e CTC trazem CNPJ completo (um por linha, 342.652). Os 846.673 TAC têm 62.691 valores distintos, que repetem entre pessoas diferentes; não serve para junção nem para saber se o mesmo autônomo tem dois registros."
+    tabelas: [rntrc]
+    colunas: [cpfcnpjtransportador, categoria_transportador]
+    severidade: silencioso
+    verificado: "retrato 2026-09: TAC 999.***.***-99 em 846.664 linhas com 62.691 valores; ETC/CTC 99.999.999/9999-99, 342.652 linhas e 342.652 valores — medido 2026-11-18"

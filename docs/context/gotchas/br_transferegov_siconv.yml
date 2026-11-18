@@ -33,3 +33,10 @@ gotchas:
     colunas: [ANO_DESEMBOLSO, DATA_PAG, VALOR_REPASSE_EMENDA, VALOR_REPASSE_PROPOSTA_EMENDA]
     severidade: silencioso
     verificado: "2026-10-31: ANO_DESEMBOLSO=1900 em 1 de 378.212 (total R$ 150,2 bi); DATA_PAG até 2031-06-03, 1 linha futura; VALOR_REPASSE_EMENDA NULL em 114.189 de 297.828"
+  - id: proposta_parada_em_analise
+    resumo: "Em siconv_proposta, somar VL_GLOBAL_PROP (R$ 1,49 tri) ou VL_REPASSE_PROP (R$ 1,42 tri) soma pedidos: 371.965 propostas \"Enviado para Análise\" (R$ 503 bi de repasse) quase nunca viram convênio."
+    detalhe: "Só 626 delas têm convênio, contra 265.572 das 276.081 \"Aprovados\" (96%); \"Cadastrados\" (98.054) e \"Rejeitados\" (211.713, 55 com convênio) também não contam como dinheiro. A modalidade \"CONVENIO OU CONTRATO DE REPASSE\" (52.004) quase não virou convênio (9). Para o contratado use siconv_convenio."
+    tabelas: [siconv_proposta]
+    colunas: [SIT_PROPOSTA, VL_REPASSE_PROP, VL_GLOBAL_PROP]
+    severidade: silencioso
+    verificado: "1.153.701 propostas, 285.743 com convênio; repasse pedido por situação: Enviado para Análise R$ 503,1 bi, Aprovados 323,9, Rejeitados 222,0, Cadastrados 168,9 — medido 2026-11-18"

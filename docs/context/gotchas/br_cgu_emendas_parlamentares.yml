@@ -69,3 +69,10 @@ gotchas:
     colunas: [documento_favorecido]
     severidade: silencioso
     verificado: "135.706 de 181.007 linhas completadas — medido 2026-10-07"
+  - id: valor_recebido_e_pago_mais_restos
+    resumo: "Em por_favorecido, valor_recebido fecha com o pago da emenda MAIS os restos a pagar pagos, não com o pago só: comparar com emendas.valor_pago dá diferença de R$ 87 bi."
+    detalhe: "Por emenda, valor_recebido = valor_pago + valor_restos_a_pagar_pagos em 63.559 de 76.760 emendas, e só em 25.760 igual ao valor_pago. A emenda de relator 202081000199 (13.941 linhas, R$ 0,06 bi) está em por_favorecido e não em emendas."
+    tabelas: [por_favorecido, emendas]
+    colunas: [valor_recebido, valor_pago, valor_restos_a_pagar_pagos]
+    severidade: aviso
+    verificado: "por_favorecido R$ 280,77 bi (nas emendas em comum), emendas valor_pago 193,58 e pago + restos 287,05 — medido 2026-11-18"

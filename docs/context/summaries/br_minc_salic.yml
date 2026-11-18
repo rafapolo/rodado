@@ -11,17 +11,17 @@ tabelas:
       nivel: uf
       colunas: {uf: "sigla da UF do proponente/projeto", estado_id: "id em estados"}
     medidas:
-      - {coluna: solicitado, o_que: "valor solicitado", unidade: "R$", soma: sim}
-      - {coluna: aprovado, o_que: "valor aprovado para captação", unidade: "R$", soma: sim}
-      - {coluna: apoiado, o_que: "valor apoiado; mesma faixa de aprovado, semântica exata não documentada", unidade: "R$", soma: sim}
+      - {coluna: solicitado, o_que: "valor solicitado (R$ 89,4 bi no legado dump_2017, R$ 75,3 bi na cópia api_salic)", unidade: "R$", soma: sim}
+      - {coluna: aprovado, o_que: "valor aprovado para captação (R$ 49,7 bi no legado, R$ 75,0 bi em api_salic, porque PRONAC de 2023 a 2025 somam 10,7 a 15,4 mil projetos por ano contra 2,6 a 4,7 mil em 2019–2022); 0 em 72.282 linhas do legado e 572 de api_salic", unidade: "R$", soma: sim}
+      - {coluna: apoiado, o_que: "valor apoiado, com sentido diferente por origem: no legado dump_2017 é o total de incentivos recebidos (igual à soma de incentivos.valor do projeto em 19.984 dos 21.180 que têm incentivo; 0 em 82% das linhas, R$ 11,9 bi); em api_salic NÃO é captação (só 28% iguala projetos_api.valor_captado; 71% iguala valor_projeto; R$ 60,4 bi)", unidade: "R$", soma: "nao entre origens (sentidos diferentes); use projetos_api.valor_captado ou captacoes para o captado"}
     filtros_tipicos:
-      - "mecanismo = 'Mecenato' (156.360 linhas; outros: 'FNC' 54.414, 'Recurso do Tesouro', 'Audiovisual', 'Mecenato/Audiovisual')"
-      - "enquadramento IN ('Artigo 18','Artigo 18 (100%)','Artigo 26'): duas grafias para o Artigo 18; 34% NULL"
-      - "origem = 'dump_2017' para o legado; origem = 'api_salic' repete projetos_api com menos colunas (use projetos_api para 2019+)"
-    use_para: "cadastro de projetos Rouanet do legado (2000–2016) com valor solicitado/aprovado, UF, área e segmento."
-    nao_use_para: "série de captação por ano depois de 2016 (projetos não traz captação) nem juntar por numero sem desempatar."
-    rascunho: [use_para, nao_use_para, "significado de apoiado"]
-    verificado: "214.030 linhas, 214.030 ids distintos; origem 153.748 dump_2017 (numero 000001–161714) + 60.282 api_salic (164380–266608); situacao top 'Projeto Arquivado' 45.329 — medido 2026-10-27. Gotchas: numero_repetido, origem_e_retrato_2014, api_e_legado_sao_tabelas_diferentes"
+      - "mecanismo = 'Mecenato' (156.360 linhas; outros: 'FNC' 54.414, 'Recurso do Tesouro' 2.836, 'Audiovisual' 241, 'Mecenato/Audiovisual' 179; 'Recurso do Tesouro', 'Audiovisual' e 'Mecenato/Audiovisual' só no legado; api_salic é 99,5% Mecenato e tem só 324 FNC)"
+      - "enquadramento IN ('Artigo 18','Artigo 18 (100%)','Artigo 26'): duas grafias para o Artigo 18; 34% NULL (73.621); 'Nao enquadrado' 345"
+      - "origem = 'dump_2017' para o legado (PRONAC 2000–2016, 153.748 linhas); origem = 'api_salic' (PRONAC 2019–2026, 60.282) repete projetos_api com menos colunas (use projetos_api para 2019+)"
+      - "ano do PRONAC = substr(numero, 1, 2) (2 dígitos), menos os 4.955 numero 111xxxx do legado, que são código de edital (api_salic tem 1 projeto de 2016 e 1 de 2018 entre 2019 e 2026)"
+    use_para: "cadastro dos projetos da Lei Rouanet: legado 2000–2016 (origem dump_2017) e cópia da API 2019–2026 (origem api_salic), com valor solicitado e aprovado, UF, área, segmento, mecanismo e enquadramento; contar projetos e somar o aprovado por ano de PRONAC ou por origem."
+    nao_use_para: "série de captação por ano depois de 2016 (projetos não traz captação; use captacoes ou projetos_api.valor_captado); somar apoiado entre origens (é incentivo no legado e valor do projeto na API); juntar por numero sem desempatar (110 pares); ler numero 111xxxx como PRONAC; procurar projetos de 2017–2018 (não existem)."
+    verificado: "214.030 linhas, 214.030 ids, 213.920 numero distintos (110 pares, todos dump_2017); origem 153.748 dump_2017 (numero 000001–161714, PRONAC de 2000 a 2016) + 60.282 api_salic (164380–266608, PRONAC de 2019 a 2026 mais 1 de 2016 e 1 de 2018, sem sobreposição de numero com o legado); uf e estado_id preenchidos em 100%; apoiado = soma de incentivos em 19.984 de 21.180 projetos do legado com incentivo, zero em 125.788 (82%); em api_salic apoiado = valor_captado em 16.870 de 60.282 e = valor_projeto em 43.055; aprovado = valor_aprovado de projetos_api em 59.827 — medido 2026-11-18. Gotchas: numero_repetido, origem_e_retrato_2014, api_e_legado_sao_tabelas_diferentes, apoiado_muda_de_sentido_por_origem"
   projetos_2014:
     ultima_data: "2014-02-10"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um projeto no retrato do cadastro de 2014-02 (mesmo grão de projetos)"
@@ -139,16 +139,15 @@ tabelas:
     verificado: "2.848.765 linhas; soma valor_pagamento 13.274.824.115,91; entre 2010 e 2026 13.267.638.700,77; 2025: 632.255 linhas — medido 2026-10-27. Gotchas: pagamento_ao_proprio_proponente, pagamentos_datas_e_nomes"
   pagamentos_detalhe:
     ultima_data: "2026-10-27"  # dado mais recente, gerado por scripts/gera_ultima_data.py
-    grao: "mesmo grão de pagamentos, com projeto, proponente, UF e item (2.848.765 linhas)"
-    chave: "nenhuma: mesmo grão de pagamentos"
-    tempo: {natureza: serie_diaria, coluna: data_pagamento, cobertura: "mesmo de pagamentos"}
-    territorio: {nivel: uf, colunas: {uf: "UF do projeto"}}
+    grao: "um pagamento (comprovante) de um projeto da API do SALIC (PRONAC 2019–2026) a um fornecedor, com projeto, proponente, UF e item de despesa; mesmo conjunto de pagamentos (2.848.765 linhas, R$ 13.274.824.116)"
+    chave: "nenhuma única: id_comprovante_pagamento tem 2.848.254 valores em 2.848.765 linhas (511 repetidos); 457 são cópias exatas da linha inteira (2.848.308 linhas distintas), 54 são o mesmo comprovante em outro item ou valor"
+    tempo: {natureza: serie_diaria, coluna: data_pagamento, cobertura: "projetos de PRONAC 2019–2026 (e 2.257 linhas de PRONAC 16xxxx); data_pagamento de 2018 a 2026-10 com 618 anteriores a 2018 e 1.277 posteriores a 2026-10-27 (1900-01-26 a 9093-09-18, R$ 13,3 mi)"}
+    territorio: {nivel: uf, colunas: {uf: "UF do projeto (igual a projetos_api.uf nos 13.561 projetos; sem nulos, 27 UFs); não há município"}}
     medidas:
-      - {coluna: valor_pagamento, o_que: "valor pago", unidade: "R$", soma: sim}
-    use_para: "pagamentos por item, UF e proponente já desnormalizados."
-    nao_use_para: "somar junto com pagamentos (mesma informação)."
-    rascunho: [use_para, nao_use_para]
-    verificado: "2.848.765 linhas (o perfil dizia 0) — medido 2026-10-27"
+      - {coluna: valor_pagamento, o_que: "valor pago (R$ 13.274.824.116, o mesmo de pagamentos); 1.628 negativos, 1.491 zeros, máximo R$ 5,64 mi; 126.966 linhas (R$ 1,48 bi) pagam ao próprio proponente", unidade: "R$", soma: sim}
+    use_para: "gasto dos projetos Rouanet da API (2019–2026) por item de despesa, fornecedor, UF e proponente já desnormalizados, sem juntar com projetos_api: 13.561 projetos, 2.417 itens, 6.045 proponentes."
+    nao_use_para: "somar junto com pagamentos (é o mesmo R$ 13,27 bi); somar sem antes tirar as 457 cópias exatas se for contar pagamentos; contar fornecedores por fornecedor_cgccpf como empresas (538.600 linhas, 19%, são CPF de pessoa física, 8.097 sem documento); pagamentos do legado 2000–2016 (a tabela só cobre 13.561 dos 63.350 projetos de projetos_api); agregar por mês sem tirar as datas impossíveis (gotcha pagamentos_datas_e_nomes)."
+    verificado: "2.848.765 linhas, 2.848.254 id_comprovante_pagamento, 2.848.308 linhas distintas; 13.561 PRONAC (todos em projetos_api; 21% dos 63.350), 27 UF, 2.417 itens; mesmas linhas e mesmo valor de pagamentos (junção por id_comprovante_pagamento fecha 100% no valor e no pronac); fornecedor_cgccpf só em dígitos (11 em 538.600, 14 em 2.302.068, nulo em 8.097); valor por ano de PRONAC: 2019 R$ 1,48 bi, 2020 2,09, 2021 1,15, 2022 1,44, 2023 3,64, 2024 2,16, 2025 1,28, 2026 0,04 — medido 2026-11-18"
   entidades:
     ultima_data: "2016-07-16"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "uma entidade (proponente e/ou patrocinador, pessoa física ou jurídica) do SALIC"

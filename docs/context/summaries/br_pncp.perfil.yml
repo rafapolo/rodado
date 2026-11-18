@@ -1,33 +1,33 @@
 dataset: br_pncp
-gerado_em: '2026-10-27'
+gerado_em: '2026-11-18'
 gerado_por: scripts/gera_perfil.py — não edite à mão
 tabelas:
   contratos:
-    linhas: 5229507
-    fonte_do_perfil: amostra de 38.245%. ~2.000.000 linhas
+    linhas: 5370608
+    fonte_do_perfil: amostra de 37.24%. ~2.000.000 linhas
     colunas:
-      numeroControlePncpCompra: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 733635, pessoal: 'só contagens: valores seriam dado pessoal'}
-      numeroControlePncpAta: {tipo: VARCHAR, nulos_pct: 89.44, distintos_aprox: 39000, pessoal: 'só contagens: valores seriam dado pessoal'}
-      codigoPaisFornecedor: {tipo: VARCHAR, nulos_pct: 74.53, distintos_aprox: 36, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numeroControlePncpCompra: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 696497, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numeroControlePncpAta: {tipo: VARCHAR, nulos_pct: 88.56, distintos_aprox: 47462, pessoal: 'só contagens: valores seriam dado pessoal'}
+      codigoPaisFornecedor: {tipo: VARCHAR, nulos_pct: 74.84, distintos_aprox: 43, pessoal: 'só contagens: valores seriam dado pessoal'}
       anoContrato:
         tipo: BIGINT
         nulos_pct: 0
-        distintos_aprox: 27
+        distintos_aprox: 30
         min: '2021'
         max: '24062025'
-        media: 2043.983
+        media: 2044.0586
         quartis: [2025, 2025, 2026]
         top:
-        - ['2025', 915109]
-        - ['2026', 757902]
-        - ['2024', 296332]
-        - ['2023', 99870]
-        - ['2022', 15038]
-        - ['2021', 284]
-        - ['2027', 21]
+        - ['2025', 888280]
+        - ['2026', 779294]
+        - ['2024', 295619]
+        - ['2023', 99871]
+        - ['2022', 15044]
+        - ['2021', 278]
+        - ['2027', 26]
         - ['2028', 10]
         - ['8197', 6]
-        - ['2029', 3]
+        - ['20025', 2]
       tipoContrato:
         tipo: STRUCT(id BIGINT, nome VARCHAR)
         nulos_pct: 0
@@ -35,21 +35,21 @@ tabelas:
         min: '{''id'': 1, ''nome'': ''Contrato (termo inicial)''}'
         max: '{''id'': 12, ''nome'': Carta Contrato}'
         top:
-        - ['{''id'': 7, ''nome'': Empenho}', 758431]
-        - ['{''id'': 1, ''nome'': ''Contrato (termo inicial)''}', 755211]
-        - ['{''id'': 8, ''nome'': Outros}', 560250]
-        - ['{''id'': 12, ''nome'': Carta Contrato}', 4867]
-        - ['{''id'': 5, ''nome'': Termo de Adesão}', 3827]
-        - ['{''id'': 2, ''nome'': Comodato}', 1207]
+        - ['{''id'': 7, ''nome'': Empenho}', 755671]
+        - ['{''id'': 1, ''nome'': ''Contrato (termo inicial)''}', 751814]
+        - ['{''id'': 8, ''nome'': Outros}', 560305]
+        - ['{''id'': 12, ''nome'': Carta Contrato}', 4858]
+        - ['{''id'': 5, ''nome'': Termo de Adesão}', 3803]
+        - ['{''id'': 2, ''nome'': Comodato}', 1198]
         - ['{''id'': 4, ''nome'': Concessão}', 541]
         - ['{''id'': 3, ''nome'': Arrendamento}', 159]
         - ['{''id'': 6, ''nome'': Convênio}', 89]
         - ['{''id'': 11, ''nome'': Termo de Compromisso}', 12]
-      numeroContratoEmpenho: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 883171, pessoal: 'só contagens: valores seriam dado pessoal'}
-      dataAssinatura: {tipo: DATE, nulos_pct: 0, distintos_aprox: 2039, min: '2021-04-04', max: '2027-08-03'}
-      dataVigenciaInicio: {tipo: DATE, nulos_pct: 0, distintos_aprox: 2205, min: '2021-04-14', max: '5026-05-07'}
-      dataVigenciaFim: {tipo: DATE, nulos_pct: 0.02, distintos_aprox: 5804, min: '2021-08-08', max: '9999-12-31'}
-      niFornecedor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 340898, pessoal: 'só contagens: valores seriam dado pessoal'}
+      numeroContratoEmpenho: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 792442, pessoal: 'só contagens: valores seriam dado pessoal'}
+      dataAssinatura: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1768, min: '2021-04-04', max: '2027-08-03'}
+      dataVigenciaInicio: {tipo: DATE, nulos_pct: 0, distintos_aprox: 1990, min: '2021-04-14', max: '2066-06-26'}
+      dataVigenciaFim: {tipo: DATE, nulos_pct: 0.02, distintos_aprox: 4567, min: '2021-08-08', max: '9999-12-31'}
+      niFornecedor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 329748, pessoal: 'só contagens: valores seriam dado pessoal'}
       tipoPessoa:
         tipo: VARCHAR
         nulos_pct: 0
@@ -57,57 +57,56 @@ tabelas:
         min: PE
         max: PJ
         top:
-        - [PJ, 2000776]
-        - [PF, 78540]
-        - [PE, 5283]
-      orgaoEntidade: {tipo: 'STRUCT(cnpj VARCHAR, razaoSocial VARCHAR, poderId VARCHAR, esferaId VARCHAR)', nulos_pct: 0, distintos_aprox: 13959,
+        - [PJ, 1995297]
+        - [PF, 77890]
+        - [PE, 5268]
+      orgaoEntidade: {tipo: 'STRUCT(cnpj VARCHAR, razaoSocial VARCHAR, poderId VARCHAR, esferaId VARCHAR)', nulos_pct: 0, distintos_aprox: 13727,
         min: '{''cnpj'': 00000000000191, ''razaoSocial'': BANCO DO BRASIL SA, ''poderId'': N, ''esferaId'': N}', max: '{''cnpj'': 98671597000109,
           ''razaoSocial'': MUNICIPIO DE VERANOPOLIS, ''poderId'': N, ''esferaId'': M}'}
       categoriaProcesso:
         tipo: STRUCT(id BIGINT, nome VARCHAR)
         nulos_pct: 0
-        distintos_aprox: 12
+        distintos_aprox: 11
         min: '{''id'': 1, ''nome'': Cessão}'
         max: '{''id'': 11, ''nome'': Alienação de bens móveis/imóveis}'
         top:
-        - ['{''id'': 2, ''nome'': Compras}', 1425055]
-        - ['{''id'': 8, ''nome'': Serviços}', 521626]
-        - ['{''id'': 10, ''nome'': Serviços de Saúde}', 41043]
-        - ['{''id'': 7, ''nome'': Obras}', 23981]
-        - ['{''id'': 9, ''nome'': Serviços de Engenharia}', 19012]
-        - ['{''id'': 5, ''nome'': Locação Imóveis}', 13086]
-        - ['{''id'': 3, ''nome'': ''Informática (TIC)''}', 12459]
-        - ['{''id'': 1, ''nome'': Cessão}', 12270]
-        - ['{''id'': 11, ''nome'': Alienação de bens móveis/imóveis}', 8906]
-        - ['{''id'': 6, ''nome'': Mão de Obra}', 6882]
-      dataPublicacaoPncp: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 1695766, min: '2022-06-02 11:22:47', max: '2026-10-06 23:22:09'}
-      dataAtualizacao: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 1858945, min: '2022-06-02 11:23:07', max: '2026-10-07 11:25:23'}
+        - ['{''id'': 2, ''nome'': Compras}', 1421727]
+        - ['{''id'': 8, ''nome'': Serviços}', 518950]
+        - ['{''id'': 10, ''nome'': Serviços de Saúde}', 40597]
+        - ['{''id'': 7, ''nome'': Obras}', 23988]
+        - ['{''id'': 9, ''nome'': Serviços de Engenharia}', 19049]
+        - ['{''id'': 5, ''nome'': Locação Imóveis}', 13020]
+        - ['{''id'': 1, ''nome'': Cessão}', 12439]
+        - ['{''id'': 3, ''nome'': ''Informática (TIC)''}', 12405]
+        - ['{''id'': 11, ''nome'': Alienação de bens móveis/imóveis}', 9127]
+        - ['{''id'': 6, ''nome'': Mão de Obra}', 6872]
+      dataPublicacaoPncp: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 1378496, min: '2022-06-02 11:22:47', max: '2026-11-01 15:37:55'}
+      dataAtualizacao: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 1542821, min: '2022-06-02 11:23:07', max: '2026-11-02 13:59:20'}
       sequencialContrato:
         tipo: BIGINT
         nulos_pct: 0
-        distintos_aprox: 32337
+        distintos_aprox: 35782
         min: '1'
-        max: '41505'
-        media: 1676.5824
-        quartis: [95, 404, 1262]
+        max: '42303'
+        media: 1705.6147
+        quartis: [96, 409, 1279]
       unidadeOrgao: {tipo: 'STRUCT(ufNome VARCHAR, codigoUnidade VARCHAR, nomeUnidade VARCHAR, ufSigla VARCHAR, municipioNome VARCHAR, codigoIbge
-          VARCHAR)', nulos_pct: 0, distintos_aprox: 32662, min: '{''ufNome'': Acre, ''codigoUnidade'': 04034583000122, ''nomeUnidade'': MUNICIPIO
-          DE RIO BRANCO/AC, ''ufSigla'': AC, ''municipioNome'': Rio Branco, ''codigoIbge'': 1200401}', max: '{''ufNome'': Tocantins, ''codigoUnidade'':
-          x, ''nomeUnidade'': SECRETARIA MUNICIPAL DE ASSISTENCIA SOCIAL, ''ufSigla'': TO, ''municipioNome'': Porto Nacional, ''codigoIbge'':
-          1718204}'}
-      informacaoComplementar: {tipo: VARCHAR, nulos_pct: 73.92, distintos_aprox: 70812}
-      processo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 550442}
+          VARCHAR)', nulos_pct: 0, distintos_aprox: 34321, min: '{''ufNome'': Acre, ''codigoUnidade'': 04034583000122, ''nomeUnidade'': MUNICIPIO
+          DE RIO BRANCO/AC, ''ufSigla'': AC, ''municipioNo…', max: '{''ufNome'': Tocantins, ''codigoUnidade'': x, ''nomeUnidade'': SECRETARIA
+          MUNICIPAL DE ASSISTENCIA SOCIAL, ''ufSigla'': TO, ''mun…'}
+      informacaoComplementar: {tipo: VARCHAR, nulos_pct: 73.94, distintos_aprox: 57794, min: '', max: "• Serviço de Terapia Renal Substitutiva\
+          \ (STRS) da Fundação \nPública Estadual Hospital de Clínicas Gaspar Vianna – \nFPEHC…"}
+      processo: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 515780, min: '', max: ó3193.0033s7/2024-25}
       unidadeSubRogada: {tipo: 'STRUCT(ufNome VARCHAR, ufSigla VARCHAR, codigoUnidade VARCHAR, nomeUnidade VARCHAR, municipioNome VARCHAR, codigoIbge
-          VARCHAR)', nulos_pct: 99.82, distintos_aprox: 479, min: '{''ufNome'': Acre, ''ufSigla'': AC, ''codigoUnidade'': 070002, ''nomeUnidade'':
-          Tribunal Regional Eleitoral do Acre, ''municipioNome'': Rio Branco, ''codigoIbge'': 1200401}', max: '{''ufNome'': Tocantins, ''ufSigla'':
-          TO, ''codigoUnidade'': 158131, ''nomeUnidade'': ''INST.FED.DE EDUC.,CIENC. E TEC.DO TOCANTINS'', ''municipioNome'': Palmas, ''codigoIbge'':
-          1721000}'}
-      orgaoSubRogado: {tipo: 'STRUCT(cnpj VARCHAR, razaoSocial VARCHAR, poderId VARCHAR, esferaId VARCHAR)', nulos_pct: 99.82, distintos_aprox: 171,
+          VARCHAR)', nulos_pct: 99.82, distintos_aprox: 487, min: '{''ufNome'': Acre, ''ufSigla'': AC, ''codigoUnidade'': 070002, ''nomeUnidade'':
+          Tribunal Regional Eleitoral do Acre, ''municipioN…', max: '{''ufNome'': Tocantins, ''ufSigla'': TO, ''codigoUnidade'': 158131, ''nomeUnidade'':
+          ''INST.FED.DE EDUC.,CIENC. E TEC.DO TOCANTIN…'}
+      orgaoSubRogado: {tipo: 'STRUCT(cnpj VARCHAR, razaoSocial VARCHAR, poderId VARCHAR, esferaId VARCHAR)', nulos_pct: 99.81, distintos_aprox: 168,
         min: '{''cnpj'': 00038166000105, ''razaoSocial'': BANCO CENTRAL DO BRASIL, ''poderId'': E, ''esferaId'': F}', max: '{''cnpj'': 88830609000139,
           ''razaoSocial'': MUNICIPIO DE CAXIAS DO SUL, ''poderId'': N, ''esferaId'': M}'}
-      nomeRazaoSocialFornecedor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 317695, pessoal: 'só contagens: valores seriam dado pessoal'}
-      niFornecedorSubContratado: {tipo: VARCHAR, nulos_pct: 99.98, distintos_aprox: 311, pessoal: 'só contagens: valores seriam dado pessoal'}
-      nomeFornecedorSubContratado: {tipo: VARCHAR, nulos_pct: 99.98, distintos_aprox: 275, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nomeRazaoSocialFornecedor: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 402175, pessoal: 'só contagens: valores seriam dado pessoal'}
+      niFornecedorSubContratado: {tipo: VARCHAR, nulos_pct: 99.98, distintos_aprox: 303, pessoal: 'só contagens: valores seriam dado pessoal'}
+      nomeFornecedorSubContratado: {tipo: VARCHAR, nulos_pct: 99.98, distintos_aprox: 306, pessoal: 'só contagens: valores seriam dado pessoal'}
       receita:
         tipo: BOOLEAN
         nulos_pct: 0
@@ -115,90 +114,92 @@ tabelas:
         min: 'false'
         max: 'true'
         top:
-        - ['false', 2062786]
-        - ['true', 21813]
-      numeroParcelas: {tipo: BIGINT, nulos_pct: 0, distintos_aprox: 916, pessoal: 'só contagens: valores seriam dado pessoal'}
+        - ['false', 2056404]
+        - ['true', 22051]
+      numeroParcelas: {tipo: BIGINT, nulos_pct: 0, distintos_aprox: 822, pessoal: 'só contagens: valores seriam dado pessoal'}
       numeroRetificacao: {tipo: BIGINT, nulos_pct: 0, distintos_aprox: 92, pessoal: 'só contagens: valores seriam dado pessoal'}
       temRemanejamento:
         tipo: BOOLEAN
-        nulos_pct: 77.52
+        nulos_pct: 75.97
         distintos_aprox: 2
         min: 'false'
         max: 'true'
         top:
-        - [null, 1615898]
-        - ['false', 465050]
-        - ['true', 3651]
+        - [null, 1579086]
+        - ['false', 495476]
+        - ['true', 3893]
       emendaParlamentar:
         tipo: BOOLEAN
-        nulos_pct: 98.95
+        nulos_pct: 98.72
         distintos_aprox: 2
         min: 'false'
         max: 'true'
         top:
-        - [null, 2062644]
-        - ['false', 21824]
-        - ['true', 131]
+        - [null, 2051861]
+        - ['false', 26419]
+        - ['true', 175]
       frutoAdesao:
         tipo: BOOLEAN
-        nulos_pct: 77.52
+        nulos_pct: 75.97
         distintos_aprox: 2
         min: 'false'
         max: 'true'
         top:
-        - [null, 1615898]
-        - ['false', 465860]
-        - ['true', 2841]
+        - [null, 1579086]
+        - ['false', 496228]
+        - ['true', 3141]
       tipoPessoaSubContratada: {tipo: VARCHAR, nulos_pct: 99.98, distintos_aprox: 2, pessoal: 'só contagens: valores seriam dado pessoal'}
-      objetoContrato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 792217}
+      objetoContrato: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 889229, min: "\aContratação de empresa de engenharia com especialidade em\
+          \ obras públicas, para execução obra de Ampliação da Creche Don…", max: ► Inexigibilidade de Licitação para Contratação de federação
+          esportiva oficial em organização e execução de eventos no t…}
       valorInicial:
         tipo: DOUBLE
         nulos_pct: 0
-        distintos_aprox: 552947
+        distintos_aprox: 504468
         min: '0.0'
         max: '3935137983935.13'
-        media: 13904218.6153
-        quartis: [550.0363, 3210.8189, 23903.8889]
+        media: 14053214.7066
+        quartis: [548.7986, 3199.1263, 23813.9356]
       valorParcela:
         tipo: DOUBLE
         nulos_pct: 0
-        distintos_aprox: 439269
+        distintos_aprox: 439834
         min: '0.0'
         max: '1960000000000.0'
-        media: 4485344.1087
-        quartis: [0.0001, 1390.1573, 12868.7708]
+        media: 4607032.1674
+        quartis: [0.0133, 1399.7162, 12869.2225]
       valorGlobal:
         tipo: DOUBLE
         nulos_pct: 0
-        distintos_aprox: 557926
+        distintos_aprox: 509048
         min: '0.0'
         max: '3935137983935.13'
-        media: 14051811.9226
-        quartis: [551.9146, 3228.7471, 24295.9194]
-      numeroControlePNCP: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1996803, pessoal: 'só contagens: valores seriam dado pessoal'}
+        media: 14200954.9302
+        quartis: [550.8556, 3217.615, 24206.4801]
+      numeroControlePNCP: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 1977579, pessoal: 'só contagens: valores seriam dado pessoal'}
       valorAcumulado:
         tipo: DOUBLE
-        nulos_pct: 40.83
-        distintos_aprox: 218104
+        nulos_pct: 41.21
+        distintos_aprox: 191457
         min: '-213125.16'
         max: '3600000000000.0'
-        media: 4175499.0763
-        quartis: [0, 0, 2745.9478]
-      dataAtualizacaoGlobal: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 1950217, min: '2022-06-02 11:23:07', max: '2026-10-07 11:25:40'}
-      identificadorCipi: {tipo: VARCHAR, nulos_pct: 97.47, distintos_aprox: 59, pessoal: 'só contagens: valores seriam dado pessoal'}
-      urlCipi: {tipo: VARCHAR, nulos_pct: 96.44, distintos_aprox: 94, min: '', max: www.diadema.gov.br}
-      usuarioNome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 287, pessoal: 'só contagens: valores seriam dado pessoal'}
+        media: 4401695.9158
+        quartis: [0, 0, 2772.9237]
+      dataAtualizacaoGlobal: {tipo: TIMESTAMP, nulos_pct: 0, distintos_aprox: 1568150, min: '2022-06-02 11:23:07', max: '2026-11-02 13:59:20'}
+      identificadorCipi: {tipo: VARCHAR, nulos_pct: 97.46, distintos_aprox: 60, pessoal: 'só contagens: valores seriam dado pessoal'}
+      urlCipi: {tipo: VARCHAR, nulos_pct: 96.49, distintos_aprox: 89, min: '', max: www.diadema.gov.br}
+      usuarioNome: {tipo: VARCHAR, nulos_pct: 0, distintos_aprox: 262, pessoal: 'só contagens: valores seriam dado pessoal'}
       ano_publicacao:
         tipo: BIGINT
         nulos_pct: 0
         distintos_aprox: 5
         min: '2022'
         max: '2026'
-        media: 2025.1876
+        media: 2025.198
         quartis: [2025, 2025, 2026]
         top:
-        - ['2025', 865740]
-        - ['2026', 858892]
+        - ['2026', 879372]
+        - ['2025', 839116]
         - ['2024', 266074]
         - ['2023', 79872]
         - ['2022', 14021]

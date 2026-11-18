@@ -4,20 +4,20 @@ dataset: br_ms_sia
 tabelas:
   producao_ambulatorial:
     grao: "uma linha de produção ambulatorial: um procedimento aprovado por estabelecimento × competência × instrumento de registro (BPA-C é agregado; BPA-I, APAC e RAAS são individualizados). Tem 6,16 bilhões de linhas"
-    chave: "nenhuma conferida: não há identificador; o perfil falhou por UTF-8 inválido em um parquet"
-    tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2008–2025 (2025 até mes = 7)"}
+    chave: "nenhuma, e linha idêntica não é cópia: em 2024-06 AC, 148.900 linhas têm só 107.129 distintas (28% repetidas); a APAC (P e S) não repete, mas o BPA-I (111.004 linhas, 74.076 distintas), o BPA-C (27.131, 23.074) e a RAAS (2.696, 1.910) repetem porque o registro não traz número de atendimento. Não use SELECT DISTINCT nem trate repetição como erro de carga. O perfil falhou por UTF-8 inválido em um parquet"
+    tempo: {natureza: serie_mensal, coluna: "ano, mes", cobertura: "2008–2025 (2025 só até mes = 7); ano e mes são a competência de PROCESSAMENTO (igual a ano/mes_processamento_procedimento em 100% das linhas de 2024-06 AC); a realização (ano/mes_realizacao_procedimento) coincide em 98,7%, o resto é produção tardia de meses anteriores"}
     territorio: {nivel: municipio, colunas: {sigla_uf: "UF", id_municipio: "município do estabelecimento", id_paciente_proto: "NÃO é paciente: é o município de residência (gotcha id_paciente_proto_e_municipio)"}}
     medidas:
       - {coluna: quantidade_aprovada_procedimento, o_que: "procedimentos aprovados (jun/2022 AC: 972.106 em 72.348 linhas; contar linhas não é contar atendimentos)", unidade: "procedimentos", soma: sim}
       - {coluna: valor_aprovado_procedimento, o_que: "valor aprovado (DOUBLE; máximo 130.669 numa linha de jun/2022 AC)", unidade: "R$", soma: sim}
     filtros_tipicos:
-      - "ano = <ano> AND mes = <mes> (sempre filtre a partição; a tabela tem 6 bilhões de linhas)"
-      - "instrumento_registro IN ('C','I','A','B','P','S'): C = BPA consolidado, I = BPA-I, A = RAAS atenção domiciliar, B = RAAS psicossocial, P = APAC principal, S = APAC secundário (jun/2022 AC: I 47.600, C 21.033, B 1.836, P 1.567, S 312)"
+      - "ano = <ano> AND mes = <mes> (sempre filtre a partição; a tabela tem 6.159.969.884 linhas, 652 milhões só em 2024)"
+      - "instrumento_registro IN ('C','I','A','B','P','S'): C = BPA consolidado, I = BPA-I, A = RAAS atenção domiciliar (só 2012–2018, 3,5 milhões de linhas), B = RAAS psicossocial (2012+), P = APAC principal, S = APAC secundário. 2024: I 493,5 milhões de linhas e R$ 8,58 bi, C 69,4 milhões e R$ 9,49 bi (2,3 bilhões de procedimentos), P 45,2 milhões e R$ 10,76 bi, S 29,1 milhões e R$ 1,15 bi, B 15,3 milhões e R$ 0 (a RAAS psicossocial não traz valor aprovado)"
       - "raca_cor_paciente: 3 = parda e 4 = amarela, ao contrário dos outros sistemas (gotcha raca_cor_ordem_propria)"
-    use_para: "produção ambulatorial do SUS por procedimento, estabelecimento, município e mês, somando quantidade_aprovada_procedimento"
-    nao_use_para: "contar pacientes ou atendimentos (gotchas id_paciente_proto_e_municipio e bpa_consolidado_sem_paciente) e comparar anos sem checar meses ausentes por município (meses_ausentes_por_municipio)"
-    rascunho: [chave, use_para]
-    verificado: "partição ano = 2022, mes = 6, sigla_uf = 'AC': 72.348 linhas, 22 municípios, 5 instrumentos; ano 2008–2025 em 18 partições anuais; tipos DOUBLE em valores — medido 2026-10-27"
+      - "quantidade_aprovada_procedimento = 0: no BPA e na RAAS é produção rejeitada (produzida > 0 e aprovada 0 em todos os zeros de 2024-06 AC); na APAC não: P tem 899 zeros (só 97 com produzida > 0) e S 280 (nenhum); no mês, 99,7% da quantidade produzida foi aprovada"
+    use_para: "produção ambulatorial do SUS (procedimentos e valor aprovados) por procedimento SIGTAP, estabelecimento, município e mês de processamento, somando quantidade_aprovada_procedimento e valor_aprovado_procedimento dentro de ano e mes."
+    nao_use_para: "contar pacientes ou atendimentos (gotchas id_paciente_proto_e_municipio e bpa_consolidado_sem_paciente; contar linhas também não); remover linhas idênticas; comparar anos sem checar meses ausentes por município (meses_ausentes_por_municipio) nem 2025 com ano fechado; usar valor_aprovado como gasto da RAAS ou das APAC de medicamentos (apac_0604_valor_nao_e_gasto)."
+    verificado: "6.159.969.884 linhas (I 3.408.582.240, C 1.709.382.149, P 509.516.899, S 380.332.839, B 148.673.120 de 2012, A 3.482.637 de 2012 a 2018); 2024: 652.419.807 linhas em 12 meses, 2025: 480.042.593 em 7 meses; partição ano = 2024, mes = 6, sigla_uf = AC: 148.900 linhas, 107.129 distintas, instrumentos I 111.004, C 27.131, P 6.309, B 2.696, S 1.760; processamento = ano/mes em 148.900, realização em 146.914; valor aprovado nunca maior que o produzido nas 148.900 linhas — medido 2026-11-18. Partição anterior: ano 2022, mes 6, AC, 72.348 linhas (2026-10-27)"
   psicossocial:
     ultima_data: "2025-07"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: "um registro de atendimento psicossocial (RAAS psicossocial) por paciente-procedimento num mês de processamento; 138 milhões de linhas"

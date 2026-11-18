@@ -6,10 +6,7 @@ tabelas:
     ultima_data: "2026-07-16"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma proposta/plano de trabalho cadastrada no SICONV/Plataforma +Brasil (inclui as que nunca viraram convênio)
     chave: ID_PROPOSTA (1.153.701 linhas = 1.153.701 distintos. medido)
-    tempo:
-      natureza: serie_anual
-      coluna: DIA_PROPOSTA
-      cobertura: 2008-01-01–2026-07-16 (DIA_PROPOSTA é DATE; ANO_PROP é INTEGER 2008–2026)
+    tempo: {natureza: serie_anual, coluna: "DIA_PROPOSTA", cobertura: "2008-01-01–2026-07-16 (DIA_PROPOSTA é DATE, sem nulos; ANO_PROP é INTEGER 2008–2026 e difere do ano de DIA_PROPOSTA em 28 linhas, sempre um ano a menos, ex. DIA 2024-01-23 com ANO_PROP 2023)"}
     territorio:
       nivel: municipio
       colunas:
@@ -17,28 +14,16 @@ tabelas:
         UF_PROPONENTE: UF do proponente
         MUNIC_PROPONENTE: nome do município do proponente
     medidas:
-    - coluna: VL_GLOBAL_PROP
-      o_que: valor global da proposta (= VL_REPASSE_PROP + VL_CONTRAPARTIDA_PROP em 1.153.700 de 1.153.701 linhas)
-      unidade: R$
-      soma: sim
-    - coluna: VL_REPASSE_PROP
-      o_que: parcela da União
-      unidade: R$
-      soma: sim
-    - coluna: VL_CONTRAPARTIDA_PROP
-      o_que: contrapartida do proponente; há valores negativos (mín -78.764,95)
-      unidade: R$
-      soma: sim
+      - {coluna: "VL_GLOBAL_PROP", o_que: "valor global PEDIDO na proposta (= VL_REPASSE_PROP + VL_CONTRAPARTIDA_PROP em 1.153.700 de 1.153.701 linhas); somando todas as situações dá R$ 1,49 tri, porque inclui rejeitadas, em análise e só cadastradas; zero em 1.332 linhas, máximo R$ 12,8 bi", unidade: "R$", soma: "sim, mas é pedido, não dinheiro federal (ver nao_use_para)"}
+      - {coluna: "VL_REPASSE_PROP", o_que: "parcela da União pedida (R$ 1,42 tri no total; R$ 323,9 bi nas aprovadas, 503,1 bi nas enviadas para análise, 222,0 bi nas rejeitadas)", unidade: "R$", soma: "sim, mesma ressalva"}
+      - {coluna: "VL_CONTRAPARTIDA_PROP", o_que: "contrapartida do proponente (R$ 69,3 bi); há 2 valores negativos (mín -78.764,95)", unidade: "R$", soma: sim}
     filtros_tipicos:
-    - MODALIDADE = 'CONVENIO' (497.298) ou 'CONTRATO DE REPASSE' (540.581); há ainda 'CONVENIO OU CONTRATO DE REPASSE' (52.004), 'TERMO DE COMPROMISSO', 'TERMO DE FOMENTO', 'TERMO DE COLABORACAO', 'TERMO DE PARCERIA'
-    - SIT_PROPOSTA = 'Proposta/Plano de Trabalho Aprovados' (276.081) para aprovadas; 'Proposta/Plano de Trabalho Rejeitados' (211.713) e 'Proposta/Plano de Trabalho Enviado para Análise' (371.965) são as maiores outras situações
-    - ANO_PROP ou DIA_PROPOSTA para recortar o ano; para dinheiro de fato contratado junte com siconv_convenio por ID_PROPOSTA (só 285.743 das propostas viraram convênio)
-    use_para: ver o que foi pedido ao governo federal (valor, órgão, modalidade, proponente) antes da assinatura.
-    nao_use_para: 'dinheiro efetivamente repassado: propostas incluem rejeitadas e em análise; use siconv_convenio / siconv_desembolso.'
-    rascunho:
-    - use_para
-    - nao_use_para
-    verificado: 1.153.701 linhas. 1.153.701 distintos de ID_PROPOSTA; VL_GLOBAL_PROP = VL_REPASSE_PROP + VL_CONTRAPARTIDA_PROP em 1.153.700 linhas; 285.743 têm convênio (join por ID_PROPOSTA) — medido 2026-10-27
+      - "MODALIDADE = 'CONVENIO' (497.298) ou 'CONTRATO DE REPASSE' (540.581); há ainda 'CONVENIO OU CONTRATO DE REPASSE' (52.004, só 9 viraram convênio), 'TERMO DE COMPROMISSO' (31.525), 'TERMO DE FOMENTO' (27.090), 'TERMO DE COLABORACAO' (3.352), 'TERMO DE PARCERIA' (1.851)"
+      - "SIT_PROPOSTA = 'Proposta/Plano de Trabalho Aprovados' (276.081; 265.572 deles, 96%, viraram convênio) para aprovadas; as maiores outras são 'Enviado para Análise' (371.965, só 626 viraram convênio), 'Rejeitados' (211.713, 55), 'Cadastrados' (98.054, nenhum) e 'em Análise' (92.509); 19 situações, 273 NULL"
+      - "ANO_PROP ou DIA_PROPOSTA para recortar o ano; para dinheiro de fato contratado junte com siconv_convenio por ID_PROPOSTA (285.743 das propostas viraram convênio: 25% dos contratos de repasse e 24% dos convênios, 54% dos termos de compromisso, 56% dos de fomento)"
+    use_para: "ver o que foi pedido ao governo federal (valor, órgão concedente, modalidade, proponente) antes da assinatura, e o funil proposta → convênio por ano, modalidade e situação; achar o município do proponente (COD_MUNIC_IBGE, 5.570 municípios, sem nulos)."
+    nao_use_para: "dinheiro efetivamente repassado ou contratado: propostas incluem rejeitadas, só cadastradas e paradas em análise (371.965 propostas, R$ 503 bi de repasse pedido, estão \"Enviado para Análise\" com 626 convênios); use siconv_convenio / siconv_desembolso; tratar a soma de VL_GLOBAL_PROP (R$ 1,49 tri) como orçamento; juntar com siconv_proposta_cancelada (sem sobreposição)."
+    verificado: "1.153.701 linhas, 1.153.701 ID_PROPOSTA; VL_GLOBAL_PROP = VL_REPASSE_PROP + VL_CONTRAPARTIDA_PROP em 1.153.700; soma R$ 1.487.617.906.464 global, 1.418.353.868.092 repasse, 69.264.078.372 contrapartida; 285.743 com convênio (junção por ID_PROPOSTA); propostas por ANO_PROP de 28.049 (2020) a 127.287 (2009), 2026 só até 07-16 com 29.976; repasse pedido por ano de R$ 26 bi (2008) a R$ 163,5 bi (2023) — medido 2026-11-18. Gotcha: proposta_parada_em_analise"
   siconv_proposta_cancelada:
     ultima_data: "2026-07-16"  # dado mais recente, gerado por scripts/gera_ultima_data.py
     grao: uma proposta cancelada, com as mesmas colunas de siconv_proposta (mesmo grão de siconv_proposta)
