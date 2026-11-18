@@ -26,6 +26,12 @@ PALE_RED, PALE_BLUE = "#e8a29c", "#a9c7ef"
 GRID, REF = "#e6e6e2", "#b6b6ae"
 MIN_N = 10
 ULTIMO_ANO_SIA = 2025
+NOME_UF = {"AC": "Acre", "AL": "Alagoas", "AM": "Amazonas", "AP": "Amapá", "BA": "Bahia", "CE": "Ceará",
+           "DF": "the Federal District", "ES": "Espírito Santo", "GO": "Goiás", "MA": "Maranhão",
+           "MG": "Minas Gerais", "MS": "Mato Grosso do Sul", "MT": "Mato Grosso", "PA": "Pará", "PB": "Paraíba",
+           "PE": "Pernambuco", "PI": "Piauí", "PR": "Paraná", "RJ": "Rio de Janeiro", "RN": "Rio Grande do Norte",
+           "RO": "Rondônia", "RR": "Roraima", "RS": "Rio Grande do Sul", "SC": "Santa Catarina", "SE": "Sergipe",
+           "SP": "São Paulo", "TO": "Tocantins"}
 
 FONTE_SIA = ("Ministry of Health / DATASUS: Outpatient Information System (SIA/SUS), "
              "high-complexity authorisations (APAC)")
@@ -116,8 +122,8 @@ def barras(ax, rotulos, vals, destaque, molde, cor, cor_palida):
     ax.set_ylim(-0.7, len(vals) - 0.3)
 
 
-# ------------------------------------------------------- 1. ranking de 2024
-def ranking_2024():
+# ------------------------------------------------- 1. ranking do último ano
+def ranking_ultimo_ano():
     a = apac().filter(pl.col("ano") == ULTIMO_ANO_SIA)
     med = (a.filter(pl.col("grupo") == "0604").group_by("cid3")
            .agg(pl.sum("linhas"), pl.sum("valor")).sort("linhas", descending=True))
@@ -207,7 +213,8 @@ def crescimento():
     ax2.grid(axis="x", color=GRID, lw=0.8)
     siglas = [UF[u] for u in ra["id_uf"]]
     taxas = ra["taxa"].to_list()
-    ax2.barh(ys, taxas, color=[BLUE if s in ("PR", "AL") else PALE_BLUE for s in siglas],
+    alto, baixo = siglas[-1], siglas[0]
+    ax2.barh(ys, taxas, color=[BLUE if s in (alto, baixo) else PALE_BLUE for s in siglas],
              height=0.72, edgecolor=SURFACE, linewidth=2)
     ax2.set_yticks(ys)
     ax2.set_yticklabels(siglas, fontsize=10, color=TXT2)
@@ -222,15 +229,14 @@ def crescimento():
     ax2.text(nac + 4, -0.55, f"Brazil {nac:.0f}", fontsize=10, color=TXT3, va="center")
     ax2.text(0.0, 1.03, f"Rheumatoid arthritis by state, {ULTIMO_ANO_SIA}", transform=ax2.transAxes,
              fontsize=12.5, color=TXT2)
-    pr = ra.filter(pl.col("id_uf") == "41")["taxa"][0]
-    al = ra.filter(pl.col("id_uf") == "27")["taxa"][0]
+    pr, al = taxas[-1], taxas[0]
     moldura(
         fig,
         "Immunology drugs grew fastest, and reach patients unevenly",
         f"SUS specialised-component dispensing by diagnosis, 2014–{ULTIMO_ANO_SIA} (left) and rheumatoid arthritis by state (right)",
-        "Records for psoriasis, lupus and ankylosing spondylitis grew three to five times in a decade, as new drugs, many of them\n"
+        "Records for psoriasis, lupus and ankylosing spondylitis grew four to seven times in a decade, as new drugs, many of them\n"
         "biologics, entered the public treatment protocols; Alzheimer's stayed flat. For the same disease, "
-        f"Paraná dispenses to\n{pr:.0f} patients per 100,000 and Alagoas to {al:.0f}: a {pr / al:.0f}-fold gap "
+        f"{NOME_UF[alto]} dispenses to\n{pr:.0f} patients per 100,000 and {NOME_UF[baixo]} to {al:.0f}: a {pr / al:.0f}-fold gap "
         "that measures access, not prevalence.",
         f"Source: {FONTE_SIA}, SIGTAP group 06.04; IBGE population estimates {ULTIMO_ANO_SIA}.\n"
         "State of the dispensing facility. Monthly records ÷ 12 ≈ patients on treatment in an average month "
@@ -302,5 +308,5 @@ def sorotipos():
 
 if __name__ == "__main__":
     OUT.mkdir(parents=True, exist_ok=True)
-    for f in (ranking_2024, crescimento, sorotipos):
+    for f in (ranking_ultimo_ano, crescimento, sorotipos):
         f()

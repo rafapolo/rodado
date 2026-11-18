@@ -74,12 +74,24 @@ gotchas:
     colunas: [valor_aprovado_procedimento]
     severidade: silencioso
     verificado: "2024: 7 dos 15 CIDs com mais registros 0604 com valor total zero (E78, H40, M05, Z94, G40, E11, R52) — medido 2026-11-18"
-  - id: ano_2025_parcial
-    resumo: "Na cópia de 2026-10-29, ano=2025 tem só 7 meses de processamento; não compare 2025 com ano fechado."
+  - id: origem_mista_2025
+    resumo: "Em producao_ambulatorial, até 2024 as linhas vêm da cópia do Base dos Dados (arquivos 000000000000–000000000456); de 2025-01 em diante, e o complemento SP/TO de 2024-03, vêm dos .dbc do FTP do DATASUS (datasus_*.parquet). A cópia da BD perde linhas sem aviso."
+    detalhe: >
+      Troca feita em 2026-11-18: os 38 arquivos da BD com 2025-01 a 2025-07 saíram do
+      espelho (backup em ~/scrap_tmp/backup/br_ms_sia/producao_ambulatorial/ no beelink).
+      A conversão segue o modelo dbt da BD (commit c921822a), traduzido para DuckDB; em
+      2025-06 AC/AP/RR a fonte e a cópia batem linha a linha. Em 2025-01..06 a fonte tem
+      380,8 M linhas e a cópia tinha 350,6 M (-8%), mas nas APAC 06.04 e 03.04 a cópia
+      tinha 1,6% e 0,6% a mais — a perda está no BPA. A cópia tinha 2025-07 duplicado e
+      2024-03 sem SP e TO. Buracos conhecidos em anos fechados: Alagoas, APAC 06.04, 2024
+      com 221 mil linhas contra 582 mil em 2023 e 632 mil em 2025 (estado pareceu 22x
+      abaixo do PR). Antes de comparar UF×ano até 2024, conferir a série do próprio estado.
+      Os datasus_*.parquet de 2604 e 2605 foram gravados sem ordem no finland e
+      reordenados (id_estabelecimento_cnes, mes) no beelink, com sum(hash) igual.
     tabelas: [producao_ambulatorial]
-    colunas: [ano, mes]
+    colunas: [ano, mes, sigla_uf]
     severidade: silencioso
-    verificado: "APAC 0304/0604: max(count(DISTINCT mes)) = 7 em 2025, 12 em 2014–2024 — medido 2026-11-18"
+    verificado: "count por mês 2024-01..2026-08 com 27 UFs em todos; AL 0604 por ano: 2023 581.820, 2024 221.085, 2025 632.392 — medido 2026-11-18"
   - id: linhas_identicas_sao_registros
     resumo: "Em producao_ambulatorial, linha idêntica não é cópia de carga: 28% das linhas de uma partição repetem outra por inteiro. Não use SELECT DISTINCT nem count(DISTINCT *): some quantidade_aprovada_procedimento."
     detalhe: "A APAC (P e S), que passa pela mesma carga, tem 0 linhas repetidas, o que aponta para o registro e não para o carregador: BPA-I, BPA-C e RAAS não trazem número de atendimento, e linhas iguais são provavelmente atendimentos distintos (inferência; a fonte não foi consultada). Em 2024-06 AC, 148.900 linhas viram 107.129 com DISTINCT (BPA-I 111.004 para 74.076, BPA-C 27.131 para 23.074, RAAS 2.696 para 1.910, APAC 6.309 e 1.760 sem repetição); em 2019-06 AP o padrão se repete (BPA-I 7.898 para 5.913, BPA-C 7.912 para 6.758, RAAS 1.010 para 611, APAC 1.866 e 2.889 sem repetição). Deduplicar subconta procedimentos e valor."

@@ -201,45 +201,52 @@ sample: which cases get typed depends on the state laboratory, not on the patien
 
 ## Worked example 3: high-cost drugs, by disease
 
-![SUS specialised-drug and cancer-drug authorisations by ICD-10, Brazil 2024](/analises/img/rwd-specialty-drugs-2024.png)
+![SUS specialised-drug and cancer-drug authorisations by ICD-10, Brazil 2025](/analises/img/rwd-specialty-drugs-2025.png)
 
 SUS dispenses high-cost medicines to outpatients through monthly authorisations (APAC).
 Each one names the procedure, which for drugs is the medicine, and the patient's
-diagnosis. In 2024 there were 42.7 million records from the Specialised Component of
+diagnosis. In 2025 there were 50.5 million records from the Specialised Component of
 Pharmaceutical Care, the national programme for chronic and rare diseases. There were
-another 4.9 million for cancer drug therapy. Each record is one procedure for one
+another 5.4 million for cancer drug therapy. Each record is one procedure for one
 patient in one month, so dividing by twelve gives a rough count of patients on
 treatment in an average month. Both files carry a diagnosis in every record, unlike the
 rest of outpatient billing. That makes this the closest public equivalent of a
 specialty-pharmacy claims file.
 
 The diagnoses look like the treatment protocols. Lipid disorders, glaucoma,
-schizophrenia, chronic kidney disease, asthma and COPD lead by volume. Rheumatoid
-arthritis, transplants and epilepsy follow. In cancer, breast tumours are 48% of all
+schizophrenia, chronic kidney disease, asthma and COPD lead by volume. Type 2 diabetes,
+rheumatoid arthritis, transplants and epilepsy follow. In cancer, breast tumours are 48% of all
 authorisations, most of them adjuvant therapy authorised month after month after surgery.
 Prostate cancer comes next, then myeloid leukaemia.
 
 The amounts are the trap. For 7 of the 15 leading drug diagnoses, the bill for the whole
 year is R$ 0. The Ministry buys those medicines centrally and ships them to the states,
-so the authorisation records the dispensing but not the cost. In 2024 the authorisations
-billed R$ 1.43 billion. The federal budget line that buys these drugs spent
-R$ 9.92 billion in the same year. Between 2014 and 2020 the number of records rose by half
+so the authorisation records the dispensing but not the cost. In 2025 the authorisations
+billed R$ 2.03 billion. The federal budget line that buys these drugs spent
+R$ 12.85 billion in the same year. Between 2014 and 2020 the number of records rose by half
 while the billed amount fell by half. The authorisations measure **how many patients get
 which treatment, where**. They do not measure spending.
 
-![Growth of specialised-drug dispensing by diagnosis 2014–2024, and rheumatoid arthritis by state](/analises/img/rwd-specialty-drugs-trend.png)
+![Growth of specialised-drug dispensing by diagnosis 2014–2025, and rheumatoid arthritis by state](/analises/img/rwd-specialty-drugs-trend.png)
 
-Over time they show uptake. Between 2014 and 2024, records for psoriasis grew 5.5 times,
-lupus 4.8 times and ankylosing spondylitis 3.5 times, as new medicines, many of them
-biologics, entered the public treatment protocols. Rheumatoid arthritis doubled. Multiple
-sclerosis and inflammatory bowel disease grew 1.8 times. Alzheimer's disease did not
-move. Across states the same disease is treated at very different rates. Paraná
-dispenses rheumatoid arthritis drugs to 289 patients per 100,000 in an average month, the
-national figure is 110 and Alagoas is at 13. Rheumatoid arthritis prevalence does not
-vary 22-fold between Brazilian states, so most of that gap is access to diagnosis and
-to the programme. For a launch plan or a market-access case, that gap is the finding.
+Over time they show uptake. Between 2014 and 2025, records for psoriasis grew 6.9 times,
+lupus 5.4 times and ankylosing spondylitis 4.0 times, as new medicines, many of them
+biologics, entered the public treatment protocols. Rheumatoid arthritis grew 2.5 times.
+Inflammatory bowel disease doubled and multiple sclerosis grew 1.9 times. Alzheimer's
+disease barely moved. Across states the same disease is treated at very different rates.
+Paraná dispenses rheumatoid arthritis drugs to 309 patients per 100,000 in an average
+month, the national figure is 125 and Tocantins is at 30. Rheumatoid arthritis prevalence
+does not vary 10-fold between Brazilian states, so most of that gap is access to diagnosis
+and to the programme. For a launch plan or a market-access case, that gap is the finding.
 The usual limits apply. Without a patient identifier, a patient on two drugs counts
 twice, switching between drugs is invisible, and persistence cannot be measured.
+
+The gap also shows why lineage matters. A first run of this section used a secondary copy
+of the outpatient file. In it, Alagoas's specialised-drug records fell from 582,000 in 2023
+to 221,000 in 2024, and the state appeared at 13 patients per 100,000, a 22-fold gap with
+Paraná. Rebuilt from the Ministry's original files, Alagoas has 632,000 records in 2025
+and 42 patients per 100,000. The drop was missing data, not missing patients, and nothing
+in the copy flagged it.
 
 ## What it can and can't answer
 
@@ -297,10 +304,12 @@ twice, switching between drugs is invisible, and persistence cannot be measured.
 
 - **High-cost drugs** are outpatient authorisations (APAC, principal and secondary)
   in SIGTAP group 06.04, the Specialised Component of Pharmaceutical Care, and cancer
-  drug therapy in group 03.04. They are counted by year of processing. 2025 is left out
-  because the copy holds only its first seven months. The diagnosis is the 3-character
+  drug therapy in group 03.04. They are counted by year of processing. 2025 and 2026 come
+  from the Ministry's original monthly files; earlier years from a secondary copy, which
+  for these two groups differs from the original by less than 2% where both exist
+  (January–June 2025). 2026 is partial and left out. The diagnosis is the 3-character
   ICD-10 category, taken from whichever of the two diagnosis fields is filled. Rates by
-  state use the state of the dispensing facility and IBGE population estimates for 2024.
+  state use the state of the dispensing facility and IBGE population estimates for 2025.
   The federal reference is budget action 4705 (medicines of the Specialised Component),
   amount paid, from the federal budget execution data.
 - **Serotype** counts probable dengue cases whose form records DENV-1 to DENV-4. 2026 is
