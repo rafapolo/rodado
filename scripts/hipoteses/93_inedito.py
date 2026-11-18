@@ -25,6 +25,7 @@ import yaml
 REPO = Path(__file__).resolve().parent.parent.parent
 CTX  = REPO / "docs" / "context"
 OUT  = REPO / "tasks/plans/inedito"
+OUT.mkdir(parents=True, exist_ok=True)
 
 fam_cfg  = yaml.safe_load((CTX / "familias.yaml").read_text(encoding="utf-8"))
 DSFAM    = {k: v["familia"] for k, v in fam_cfg["datasets"].items()}
