@@ -25,9 +25,9 @@ gotchas:
     severidade: aviso
     verificado: "ano_publicacao=2025: PJ 14 dígitos 2.105.929, PJ 11 dígitos 1.726, PF 11 dígitos 74.928, PF 14 dígitos 642 — medido 2026-11-04"
   - id: valorglobal_outliers_dominam_a_soma
-    resumo: "Em contratos, 86 contratos com valorGlobal acima de R$ 10 bi somam R$ 34,2 tri, mais de 90% do valor da tabela: filtre valorGlobal < 1e10 (e revise os maiores) antes de somar."
-    detalhe: "O máximo é R$ 6,0 tri (um contrato). Na versão mais recente de cada numeroControlePNCP, o valor de 2025 cai de R$ 13.564 bi para R$ 998 bi sem esses contratos, e o de 2026 de R$ 20.479 bi para R$ 835 bi. Valores dessa ordem (a tabela inteira soma R$ 36,4 tri em 2022–2026) não são contratação plausível; a deduplicação sozinha não resolve."
+    resumo: "Em contratos, cerca de 90 contratos com valorGlobal de R$ 10 bi ou mais somam R$ 34,2 tri, mais de 90% do valor da tabela: filtre valorGlobal < 1e10 (e revise os maiores) antes de somar."
+    detalhe: "O máximo é R$ 6,0 tri (um contrato). Na versão mais recente de cada numeroControlePNCP, o valor assinado em 2025 cai de R$ 14.235 bi para R$ 1.003 bi sem esses contratos, e o de 2026 de R$ 17.489 bi para R$ 731 bi. Valores dessa ordem (a tabela inteira soma R$ 36,4 tri em 2022–2026) não são contratação plausível; a deduplicação sozinha não resolve."
     tabelas: [contratos]
     colunas: [valorGlobal, valorInicial]
     severidade: silencioso
-    verificado: "86 numeroControlePNCP com valorGlobal > 1e10 (101 linhas com cópias), R$ 34,16 tri na versão mais recente; soma total R$ 36,4 tri em 2022–2026; 2025 R$ 13.564,2 bi e 998,4 bi sem eles; 2026 R$ 20.479,1 bi e 835,3 bi — medido 2026-11-18"
+    verificado: "89 contratos com valorGlobal >= 1e10 (86 acima, 48 assinados em 2025), R$ 34,2 tri na versão mais recente; soma total R$ 36,4 tri; por year(dataAssinatura): 2025 R$ 14.234,8 bi e 1.003,5 bi sem eles, 2026 R$ 17.489,1 bi e 730,8 bi — medido 2026-11-18"
