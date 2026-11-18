@@ -10,7 +10,7 @@ Três entradas, todas versionadas:
   docs/context/cobertura_municipal.json   quantos municípios cada dataset cobre
   docs/context/rodado-schema.json   colunas, para achar a chave de join
 
-E três saídas em tasks/:
+E três saídas em tasks/plans/inedito/ (análise, não tarefa):
   inedito_familias.tsv   toda combinação de 2..4 famílias, coberta ou não
   inedito_ranked.tsv     só as inéditas, ranqueadas
   inedito_cobertura.tsv  o que cada pergunta/hipótese/achado já ocupa
@@ -24,7 +24,7 @@ import yaml
 
 REPO = Path(__file__).resolve().parent.parent.parent
 CTX  = REPO / "docs" / "context"
-OUT  = REPO / "tasks"
+OUT  = REPO / "tasks/plans/inedito"
 
 fam_cfg  = yaml.safe_load((CTX / "familias.yaml").read_text(encoding="utf-8"))
 DSFAM    = {k: v["familia"] for k, v in fam_cfg["datasets"].items()}
@@ -162,4 +162,4 @@ print("\ntop 25 inéditas:")
 for r in rank[:25]:
     print(f"  {r['score']:.3f}  n={r['n']}  poder={r['poder']:5d}  "
           f"{'+'.join(sorted(r['familias']))}")
-print(f"\nescrito: tasks/inedito_ranked.tsv, inedito_familias.tsv, inedito_cobertura.tsv")
+print(f"\nescrito: tasks/plans/inedito/inedito_ranked.tsv, inedito_familias.tsv, inedito_cobertura.tsv")
