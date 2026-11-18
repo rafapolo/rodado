@@ -79,7 +79,9 @@ system, and nothing fails when it is mixed up.** Measured on 2022 records:
   by code silently swaps the largest group in the country with one of the smallest.
 - **Diagnosis** in hospital admissions is stored in a 3-character field *or* a
   4-character field, never both: 89% of admissions have only the 4-character code. Filtering
-  on the 3-character field alone loses nine admissions in ten.
+  on the 3-character field alone loses nine admissions in ten. Outpatient authorisations
+  repeat the split: read only the 3-character field and 2024 specialised-drug records
+  look 96% undiagnosed, when every one of them carries a code.
 - **Municipality** has 7 digits in deaths and births and 6 (no check digit) in hospital and
   outpatient billing. In outpatient billing the patient's municipality sits in a field
   labelled as a patient ID.
@@ -184,6 +186,61 @@ fatality rose from 0.21 per 1,000 among children to 15.3 per 1,000 over age 80, 
 diabetic patients aged 60–79 died 2.9 times as often as non-diabetic ones of the same age.
 That comes with a caveat: comorbidity is recorded more carefully in severe cases.
 
+![Dengue serotype mix among typed cases, and share of probable cases typed, 2014–2026](/analises/img/dengue-serotypes-2014-2026.png)
+
+The notification form is also the only place where a molecular result reaches the
+national file: the virus serotype, from RT-PCR or viral isolation. It is filled for very
+few cases, 0.2–0.8% of probable cases a year until 2021 and about 3% since 2023. Even
+so, it is enough to see the virus change. DENV-3 was almost absent for a decade, with
+fewer than 110 typed cases a year until 2023. Then it rose to 1,766 in 2024 and 6,857 in
+2025, 14% of typed cases, and to 30% in the partial 2026 file. Meanwhile DENV-2 overtook
+DENV-1, from 30% of the mix in 2024 to 74% in 2025. A population that met only DENV-1
+and DENV-2 has no immunity to DENV-3. That matters for an epidemic forecast, or for
+choosing trial sites for a vaccine or an antiviral. It is a signal, though, not a
+sample: which cases get typed depends on the state laboratory, not on the patient.
+
+## Worked example 3: high-cost drugs, by disease
+
+![SUS specialised-drug and cancer-drug authorisations by ICD-10, Brazil 2024](/analises/img/rwd-specialty-drugs-2024.png)
+
+SUS dispenses high-cost medicines to outpatients through monthly authorisations (APAC).
+Each one names the procedure, which for drugs is the medicine, and the patient's
+diagnosis. In 2024 there were 42.7 million records from the Specialised Component of
+Pharmaceutical Care, the national programme for chronic and rare diseases. There were
+another 4.9 million for cancer drug therapy. Each record is one procedure for one
+patient in one month, so dividing by twelve gives a rough count of patients on
+treatment in an average month. Both files carry a diagnosis in every record, unlike the
+rest of outpatient billing. That makes this the closest public equivalent of a
+specialty-pharmacy claims file.
+
+The diagnoses look like the treatment protocols. Lipid disorders, glaucoma,
+schizophrenia, chronic kidney disease, asthma and COPD lead by volume. Rheumatoid
+arthritis, transplants and epilepsy follow. In cancer, breast tumours are 48% of all
+authorisations, most of them adjuvant therapy authorised month after month after surgery.
+Prostate cancer comes next, then myeloid leukaemia.
+
+The amounts are the trap. For 7 of the 15 leading drug diagnoses, the bill for the whole
+year is R$ 0. The Ministry buys those medicines centrally and ships them to the states,
+so the authorisation records the dispensing but not the cost. In 2024 the authorisations
+billed R$ 1.43 billion. The federal budget line that buys these drugs spent
+R$ 9.92 billion in the same year. Between 2014 and 2020 the number of records rose by half
+while the billed amount fell by half. The authorisations measure **how many patients get
+which treatment, where**. They do not measure spending.
+
+![Growth of specialised-drug dispensing by diagnosis 2014–2024, and rheumatoid arthritis by state](/analises/img/rwd-specialty-drugs-trend.png)
+
+Over time they show uptake. Between 2014 and 2024, records for psoriasis grew 5.5 times,
+lupus 4.8 times and ankylosing spondylitis 3.5 times, as new medicines, many of them
+biologics, entered the public treatment protocols. Rheumatoid arthritis doubled. Multiple
+sclerosis and inflammatory bowel disease grew 1.8 times. Alzheimer's disease did not
+move. Across states the same disease is treated at very different rates. Paraná
+dispenses rheumatoid arthritis drugs to 289 patients per 100,000 in an average month, the
+national figure is 110 and Alagoas is at 13. Rheumatoid arthritis prevalence does not
+vary 22-fold between Brazilian states, so most of that gap is access to diagnosis and
+to the programme. For a launch plan or a market-access case, that gap is the finding.
+The usual limits apply. Without a patient identifier, a patient on two drugs counts
+twice, switching between drugs is invisible, and persistence cannot be measured.
+
 ## What it can and can't answer
 
 **Good fit:**
@@ -191,6 +248,7 @@ That comes with a caveat: comorbidity is recorded more carefully in severe cases
   diseases, nationally and down to the municipality.
 - Health-care use and cost in the public system: admissions, length of stay, ICU use,
   outpatient high-cost procedures and drugs (APAC), amounts paid.
+- Treatment uptake by disease and state for high-cost and cancer drugs dispensed by SUS.
 - Ecological studies that join health outcomes to social and environmental data by
   municipality, which Brazil publishes for every municipality.
 - Facility-level analyses of volume, capacity (beds, equipment, staff) and outcomes.
@@ -202,8 +260,14 @@ That comes with a caveat: comorbidity is recorded more carefully in severe cases
   persistence, time-to-event from diagnosis to death. This needs restricted access to
   identified data.
 - Anything in the private sector, a quarter of the population, unevenly distributed.
-- Outpatient diagnosis, which is mostly absent outside high-complexity procedures.
-- Prescriptions and dispensing outside the controlled-drug file.
+- Outpatient diagnosis, which is mostly absent outside high-complexity procedures and
+  high-cost drugs.
+- Retail prescriptions and dispensing: what is public covers controlled drugs, and SUS
+  high-cost drugs by diagnosis. The cost of centrally purchased drugs is not in the
+  record.
+- Anything molecular. Brazil publishes no genomic, transcriptomic or biomarker data
+  alongside these systems. The one laboratory result in the national files is the dengue
+  serotype, recorded for about 3% of cases.
 - Comparisons across long periods without checking for coding and classification changes.
 
 ## Method
@@ -231,4 +295,16 @@ That comes with a caveat: comorbidity is recorded more carefully in severe cases
 - **Dengue** probable cases are notifications not classified as discarded; admissions have
   principal diagnosis A90–A91; certificate deaths have underlying cause A90–A91.
 
-*Data run on 5 October 2026.*
+- **High-cost drugs** are outpatient authorisations (APAC, principal and secondary)
+  in SIGTAP group 06.04, the Specialised Component of Pharmaceutical Care, and cancer
+  drug therapy in group 03.04. They are counted by year of processing. 2025 is left out
+  because the copy holds only its first seven months. The diagnosis is the 3-character
+  ICD-10 category, taken from whichever of the two diagnosis fields is filled. Rates by
+  state use the state of the dispensing facility and IBGE population estimates for 2024.
+  The federal reference is budget action 4705 (medicines of the Specialised Component),
+  amount paid, from the federal budget execution data.
+- **Serotype** counts probable dengue cases whose form records DENV-1 to DENV-4. 2026 is
+  partial.
+
+*Data run on 5 October 2026; the serotype paragraph and worked example 3 on 18 November
+2026.*

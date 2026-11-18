@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- gerado por scripts/gera_analises.py — não editar à mão -->
 <title>Brazil's public real-world data: what it covers, how it links, what it can and can't answer — rodado</title>
-<meta name="description" content="13 billion rows of Brazilian public health data, three decades of it, and not a single patient ID. What it can tell you, and where it quietly misleads.">
+<meta name="description" content="13 billion rows of Brazilian public health data, three decades of it, and not a single patient ID. What it can tell you, from dengue serotypes to who gets biologics in which state, and where it quietly misleads.">
 <!-- seo:start (gerado por scripts/gera_seo.py — não editar à mão) -->
 <link rel="canonical" href="https://rodado.xyz/analises/brazil-public-real-world-data/">
 <meta property="og:type" content="article">
@@ -13,14 +13,14 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:url" content="https://rodado.xyz/analises/brazil-public-real-world-data/">
 <meta property="og:title" content="Brazil&#x27;s public real-world data: what it covers, how it links, what it can and can&#x27;t answer">
-<meta property="og:description" content="13 billion rows of Brazilian public health data, three decades of it, and not a single patient ID. What it can tell you, and where it quietly misleads.">
+<meta property="og:description" content="13 billion rows of Brazilian public health data, three decades of it, and not a single patient ID. What it can tell you, from dengue serotypes to who gets biologics in which state, and where it quietly misleads.">
 <meta property="og:image" content="https://rodado.xyz/analises/img/og-brazil-public-real-world-data.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Brazil&#x27;s public real-world data: what it covers, how it links, what it can and can&#x27;t answer — rodado">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Brazil&#x27;s public real-world data: what it covers, how it links, what it can and can&#x27;t answer">
-<meta name="twitter:description" content="13 billion rows of Brazilian public health data, three decades of it, and not a single patient ID. What it can tell you, and where it quietly misleads.">
+<meta name="twitter:description" content="13 billion rows of Brazilian public health data, three decades of it, and not a single patient ID. What it can tell you, from dengue serotypes to who gets biologics in which state, and where it quietly misleads.">
 <meta name="twitter:image" content="https://rodado.xyz/analises/img/og-brazil-public-real-world-data.png">
 <link rel="icon" href="../../assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png">
@@ -29,7 +29,7 @@
 <link rel="manifest" href="https://rodado.xyz/site.webmanifest">
 <meta name="theme-color" content="#f9f8f5">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Brazil&#x27;s public real-world data: what it covers, how it links, what it can and can&#x27;t answer","description":"13 billion rows of Brazilian public health data, three decades of it, and not a single patient ID. What it can tell you, and where it quietly misleads.","url":"https://rodado.xyz/analises/brazil-public-real-world-data/","image":"https://rodado.xyz/analises/img/og-brazil-public-real-world-data.png","datePublished":"2026-10","inLanguage":"en","author":{"@type":"Organization","name":"rodado"},"isPartOf":{"@type":"WebSite","name":"rodado","url":"https://rodado.xyz/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Brazil&#x27;s public real-world data: what it covers, how it links, what it can and can&#x27;t answer","description":"13 billion rows of Brazilian public health data, three decades of it, and not a single patient ID. What it can tell you, from dengue serotypes to who gets biologics in which state, and where it quietly misleads.","url":"https://rodado.xyz/analises/brazil-public-real-world-data/","image":"https://rodado.xyz/analises/img/og-brazil-public-real-world-data.png","datePublished":"2026-10","inLanguage":"en","author":{"@type":"Organization","name":"rodado"},"isPartOf":{"@type":"WebSite","name":"rodado","url":"https://rodado.xyz/"}}</script>
 <!-- seo:end -->
 <!-- a linha do site.css é marca do bloco comum: o gera_seo.py a substitui pelo
      bloco inteiro aqui, e não no fim do <head>, para o analises.css abaixo
@@ -71,7 +71,7 @@
 <main>
   <p class="eyebrow" id="eyebrow">Analysis</p>
   <img class="capa" src="../img/capa-brazil-public-real-world-data.webp" alt="" width="1680" height="240" decoding="async">
-  <p class="meta">run on 05-10-2026</p>
+  <p class="meta">run on 18-11-2026</p>
   <div id="doc" data-slug="brazil-public-real-world-data" data-base="../" data-pronto>
 <h1>Brazil&#39;s public real-world data: what it covers, how it links, what it can and can&#39;t answer</h1>
 <p>Brazil runs one of the largest single-payer health systems in the world, the SUS, and
@@ -229,7 +229,9 @@ births, surveillance and nutrition, where 3 means &quot;amarela&quot; (East Asia
 by code silently swaps the largest group in the country with one of the smallest.</li>
 <li><strong>Diagnosis</strong> in hospital admissions is stored in a 3-character field <em>or</em> a
 4-character field, never both: 89% of admissions have only the 4-character code. Filtering
-on the 3-character field alone loses nine admissions in ten.</li>
+on the 3-character field alone loses nine admissions in ten. Outpatient authorisations
+repeat the split: read only the 3-character field and 2024 specialised-drug records
+look 96% undiagnosed, when every one of them carries a code.</li>
 <li><strong>Municipality</strong> has 7 digits in deaths and births and 6 (no check digit) in hospital and
 outpatient billing. In outpatient billing the patient&#39;s municipality sits in a field
 labelled as a patient ID.</li>
@@ -311,6 +313,52 @@ definition and say which.</p>
 fatality rose from 0.21 per 1,000 among children to 15.3 per 1,000 over age 80, and
 diabetic patients aged 60–79 died 2.9 times as often as non-diabetic ones of the same age.
 That comes with a caveat: comorbidity is recorded more carefully in severe cases.</p>
+<p><img decoding="async" loading="lazy" src="/analises/img/dengue-serotypes-2014-2026.png" alt="Dengue serotype mix among typed cases, and share of probable cases typed, 2014–2026"></p>
+<p>The notification form is also the only place where a molecular result reaches the
+national file: the virus serotype, from RT-PCR or viral isolation. It is filled for very
+few cases, 0.2–0.8% of probable cases a year until 2021 and about 3% since 2023. Even
+so, it is enough to see the virus change. DENV-3 was almost absent for a decade, with
+fewer than 110 typed cases a year until 2023. Then it rose to 1,766 in 2024 and 6,857 in
+2025, 14% of typed cases, and to 30% in the partial 2026 file. Meanwhile DENV-2 overtook
+DENV-1, from 30% of the mix in 2024 to 74% in 2025. A population that met only DENV-1
+and DENV-2 has no immunity to DENV-3. That matters for an epidemic forecast, or for
+choosing trial sites for a vaccine or an antiviral. It is a signal, though, not a
+sample: which cases get typed depends on the state laboratory, not on the patient.</p>
+<h2>Worked example 3: high-cost drugs, by disease</h2>
+<p><img decoding="async" loading="lazy" src="/analises/img/rwd-specialty-drugs-2024.png" alt="SUS specialised-drug and cancer-drug authorisations by ICD-10, Brazil 2024"></p>
+<p>SUS dispenses high-cost medicines to outpatients through monthly authorisations (APAC).
+Each one names the procedure, which for drugs is the medicine, and the patient&#39;s
+diagnosis. In 2024 there were 42.7 million records from the Specialised Component of
+Pharmaceutical Care, the national programme for chronic and rare diseases. There were
+another 4.9 million for cancer drug therapy. Each record is one procedure for one
+patient in one month, so dividing by twelve gives a rough count of patients on
+treatment in an average month. Both files carry a diagnosis in every record, unlike the
+rest of outpatient billing. That makes this the closest public equivalent of a
+specialty-pharmacy claims file.</p>
+<p>The diagnoses look like the treatment protocols. Lipid disorders, glaucoma,
+schizophrenia, chronic kidney disease, asthma and COPD lead by volume. Rheumatoid
+arthritis, transplants and epilepsy follow. In cancer, breast tumours are 48% of all
+authorisations, most of them adjuvant therapy authorised month after month after surgery.
+Prostate cancer comes next, then myeloid leukaemia.</p>
+<p>The amounts are the trap. For 7 of the 15 leading drug diagnoses, the bill for the whole
+year is R$ 0. The Ministry buys those medicines centrally and ships them to the states,
+so the authorisation records the dispensing but not the cost. In 2024 the authorisations
+billed R$ 1.43 billion. The federal budget line that buys these drugs spent
+R$ 9.92 billion in the same year. Between 2014 and 2020 the number of records rose by half
+while the billed amount fell by half. The authorisations measure <strong>how many patients get
+which treatment, where</strong>. They do not measure spending.</p>
+<p><img decoding="async" loading="lazy" src="/analises/img/rwd-specialty-drugs-trend.png" alt="Growth of specialised-drug dispensing by diagnosis 2014–2024, and rheumatoid arthritis by state"></p>
+<p>Over time they show uptake. Between 2014 and 2024, records for psoriasis grew 5.5 times,
+lupus 4.8 times and ankylosing spondylitis 3.5 times, as new medicines, many of them
+biologics, entered the public treatment protocols. Rheumatoid arthritis doubled. Multiple
+sclerosis and inflammatory bowel disease grew 1.8 times. Alzheimer&#39;s disease did not
+move. Across states the same disease is treated at very different rates. Paraná
+dispenses rheumatoid arthritis drugs to 289 patients per 100,000 in an average month, the
+national figure is 110 and Alagoas is at 13. Rheumatoid arthritis prevalence does not
+vary 22-fold between Brazilian states, so most of that gap is access to diagnosis and
+to the programme. For a launch plan or a market-access case, that gap is the finding.
+The usual limits apply. Without a patient identifier, a patient on two drugs counts
+twice, switching between drugs is invisible, and persistence cannot be measured.</p>
 <h2>What it can and can&#39;t answer</h2>
 <p><strong>Good fit:</strong></p>
 <ul>
@@ -318,6 +366,7 @@ That comes with a caveat: comorbidity is recorded more carefully in severe cases
 diseases, nationally and down to the municipality.</li>
 <li>Health-care use and cost in the public system: admissions, length of stay, ICU use,
 outpatient high-cost procedures and drugs (APAC), amounts paid.</li>
+<li>Treatment uptake by disease and state for high-cost and cancer drugs dispensed by SUS.</li>
 <li>Ecological studies that join health outcomes to social and environmental data by
 municipality, which Brazil publishes for every municipality.</li>
 <li>Facility-level analyses of volume, capacity (beds, equipment, staff) and outcomes.</li>
@@ -330,36 +379,62 @@ surveillance; birth weight and gestational age in births.</li>
 persistence, time-to-event from diagnosis to death. This needs restricted access to
 identified data.</li>
 <li>Anything in the private sector, a quarter of the population, unevenly distributed.</li>
-<li>Outpatient diagnosis, which is mostly absent outside high-complexity procedures.</li>
-<li>Prescriptions and dispensing outside the controlled-drug file.</li>
+<li>Outpatient diagnosis, which is mostly absent outside high-complexity procedures and
+high-cost drugs.</li>
+<li>Retail prescriptions and dispensing: what is public covers controlled drugs, and SUS
+high-cost drugs by diagnosis. The cost of centrally purchased drugs is not in the
+record.</li>
+<li>Anything molecular. Brazil publishes no genomic, transcriptomic or biomarker data
+alongside these systems. The one laboratory result in the national files is the dengue
+serotype, recorded for about 3% of cases.</li>
 <li>Comparisons across long periods without checking for coding and classification changes.</li>
 </ul>
 <h2>Method</h2>
 <ul>
-<li><strong>Sources.</strong> Ministry of Health / DATASUS: SIH (reduced admission records and
+<li><p><strong>Sources.</strong> Ministry of Health / DATASUS: SIH (reduced admission records and
 professional services), SIA (outpatient production and psychosocial care), SIM, SINASC,
 SINAN (dengue, chikungunya, zika, yellow fever, extra-Amazon malaria, severe acute
 respiratory infection, violence), SISVAN, SI-PNI, CNES. National Supplementary Health
 Agency (ANS). Anvisa (SNGPC). IBGE (population, municipality directory). Official ICD-10
-table. SI-PNI read from a public third-party mirror of the official files.</li>
-<li><strong>Counts</strong> are records as published, by the year stored in each file. Rows are not
-people.</li>
-<li><strong>Completeness</strong> uses 2022 records; outpatient individual records (BPA-I, APAC, RAAS) and
+table. SI-PNI read from a public third-party mirror of the official files.</p>
+</li>
+<li><p><strong>Counts</strong> are records as published, by the year stored in each file. Rows are not
+people.</p>
+</li>
+<li><p><strong>Completeness</strong> uses 2022 records; outpatient individual records (BPA-I, APAC, RAAS) and
 nutrition records use June 2022. A field counts as usable when it is not blank and not
-coded as unknown.</li>
-<li><strong>Linkage</strong> match rates compare each key with the official reference list: IBGE
+coded as unknown.</p>
+</li>
+<li><p><strong>Linkage</strong> match rates compare each key with the official reference list: IBGE
 municipalities (7- or 6-digit), the CNES facility registry for the same year, and valid
-3- and 4-character ICD-10 codes.</li>
-<li><strong>Ill-defined causes</strong> use the underlying cause of death; the state comes from the
+3- and 4-character ICD-10 codes.</p>
+</li>
+<li><p><strong>Ill-defined causes</strong> use the underlying cause of death; the state comes from the
 municipality-of-residence code, keeping deaths with a known state and unknown
-municipality. The 1996 national total (908,883 deaths) matches the official figure.</li>
-<li><strong>Private coverage</strong> counts active beneficiaries of medical-hospital plans in December,
+municipality. The 1996 national total (908,883 deaths) matches the official figure.</p>
+</li>
+<li><p><strong>Private coverage</strong> counts active beneficiaries of medical-hospital plans in December,
 using only the latest data load for each month. The December 2022 total (50.0 million)
-is within 2% of the figure published by ANS.</li>
-<li><strong>Dengue</strong> probable cases are notifications not classified as discarded; admissions have
-principal diagnosis A90–A91; certificate deaths have underlying cause A90–A91.</li>
+is within 2% of the figure published by ANS.</p>
+</li>
+<li><p><strong>Dengue</strong> probable cases are notifications not classified as discarded; admissions have
+principal diagnosis A90–A91; certificate deaths have underlying cause A90–A91.</p>
+</li>
+<li><p><strong>High-cost drugs</strong> are outpatient authorisations (APAC, principal and secondary)
+in SIGTAP group 06.04, the Specialised Component of Pharmaceutical Care, and cancer
+drug therapy in group 03.04. They are counted by year of processing. 2025 is left out
+because the copy holds only its first seven months. The diagnosis is the 3-character
+ICD-10 category, taken from whichever of the two diagnosis fields is filled. Rates by
+state use the state of the dispensing facility and IBGE population estimates for 2024.
+The federal reference is budget action 4705 (medicines of the Specialised Component),
+amount paid, from the federal budget execution data.</p>
+</li>
+<li><p><strong>Serotype</strong> counts probable dengue cases whose form records DENV-1 to DENV-4. 2026 is
+partial.</p>
+</li>
 </ul>
-<p><em>Data run on 5 October 2026.</em></p>
+<p><em>Data run on 5 October 2026; the serotype paragraph and worked example 3 on 18 November
+2026.</em></p>
   </div>
 </main>
 
