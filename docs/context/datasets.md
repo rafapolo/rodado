@@ -209,7 +209,7 @@ o arquivo em disco é ~1% maior (rodapé e índices), e muito mais em dataset mi
 | `br_ms_pns` | 3 | 49,8 MB | 521.059 | 2026-07-06 |
 | `br_ms_populacao` | 1 | 17,1 MB | 4.919.222 | 2026-07-06 |
 | `br_ms_pro_residencia` | 3 | 146,2 KB | 11.849 | 2026-11-04 |
-| `br_ms_sia` | 3 | 34,0 GB | 6.298.035.211 | 2026-10-29 |
+| `br_ms_sia` | 3 | 41,6 GB | 7.229.492.236 | 2026-11-18 |
 | `br_ms_sih` | 3 | 32,8 GB | 2.634.914.987 | 2026-11-17 |
 | `br_ms_sim` | 6 | 1,5 GB | 107.245.069 | 2026-10-30 |
 | `br_ms_sinan` | 3 | 617,4 MB | 37.154.410 | 2026-11-03 |
@@ -284,7 +284,7 @@ o arquivo em disco é ~1% maior (rodapé e índices), e muito mais em dataset mi
 | `br_transferegov` | 3 | 7,1 MB | 30.346 | 2026-10-21 |
 | `br_transferegov_siconv` | 62 | 2,8 GB | 69.060.758 | 2026-10-21 |
 | `br_trase_supply_chain` | 7 | 62,9 MB | 1.824.843 | 2026-07-18 |
-| `br_tse_eleicoes` | 32 | 13,0 GB | 1.719.616.522 | 2026-11-17 |
+| `br_tse_eleicoes` | 32 | 13,0 GB | 1.719.617.327 | 2026-11-18 |
 | `br_tse_filiacao_partidaria` | 2 | 1,1 GB | 42.201.443 | 2026-10-09 |
 | `br_ufmg_censo_demografico_1872` | 58 | 8,4 MB | 1.251.630 | 2026-10-07 |
 | `eu_sanctions` | 1 | 1,7 MB | 44.043 | 2026-10-30 |

@@ -2,7 +2,7 @@
 
 **Gerado por `scripts/gera_catalog_md.py`, a partir de `_rodado_metadata/catalog.parquet` — não editar à mão.** Descrições vêm de `docs/context/dataset_descriptions.yaml`; a coluna Dado até vem de `docs/context/dataset_freshness.yaml` (curado, só ~6 datasets por enquanto — vazio não significa "sem gap", significa "não conferido ainda"). Editar os YAML e regenerar (`build_metadata_catalog.py` → `gera_catalog_md.py`), nunca este arquivo.
 
-**296 datasets, 1.761 tabelas, 33.753.873.142 linhas.** 34 dataset(s) sem descrição. 13 com data de frescor conferida (de 296).
+**296 datasets, 1.761 tabelas, 34.685.330.972 linhas.** 34 dataset(s) sem descrição. 13 com data de frescor conferida (de 296).
 
 | Dataset | Descrição | Tabelas | Linhas | Dado até | Fonte |
 |---|---|---:|---:|---|---|
@@ -203,7 +203,7 @@
 | `br_ms_pns` | Ministério da Saúde — Pesquisa Nacional de Saúde | 3 | 521.059 | — | Base dos Dados |
 | `br_ms_populacao` | Ministério da Saúde — estimativas populacionais por município | 1 | 4.919.222 | — | Base dos Dados |
 | `br_ms_pro_residencia` | _(sem descrição)_ | 3 | 11.849 | — | Pró-Residência em Saúde — Ministério da Saúde |
-| `br_ms_sia` | SIA/SUS — produção ambulatorial e psicossocial | 3 | 6.298.035.211 | — | Base dos Dados |
+| `br_ms_sia` | SIA/SUS — produção ambulatorial e psicossocial | 3 | 7.229.492.236 | — | Base dos Dados |
 | `br_ms_sih` | SIH/SUS — Autorizações de Internação Hospitalar (AIH) | 3 | 2.634.914.987 | 2026-07-31 | Base dos Dados |
 | `br_ms_sim` | SIM — Sistema de Informações sobre Mortalidade | 6 | 107.245.069 | — | Base dos Dados |
 | `br_ms_sinan` | SINAN — notificação compulsória de dengue e influenza/SRAG | 3 | 37.154.410 | — | Base dos Dados |
@@ -278,7 +278,7 @@
 | `br_transferegov` | TransfereGov — planos de ação, programas e transferências (API normalizada) | 3 | 30.346 | — | TransfereGov |
 | `br_transferegov_siconv` | TransfereGov/SICONV — convênios, contratos de repasse e execução física/financeira completa | 62 | 69.060.758 | — | Transferegov/SICONV completo |
 | `br_trase_supply_chain` | Trase — cadeia de suprimentos de soja e carne bovina, do frigorífico/esmagadora à origem | 7 | 1.824.843 | — | Sem procedência registrada |
-| `br_tse_eleicoes` | TSE — eleições 2026 (candidatos, votação, resultados, bens, receitas) | 32 | 1.719.616.522 | 2026-10-25 | Base dos Dados |
+| `br_tse_eleicoes` | TSE — eleições 2026 (candidatos, votação, resultados, bens, receitas) | 32 | 1.719.617.327 | 2026-10-25 | Base dos Dados |
 | `br_tse_filiacao_partidaria` | TSE — filiação partidária | 2 | 42.201.443 | — | Base dos Dados |
 | `br_ufmg_censo_demografico_1872` | Recenseamento Geral do Império do Brasil de 1872 (UFMG) por província, município e paróquia, nos dados originais e corrigidos | 58 | 1.251.630 | — | Base dos Dados |
 | `eu_sanctions` | União Europeia — lista de sanções | 1 | 44.043 | — | EU Sanctions |
