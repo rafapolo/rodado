@@ -224,6 +224,7 @@ ATLAS_DATASET_THEME = {
     "br_fipe_veiculos": "economia",
     "br_firjan_ifgf": "governo",
     "br_geobr_mapas": "territorio",
+    "br_funai_terras_indigenas": "territorio",
     "br_ggb_relatorio_lgbtqi": "seguranca",
     "br_ibama_autos": "meio_ambiente",
     "br_ibama_ctf": "meio_ambiente",

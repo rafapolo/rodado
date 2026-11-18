@@ -292,6 +292,8 @@ concept_aliases:
   # sob outro nome (a ponte com a expressão de conversão está em `bridges`).
   # Município por NOME (rntrc, ciot, assentamentos) fica de fora: não é o mesmo
   # valor, só junta por strip_accents + UF.
+  br_funai_terras_indigenas.poligonos:
+    uf_sigla: sigla_uf
   br_aneel_dadosabertos.siga_empreendimentos_geracao:
     SigUFPrincipal: sigla_uf
   br_aneel_dadosabertos.empreendimento_geracao_distribuida:
@@ -1428,6 +1430,12 @@ bridges:
     verified: 12.044 of 12.044 Brazil-destination rows parsed (12.944
       total rows, 900 international) — found answering tema 51, T51-2,
       2026-08-25
+  - table: br_funai_terras_indigenas.poligonos
+    column: uf_sigla
+    description: 2-letter code — UF da terra; 18 de 665 terras cruzam divisa e trazem a lista ('AM,RR'), que não casa
+    verified: 647 de 665 polígonos com uma UF só — 2026-11-17
+    concept: sigla_uf
+    join_expr: '{s}.uf_sigla = {d}.sigla_uf'
   - table: br_aneel_dadosabertos.siga_empreendimentos_geracao
     column: SigUFPrincipal
     description: 2-letter code — UF principal da usina (usina que cruza divisa tem outras UFs só em texto)
