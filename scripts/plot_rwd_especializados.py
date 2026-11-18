@@ -7,7 +7,7 @@ qN_*.sql (SIA/APAC, SINAN dengue, população do IBGE, CID-10, orçamento federa
 PNGs em pages/analises/img/, no mesmo formato das figuras de plot_dengue_rwd.py:
 matplotlib, 12,4 pol. de largura, dpi 200, título, subtítulo, leitura e fonte na figura.
 
-2025 fica fora das séries do SIA: a cópia tem só os primeiros 7 meses de processamento.
+2026 fica fora das séries do SIA: o ano ainda está em curso (FTP do DATASUS até 2026-08).
 Supressão: célula com menos de 10 registros não aparece.
 """
 from pathlib import Path
@@ -25,7 +25,7 @@ RED, BLUE, TEAL = "#d1453b", "#2a78d6", "#1f9e89"
 PALE_RED, PALE_BLUE = "#e8a29c", "#a9c7ef"
 GRID, REF = "#e6e6e2", "#b6b6ae"
 MIN_N = 10
-ULTIMO_ANO_SIA = 2024
+ULTIMO_ANO_SIA = 2025
 
 FONTE_SIA = ("Ministry of Health / DATASUS: Outpatient Information System (SIA/SUS), "
              "high-complexity authorisations (APAC)")
@@ -193,7 +193,7 @@ def crescimento():
         ult = y
     ax1.axhline(1, color=REF, lw=1, ls=(0, (5, 3.5)))
     ax1.set_xlim(2014, ULTIMO_ANO_SIA)
-    ax1.set_xticks([2014, 2016, 2018, 2020, 2022, 2024])
+    ax1.set_xticks(list(range(2014, ULTIMO_ANO_SIA + 1, 2)))
     ax1.text(0.0, 1.03, "Dispensing records, 2014 = 1", transform=ax1.transAxes,
              fontsize=12.5, color=TXT2)
 
@@ -227,12 +227,12 @@ def crescimento():
     moldura(
         fig,
         "Immunology drugs grew fastest, and reach patients unevenly",
-        "SUS specialised-component dispensing by diagnosis, 2014–2024 (left) and rheumatoid arthritis by state (right)",
+        f"SUS specialised-component dispensing by diagnosis, 2014–{ULTIMO_ANO_SIA} (left) and rheumatoid arthritis by state (right)",
         "Records for psoriasis, lupus and ankylosing spondylitis grew three to five times in a decade, as new drugs, many of them\n"
         "biologics, entered the public treatment protocols; Alzheimer's stayed flat. For the same disease, "
         f"Paraná dispenses to\n{pr:.0f} patients per 100,000 and Alagoas to {al:.0f}: a {pr / al:.0f}-fold gap "
         "that measures access, not prevalence.",
-        f"Source: {FONTE_SIA}, SIGTAP group 06.04; IBGE population estimates 2024.\n"
+        f"Source: {FONTE_SIA}, SIGTAP group 06.04; IBGE population estimates {ULTIMO_ANO_SIA}.\n"
         "State of the dispensing facility. Monthly records ÷ 12 ≈ patients on treatment in an average month "
         "(one record per drug, so patients on two drugs count twice).",
         topo=0.965,

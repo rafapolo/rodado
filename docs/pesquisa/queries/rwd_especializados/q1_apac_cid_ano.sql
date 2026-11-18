@@ -12,7 +12,7 @@ SELECT ano,
   round(sum(valor_aprovado_procedimento), 2) valor,
   count(DISTINCT mes) meses
 FROM br_ms_sia.producao_ambulatorial
-WHERE ano BETWEEN 2014 AND 2025 AND instrumento_registro IN ('P', 'S')
+WHERE ano BETWEEN 2014 AND 2026 AND instrumento_registro IN ('P', 'S')
   AND substr(id_processamento_ambulatorial, 1, 4) IN ('0304', '0604')
 GROUP BY ALL
 HAVING count(*) >= 10;
