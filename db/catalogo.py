@@ -53,6 +53,10 @@ def log(msg):
 def _conexao(arquivo=":memory:"):
     con = duckdb.connect(arquivo, config={"threads": 32, "memory_limit": "1GB"})
     con.execute("LOAD httpfs")
+    # GLOBAL: as views são criadas em cursor(), que não herda SET de sessão. Com o padrão (30 s)
+    # br_ms_sia.producao_ambulatorial (478 rodapés) caía por timeout a cada volta (2026-11-18);
+    # com 120 s monta em ~8 min. Só a montagem: as consultas seguem com RODADO_HTTP_TIMEOUT.
+    con.execute("SET GLOBAL http_timeout=120")
     con.execute(rodado_sql.segredo_s3("catalogo_s3"))  # temporário: não fica gravado no arquivo
     return con
 
