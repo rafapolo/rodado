@@ -57,6 +57,10 @@ def _conexao(arquivo=":memory:"):
     # br_ms_sia.producao_ambulatorial (478 rodapés) caía por timeout a cada volta (2026-11-18);
     # com 120 s monta em ~8 min. Só a montagem: as consultas seguem com RODADO_HTTP_TIMEOUT.
     con.execute("SET GLOBAL http_timeout=120")
+    # Conexão reaproveitada pendura no object storage da Hetzner: br_ibge_pnadc.microdados (1.291
+    # rodapés) caía por timeout de HEAD/GET em toda volta, com 32 ou 4 threads, e montava em 106 s
+    # sem keep-alive (2026-11-19). Um arquivo isolado responde em 0,1 s.
+    con.execute("SET GLOBAL http_keep_alive=false")
     con.execute(rodado_sql.segredo_s3("catalogo_s3"))  # temporário: não fica gravado no arquivo
     return con
 

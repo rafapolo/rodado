@@ -132,7 +132,7 @@ o arquivo em disco é ~1% maior (rodapé e índices), e muito mais em dataset mi
 | `br_ibge_pib` | 8 | 6,1 MB | 225.905 | 2026-11-03 |
 | `br_ibge_pnad` | 3 | 121,4 MB | 9.587.801 | 2026-07-05 |
 | `br_ibge_pnad_covid` | 2 | 62,1 MB | 2.651.013 | 2026-09-25 |
-| `br_ibge_pnadc` | 14 | 29,3 GB | 31.529.302 | 2026-07-09 |
+| `br_ibge_pnadc` | 14 | 30,2 GB | 33.594.041 | 2026-11-19 |
 | `br_ibge_pof` | 18 | 100,1 MB | 6.218.668 | 2026-10-31 |
 | `br_ibge_populacao` | 3 | 660,0 KB | 192.080 | 2026-07-05 |
 | `br_ibge_ppm` | 4 | 15,0 MB | 3.111.747 | 2026-10-09 |
@@ -284,7 +284,7 @@ o arquivo em disco é ~1% maior (rodapé e índices), e muito mais em dataset mi
 | `br_transferegov` | 3 | 7,1 MB | 30.346 | 2026-10-21 |
 | `br_transferegov_siconv` | 62 | 2,8 GB | 69.060.758 | 2026-10-21 |
 | `br_trase_supply_chain` | 7 | 62,9 MB | 1.824.843 | 2026-07-18 |
-| `br_tse_eleicoes` | 32 | 13,0 GB | 1.719.617.327 | 2026-11-18 |
+| `br_tse_eleicoes` | 32 | 13,0 GB | 1.719.617.327 | 2026-11-19 |
 | `br_tse_filiacao_partidaria` | 2 | 1,1 GB | 42.201.443 | 2026-10-09 |
 | `br_ufmg_censo_demografico_1872` | 58 | 8,4 MB | 1.251.630 | 2026-10-07 |
 | `eu_sanctions` | 1 | 1,7 MB | 44.043 | 2026-10-30 |

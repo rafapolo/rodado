@@ -2,7 +2,7 @@
 
 **Gerado por `scripts/gera_catalog_md.py`, a partir de `_rodado_metadata/catalog.parquet` — não editar à mão.** Descrições vêm de `docs/context/dataset_descriptions.yaml`; a coluna Dado até vem de `docs/context/dataset_freshness.yaml` (curado, só ~6 datasets por enquanto — vazio não significa "sem gap", significa "não conferido ainda"). Editar os YAML e regenerar (`build_metadata_catalog.py` → `gera_catalog_md.py`), nunca este arquivo.
 
-**296 datasets, 1.761 tabelas, 34.685.330.972 linhas.** 34 dataset(s) sem descrição. 13 com data de frescor conferida (de 296).
+**296 datasets, 1.761 tabelas, 34.687.395.711 linhas.** 34 dataset(s) sem descrição. 13 com data de frescor conferida (de 296).
 
 | Dataset | Descrição | Tabelas | Linhas | Dado até | Fonte |
 |---|---|---:|---:|---|---|
@@ -126,7 +126,7 @@
 | `br_ibge_pib` | IBGE — PIB municipal e estadual | 8 | 225.905 | — | IBGE — Contas Nacionais Trimestrais (PIB e valor adicionado por setor), série completa |
 | `br_ibge_pnad` | IBGE — PNAD, microdados compatibilizados históricos | 3 | 9.587.801 | — | Base dos Dados |
 | `br_ibge_pnad_covid` | IBGE — PNAD-COVID19, microdados mensais de mai a nov/2020 (2,65 mi pessoas, pesar por v1032) e o dicionário | 2 | 2.651.013 | — | IBGE — PNAD COVID19, microdados mensais mai–nov/2020 |
-| `br_ibge_pnadc` | IBGE — PNAD Contínua, mercado de trabalho e rendimento | 14 | 31.529.302 | — | Base dos Dados |
+| `br_ibge_pnadc` | IBGE — PNAD Contínua, mercado de trabalho e rendimento | 14 | 33.594.041 | — | Base dos Dados |
 | `br_ibge_pof` | IBGE — Pesquisa de Orçamentos Familiares | 18 | 6.218.668 | — | IBGE — POF 2017-2018, registros que faltavam |
 | `br_ibge_populacao` | IBGE — estimativas populacionais por município, UF e Brasil | 3 | 192.080 | — | Base dos Dados |
 | `br_ibge_ppm` | IBGE — Pesquisa Pecuária Municipal (rebanhos, aquicultura, produção animal) | 4 | 3.111.747 | — | Base dos Dados |

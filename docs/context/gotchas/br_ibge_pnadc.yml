@@ -17,13 +17,14 @@ gotchas:
     tabelas: [microdados]
     colunas: [habitual, efetivo]
     severidade: silencioso
-    verificado: "primeiro trimestre com count(habitual)=0 é 2021-T4, e segue nulo até 2025-T3; em 2012-T1 habitual vai de 1,65 a 1,81 — medido 2026-10-19"
+    verificado: "primeiro trimestre com count(habitual)=0 é 2021-T4, e segue nulo até 2026-T3 (os trimestres trazidos direto do IBGE também vêm NULL); em 2012-T1 habitual vai de 1,65 a 1,81 — medido 2026-10-19"
   - id: populacao_cai_em_2025
-    resumo: "A população estimada cai de 217,5 mi (2024-T4) para 212,5 mi (2025-T1): mudança de pesos, não de pessoas. Totais absolutos não se comparam entre os dois lados; taxas mudam pouco."
+    resumo: "2012-T1 a 2024-T4 estão com os pesos ANTIGOS; 2025-T1 em diante, com os pesos do Censo 2022 (o IBGE republicou a série inteira repesada em 2025-08-15, Nota técnica 02/2025, e a cópia da BD não pegou). Daí a população cair de 217,5 mi (2024-T4) para 212,5 mi (2025-T1) sem mudança real. Totais absolutos não se comparam entre os dois lados; taxas quase não mudam."
     tabelas: [microdados]
-    colunas: [V1028]
+    colunas: [V1028, V1027, V1029, V1033]
     severidade: silencioso
-    verificado: "sum(V1028) 2024-T4 = 217,5 mi, 2025-T1 = 212,5 mi; a causa provável (repesagem pelo Censo 2022) não foi conferida na nota do IBGE — medido 2026-10-19"
+    verificado: "2024-T4 do FTP (repesado) convertido e comparado ao disco: mesmas 469.334 pessoas, 1 linha diferente fora dos pesos; sum(V1028) disco 217,5 mi x fonte 212,3 mi; desocupação 6,17% x 6,16% — medido 2026-11-19"
+
   - id: amostra_menor_na_pandemia
     resumo: "A amostra caiu de ~570 mil para 320–370 mil pessoas por trimestre de 2020-T2 a 2021-T2 (entrevista por telefone): estimativas desse período têm erro maior."
     tabelas: [microdados]
@@ -36,3 +37,15 @@ gotchas:
     colunas: [V3003, V3003A, V3009, V3009A, V4006, V4006A, VD4004, VD4004A, VD4023, VD4030]
     severidade: silencioso
     verificado: "2014-T1: V3003 preenchida 154.056, V3003A 0; 2020-T1: V3003 0, V3003A 116.288 — medido 2026-10-19"
+  - id: procedencia_mista
+    resumo: "Até 2025-T3 os shards (000000000000.parquet…) são cópia do Base dos Dados; de 2025-T4 em diante, ibge_<aaaa>t<t>.parquet vêm do FTP do IBGE por scripts/scrap/ibge_pnadc_microdados.py, no mesmo schema e com as mesmas regras de código."
+    tabelas: [microdados]
+    colunas: [ano, trimestre]
+    severidade: informativo
+    verificado: "2025-T3 convertido da fonte = disco linha a linha (490.488, EXCEPT ALL zero nos dois sentidos) — medido 2026-11-19"
+  - id: gerente_nao_e_o_do_ibge
+    resumo: "Contar 'cargo gerencial' como V4010 no grande grupo 1 da COD (diretores e gerentes) dá pretos e pardos em 33,7% em 2025, contra 30,7% em 'Desigualdades Sociais por Cor ou Raça' (IBGE, 2026-11-18): o recorte do IBGE é mais estreito e não está nos microdados. O resto do estudo bate (55,1% dos ocupados; 19,6% dos 20% de gerentes mais bem pagos; desocupação por cor)."
+    tabelas: [microdados]
+    colunas: [V4010, V2010]
+    severidade: silencioso
+    verificado: "2025-T1..T4 pesados por V1028/4, VD4002='1': pretos+pardos 55,4% dos ocupados, 33,7% do grupo 1; top 20% de VD4016 entre gerentes 19,1–20,5% por trimestre — medido 2026-11-19"
