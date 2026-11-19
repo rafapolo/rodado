@@ -247,11 +247,18 @@ def bloco(path: Path, titulo: str, descricao: str) -> str:
     url = BASE + rel_url(path)
     prefixo = prefixo_de(path)
     secao = secao_da_ficha(path)
-    if secao:
-        # cada análise/plataforma tem seu cartão editorial
-        # (scripts/gera_og_image.py); sem isso todas compartilhariam a capa do
-        # site no feed
-        imagem = f"{BASE}/{secao}/img/og-{path.parent.name}.png"
+    # cada análise/plataforma tem seu cartão editorial
+    # (scripts/gera_og_image.py); sem isso todas compartilhariam a capa do
+    # site no feed. O cartão pode estar na outra seção: os-rios-estao-secando
+    # mora em analises/ mas virou plataforma e o cartão dela é gerado em
+    # plataformas/img/ — apontar para analises/img/ dava 404 (2026-11-19).
+    nome_og = f"og-{path.parent.name}.png"
+    secao_og = next(
+        (s for s in (secao, *SECOES_COM_FICHA) if s and (PAGES / s / "img" / nome_og).exists()),
+        None,
+    ) if secao else None
+    if secao_og:
+        imagem = f"{BASE}/{secao_og}/img/{nome_og}"
     else:
         nome = 'og-en.png' if en else 'og.png'
         # ?v=<hash do arquivo>: o LinkedIn guarda a imagem pela URL e não
@@ -476,6 +483,10 @@ def alvos() -> list[Path]:
             p for p in (PAGES / secao).glob("*/index.html")
             if p.parent.name in slugs
         )
+    # série de tendência dos rios: página própria em analises/ cujo slug está
+    # no manifest de plataformas (o card de lá aponta para o mapa). Sem entrar
+    # aqui o bloco de SEO dela congelou com og:image em 404 (2026-11-19).
+    arquivos.append(PAGES / "analises" / "os-rios-estao-secando" / "index.html")
     return arquivos
 
 
@@ -511,6 +522,9 @@ def urls_externas() -> list[str]:
     # mas seguem no ar e recebem link: bens-dos-candidatos é o texto para o
     # qual o painel /plataformas/patrimonio/ manda o leitor de volta
     urls += [f"{BASE}/analises/bens-dos-candidatos/"]
+    # a série de tendência por estação (vinda do repositório rios-do-brasil)
+    # segue no ar, indexável e com cartão, mas não estava no sitemap
+    urls += [f"{BASE}/analises/os-rios-estao-secando/"]
     prefixo = f"{BASE}/plataformas/"
     for item in manifest_da_secao("plataformas"):
         url = item.get("url", "").split("?")[0].split("#")[0]

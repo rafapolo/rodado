@@ -10,7 +10,11 @@ dengue-deaths-by-source-2014-2024.png, de scripts/plot_dengue_rwd.py.
 
 Cor: vermelho de destaque das análises; rampa sequencial azul de um só matiz
 (#cde2fb -> #0d366b, a padrão do skill dataviz) nos mapas de calor.
+
+`--pt` gera as mesmas figuras em português, com sufixo -pt, para o par
+dados-de-mundo-real-do-sus.
 """
+import sys
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -29,7 +33,21 @@ GRID, REF, VAZIO = "#e6e6e2", "#b6b6ae", "#ecece8"
 SEQ = LinearSegmentedColormap.from_list(
     "azul", ["#cde2fb", "#86b6ef", "#3987e5", "#1c5cab", "#0d366b"])
 
-MS = "Ministry of Health / DATASUS"
+PT = "--pt" in sys.argv
+
+
+def T(en, pt):
+    """Texto no idioma da rodada."""
+    return pt if PT else en
+
+
+def num(v, molde):
+    """Formata com o molde em inglês e troca os separadores em português."""
+    txt = molde.format(v)
+    return txt.replace(",", "\0").replace(".", ",").replace("\0", ".") if PT else txt
+
+
+MS = T("Ministry of Health / DATASUS", "Ministério da Saúde / DATASUS")
 
 # fonte -> (classe no vocabulário de pharma, unidade de registro)
 FONTES = [
@@ -59,6 +77,45 @@ FONTES = [
     ("Population (MS/IBGE)", "Denominator", "population by municipality x sex x age"),
 ]
 
+# nome da fonte (chave dos CSVs, em inglês) -> (nome, classe, unidade) em português
+FONTES_PT = {
+    "SIH · admissions (AIH)": ("SIH · internações (AIH)", "Faturamento", "uma internação (pagador público)"),
+    "SIH · professional services": ("SIH · serviços profissionais", "Faturamento", "um ato profissional faturado numa internação"),
+    "SIA · outpatient production": ("SIA · produção ambulatorial", "Faturamento", "uma linha de procedimento ambulatorial (BPA/APAC)"),
+    "SIA · psychosocial care (RAAS)": ("SIA · atenção psicossocial (RAAS)", "Faturamento", "um mês de cuidado em saúde mental (CAPS)"),
+    "SIM · deaths": ("SIM · óbitos", "Registro", "uma declaração de óbito"),
+    "SINASC · live births": ("SINASC · nascidos vivos", "Registro", "uma declaração de nascido vivo"),
+    "SINAN · dengue": ("SINAN · dengue", "Vigilância", "uma ficha de notificação"),
+    "SINAN · chikungunya": ("SINAN · chikungunya", "Vigilância", "uma ficha de notificação"),
+    "SINAN · zika": ("SINAN · zika", "Vigilância", "uma ficha de notificação"),
+    "SINAN · yellow fever": ("SINAN · febre amarela", "Vigilância", "uma ficha de notificação"),
+    "SINAN · malaria (extra-Amazon)": ("SINAN · malária (fora da Amazônia)", "Vigilância", "uma ficha de notificação"),
+    "SINAN · SARI/influenza": ("SINAN · SRAG/influenza", "Vigilância", "um caso de SRAG hospitalizado"),
+    "SINAN · violence": ("SINAN · violência", "Vigilância", "uma notificação de violência"),
+    "SISVAN · nutrition records": ("SISVAN · estado nutricional", "Prontuário", "uma aferição antropométrica na atenção básica"),
+    "SI-PNI · vaccination microdata": ("SI-PNI · microdados de vacinação", "Registro", "uma dose de vacina"),
+    "SI-PNI · historical doses (aggregated)": ("SI-PNI · doses históricas (agregadas)", "Agregado", "doses por vacina x município x mês"),
+    "Controlled-drug sales (SNGPC)": ("Venda de controlados (SNGPC)", "Dispensação", "uma venda de medicamento controlado em farmácia"),
+    "CNES · facilities (monthly)": ("CNES · estabelecimentos (mensal)", "Cadastro", "um estabelecimento-mês"),
+    "CNES · beds (monthly)": ("CNES · leitos (mensal)", "Cadastro", "um tipo de leito num estabelecimento-mês"),
+    "CNES · professionals (monthly)": ("CNES · profissionais (mensal)", "Cadastro", "um vínculo profissional num estabelecimento-mês"),
+    "ANS · private plan enrolment": ("ANS · beneficiários de planos", "Adesão", "beneficiários por plano x município x mês"),
+    "Vaccination coverage (municipal)": ("Cobertura vacinal (municipal)", "Agregado", "um município-ano"),
+    "Primary care teams (municipal)": ("Equipes de atenção básica (municipal)", "Agregado", "um município-mês"),
+    "Population (MS/IBGE)": ("População (MS/IBGE)", "Denominador", "população por município x sexo x idade"),
+}
+# rótulos de q3_completude.csv
+COMPLETUDE_PT = {
+    "SIH · admissions": "SIH · internações",
+    "SIA · outpatient (individual records)": "SIA · ambulatorial (registros individuais)",
+    "SIM · deaths": "SIM · óbitos",
+    "SINASC · live births": "SINASC · nascidos vivos",
+    "SINAN · dengue": "SINAN · dengue",
+    "SINAN · SARI/influenza": "SINAN · SRAG/influenza",
+    "SINAN · violence": "SINAN · violência",
+    "SISVAN · nutrition": "SISVAN · estado nutricional",
+}
+
 
 def ler(nome):
     return pl.read_csv(Q / f"{nome}.csv", null_values=["NULL", ""])
@@ -85,18 +142,31 @@ def moldura(fig, titulo, subtitulo, leitura, fonte, topo=0.955):
              color=TXT3, linespacing=1.6)
 
 
+def transborda(fig):
+    """Avisa de texto que passa da borda da figura (o português é ~15% mais longo)."""
+    fig.canvas.draw()
+    rend = fig.canvas.get_renderer()
+    for t in fig.findobj(plt.Text):
+        if t.get_visible() and t.get_text().strip():
+            bb = t.get_window_extent(rend)
+            if bb.x1 > fig.bbox.width + 1 or bb.x0 < -1:
+                print(f"  TRANSBORDA ({bb.x1 - fig.bbox.width:+.0f}px):", t.get_text()[:70].replace("\n", " | "))
+
+
 def salva(fig, nome):
-    destino = OUT / f"{nome}.png"
+    transborda(fig)
+    destino = OUT / f"{nome}{'-pt' if PT else ''}.png"
     fig.savefig(destino, facecolor=fig.get_facecolor())
     plt.close(fig)
     print("ok:", destino.relative_to(RAIZ))
 
 
 def compacto(n):
-    for lim, suf in ((1e9, "B"), (1e6, "M"), (1e3, "k")):
+    sufixos = ((1e9, " bi"), (1e6, " mi"), (1e3, " mil")) if PT else ((1e9, "B"), (1e6, "M"), (1e3, "k"))
+    for lim, suf in sufixos:
         if n >= lim:
-            return f"{n / lim:.1f}{suf}".replace(".0", "")
-    return f"{n:,.0f}"
+            return num(n / lim, "{:.1f}").replace(T(".0", ",0"), "") + suf
+    return num(n, "{:,.0f}")
 
 
 # ------------------------------------------------------- 1. linha do tempo
@@ -112,6 +182,8 @@ def linha_do_tempo():
     ax = fig.add_axes((0.30, 0.125, 0.44, 0.68))
     eixo(ax, grid=False)
     norm = LogNorm(vmin=1e3, vmax=2e9)
+    if PT:
+        fontes = [(n, *FONTES_PT[n][1:]) for n, _, _ in fontes]
     for i, (nome, classe, unidade) in enumerate(fontes):
         s = d.filter(pl.col("fonte") == nome)
         mapa = dict(zip(s["ano"].to_list(), s["linhas"].to_list()))
@@ -122,13 +194,13 @@ def linha_do_tempo():
                                        lw=0))
         tot = s["linhas"].sum()
         anos_txt = str(min(mapa)) if min(mapa) == max(mapa) else f"{min(mapa)}–{max(mapa)}"
-        ax.text(2027.0, i, f"{compacto(tot)} rows · {anos_txt}",
+        ax.text(2027.0, i, f"{compacto(tot)} {T('rows', 'linhas')} · {anos_txt}",
                 va="center", fontsize=9.5, color=TXT2)
         ax.text(2027.0, i + 0.36, unidade, va="center", fontsize=7.8, color=TXT3)
     ax.set_xlim(1993.5, 2026.5)
     ax.set_ylim(len(fontes) - 0.5, -0.5)
     ax.set_yticks(range(len(fontes)))
-    ax.set_yticklabels([f"{n}  [{c}]" for n, c, _ in fontes], fontsize=10,
+    ax.set_yticklabels([f"{FONTES_PT[n][0] if PT else n}  [{c}]" for n, c, _ in fontes], fontsize=10,
                        color=TXT2)
     ax.set_xticks([1995, 2000, 2005, 2010, 2015, 2020, 2025])
     # barra de cor
@@ -137,8 +209,21 @@ def linha_do_tempo():
                       orientation="horizontal")
     cb.outline.set_visible(False)
     cb.set_ticks([1e3, 1e5, 1e7, 1e9])
-    cb.set_ticklabels(["1k", "100k", "10M", "1B rows a year"])
+    cb.set_ticklabels(T(["1k", "100k", "10M", "1B rows a year"],
+                        ["1 mil", "100 mil", "10 mi", "1 bi de linhas por ano"]))
     cax.tick_params(labelsize=9.5, colors=TXT3, length=0)
+    if PT:
+        moldura(
+            fig,
+            f"Trinta anos de dados públicos de saúde, em {len(fontes)} tabelas",
+            "Linhas por ano em cada fonte de saúde desta cópia; entre colchetes, a classe no vocabulário da indústria farmacêutica",
+            "Os registros de óbito e nascimento vão até os anos 1990; o faturamento hospitalar e ambulatorial, até 2008–09.\n"
+            "O faturamento é o grosso: 6,2 bilhões de linhas ambulatoriais, 2,4 bilhões de atos profissionais. Cada fonte para\n"
+            "num ano: óbitos em 2022, nascimentos em 2023, faturamento hospitalar em meados de 2025. Cinza = sem dado.",
+            f"Fontes: {MS} (SIH, SIA, SIM, SINASC, SINAN, SISVAN, SI-PNI, CNES); ANS; Anvisa (SNGPC); IBGE.\n"
+            "Linhas são registros como publicados, não pessoas. SI-PNI lido de um espelho público de terceiros dos arquivos oficiais.",
+        )
+        return salva(fig, "rwd-coverage-timeline")
     moldura(
         fig,
         f"Thirty years of public health data, in {len(fontes)} tables",
@@ -158,6 +243,16 @@ def ligacao():
     pct = {r["fonte"]: r for r in lg.iter_rows(named=True)}
     # fonte, rótulo, tempo, armadilha. Células de casamento vêm de q7_ligacao.csv;
     # None = a chave não existe na fonte; "agg" = existe, mas a fonte é agregada
+    linhas_pt = [
+        ("SIH", "SIH · internações", "data de internação", "CID num campo de 3 caracteres OU de 4,\nnunca nos dois; município com 6 dígitos; sexo como 'Feminino'"),
+        ("SIA", "SIA · ambulatorial (individual)", "mês de atendimento", "residência num campo com nome de ID do paciente;\n'parda' = 3 aqui, 4 nas outras"),
+        ("SIM", "SIM · óbitos", "data do óbito", "CNES gravado como '2000733.0'; raça como '4.0';\nóbito em casa não tem estabelecimento"),
+        ("SINASC", "SINASC · nascidos vivos", "data de nascimento", "sexo codificado 1/2, não M/F"),
+        ("SINAN dengue", "SINAN · dengue", "início dos sintomas, sem. epid.", "códigos de classificação com espaço à esquerda\na partir de 2014; sem casos descartados desde 2022"),
+        ("SISVAN", "SISVAN · antropometria", "data da aferição", "'amarela' em 16%: implausível"),
+        ("CNES", "CNES · unidades, leitos, equipes", "mês", "a lista de referência de todo código de estabelecimento"),
+        ("ANS", "ANS · beneficiários de planos", "mês", "várias cargas por mês: ficar com a mais recente"),
+    ]
     linhas = [
         ("SIH", "SIH · hospital admissions", "admission date", "ICD sits in a 3-character OR a 4-character field,\nnever both; 6-digit municipality; sex as 'Feminino'"),
         ("SIA", "SIA · outpatient (individual)", "month of care", "residence hides in a field labelled as a patient ID;\n'parda' = 3 here, 4 elsewhere"),
@@ -170,6 +265,10 @@ def ligacao():
     ]
     cols = [("municipio_casa", "Municipality\n(IBGE code)"), ("cnes_casa", "Facility\n(CNES code)"),
             ("cid_casa", "Diagnosis\n(ICD-10)"), (None, "Patient ID")]
+    if PT:
+        linhas = linhas_pt
+        cols = [("municipio_casa", "Município\n(código IBGE)"), ("cnes_casa", "Estabelecimento\n(código CNES)"),
+                ("cid_casa", "Diagnóstico\n(CID-10)"), (None, "ID do paciente")]
     fig = plt.figure(figsize=(12.4, 10.6), dpi=200, facecolor=FIG_BG)
     ax = fig.add_axes((0.25, 0.10, 0.40, 0.60))
     ax.set_xlim(-0.5, len(cols) - 0.5)
@@ -188,11 +287,11 @@ def ligacao():
             if isinstance(v, float):
                 fc, txt, cor = SEQ(norm(v)), f"{v * 100:.0f}%", "white" if v > 0.55 else TXT
             elif v == "ref":
-                fc, txt, cor = VAZIO, "reference", TXT2
+                fc, txt, cor = VAZIO, T("reference", "referência"), TXT2
             elif v == "agg":
-                fc, txt, cor = VAZIO, "aggregate", TXT2
+                fc, txt, cor = VAZIO, T("aggregate", "agregado"), TXT2
             else:
-                fc, txt, cor = SURFACE, "none" if c is None else "—", RED if c is None else TXT3
+                fc, txt, cor = SURFACE, T("none", "nenhum") if c is None else "—", RED if c is None else TXT3
             ax.add_patch(FancyBboxPatch((j - 0.45, i - 0.40), 0.90, 0.80,
                                         boxstyle="round,pad=0,rounding_size=0.08",
                                         fc=fc, ec=GRID if fc == SURFACE else "none", lw=1))
@@ -206,9 +305,21 @@ def ligacao():
                  va="center", fontsize=9.3, color=TXT2, linespacing=1.35)
     for j, (_, t) in enumerate(cols):
         ax.text(j, -0.62, t, ha="center", va="bottom", fontsize=11, color=TXT2)
-    fig.text(0.665, 0.715, "Coding traps found on the way", fontsize=11, color=TXT,
+    fig.text(0.665, 0.715, T("Coding traps found on the way", "Armadilhas de codificação achadas no caminho"), fontsize=11, color=TXT,
              fontweight="bold", va="bottom")
-    fig.text(0.245, 0.715, "time key", fontsize=9.5, color=TXT3, ha="right", va="bottom")
+    fig.text(0.245, 0.715, T("time key", "chave de tempo"), fontsize=9.5, color=TXT3, ha="right", va="bottom")
+    if PT:
+        moldura(
+            fig,
+            "Sem ID do paciente: os sistemas se cruzam por lugar",
+            "Parcela dos registros de 2022 cuja chave casa com a lista oficial de referência, por fonte",
+            "Toda fonte traz o código IBGE do município, e todas menos a declaração de óbito trazem um código de estabelecimento\n"
+            "válido em 98–100% dos registros. Nenhuma traz identificador do paciente: a ligação é ecológica (lugar x tempo)\n"
+            "ou por estabelecimento, nunca por pessoa. O mesmo conceito é codificado de formas diferentes, sem erro.",
+            f"Fontes: {MS}, 2022 (registros individuais do SIA e SISVAN: junho de 2022); ANS; cadastro de municípios do IBGE; tabela\n"
+            "oficial da CID-10. Diagnóstico = CID-10 válido de 3 ou 4 caracteres; no SIA a parcela é baixa porque a maioria dos registros não tem CID.",
+        )
+        return salva(fig, "rwd-linkage-map")
     moldura(
         fig,
         "No patient ID: the systems meet on place and facility",
@@ -228,6 +339,10 @@ def completude():
     campos = [("residencia", "municipality\nof residence"), ("data_evento", "event date"),
               ("idade", "age"), ("sexo", "sex"), ("raca", "race/colour"),
               ("cid", "ICD-10\ndiagnosis")]
+    if PT:
+        campos = [("residencia", "município\nde residência"), ("data_evento", "data do evento"),
+                  ("idade", "idade"), ("sexo", "sexo"), ("raca", "raça/cor"),
+                  ("cid", "diagnóstico\nCID-10")]
     fontes = d["fonte"].to_list()
     fig = plt.figure(figsize=(12.4, 9.6), dpi=200, facecolor=FIG_BG)
     ax = fig.add_axes((0.30, 0.12, 0.66, 0.58))
@@ -239,7 +354,7 @@ def completude():
             if v is None:
                 ax.add_patch(plt.Rectangle((j - 0.47, i - 0.45), 0.94, 0.9, fc=VAZIO,
                                            hatch="///", ec="#d9d9d4", lw=0))
-                ax.text(j, i, "n/a", ha="center", va="center", fontsize=10, color=TXT3)
+                ax.text(j, i, T("n/a", "n/d"), ha="center", va="center", fontsize=10, color=TXT3)
                 continue
             ax.add_patch(plt.Rectangle((j - 0.47, i - 0.45), 0.94, 0.9,
                                        fc=SEQ(norm(v)), lw=0))
@@ -252,8 +367,21 @@ def completude():
     ax.set_xticklabels([t for _, t in campos], fontsize=11, color=TXT2)
     ax.xaxis.tick_top()
     ax.set_yticks(range(len(fontes)))
-    ax.set_yticklabels([f"{f}\n{n:,.0f} records" for f, n in zip(fontes, d["n"].to_list())],
+    ax.set_yticklabels([f"{COMPLETUDE_PT.get(f, f) if PT else f}\n{num(n, '{:,.0f}')} {T('records', 'registros')}"
+                        for f, n in zip(fontes, d["n"].to_list())],
                        fontsize=10.5, color=TXT2)
+    if PT:
+        moldura(
+            fig,
+            "Onde, quando, quem, o quê: a completude dos campos",
+            "Parcela dos registros de 2022 com valor utilizável (não vazio, não 'ignorado'); n/d = o campo não existe na fonte",
+            "Lugar, data, idade e sexo estão quase completos em todo lugar, com uma exceção: o sexo está vazio em todo registro\n"
+            "de SRAG. Raça/cor é o campo fraco (75–85% na maioria dos arquivos). Só um registro ambulatorial individual em três\n"
+            "traz diagnóstico, e 6% das declarações de óbito não nomeiam causa real (capítulo R da CID-10, contado como faltante).",
+            f"Fonte: {MS}: SIH, SIA (registros individuais — BPA-I, APAC, RAAS — junho de 2022), SIM, SINASC, SINAN, SISVAN.\n"
+            "Idade no SINASC é a da mãe; na SRAG, data de nascimento. Diagnóstico no SIM = causa básica fora do capítulo R (mal definidas).",
+        )
+        return salva(fig, "rwd-completeness-2022")
     moldura(
         fig,
         "Where, when, who, what: how complete the key fields are",
@@ -282,7 +410,7 @@ def mal_definidas():
         for a, v in zip(s["ano"].to_list(), s["p"].to_list()):
             ax.add_patch(plt.Rectangle((a - 0.5, i - 0.5), 1, 1, fc=SEQ(norm(v)), ec=SURFACE, lw=0.6))
         fim = s.filter(pl.col("ano") == 2022)["p"][0]
-        ax.text(2022.9, i, f"{fim * 100:.1f}%", va="center", fontsize=9.5, color=TXT2)
+        ax.text(2022.9, i, f"{num(fim * 100, '{:.1f}')}%", va="center", fontsize=9.5, color=TXT2)
     ax.set_xlim(1995.5, 2022.5)
     ax.set_ylim(len(ordem) - 0.5, -0.5)
     ax.set_yticks(range(len(ordem)))
@@ -299,13 +427,25 @@ def mal_definidas():
     ax2.set_xticks([])
     ax2.set_yticks([0, 5, 10, 15])
     ax2.set_yticklabels(["0", "5", "10", "15%"])
-    ax2.text(1996, 16.8, "Brazil", fontsize=10.5, color=TXT, fontweight="bold", va="top")
+    ax2.text(1996, 16.8, T("Brazil", "Brasil"), fontsize=10.5, color=TXT, fontweight="bold", va="top")
     cax = fig.add_axes((0.08, 0.055, 0.30, 0.012))
     cb = fig.colorbar(plt.cm.ScalarMappable(norm=norm, cmap=SEQ), cax=cax, orientation="horizontal")
     cb.outline.set_visible(False)
     cb.set_ticks([0, 0.1, 0.2, 0.3])
-    cb.set_ticklabels(["0%", "10%", "20%", "30% of deaths ill-defined"])
+    cb.set_ticklabels(["0%", "10%", "20%", T("30% of deaths ill-defined", "30% dos óbitos mal definidos")])
     cax.tick_params(labelsize=9.5, colors=TXT3, length=0)
+    if PT:
+        moldura(
+            fig,
+            "Óbitos sem causa: 15% em 1996, ainda 6% em 2022",
+            "Parcela dos óbitos com causa básica mal definida (CID-10 R00–R99), por UF de residência, 1996–2022",
+            "A parcela nacional caiu de 15,1% para 6,1%, quase toda entre 2004 e 2007, quando Norte e Nordeste montaram\n"
+            "serviços de verificação de óbito. O Rio de Janeiro quase não se mexeu (9,6% para 9,4%) e hoje está entre os piores.\n"
+            "Estudo de mortalidade por causa que compare UFs ou décadas precisa ajustar isso, ou mede codificação.",
+            f"Fonte: {MS}: Sistema de Informações sobre Mortalidade (SIM), 1996–2022. UF tirada do código do município de residência\n"
+            "(óbitos com município ignorado e UF conhecida ficam). UFs ordenadas pela parcela de 2022.",
+        )
+        return salva(fig, "rwd-ill-defined-deaths-1996-2022")
     moldura(
         fig,
         "Deaths without a cause: 15% in 1996, still 6% in 2022",
@@ -340,8 +480,8 @@ def cobertura_privada():
     ax.set_xlim(0, 100)
     ax.set_xticks([0, 25, 50, 75, 100])
     ax.set_xticklabels(["0", "25", "50", "75", "100%"])
-    ax.text(0, a.height + 0.1, "private medical plan", fontsize=10.5, color=RED, fontweight="bold")
-    ax.text(100, a.height + 0.1, "SUS only", fontsize=10.5, color=TXT2, ha="right")
+    ax.text(0, a.height + 0.1, T("private medical plan", "plano médico privado"), fontsize=10.5, color=RED, fontweight="bold")
+    ax.text(100, a.height + 0.1, T("SUS only", "só SUS"), fontsize=10.5, color=TXT2, ha="right")
     ax.set_ylim(-0.6, a.height + 0.9)
     ax2 = fig.add_axes((0.71, 0.48, 0.25, 0.26))
     eixo(ax2)
@@ -349,8 +489,20 @@ def cobertura_privada():
              marker="o", ms=6, markeredgecolor=SURFACE)
     ax2.set_ylim(0, 60)
     ax2.set_xticks([2014, 2019, 2024])
-    ax2.text(0, 1.05, "Brazil, millions with a plan (Dec.)", transform=ax2.transAxes,
+    ax2.text(0, 1.05, T("Brazil, millions with a plan (Dec.)", "Brasil, milhões com plano (dez.)"), transform=ax2.transAxes,
              fontsize=10.5, color=TXT, fontweight="bold")
+    if PT:
+        moldura(
+            fig,
+            "O faturamento do SUS vê todos, menos um em cada quatro",
+            "Parcela dos residentes com plano médico privado, por UF, dezembro de 2024",
+            "O faturamento do SUS (SIH, SIA) registra só o cuidado pago pelo sistema público. Quem tem plano privado continua\n"
+            "nos registros de óbito, nascimento e notificação, mas as internações dessa pessoa ficam invisíveis. O ponto cego vai de\n"
+            "4% dos residentes em Roraima a 40% em São Paulo: o viés de qualquer estimativa hospitalar muda de UF para UF.",
+            "Fonte: Agência Nacional de Saúde Suplementar (ANS), beneficiários ativos de planos médico-hospitalares, dezembro, carga mais recente;\n"
+            "população: IBGE. Planos só odontológicos excluídos. Denominadores de 2022–2023 vêm do Censo 2022.",
+        )
+        return salva(fig, "rwd-private-coverage-2024")
     moldura(
         fig,
         "The public billing data sees everyone — except one in four",
@@ -375,16 +527,16 @@ def mortalidade_infantil():
     fig = plt.figure(figsize=(12.4, 10.6), dpi=200, facecolor=FIG_BG)
     ax = fig.add_axes((0.07, 0.12, 0.50, 0.56))
     eixo(ax)
-    for col, cor, rot, mk in (("tmi", RED, "infant\n(under 1 year)", "o"),
-                              ("neo", BLUE, "neonatal\n(under 28 days)", "s")):
+    for col, cor, rot, mk in (("tmi", RED, T("infant\n(under 1 year)", "infantil\n(menos de 1 ano)"), "o"),
+                              ("neo", BLUE, T("neonatal\n(under 28 days)", "neonatal\n(menos de 28 dias)"), "s")):
         ax.plot(nac["ano"].to_list(), nac[col].to_list(), color=cor, lw=2, marker=mk, ms=6,
                 markeredgecolor=SURFACE)
         ax.text(2022.6, nac[col].to_list()[-1], rot, color=TXT2, fontsize=10.5, va="center")
     ax.set_ylim(0, 30)
     ax.set_xlim(1995, 2027)
     ax.set_xticks([1996, 2002, 2008, 2014, 2022])
-    ax.set_ylabel("deaths per 1,000 live births", fontsize=11.5, color=TXT2)
-    ax.text(0, 1.04, "Brazil", transform=ax.transAxes, fontsize=13, fontweight="bold", color=TXT)
+    ax.set_ylabel(T("deaths per 1,000 live births", "óbitos por mil nascidos vivos"), fontsize=11.5, color=TXT2)
+    ax.text(0, 1.04, T("Brazil", "Brasil"), transform=ax.transAxes, fontsize=13, fontweight="bold", color=TXT)
     ax2 = fig.add_axes((0.67, 0.12, 0.29, 0.56))
     eixo(ax2, grid=False)
     ax2.grid(axis="x", color=GRID, lw=0.8)
@@ -392,14 +544,26 @@ def mortalidade_infantil():
     for y, v in zip(ys, uf["t"].to_list()):
         ax2.plot([0, v], [y, y], color=GRID, lw=2, zorder=1)
         ax2.scatter([v], [y], s=55, color=RED, edgecolors=SURFACE, linewidths=1.3, zorder=3)
-        ax2.text(v + 0.4, y, f"{v:.1f}", va="center", fontsize=9, color=TXT2)
+        ax2.text(v + 0.4, y, num(v, "{:.1f}"), va="center", fontsize=9, color=TXT2)
     ax2.set_yticks(ys)
     ax2.set_yticklabels(uf["sigla_uf"].to_list(), fontsize=9.5, color=TXT2)
     ax2.set_xlim(0, 20)
     ax2.set_ylim(-0.7, uf.height - 0.3)
-    ax2.text(0, 1.04, "States, 2022", transform=ax2.transAxes, fontsize=13, fontweight="bold", color=TXT)
+    ax2.text(0, 1.04, T("States, 2022", "UFs, 2022"), transform=ax2.transAxes, fontsize=13, fontweight="bold", color=TXT)
     t22 = nac.filter(pl.col("ano") == 2022).row(0, named=True)
     t96 = nac.filter(pl.col("ano") == 1996).row(0, named=True)
+    if PT:
+        moldura(
+            fig,
+            "Mortalidade infantil a partir de dois registros, sem ID em comum",
+            "Óbitos de menores de 1 ano (SIM) ÷ nascidos vivos (SINASC), por ano e UF de residência",
+            f"A razão direta caiu de {num(t96['tmi'], '{:.1f}')} para {num(t22['tmi'], '{:.1f}')} por mil entre 1996 e 2022. Os óbitos neonatais, que dependem do cuidado\n"
+            "hospitalar, caíram cerca de metade e hoje são dois terços do total. A diferença entre UFs ainda é quase o dobro. Onde o\n"
+            "registro é mais fraco, a razão direta subconta: por isso as estimativas oficiais do Norte e Nordeste são corrigidas para cima.",
+            f"Fontes: {MS}: SIM e SINASC, 1996–2022, ligados por UF de residência e ano. Registros com idade impossível\n"
+            "(negativa; 1.006 em 2022) excluídos. Cálculo direto, sem correção de sub-registro.",
+        )
+        return salva(fig, "rwd-infant-mortality-1996-2022")
     moldura(
         fig,
         "Infant mortality from two registries, no shared ID",

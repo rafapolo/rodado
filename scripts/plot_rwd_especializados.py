@@ -9,7 +9,11 @@ matplotlib, 12,4 pol. de largura, dpi 200, título, subtítulo, leitura e fonte 
 
 2026 fica fora das séries do SIA: o ano ainda está em curso (FTP do DATASUS até 2026-08).
 Supressão: célula com menos de 10 registros não aparece.
+
+`--pt` gera as mesmas figuras em português, com sufixo -pt, para o par
+dados-de-mundo-real-do-sus.
 """
+import sys
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -25,17 +29,32 @@ RED, BLUE, TEAL = "#d1453b", "#2a78d6", "#1f9e89"
 PALE_RED, PALE_BLUE = "#e8a29c", "#a9c7ef"
 GRID, REF = "#e6e6e2", "#b6b6ae"
 MIN_N = 10
+PT = "--pt" in sys.argv
+
+
+def T(en, pt):
+    """Texto no idioma da rodada."""
+    return pt if PT else en
+
+
+def num(v, molde):
+    """Formata com o molde em inglês e troca os separadores em português."""
+    txt = molde.format(v)
+    return txt.replace(",", "\0").replace(".", ",").replace("\0", ".") if PT else txt
+
 ULTIMO_ANO_SIA = 2025
 NOME_UF = {"AC": "Acre", "AL": "Alagoas", "AM": "Amazonas", "AP": "Amapá", "BA": "Bahia", "CE": "Ceará",
-           "DF": "the Federal District", "ES": "Espírito Santo", "GO": "Goiás", "MA": "Maranhão",
+           "DF": T("the Federal District", "o Distrito Federal"), "ES": "Espírito Santo", "GO": "Goiás", "MA": "Maranhão",
            "MG": "Minas Gerais", "MS": "Mato Grosso do Sul", "MT": "Mato Grosso", "PA": "Pará", "PB": "Paraíba",
            "PE": "Pernambuco", "PI": "Piauí", "PR": "Paraná", "RJ": "Rio de Janeiro", "RN": "Rio Grande do Norte",
            "RO": "Rondônia", "RR": "Roraima", "RS": "Rio Grande do Sul", "SC": "Santa Catarina", "SE": "Sergipe",
            "SP": "São Paulo", "TO": "Tocantins"}
 
-FONTE_SIA = ("Ministry of Health / DATASUS: Outpatient Information System (SIA/SUS), "
-             "high-complexity authorisations (APAC)")
-FONTE_SINAN = "Ministry of Health / DATASUS: Notifiable Diseases Information System (SINAN), dengue"
+FONTE_SIA = T("Ministry of Health / DATASUS: Outpatient Information System (SIA/SUS), "
+              "high-complexity authorisations (APAC)",
+              "Ministério da Saúde / DATASUS, Sistema de Informações Ambulatoriais (SIA/SUS), APAC")
+FONTE_SINAN = T("Ministry of Health / DATASUS: Notifiable Diseases Information System (SINAN), dengue",
+                "Ministério da Saúde / DATASUS: Sistema de Informação de Agravos de Notificação (SINAN), dengue")
 
 UF = {"11": "RO", "12": "AC", "13": "AM", "14": "RR", "15": "PA", "16": "AP", "17": "TO",
       "21": "MA", "22": "PI", "23": "CE", "24": "RN", "25": "PB", "26": "PE", "27": "AL",
@@ -56,17 +75,31 @@ CID_EN = {
     "C67": "Bladder",
 }
 
+CID_PT = {
+    "E78": "Dislipidemias", "H40": "Glaucoma", "F20": "Esquizofrenia",
+    "N18": "Doença renal crônica", "J45": "Asma", "J44": "DPOC",
+    "M05": "Artrite reumatoide soropositiva", "Z94": "Transplante de órgão",
+    "G40": "Epilepsia", "F31": "Transtorno bipolar", "E11": "Diabetes tipo 2",
+    "R52": "Dor não classificada", "G30": "Doença de Alzheimer",
+    "M32": "Lúpus sistêmico", "E10": "Diabetes tipo 1",
+    "C50": "Mama", "C61": "Próstata", "C92": "Leucemia mieloide", "C18": "Cólon",
+    "C90": "Mieloma múltiplo", "D47": "Mieloproliferativas/incertas", "C34": "Pulmão",
+    "C20": "Reto", "C53": "Colo do útero", "C16": "Estômago", "C91": "Leucemia linfoide",
+    "C67": "Bexiga",
+}
+CID_NOME = CID_PT if PT else CID_EN
+
 # Doenças da série: CIDs somados sob um rótulo.
 SERIE = [
-    ("Psoriasis", ["L40"]),
-    ("Systemic lupus", ["M32"]),
-    ("Ankylosing spondylitis", ["M45"]),
-    ("Rheumatoid arthritis", ["M05", "M06"]),
-    ("Multiple sclerosis", ["G35"]),
-    ("Inflammatory bowel disease", ["K50", "K51"]),
-    ("Asthma", ["J45"]),
-    ("Schizophrenia", ["F20"]),
-    ("Alzheimer's disease", ["G30"]),
+    (T("Psoriasis", "Psoríase"), ["L40"]),
+    (T("Systemic lupus", "Lúpus sistêmico"), ["M32"]),
+    (T("Ankylosing spondylitis", "Espondilite anquilosante"), ["M45"]),
+    (T("Rheumatoid arthritis", "Artrite reumatoide"), ["M05", "M06"]),
+    (T("Multiple sclerosis", "Esclerose múltipla"), ["G35"]),
+    (T("Inflammatory bowel disease", "Doença inflamatória intestinal"), ["K50", "K51"]),
+    (T("Asthma", "Asma"), ["J45"]),
+    (T("Schizophrenia", "Esquizofrenia"), ["F20"]),
+    (T("Alzheimer's disease", "Doença de Alzheimer"), ["G30"]),
 ]
 
 
@@ -100,8 +133,20 @@ def moldura(fig, titulo, subtitulo, leitura, fonte, topo=0.955):
              color=TXT3, linespacing=1.6)
 
 
+def transborda(fig):
+    """Avisa de texto que passa da borda da figura (o português é ~15% mais longo)."""
+    fig.canvas.draw()
+    rend = fig.canvas.get_renderer()
+    for t in fig.findobj(plt.Text):
+        if t.get_visible() and t.get_text().strip():
+            bb = t.get_window_extent(rend)
+            if bb.x1 > fig.bbox.width + 1 or bb.x0 < -1:
+                print(f"  TRANSBORDA ({bb.x1 - fig.bbox.width:+.0f}px):", t.get_text()[:70].replace("\n", " | "))
+
+
 def salva(fig, nome):
-    destino = OUT / f"{nome}.png"
+    transborda(fig)
+    destino = OUT / f"{nome}{'-pt' if PT else ''}.png"
     fig.savefig(destino, facecolor=fig.get_facecolor())
     plt.close(fig)
     print("ok:", destino.relative_to(RAIZ))
@@ -116,7 +161,7 @@ def barras(ax, rotulos, vals, destaque, molde, cor, cor_palida):
     ax.set_yticks(ys)
     ax.set_yticklabels(rotulos, fontsize=11, color=TXT2)
     for y, v in zip(ys, vals):
-        ax.text(v + max(vals) * 0.015, y, molde.format(v), va="center",
+        ax.text(v + max(vals) * 0.015, y, num(v, molde), va="center",
                 fontsize=10, color=TXT2)
     ax.set_xlim(0, max(vals) * 1.18)
     ax.set_ylim(-0.7, len(vals) - 0.3)
@@ -136,25 +181,40 @@ def ranking_ultimo_ano():
     fig = plt.figure(figsize=(12.4, 11.2), dpi=200, facecolor=FIG_BG)
     ax1 = fig.add_axes((0.30, 0.10, 0.25, 0.62))
     ax2 = fig.add_axes((0.71, 0.10, 0.25, 0.62))
-    barras(ax1, [CID_EN.get(c, c) for c in m15["cid3"]],
+    barras(ax1, [CID_NOME.get(c, c) for c in m15["cid3"]],
            [v / 1e6 for v in m15["linhas"]],
-           [v == 0 for v in m15["valor"]], "{:.1f}M", BLUE, PALE_BLUE)
-    ax1.set_xlabel("monthly dispensing records, millions", fontsize=11, color=TXT2,
+           [v == 0 for v in m15["valor"]], T("{:.1f}M", "{:.1f} mi"), BLUE, PALE_BLUE)
+    ax1.set_xlabel(T("monthly dispensing records, millions", "registros mensais de dispensação, milhões"), fontsize=11, color=TXT2,
                    labelpad=8)
-    ax1.text(-0.62, 1.07, "Specialised-component drugs", transform=ax1.transAxes,
+    ax1.text(-0.62, 1.07, T("Specialised-component drugs", "Medicamentos do Componente Especializado"), transform=ax1.transAxes,
              fontsize=13, color=TXT, fontweight="bold")
-    ax1.text(-0.62, 1.03, "dark bar = R$ 0 billed for the whole year",
+    ax1.text(-0.62, 1.03, T("dark bar = R$ 0 billed for the whole year", "barra escura = R$ 0 faturado no ano inteiro"),
              transform=ax1.transAxes, fontsize=10, color=BLUE)
-    barras(ax2, [CID_EN.get(c, c) for c in q12["cid3"]],
+    barras(ax2, [CID_NOME.get(c, c) for c in q12["cid3"]],
            [v / 1e3 for v in q12["linhas"]],
-           [c == "C50" for c in q12["cid3"]], "{:,.0f}k", RED, PALE_RED)
-    ax2.set_xlabel("monthly chemotherapy authorisations, thousands", fontsize=11,
+           [c == "C50" for c in q12["cid3"]], T("{:,.0f}k", "{:,.0f} mil"), RED, PALE_RED)
+    ax2.set_xlabel(T("monthly chemotherapy authorisations, thousands", "autorizações mensais de quimioterapia, milhares"), fontsize=11,
                    color=TXT2, labelpad=8)
-    ax2.text(-0.62, 1.07, "Cancer drug therapy, by site", transform=ax2.transAxes,
+    ax2.text(-0.62, 1.07, T("Cancer drug therapy, by site", "Quimioterapia, por localização do câncer"), transform=ax2.transAxes,
              fontsize=13, color=TXT, fontweight="bold")
-    ax2.text(-0.62, 1.03, "red = breast cancer", transform=ax2.transAxes,
+    ax2.text(-0.62, 1.03, T("red = breast cancer", "vermelho = câncer de mama"), transform=ax2.transAxes,
              fontsize=10, color=RED)
     mama = qt.filter(pl.col("cid3") == "C50")["linhas"][0] / tot_qt
+    if PT:
+        moldura(
+            fig,
+            "Que doenças o SUS trata com medicamentos de alto custo",
+            f"Brasil, {ULTIMO_ANO_SIA}, APACs ambulatoriais do SUS pelo CID-10 do paciente, doenças principais",
+            f"{num(tot_med / 1e6, '{:.1f}')} milhões de registros mensais de medicamentos especializados e {num(tot_qt / 1e6, '{:.1f}')} milhões de quimioterapia, "
+            "todos com CID.\n"
+            f"Só o câncer de mama soma {num(mama * 100, '{:.0f}')}% da quimioterapia: em geral, tratamento adjuvante pós-cirurgia, autorizado mês a mês.\n"
+            f"Em {zero} dos 15 diagnósticos principais a conta é R$ 0: o Ministério compra esses medicamentos de forma centralizada.",
+            f"Fonte: {FONTE_SIA}, por ano de processamento.\n"
+            "Especializados = grupo SIGTAP 06.04 (CEAF); quimioterapia = grupo 03.04. "
+            "Registro = um procedimento, um paciente, um mês.",
+            topo=0.965,
+        )
+        return salva(fig, f"rwd-specialty-drugs-{ULTIMO_ANO_SIA}")
     moldura(
         fig,
         "Which diseases the public system treats with high-cost drugs",
@@ -194,13 +254,13 @@ def crescimento():
     ult = -1.0
     for v, rot, forte in finais:
         y = max(v, ult + 0.22)
-        ax1.text(ULTIMO_ANO_SIA + 0.25, y, f"{rot} ×{v:.1f}", va="center", fontsize=10,
+        ax1.text(ULTIMO_ANO_SIA + 0.25, y, f"{rot} ×{num(v, '{:.1f}')}", va="center", fontsize=10,
                  color=TXT if forte else TXT3, fontweight="bold" if forte else "normal")
         ult = y
     ax1.axhline(1, color=REF, lw=1, ls=(0, (5, 3.5)))
     ax1.set_xlim(2014, ULTIMO_ANO_SIA)
     ax1.set_xticks(list(range(2014, ULTIMO_ANO_SIA + 1, 2)))
-    ax1.text(0.0, 1.03, "Dispensing records, 2014 = 1", transform=ax1.transAxes,
+    ax1.text(0.0, 1.03, T("Dispensing records, 2014 = 1", "Registros de dispensação, 2014 = 1"), transform=ax1.transAxes,
              fontsize=12.5, color=TXT2)
 
     pop = ler("q3_populacao_uf", schema_overrides={"id_uf": pl.Utf8})
@@ -222,14 +282,29 @@ def crescimento():
         ax2.text(v + 4, y, f"{v:.0f}", va="center", fontsize=9.5, color=TXT2)
     ax2.set_ylim(-0.7, ra.height - 0.3)
     ax2.set_xlim(0, max(taxas) * 1.15)
-    ax2.set_xlabel("patients per month per 100,000", fontsize=10.5,
+    ax2.set_xlabel(T("patients per month per 100,000", "pacientes por mês por 100 mil hab."), fontsize=10.5,
                    color=TXT2, labelpad=8)
     nac = ra["linhas"].sum() / 12 / ra["populacao"].sum() * 1e5
     ax2.axvline(nac, color=REF, lw=1.1, ls=(0, (5, 3.5)))
-    ax2.text(nac + 4, -0.55, f"Brazil {nac:.0f}", fontsize=10, color=TXT3, va="center")
-    ax2.text(0.0, 1.03, f"Rheumatoid arthritis by state, {ULTIMO_ANO_SIA}", transform=ax2.transAxes,
+    ax2.text(nac + 4, -0.55, f"{T('Brazil', 'Brasil')} {nac:.0f}", fontsize=10, color=TXT3, va="center")
+    ax2.text(0.0, 1.03, T(f"Rheumatoid arthritis by state, {ULTIMO_ANO_SIA}", f"Artrite reumatoide por UF, {ULTIMO_ANO_SIA}"), transform=ax2.transAxes,
              fontsize=12.5, color=TXT2)
     pr, al = taxas[-1], taxas[0]
+    if PT:
+        moldura(
+            fig,
+            "Imunobiológicos cresceram mais, e chegam de forma desigual",
+            f"Dispensação do Componente Especializado do SUS por diagnóstico, 2014–{ULTIMO_ANO_SIA} (esq.) e artrite reumatoide por UF (dir.)",
+            "Psoríase, lúpus e espondilite anquilosante cresceram de quatro a sete vezes em uma década, com a entrada\n"
+            "de novos medicamentos, muitos deles biológicos, nos protocolos do SUS; Alzheimer ficou estável.\n"
+            f"Para a mesma doença, {NOME_UF[alto]} atende {pr:.0f} pacientes por 100 mil e {NOME_UF[baixo]}, {al:.0f}:\n"
+            f"uma diferença de {pr / al:.0f} vezes, que mede acesso, não prevalência.",
+            f"Fonte: {FONTE_SIA}, grupo SIGTAP 06.04; população do IBGE, {ULTIMO_ANO_SIA}.\n"
+            "UF do estabelecimento. Registros mensais ÷ 12 ≈ pacientes em tratamento num mês médio "
+            "(quem usa dois medicamentos conta duas vezes).",
+            topo=0.965,
+        )
+        return salva(fig, "rwd-specialty-drugs-trend")
     moldura(
         fig,
         "Immunology drugs grew fastest, and reach patients unevenly",
@@ -266,7 +341,7 @@ def sorotipos():
         base = [b + f for b, f in zip(base, frac)]
     for a, v, t in zip(anos, s["denv3"], s["tipados"]):
         if a >= 2024:
-            ax1.text(a, 101.5, f"DENV-3\n{v / t:.0%}", ha="center", va="bottom",
+            ax1.text(a, 101.5, f"DENV-3\n{num(v / t * 100, '{:.0f}')}%", ha="center", va="bottom",
                      fontsize=10, color=RED, fontweight="bold")
     ax1.set_ylim(0, 118)
     ax1.set_yticks([0, 25, 50, 75, 100])
@@ -274,22 +349,37 @@ def sorotipos():
     ax1.set_xticklabels([str(a) if a < 2026 else "2026*" for a in anos])
     ax1.legend(loc="upper left", bbox_to_anchor=(0, 1.16), ncol=4, frameon=False,
                fontsize=11, labelcolor=TXT2)
-    ax1.text(1.0, 1.03, "serotype mix among typed cases, %", transform=ax1.transAxes,
+    ax1.text(1.0, 1.03, T("serotype mix among typed cases, %", "composição de sorotipos entre os casos tipados, %"), transform=ax1.transAxes,
              fontsize=12, color=TXT2, ha="right")
 
     eixo(ax2)
     pct = [t / p * 100 for t, p in zip(s["tipados"], s["provaveis"])]
     ax2.bar(anos, pct, color=[PALE_RED if a < 2026 else REF for a in anos], width=0.74)
     for a, v, t in zip(anos, pct, s["tipados"]):
-        ax2.text(a, v + 0.2, f"{v:.1f}%", ha="center", va="bottom", fontsize=9.5,
+        ax2.text(a, v + 0.2, f"{num(v, '{:.1f}')}%", ha="center", va="bottom", fontsize=9.5,
                  color=TXT2)
     ax2.set_xticks(anos)
     ax2.set_xticklabels([str(a) if a < 2026 else "2026*" for a in anos])
     ax2.set_ylim(0, max(pct) * 1.35)
-    ax2.text(0.0, 1.06, "share of probable cases with a serotype recorded",
+    ax2.text(0.0, 1.06, T("share of probable cases with a serotype recorded", "parcela dos casos prováveis com sorotipo registrado"),
              transform=ax2.transAxes, fontsize=12, color=TXT2)
     r24 = s.filter(pl.col("ano") == 2024).row(0, named=True)
     r25 = s.filter(pl.col("ano") == 2025).row(0, named=True)
+    if PT:
+        moldura(
+            fig,
+            "O único sinal molecular no registro público",
+            "Brasil, casos prováveis de dengue com sorotipo do vírus na ficha de notificação, 2014–2026",
+            "O sorotipo é o único resultado de laboratório que chega à base nacional, e só para um caso em 35. "
+            f"Mesmo assim ele mostra\na volta do DENV-3 depois de uma década quase ausente: {num(r24['denv3'], '{:,}')} casos tipados em 2024, "
+            f"{num(r25['denv3'], '{:,}')} em 2025 ({num(r25['denv3'] / r25['tipados'] * 100, '{:.0f}')}% dos tipados),\n"
+            "enquanto o DENV-2 ultrapassou o DENV-1. Quem só teve um sorotipo não tem imunidade ao recém-chegado.",
+            f"Fonte: {FONTE_SINAN}.\n"
+            "Caso provável = toda notificação exceto as descartadas. Sorotipo por RT-PCR ou isolamento viral, como preenchido "
+            "na ficha. *2026 é parcial.",
+            topo=0.965,
+        )
+        return salva(fig, "dengue-serotypes-2014-2026")
     moldura(
         fig,
         "The only molecular signal in the public record",

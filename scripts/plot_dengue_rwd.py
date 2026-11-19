@@ -12,7 +12,11 @@ azul e verde-azulado — os três passam o validador de CVD em todos os pares
 (skill dataviz, `validate_palette.js --pairs all`, superfície #fcfcfb).
 
 Supressão: célula com menos de 10 óbitos não vira taxa (aparece como "n<10").
+
+`--pt` gera em português, com sufixo -pt, as duas figuras que o par
+dados-de-mundo-real-do-sus usa (funil e óbitos por fonte).
 """
+import sys
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -29,9 +33,20 @@ RED, BLUE, TEAL = "#d1453b", "#2a78d6", "#1f9e89"
 GRID, REF = "#e6e6e2", "#b6b6ae"
 MIN_N = 10
 
-FONTE_SINAN = "Ministry of Health / DATASUS: Notifiable Diseases Information System (SINAN), dengue"
-FONTE_SIH = "Hospital Information System (SIH/SUS, principal diagnosis ICD-10 A90–A91)"
-FONTE_SIM = "Mortality Information System (SIM, underlying cause A90–A91)"
+PT = "--pt" in sys.argv
+
+
+def T(en, pt):
+    """Texto no idioma da rodada."""
+    return pt if PT else en
+
+
+FONTE_SINAN = T("Ministry of Health / DATASUS: Notifiable Diseases Information System (SINAN), dengue",
+                "Ministério da Saúde / DATASUS: SINAN (agravos de notificação), dengue")
+FONTE_SIH = T("Hospital Information System (SIH/SUS, principal diagnosis ICD-10 A90–A91)",
+              "SIH/SUS (internações, diagnóstico principal CID-10 A90–A91)")
+FONTE_SIM = T("Mortality Information System (SIM, underlying cause A90–A91)",
+              "SIM (mortalidade, causa básica A90–A91)")
 
 
 def ler(nome):
@@ -63,8 +78,25 @@ def moldura(fig, titulo, subtitulo, leitura, fonte, topo=0.955):
              color=TXT3, linespacing=1.6)
 
 
+def sep(txt):
+    """Troca separadores para o português quando a rodada é --pt."""
+    return txt.replace(",", "\0").replace(".", ",").replace("\0", ".") if PT else txt
+
+
+def transborda(fig):
+    """Avisa de texto que passa da borda da figura (o português é ~15% mais longo)."""
+    fig.canvas.draw()
+    rend = fig.canvas.get_renderer()
+    for t in fig.findobj(plt.Text):
+        if t.get_visible() and t.get_text().strip():
+            bb = t.get_window_extent(rend)
+            if bb.x1 > fig.bbox.width + 1 or bb.x0 < -1:
+                print(f"  TRANSBORDA ({bb.x1 - fig.bbox.width:+.0f}px):", t.get_text()[:70].replace("\n", " | "))
+
+
 def salva(fig, nome):
-    destino = OUT / f"{nome}.png"
+    transborda(fig)
+    destino = OUT / f"{nome}{'-pt' if PT else ''}.png"
     fig.savefig(destino, facecolor=fig.get_facecolor())
     plt.close(fig)
     print("ok:", destino.relative_to(RAIZ))
@@ -76,9 +108,9 @@ def funil():
     anos = d["ano"].to_list()
     fig = plt.figure(figsize=(12.4, 12.4), dpi=200, facecolor=FIG_BG)
     paineis = [
-        ("provaveis", 1e6, "probable cases (millions)", "{:.1f}M"),
-        ("sih_internacoes", 1e3, "SUS hospital admissions (thousands)", "{:.0f}k"),
-        ("sinan_obitos", 1, "deaths from dengue (confirmed by surveillance)", "{:,.0f}"),
+        ("provaveis", 1e6, T("probable cases (millions)", "casos prováveis (milhões)"), T("{:.1f}M", "{:.1f} mi")),
+        ("sih_internacoes", 1e3, T("SUS hospital admissions (thousands)", "internações no SUS (milhares)"), T("{:.0f}k", "{:.0f} mil")),
+        ("sinan_obitos", 1, T("deaths from dengue (confirmed by surveillance)", "óbitos por dengue (confirmados pela vigilância)"), "{:,.0f}"),
     ]
     altura, base = 0.18, 0.10
     for i, (col, div, rot, molde) in enumerate(paineis):
@@ -94,11 +126,24 @@ def funil():
                 color=TXT2, va="bottom")
         for a, v in zip(anos, vals):
             if a in (2015, 2019, 2024):
-                ax.text(a, v + max(vals) * 0.03, molde.format(v), ha="center",
+                ax.text(a, v + max(vals) * 0.03, sep(molde.format(v)), ha="center",
                         va="bottom", fontsize=11,
                         color=TXT if a == 2024 else TXT2,
                         fontweight="bold" if a == 2024 else "normal")
     r24 = d.filter(pl.col("ano") == 2024).row(0, named=True)
+    if PT:
+        moldura(
+            fig,
+            "2024 quebrou todas as etapas do funil da dengue",
+            "Brasil, 2014–2024: casos prováveis notificados, internações no SUS e óbitos, por ano",
+            f"Em 2024 a vigilância registrou {sep(fmt(r24['provaveis']))} casos prováveis, 3,8 vezes o pico anterior (2015).\n"
+            f"Os hospitais públicos internaram {sep(fmt(r24['sih_internacoes']))} pacientes e {sep(fmt(r24['sinan_obitos']))} pessoas morreram: "
+            "cerca de 1 internação\npor 40 casos e 1 óbito por mil casos. Os óbitos cresceram mais que os casos: 6,2 vezes 2015, contra 3,8.",
+            f"Fonte: {FONTE_SINAN}; {FONTE_SIH}.\n"
+            "Caso provável = toda notificação exceto as descartadas. Internações pela data, episódios e não pacientes, só SUS.",
+            topo=0.965,
+        )
+        return salva(fig, "dengue-funnel-2014-2024")
     moldura(
         fig,
         "2024 broke every step of the dengue funnel at once",
@@ -215,9 +260,9 @@ def obitos_fontes():
     ax = fig.add_axes((0.07, 0.15, 0.80, 0.57))
     eixo(ax)
     series = [
-        ("sinan_obitos", RED, "Surveillance (SINAN):\nconfirmed dengue deaths", "o"),
-        ("sim_obitos", BLUE, "Death certificates (SIM):\nunderlying cause dengue", "s"),
-        ("sih_obitos", TEAL, "SUS hospitals (SIH):\nin-hospital deaths", "D"),
+        ("sinan_obitos", RED, T("Surveillance (SINAN):\nconfirmed dengue deaths", "Vigilância (SINAN):\nóbitos confirmados"), "o"),
+        ("sim_obitos", BLUE, T("Death certificates (SIM):\nunderlying cause dengue", "Declarações de óbito (SIM):\ncausa básica dengue"), "s"),
+        ("sih_obitos", TEAL, T("SUS hospitals (SIH):\nin-hospital deaths", "Hospitais do SUS (SIH):\nóbitos na internação"), "D"),
     ]
     for col, cor, rot, mk in series:
         pts = [(a, v) for a, v in zip(anos, d[col].to_list()) if v is not None]
@@ -232,12 +277,25 @@ def obitos_fontes():
                     va="center", linespacing=1.3)
     ax.set_yscale("log")
     ax.set_yticks([100, 200, 500, 1000, 2000, 5000])
-    ax.set_yticklabels(["100", "200", "500", "1,000", "2,000", "5,000"])
+    ax.set_yticklabels(["100", "200", "500", sep("1,000"), sep("2,000"), sep("5,000")])
     ax.minorticks_off()
     ax.set_xticks(anos)
     ax.set_xlim(2013.6, 2026.2)
-    ax.set_ylabel("deaths (log scale)", fontsize=12, color=TXT2)
+    ax.set_ylabel(T("deaths (log scale)", "óbitos (escala log)"), fontsize=12, color=TXT2)
     r22 = d.filter(pl.col("ano") == 2022).row(0, named=True)
+    if PT:
+        moldura(
+            fig,
+            "Três sistemas, três contagens de óbito para a mesma doença",
+            "Brasil, óbitos por dengue como registrados por cada sistema nacional, 2014–2024",
+            f"Em 2022 a vigilância encerrou {sep(fmt(r22['sinan_obitos']))} casos como óbito, as declarações de óbito citaram dengue\n"
+            f"{sep(fmt(r22['sim_obitos']))} vezes e os hospitais do SUS registraram {sep(fmt(r22['sih_obitos']))} óbitos na internação. "
+            "Nenhum está errado: cada um conta\num evento diferente, e os sistemas não têm identificador de paciente em comum para conciliá-los.",
+            f"Fontes: {FONTE_SINAN} (evolução = óbito pelo agravo);\n"
+            f"{FONTE_SIM}; {FONTE_SIH}, óbitos durante a internação.\n"
+            "Os microdados de declaração de óbito vão até 2022.",
+        )
+        return salva(fig, "dengue-deaths-by-source-2014-2024")
     moldura(
         fig,
         "Three systems, three death counts for the same disease",
@@ -425,5 +483,6 @@ def qualidade():
 
 if __name__ == "__main__":
     OUT.mkdir(parents=True, exist_ok=True)
-    for f in (funil, semanal, por_uf, obitos_fontes, comorbidade, sdoh, qualidade):
+    for f in ((funil, obitos_fontes) if PT else
+              (funil, semanal, por_uf, obitos_fontes, comorbidade, sdoh, qualidade)):
         f()

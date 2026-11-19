@@ -299,6 +299,7 @@ const TEMAS: Record<string, [string, string]> = {
   corresponsaveis: ["areia", "rede"],
   "os-vira-casacas-de-lula-para-bozo": ["oxido", "virada"],
   "brazil-public-real-world-data": ["relevo", "matriz"],
+  "dados-de-mundo-real-do-sus": ["relevo", "matriz"],
   "emenda-que-pagou-a-propria-empresa": ["siena", "laco"],
   "devedora-antes-fornecedora-depois": ["areia", "divida"],
   "cinco-cadastros-as-mesmas-empresas": ["cobalto", "venn"],

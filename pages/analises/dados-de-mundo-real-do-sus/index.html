@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- gerado por scripts/gera_analises.py — não editar à mão -->
+<title>Dados de mundo real do SUS: o que respondem — rodado</title>
+<meta name="description" content="13 bilhões de registros do SUS em três décadas, sem ID do paciente: o que respondem, dos sorotipos da dengue aos biológicos por UF, e onde enganam.">
+<!-- seo:start (gerado por scripts/gera_seo.py — não editar à mão) -->
+<link rel="canonical" href="https://rodado.xyz/analises/dados-de-mundo-real-do-sus/">
+<link rel="alternate" hreflang="pt-br" href="https://rodado.xyz/analises/dados-de-mundo-real-do-sus/">
+<link rel="alternate" hreflang="en" href="https://rodado.xyz/analises/brazil-public-real-world-data/">
+<link rel="alternate" hreflang="x-default" href="https://rodado.xyz/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="rodado">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:url" content="https://rodado.xyz/analises/dados-de-mundo-real-do-sus/">
+<meta property="og:title" content="Dados de mundo real do SUS: o que respondem">
+<meta property="og:description" content="13 bilhões de registros do SUS em três décadas, sem ID do paciente: o que respondem, dos sorotipos da dengue aos biológicos por UF, e onde enganam.">
+<meta property="og:image" content="https://rodado.xyz/analises/img/og-dados-de-mundo-real-do-sus.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Dados de mundo real do SUS: o que respondem — rodado">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Dados de mundo real do SUS: o que respondem">
+<meta name="twitter:description" content="13 bilhões de registros do SUS em três décadas, sem ID do paciente: o que respondem, dos sorotipos da dengue aos biológicos por UF, e onde enganam.">
+<meta name="twitter:image" content="https://rodado.xyz/analises/img/og-dados-de-mundo-real-do-sus.png">
+<link rel="icon" href="../../assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16.png">
+<link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+<link rel="manifest" href="https://rodado.xyz/site.webmanifest">
+<meta name="theme-color" content="#f9f8f5">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Dados de mundo real do SUS: o que respondem","description":"13 bilhões de registros do SUS em três décadas, sem ID do paciente: o que respondem, dos sorotipos da dengue aos biológicos por UF, e onde enganam.","url":"https://rodado.xyz/analises/dados-de-mundo-real-do-sus/","image":"https://rodado.xyz/analises/img/og-dados-de-mundo-real-do-sus.png","datePublished":"2026-10","inLanguage":"pt-BR","author":{"@type":"Organization","name":"rodado"},"isPartOf":{"@type":"WebSite","name":"rodado","url":"https://rodado.xyz/"}}</script>
+<!-- seo:end -->
+<!-- a linha do site.css é marca do bloco comum: o gera_seo.py a substitui pelo
+     bloco inteiro aqui, e não no fim do <head>, para o analises.css abaixo
+     continuar vencendo a cascata -->
+<!-- head:start (gerado por scripts/gera_seo.py — não editar à mão) -->
+<link rel="preload" href="../../assets/fonts/public-sans-latin-400-800.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/site.css">
+<link rel="stylesheet" href="../../assets/mcp-theme.css">
+<script defer src="https://cloud.umami.is/script.js" data-website-id="d2597bf7-73e0-4e7e-b353-1202d9f72b7d"></script>
+<!-- head:end -->
+<link rel="stylesheet" href="../analises.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="brand" href="/">rodado</a>
+    <div class="nav-right">
+      <div class="links">
+        <a href="/analises/">Análises</a>
+        <a href="/plataformas/">Plataformas</a>
+        <a href="https://xn--2dk.xyz/">DataViz</a>
+        <a href="/temas/">Temas</a>
+        <a href="/atlas/">Atlas</a>
+        <a class="mcp-link" href="/mcp">MCP</a>
+      </div>
+      <div class="nav-controls">
+        <div class="lang-switch">
+          <span class="lang-current">PT</span>
+          <span class="lang-sep">/</span>
+          <a href="/analises/brazil-public-real-world-data/" class="lang-link" hreflang="en">EN</a>
+        </div>
+        <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema claro/escuro" type="button"><i class="fa-solid fa-moon"></i></button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <p class="eyebrow" id="eyebrow">Análises</p>
+  <img class="capa" src="../img/capa-dados-de-mundo-real-do-sus.webp" alt="" width="1680" height="240" decoding="async">
+  <p class="meta">rodado em 18-11-2026</p>
+  <div id="doc" data-slug="dados-de-mundo-real-do-sus" data-base="../" data-pronto>
+<h1>Dados de mundo real do SUS: o que cobrem, como se ligam, o que respondem e o que não respondem</h1>
+<p>O Brasil tem um dos maiores sistemas públicos e universais de saúde do mundo, o SUS, e
+publica o rastro administrativo de quase tudo o que ele faz: cada internação em hospital
+público, cada procedimento ambulatorial que paga, cada declaração de óbito, cada nascido
+vivo, cada caso de doença de notificação compulsória. Quase tudo vem registro a registro,
+com cobertura nacional e de graça. Para quem trabalha com dados de mundo real (<em>real-world
+data</em>, RWD) na indústria farmacêutica, é um recurso raro: uma população de 213 milhões,
+com três décadas de história e sem custo de licença.</p>
+<p>Também é raro no que falta. Nenhum arquivo público traz identificador do paciente, então
+nada se liga no nível da pessoa. Cobertura, codificação e completude mudam de fonte para
+fonte e de ano para ano. Este texto mapeia o que existe, mede como as peças se encaixam e
+diz com clareza o que os dados sustentam e o que não sustentam. Tudo aqui foi medido numa
+cópia local dos arquivos oficiais em outubro de 2026.</p>
+<p><img decoding="async" src="/analises/img/rwd-coverage-timeline-pt.png" alt="Faixa de calor: linhas por ano em cada fonte pública de dados de saúde do Brasil, 1994–2026"></p>
+<h2>O inventário</h2>
+<p>Vinte e quatro tabelas, 13 bilhões de linhas. Agrupadas pelo nome que receberiam numa
+equipe de RWD da indústria:</p>
+<table>
+<thead>
+<tr>
+<th>Fonte</th>
+<th>Anos</th>
+<th>Registros</th>
+<th>Unidade de registro</th>
+<th>Equivalente na indústria</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>SIH</strong>, internações</td>
+<td>2009–2025</td>
+<td>200 mi</td>
+<td>uma internação paga pelo SUS: CID-10, datas, procedimentos, diárias de UTI, valor pago, óbito no hospital</td>
+<td><em>claims</em> hospitalares de um pagador público único</td>
+</tr>
+<tr>
+<td><strong>SIH</strong>, serviços profissionais</td>
+<td>2008–2025</td>
+<td>2,4 bi</td>
+<td>um ato profissional faturado dentro de uma internação</td>
+<td>itens de <em>claims</em></td>
+</tr>
+<tr>
+<td><strong>SIA</strong>, produção ambulatorial</td>
+<td>2008–2025</td>
+<td>6,2 bi</td>
+<td>uma linha de procedimento ambulatorial; os registros individuais (APAC) trazem CID-10 e cobrem oncologia, diálise e medicamentos de alto custo</td>
+<td><em>claims</em> ambulatoriais e de farmácia especializada</td>
+</tr>
+<tr>
+<td><strong>SIA</strong>, atenção psicossocial</td>
+<td>2012–2025</td>
+<td>138 mi</td>
+<td>um mês de cuidado em saúde mental na comunidade (CAPS)</td>
+<td>registros de episódio ambulatorial</td>
+</tr>
+<tr>
+<td><strong>SIM</strong>, óbitos</td>
+<td>1996–2022</td>
+<td>31 mi</td>
+<td>uma declaração de óbito: causa básica e associadas (CID-10), local, idade, sexo, raça/cor</td>
+<td>índice nacional de óbitos</td>
+</tr>
+<tr>
+<td><strong>SINASC</strong>, nascidos vivos</td>
+<td>1994–2023</td>
+<td>86 mi</td>
+<td>uma declaração de nascido vivo: idade gestacional, peso ao nascer, idade e escolaridade da mãe, anomalias congênitas</td>
+<td>registro de nascimentos</td>
+</tr>
+<tr>
+<td><strong>SINAN</strong>, agravos de notificação</td>
+<td>2000–2026</td>
+<td>46 mi</td>
+<td>uma ficha de notificação: dengue, chikungunya, zika, febre amarela, malária, síndrome respiratória aguda grave, violência</td>
+<td>registros de vigilância</td>
+</tr>
+<tr>
+<td><strong>SISVAN</strong>, estado nutricional</td>
+<td>2008–2023</td>
+<td>406 mi</td>
+<td>uma aferição antropométrica na atenção básica</td>
+<td>extrato de prontuário (só sinais vitais)</td>
+</tr>
+<tr>
+<td><strong>SI-PNI</strong>, vacinação</td>
+<td>1994–2019; microdados de 2020</td>
+<td>94 mi + 102 mi</td>
+<td>doses por vacina e município; uma dose por registro nos microdados de 2020</td>
+<td>registro de imunização</td>
+</tr>
+<tr>
+<td><strong>CNES</strong>, estabelecimentos</td>
+<td>2005–2025</td>
+<td>950 mi</td>
+<td>estabelecimento, leito e profissional, mês a mês</td>
+<td>cadastro de prestadores</td>
+</tr>
+<tr>
+<td><strong>ANS</strong>, planos de saúde</td>
+<td>2014–2025</td>
+<td>2,3 bi</td>
+<td>contagem de beneficiários por tipo de plano, município e mês</td>
+<td>arquivo de adesão, agregado</td>
+</tr>
+<tr>
+<td><strong>SNGPC</strong>, medicamentos controlados</td>
+<td>2014–2021</td>
+<td>10 mi</td>
+<td>uma venda em farmácia de medicamento controlado, com UF do prescritor e CID-10</td>
+<td>dispensação em farmácia (cópia parcial)</td>
+</tr>
+<tr>
+<td>População</td>
+<td>2000–2025</td>
+<td>4,9 mi</td>
+<td>residentes por município, sexo e idade</td>
+<td>denominadores</td>
+</tr>
+</tbody></table>
+<p>A linha do tempo já mostra algumas coisas. Os registros vitais são os mais antigos, de
+meados dos anos 1990. O faturamento começa em 2008–09. Cada fonte termina num ano
+diferente: óbitos em 2022, nascimentos em 2023, faturamento hospitalar em meados de 2025,
+vigilância já em 2026. Um estudo que precise de todas termina em 2022. O volume está no
+faturamento: 6,2 bilhões de linhas ambulatoriais e 2,4 bilhões de atos profissionais.</p>
+<p>A cópia do arquivo de vendas de controlados para em exatamente 10 milhões de linhas, com
+2021 cortado. Serve para explorar, não para contar.</p>
+<p><img decoding="async" loading="lazy" src="/analises/img/rwd-linkage-map-pt.png" alt="Matriz: parcela dos registros de 2022 cujos códigos de município, estabelecimento e CID-10 casam com as listas de referência, por fonte"></p>
+<h2>Como se ligam: lugar, estabelecimento, diagnóstico, tempo</h2>
+<p>Nenhum arquivo público traz identificador do paciente. O SUS tem um, o número do Cartão
+Nacional de Saúde, mas ele é retirado antes da publicação. Toda análise que cruza fontes,
+portanto, se apoia em quatro chaves comuns:</p>
+<ul>
+<li><strong>Município</strong> (código IBGE), presente em todas as fontes. Casa com a lista oficial em
+99,6–100% dos registros de 2022.</li>
+<li><strong>Estabelecimento</strong> (código CNES), presente em todas as fontes, menos quando o cuidado
+acontece em casa. Casa com o cadastro de estabelecimentos em 98–100% dos registros, e em
+72% das declarações de óbito (óbito em casa não tem estabelecimento).</li>
+<li><strong>Diagnóstico</strong> (CID-10), nas internações, no ambulatório e nos óbitos. Código válido em
+99,99% das internações e dos óbitos. As fichas de notificação são específicas de cada
+doença e não precisam de CID.</li>
+<li><strong>Tempo</strong>: data de internação, de óbito ou de nascimento; semana epidemiológica na
+vigilância; mês de competência no faturamento.</li>
+</ul>
+<p>Então a ligação é <strong>ecológica</strong> (município × período × diagnóstico) ou <strong>por
+estabelecimento</strong> (o que acontece num dado hospital), nunca por pessoa. Isso descarta
+coortes que sigam um paciente do diagnóstico ao óbito entre sistemas. Ainda permite a
+maioria dos desenhos descritivos e ecológicos, e estudos de qualidade e volume por
+estabelecimento.</p>
+<p>A segunda lição é menos óbvia: <strong>o mesmo conceito é codificado de um jeito em cada
+sistema, e nada dá erro quando eles se misturam.</strong> Medido nos registros de 2022:</p>
+<ul>
+<li><strong>Sexo</strong> é a palavra &quot;Feminino&quot; ou &quot;Masculino&quot; nas internações, os códigos 1 e 2 nos
+óbitos e nascimentos, e F ou M no ambulatório, na vigilância e no SISVAN. No arquivo de
+síndrome respiratória aguda grave está vazio em todo registro, de 2009 a 2022.</li>
+<li><strong>Raça/cor</strong> &quot;parda&quot; é o código 3 no faturamento ambulatorial e o código 4 nos óbitos,
+nascimentos, vigilância e SISVAN, onde 3 quer dizer &quot;amarela&quot;. Juntar os dois pelo código
+troca, sem aviso, o maior grupo do país por um dos menores.</li>
+<li><strong>Diagnóstico</strong> nas internações fica num campo de 3 caracteres <em>ou</em> num de 4, nunca nos
+dois: 89% das internações só têm o código de 4 caracteres. Filtrar só pelo campo de 3
+perde nove internações em dez. As autorizações ambulatoriais repetem a divisão: lendo só
+o campo de 3 caracteres, os registros de medicamentos especializados de 2024 parecem 96%
+sem diagnóstico, quando todos têm código.</li>
+<li><strong>Município</strong> tem 7 dígitos nos óbitos e nascimentos e 6 (sem dígito verificador) no
+faturamento hospitalar e ambulatorial. No faturamento ambulatorial, o município do
+paciente fica num campo com nome de ID do paciente.</li>
+<li><strong>Código do estabelecimento</strong> na declaração de óbito vem gravado como decimal
+(&quot;2000733.0&quot;) e não casa com nada até ser limpo.</li>
+</ul>
+<p>Nenhum desses casos dá erro. Cada um produz um resultado que parece plausível.</p>
+<p><img decoding="async" loading="lazy" src="/analises/img/rwd-completeness-2022-pt.png" alt="Mapa de calor: parcela dos registros de 2022 com valor utilizável em cada campo-chave, por fonte"></p>
+<h2>Adequação ao uso, medida</h2>
+<p>Nos termos da FDA e da EMA, a pergunta não é se os dados são bons, mas se são bons o
+bastante para uma dada pergunta. Cinco dimensões, medidas.</p>
+<p><strong>Completude.</strong> Lugar, data, idade e sexo estão quase completos em todas as fontes, com a
+exceção citada acima. Raça/cor é o campo fraco: 75% nos registros ambulatoriais, 80–85% nas
+internações, notificações de dengue e SISVAN, 96–98% nos óbitos e nascimentos. Só um terço
+dos registros ambulatoriais individuais traz CID-10. O grosso da produção ambulatorial é
+informado de forma consolidada, sem paciente nenhum.</p>
+<p><img decoding="async" loading="lazy" src="/analises/img/rwd-ill-defined-deaths-1996-2022-pt.png" alt="Mapa de calor: parcela dos óbitos com causa mal definida por UF, 1996–2022"></p>
+<p><strong>Qualidade da causa de óbito.</strong> Em 1996, 15,1% dos óbitos tinham causa básica mal
+definida (CID-10 R00–R99). Em 2022 eram 6,1%, depois de uma queda forte em 2004–07, quando
+estados do Norte e do Nordeste montaram serviços de verificação de óbito. A queda foi
+desigual: o Rio de Janeiro passou de 9,6% para 9,4% e hoje é o terceiro pior. Uma
+comparação de mortalidade por causa entre UFs ou décadas que ignore isso mede, em parte,
+codificação.</p>
+<p><img decoding="async" loading="lazy" src="/analises/img/rwd-private-coverage-2024-pt.png" alt="Barras: parcela dos residentes com plano médico privado por UF, 2024"></p>
+<p><strong>Cobertura.</strong> Os registros vitais e de notificação (óbitos, nascimentos, agravos) cobrem
+todo mundo. O faturamento cobre só o cuidado pago pelo SUS. Em dezembro de 2024, 52,2
+milhões de pessoas, 24,6% da população, tinham plano médico privado, de 4% em Roraima a 40%
+em São Paulo. As internações delas são invisíveis nos dados hospitalares. Qualquer taxa
+baseada em hospital fica, portanto, enviesada por UF, e na mesma direção da renda. A adesão
+a planos privados só é publicada como contagem: serve para corrigir denominadores, não para
+identificar pacientes.</p>
+<p><strong>Oportunidade e atraso.</strong> O faturamento é processado todo mês e chega em poucos meses. Uma
+internação é faturada no mês da alta ou depois, então o ano de faturamento não é o ano do
+cuidado. Os microdados de óbito saem como definitivos cerca de dois anos depois do ano do
+óbito, e o ano mais recente nesta cópia é 2022. As notificações chegam numa mediana de 3
+dias depois do início dos sintomas, mas o caso é encerrado semanas depois: na dengue, a
+mediana entre notificação e encerramento caiu de 31 dias em 2014 para 14 em 2025.</p>
+<p><strong>Estabilidade no tempo.</strong> As classificações mudam debaixo dos pés de quem analisa. A dengue
+passou para as definições de caso da OMS de 2009 em 2014, com códigos novos. A partir de
+2022 o arquivo público de dengue deixou de trazer as notificações descartadas, então &quot;todas
+as notificações&quot; quer dizer coisas diferentes antes e depois. Os campos de comorbidade da
+ficha de dengue ficaram em branco até 2015 e só são utilizáveis a partir de 2017. Um
+estado, o Espírito Santo, notificou dengue num sistema próprio em 2021–2024 e quase some do
+arquivo nacional, enquanto os hospitais de lá continuaram faturando internações por dengue.</p>
+<p><strong>Privacidade.</strong> Os registros hospitalares e de vigilância trazem data de nascimento, sexo,
+município e, nos hospitalares, CEP. Combinados, conseguem singularizar pessoas em municípios
+pequenos. Tudo o que se publica aqui é agregado, e células com menos de 10 eventos são
+suprimidas.</p>
+<h2>Exemplo 1: mortalidade infantil a partir de dois registros</h2>
+<p><img decoding="async" loading="lazy" src="/analises/img/rwd-infant-mortality-1996-2022-pt.png" alt="Mortalidade infantil e neonatal no Brasil, 1996–2022, e por UF em 2022"></p>
+<p>A taxa de mortalidade infantil precisa de dois registros: óbitos de menores de um ano (SIM)
+divididos por nascidos vivos (SINASC). Eles não têm identificador em comum, mas têm o
+município de residência e o ano, e isso basta para a taxa. A razão direta caiu de 26,4 por
+mil em 1996 para 11,6 em 2022. Os óbitos neonatais, nos primeiros 28 dias, dependem mais do
+cuidado hospitalar. Caíram cerca de metade e hoje são dois terços do total. Sergipe (16,8)
+e Amapá (16,5) têm quase o dobro do Distrito Federal (8,7).</p>
+<p>A conferência faz parte do exemplo. Em 2022 o arquivo de óbitos tem 30.791 registros com
+idade abaixo de um ano, 29.764 depois de tirar 1.006 idades negativas impossíveis e 21
+registros sem município. Uma segunda contagem, pelas datas de nascimento e de óbito, dá
+30.668. Onde o registro é mais fraco a razão direta subconta, e é por isso que as
+estimativas oficiais do Norte e do Nordeste são corrigidas para cima.</p>
+<h2>Exemplo 2: dengue, da notificação ao hospital e ao óbito</h2>
+<p><img decoding="async" loading="lazy" src="/analises/img/dengue-funnel-2014-2024-pt.png" alt="Casos prováveis de dengue, internações no SUS e óbitos por ano, 2014–2024"></p>
+<p>A dengue atravessa três sistemas: notificada no SINAN, internada no SIH, atestada no SIM.
+Entre 2014 e 2024 a vigilância registrou 16,7 milhões de casos prováveis e 12.788 óbitos.
+Os hospitais do SUS faturaram 567.723 internações, por R$ 231,7 milhões. 2024 saiu da
+escala: 6,4 milhões de casos prováveis, 3,8 vezes o recorde anterior, com 158.910
+internações e 6.270 óbitos.</p>
+<p>A série também mostra como o quadro hospitalar mudou. Em 2014 havia uma internação no SUS
+para cada 16 casos prováveis; em 2024, uma para cada 40. A letalidade hospitalar entre os
+internados subiu de 0,45% para 1,58%. Menos pacientes chegam a um leito público, e os que
+chegam estão mais graves. Isso combina com a hidratação ambulatorial dos casos mais leves.
+Também combina com mais internações indo para hospitais privados, que o SIH não vê. Só com
+os dados não dá para separar as duas coisas.</p>
+<p><img decoding="async" loading="lazy" src="/analises/img/dengue-deaths-by-source-2014-2024-pt.png" alt="Óbitos por dengue segundo a vigilância, as declarações de óbito e os hospitais do SUS, 2014–2024"></p>
+<p>Três sistemas, três contagens de óbito. Em 2014–2022 a vigilância encerrou 5.422 casos como
+óbito, as declarações de óbito citaram dengue 5.925 vezes e os hospitais do SUS registraram
+2.755 óbitos na internação. Cada um conta um evento diferente, e sem identificador do
+paciente eles não podem ser conciliados um a um. Um estudo que precise de &quot;óbitos por
+dengue&quot; tem que escolher uma definição e dizer qual.</p>
+<p>Dentro do SINAN, que é registro a registro, os fatores de risco se leem diretamente. Em 2024
+a letalidade subiu de 0,21 por mil entre crianças para 15,3 por mil acima dos 80 anos, e
+diabéticos de 60 a 79 anos morreram 2,9 vezes mais que não diabéticos da mesma idade. Com
+uma ressalva: a comorbidade é registrada com mais cuidado nos casos graves.</p>
+<p><img decoding="async" loading="lazy" src="/analises/img/dengue-serotypes-2014-2026-pt.png" alt="Composição de sorotipos da dengue entre os casos tipados e parcela dos casos prováveis tipados, 2014–2026"></p>
+<p>A ficha de notificação é também o único lugar em que um resultado molecular chega à base
+nacional: o sorotipo do vírus, por RT-PCR ou isolamento viral. Ele é preenchido em muito
+poucos casos, 0,2–0,8% dos casos prováveis por ano até 2021 e cerca de 3% desde 2023. Mesmo
+assim, basta para ver o vírus mudar. O DENV-3 ficou quase ausente por uma década, com menos
+de 110 casos tipados por ano até 2023. Depois subiu para 1.766 em 2024 e 6.857 em 2025, 14%
+dos casos tipados, e para 30% no arquivo parcial de 2026. Enquanto isso o DENV-2 passou o
+DENV-1, de 30% da composição em 2024 para 74% em 2025. Uma população que só conheceu DENV-1
+e DENV-2 não tem imunidade ao DENV-3. Isso importa para prever uma epidemia, ou para
+escolher centros de estudo clínico de uma vacina ou de um antiviral. Mas é um sinal, não uma
+amostra: quais casos são tipados depende do laboratório do estado, não do paciente.</p>
+<h2>Exemplo 3: medicamentos de alto custo, por doença</h2>
+<p><img decoding="async" loading="lazy" src="/analises/img/rwd-specialty-drugs-2025-pt.png" alt="Autorizações do SUS de medicamentos especializados e de quimioterapia por CID-10, Brasil, 2025"></p>
+<p>O SUS dispensa medicamentos de alto custo a pacientes ambulatoriais por meio de autorizações
+mensais (APAC). Cada uma traz o procedimento, que no caso de medicamento é o próprio
+remédio, e o diagnóstico do paciente. Em 2025 foram 50,5 milhões de registros do Componente
+Especializado da Assistência Farmacêutica, o programa nacional para doenças crônicas e
+raras. Foram mais 5,4 milhões de quimioterapia. Cada registro é um procedimento, para um
+paciente, num mês; dividir por doze dá uma contagem aproximada de pacientes em tratamento
+num mês médio. Os dois arquivos trazem diagnóstico em todo registro, ao contrário do resto
+do faturamento ambulatorial. Isso faz deles o equivalente público mais próximo de um
+arquivo de <em>claims</em> de farmácia especializada.</p>
+<p>Os diagnósticos se parecem com os protocolos clínicos. Dislipidemias, glaucoma,
+esquizofrenia, doença renal crônica, asma e DPOC lideram em volume. Diabetes tipo 2, artrite
+reumatoide, transplantes e epilepsia vêm em seguida. No câncer, os tumores de mama são 48%
+de todas as autorizações, a maioria tratamento adjuvante autorizado mês após mês depois da
+cirurgia. O câncer de próstata vem depois, e então a leucemia mieloide.</p>
+<p>Os valores são a armadilha. Em 7 dos 15 principais diagnósticos de medicamentos, a conta do
+ano inteiro é R$ 0. O Ministério compra esses medicamentos de forma centralizada e os envia
+aos estados, então a autorização registra a dispensação, mas não o custo. Em 2025 as
+autorizações faturaram R$ 2,03 bilhões. A ação orçamentária federal que compra esses
+medicamentos pagou R$ 12,85 bilhões no mesmo ano. Entre 2014 e 2020 o número de registros
+subiu pela metade enquanto o valor faturado caiu pela metade. As autorizações medem <strong>quantos
+pacientes recebem qual tratamento, e onde</strong>. Não medem gasto.</p>
+<p><img decoding="async" loading="lazy" src="/analises/img/rwd-specialty-drugs-trend-pt.png" alt="Crescimento da dispensação de medicamentos especializados por diagnóstico, 2014–2025, e artrite reumatoide por UF"></p>
+<p>Ao longo do tempo, elas mostram a incorporação. Entre 2014 e 2025 os registros de psoríase
+cresceram 6,9 vezes, os de lúpus 5,4 vezes e os de espondilite anquilosante 4,0 vezes, com a
+entrada de medicamentos novos, muitos deles biológicos, nos protocolos do SUS. A artrite
+reumatoide cresceu 2,5 vezes. A doença inflamatória intestinal dobrou e a esclerose
+múltipla cresceu 1,9 vez. O Alzheimer quase não se mexeu. Entre estados, a mesma doença é
+tratada em ritmos muito diferentes. O Paraná dispensa medicamentos para artrite reumatoide
+a 309 pacientes por 100 mil habitantes num mês médio, a média nacional é 125 e Tocantins
+fica em 30. A prevalência de artrite reumatoide não varia 10 vezes entre os estados
+brasileiros, então a maior parte dessa diferença é acesso ao diagnóstico e ao programa. Para
+um plano de lançamento ou um dossiê de acesso, essa diferença é o achado. Valem os limites
+de sempre. Sem identificador do paciente, quem usa dois medicamentos conta duas vezes, a
+troca de medicamento é invisível e a persistência não pode ser medida.</p>
+<p>A diferença também mostra por que a linhagem do dado importa. Uma primeira versão desta
+seção usou uma cópia secundária do arquivo ambulatorial. Nela, os registros de medicamentos
+especializados de Alagoas caíram de 582 mil em 2023 para 221 mil em 2024, e o estado aparecia
+com 13 pacientes por 100 mil, uma diferença de 22 vezes para o Paraná. Refeito a partir dos
+arquivos originais do Ministério, Alagoas tem 632 mil registros em 2025 e 42 pacientes por
+100 mil. A queda era dado faltando, não paciente faltando, e nada na cópia avisava.</p>
+<h2>O que dá e o que não dá para responder</h2>
+<p><strong>Serve bem:</strong></p>
+<ul>
+<li>Carga, tendência e geografia das doenças que internam, dos óbitos, dos nascimentos e dos
+agravos de notificação, no país e até o nível do município.</li>
+<li>Uso e custo de serviços no sistema público: internações, tempo de permanência, uso de
+UTI, procedimentos e medicamentos ambulatoriais de alto custo (APAC), valores pagos.</li>
+<li>Incorporação de tratamento por doença e UF para medicamentos de alto custo e
+quimioterapia dispensados pelo SUS.</li>
+<li>Estudos ecológicos que juntam desfechos de saúde a dados sociais e ambientais por
+município, que o Brasil publica para todos os municípios.</li>
+<li>Análises por estabelecimento de volume, capacidade (leitos, equipamentos, equipe) e
+desfechos.</li>
+<li>Fatores de risco registro a registro <em>dentro</em> de um sistema: idade, sexo, comorbidades e
+gravidade na vigilância; peso ao nascer e idade gestacional nos nascimentos.</li>
+</ul>
+<p><strong>Serve mal, ou só com cuidado:</strong></p>
+<ul>
+<li>Tudo o que segue um paciente entre sistemas ou ao longo do tempo: sequência de
+tratamento, persistência, tempo do diagnóstico ao óbito. Isso exige acesso restrito a
+dados identificados.</li>
+<li>Tudo o que acontece no setor privado, um quarto da população, distribuído de forma
+desigual.</li>
+<li>Diagnóstico ambulatorial, que quase não existe fora dos procedimentos de alta complexidade
+e dos medicamentos de alto custo.</li>
+<li>Prescrição e dispensação no varejo: o que é público cobre os medicamentos controlados e os
+de alto custo do SUS por diagnóstico. O custo dos medicamentos comprados de forma
+centralizada não está no registro.</li>
+<li>Qualquer coisa molecular. O Brasil não publica dados genômicos, transcriptômicos ou de
+biomarcadores junto desses sistemas. O único resultado de laboratório nas bases nacionais
+é o sorotipo da dengue, registrado em cerca de 3% dos casos.</li>
+<li>Comparações entre períodos longos sem conferir mudanças de codificação e de classificação.</li>
+</ul>
+<h2>Método</h2>
+<ul>
+<li><strong>Fontes.</strong> Ministério da Saúde / DATASUS: SIH (AIH reduzida e serviços profissionais),
+SIA (produção ambulatorial e atenção psicossocial), SIM, SINASC, SINAN (dengue,
+chikungunya, zika, febre amarela, malária fora da Amazônia, síndrome respiratória aguda
+grave, violência), SISVAN, SI-PNI, CNES. Agência Nacional de Saúde Suplementar (ANS).
+Anvisa (SNGPC). IBGE (população, cadastro de municípios). Tabela oficial da CID-10. O
+SI-PNI foi lido de um espelho público de terceiros dos arquivos oficiais.</li>
+<li><strong>Contagens</strong> são registros como publicados, pelo ano gravado em cada arquivo. Linhas não
+são pessoas.</li>
+<li><strong>Completude</strong> usa os registros de 2022; os registros ambulatoriais individuais (BPA-I,
+APAC, RAAS) e os do SISVAN usam junho de 2022. Um campo conta como utilizável quando não
+está em branco nem codificado como ignorado.</li>
+<li><strong>Ligação</strong>: as taxas de casamento comparam cada chave com a lista oficial de referência:
+municípios do IBGE (7 ou 6 dígitos), o cadastro CNES do mesmo ano e códigos CID-10 válidos
+de 3 e 4 caracteres.</li>
+<li><strong>Causas mal definidas</strong> usam a causa básica do óbito; a UF vem do código do município de
+residência, mantendo os óbitos com UF conhecida e município ignorado. O total nacional de
+1996 (908.883 óbitos) bate com o número oficial.</li>
+<li><strong>Cobertura privada</strong> conta beneficiários ativos de planos médico-hospitalares em
+dezembro, usando só a carga mais recente de cada mês. O total de dezembro de 2022 (50,0
+milhões) fica a menos de 2% do número publicado pela ANS.</li>
+<li><strong>Dengue</strong>: casos prováveis são notificações não classificadas como descartadas; as
+internações têm diagnóstico principal A90–A91; os óbitos por declaração têm causa básica
+A90–A91.</li>
+<li><strong>Medicamentos de alto custo</strong> são autorizações ambulatoriais (APAC, principais e
+secundárias) do grupo SIGTAP 06.04, o Componente Especializado da Assistência
+Farmacêutica, e quimioterapia do grupo 03.04. São contadas por ano de processamento. 2025 e
+2026 vêm dos arquivos mensais originais do Ministério; os anos anteriores, de uma cópia
+secundária, que para esses dois grupos difere do original em menos de 2% onde os dois
+existem (janeiro a junho de 2025). 2026 é parcial e fica de fora. O diagnóstico é a
+categoria CID-10 de 3 caracteres, tirada de qualquer um dos dois campos de diagnóstico que
+esteja preenchido. As taxas por UF usam a UF do estabelecimento que dispensa e as
+estimativas de população do IBGE para 2025. A referência federal é a ação orçamentária
+4705 (medicamentos do Componente Especializado), valor pago, dos dados de execução da
+despesa federal.</li>
+<li><strong>Sorotipo</strong> conta os casos prováveis de dengue cuja ficha registra DENV-1 a DENV-4. 2026
+é parcial.</li>
+</ul>
+<p><em>Dados rodados em 5 de outubro de 2026; o parágrafo dos sorotipos e o exemplo 3 em 18 de
+novembro de 2026.</em></p>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <a href="/temas/">Índice temático</a>
+    <span>Dados: fontes públicas oficiais / DuckDB</span>
+    <span class="footer-by">por <a href="https://extrapolo.com" target="_blank" rel="noopener">extrapolo.com</a></span>
+  </div>
+</footer>
+
+<script src="../viewer.js"></script>
+<script src="../../assets/theme-toggle.js"></script>
+</body>
+</html>

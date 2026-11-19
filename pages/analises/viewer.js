@@ -225,7 +225,11 @@
       enhance();
       var h1 = docEl.querySelector('h1');
       if (h1) {
-        document.title = h1.textContent + ' — rodado';
+        // a página própria (/analises/<slug>/) já traz o <title> curto do
+        // manifest, feito para busca; o H1 é longo e o Google, que roda JS,
+        // passaria a usá-lo. Só a rota ?doc= (sem título próprio) usa o H1.
+        var propria = document.querySelector('link[rel="canonical"][href$="/analises/' + name + '/"]');
+        if (!propria) document.title = h1.textContent + ' — rodado';
         eyebrow.innerHTML = '<a href="' + (base || './') + '" ' +
           'style="color:inherit;text-decoration:none">Análises</a> ／ ' + name;
       }
