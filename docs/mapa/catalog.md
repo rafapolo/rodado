@@ -2,7 +2,7 @@
 
 **Gerado por `scripts/gera_catalog_md.py`, a partir de `_rodado_metadata/catalog.parquet` — não editar à mão.** Descrições vêm de `docs/context/dataset_descriptions.yaml`; a coluna Dado até vem de `docs/context/dataset_freshness.yaml` (curado, só ~6 datasets por enquanto — vazio não significa "sem gap", significa "não conferido ainda"). Editar os YAML e regenerar (`build_metadata_catalog.py` → `gera_catalog_md.py`), nunca este arquivo.
 
-**296 datasets, 1.761 tabelas, 34.687.395.711 linhas.** 34 dataset(s) sem descrição. 13 com data de frescor conferida (de 296).
+**296 datasets, 1.761 tabelas, 34.688.054.794 linhas.** 34 dataset(s) sem descrição. 13 com data de frescor conferida (de 296).
 
 | Dataset | Descrição | Tabelas | Linhas | Dado até | Fonte |
 |---|---|---:|---:|---|---|
@@ -51,7 +51,7 @@
 | `br_brasilapi` | BrasilAPI — bancos, DDDs, feriados nacionais, taxas de referência | 4 | 6.149 | — | BrasilAPI |
 | `br_brasilio_holdings` | Brasil.IO — estrutura societária de holdings empresariais | 1 | 515.191 | — | Brasil.IO holdings |
 | `br_caixa_sinapi` | SINAPI/Caixa — custos e insumos de construção civil | 1 | 2.258.550 | — | SINAPI (custos/insumos de construção civil) |
-| `br_caixa_sorteios` | Caixa Econômica — resultados da Mega-Sena | 1 | 15.294 | — | Base dos Dados |
+| `br_caixa_sorteios` | Caixa Econômica — resultados da Mega-Sena | 1 | 18.522 | — | SIDRA/IBGE (IPCA, IPCA-15, INPC, IPP, população, PAM, PEVS) e Loterias Caixa (Mega-Sena) |
 | `br_camara_dados_abertos` | Câmara dos Deputados — deputados, votações, despesas, licitações internas | 30 | 15.053.218 | — | Base dos Dados |
 | `br_capes_bolsas` | CAPES — bolsas de mobilidade acadêmica internacional | 1 | 146.036 | — | Base dos Dados |
 | `br_ce_fortaleza_sefin_iptu` | Prefeitura de Fortaleza — cadastro de IPTU por face de quadra | 1 | 68.932 | — | Base dos Dados |
@@ -110,25 +110,25 @@
 | `br_ibge_censo_demografico` | IBGE — microdados dos Censos Demográficos 1970 a 2010 | 38 | 181.895.148 | — | Base dos Dados |
 | `br_ibge_cnefe` | IBGE — Cadastro Nacional de Endereços para Fins Estatísticos, Censo 2022 (endereço a endereço) | 1 | 111.102.875 | — | CNEFE Censo 2022 (microdado completo) |
 | `br_ibge_estadic` | IBGE — Pesquisa de Informações Básicas Estaduais (ESTADIC) | 39 | 7.348 | — | IBGE — MUNIC e ESTADIC, bases completas 2020–2024 |
-| `br_ibge_inpc` | IBGE — Índice Nacional de Preços ao Consumidor | 4 | 658.100 | — | Base dos Dados |
-| `br_ibge_ipca` | IBGE — Índice de Preços ao Consumidor Amplo | 4 | 686.056 | — | Base dos Dados |
-| `br_ibge_ipca15` | IBGE — IPCA-15, prévia mensal do IPCA | 4 | 397.247 | — | Base dos Dados |
-| `br_ibge_ipp` | IBGE — Índice de Preços ao Produtor | 6 | 5.118 | — | Base dos Dados |
+| `br_ibge_inpc` | IBGE — Índice Nacional de Preços ao Consumidor | 4 | 722.924 | — | Base dos Dados |
+| `br_ibge_ipca` | IBGE — Índice de Preços ao Consumidor Amplo | 4 | 740.446 | — | Base dos Dados |
+| `br_ibge_ipca15` | IBGE — IPCA-15, prévia mensal do IPCA | 4 | 434.802 | — | Base dos Dados |
+| `br_ibge_ipp` | IBGE — Índice de Preços ao Produtor | 6 | 8.088 | — | SIDRA/IBGE (IPCA, IPCA-15, INPC, IPP, população, PAM, PEVS) e Loterias Caixa (Mega-Sena) |
 | `br_ibge_lspa` | _(sem descrição)_ | 2 | 76.725 | — | IBGE SIDRA — LSPA, PIA, PAC, PAIC, PAS e Censo Agropecuário 2017, em formato longo |
 | `br_ibge_munic` | IBGE — Pesquisa de Informações Básicas Municipais (MUNIC) | 48 | 1.102.387 | — | IBGE — MUNIC e ESTADIC, bases completas 2020–2024 |
 | `br_ibge_nomes_brasil` | IBGE — frequência de nomes por município, Censo 2010 (nomes raros suprimidos: soma 145 mi de 191 mi) | 1 | 1.959.116 | — | Base dos Dados |
 | `br_ibge_pac` | _(sem descrição)_ | 2 | 504.016 | — | IBGE SIDRA — LSPA, PIA, PAC, PAIC, PAS e Censo Agropecuário 2017, em formato longo |
 | `br_ibge_paic` | _(sem descrição)_ | 2 | 370.915 | — | IBGE SIDRA — LSPA, PIA, PAC, PAIC, PAS e Censo Agropecuário 2017, em formato longo |
-| `br_ibge_pam` | IBGE — Produção Agrícola Municipal, lavouras permanentes e temporárias | 2 | 20.097.187 | — | Base dos Dados |
+| `br_ibge_pam` | IBGE — Produção Agrícola Municipal, lavouras permanentes e temporárias | 2 | 20.569.225 | — | Base dos Dados |
 | `br_ibge_pas` | _(sem descrição)_ | 2 | 812.172 | — | IBGE SIDRA — LSPA, PIA, PAC, PAIC, PAS e Censo Agropecuário 2017, em formato longo |
-| `br_ibge_pevs` | IBGE — Produção da Extração Vegetal e da Silvicultura | 2 | 558.451 | — | Base dos Dados |
+| `br_ibge_pevs` | IBGE — Produção da Extração Vegetal e da Silvicultura | 2 | 576.634 | — | Base dos Dados |
 | `br_ibge_pia` | _(sem descrição)_ | 2 | 6.808.795 | — | IBGE SIDRA — LSPA, PIA, PAC, PAIC, PAS e Censo Agropecuário 2017, em formato longo |
 | `br_ibge_pib` | IBGE — PIB municipal e estadual | 8 | 225.905 | — | IBGE — Contas Nacionais Trimestrais (PIB e valor adicionado por setor), série completa |
 | `br_ibge_pnad` | IBGE — PNAD, microdados compatibilizados históricos | 3 | 9.587.801 | — | Base dos Dados |
 | `br_ibge_pnad_covid` | IBGE — PNAD-COVID19, microdados mensais de mai a nov/2020 (2,65 mi pessoas, pesar por v1032) e o dicionário | 2 | 2.651.013 | — | IBGE — PNAD COVID19, microdados mensais mai–nov/2020 |
 | `br_ibge_pnadc` | IBGE — PNAD Contínua, mercado de trabalho e rendimento | 14 | 33.594.041 | — | Base dos Dados |
 | `br_ibge_pof` | IBGE — Pesquisa de Orçamentos Familiares | 18 | 6.218.668 | — | IBGE — POF 2017-2018, registros que faltavam |
-| `br_ibge_populacao` | IBGE — estimativas populacionais por município, UF e Brasil | 3 | 192.080 | — | Base dos Dados |
+| `br_ibge_populacao` | IBGE — estimativas populacionais por município, UF e Brasil | 3 | 197.679 | — | Base dos Dados |
 | `br_ibge_ppm` | IBGE — Pesquisa Pecuária Municipal (rebanhos, aquicultura, produção animal) | 4 | 3.111.747 | — | Base dos Dados |
 | `br_icmbio_embargos` | _(sem descrição)_ | 1 | 14.806 | — | ICMBio — embargos |
 | `br_ieps_saude` | IEPS — indicadores de saúde por município e região de saúde | 5 | 73.980 | — | Base dos Dados |
@@ -278,7 +278,7 @@
 | `br_transferegov` | TransfereGov — planos de ação, programas e transferências (API normalizada) | 3 | 30.346 | — | TransfereGov |
 | `br_transferegov_siconv` | TransfereGov/SICONV — convênios, contratos de repasse e execução física/financeira completa | 62 | 69.060.758 | — | Transferegov/SICONV completo |
 | `br_trase_supply_chain` | Trase — cadeia de suprimentos de soja e carne bovina, do frigorífico/esmagadora à origem | 7 | 1.824.843 | — | Sem procedência registrada |
-| `br_tse_eleicoes` | TSE — eleições 2026 (candidatos, votação, resultados, bens, receitas) | 32 | 1.719.617.327 | 2026-10-25 | Base dos Dados |
+| `br_tse_eleicoes` | TSE — eleições 2026 (candidatos, votação, resultados, bens, receitas) | 32 | 1.719.617.623 | 2026-10-25 | Base dos Dados |
 | `br_tse_filiacao_partidaria` | TSE — filiação partidária | 2 | 42.201.443 | — | Base dos Dados |
 | `br_ufmg_censo_demografico_1872` | Recenseamento Geral do Império do Brasil de 1872 (UFMG) por província, município e paróquia, nos dados originais e corrigidos | 58 | 1.251.630 | — | Base dos Dados |
 | `eu_sanctions` | União Europeia — lista de sanções | 1 | 44.043 | — | EU Sanctions |
