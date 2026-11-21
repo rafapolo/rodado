@@ -1,0 +1,31 @@
+dataset: br_ibge_registro_civil
+gotchas:
+  - id: series_atuais_estao_no_recorte
+    resumo: "As séries atuais de casamento (4412, 2013–2024; 2759, 2003–2024) e de divórcio (1695, 2009–2024) NÃO estão em sidra: o cruzamento completo passa de 1 bilhão de células e ficou só no índice (sidra_tabelas.fora). Estão em sidra_municipio, recortes com o Total das demais classificações, Brasil + UF + município (coluna recorte: casamentos_total 2013–2024 com total, entre homens e entre mulheres; casamentos_total_2003 2003–2012; divorcios_total 2009–2024). Em sidra, casamento por município só existe para 1984–2002 (703, 707, 712)."
+    tabelas: [sidra, sidra_municipio, sidra_tabelas]
+    colunas: [id_tabela, recorte]
+    severidade: silencioso
+    verificado: "127 tabelas no índice, 99 com valores em sidra, 20 com município; sidra_municipio 347.138 linhas, BR 2022 = 970.041 casamentos e 420.039 divórcios, soma dos municípios igual — 2026-11-21"
+  - id: nascimento_e_obito_use_sinasc_sim
+    resumo: "Nascidos vivos e óbitos daqui são os registrados em cartório (Estatísticas do Registro Civil), não as declarações do SUS: diferem de br_ms_sinasc/br_ms_sim por sub-registro e por ano de registro × ano de ocorrência (tabelas 'registrados no ano' vs 'ocorridos no ano'). Para saúde, use SINASC/SIM; aqui o ganho é casamento, divórcio e separação, que o DataSUS não tem."
+    tabelas: [sidra]
+    severidade: aviso
+    verificado: "2026-11-21"
+  - id: mesma_celula_em_varias_tabelas
+    resumo: "Como em todo sidra do espelho, a mesma contagem aparece em mais de uma id_tabela (séries de eras diferentes, 'registrados' vs 'ocorridos', mês do registro vs mês de ocorrência). Filtre sempre uma id_tabela escolhida em sidra_tabelas; nunca some tabelas."
+    tabelas: [sidra, sidra_municipio]
+    colunas: [id_tabela]
+    severidade: erro
+    verificado: "2026-11-21"
+  - id: lugar_e_do_registro
+    resumo: "O nível município é o lugar do registro (casamento) ou da ação do processo (divórcio), não a residência dos cônjuges: cidades-polo concentram registros de vizinhas pequenas."
+    tabelas: [sidra, sidra_municipio]
+    colunas: [id_localidade]
+    severidade: silencioso
+    verificado: "nomes das tabelas 4412, 2759, 1695 (… e lugar do registro / lugar da ação do processo) — 2026-11-21"
+  - id: valor_nulo_e_percentual
+    resumo: "valor NULL tem motivo em simbolo ('-' virou 0; '...' não disponível; 'X' sigilo). Variáveis 1000xxx são percentual do total na mesma coluna valor: filtre id_variavel antes de somar."
+    tabelas: [sidra, sidra_municipio]
+    colunas: [valor, simbolo, id_variavel]
+    severidade: erro
+    verificado: "2026-11-21"

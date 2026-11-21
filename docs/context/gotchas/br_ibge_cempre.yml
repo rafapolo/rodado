@@ -1,0 +1,31 @@
+dataset: br_ibge_cempre
+gotchas:
+  - id: serie_municipal_em_tres_pares
+    resumo: "Município × atividade vem em três pares de tabelas, cada um com uma CNAE: 1735 (1996–2006, seção CNAE 1.0, × faixa de pessoal), 3421 (2010–2021, CNAE 2.0 seção e divisão) e 9510 (2022–2024, a mesma de 3421). Totais por município sem atividade: 1685 (2006–2021) e 9509 (2022–2024). As tabelas por classe CNAE (6449, 6450, 9418, 9528: 1.067 categorias) só têm Brasil e UF. Não junte códigos de categoria entre eras: filtre id_tabela."
+    tabelas: [sidra, sidra_tabelas]
+    colunas: [id_tabela, id_nivel, id_categoria_1]
+    severidade: silencioso
+    verificado: "3421 com 5.571 municípios em 2021; 1735 88,7 mi, 3421 95,2 mi, 9510 23,8 mi de valores — 2026-11-21"
+  - id: so_indice
+    resumo: "9 tabelas ficaram só no índice (sidra_tabelas.fora): os cruzamentos CNAE × faixa de pessoal × natureza jurídica (992, 7528, 6703, 9529, 988, 1732, 1733, 2869) passam do teto em UF. Para esses recortes, consulte o SIDRA ou use 3421/9510 por município."
+    tabelas: [sidra_tabelas]
+    colunas: [fora]
+    severidade: aviso
+    verificado: "27 tabelas no índice, 18 com valores — 2026-11-21"
+  - id: unidades_misturadas
+    resumo: "valor mistura contagens (empresas, unidades locais, pessoas), Mil Reais (salários e outras remunerações), salários mínimos (salário médio mensal) e reais (salário médio mensal em reais): filtre id_variavel e olhe unidade antes de somar. Salários vêm em MIL reais: 908.823.997 em 2010 = R$ 909 bi."
+    tabelas: [sidra]
+    colunas: [valor, unidade, id_variavel]
+    severidade: erro
+    verificado: "BR 2021: 6.048.052 empresas, 55.296.012 pessoas ocupadas, salários 1.994.858.026 (mil R$) — 2026-11-21"
+  - id: valor_nulo_tem_motivo
+    resumo: "valor NULL com simbolo 'X' é sigilo (município com poucas empresas na atividade): somar municípios não fecha com a UF; '-' virou 0."
+    tabelas: [sidra]
+    colunas: [valor, simbolo]
+    severidade: silencioso
+    verificado: "2026-11-21"
+  - id: unidade_local_vs_empresa
+    resumo: "Por município, o CEMPRE conta unidades locais (estabelecimentos) onde estão; por UF/Brasil há tabelas de empresas (sede). Não compare contagem de empresas com unidades locais, nem com br_me_cnpj.estabelecimentos sem filtrar situação ativa: o CEMPRE só tem quem declarou na RAIS/eSocial no ano."
+    tabelas: [sidra]
+    severidade: aviso
+    verificado: "2010: 5.338.630 empresas, 5.551.915 unidades locais — 2026-11-21"

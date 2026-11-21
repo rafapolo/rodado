@@ -1,0 +1,23 @@
+dataset: br_ibge_pense
+gotchas:
+  - id: uma_tabela_por_edicao
+    resumo: "Cada edição é uma tabela com variáveis próprias (2009 B01P01…, 2012 B01001…, 2015 VB01001…, 2019/2024 B01001A…): o mesmo código pode ser outra pergunta em outra edição. Para série 2009–2019 do 9º ano use os indicadores comparáveis que o IBGE publica (ftp pense/2009_2019_indicadores_comparaveis_9ano), não um UNION das tabelas."
+    tabelas: [microdados_2009, microdados_2012, microdados_2015_amostra1, microdados_2015_amostra2, microdados_2019, microdados_2024]
+    severidade: erro
+    verificado: "nomes de coluna conferidos nas 6 tabelas — 2026-11-20"
+  - id: use_o_peso
+    resumo: "Linha é aluno da amostra, não população. Expanda pelo peso: PESO_AJU_FREQ (2009), PESO (2012, 2015), PESO_ALUNO_FREQ (2019, 2024)."
+    tabelas: [microdados_2009, microdados_2012, microdados_2015_amostra1, microdados_2015_amostra2, microdados_2019, microdados_2024]
+    colunas: [PESO, PESO_AJU_FREQ, PESO_ALUNO_FREQ]
+    severidade: silencioso
+    verificado: "soma dos pesos: 2009 618.555 (9º ano, capitais), 2012 3.153.314 (9º ano), 2015 a1 2.630.835 (9º ano), 2015 a2 18.954.449, 2019 14.963.958, 2024 15.354.855 — 2026-11-20"
+  - id: idade_fora_do_recorte_publicado
+    resumo: "2015 amostra 2, 2019 e 2024 trazem alunos de todas as idades das séries pesquisadas; os resultados publicados pelo IBGE são de 13 a 17 anos. Filtre a idade antes de comparar com a publicação."
+    tabelas: [microdados_2015_amostra2, microdados_2019, microdados_2024]
+    severidade: silencioso
+    verificado: "peso total 2019 = 14,96 mi contra 11,8 mi de escolares de 13 a 17 anos na publicação — 2026-11-20"
+  - id: codigos_sem_rotulo
+    resumo: "Valores são códigos de resposta (número); o rótulo está em dicionario (texto cru das planilhas, uma linha por linha da planilha, edicao em 2015_amostra1/2015_amostra2/2019/2024; em 2009 e 2012 variavel + rótulo vêm do input SAS). Em 2009 o '.' do SAS (ausente) virou NULL; 2015 vinha com decimal vírgula."
+    tabelas: [dicionario]
+    severidade: aviso
+    verificado: "2026-11-20"

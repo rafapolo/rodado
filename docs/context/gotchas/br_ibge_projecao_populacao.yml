@@ -1,0 +1,30 @@
+dataset: br_ibge_projecao_populacao
+gotchas:
+  - id: locais_misturados
+    resumo: "Brasil, as 5 regiões e as 27 UFs estão na mesma tabela: codigo_local 0 = Brasil, 1–5 = regiões, 11–53 = UF; sigla_uf traz BR e as siglas de região além das UFs. Somar sem filtrar triplica o total."
+    tabelas: [populacao_idade, indicadores, tabua_mortalidade]
+    colunas: [codigo_local, sigla_uf]
+    severidade: erro
+    verificado: "33 locais × 71 anos = 2.343 linhas em indicadores — 2026-11-20"
+  - id: sexo_ambos
+    resumo: "sexo tem Ambos, Homens e Mulheres; Ambos já é a soma."
+    tabelas: [populacao_idade, tabua_mortalidade]
+    colunas: [sexo]
+    severidade: erro
+    verificado: "2026-11-20"
+  - id: nao_e_o_censo
+    resumo: "A revisão 2024 corrige o sub-registro do Censo 2022: BR 2022 = 210,86 mi aqui contra 203,1 mi no Censo. Para denominador oficial do ano de censo use o censo; para série 2000–2070 coerente com os pesos novos da PNAD Contínua, esta."
+    tabelas: [populacao_idade]
+    severidade: silencioso
+    verificado: "soma BR Ambos 2022 = 210.862.983; pico 2041 = 220.425.299; 2070 = 199.228.708 — 2026-11-20"
+  - id: idade_aberta
+    resumo: "idade 90 é 90 ou mais (idade_aberta = true); na tabua_mortalidade o último grupo tem intervalo_idade NULL (era '+' na planilha)."
+    tabelas: [populacao_idade, tabua_mortalidade]
+    colunas: [idade, idade_aberta, intervalo_idade]
+    severidade: aviso
+    verificado: "2026-11-20"
+  - id: nomes_de_indicador
+    resumo: "indicadores: colunas em minúsculas com sufixo _t/_h/_m (ambos/homens/mulheres); as que começavam com dígito ganharam 'q' na frente (5q0_T → q5q0_t, 45q15_T → q45q15_t, 20q60_T → q20q60_t). Taxas em ‰ (tbn, tbm, tmi, q*), razões por 100. Primeiro ano (2000) sem tcg_*."
+    tabelas: [indicadores]
+    severidade: aviso
+    verificado: "2026-11-20"

@@ -1,0 +1,19 @@
+dataset: br_ibge_tabuas_mortalidade
+gotchas:
+  - id: idade_aberta_mudou
+    resumo: "A idade aberta é 80+ de 1998 a 2021 e 90+ de 2022 em diante (81 vs 91 linhas por ano e sexo). Compare ex só até 80 entre essas eras."
+    tabelas: [tabua_completa]
+    colunas: [idade, idade_aberta]
+    severidade: silencioso
+    verificado: "72 grupos ano×sexo com 81 linhas (1998–2021), 9 com 91 (2022–2024) — 2026-11-20"
+  - id: so_brasil
+    resumo: "Só Brasil. Tábua por UF (abreviada, quinquenal, 2000–2070) está em br_ibge_projecao_populacao.tabua_mortalidade."
+    tabelas: [tabua_completa]
+    severidade: aviso
+    verificado: "2026-11-20"
+  - id: qx_por_mil
+    resumo: "qx_por_mil é por mil; na idade aberta foi normalizado para 1000 (as planilhas de 1998–2001 traziam 1.0). Cada tábua é publicada com o ano de referência e não é revisada para trás: e0 de anos antigos não é comparável com a projeção revisão 2024."
+    tabelas: [tabua_completa]
+    colunas: [qx_por_mil]
+    severidade: silencioso
+    verificado: "e0 ambos: 1998 68,10; 2010 73,48; 2019 76,55; 2024 76,61 — 2026-11-20"

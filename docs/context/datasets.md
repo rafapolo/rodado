@@ -9,7 +9,7 @@ conferimos a fonte (esse registro não existe).
 o arquivo em disco é ~1% maior (rodapé e índices), e muito mais em dataset minúsculo.
 `0 B` = só view ou tabela nativa do `.duckdb`, sem parquet.
 
-295 datasets, 1760 tabelas.
+301 datasets, 1789 tabelas.
 
 | dataset | tabelas | tamanho | linhas | updated_at |
 |---|---:|---:|---:|---|
@@ -44,7 +44,7 @@ o arquivo em disco é ~1% maior (rodapé e índices), e muito mais em dataset mi
 | `br_bcb_ptax` | 3 | 10,9 MB | 806.069 | 2026-11-10 |
 | `br_bcb_scrdata` | 1 | 2,0 GB | 43.690.931 | 2026-11-10 |
 | `br_bcb_sgs` | 1 | 62,7 KB | 25.248 | 2026-11-10 |
-| `br_bcb_sicor` | 20 | 24,1 GB | 787.221.440 | 2026-11-02 |
+| `br_bcb_sicor` | 20 | 24,7 GB | 821.167.854 | 2026-11-20 |
 | `br_bd_diretorios_brasil` | 23 | 148,9 MB | 2.033.171 | 2026-10-30 |
 | `br_bd_diretorios_data_tempo` | 11 | 5,9 MB | 1.922.812 | 2026-07-05 |
 | `br_bd_diretorios_mundo` | 4 | 1,5 MB | 20.648 | 2026-08-23 |
@@ -58,19 +58,19 @@ o arquivo em disco é ~1% maior (rodapé e índices), e muito mais em dataset mi
 | `br_brasilio_holdings` | 1 | 10,8 MB | 515.191 | 2026-07-10 |
 | `br_caixa_sinapi` | 1 | 6,2 MB | 2.258.550 | 2026-10-30 |
 | `br_caixa_sorteios` | 1 | 36,7 KB | 18.522 | 2026-11-19 |
-| `br_camara_dados_abertos` | 30 | 297,6 MB | 15.053.218 | 2026-11-11 |
+| `br_camara_dados_abertos` | 30 | 297,3 MB | 15.057.224 | 2026-11-20 |
 | `br_capes_bolsas` | 1 | 4,0 MB | 146.036 | 2026-10-07 |
 | `br_ce_fortaleza_sefin_iptu` | 1 | 1,6 MB | 68.932 | 2026-07-05 |
-| `br_cgu_beneficios_cidadao` | 6 | 11,9 GB | 3.321.211.133 | 2026-10-26 |
-| `br_cgu_cartao_pagamento` | 4 | 50,1 MB | 3.213.220 | 2026-10-30 |
+| `br_cgu_beneficios_cidadao` | 6 | 15,7 GB | 3.411.074.270 | 2026-11-20 |
+| `br_cgu_cartao_pagamento` | 4 | 45,5 MB | 3.342.432 | 2026-11-20 |
 | `br_cgu_dados_abertos` | 3 | 7,2 MB | 89.771 | 2026-07-05 |
 | `br_cgu_despesas_publicas` | 2 | 3,0 GB | 131.107.783 | 2026-11-11 |
 | `br_cgu_ebt` | 2 | 10,7 KB | 1.384 | 2026-07-09 |
-| `br_cgu_emendas_parlamentares` | 4 | 25,3 MB | 1.094.989 | 2026-10-30 |
+| `br_cgu_emendas_parlamentares` | 4 | 25,0 MB | 1.106.104 | 2026-11-20 |
 | `br_cgu_fef` | 3 | 512,5 KB | 84.945 | 2026-07-09 |
 | `br_cgu_garantia_safra` | 3 | 136,2 MB | 36.210.983 | 2026-10-22 |
 | `br_cgu_gas_do_povo` | 1 | 433,8 MB | 24.494.950 | 2026-10-31 |
-| `br_cgu_licitacao_contrato` | 8 | 1,9 GB | 100.216.979 | 2026-10-30 |
+| `br_cgu_licitacao_contrato` | 8 | 1,9 GB | 100.222.871 | 2026-11-19 |
 | `br_cgu_novo_bolsa_familia` | 3 | 3,6 GB | 889.084.279 | 2026-10-31 |
 | `br_cgu_orcamento_publico` | 1 | 11,7 MB | 341.269 | 2026-10-09 |
 | `br_cgu_pe_de_meia` | 4 | 582,3 MB | 97.981.384 | 2026-10-22 |
@@ -78,7 +78,7 @@ o arquivo em disco é ~1% maior (rodapé e índices), e muito mais em dataset mi
 | `br_cgu_receitas_publicas` | 1 | 15,6 MB | 1.529.345 | 2026-07-05 |
 | `br_cgu_sancoes` | 6 | 3,4 MB | 45.506 | 2026-10-30 |
 | `br_cgu_seguro_defeso` | 3 | 145,6 MB | 47.779.027 | 2026-10-31 |
-| `br_cgu_servidores_executivo_federal` | 7 | 3,8 GB | 432.489.430 | 2026-11-01 |
+| `br_cgu_servidores_executivo_federal` | 7 | 5,9 GB | 491.606.393 | 2026-11-20 |
 | `br_cgu_transferencias` | 1 | 340,4 MB | 23.086.484 | 2026-11-10 |
 | `br_cgu_viagens` | 4 | 1,1 GB | 53.192.569 | 2026-10-30 |
 | `br_clp_ranking_competitividade` | 2 | 44,6 KB | 9.431 | 2026-07-09 |
@@ -90,11 +90,11 @@ o arquivo em disco é ~1% maior (rodapé e índices), e muito mais em dataset mi
 | `br_cvm_administradores_carteira` | 3 | 449,6 KB | 16.476 | 2026-10-30 |
 | `br_cvm_cia_aberta` | 118 | 307,9 MB | 71.347.599 | 2026-11-11 |
 | `br_cvm_fundos` | 39 | 4,2 GB | 440.462.913 | 2026-11-10 |
-| `br_cvm_oferta_publica_distribuicao` | 1 | 1,1 MB | 27.486 | 2026-10-30 |
+| `br_cvm_oferta_publica_distribuicao` | 1 | 2,5 MB | 64.194 | 2026-11-20 |
 | `br_datahackers_state_data` | 1 | 367,6 KB | 4.271 | 2026-07-05 |
 | `br_datasus_cid10` | 6 | 452,3 KB | 15.672 | 2026-07-10 |
 | `br_fbsp_absp` | 3 | 40,1 KB | 2.484 | 2026-07-09 |
-| `br_fgv_igp` | 7 | 102,6 KB | 2.536 | 2026-07-05 |
+| `br_fgv_igp` | 7 | 93,9 KB | 2.665 | 2026-11-20 |
 | `br_fipe_veiculos` | 1 | 171,7 KB | 11.425 | 2026-10-07 |
 | `br_firjan_ifgf` | 1 | 599,0 KB | 55.680 | 2026-07-09 |
 | `br_fnde_fundeb` | 2 | 93,1 MB | 15.063.256 | 2026-10-21 |
@@ -109,24 +109,26 @@ o arquivo em disco é ~1% maior (rodapé e índices), e muito mais em dataset mi
 | `br_ibge_amc` | 1 | 349,9 KB | 434.070 | 2026-07-09 |
 | `br_ibge_areas_risco` | 4 | 2,3 MB | 21.499 | 2026-10-25 |
 | `br_ibge_cbo_2002` | 2 | 962,1 KB | 177.556 | 2026-07-09 |
+| `br_ibge_cempre` | 2 | 85,8 MB | 287.555.321 | 2026-11-21 |
 | `br_ibge_censo2022_raca` | 2 | 2,0 MB | 1.415.034 | 2026-07-18 |
 | `br_ibge_censo2022_religiao` | 15 | 8,3 MB | 6.451.488 | 2026-07-18 |
 | `br_ibge_censo_2022` | 47 | 4,6 GB | 171.441.122 | 2026-10-11 |
 | `br_ibge_censo_agropecuario` | 3 | 136,9 MB | 212.112.778 | 2026-10-26 |
 | `br_ibge_censo_demografico` | 38 | 5,3 GB | 181.895.148 | 2026-10-09 |
 | `br_ibge_cnefe` | 1 | 3,1 GB | 111.102.875 | 2026-10-21 |
-| `br_ibge_estadic` | 39 | 635,7 KB | 7.348 | 2026-10-25 |
+| `br_ibge_estadic` | 42 | 670,0 KB | 7.670 | 2026-11-20 |
 | `br_ibge_inpc` | 4 | 4,6 MB | 722.924 | 2026-11-19 |
 | `br_ibge_ipca` | 4 | 4,7 MB | 740.446 | 2026-11-19 |
 | `br_ibge_ipca15` | 4 | 3,0 MB | 434.802 | 2026-11-19 |
 | `br_ibge_ipp` | 6 | 129,8 KB | 8.088 | 2026-11-19 |
 | `br_ibge_lspa` | 2 | 88,4 KB | 76.725 | 2026-10-25 |
-| `br_ibge_munic` | 48 | 11,6 MB | 1.102.387 | 2026-10-25 |
+| `br_ibge_munic` | 56 | 12,9 MB | 1.153.374 | 2026-11-20 |
 | `br_ibge_nomes_brasil` | 1 | 6,0 MB | 1.959.116 | 2026-07-09 |
 | `br_ibge_pac` | 2 | 1,8 MB | 504.016 | 2026-10-25 |
 | `br_ibge_paic` | 2 | 1,1 MB | 370.915 | 2026-10-25 |
 | `br_ibge_pam` | 2 | 71,1 MB | 20.569.225 | 2026-11-19 |
 | `br_ibge_pas` | 2 | 3,4 MB | 812.172 | 2026-10-25 |
+| `br_ibge_pense` | 7 | 34,7 MB | 614.226 | 2026-11-20 |
 | `br_ibge_pevs` | 2 | 3,5 MB | 576.634 | 2026-11-19 |
 | `br_ibge_pia` | 2 | 12,5 MB | 6.808.795 | 2026-11-10 |
 | `br_ibge_pib` | 8 | 6,1 MB | 225.905 | 2026-11-03 |
@@ -136,6 +138,9 @@ o arquivo em disco é ~1% maior (rodapé e índices), e muito mais em dataset mi
 | `br_ibge_pof` | 18 | 100,1 MB | 6.218.668 | 2026-10-31 |
 | `br_ibge_populacao` | 3 | 684,0 KB | 197.679 | 2026-11-19 |
 | `br_ibge_ppm` | 4 | 15,0 MB | 3.111.747 | 2026-10-09 |
+| `br_ibge_projecao_populacao` | 3 | 10,0 MB | 782.562 | 2026-11-20 |
+| `br_ibge_registro_civil` | 3 | 65,3 MB | 215.868.766 | 2026-11-21 |
+| `br_ibge_tabuas_mortalidade` | 1 | 289,2 KB | 6.651 | 2026-11-20 |
 | `br_icmbio_embargos` | 1 | 15,4 MB | 14.806 | 2026-10-28 |
 | `br_ieps_saude` | 5 | 11,8 MB | 73.980 | 2026-07-09 |
 | `br_incra_acervo` | 6 | 1,5 GB | 3.830.361 | 2026-10-25 |
@@ -156,8 +161,9 @@ o arquivo em disco é ~1% maior (rodapé e índices), e muito mais em dataset mi
 | `br_inpe_deter` | 2 | 366,5 MB | 1.415.408 | 2026-11-02 |
 | `br_inpe_prodes` | 1 | 881,2 KB | 156.864 | 2026-07-06 |
 | `br_inpe_prodes_acumulado` | 3 | 3,0 GB | 14.457.350 | 2026-10-25 |
-| `br_inpe_queimadas` | 1 | 368,7 MB | 23.902.398 | 2026-11-02 |
+| `br_inpe_queimadas` | 1 | 372,5 MB | 24.184.209 | 2026-11-20 |
 | `br_inpe_sisam` | 1 | 1,6 GB | 158.705.816 | 2026-07-06 |
+| `br_inss_cat` | 1 | 229,1 MB | 7.847.481 | 2026-11-21 |
 | `br_ipea_acesso_oportunidades` | 1 | 18,4 MB | 336.427 | 2026-07-09 |
 | `br_ipea_atlasviolencia` | 2 | 23,8 KB | 3.006 | 2026-08-27 |
 | `br_ipea_avs` | 1 | 37,1 MB | 319.681 | 2026-07-06 |
@@ -169,9 +175,9 @@ o arquivo em disco é ~1% maior (rodapé e índices), e muito mais em dataset mi
 | `br_me_caged` | 6 | 5,9 GB | 770.758.064 | 2026-11-11 |
 | `br_me_clima_organizacional` | 1 | 956,2 KB | 16.436 | 2026-07-09 |
 | `br_me_cno` | 3 | 4,9 MB | 1.020.894 | 2026-07-09 |
-| `br_me_cnpj` | 8 | 15,4 GB | 537.025.666 | 2026-10-29 |
-| `br_me_comex_stat` | 5 | 1,5 GB | 133.659.718 | 2026-10-09 |
-| `br_me_estoque_divida_publica` | 1 | 1,2 MB | 124.419 | 2026-07-09 |
+| `br_me_cnpj` | 8 | 15,6 GB | 540.938.835 | 2026-11-20 |
+| `br_me_comex_stat` | 5 | 1,5 GB | 137.615.726 | 2026-11-21 |
+| `br_me_estoque_divida_publica` | 1 | 1,0 MB | 166.082 | 2026-11-20 |
 | `br_me_exportadoras_importadoras` | 1 | 303 B | 3 | 2026-07-09 |
 | `br_me_rais` | 3 | 62,1 GB | 2.408.887.556 | 2026-10-10 |
 | `br_me_rais_identificada` | 1 | 512,9 MB | 36.161.488 | 2026-08-26 |
@@ -201,24 +207,24 @@ o arquivo em disco é ~1% maior (rodapé e índices), e muito mais em dataset mi
 | `br_mme_luz_para_todos` | 2 | 1,3 MB | 619.959 | 2026-11-04 |
 | `br_mobilidados_indicadores` | 10 | 625,3 KB | 671.362 | 2026-07-09 |
 | `br_mp_pep` | 1 | 7,8 MB | 1.799.733 | 2026-10-09 |
-| `br_mps_beneficios` | 3 | 525,8 MB | 81.063.055 | 2026-10-07 |
+| `br_mps_beneficios` | 3 | 526,8 MB | 81.270.189 | 2026-11-20 |
 | `br_ms_atencao_basica` | 1 | 5,1 MB | 901.944 | 2026-07-09 |
-| `br_ms_cnes` | 14 | 28,6 GB | 1.327.769.452 | 2026-11-01 |
+| `br_ms_cnes` | 15 | 6,0 GB | 499.948.431 | 2026-11-20 |
 | `br_ms_imunizacoes` | 1 | 9,4 MB | 149.124 | 2026-07-09 |
 | `br_ms_mais_medicos` | 4 | 2,1 MB | 856.984 | 2026-11-04 |
 | `br_ms_pns` | 3 | 49,8 MB | 521.059 | 2026-07-06 |
 | `br_ms_populacao` | 1 | 17,1 MB | 4.919.222 | 2026-07-06 |
 | `br_ms_pro_residencia` | 3 | 146,2 KB | 11.849 | 2026-11-04 |
-| `br_ms_sia` | 3 | 41,6 GB | 7.229.492.236 | 2026-11-18 |
-| `br_ms_sih` | 3 | 32,8 GB | 2.634.914.987 | 2026-11-17 |
+| `br_ms_sia` | 3 | 41,8 GB | 7.261.667.965 | 2026-11-20 |
+| `br_ms_sih` | 3 | 35,0 GB | 2.848.310.544 | 2026-11-20 |
 | `br_ms_sim` | 6 | 1,5 GB | 107.245.069 | 2026-10-30 |
-| `br_ms_sinan` | 3 | 617,4 MB | 37.154.410 | 2026-11-03 |
-| `br_ms_sinan_chikungunya` | 1 | 48,2 MB | 2.514.085 | 2026-10-30 |
+| `br_ms_sinan` | 3 | 617,5 MB | 37.172.816 | 2026-11-20 |
+| `br_ms_sinan_chikungunya` | 1 | 47,7 MB | 2.519.878 | 2026-11-20 |
 | `br_ms_sinan_esquistossomose` | 1 | 4,2 MB | 169.721 | 2026-10-21 |
 | `br_ms_sinan_febre_amarela` | 1 | 3,2 MB | 82.844 | 2026-10-30 |
 | `br_ms_sinan_malaria` | 1 | 1,7 MB | 71.159 | 2026-10-30 |
 | `br_ms_sinan_violencia` | 1 | 162,2 MB | 5.384.473 | 2026-10-31 |
-| `br_ms_sinan_zika` | 1 | 8,6 MB | 607.893 | 2026-10-30 |
+| `br_ms_sinan_zika` | 1 | 8,5 MB | 608.320 | 2026-11-20 |
 | `br_ms_sinasc` | 2 | 1,7 GB | 93.344.585 | 2026-11-01 |
 | `br_ms_siops` | 2 | 12,2 MB | 144.405 | 2026-10-31 |
 | `br_ms_sipni_cobertura_historica` | 1 | 20,6 MB | 2.762.327 | 2026-02-27 |
@@ -257,7 +263,7 @@ o arquivo em disco é ~1% maior (rodapé e índices), e muito mais em dataset mi
 | `br_senado_dados_abertos` | 18 | 28,2 MB | 612.356 | 2026-10-31 |
 | `br_senado_dados_abertos_administrativos` | 40 | 9,8 MB | 641.617 | 2026-10-09 |
 | `br_senado_dadosabertos` | 4 | 11,2 MB | 167.221 | 2026-11-11 |
-| `br_senatran_estatisticas` | 1 | 559,8 KB | 159.327 | 2026-10-07 |
+| `br_senatran_estatisticas` | 1 | 302,8 KB | 160.461 | 2026-11-20 |
 | `br_senatran_frota` | 1 | 40,0 MB | 20.223.786 | 2026-11-03 |
 | `br_sfb_cnfp` | 1 | 228,4 MB | 12.874 | 2026-10-25 |
 | `br_sfb_concessoes` | 2 | 2,9 KB | 75 | 2026-11-04 |
@@ -284,7 +290,7 @@ o arquivo em disco é ~1% maior (rodapé e índices), e muito mais em dataset mi
 | `br_transferegov` | 3 | 7,1 MB | 30.346 | 2026-10-21 |
 | `br_transferegov_siconv` | 62 | 2,8 GB | 69.060.758 | 2026-10-21 |
 | `br_trase_supply_chain` | 7 | 62,9 MB | 1.824.843 | 2026-07-18 |
-| `br_tse_eleicoes` | 32 | 13,0 GB | 1.719.617.623 | 2026-11-19 |
+| `br_tse_eleicoes` | 32 | 13,0 GB | 1.719.618.062 | 2026-11-21 |
 | `br_tse_filiacao_partidaria` | 2 | 1,1 GB | 42.201.443 | 2026-10-09 |
 | `br_ufmg_censo_demografico_1872` | 58 | 8,4 MB | 1.251.630 | 2026-10-07 |
 | `eu_sanctions` | 1 | 1,7 MB | 44.043 | 2026-10-30 |

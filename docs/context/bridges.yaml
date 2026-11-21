@@ -320,6 +320,12 @@ concept_aliases:
     sigla_uf_arquivo: sigla_uf
   br_incra_acervo.snci_parcelas:
     sigla_uf_arquivo: sigla_uf
+  # CAT do INSS (2026-11-20): CNPJ casa com br_me_cnpj.estabelecimentos em 165 de 173 (amostra 2025);
+  # antes de 2023-11 a coluna pode trazer CEI (não é CNPJ). Município: 100% casa com o diretório.
+  br_inss_cat.comunicacao:
+    cnpj_cei_empregador: cnpj
+    id_municipio_6_empregador: id_municipio_6
+    id_municipio_6_segurado: id_municipio_6
 
 concepts:
   id_municipio:
