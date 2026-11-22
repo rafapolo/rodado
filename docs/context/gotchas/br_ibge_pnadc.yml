@@ -48,3 +48,20 @@ gotchas:
     colunas: [V4010, V2010]
     severidade: silencioso
     verificado: "2025-T1..T4 pesados por V1028/4, VD4002='1': pretos+pardos 55,4% dos ocupados, 33,7% do grupo 1; top 20% de VD4016 entre gerentes 19,1–20,5% por trimestre — medido 2026-11-19"
+  - id: anuais_arquivo_inteiro_desde_2026_11_22
+    resumo: "educacao e rendimentos_outras_fontes trazem desde 2026-11-22 o arquivo anual INTEIRO do IBGE (todas as pessoas entrevistadas), com os pesos do Censo 2022. A cópia anterior da BD guardava um subconjunto: educacao 2016–2022 só ~140 mil pessoas/ano (quem frequentava escola, 43–50 mi de população) e o arquivo inteiro em 2023–2024; rendimentos_outras_fontes ~30 mil pessoas/trimestre. Contagem de linhas e soma do peso por ano mudaram (agora ~475–570 mil linhas e ~203–213 mi de população na educacao). Filtre a população de interesse (ex.: v3002 frequenta escola) em vez de contar linhas."
+    tabelas: [educacao, rendimentos_outras_fontes]
+    colunas: [v1028, V1032, v3002]
+    severidade: silencioso
+    verificado: "toda pessoa da cópia da BD está no arquivo novo (id_pessoa+trimestre, 100% em todos os anos); educacao 2023: 474.575 nos dois lados — 2026-11-22"
+  - id: rendimentos_visita5_na_pandemia
+    resumo: "rendimentos_outras_fontes vem da 1ª visita, exceto 2020 e 2021, que vêm da 5ª (a 1ª visita não foi a campo na pandemia; é a escolha do IBGE): 355 e 335 mil pessoas contra ~450 mil nos outros anos. 39 colunas do questionário antigo (V5001…V5013 e derivados) só existem de 2012 a 2015 e ficam NULL depois."
+    tabelas: [rendimentos_outras_fontes]
+    severidade: aviso
+    verificado: "2020 355.436, 2021 335.100, 2022 376.821 pessoas — 2026-11-22"
+  - id: anuais_codigos_sem_ponto_e_id_domicilio
+    resumo: "Nas anuais, códigos VARCHAR passaram de '11.0' (como a BD gravava) para '11', e V1008 de '02' para '2', no padrão de microdados; id_domicilio agora tem o V1008 com 2 dígitos (UPA||V1008||V1014), igual a microdados — antes a BD montava sem o zero e o join por id_domicilio entre as tabelas falhava. id_pessoa não mudou."
+    tabelas: [educacao, rendimentos_outras_fontes]
+    colunas: [id_domicilio, V1008, capital, rm_ride]
+    severidade: silencioso
+    verificado: "confere 2023 (educacao) e 2022 (rendimentos) campo a campo contra a cópia da BD — 2026-11-22"
