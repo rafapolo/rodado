@@ -1,7 +1,7 @@
 dataset: br_ibge_ipp
 gotchas:
-  - id: serie_termina_em_2022_02
-    resumo: "As seis tabelas mes_* terminam em fevereiro de 2022 (geral: 2013-12 a 2022-02, 99 meses; por atividade: 2009-12 a 2022-02): nada de 2022 em diante. Variação de 12 meses é nula nos primeiros 12 meses de cada série."
+  - id: serie_comeca_em_2009_12_e_2013_12
+    resumo: "Até 2026-11-19 as seis tabelas mes_* paravam em 2022-02; desde então vão até 2026-09, pelo SIDRA (geral desde 2013-12, por atividade desde 2009-12). Variação de 12 meses é nula nos primeiros 12 meses de cada série. As contagens abaixo são da medição de 2026-11-04, antes da atualização."
     detalhe: >
       numero_indice vai de 76,8 a 164,2 na indústria geral (média 77,1 em 2013 e
       163,7 em 2022): é número-índice, não valor. variacao_doze_meses tem 87 de
@@ -13,3 +13,15 @@ gotchas:
     colunas: [ano, mes, numero_indice, variacao_doze_meses, divisao]
     severidade: silencioso
     verificado: "mes_industria_geral: 99 linhas, 2013 só mês 12, 2022 só meses 1-2; mes_industria_atividade: 3.381 linhas = 3.381 (ano, mês, divisão), 276 por ano de 2010 a 2021; variacao_doze_meses nn 87/99 — medido 2026-11-04"
+  - id: extrativa_e_transformacao_estavam_trocadas
+    resumo: "Na cópia da BD, mes_industria_extrativa e mes_industria_transformacao tinham o conteúdo trocado (a 'extrativa' trazia a transformação e vice-versa). Corrigido em 2026-11-19 comparando com o SIDRA 6903; quem guardou número dessas duas tabelas antes dessa data tem o outro."
+    tabelas: [mes_industria_extrativa, mes_industria_transformacao]
+    colunas: [numero_indice]
+    severidade: silencioso
+    verificado: "fev/2022 extrativa 223,66 e transformação 161,56 (SIDRA 6903 linhas B e C); espelho antigo tinha o inverso — medido 2026-11-19"
+  - id: serie_estendida_ate_2026_09
+    resumo: "O aviso de que as tabelas terminam em 2022-02 valeu até 2026-11-19: o espelho agora vai até 2026-09. fev/2022 na BD difere do SIDRA atual em até 0,7 ponto (revisão do IBGE)."
+    tabelas: [mes_industria_geral, mes_industria_atividade, mes_industria_extrativa, mes_industria_transformacao, mes_grupo_industrial, mes_categoria_economica]
+    colunas: [ano, mes]
+    severidade: aviso
+    verificado: "max(ano*100+mes) = 202609 nas seis tabelas — medido 2026-11-19"

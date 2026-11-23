@@ -34,3 +34,9 @@ gotchas:
     colunas: [preco_revenda, unidade_medida, produto]
     severidade: silencioso
     verificado: "GLP R$/13 kg: 69,99 a 170,00; GNV R$/m³: 3,19 a 6,89; ETANOL R$/litro: 2,69 a 7,35 — medido 2026-11-04"
+  - id: raspador_so_ano_corrente
+    resumo: "O raspador baixa só o ano corrente: promover o staging puro corta 2024-2025. A tabela é atualizada por fusão (histórico com data_coleta antes do 1º domingo do ano + ano novo), num único precos.parquet, o nome que a view lê."
+    tabelas: [precos]
+    colunas: [data_coleta]
+    severidade: erro
+    verificado: "2026-11-23 16:43: staging 788.375 linhas (2026-01-05 a 2026-10-09) x espelho 2.205.259 (2024-03-11 a 2026-10-02); as 767.991 linhas do espelho do mesmo período estavam todas no staging (EXCEPT ALL = 0); fusão 1.437.268 + 788.375 = 2.225.643, 16 linhas idênticas repetidas"

@@ -24,3 +24,13 @@ gotchas:
     colunas: [id_municipio, municipio]
     severidade: aviso
     verificado: "40 de 17.838 — medido 2026-10-31"
+  - id: setorizacao_substituida
+    resumo: "Quando o SGB refaz a setorização de um município, os setores antigos somem da fonte. Em 2026-11-23, 301 setores de 16 municípios (mapeados de 2011 a 2022) foram trocados por setorizações de 2025-2026."
+    detalhe: >
+      A tabela é o retrato atual da fonte, não um histórico. Os 301 setores substituídos
+      ficaram no backup do gate (~/scrap_tmp/backup/br_sgb_setorizacao_risco/setores/20261123-105354).
+      Comparar pessoas em risco entre coletas mistura área remapeada com área nova.
+    tabelas: [setores]
+    colunas: [num_setor, data_setorizacao]
+    severidade: aviso
+    verificado: "17.838 -> 18.936 setores, data máxima 2026-03-11 -> 2026-09-28; os 301 que saíram são de municípios com setorização nova — medido 2026-11-23"

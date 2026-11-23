@@ -21,3 +21,13 @@ gotchas:
       cnpj (desempate por mes) dentro de cada ano. cnpj é VARCHAR de 14 dígitos
       ('00006037000127'), não número.
     verificado: "95 arquivos, 18.827 row groups, zero sobrepostos em cnpj, 2.307.338.481 linhas e soma de hash conferidas na troca — medido 2026-10-29 no beelink; cnpj = '00006037000127' sem ano (12 anos, 765.902 linhas) em 1,1 s"
+  - id: texto_muda_de_formato_em_2025_11
+    resumo: "De 2025-11 em diante (vindos direto da ANS) os textos de categoria vêm em maiúsculas e com acento certo ('COOPERATIVA MÉDICA'); até 2025-10 (cópia da Base dos Dados) vêm em title case e com mojibake ('Cooperativa Madica', 'Ma©dico-Hospitalar'). Filtro por igualdade de texto numa série que cruza 2025-11 perde um dos lados: use ILIKE ou compare por código."
+    tabelas: [informacao_consolidada]
+    severidade: silencioso
+    detalhe: >
+      Também a partir de 2025-11 cada arquivo novo (000000000095.parquet em diante) é um mês inteiro
+      ordenado por cnpj, e não mais faixas de cnpj dentro do ano (ver ordenada_pela_chave).
+      id_municipio dos meses novos sai do código de 6 dígitos da ANS convertido pelo
+      br_bd_diretorios_brasil.municipio; 3.217 linhas de 2025-11 ficaram sem município.
+    verificado: "job ~/scrap_tmp/ans de 2026-11-20, mês 2025-11: 15,45 M linhas, 28 UFs, tipos iguais aos do espelho"

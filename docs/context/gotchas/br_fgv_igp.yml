@@ -5,9 +5,23 @@ gotchas:
     detalhe: >
       igp_m_mes, igp_di_mes e igp_og_mes: ano vai de 1 a 12 e mes de 1944 a
       2023. Filtre mes = <ano> AND ano = <mês>. igp_10_mes está certa. As
-      tabelas anuais (igp_*_ano) estão certas, mas param em 2021: 2022 só existe
-      nas mensais.
+      tabelas anuais (igp_*_ano) estão certas. Desde 2026-11-20 as linhas novas
+      (2023-05 em diante) seguem a mesma convenção trocada.
     tabelas: [igp_m_mes, igp_di_mes, igp_og_mes]
     colunas: [ano, mes]
     severidade: erro
     verificado: "igp_m_mes: ano de 1 a 12, mes de 1989 a 2023 (407 linhas); igp_m_ano termina em 2021; igp_10_mes: ano 1993–2023, mes 1–12 (certa); IGP-M 2020 = 23,14% nas duas, pelo produto dos meses com mes = 2020 — medido 2026-10-20"
+  - id: linhas_novas_derivadas_do_sgs
+    resumo: "De 2023-05 (IGP-M), 2023-07 (IGP-DI) e 2023-08 (IGP-10) em diante só variacao_mensal vem da fonte; indice, variacao_12_meses e variacao_acumulada_ano são encadeados."
+    detalhe: >
+      A cópia da BD parou em 2023. As linhas novas vêm do SGS do BCB (séries 189,
+      190 e 7447), que só publica a variação mensal com 2 casas. indice é o último
+      índice real vezes o produto de (1+v/100) (deriva medida de 0,015% em 28 meses
+      no IGP-M), e as variações de 12 meses e no ano saem desse índice. Os
+      decêndios (igp_m_mes) e indice_fechamento_mensal/anual ficam NULL nessas
+      linhas. igp_og_mes e igp_og_ano não têm série no SGS e seguem parados em
+      2023-04 / 2021. igp_m_ano e igp_di_ano ganharam 2022-2025 pelo mesmo índice.
+    tabelas: [igp_m_mes, igp_di_mes, igp_10_mes, igp_m_ano, igp_di_ano]
+    colunas: [indice, variacao_12_meses, variacao_acumulada_ano, indice_fechamento_mensal]
+    severidade: aviso
+    verificado: "IGP-M 2025 = -1,04% (índice encadeado); SGS 189/190/7447 casam a 2ª casa com 404/407, 952/953 e 345/347 meses do espelho, medido 2026-11-20"

@@ -7,7 +7,7 @@ gotchas:
       64.078 (2017), 57.592 (2018), 47.742 (2019), 50.448 (2020), 47.503 (2021),
       igual aos números publicados no Anuário. Antes de 2011 use quantidade_cvli
       (44.625 em 2007). quantidade_feminicidio é nula em 14 linhas (13 UFs em 2015, 4
-      em 2016). Os dados vão de 2007 a 2021, 27 UFs por ano. despesa_empenhada_seguranca_publica
+      em 2016). Os dados da BD vão de 2007 a 2021, 27 UFs por ano (2022 em diante: uf_2022_em_diante_pela_fonte). despesa_empenhada_seguranca_publica
       está em reais.
     tabelas: [uf]
     colunas: [quantidade_morte_violenta_intencional, quantidade_vitima_homicidio_doloso, quantidade_estupro, quantidade_feminicidio]
@@ -25,3 +25,23 @@ gotchas:
     colunas: [grupo, quantidade_escola, tema, quantidade_morte_policiais_civis_fora_de_servico]
     severidade: silencioso
     verificado: "municipio: 27 capitais x 6 anos = 162, grupo nn=108; violencia_escola 1.917 linhas, ano 2021, 19 temas — medido 2026-11-04"
+  - id: uf_2022_em_diante_pela_fonte
+    resumo: "uf de 2022 a 2025 vem do xlsx de tabelas do Anuário (ano N da edição N+1, a primeira publicação, como a BD). Edições seguintes revisam o ano anterior e o espelho não acompanha: MVI Brasil 2021 é 47.503 aqui e 48.286 na edição 2026."
+    detalhe: >
+      Nos anos novos, "..." da fonte (informação não disponível) é NULL e "-"
+      (fenômeno inexistente) é 0; a BD gravava 0 também no "..." em algumas
+      colunas (intervenção policial, mortes a esclarecer). Coluna sem tabela na
+      edição é NULL para todas as UFs: 2024 sem quantidade_morte_a_esclarecer
+      (a edição 2025 só traz gráfico); 2025 também sem quantidade_suicidio e
+      quantidade_tentativa_estupro. A partir de 2023 a tabela de mortes a
+      esclarecer passa a ser "sem indício de crime" (16.450 em 2023 contra 9.479
+      em 2022): quebra de série. despesa_empenhada_seguranca_publica é a da
+      tabela "Evolução das despesas com a Função Segurança Pública" em R$
+      constantes do próprio ano (= correntes); 2021 continua 0 como veio da BD.
+      quantidade_cvli = vítimas de homicídio doloso + latrocínio + lesão
+      corporal seguida de morte. Somar as 4 colunas de intervenção policial por
+      UF não dá o total (UFs com "..." ficam nulas).
+    tabelas: [uf]
+    colunas: [quantidade_morte_violenta_intencional, quantidade_morte_a_esclarecer, quantidade_suicidio, quantidade_tentativa_estupro, despesa_empenhada_seguranca_publica, quantidade_cvli]
+    severidade: silencioso
+    verificado: "2021 extraído da edição 2022 = espelho em todas as células numéricas (60 diferenças: 33 de '...' vs 0 e 27 da despesa 0); MVI soma UFs 2022 47.452, 2023 46.328, 2024 44.127, 2025 40.775; despesa UFs 2022 101,86 bi, 2025 131,25 bi — medido 2026-11-23"

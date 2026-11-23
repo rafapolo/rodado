@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Referência técnica — rodado</title>
-<meta name="description" content="Como o rodado é feito: um espelho local em Parquet de 1.759 tabelas públicas brasileiras, uma camada semântica de joins, métricas e alertas por dataset, e acesso somente-leitura por SQL e MCP.">
+<meta name="description" content="Como o rodado é feito: um espelho local em Parquet de 1.789 tabelas públicas brasileiras, uma camada semântica de joins, métricas e alertas por dataset, e acesso somente-leitura por SQL e MCP.">
 <!-- seo:start (gerado por scripts/gera_seo.py — não editar à mão) -->
 <link rel="canonical" href="https://rodado.xyz/tecnico">
 <link rel="alternate" hreflang="pt-br" href="https://rodado.xyz/tecnico">
@@ -15,14 +15,14 @@
 <meta property="og:locale" content="pt_BR">
 <meta property="og:url" content="https://rodado.xyz/tecnico">
 <meta property="og:title" content="Referência técnica">
-<meta property="og:description" content="Como o rodado é feito: um espelho local em Parquet de 1.759 tabelas públicas brasileiras, uma camada semântica de joins, métricas e alertas por dataset, e acesso somente-leitura por SQL e MCP.">
+<meta property="og:description" content="Como o rodado é feito: um espelho local em Parquet de 1.789 tabelas públicas brasileiras, uma camada semântica de joins, métricas e alertas por dataset, e acesso somente-leitura por SQL e MCP.">
 <meta property="og:image" content="https://rodado.xyz/assets/og.png?v=62dfe68a">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Referência técnica — rodado">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Referência técnica">
-<meta name="twitter:description" content="Como o rodado é feito: um espelho local em Parquet de 1.759 tabelas públicas brasileiras, uma camada semântica de joins, métricas e alertas por dataset, e acesso somente-leitura por SQL e MCP.">
+<meta name="twitter:description" content="Como o rodado é feito: um espelho local em Parquet de 1.789 tabelas públicas brasileiras, uma camada semântica de joins, métricas e alertas por dataset, e acesso somente-leitura por SQL e MCP.">
 <meta name="twitter:image" content="https://rodado.xyz/assets/og.png?v=62dfe68a">
 <link rel="icon" href="assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
@@ -76,7 +76,7 @@
   <p class="dek">As análises deste site saem todas de um lugar só: um espelho local de dados públicos brasileiros, mais uma camada semântica que diz como as tabelas se ligam e onde elas enganam. Esta página descreve os dois, e os caminhos de acesso somente-leitura.</p>
 
   <h2>O espelho</h2>
-  <p>1.759 tabelas em 295 datasets de 140 fontes, 521 GB e 33,7 bilhões de linhas em 11 de novembro de 2026. 1.216 tabelas espelham a <a href="https://basedosdados.org" target="_blank" rel="noopener">Base dos Dados</a>; as outras 543 são raspadas direto de quem publica, para cobrir as lacunas: listas de sanções, SICAF, microdados do SINAN, reclamações de consumidor, pagamentos da CGU e outras. Cada tabela é uma pasta de arquivos Parquet comprimidos com zstd, e o DuckDB lê os arquivos direto, sem importar nada para um banco.</p>
+  <p>1.789 tabelas em 299 datasets de 155 fontes, 508 GB e 35,5 bilhões de linhas em 23 de novembro de 2026. 804 tabelas espelham a <a href="https://basedosdados.org" target="_blank" rel="noopener">Base dos Dados</a>; as outras 985 são raspadas direto de quem publica, para cobrir as lacunas: listas de sanções, SICAF, microdados do SINAN, reclamações de consumidor, pagamentos da CGU e outras. Cada tabela é uma pasta de arquivos Parquet comprimidos com zstd, e o DuckDB lê os arquivos direto, sem importar nada para um banco.</p>
   <p>Um catálogo de metadados registra linhas, tamanho, URL da fonte, data da coleta, status e procedência de cada tabela. Ele é refeito a cada atualização, e é o que o terminal SQL mostra quando uma tabela é aberta.</p>
 
   <h2>Arquitetura</h2>
@@ -96,7 +96,7 @@
   <p>Toda sessão abre em modo somente-leitura, com os diretórios legíveis numa lista fechada e a configuração travada. A SQL vem de um modelo ou de um desconhecido, e uma consulta que só lê ainda pode ler o arquivo errado.</p>
 
   <h2>Camada semântica</h2>
-  <p>Nome de tabela e de coluna não basta para consultar 1.759 tabelas direito. O mesmo código significa coisas diferentes em anos diferentes, e duas colunas de mesmo nome podem guardar grandezas diferentes. A camada semântica registra isso uma vez, medido no dado real e datado, para que a consulta não precise redescobrir.</p>
+  <p>Nome de tabela e de coluna não basta para consultar 1.789 tabelas direito. O mesmo código significa coisas diferentes em anos diferentes, e duas colunas de mesmo nome podem guardar grandezas diferentes. A camada semântica registra isso uma vez, medido no dado real e datado, para que a consulta não precise redescobrir.</p>
   <div class="data-table-wrap">
     <table>
       <thead><tr><th>Peça</th><th>Tamanho</th><th>O que faz</th></tr></thead>
@@ -106,7 +106,7 @@
         <tr><td>Codificados de outro jeito</td><td>13</td><td>Conceitos como sexo e raça cujos códigos mudam por dataset e por ano.</td></tr>
         <tr><td>Métricas nomeadas</td><td>16</td><td>Valores per capita, taxas e razões com unidade verificada. <code>get_metric()</code> vem antes de qualquer fórmula escrita à mão.</td></tr>
         <tr><td>Hierarquias</td><td>3</td><td>Agregações territoriais, de CNAE e de CID-10.</td></tr>
-        <tr><td>Armadilhas</td><td>290 datasets</td><td>Alertas por dataset devolvidos por <code>describe_table</code>: tabelas só com o último retrato, anos vazios, identificadores mascarados.</td></tr>
+        <tr><td>Armadilhas</td><td>298 datasets</td><td>Alertas por dataset devolvidos por <code>describe_table</code>: tabelas só com o último retrato, anos vazios, identificadores mascarados.</td></tr>
         <tr><td>Ontologia</td><td>87 classes · 137 relações</td><td>O modelo de domínio em 13 domínios: município, empresa, pessoa, contrato, evento de saúde e assim por diante.</td></tr>
         <tr><td>Panoramas por tema</td><td>47</td><td>Resumos curtos por tema, usados como contexto pelos agentes.</td></tr>
       </tbody>
@@ -133,7 +133,7 @@
   </div>
 
   <h2>Escolha das tabelas</h2>
-  <p>Com 1.759 tabelas, o passo difícil é escolher as poucas que valem a leitura antes de escrever qualquer SQL. Uma escolha errada ali produz joins que parecem válidos e não são. O harness local põe o catálogo inteiro de datasets no prompt (cerca de 2.000 tokens, em cache depois da primeira pergunta) e acerta o dataset em 88% das vezes. Um índice de embeddings sobre cerca de oito perguntas sintéticas por tabela ficou perto de 53% no mesmo teste e foi removido. Os agentes então afunilam com <code>list_datasets</code> → <code>list_tables</code> → <code>describe_table</code>.</p>
+  <p>Com 1.789 tabelas, o passo difícil é escolher as poucas que valem a leitura antes de escrever qualquer SQL. Uma escolha errada ali produz joins que parecem válidos e não são. O harness local põe o catálogo inteiro de datasets no prompt (cerca de 2.000 tokens, em cache depois da primeira pergunta) e acerta o dataset em 88% das vezes. Um índice de embeddings sobre cerca de oito perguntas sintéticas por tabela ficou perto de 53% no mesmo teste e foi removido. Os agentes então afunilam com <code>list_datasets</code> → <code>list_tables</code> → <code>describe_table</code>.</p>
 
   <h2>Consultas de exemplo</h2>
   <p>Três perguntas respondidas com o espelho. As três rodam como estão escritas no esquema atual (conferido em 13 de novembro de 2026).</p>
@@ -228,7 +228,7 @@ ORDER BY contratos_federais_2023_2025 DESC</pre>
 <footer>
   <div class="footer-inner">
     <a href="/temas/">Índice temático</a>
-    <span>1.759 tabelas · 521 GB · DuckDB + Parquet</span>
+    <span>1.789 tabelas · 508 GB · DuckDB + Parquet</span>
     <span class="footer-by">por <a href="https://extrapolo.com" target="_blank" rel="noopener">extrapolo.com</a></span>
   </div>
 </footer>

@@ -12,15 +12,33 @@ gotchas:
     colunas: [tipo_esfera_administrativa, tipo_gestao]
     severidade: silencioso
     verificado: "mes 6 de cada ano: 2006 a 2015 todas as linhas preenchidas com códigos 1 a 4 (2015: '4' 186.293 e '3' 68.093 sobre tipo_gestao M, entre outras combinações), 2016 a 2024 0 preenchidas; 2025-01 a 2025-07 0; 2025-08: M/M 449.740, E/E 13.822, D/D 2.303, F/E 1 — medido 2026-10-28"
-  - id: profissional_sem_municipio_desde_2025_02
-    resumo: "profissional.id_municipio é 100% nulo a partir de 2025-02 (6,35 milhões de linhas em 2025-08), embora preenchido até 2025-01. Junte com estabelecimento por id_estabelecimento_cnes (mesmo ano e mes) para ter o município."
+  - id: profissional_tipo_vinculo_sem_zero_desde_2025_01
+    resumo: "profissional.tipo_vinculo tem 6 dígitos ('010101') até 2024-12 e perde os zeros à esquerda de 2025-01 em diante ('1', '10101'...). Série que cruza 2025-01 por tipo_vinculo precisa de lpad(tipo_vinculo, 6, '0')."
     tabelas: [profissional]
-    colunas: [id_municipio, id_estabelecimento_cnes]
+    colunas: [tipo_vinculo]
     severidade: silencioso
-    verificado: "2025-01: 6.099.997 linhas, 6.099.997 com id_municipio; 2025-02 a 2025-08: 0 com id_municipio (2025-08: 6.350.074 linhas); 2020-08 4.451.001 de 4.451.001; meses 6 e 12 de 2021 a 2024: 100% — medido 2026-10-28"
+    verificado: "2024-01/02/08/12: um só comprimento, mínimo '010101'; 2025-01, 2025-02, 2025-08, 2025-12, 2026-01, 2026-02: 3 comprimentos, mínimo '1' — medido 2026-11-20. (A gotcha antiga profissional_sem_municipio_desde_2025_02 saiu: id_municipio está 100% preenchido em todos esses meses, ex. 2025-08 6.350.074 de 6.350.074.)"
   - id: dados_complementares_muda_de_universo_em_2006_12
     resumo: "dados_complementares cobre quase todos os estabelecimentos até 2006-11 (143.287 linhas) e só os com serviço complementar de 2006-12 em diante (2.565). Série que cruza 2006-12 mostra uma queda de 98% que é mudança de universo, não fechamento."
     tabelas: [dados_complementares]
     colunas: [ano, mes]
     severidade: silencioso
     verificado: "2006-10: 149.175 linhas; 2006-11: 143.287; 2006-12: 2.565; 2007-01: 2.574; 2010-06: 2.555; 2020-06: 3.021; 2026-02: 2.647 — medido 2026-10-28"
+  - id: estabelecimento_nomes_do_retrato_do_cnpj
+    resumo: "Nos meses de 2025-09 em diante (vindos direto do FTP do DATASUS) as 5 colunas de nome de estabelecimento (razao_social, nome_fantasia, situacao_cadastral_codigo/descricao, razao_social_mantenedora) são preenchidas por igualdade exata de CNPJ contra UM retrato de br_me_cnpj (202611), não o do mês do CNES. A situação cadastral é a de hoje: um estabelecimento baixado depois de 2025-09 aparece como Baixada em todos os meses. CPF (tipo_pessoa 1) e CNPJ que não está no retrato ficam sem nome; em 2026-10, 285.002 de 387.535 PJ têm razao_social."
+    tabelas: [estabelecimento]
+    colunas: [razao_social, nome_fantasia, situacao_cadastral_codigo, situacao_cadastral_descricao, razao_social_mantenedora]
+    severidade: silencioso
+    verificado: "2025-09 a 2026-10 (6.754.442 linhas, 3.726.495 com razao_social); 2026-10: 504.480 linhas, 387.535 PJ, 285.002 com razao_social — medido 2026-11-20"
+  - id: servico_especializado_sem_ap_2408
+    resumo: "O FTP do DATASUS não tem o arquivo de servico_especializado do Amapá em 2024-08 (SRAP2408 não existe; os outros 26 UFs e os demais meses têm). O buraco é da fonte, não da carga: a série do AP tem um mês faltando, e a soma nacional de 2024-08 vem sem o AP."
+    tabelas: [servico_especializado]
+    colunas: [sigla_uf, ano, mes]
+    severidade: silencioso
+    verificado: "listagem do FTP CNES/200508_/Dados/SR conferida em 2026-11-20: nenhum arquivo SRAP2408"
+  - id: gestao_metas_uf_parcial_2603
+    resumo: "O mês 2026-03 de gestao_metas veio do FTP com 25 das 27 UFs (a coleta usa --parcial: grava o mês mesmo sem todas as UFs). Somas nacionais desse mês saem sem as UFs ausentes; o mesmo pode valer para estabelecimento_filantropico e regra_contratual, também coletadas com --parcial."
+    tabelas: [gestao_metas, estabelecimento_filantropico, regra_contratual]
+    colunas: [sigla_uf, ano, mes]
+    severidade: silencioso
+    verificado: "pouso datasus_202603.parquet de gestao_metas: 668 linhas, 25 UFs, medido 2026-11-20 (os demais meses e tabelas ainda não conferidos; o ~/scrap_tmp/cnespub/STATUS lista os meses com menos de 27 UFs)"

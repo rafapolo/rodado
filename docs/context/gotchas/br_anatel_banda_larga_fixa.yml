@@ -35,3 +35,14 @@ gotchas:
     colunas: [velocidade]
     severidade: aviso
     verificado: "2026-10-31: VARCHAR com 5 faixas por ano; 2010 com '0Kbps a 64Kbps', 2016 com '0Kbps a 512Kbps'; dez/2025 com 415.229 de 645 mil linhas em '> 34Mbps'"
+  - id: densidade_buraco_2025_10_a_2026_04
+    resumo: "densidade_municipio, densidade_uf e densidade_brasil pulam de 2025-09 para 2026-05: a fonte (zip de 2026-11-03) tem esses meses quebrados."
+    detalhe: >
+      No Densidade_Banda_Larga_Fixa.csv, de 2025-10 a 2026-04 há linhas vazias (só ano, mês e
+      nível), municípios sem código e valores absurdos (Brasil 94 em 2025-12, 55 em 2026-01;
+      Ariquemes 0,0018 em 2026-02). Esses meses ficaram de fora até a Anatel corrigir. Os
+      microdados de acessos desses meses estão certos e no espelho.
+    tabelas: [densidade_municipio, densidade_uf, densidade_brasil]
+    colunas: [densidade]
+    severidade: aviso
+    verificado: "Brasil 2025-09 = 25,8, 2026-05 = 27,2; meses íntegros (5.571 municípios com código) só de 2026-05 a 2026-09 — medido 2026-11-23"

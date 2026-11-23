@@ -20,3 +20,9 @@ gotchas:
     colunas: [ano, id_municipio, nota_geral]
     severidade: silencioso
     verificado: "municipio: ano d=1 (2022), id_municipio 415 distintos; uf: 2015 a 2022, 297 linhas por ano — medido 2026-11-04"
+  - id: anos_novos_sem_arredondar
+    resumo: "nota_geral_uf de 2023 a 2026 vem do CSV do site com a precisão da fonte (24,7293811); até 2022 a BD arredondou a 1 casa. nota_geral_municipio segue só com 2022."
+    tabelas: [nota_geral_uf]
+    colunas: [nota_geral]
+    severidade: aviso
+    verificado: "AC Ranking Geral 2022: fonte 31,75, espelho 31,8; 2025: SP 1º (81,1), SC 2º, PR 3º — medido 2026-11-23"

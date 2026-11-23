@@ -12,4 +12,16 @@ gotchas:
     tabelas: [terceirizados]
     colunas: [cpf]
     severidade: silencioso
-    verificado: "486.787 de 732.255 linhas completadas — medido 2026-10-07"
+    verificado: "486.787 de 732.255 linhas completadas — medido 2026-10-07; as 8 cargas de 2024-01 a 2026-05 foram completadas em 2026-11-23 16:48: 560.929 linhas mascaradas, 377.488 completadas (67,3%), 0 ambíguas, 67.253 sem o nome no índice, 116.188 com nome comum demais; sobram 183.441 mascaradas nelas"
+  - id: cargas_xlsx_2024_em_diante
+    resumo: "De 2024-01 em diante as cargas vêm de xlsx: contrato_empresa 'MM/AAAA' foi reconstruído de data do Excel e o CPF vinha todo mascarado (completado em 2026-11-23 pelo mesmo procedimento das cargas antigas; o que sobra continua mascarado)."
+    detalhe: >
+      A CGU passou a publicar xlsx em 2024. O Excel converteu contratos como "02/2023" em data
+      (serial no dia 1 do mês, 20 mil linhas por carga): o raspador devolve "MM/AAAA" com zero à
+      esquerda, então o raro original "2/2023" sai "02/2023". CNPJ volta com 14 dígitos. Valores
+      e jornada voltam ao texto do CSV ("2238.0"). As cargas são jan, mai e set; 2026-09 ainda não
+      saiu.
+    tabelas: [terceirizados]
+    colunas: [contrato_empresa, cnpj_empresa, cpf]
+    severidade: aviso
+    verificado: "2024-01: 82.581 linhas, 20.485 contratos de serial, todos no dia 1; 8 cargas novas (2024-01 a 2026-05) — medido 2026-11-23"

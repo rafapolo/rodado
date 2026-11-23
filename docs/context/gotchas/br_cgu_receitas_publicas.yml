@@ -18,11 +18,16 @@ gotchas:
     severidade: silencioso
     verificado: "linhas 2015 = 4.523, 2016 = 194.533; data_lancamento 2013-2015 só 12-31 — medido 2026-11-04"
   - id: ultimo_ano_incompleto
-    resumo: "2024 termina em 2024-12-07 e dezembro tem só 2.754 linhas e R$ 23,9 bi (os outros meses ficam entre R$ 318 e 612 bi): o ano está truncado. A tabela não chega a 2025."
+    resumo: "O ano corrente é parcial (2026 vai até a data da última coleta, 2026-11-18 em 2026-11-23). Desde 2026-11-23 a tabela vem da fonte original e 2024 está completo (antes parava em 2024-12-07)."
+    detalhe: >
+      Tabela refeita do Portal da Transparência em 2026-11-23 (scripts/scrap/cgu_receitas.py), um
+      parquet por ano. A CGU republica os anos passados com a estrutura atual de órgãos: a mesma UG
+      pode aparecer noutro órgão e o nome do órgão muda. Por isso um ano antigo pode mudar de
+      órgão entre coletas, sem mudar valor.
     tabelas: [receitas]
-    colunas: [ano_exercicio, data_lancamento]
+    colunas: [ano_exercicio, data_lancamento, id_orgao, nome_orgao]
     severidade: silencioso
-    verificado: "max(data_lancamento) = 2024-12-07; dezembro/2024 = 23,9 bi contra 317,9 bi em novembro — medido 2026-11-04"
+    verificado: "2013-2023 idênticos à cópia da BD em linhas e soma; 2024: 171.435 linhas, R$ 4.778,1 bi, até 2024-12-31; 2025: 175.278 linhas, R$ 5.614,1 bi; 2026 até 2026-11-18 — medido 2026-11-23"
   - id: valores_negativos_e_extremos
     resumo: "valor_realizado tem estornos negativos (3.200 linhas em 2023; mínimo de -R$ 156 bi em 2016) e máximos de centenas de bilhões numa linha (R$ 771 bi em 2015). São lançamentos reais de receita da União, não erro de escala, mas um filtro de 'outlier' ou um MAX por linha engana."
     tabelas: [receitas]

@@ -13,8 +13,32 @@ gotchas:
     severidade: silencioso
     verificado: "brasil 2000-2019: 130 a 445 (pico 445 em 2017, 329 em 2019); raca_cor 2019 321; local 2017 445 com soma de prop 116,8; raca_cor 2015 316 com 101,3% — medido 2026-11-04"
   - id: cobertura_por_ano_e_nulos
-    resumo: "As tabelas de composição cobrem anos diferentes e têm nulo onde a fonte não detalhou: causa_obito e local só em 2019; grupo_lgbtqia 2011-2020 (prop nulo em 2011-2013, 2016 e 2020); raca_cor 2011-2019 com homicidios nulo em 2011, 2012 e 2016; brasil de 2000 a 2019. ano é texto. Série nacional (sem UF), 145 linhas ao todo, e é contagem de casos documentados pelo grupo, não de estatística oficial de saúde."
+    resumo: "As tabelas de composição cobrem anos diferentes e têm nulo onde a fonte não detalhou: causa_obito e local só em 2019; grupo_lgbtqia 2011-2020 (prop nulo em 2011-2013, 2016 e 2020); raca_cor 2011-2019 com homicidios nulo em 2011, 2012 e 2016; brasil de 2000 a 2019 (é o que veio da BD; anos de 2020 em diante em anos_novos_do_relatorio_ggb). ano é texto. Série nacional (sem UF), 145 linhas ao todo, e é contagem de casos documentados pelo grupo, não de estatística oficial de saúde."
     tabelas: [brasil, causa_obito, grupo_lgbtqia, local, raca_cor]
     colunas: [ano]
     severidade: silencioso
     verificado: "brasil 20 anos (2000-2019); causa_obito 13 linhas de 2019; grupo_lgbtqia anos 2011-2020; raca_cor homicidios nulo em 2011, 2012 e 2016 — medido 2026-11-04"
+  - id: anos_novos_do_relatorio_ggb
+    resumo: "De 2020 em diante as tabelas vêm dos relatórios anuais do GGB, não da BD: brasil tem 2020, 2021, 2023, 2024 e 2025; causa_obito, local e raca_cor têm 2020, 2021, 2023 e 2024; grupo_lgbtqia ganhou 2023 e 2024. Não há 2022 em nenhuma tabela: o GGB só publicou o balanço semestral (135 casos), e os números indiretos se contradizem (256 pelo texto de 2023, 285 pela tabela por década)."
+    detalhe: >
+      homicidios em brasil é o total de mortes violentas (homicídio + suicídio +
+      outras), como a BD fazia: 2020 = 237, 2021 = 300, 2023 = 257, 2024 = 291,
+      2025 = 257. Nos anos novos cada quebra soma exatamente o total do ano
+      (anos antigos não: ver totais_nao_batem_entre_tabelas) e
+      prop_homicidios_total é recalculado (100 * n / total, 2 casas); até 2019 é
+      o percentual impresso pela fonte. Ficaram fora as quebras que não somam:
+      2025 (grupo 255, meio 242, local 214 de 257, sem cor) e grupo 2021 (283 de 300).
+      As categorias mudam de ano para ano (a fonte muda o formulário):
+      raca_cor tem "Preta ou Parda" juntas em 2020 e 2024 e separadas em 2021 e 2023;
+      local de 2020 é só Espaço Público/Privado/Residência; causa_obito é o meio
+      (arma) e não a tipificação. Em grupo_lgbtqia, 2023-2024 não se sobrepõem
+      ("Trans ou Travesti" = travestis e mulheres trans; 2024 separa Homem Trans
+      e Heterossexual), ao contrário dos anos antigos. "Não Identificado" e
+      "Outros" seguem a troca da BD (SI, NI, Sem informação -> Não Identificado).
+      O total de 2025 (257) e a tipificação do release de 2025 (204 homicídios,
+      20 suicídios, 17 latrocínios) repetem os números de 2023: é o que o GGB
+      publicou, mas desconfie.
+    tabelas: [brasil, causa_obito, grupo_lgbtqia, local, raca_cor]
+    colunas: [ano, homicidios, prop_homicidios_total, raca_cor, grupo, local, causa_obito]
+    severidade: silencioso
+    verificado: "relatório 2019 = espelho nas 5 tabelas (329; Arma Branca 100; Residência 111; Branca 121; Gay 174); anos novos: soma das quebras = total em 2020, 2021, 2023, 2024 — medido 2026-11-23"

@@ -30,3 +30,15 @@ gotchas:
     colunas: [id_reservatorio, din_instante, din_medicao]
     severidade: silencioso
     verificado: "deprec_hidro 1.642.081 linhas de 2000-01-01 a 2026-10-28 (176 reservatórios) contra 1.602.669 de dados_hidrologicos_di até 2026-10-25 — medido 2026-11-10; a conferência linha a linha entre as duas não foi feita"
+  - id: fusao_hidrologico_ena_2026_11
+    resumo: "dados_hidrologicos_di e ena_reservatorio_di são fundidas: a fonte novou o histórico, mas perdeu usinas e dias que só o espelho tinha. Três reservatórios da ENA mudaram de nome (ITAPARICA -> LUIZ GONZAGA, MAUA -> GOV JAYME CANET JR, MOXOTO -> APOLONIO SALES, mesmo cod_resplanejamento): as linhas antigas com o nome velho foram substituídas pelas da fonte com o nome novo, então filtrar pelo nome antigo não acha nada."
+    tabelas: [dados_hidrologicos_di, ena_reservatorio_di]
+    colunas: [id_reservatorio, cod_usina, nom_reservatorio, cod_resplanejamento, din_instante, ena_data]
+    severidade: aviso
+    verificado: "2026-11-23 16:45: dados_hidrologicos_di 4.126.107 (fonte, desde 1931, 178 reservatórios) + 29.564 do espelho (6 reservatórios só de 2022 e dias faltantes de TIEDSO, PBSTAC, DCSACM etc.) = 4.155.671; ena_reservatorio_di 1.512.702 + 178 (DARDANELOS 2000-2011, RONDON II 2000-2009) = 1.512.880; chaves por (id, dia) e (cod, dia)"
+  - id: res_cotaareavolume_curva_completa
+    resumo: "res_cotaareavolume passou de 2 reservatórios (45.102 linhas) para a tabela cota-área-volume completa da fonte (174 reservatórios, 9,15 milhões de linhas). din_valinicial/din_valfinal marcam a vigência de cada versão da curva (18 datas de início, 1901-01-01 a 2021-06-09; fim 3000-12-31): para a curva atual de um reservatório, pegue a linha de maior din_valinicial."
+    tabelas: [res_cotaareavolume]
+    colunas: [id_reservatorio, din_valinicial, din_valfinal, val_cota, val_area, val_volume]
+    severidade: silencioso
+    verificado: "2026-11-23 16:45: 45.102 -> 9.154.684 linhas; as duas curvas antigas (PNTBCA 17.101, PNESTR 28.001) têm as mesmas contagens e cotas na fonte; a área difere até 0,005 (versão mais nova); sem filtrar por vigência a mesma cota aparece uma vez por versão"

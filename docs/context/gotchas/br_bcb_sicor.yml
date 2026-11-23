@@ -70,3 +70,55 @@ gotchas:
     colunas: [geometria]
     severidade: aviso
     verificado: "perdas com operação no CAR pela ponte código/gleba do SICOR: 28% em 2016, 55% em 2017, 84% em 2018, ~100% de 2019 em diante; 98–100% delas têm gleba do Proagro — medido 2026-10-25 (chao)"
+  - id: saldo_a_partir_de_2026_02_so_operacao_nova
+    resumo: "saldo tem ~4,4 M linhas e ~R$ 825 bi de valor_ultimo_dia por mês até 2026-01, mas de 2026-02 em diante só 118–247 mil linhas (R$ 29–64 bi): os meses curtos trazem apenas operações emitidas em 2026 (ano_emissao = 2026, mes_emissao 1–3), sem o estoque de 2013–2025. Não é queda real do crédito rural: é carga incompleta. Não leia a série de saldo de 2026-02 em diante, nem some/compare esses meses com os anteriores, até a recoleta (feita em 2026-11-20: 2026-02 a 2026-10 agora vêm da fonte do BCB, ~4 M linhas/mês; o resumo acima descreve o estado anterior)."
+    detalhe: >
+      Em 2026-01 o saldo cobre emissões de 2013 a 2026 (2025: 1,18 M linhas,
+      2024: 659 mil) e 12 situações; em 2026-02/03/09 só ano_emissao = 2026 e
+      quase só id_situacao_operacao = 1 (2026-03: 206.388 de 206.611). O
+      saldo de 2026-09 tem 211.246 operações e só 125.798 delas aparecem em
+      operacao com emissão 2026; operacao também para em 2026-02 (162.612
+      emissões, contra ~200 mil/mês antes), então o espelho inteiro do SICOR
+      está defasado na cópia da Base dos Dados. Os parquet de 2026-02 em
+      diante estão em 000000001718–1722 (reescritos em 2026-11-01); o
+      resto é de 2026-07-05. A fonte original serve o saldo: dados brutos
+      SICOR_SALDOS_<ano>.gz (ano = emissão; o de 2015 acumula 2013–2015),
+      regravados pelo BCB em 2026-11-18, com ~4,05 M linhas por mês de
+      2026-01 a 2026-09. Mas a fonte de hoje não reproduz o espelho: em
+      2026-01 ela tem 4.051.771 linhas contra 4.521.584 do espelho (697 mil
+      chaves só no espelho, 227 mil só na fonte; 458 mil operações só no
+      espelho, concentradas nas emissões de 2022–2023 e 2013), então
+      recoletar só 2026-02 em diante deixaria a série com degrau de ~10%.
+    tabelas: [saldo, operacao]
+    colunas: [ano, mes, ano_emissao, mes_emissao, id_situacao_operacao]
+    severidade: silencioso
+    verificado: "linhas por mês: 2025-12 4.490.987; 2026-01 4.521.584; 2026-02 118.243; 03 206.611; 04 222.761; 05 228.663; 06 235.992; 07 236.101; 08 247.404; 09 236.522 — medido 2026-11-19 (beelink, read_parquet)"
+  - id: saldo_fonte_com_linhas_sem_operacao
+    resumo: "Na fonte do BCB ~4% das linhas do saldo (115–170 mil por mês em 2026) pertencem a operações que não estão em SICOR_OPERACAO_BASICA: não há emissão para elas. Nos meses de 2026-02 em diante (vindos da fonte) essas linhas ficam com ano_emissao e mes_emissao nulos; filtrar por ano_emissao as descarta. Até 2026-01 (vindo da Base dos Dados) o saldo não as tem: 2026-01 tem 0 nulos e a fonte, 161 mil."
+    detalhe: >
+      Não é bug de conversão: em 2026-01 a fonte tem 161.498 chaves sem operação e só 4 delas
+      estão no espelho. É parte do que explica as chaves só-fonte/só-espelho de 2026-01. Linhas
+      sem operação se concentram nos arquivos de emissão 2016 (~37%), 2025 e 2026. Por isso a
+      série de linhas do saldo tem degrau de ~4% entre 2026-01 e 2026-02. Para somar valor, use
+      todas as linhas; para cortar por emissão, lembre dos nulos.
+    tabelas: [saldo]
+    colunas: [ano_emissao, mes_emissao]
+    severidade: silencioso
+    verificado: "2026-02: 170.587 de 4.056.070 sem emissão (4,2%); 2026-03 169.616; 2026-09 159.395; ids de exemplo 5694473, 7241609, 7146342 — medido 2026-11-20"
+  - id: operacao_codigo_zero_vira_vazio
+    resumo: "Na fonte do BCB id_tipo_seguro e id_tipo_encargo_financeiro vêm '0' quando não há valor; o espelho (BD) grava '' (nunca '0'). As linhas de operacao incluídas da fonte em 2026-11-20 foram normalizadas para '' (mesma convenção); comparar com a fonte crua mostra divergência de até 66% (2015) que é só isso."
+    detalhe: >
+      Residuais reais (fonte x espelho nas chaves em comum): 2020 id_tipo_encargo_financeiro
+      '0' na fonte e '9' no espelho em 1.082 linhas (ex.: 511096996/1, 511292075/1);
+      data_vencimento e derivadas divergem em 0,1–4% (2025: 104.598 linhas). Por regra, o
+      espelho não foi reescrito nesses anos; só entraram as chaves que ele não tinha.
+    tabelas: [operacao]
+    colunas: [id_tipo_seguro, id_tipo_encargo_financeiro]
+    severidade: aviso
+    verificado: "id_tipo_seguro '0' na fonte x '' no espelho: 2014 891.182 linhas (34,5%), 2015 1.537.565, 2016 971.996, ex. 2865160/1, 4737005/3, 6042542/1 — medido 2026-11-20"
+  - id: saldo_indicador_renegociacao_so_recente
+    resumo: "saldo.indicador_renegociacao (IB_RENEGOCIADA da fonte, '0'/'1') só existe nos shards recentes e é nulo até 2026-01; só 2026-02 em diante o traz preenchido. Não use como filtro histórico."
+    tabelas: [saldo]
+    colunas: [indicador_renegociacao]
+    severidade: silencioso
+    verificado: "shards 1718-1727 preenchidos, anteriores nulos — medido 2026-11-20"

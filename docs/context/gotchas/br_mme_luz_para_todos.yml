@@ -18,3 +18,9 @@ gotchas:
     colunas: [id_municipio, nome_municipio_origem]
     severidade: aviso
     verificado: "0 linhas sem id_municipio nas 619.535 — medido 2026-11-04"
+  - id: fonte_sem_novidade_2026_11
+    resumo: "A fonte não mudou entre 2026-11-04 e 2026-11-23: mesma contagem e mesmo conteúdo. 223.095 linhas idênticas repetidas em domicilios_atendidos vêm da fonte (granularidade programa x município x mês sem chave): não deduplicar."
+    tabelas: [domicilios_atendidos, recursos_aplicados]
+    colunas: [ano, mes, domicilios]
+    severidade: aviso
+    verificado: "2026-11-23 16:48: staging 619.904 e 424 linhas, soma de hash da linha inteira igual à do espelho; mês máximo 2026-09"

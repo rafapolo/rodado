@@ -17,3 +17,16 @@ gotchas:
     colunas: [ano, mes]
     severidade: silencioso
     verificado: "2022-06 a 2024-05 (24 meses); 857.619 linhas em 2022-06, 875.845 em 2024-04; 2023-02 tem 646.215 (75% do mês vizinho, 864.706 em 2023-03) — medido 2026-10-28"
+  - id: meses_faltando_e_hipercentro
+    resumo: "Desde 2026-11-23 a tabela segue pela PBH: 2024-10, 2024-12 e 2026-08 não existem (regional faltando ou mês não publicado), e de 2025-02 em diante há 10 regionais (a Hipercentro saiu da Centro-Sul)."
+    detalhe: >
+      Mês só entra com todas as regionais. Dois arquivos no mesmo mês: vale o mais novo (2024-11
+      tem 20241104 e 20241129 na Leste). A BD anulou 7 polígonos inválidos da fonte; nos meses
+      novos eles ficam como vieram (ST_IsValid falso em ~12 por regional).
+      Os arquivos de 2024-06 em diante foram gravados pelo DuckDB 2.0, que anota a geometria como
+      GEOMETRY('OGC:CRS84'); os antigos são GEOMETRY puro. Lidos juntos (a view) viram GEOMETRY, com as
+      mesmas coordenadas lon/lat. Um DESCRIBE por arquivo mostra os dois tipos.
+    tabelas: [iptu]
+    colunas: [ano, mes, poligono]
+    severidade: aviso
+    verificado: "transformação igual à BD em todas as colunas de 67.548 lotes da Leste 2024-05; ~885-893 mil lotes por mês em 2025 — medido 2026-11-23"

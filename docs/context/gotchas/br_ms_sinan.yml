@@ -95,3 +95,13 @@ gotchas:
     colunas: [ano, resultado_ns1, resultado_sorologia_dengue, resultado_sorologia1_chikungunya, pais_infeccao]
     severidade: silencioso
     verificado: "2025 = 1.643.215 linhas (FINAIS de 2026-07-21), 2026 = 483.823 (PRELIM de 2026-10-27, notificação até 2026-10-25); BD 2025 = 3.435.753 linhas / 1.883.700 distintas — medido 2026-11-03"
+  - id: ano_corrente_regravado_pelo_ftp
+    resumo: "Em microdados_dengue/chikungunya/zika o ano corrente (PRELIM) é regravado por inteiro toda semana: 2026 mudou de 483.823 para 502.229 (dengue) em 2026-11-20."
+    detalhe: >
+      Contagens de 2026 citadas antes de 2026-11-20 estão defasadas (PRELIM de 2026-11-16).
+      O .dbc novo de chikungunya/zika traz ID_UNIDADE; a troca foi feita só no ano 2026,
+      sem --conformar, e os outros anos ficaram idênticos (hash conferido).
+    tabelas: [microdados_dengue, microdados_chikungunya, microdados_zika]
+    colunas: [ano, ano_sinan]
+    severidade: aviso
+    verificado: "dengue 2026 = 502.229; chikungunya 2026 = 145.588; zika 2026 = 14.542 — medido 2026-11-20"

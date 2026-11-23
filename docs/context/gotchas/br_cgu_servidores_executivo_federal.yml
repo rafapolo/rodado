@@ -20,6 +20,25 @@ gotchas:
     severidade: aviso
     detalhe: >
       remuneracao (26) e cadastro_servidores (12) estão em arquivos numerados de ~100 MB com
-      faixas contíguas de cpf; aposentados e pensionistas são um arquivo cada, ordenado. O nome
+      faixas contíguas de cpf; aposentados e pensionistas eram um arquivo cada até 2026-10, e desde
+      a publicação de 2026-11-20 têm também os arquivos dos meses novos, cada um ordenado. O nome
       do arquivo não diz mais a UF em cadastro_servidores: filtre por sigla_uf.
     verificado: "zero row groups sobrepostos em cpf nas quatro tabelas (1.332 row groups em cadastro_servidores, 230 em aposentados, 265 em pensionistas), soma de hash de todas as linhas igual antes e depois de cada troca — medido 2026-10-26; busca por um CPF no db.rodado.xyz em ~6 s com cache (era 28 s)"
+  - id: pensionistas_cadastro_bd_degradado
+    resumo: "No cadastro_pensionistas copiado da Base dos Dados (até 2025-07 SIAPE, 2025-05 Defesa), data_inicio_pensao é NULL em 100% das linhas de todos os meses; matricula e documento_ingresso_servico_publico_instituidor_pensao estão alterados em relação à fonte. Os meses acrescentados a partir da fonte original (Portal da Transparência) trazem a data."
+    detalhe: >
+      Medido em 2026-11-19 comparando 2025-07 (SIAPE) do espelho com o ZIP original da CGU, linha a linha
+      por id_servidor: data_inicio_pensao NULL no espelho em todos os meses amostrados (2020-01 a 2025-07)
+      e preenchida na fonte (265.341 de 266.040 ids comparáveis); matricula difere em 263.242 (a BD guardou
+      '004****' onde a fonte tem '044****'); documento_ingresso_servico_publico_instituidor_pensao mistura
+      valores com e sem zeros à esquerda (46.348 com zeros, 55.609 sem, no mês) enquanto a fonte tem zeros
+      em 63.306 linhas, e o raspador novo grava o valor cru; nomes têm 1.316 diferenças (truncados em 30
+      caracteres ou com '¿' no lugar de acento; poucas grafias diferentes que podem ser revisão da CGU).
+      O raspador grava a fonte crua, então a série tem quebra de formato em 2025-08: antes, data nula e
+      matrícula alterada; depois, o que a CGU publica. Causa: estrago da cópia da BD, não erro do raspador
+      (o único erro do raspador achado, tratar o documento como número, foi corrigido). Conferência com o
+      raspador, ignorando CPF (completado no espelho), nome, matrícula e data: 2 linhas divergentes de 277.305.
+    tabelas: [cadastro_pensionistas]
+    colunas: [data_inicio_pensao, matricula, documento_ingresso_servico_publico_instituidor_pensao]
+    severidade: silencioso
+    verificado: "2025-07 SIAPE, 277.305 linhas, 2 divergentes após ignorar colunas degradadas — medido 2026-11-19"

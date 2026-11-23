@@ -35,3 +35,19 @@ gotchas:
     colunas: [ano, mes, quantidade, valor_total]
     severidade: silencioso
     verificado: "2023-06 e 2023-07: soma de quantidade igual (38.074.913) e igual por categoria em 14 de 14; 912.023 pares de linhas com a mesma chave, quantidade e valor_total — medido 2026-11-12"
+  - id: concedido_2026_10_do_inss_direto
+    resumo: "beneficio_concedido_municipio_mes vai até 2026-10 (anexado direto do INSS em 2026-11-20); 2026-09 não existe (a fonte só tem 105.751 benefícios, mês parcial) e o mantido para em 2026-01."
+    detalhe: >
+      Os meses de 2026-10 vêm do XLSX do INSS reagregado por nós; a BD parou em 2026-08. A faixa_etaria da fonte não
+      existe (só Dt Nascimento): usamos a idade em anos na data de início do benefício, que difere da regra da BD em ~0,9%
+      das linhas do mesmo mês (2026-08 reagregado: 90.302 de 90.435 chaves município x espécie x sexo x clientela
+      idênticas em quantidade e salários mínimos). Faixa por faixa, 2026-10 não é comparável à risca com 2026-08.
+      O layout do INSS muda de mês a mês (2026-10: município 'NNNNN - NOME' sem UF, espécie com zero à esquerda). Linhas sem
+      município (APS zerada, '{ñ class}') ficam com id_municipio e sigla_uf nulos, como no espelho (34.505 benefícios em
+      2026-10). beneficio_mantido_municipio_mes ficou em 2026-01: os CSVs ATIVO/SUSPENSO/CESSADO da fonte não reproduzem o
+      espelho (janeiro/2026: 41,39 mi na fonte contra 40,75 mi + 448.823 sem município; rótulos de espécie truncados pela BD),
+      então não foi anexado, para não misturar duas convenções na mesma série.
+    tabelas: [beneficio_concedido_municipio_mes, beneficio_mantido_municipio_mes]
+    colunas: [ano, mes, faixa_etaria, id_municipio]
+    severidade: silencioso
+    verificado: "2026-10: 207.134 linhas, 749.312 benefícios, 5.564 municípios; 2026-09 na fonte: 105.751 — medido 2026-11-20"

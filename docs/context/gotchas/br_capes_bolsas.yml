@@ -13,3 +13,17 @@ gotchas:
     colunas: [cpf]
     severidade: silencioso
     verificado: "130.348 de 145.226 linhas completadas — medido 2026-10-07"
+  - id: mobilidade_ano_final_e_fim_da_bolsa
+    resumo: "Em mobilidade_internacional, ano_final é o ano em que a bolsa termina, não o ano do dado: a tabela vai até ano_final 2023, mas só tem bolsas iniciadas até 2019 (ano_inicial máximo 2019). Os arquivos de bolsistas da DRI de 2020 em diante são outra série (uma linha por processo e ano de pagamento) e não foram anexados."
+    detalhe: >
+      A tabela junta os recursos de mobilidade internacional 2010-2012,
+      2013-2016 e 2017-2019 da CAPES (uma linha por processo, valores somados no
+      período). Os recursos anuais da DRI (2020-2024) repetem os mesmos
+      processos ano a ano, com CPF mascarado e outras colunas: 3.566 dos 3.635
+      processos com ano_final >= 2020 reaparecem no arquivo de 2020. Anexá-los
+      contaria a mesma bolsa duas vezes; filtrar por ano_final para medir bolsas
+      ativas em 2020-2023 subestima (só pega as iniciadas até 2019).
+    tabelas: [mobilidade_internacional]
+    colunas: [ano_final, ano_inicial, id_processo_concessao]
+    severidade: silencioso
+    verificado: "ano_inicial 2005-2019, ano_final até 2023; 19.512 linhas do recurso 2017-2019 todas no espelho; 3.566 de 3.635 processos com ano_final >= 2020 no arquivo DRI 2020 — medido 2026-11-23"

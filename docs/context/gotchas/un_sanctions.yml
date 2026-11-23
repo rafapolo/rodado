@@ -18,3 +18,9 @@ gotchas:
     colunas: [un_list_type, listed_on, date_generated]
     severidade: silencioso
     verificado: "date_generated 2026-10-29; listed_on pessoas 2000-04-12 a 2026-07-14, entidades 2001-10-06 a 2026-07-22; un_list_type contagens acima — medido 2026-11-04"
+  - id: reescrita_conformar_2026_11
+    resumo: "A lista é regravada inteira a cada rodada (snapshot): a rodada de 2026-11-23 manteve 1.007 linhas; ALLIANCE FLEUVE CONGO (AFC) trocou de dataid (6909619 -> 6909743). sort_key e sort_key_last_mod vêm 100% nulos na fonte."
+    tabelas: [sanctions]
+    colunas: [dataid, sort_key, sort_key_last_mod]
+    severidade: aviso
+    verificado: "2026-11-23 16:42: individuals 733 + entities 274 = 1.007 linhas; date_generated 2026-11-22; um dataid só no espelho e um só na fonte, mesma entidade"

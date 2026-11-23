@@ -46,3 +46,19 @@ gotchas:
     colunas: [id_pais, sigla_pais_iso3, id_via, id_urf]
     severidade: silencioso
     verificado: "2024 exportação: sigla_pais_iso3 vazia em 145 linhas; id_via 0 = 12.423, 1 = 855.204, 4 = 448.712, 7 = 267.369; municipio sigla_uf 'EX' em 32 linhas — medido 2026-11-04"
+  - id: atualizado_pelo_mdic_com_revisao_2022_2025
+    resumo: "Desde 2026-11-20 as quatro tabelas vêm direto do MDIC até 2026-10; os anos de 2022 a 2025 foram regravados com a revisão do MDIC (diferenças de até ~0,8% no FOB) e as linhas repetidas de 2025 saíram."
+    detalhe: >
+      A BD parou em 2026-03. O MDIC revisa meses já publicados: 2024 exportou US$ 337,05 bi na fonte de 2026-11-06
+      (a BD trazia ~US$ 339,7 bi), 2025 US$ 348,28 bi (exportação) e US$ 280,21 bi (importação). O espelho antigo
+      tinha 2025 com linhas repetidas nas quatro tabelas (em ncm_exportacao maio somava US$ 60,3 bi, o dobro, e o ano
+      US$ 381,4 bi): 139.090, 193.413, 99.782 e 146.334 linhas a mais que as chaves distintas em ncm_exportacao,
+      ncm_importacao, municipio_exportacao e municipio_importacao. A regravação tirou a duplicata. Os totais
+      por ano que a nota escala_e_fechamento_com_o_mdic cita para 2024 e 2025 (339,7 / 381,4 bi) são do espelho antigo; o
+      número oficial atual é o desta nota. Os anos até 2021 seguem como estavam (não revisados). 2026 tem janeiro a
+      outubro (1.419.186 linhas de exportação NCM, US$ 321,88 bi). O download do MDIC reseta conexões e o certificado vem
+      incompleto (curl -k): o raspador retoma pelo Content-Length.
+    tabelas: [ncm_exportacao, ncm_importacao, municipio_exportacao, municipio_importacao]
+    colunas: [ano, mes, valor_fob_dolar]
+    severidade: silencioso
+    verificado: "fonte 2026-11-06: exportação 2022 334,14 / 2023 339,70 / 2024 337,05 / 2025 348,28 bi; importação 272,61 / 240,79 / 262,87 / 280,21 bi; espelho antigo 2025 exportação 381,4 bi com maio duplicado — medido 2026-11-20"

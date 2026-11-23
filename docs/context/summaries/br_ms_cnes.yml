@@ -84,10 +84,10 @@ tabelas:
       - {coluna: "carga_horaria_ambulatorial, carga_horaria_hospitalar, carga_horaria_outros", o_que: "horas semanais do vínculo em cada tipo de atendimento", unidade: "horas/semana", soma: sim}
     filtros_tipicos:
       - "ano = 2025 AND mes = 8: a tabela tem ~869 milhões de linhas (~6,3 milhões por mês), sempre filtre a partição"
-      - "id_municipio é 100% nulo em 2025-08 (gotcha profissional_sem_municipio_desde_2025_02: nulo desde 2025-02): junte com estabelecimento por id_estabelecimento_cnes (mesmo ano e mes) para obter o município"
+      - "id_municipio vem preenchido em todos os meses (conferido até 2026-02 em 2026-11-20)"
       - "indicador_atende_sus = 1 (4.749.959) atende SUS; indicador_atende_nao_sus = 1 (1.600.114): complementares em quase todas as linhas"
-      - "tipo_vinculo é texto de 6 dígitos ('010101' é o mais frequente, 1.182.827); significado no dicionario"
-    use_para: "contar vínculos e horas por estabelecimento e (via join) por município, no mês."
+      - "tipo_vinculo é texto de 6 dígitos ('010101' é o mais frequente, 1.182.827) até 2024-12; de 2025-01 em diante perde os zeros à esquerda (gotcha profissional_tipo_vinculo_sem_zero_desde_2025_01): use lpad(tipo_vinculo, 6, '0'); significado no dicionario"
+    use_para: "contar vínculos e horas por estabelecimento e por município, no mês."
     nao_use_para: "contar pessoas distintas sem count(distinct cartao_nacional_saude); somar entre meses; achar município diretamente."
     rascunho: [use_para, nao_use_para]
     verificado: "partição 2025-08: 6.350.074 linhas; 465.864 CNES distintos, todos presentes em estabelecimento; 15 linhas com cartao_nacional_saude = 'nan'; 111 linhas com as 3 cargas horárias zeradas; soma ambulatorial 96.213.820, hospitalar 40.537.926, outros 48.130.324 — medido 2026-10-27"

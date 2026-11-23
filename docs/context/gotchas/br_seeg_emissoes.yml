@@ -5,9 +5,9 @@ gotchas:
     tabelas: [municipio, dicionario]
     colunas: [gas, setor, tipo, categoria]
     severidade: silencioso
-    verificado: "2022, gas '2', setor 1, tipo 2: 617 Mt CO2e; categorias 9 (entérica) 399, 28 (solos) 178, 14 (dejetos) 29, 5 (arroz) 10 — medido 2026-10-22 (bragro)"
+    verificado: "2022, gas '2', setor 1, tipo 2: 617 Mt CO2e; categorias 9 (entérica) 399, 28 (solos) 178, 14 (dejetos) 29, 5 (arroz) 10 — medido 2026-10-22 (bragro), coleção BD; na coleção 14.0 do SEEG (2026-11-23) o mesmo recorte dá 617,99 Mt"
   - id: gas_gtp_e_gwp_repetem_inventario
-    resumo: "Em municipio, gas '1' (CO2e GTP) e gas '2' (CO2e GWP) trazem as mesmas 1.506.695 combinações de município × setor × categoria, cada uma por uma métrica: somar sem fixar gas dobra o inventário. Fixe gas = '2' (bate com o SEEG publicado) e sempre filtre tipo."
+    resumo: "Em municipio, gas '1' (CO2e GTP) e gas '2' (CO2e GWP) trazem as mesmas combinações (1.541.983 por gás em 2022 na coleção 14.0) de município × setor × categoria, cada uma por uma métrica: somar sem fixar gas dobra o inventário. Fixe gas = '2' (bate com o SEEG publicado) e sempre filtre tipo."
     detalhe: >
       Em 2022 o total de emissão (tipo '2') com emissao_ar5 é 4.654 Mt somando os dois
       gases e 2.586 Mt só com gas '2' (agropecuária: 617 Mt com gas '2', 227 Mt com gas '1'). O gas '1' não é
@@ -15,4 +15,19 @@ gotchas:
     tabelas: [municipio]
     colunas: [gas, emissao_ar5, emissao_ar6, tipo]
     severidade: silencioso
-    verificado: "ano 2022: gas '1' e gas '2' com 1.506.695 linhas e 1.506.695 chaves distintas cada; setor '1', tipo '2', emissao_ar5: gas '2' = 617,36 Mt, gas '1' = 227,00 Mt; tipo '2' todos os setores: gas '2' 2.586,1 Mt, os dois gases 4.654,5 Mt — medido 2026-10-28"
+    verificado: "ano 2022: gas '1' e gas '2' com 1.506.695 linhas e 1.506.695 chaves distintas cada; setor '1', tipo '2', emissao_ar5: gas '2' = 617,36 Mt, gas '1' = 227,00 Mt; tipo '2' todos os setores: gas '2' 2.586,1 Mt, os dois gases 4.654,5 Mt — medido 2026-10-28 (coleção BD); coleção 14.0 (2026-11-23), ano 2022: gas '1' e '2' com 1.541.983 linhas cada; tipo '2' emissao_ar5: gas '2' 2.658,7 Mt, gas '1' 2.135,9 Mt; setor '1': 617,99 x 227,56 Mt"
+  - id: colecao_seeg_revisa_serie
+    resumo: "Desde 2026-11-23 as três tabelas vêm direto do SEEG (coleção 14.0, 1970-2025) e cada coleção anual recalcula a série inteira: número de um ano passado muda de uma coleção para outra. Na troca, 2022 (GWP-AR5, emissão, municipio) foi de 2.586,1 para 2.658,7 Mt; 1990 de 1.930,8 para 2.093,7 Mt. Citar a coleção junto com o número."
+    detalhe: >
+      Na coleção da BD, municipio somava menos que uf nos anos antigos (1980: 337,7 x 429,2 Mt; faltava energia
+      nos municípios). Na 14.0 as duas fecham ano a ano (1980: 430,1 nas duas; 2022: 2.658,7 nas duas), sempre sem
+      "Não Alocado" (emissão que o SEEG não atribui a UF/município: fora das duas tabelas, então a soma não é o
+      total Brasil). Códigos novos: 148 transições de uso da terra em detalhamento (classes novas do MapBiomas,
+      0,5 Mt em 2022) e produto 'NA' entraram no fim do dicionário (municipio 454-601, uf 485-632); códigos antigos
+      não mudaram. 85 rótulos antigos de detalhamento ficaram sem uso. 220.998 linhas de municipio têm as quatro
+      emissao_* NULL (célula vazia na fonte): 276 municípios de 12 UFs, só agropecuária (dejetos, resíduos agrícolas,
+      fermentação entérica) — NULL não é zero.
+    tabelas: [municipio, uf, dicionario]
+    colunas: [ano, emissao_ar2, emissao_ar4, emissao_ar5, emissao_ar6, emissao, detalhamento]
+    severidade: silencioso
+    verificado: "2026-11-23: municipio 165.736.450 -> 172.702.096 linhas (3.083.966 por ano), uf 17.930.055 -> 19.097.232 (341.022 por ano); soma 2022 tipo 2 GWP-AR5 = 2.658,7 Mt em municipio e em uf; fonte x parquet: contagem e soma das 4 colunas iguais"

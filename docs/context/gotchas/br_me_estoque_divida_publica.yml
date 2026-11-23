@@ -13,3 +13,10 @@ gotchas:
     colunas: [quantidade_estoque, valor_estoque]
     severidade: silencioso
     verificado: "out/2022: LFT 010923 23.153.056 títulos, R$ 285,9 bi; LTN 010124 280.908.663, R$ 263,5 bi; Global 2025A 4.300.000, R$ 22,9 bi — medido 2026-11-18"
+  - id: serie_vem_do_tesouro_ate_2026_09
+    resumo: "Desde 2026-11-20 a tabela vem direto do estoquedpf.csv do Tesouro (2017-09 a 2026-09, 166.082 linhas), não mais da BD (que parava em 2022-10). Nos 62 meses comuns, 124.403 das 124.419 linhas são idênticas; 16 linhas de CVSA970101/CVSB970101 têm valor_estoque com 1 a 3 centavos de diferença (a fonte revisou). quantidade_estoque é a parte inteira (a fonte traz 604786,61; a BD trunca, e o mesmo foi mantido) e tipo_divida segue 'Dívida interna'/'Dívida externa' em minúscula, como na BD."
+    tabelas: [microdados]
+    colunas: [ano, mes, valor_estoque, quantidade_estoque, tipo_divida]
+    severidade: informativo
+    verificado: "comparação linha a linha nos meses 2017-09 a 2022-10: 16 linhas diferem (centavos); soma de valor_estoque de 2022-10 = R$ 7.850.221.979.085,54 na fonte contra ...085,51 no espelho — medido 2026-11-20"
+
