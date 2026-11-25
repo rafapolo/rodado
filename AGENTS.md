@@ -33,6 +33,8 @@ SQL
 - Fonte original por padrão: se a BD está atrás ou incompleta, raspe da fonte pelo gate (`scripts/scrap/atualiza_fonte.py`), no schema atual, conferido contra o espelho antes da troca.
 - Depois de gravar dataset: skill `dataset-novo` (checklist em `docs/tecnico/housekeeping.md`, só local).
 - Script que reescreve, ordena ou compacta parquet confere fonte x saída com `scripts/sync/confere_hash.py` antes da troca.
+- Troca que tira ou muda linha antiga (recoleta, dedup, recarga) chama antes o registro de mudanças (`scripts/sync/historico.py`, no beelink `~/scripts/`): o que a fonte apagou ou alterou fica em `~/rodado/_historico/`. O gate, o `consolida` do PNCP e a recarga do TSE já chamam.
+- Hash lógico de cada tabela (`docs/integridade/`): calcula no beelink com `hash_logico.py`, exporta com `scripts/exporta_integridade.py`.
 - `join_keys.md` e `metrics.json` são gerados: edite o YAML de origem.
 
 ## Só local (fora do git)
