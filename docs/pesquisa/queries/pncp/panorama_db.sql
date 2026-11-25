@@ -1,14 +1,15 @@
 -- PNCP (Portal Nacional de Contratações Públicas), panorama por ano: editais, contratos e atas (2026 até 24/11)
 -- de União, estados e municípios, ligados pela chave do edital (numeroControlePNCP).
 -- Valores em R$ mi, só registros abaixo de R$ 1 bi: a fonte aceita qualquer número e poucos
--- registros de trilhões dominariam a soma. Contratos: uma linha por contrato (a fonte repete).
+-- registros de trilhões dominariam a soma. Contratos: uma linha por contrato, a versão mais recente (a fonte repete).
 WITH editais AS (
   SELECT numeroControlePNCP, try_cast(left(dataPublicacaoPncp, 10) AS DATE) publicado,
          valorTotalEstimado, valorTotalHomologado, orgaoEntidade.esferaId esfera, orgaoEntidade.cnpj orgao, unidadeOrgao.codigoIbge ibge
   FROM br_mgi_pncp.contratacao
 ), contratos AS (
-  SELECT numeroControlePNCP, any_value(numeroControlePncpCompra) compra,
-         any_value(dataAssinatura) assinado, max(valorGlobal) valor, any_value(niFornecedor) fornecedor
+  SELECT numeroControlePNCP, arg_max(numeroControlePncpCompra, dataAtualizacao) compra,
+         arg_max(dataAssinatura, dataAtualizacao) assinado, arg_max(valorGlobal, dataAtualizacao) valor,
+         arg_max(niFornecedor, dataAtualizacao) fornecedor
   FROM br_pncp.contratos GROUP BY 1
 ), e AS (
   SELECT year(publicado) ano, count(*) editais, count(DISTINCT orgao) orgaos,

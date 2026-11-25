@@ -107,7 +107,7 @@ valores e nas datas nasce aí: cada sistema preenche os campos do seu jeito.
 - **Estatais e Sistema S:** natureza jurídica e nome no cadastro da Receita Federal, só com
   matriz ativa. Uma entidade "aparece" se tem ao menos um edital, contrato ou ata como órgão.
 - **Novembro de 2026** está incompleto e não entra no gráfico mensal.
-- **Para conferir:** o <a href="https://db.rodado.xyz/q/K7HY_MpX" target="_blank" rel="noopener">panorama
+- **Para conferir:** o <a href="https://db.rodado.xyz/q/Z2ytk9SN" target="_blank" rel="noopener">panorama
   por ano</a> refaz, sobre os dados de hoje, editais, contratos, atas, órgãos, municípios,
   fornecedores, valores e a parte dos contratos assinados antes do edital.
 

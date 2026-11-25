@@ -293,6 +293,20 @@ SSD tem `br_rodado_indicadores_municipais`, `br_rodado_eleicoes`, `br_tse_filiac
 (`/q/14QDGArQ`) caiu de 41 s para 0,9 s. Na árvore, ● verde = SSD e ● amarelo = S3. A legenda
 filtra, e `onde:ssd` / `onde:s3` na busca fazem o mesmo.
 
+Desde 2026-11-25 o PNCP também está no SSD: `br_pncp.contratos`, `br_mgi_pncp.contratacao` e
+`br_mgi_pncp.ata_registro_preco`, 132 arquivos, 895 MB. A consulta do panorama por ano
+(`/q/Z2ytk9SN`) caiu de ~20 s (S3) para ~7–9 s. O PNCP muda todo mês: o `consolida` reescreve meses
+antigos, e o parcial do mês vira `AAAAMM.parquet` quando o mês fecha. Depois de cada atualização e
+do sync do S3, rode `./ssd_prefixos.sh br_pncp/contratos br_mgi_pncp/contratacao
+br_mgi_pncp/ata_registro_preco` no finland. Ele refaz as linhas desses prefixos na lista, apaga do
+SSD o que saiu do bucket e chama o `ssd_copia.sh`.
+
+**Arquivo recomprimido ou reescrito no bucket com o catálogo igual** dá `ETag ... changed after it
+was opened`: a instância do DuckDB do processo guarda o metadado antigo e só é trocada quando o
+arquivo do catálogo muda. Se o `--uma-vez` não recriar nada, `touch /dados/catalogo.duckdb
+/dados/catalogo_anon.duckdb` no container força uma instância nova (2026-11-25, PNCP depois do
+`compacta.py`).
+
 `ssd_copia.sh` (no finland, em `/root/rodado-db`) baixa do bucket os arquivos de `ssd_lista.txt`
 e baixa de novo os que mudaram de tamanho. Isso cobre o arquivo reescrito com o mesmo nome no
 beelink, como as receitas de 2026; uma reescrita com o mesmo tamanho exato passaria despercebida.

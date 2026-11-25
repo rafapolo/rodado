@@ -40,7 +40,8 @@ GROUP BY 1 ORDER BY 1;
 
 -- arquivo: antes_do_edital_2025.csv — contratos assinados em 2025 antes de o edital deles
 -- aparecer no portal, pela modalidade do edital
-WITH c AS (SELECT numeroControlePNCP, any_value(numeroControlePncpCompra) compra, any_value(dataAssinatura) assinado
+WITH c AS (SELECT numeroControlePNCP, arg_max(numeroControlePncpCompra, dataAtualizacao) compra,
+                  arg_max(dataAssinatura, dataAtualizacao) assinado
            FROM br_pncp.contratos GROUP BY 1)
 SELECT e.modalidadeNome modalidade, count(*) contratos,
        count(*) FILTER (WHERE c.assinado < try_cast(left(e.dataPublicacaoPncp, 10) AS DATE)) antes,
