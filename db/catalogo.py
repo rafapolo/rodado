@@ -17,6 +17,8 @@ cujo SQL mudou: as outras vêm do catálogo anterior (monta). Views de outros bu
 """
 import concurrent.futures
 import fcntl
+import fnmatch
+import glob
 import hashlib
 import json
 import os
@@ -74,12 +76,29 @@ def baixa_views():
     return texto, hashlib.sha256(texto.encode()).hexdigest()
 
 
+def _no_ssd(rel: str) -> bool:
+    """Um arquivo do bucket está no SSD; um curinga (view particionada, ex. br_pncp.contratos/*/*.parquet)
+    só quando a tabela tem o marcador .ssd_completo do ssd_prefixos.sh e os arquivos locais que o
+    curinga pega são exatamente os do bucket listados nele: cópia pela metade continua no S3."""
+    if not any(c in rel for c in "*?["):
+        return os.path.isfile(rodado_sql.LOCAL + rel)
+    partes = rel.split("/")
+    if len(partes) < 3:
+        return False
+    marca = os.path.join(rodado_sql.LOCAL, partes[0], partes[1], ".ssd_completo")
+    if not os.path.isfile(marca):
+        return False
+    with open(marca) as f:
+        esperados = {l.strip() for l in f if l.strip() and fnmatch.fnmatchcase(l.strip(), rel)}
+    locais = {os.path.relpath(x, rodado_sql.LOCAL) for x in glob.glob(rodado_sql.LOCAL + rel)}
+    return bool(esperados) and esperados == locais
+
+
 def para_s3(sql: str) -> str:
     for local in LOCAIS:
         sql = sql.replace(local, "'" + rodado_sql.RAIZ)
     # parquet com cópia em /dados/local (mesmo caminho relativo do bucket) é lido do SSD
-    return _NO_BUCKET.sub(lambda m: "'" + rodado_sql.LOCAL + m[1] + "'"
-                          if os.path.isfile(rodado_sql.LOCAL + m[1]) else m[0], sql)
+    return _NO_BUCKET.sub(lambda m: "'" + rodado_sql.LOCAL + m[1] + "'" if _no_ssd(m[1]) else m[0], sql)
 
 
 def _sha(sql: str) -> str:

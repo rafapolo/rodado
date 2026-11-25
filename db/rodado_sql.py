@@ -155,7 +155,8 @@ def _abre(arquivo: str, memoria: str) -> duckdb.DuckDBPyConnection:
         con.execute("SET autoinstall_known_extensions=false")
         con.execute("SET autoload_known_extensions=false")
         con.execute("LOAD httpfs")
-        con.execute("SET parquet_metadata_cache=true")
+        # DuckDB 2.0: escopo LOCAL, e cada consulta roda num cursor novo; sem GLOBAL o cache ficava desligado
+        con.execute("SET GLOBAL parquet_metadata_cache=true")
         con.execute("SET enable_http_metadata_cache=true")
         con.execute(segredo_s3("rodado_s3"))
         con.create_function("_mascara_cpf", mascara_texto, [sqltypes.VARCHAR], sqltypes.VARCHAR,

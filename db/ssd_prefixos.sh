@@ -30,8 +30,15 @@ for p in "$@"; do
   [ -d "$DEST/$p" ] || continue
   (cd "$DEST" && find "$p" -name '*.parquet') | grep -vxF -f "$novo" | while read -r f; do
     rm -f "$DEST/$f" && echo "saiu do SSD: $f"
-  done
+  done || true   # grep sem linha devolve 1, e com pipefail o set -e matava o script aqui
 done
 echo "$(wc -l < "$novo") arquivos de $# tabela(s) na lista"
 ./ssd_copia.sh
+# marcador por tabela: a lista do bucket. O catalogo.py só lê do SSD uma view com curinga
+# (br_pncp.contratos/*/*.parquet) quando os arquivos locais batem com ela; sem cópia completa, fica no S3
+for p in "$@"; do
+  grep "^$p/" "$novo" > "$DEST/$p/.ssd_completo.tmp" && mv "$DEST/$p/.ssd_completo.tmp" "$DEST/$p/.ssd_completo"
+  faltam=$(while read -r f; do [ -f "$DEST/$f" ] || echo "$f"; done < "$DEST/$p/.ssd_completo" | wc -l)
+  echo "$p: $(wc -l < "$DEST/$p/.ssd_completo") no bucket, $faltam faltando no SSD"
+done
 rm -f "$novo" "$manter"

@@ -299,7 +299,15 @@ Desde 2026-11-25 o PNCP também está no SSD: `br_pncp.contratos`, `br_mgi_pncp.
 antigos, e o parcial do mês vira `AAAAMM.parquet` quando o mês fecha. Depois de cada atualização e
 do sync do S3, rode `./ssd_prefixos.sh br_pncp/contratos br_mgi_pncp/contratacao
 br_mgi_pncp/ata_registro_preco` no finland. Ele refaz as linhas desses prefixos na lista, apaga do
-SSD o que saiu do bucket e chama o `ssd_copia.sh`.
+SSD o que saiu do bucket e chama o `ssd_copia.sh`. Ele também grava em cada tabela um
+`.ssd_completo` com a lista do bucket: só com ele o `catalogo.py` lê do SSD uma view com curinga
+(`br_pncp.contratos/*/*.parquet`, particionada por ano), e só se os arquivos locais forem
+exatamente os da lista. Sem isso os contratos ficavam no S3 e o panorama levava ~20 s; com as
+três tabelas no SSD, ~6 s (5 rodadas, 4,5 a 6,9 s).
+
+**`parquet_metadata_cache` estava desligado em toda consulta.** No DuckDB 2.0 ele tem escopo
+LOCAL, e o `SET` na conexão-base não vale para os cursores que cada consulta abre. Desde
+2026-11-25 é `SET GLOBAL` (entra no ar no próximo deploy ou reinício do `consulta.py`).
 
 **Arquivo recomprimido ou reescrito no bucket com o catálogo igual** dá `ETag ... changed after it
 was opened`: a instância do DuckDB do processo guarda o metadado antigo e só é trocada quando o
