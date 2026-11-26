@@ -576,6 +576,22 @@ def link_q_em_markdown_para_agente():
     assert c.getresponse().status == 405       # HEAD não executa
     c.close()
     assert pede("", "/q/naoexiste99/resultado", metodo="GET")[0] == 404
+    # formato=md e navegador de agente sem formato: tabela markdown em text/plain, com o caminho da próxima consulta
+    st, cab, res = pede("", f"/q/{ident}/resultado?formato=md", ip="10.7.0.2", metodo="GET")
+    assert st == 200 and cab["content-type"].startswith("text/plain") and res.startswith(b"| a |\n|---|\n| "), res[:80]
+    assert b"10 linha(s)" in res and b"formato=md" in res
+    c = http.client.HTTPConnection("127.0.0.1", PORTA, timeout=60)
+    c.request("GET", "/query?q=SELECT+a+FROM+br_t.pequena", headers={"User-Agent": "ChatGPT-User/1.0", "X-Rodado-Ip": "10.7.0.3"})
+    r = c.getresponse()
+    assert r.getheader("Content-Type").startswith("text/plain") and r.read().startswith(b"| a |")
+    c.close()
+    c = http.client.HTTPConnection("127.0.0.1", PORTA, timeout=60)
+    c.request("GET", "/query?q=SELECT+nada+FROM+br_t.naoexiste", headers={"User-Agent": "ChatGPT-User/1.0", "X-Rodado-Ip": "10.7.0.3"})
+    r = c.getresponse()
+    assert r.status >= 400 and r.getheader("Content-Type").startswith("text/plain") and b"erro" in r.read()
+    c.close()
+    st, cab, _r = pede("", "/query?q=SELECT+a+FROM+br_t.pequena", ip="10.7.0.4", metodo="GET")
+    assert cab["content-type"].startswith("application/json")      # sem User-Agent de agente, segue JSON
     # HEAD responde (era 501) sem corpo e sem contar clique; /query não aceita HEAD
     cliques = consulta._meta_q(ident).get("cliques")
     c = http.client.HTTPConnection("127.0.0.1", PORTA, timeout=60)

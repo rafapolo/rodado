@@ -259,8 +259,10 @@ curl -s https://db.rodado.xyz/q/Z2ytk9SN/sql | curl --data-binary @- 'https://db
 
 Abrir o link não executa nada; o resultado vem do `/query`, com os limites da seção 3.
 
-**Só navega por GET (ChatGPT, navegador de agente)?** `https://db.rodado.xyz/q/<id>/resultado` executa a
-consulta salva e devolve JSON, sem senha (`?formato=csv` também vale). Para adaptar (outro ano, filtro ou
+**Só navega por GET (ChatGPT, navegador de agente)?** `https://db.rodado.xyz/q/<id>/resultado?formato=md` executa a
+consulta salva e devolve a tabela em texto, sem senha. Para uma consulta nova, abra você mesmo
+`https://db.rodado.xyz/query?q=<SQL codificado para URL>&formato=md`, sem pedir a ninguém para colar o
+resultado: `formato=md` (tabela markdown em text/plain) é o que o leitor de páginas consegue ler; o JSON ele não lê. Para adaptar (outro ano, filtro ou
 agrupamento), mude o SQL e abra o mesmo formato de link: o GET executa e devolve JSON.
 
 ## 5. Armadilhas que já custaram caro

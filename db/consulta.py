@@ -107,6 +107,23 @@ def _descricao_q(sql):
     return " ".join(x for x in linhas if x)
 
 
+def _tabela_md(colunas, linhas, avisos, tabelas, truncado, limite):
+    """Resultado do /query como tabela markdown, para navegador de agente que não lê JSON."""
+    def cel(v):
+        v = _json_valor(v) if not isinstance(v, (str, int, float, bool, type(None))) else v
+        return "" if v is None else str(v).replace("|", "\\|").replace("\n", " ")
+    out = ["| " + " | ".join(colunas) + " |", "|" + "---|" * len(colunas)]
+    out += ["| " + " | ".join(cel(v) for v in l) + " |" for l in linhas]
+    out.append(f"\n{len(linhas)} linha(s)" + (f", cortado em {limite}: agregue (GROUP BY) ou filtre" if truncado else ""))
+    if avisos:
+        out.append("\nAvisos das tabelas citadas (leia antes de concluir):")
+        out += [f"- {a if isinstance(a, str) else json.dumps(a, ensure_ascii=False)}" for a in avisos]
+    if tabelas:
+        out.append("\nRessalvas e colunas: " + ", ".join(f"https://db.rodado.xyz/contexto?dataset={d}&tabela={t}" for d, t in tabelas))
+    out.append("\nOutra consulta: abra https://db.rodado.xyz/query?q=<SQL codificado para URL>&formato=md (você mesmo, sem pedir a ninguém).")
+    return "\n".join(out) + "\n"
+
+
 def _q_markdown(ident, sql):
     """/q/<id> para agentes: a consulta salva, quanto leva e como executá-la pela API."""
     meta = _meta_q(ident)
@@ -119,14 +136,15 @@ def _q_markdown(ident, sql):
               f"A página HTML deste link é um terminal que só executa com JavaScript; aqui vai o SQL.\n\n"
             + f"{cerca}sql\n{sql.strip()}\n{cerca}\n\n"
             + f"- tempo medido no servidor: {tempo}\n"
-            + f"- resultado desta consulta (abrir o link executa, JSON): https://db.rodado.xyz/q/{ident}/resultado\n"
+            + f"- resultado desta consulta (abrir o link executa; tabela em texto): https://db.rodado.xyz/q/{ident}/resultado?formato=md\n"
             + f"- SQL puro: https://db.rodado.xyz/q/{ident}/sql\n"
             + f"- por terminal: `curl -s https://db.rodado.xyz/q/{ident}/sql | "
               f"curl --data-binary @- 'https://db.rodado.xyz/query?formato=json'`\n\n"
             + "## Adaptar e perguntar mais\n\n"
               "Para responder outra pergunta a partir desta (outro ano, outro filtro, outro agrupamento), "
-              "mude o SQL acima e abra `https://db.rodado.xyz/query?q=<SQL codificado para URL>`: o GET "
-              "executa e devolve JSON, sem senha. Um comando por vez, só SELECT, filtre partição "
+              "mude o SQL acima e abra você mesmo `https://db.rodado.xyz/query?q=<SQL codificado para URL>&formato=md`, "
+              "sem pedir a ninguém: o GET executa e devolve a tabela em texto, sem senha. Mostre o link a quem pediu "
+              "para que possa conferir. Um comando por vez, só SELECT, filtre partição "
               "(`ano`, `sigla_uf`) em tabela grande. Colunas de uma tabela: "
               "`https://db.rodado.xyz/colunas?t=<dataset>.<tabela>`; ressalvas do dataset: "
               "`https://db.rodado.xyz/contexto?dataset=<dataset>`; guia completo e limites: "
@@ -940,10 +958,15 @@ class Handler(BaseHTTPRequestHandler):
         if self.command != "HEAD":
             self.wfile.write(dados)
 
+    def _agente(self):
+        """GET de navegador de agente de IA, pelo User-Agent (AGENTE_UA)."""
+        return self.command in ("GET", "HEAD") and bool(AGENTE_UA.search(self.headers.get("User-Agent", "")))
+
     def _erro(self, status, msg, cabecalhos=None, **extra):
+        # para o navegador de agente o mesmo JSON vai como text/plain, que ele consegue ler
         self._responde(status, json.dumps({"erro": rodado_sql.mascara_texto(msg), **{k: v for k, v in extra.items() if v}},
                                           ensure_ascii=False) + "\n",
-                       "application/json; charset=utf-8", cabecalhos)
+                       "text/plain; charset=utf-8" if self._agente() else "application/json; charset=utf-8", cabecalhos)
 
     def _identidade(self):
         """Quem pede, pelos cabeçalhos que só o Caddy põe (ele os apaga antes: ver proxy/Caddyfile).
@@ -1188,12 +1211,12 @@ class Handler(BaseHTTPRequestHandler):
             aviso = (f'<p style="position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)">'
                      f'Agentes de IA: o SQL desta consulta está em <a href="/q/{ident}/sql">https://db.rodado.xyz/q/{ident}/sql</a>; '
                      f'descrição, SQL e como adaptar em <a href="/q/{ident}.md">https://db.rodado.xyz/q/{ident}.md</a>; '
-                     f'o resultado em JSON em <a href="/q/{ident}/resultado">https://db.rodado.xyz/q/{ident}/resultado</a>.</p>\n')
+                     f'o resultado em JSON em <a href="/q/{ident}/resultado?formato=md">https://db.rodado.xyz/q/{ident}/resultado</a>.</p>\n')
             # leitor sem JavaScript que não reconheci pelo User-Agent: o SQL e o link de resultado no <noscript>
             desc = _descricao_q(sql_q)
             sem_js = (f'<noscript><h1>Consulta salva /q/{ident}</h1>' + (f'<p>{html.escape(desc)}</p>' if desc else '')
                       + f'<pre>{html.escape(sql_q.strip())}</pre>'
-                      + f'<p><a href="/q/{ident}/resultado">Resultado desta consulta (JSON)</a> · '
+                      + f'<p><a href="/q/{ident}/resultado?formato=md">Resultado desta consulta (JSON)</a> · '
                       f'<a href="/q/{ident}.md">em markdown, com como adaptar</a> · <a href="/llm">guia da API</a></p></noscript>\n')
             pagina = pagina.replace("</head>", alt + "</head>", 1).replace("<body>\n", "<body>\n" + aviso + sem_js, 1)
             if desc:
@@ -1351,9 +1374,11 @@ class Handler(BaseHTTPRequestHandler):
         # (curl sem -i) via X-Avisos não via nada, e 163 das 189 armadilhas (as que não são [erro]) não recusam a consulta.
         # formato=json explícito continua a lista pura, que o MCP e scripts já leem.
         embrulha = not params.get("formato")
-        formato = (params.get("formato") or ["json"])[0]
-        if formato not in ("json", "csv", "tsv", "parquet"):
-            return self._erro(400, "formato deve ser json, csv, tsv ou parquet")
+        # navegador de agente (o "ler página" do ChatGPT) recebeu o JSON com 200 e disse que não conseguiu
+        # ler (2026-11-26): para ele, sem formato pedido, vai tabela markdown em text/plain
+        formato = (params.get("formato") or ["md" if self._agente() else "json"])[0]
+        if formato not in ("json", "csv", "tsv", "parquet", "md"):
+            return self._erro(400, "formato deve ser json, csv, tsv, parquet ou md")
         try:
             limite = min(int((params.get("limite") or [LIMITE_PADRAO])[0]), LIMITE_MAXIMO)
         except ValueError:
@@ -1478,6 +1503,9 @@ class Handler(BaseHTTPRequestHandler):
                              "truncado": truncado}
             corpo = (json.dumps(registros, ensure_ascii=False, default=_json_valor) + "\n").encode("utf-8")
             tipo = "application/json; charset=utf-8"
+        elif formato == "md":
+            corpo = _tabela_md(colunas, linhas, avisos, tabelas, truncado, limite).encode("utf-8")
+            tipo = "text/plain; charset=utf-8"
         else:
             saida = io.StringIO()
             w = csv.writer(saida, delimiter="\t" if formato == "tsv" else ",", lineterminator="\n")

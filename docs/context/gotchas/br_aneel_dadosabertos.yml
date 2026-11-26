@@ -1,5 +1,11 @@
 dataset: br_aneel_dadosabertos
 gotchas:
+  - id: continuidade_fonte_duplicou_linhas
+    resumo: "Em 2026-11-25 a fonte entregou cada linha de indicadores_continuidade, _compensacao e _limite 2 a 3 vezes; o espelho guarda só as linhas distintas. Ao comparar com um download direto, deduplique antes de contar."
+    tabelas: [indicadores_continuidade, indicadores_continuidade_compensacao, indicadores_continuidade_limite]
+    colunas: [DatGeracaoConjuntoDados]
+    severidade: silencioso
+    verificado: "2026-11-26: continuidade 32.880.748 linhas baixadas, 16.371.030 distintas; compensação 37.818.138 e 18.902.304; limite 533.338 e 263.401. Os dados vão até 2026 (DatGeracaoConjuntoDados 2026-11-05)"
   - id: retrato_unico
     resumo: "empreendimento_geracao_distribuida e siga_empreendimentos_geracao são retrato de uma só data, não série. No SIGA, a evolução sai de DatEntradaOperacao das usinas ainda ativas."
     tabelas: [empreendimento_geracao_distribuida, siga_empreendimentos_geracao]

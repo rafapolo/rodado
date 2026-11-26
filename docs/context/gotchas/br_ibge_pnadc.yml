@@ -40,7 +40,7 @@ gotchas:
     resumo: "Desde 2026-11-19 os 59 trimestres (ibge_<aaaa>t<t>.parquet) vêm do FTP do IBGE por scripts/scrap/ibge_pnadc_microdados.py, no schema da antiga cópia da BD e com as regras de código dela; a cópia da BD foi substituída. Diferenças contra ela, todas revisões oficiais: V1022 corrigida (~680 domicílios por trimestre, 2014–2021), id_estrato renumerado (2016–2021), módulo de educação de 2019-T2 e 2022-T2, V3006A (2020-T2, 2024-T2) e o código todo zero de V4010/V4013/V4041/V4044, agora '0' em toda a série (a BD alternava '0' e '000')."
     tabelas: [microdados]
     colunas: [ano, trimestre, V1022, id_estrato, V4010, V4013, V4041, V4044]
-    severidade: informativo
+    severidade: aviso
     verificado: "mesmo número de linhas nos 59 trimestres; hash da linha fora de pesos/deflator idêntico em 2012–2013, 2021-T4..2022-T1 e nos demais só nas colunas citadas — medido 2026-11-19"
   - id: gerente_nao_e_o_do_ibge
     resumo: "Contar 'cargo gerencial' como V4010 no grande grupo 1 da COD (diretores e gerentes) dá pretos e pardos em 33,7% em 2025, contra 30,7% em 'Desigualdades Sociais por Cor ou Raça' (IBGE, 2026-11-18): o recorte do IBGE é mais estreito e não está nos microdados. O resto do estudo bate (55,1% dos ocupados; 19,6% dos 20% de gerentes mais bem pagos; desocupação por cor)."

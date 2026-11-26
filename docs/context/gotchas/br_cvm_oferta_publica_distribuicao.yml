@@ -34,5 +34,5 @@ gotchas:
     resumo: "A CVM revisou nomes de líder de ofertas antigas desde a cópia da BD (112 linhas do espelho de 2026-11 mudaram, 90 só em nome_lider, ex. 'CBSF TRUST ...' virou 'APOCK TRUST ...'). A tabela guarda a versão atual da CVM, então agrupar por nome_lider pode diferir de análises feitas com a BD; o cnpj_lider não mudou."
     tabelas: [dia]
     colunas: [nome_lider]
-    severidade: informativo
+    severidade: aviso
     verificado: "112 linhas do espelho de 27.486 sem linha idêntica na fonte; 90 diferem só em nome_lider — medido 2026-11-20"
