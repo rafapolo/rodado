@@ -517,6 +517,34 @@ def token_de_link_tem_cota_propria():
     assert pede(N60, ip="10.6.0.3")[1]["x-cota-restante"] == "940"            # a senha não foi gasta
 
 
+@teste
+def link_q_em_markdown_para_agente():
+    # /q/<id> pedido como markdown (ou ?formato=md) devolve o SQL e como rodá-lo, sem executar;
+    # o navegador (Accept com text/html) continua recebendo o terminal
+    os.makedirs(consulta.DIR_Q, exist_ok=True)
+    ident = "AbCdEfGh12"
+    with open(os.path.join(consulta.DIR_Q, ident + ".sql"), "w", encoding="utf-8") as f:
+        f.write("-- linhas pequenas\nSELECT a FROM br_t.pequena")
+
+    def get(caminho, aceita):
+        c = http.client.HTTPConnection("127.0.0.1", PORTA, timeout=60)
+        try:
+            c.request("GET", caminho, headers={"Accept": aceita})
+            r = c.getresponse()
+            return r.status, r.getheader("Content-Type"), r.read().decode()
+        finally:
+            c.close()
+    st, tipo, corpo = get(f"/q/{ident}", "text/markdown")
+    assert st == 200 and tipo.startswith("text/markdown"), (st, tipo)
+    assert "SELECT a FROM br_t.pequena" in corpo and "linhas pequenas" in corpo and "/llm" in corpo, corpo
+    for v in ("?formato=md", "?format=markdown", "?format=md", ".md"):
+        assert get(f"/q/{ident}{v}", "text/html")[1].startswith("text/markdown"), v
+    assert get(f"/q/{ident}/sql", "*/*")[2].startswith("-- linhas pequenas")
+    assert get(f"/q/{ident}", "text/html,text/markdown;q=0.9,*/*")[1].startswith("text/html")
+    assert get(f"/q/{ident}", "*/*")[1].startswith("text/html")
+    assert get("/q/naoexiste99", "text/markdown")[0] == 404
+
+
 if __name__ == "__main__":
     falhas = 0
     for f in RESULTADOS:

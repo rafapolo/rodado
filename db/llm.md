@@ -244,6 +244,18 @@ consulta exploratória que ficou pelo caminho.
   credencial, comentário interno).
 - Sem acesso a HTTP de escrita? Mostre a SQL em bloco de código e diga que o link não foi gerado.
 
+**Recebeu um link `/q/<id>` e quer ler a consulta?** A página HTML é o terminal, que só executa com
+JavaScript; o SQL não está no HTML. Leia por uma destas rotas, todas públicas e sem senha:
+
+```bash
+curl https://db.rodado.xyz/q/Z2ytk9SN/sql      # o SQL puro, como foi salvo
+curl https://db.rodado.xyz/q/Z2ytk9SN.md       # markdown: descrição, SQL, tempo medido e como rodar
+                                               # (também ?formato=md, ?format=markdown ou Accept: text/markdown)
+curl -s https://db.rodado.xyz/q/Z2ytk9SN/sql | curl --data-binary @- 'https://db.rodado.xyz/query?formato=json'
+```
+
+Abrir o link não executa nada; o resultado vem do `/query`, com os limites da seção 3.
+
 ## 5. Armadilhas que já custaram caro
 
 As gerais; as de cada dataset estão em `/contexto?dataset=`.

@@ -52,7 +52,7 @@ SEM_TEMA = "outros"
 # colidir. /q/<id> é a página do terminal, que busca /q/<id>/sql e executa; o Caddy dá a
 # quem abre um link que existe o mesmo acesso de quem tem o token.
 DIR_Q = os.environ.get("RODADO_DIR_Q", "/dados/q")
-ROTA_Q = re.compile(r"^/q/([A-Za-z0-9_-]{8,16})(/sql)?$")
+ROTA_Q = re.compile(r"^/q/([A-Za-z0-9_-]{8,16})(/sql|\.md)?$")   # .md: o markdown para agentes
 # Ao lado de cada <id>.sql, <id>.json guarda o que /index mostra: cliques (aberturas de
 # /q/<id>), criado_em e quanto a consulta leva para rodar (segundos, medido por _mede_q logo
 # depois de salvar e refeito a cada /query com o mesmo texto).
@@ -105,6 +105,24 @@ def _descricao_q(sql):
             break
         linhas.append(l.lstrip("-").strip())
     return " ".join(x for x in linhas if x)
+
+
+def _q_markdown(ident, sql):
+    """/q/<id> para agentes: a consulta salva, quanto leva e como executá-la pela API."""
+    meta = _meta_q(ident)
+    desc = _descricao_q(sql)
+    tempo = f"{meta['segundos']} s" if isinstance(meta.get("segundos"), (int, float)) else "ainda não medido"
+    cerca = "````" if "```" in sql else "```"
+    return (f"# Consulta salva /q/{ident}\n\n"
+            + (f"{desc}\n\n" if desc else "")
+            + f"Esta é uma consulta SQL (DuckDB) sobre o espelho de dados públicos brasileiros do rodado. "
+              f"A página HTML deste link é um terminal que só executa com JavaScript; aqui vai o SQL.\n\n"
+            + f"{cerca}sql\n{sql.strip()}\n{cerca}\n\n"
+            + f"- tempo medido no servidor: {tempo}\n"
+            + f"- SQL puro: https://db.rodado.xyz/q/{ident}/sql\n"
+            + f"- executar: `curl -s https://db.rodado.xyz/q/{ident}/sql | "
+              f"curl --data-binary @- 'https://db.rodado.xyz/query?formato=json'`\n"
+            + "- guia da API (limites, catálogo, formatos): https://db.rodado.xyz/llm\n")
 
 
 def _mede_q():
@@ -1112,12 +1130,22 @@ class Handler(BaseHTTPRequestHandler):
             _fila_q.put(h[:n])
         self._json({"id": h[:n], "url": f"/q/{h[:n]}"})
 
-    def _q(self, ident, parte):
+    def _q(self, ident, parte):   # parte: None (página), "/sql" (texto puro) ou ".md"
         caminho = os.path.join(DIR_Q, ident + ".sql")
         if not os.path.exists(caminho):
             return self._erro(404, "link não encontrado")
-        if not parte:
+        if parte != "/sql":
             _anota_q(ident, clique=True)
+            # agente que pede markdown (e não HTML), ou ?formato=md: o SQL e como rodá-lo, não o
+            # terminal (que só executa com JavaScript). Sem executar aqui: robô que abre link não gasta consulta.
+            aceita = self.headers.get("Accept", "")
+            q = parse_qs(urlparse(self.path).query)
+            formato = ((q.get("formato") or q.get("format") or [""])[0]).lower()
+            if (parte == ".md" or formato in ("md", "markdown")
+                    or ("text/markdown" in aceita and "text/html" not in aceita)):
+                with open(caminho, encoding="utf-8") as f:
+                    return self._responde(200, _q_markdown(ident, f.read()), "text/markdown; charset=utf-8",
+                                          {"Cache-Control": "no-cache"})
             with open(PAGINA, "rb") as f:
                 return self._responde(200, f.read(), "text/html; charset=utf-8", {"Cache-Control": "no-cache"})
         with open(caminho, encoding="utf-8") as f:
