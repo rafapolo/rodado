@@ -558,20 +558,25 @@ termFrame.addEventListener("load", async () => {
     },
   };
   ajustaFonte(term);
+  // o ttyd reaplica as preferências do servidor (fontSize=12) ao conectar o websocket, o que
+  // pode vir depois daqui; elas chegam antes da primeira saída, então reajusta nela
+  const primeira = term.onWriteParsed(() => { primeira.dispose(); ajustaFonte(term); });
   addEventListener("resize", () => ajustaFonte(term));
   if (editorVisivel()) sql.focus();      // no desktop o teclado começa no editor, não no terminal
   rodaDaUrl(term);
 });
 
-// Tela estreita (celular): diminui a fonte até caberem COLUNAS_MIN colunas — o logo da
-// abertura e a linha de números do terminal.py — sem descer de FONTE_MIN.
-const FONTE = 12, FONTE_MIN = 9, COLUNAS_MIN = 62;
+// Tela estreita: diminui a fonte até caberem COLUNAS_MIN colunas, sem descer de FONTE_MIN.
+// No celular a meta é 80: o DuckDB não desenha tabela mais estreita que isso e, com menos
+// colunas, o terminal.py corta a tabela à direita. No desktop basta o logo da abertura (62).
+const FONTE = 12, CELULAR = matchMedia("(max-width: 760px), (pointer: coarse) and (max-width: 1024px)");
 function ajustaFonte(term) {
+  const [COLUNAS_MIN, FONTE_MIN] = CELULAR.matches ? [80, 7] : [62, 9];
   let px = FONTE;
   term.options.fontSize = px;
   term.fit?.();
   while (term.cols < COLUNAS_MIN && px > FONTE_MIN) {
-    px = Math.max(FONTE_MIN, px - 0.5);
+    px = Math.max(FONTE_MIN, px - 0.25);
     term.options.fontSize = px;
     term.fit?.();
   }

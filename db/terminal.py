@@ -193,6 +193,10 @@ def colore_tabela(texto):
         return texto
     borda = linhas[0]
     cortes = [i for i, c in enumerate(borda) if c in "┌┬┐"]
+    # tabela cortada à direita (cabe_na_tela): a última coluna vai até o fim, sem │ de fecho
+    aberta = not borda.endswith("┐")
+    if aberta:
+        cortes.append(len(borda))
     fatias = list(zip(cortes, cortes[1:]))
     cores, saida, corpo = None, [], 0
     for linha in linhas:
@@ -214,7 +218,28 @@ def colore_tabela(texto):
                         for cor, c in zip(cores, celulas)]
         corpo += 1
         barra = f"{CINZA}│{FIM}"
-        saida.append(barra + barra.join(pintadas) + barra)
+        saida.append(barra + barra.join(pintadas) + ("" if aberta else barra))
+    return "\n".join(saida)
+
+
+# O DuckDB 2.0 não desenha tabela com menos de 80 colunas: show(max_width=60) sai com 80, e
+# max_col_width também é ignorado (conferido em 2026-11-26). Num celular estreito o xterm
+# quebrava cada linha em duas. A página baixa a fonte até caberem 80; se ainda não couber,
+# a tabela é cortada à direita com › e o rodapé perde o alinhamento à direita.
+LARGURA_MIN_DUCKDB = 80
+
+
+def cabe_na_tela(texto, largura):
+    if largura >= LARGURA_MIN_DUCKDB:
+        return texto
+    saida = []
+    for linha in texto.split("\n"):
+        if len(linha) <= largura:
+            saida.append(linha)
+        elif linha[:1] in "┌├└│":
+            saida.append(linha[:largura - 1] + "›")
+        else:  # rodapé: "  6 rows        12 columns (5 shown)"
+            saida.append(("  " + " · ".join(re.split(r"\s{2,}", linha.strip())))[:largura])
     return "\n".join(saida)
 
 
@@ -277,7 +302,7 @@ def mostra(sql: str, linhas: int):
                     # linhas do corpo da tabela (as que começam pela borda), e o tamanho do texto
                     LIMITES.registra(limites.BALDE_TERMINAL, max(0, tabela.count("\n│") - 2),
                                      bytes_=len(tabela.encode("utf-8")))
-                    sys.stdout.write(colore_tabela(tabela))
+                    sys.stdout.write(colore_tabela(cabe_na_tela(tabela, largura)))
                 except (duckdb.InterruptException, KeyboardInterrupt):
                     avisa(PESSEGO, "tempo limite estourado" if crono.estourou else "interrompido")
                     return None
