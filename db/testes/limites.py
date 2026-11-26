@@ -566,10 +566,16 @@ def link_q_em_markdown_para_agente():
     # o link de resultado do markdown executa por GET (o que um navegador de agente consegue fazer)
     import re as _re, urllib.parse as _up
     novo(cota_dia=1000)
-    url = _re.search(r"https://db\.rodado\.xyz(/query\?q=\S+)", corpo).group(1)
-    assert _up.unquote(url.split("q=", 1)[1]).startswith("-- linhas pequenas")
-    st, _h, res = pede("", url, ip="10.7.0.1", metodo="GET")
-    assert st == 200 and json.loads(res)["linhas"], res[:200]
+    assert f"https://db.rodado.xyz/q/{ident}/resultado" in corpo
+    st, _h, res = pede("", f"/q/{ident}/resultado", ip="10.7.0.1", metodo="GET")
+    assert st == 200 and len(json.loads(res)["linhas"]) == 10, res[:200]
+    st, _h, res = pede("", f"/q/{ident}/resultado?formato=csv", ip="10.7.0.1", metodo="GET")
+    assert st == 200 and res.startswith(b"a\n")
+    c = http.client.HTTPConnection("127.0.0.1", PORTA, timeout=60)
+    c.request("HEAD", f"/q/{ident}/resultado")
+    assert c.getresponse().status == 405       # HEAD não executa
+    c.close()
+    assert pede("", "/q/naoexiste99/resultado", metodo="GET")[0] == 404
     # HEAD responde (era 501) sem corpo e sem contar clique; /query não aceita HEAD
     cliques = consulta._meta_q(ident).get("cliques")
     c = http.client.HTTPConnection("127.0.0.1", PORTA, timeout=60)
