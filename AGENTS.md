@@ -34,6 +34,7 @@ SQL
 - Depois de gravar dataset: skill `dataset-novo` (checklist em `docs/tecnico/housekeeping.md`, só local).
 - Script que reescreve, ordena ou compacta parquet confere fonte x saída com `scripts/sync/confere_hash.py` antes da troca.
 - Troca que tira ou muda linha antiga (recoleta, dedup, recarga) chama antes o registro de mudanças (`scripts/sync/historico.py`, no beelink `~/scripts/`): o que a fonte apagou ou alterou fica em `~/rodado/_historico/`. O gate, o `consolida` do PNCP e a recarga do TSE já chamam. Coluna que muda a cada download sem o dado mudar (carimbo de coleta, `last_seen`, `OGC_FID`) vai em `--ignora ds.tab=col` no gate, senão cada recoleta registra a tabela inteira (OpenSanctions: 681 MB de ruído em 2026-11-25).
+- Toda troca promovida grava uma linha em `~/rodado/_historico/promocoes.jsonl` (`historico.py promocao`: quando, linhas antes/depois, o que saiu, hash do que foi baixado); o gate, o `consolida` do PNCP e a recarga do TSE já gravam, script novo que publica fora do gate chama também. A checagem do frescor grava `checagens.jsonl`. Consulta: views `_rodado_promocoes`, `_rodado_checagens`, `_rodado_mudancas` e colunas `ultima_promocao*`/`hash_logico` em `_rodado_metadata`.
 - Hash lógico de cada tabela (`docs/integridade/`): calcula no beelink com `hash_logico.py`, exporta com `scripts/exporta_integridade.py`.
 - `join_keys.md` e `metrics.json` são gerados: edite o YAML de origem.
 

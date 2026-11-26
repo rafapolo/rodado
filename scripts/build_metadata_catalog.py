@@ -551,6 +551,33 @@ def load_fontes() -> dict:
     return out
 
 
+def load_atualizacoes() -> tuple[dict, dict]:
+    """Última promoção de cada tabela (~/rodado/_historico/promocoes.jsonl: gate, consolida do PNCP,
+    recarga do TSE desde 2026-11-26, retroativo pelos carimbos desde 2026-10-07) e o último hash
+    lógico (~/rodado/_integridade/hashes.jsonl). Fora do ar, colunas vazias."""
+    r = subprocess.run(["ssh", BEELINK_HOST, "cat ~/rodado/_historico/promocoes.jsonl; echo ---; "
+                        "cat ~/rodado/_integridade/hashes.jsonl"], capture_output=True, text=True, timeout=120)
+    prom, _, hashes = r.stdout.partition("---")
+    ult, hs = {}, {}
+    for linha in prom.splitlines():
+        try:
+            x = json.loads(linha)
+        except ValueError:
+            continue
+        k = (x["dataset"], x["tabela"])
+        if x["em"] >= ult.get(k, {}).get("em", ""):
+            ult[k] = x
+    for linha in hashes.splitlines():
+        try:
+            x = json.loads(linha)
+        except ValueError:
+            continue
+        ds, _, tab = x["tabela"].partition(".")
+        if x.get("calculado_em", "") >= hs.get((ds, tab), {}).get("calculado_em", ""):
+            hs[(ds, tab)] = x
+    return ult, hs
+
+
 def build_catalog():
     # Resolved rows (done/mcp-live/excluded) live in the done/ split file, not
     # the active one (see its 2026-08-24 split header) — merge both, or every
@@ -605,7 +632,16 @@ def build_catalog():
         ("source", pa.string()),
         ("updated_at", pa.string()),
         ("original_source_url", pa.string()),
+        # monitorar atualizações: última promoção (promocoes.jsonl) e último hash lógico
+        ("ultima_promocao", pa.string()),
+        ("ultima_promocao_origem", pa.string()),
+        ("ultima_promocao_linhas_novas", pa.int64()),
+        ("ultima_promocao_saiu", pa.int64()),
+        ("hash_logico", pa.string()),
+        ("hash_calculado_em", pa.string()),
     ])
+    atualizacoes, hashes = load_atualizacoes()
+    print(f"  {len(atualizacoes)} tabelas com promoção registrada, {len(hashes)} com hash lógico", file=sys.stderr)
 
     with open(DATASET_DESCRIPTIONS_PATH) as f:
         dataset_descriptions = yaml.safe_load(f) or {}
@@ -717,6 +753,13 @@ def build_catalog():
         # de onde a BD diz que o dado vem, para tabela que também existe na BD
         # (docs/context/privado/fontes_originais_bd.json, só local, gerado por scripts/gera_fontes_bd.ts)
         arrays["original_source_url"].append(fonte_original_bd(fontes_bd, ds, t["table"]))
+        u, h = atualizacoes.get((ds, t["table"]), {}), hashes.get((ds, t["table"]), {})
+        arrays["ultima_promocao"].append(u.get("em", ""))
+        arrays["ultima_promocao_origem"].append(u.get("origem", ""))
+        arrays["ultima_promocao_linhas_novas"].append(u.get("linhas_novas"))
+        arrays["ultima_promocao_saiu"].append(u.get("saiu"))
+        arrays["hash_logico"].append(h.get("hash", ""))
+        arrays["hash_calculado_em"].append(h.get("calculado_em", ""))
 
     print(f"  {n_bd} tables attributed to {BD_SOURCE_NAME}", file=sys.stderr)
     if missing_descriptions:
@@ -826,6 +869,19 @@ SELECT
   count(*) FILTER (WHERE source = 'view_only') AS orphan_views
 FROM read_parquet('~/rodado/_rodado_metadata/catalog.parquet')
 GROUP BY dataset;
+
+-- histórico de atualizações (só no beelink; o motivo do registro de mudanças cita o raspador):
+-- uma linha por troca promovida, e o que a fonte apagou ou alterou em cada troca
+CREATE OR REPLACE VIEW _rodado_promocoes AS
+SELECT * REPLACE (CAST(em AS TIMESTAMP) AS em)
+FROM read_json('~/rodado/_historico/promocoes.jsonl', format = 'newline_delimited', sample_size = -1);
+
+CREATE OR REPLACE VIEW _rodado_checagens AS
+SELECT * REPLACE (CAST(em AS TIMESTAMP) AS em)
+FROM read_json('~/rodado/_historico/checagens.jsonl', format = 'newline_delimited', sample_size = -1);
+
+CREATE OR REPLACE VIEW _rodado_mudancas AS
+SELECT * FROM read_json('~/rodado/_historico/mudancas.jsonl', format = 'newline_delimited', sample_size = -1);
 """
 
 
@@ -843,7 +899,7 @@ def refresh_views():
     if proc.returncode != 0:
         print(f"WARN: could not refresh views: {proc.stderr.decode()[:300]}", file=sys.stderr)
         return
-    print("Refreshed views: _rodado_metadata, _rodado_datasets", file=sys.stderr)
+    print("Refreshed views: _rodado_metadata, _rodado_datasets, _rodado_promocoes, _rodado_checagens, _rodado_mudancas", file=sys.stderr)
 
 
 if __name__ == "__main__":
