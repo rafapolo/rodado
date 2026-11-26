@@ -546,6 +546,23 @@ def link_q_em_markdown_para_agente():
     # a página HTML do link traz o /sql e o .md deste id como link de verdade
     pagina = get(f"/q/{ident}", "text/html")[2]
     assert f'href="/q/{ident}/sql"' in pagina and f'href="/q/{ident}.md"' in pagina, pagina[:300]
+    # navegador de agente pelo User-Agent recebe o markdown já no /q/<id>; navegador comum, o terminal
+    # com o SQL no <noscript>
+    def get_ua(caminho, ua):
+        c = http.client.HTTPConnection("127.0.0.1", PORTA, timeout=60)
+        try:
+            c.request("GET", caminho, headers={"Accept": "text/html,*/*", "User-Agent": ua})
+            r = c.getresponse()
+            return r.getheader("Content-Type"), r.read().decode()
+        finally:
+            c.close()
+    for ua in ("Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; ChatGPT-User/1.0; +https://openai.com/bot",
+               "Claude-User/1.0", "Mozilla/5.0 (compatible; PerplexityBot/1.0)"):
+        tipo, txt = get_ua(f"/q/{ident}", ua)
+        assert tipo.startswith("text/plain") and "SELECT a FROM br_t.pequena" in txt and "/query?q=" in txt, (ua, tipo)
+    tipo, txt = get_ua(f"/q/{ident}", "Mozilla/5.0 (Macintosh) Safari/605")
+    assert tipo.startswith("text/html") and "<noscript>" in txt and "SELECT a FROM br_t.pequena" in txt
+    assert "<title>linhas pequenas · Rodado SQL</title>" in txt
     # o link de resultado do markdown executa por GET (o que um navegador de agente consegue fazer)
     import re as _re, urllib.parse as _up
     novo(cota_dia=1000)

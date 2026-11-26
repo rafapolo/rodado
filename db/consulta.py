@@ -133,6 +133,14 @@ def _q_markdown(ident, sql):
               "https://db.rodado.xyz/llm\n")
 
 
+# Navegadores de agente de IA (o "ler a página" do ChatGPT, Claude, Perplexity...): em 2026-11-26 o
+# ChatGPT abriu /q/<id> e /llm e nunca seguiu o /sql nem o .md da página (o leitor dele descarta o texto
+# escondido e não abre link que não está visível). Pelo User-Agent eles recebem o markdown já no /q/<id>.
+AGENTE_UA = re.compile(r"ChatGPT-User|OAI-SearchBot|GPTBot|ChatGPT|Claude-User|Claude-SearchBot|ClaudeBot|"
+                       r"anthropic-ai|Perplexity|MistralAI|DuckAssistBot|Google-NotebookLM|cohere-ai|"
+                       r"YouBot|Bytespider|meta-externalagent|Amazonbot", re.I)
+
+
 def _url_query(sql):
     """O link GET que executa o SQL (navegador de agente só faz GET e só abre link que viu)."""
     return "https://db.rodado.xyz/query?q=" + quote(sql.strip(), safe="")
@@ -1156,11 +1164,14 @@ class Handler(BaseHTTPRequestHandler):
             aceita = self.headers.get("Accept", "")
             q = parse_qs(urlparse(self.path).query)
             formato = ((q.get("formato") or q.get("format") or [""])[0]).lower()
-            if (parte == ".md" or formato in ("md", "markdown")
+            agente = bool(AGENTE_UA.search(self.headers.get("User-Agent", "")))
+            if (parte == ".md" or formato in ("md", "markdown") or agente
                     or ("text/markdown" in aceita and "text/html" not in aceita)):
+                # ao agente reconhecido pelo User-Agent vai como text/plain: todo leitor abre texto puro
+                tipo = "text/plain; charset=utf-8" if agente and parte != ".md" else "text/markdown; charset=utf-8"
                 with open(caminho, encoding="utf-8") as f:
-                    return self._responde(200, _q_markdown(ident, f.read()), "text/markdown; charset=utf-8",
-                                          {"Cache-Control": "no-cache"})
+                    return self._responde(200, _q_markdown(ident, f.read()), tipo,
+                                          {"Cache-Control": "no-cache", "Vary": "User-Agent, Accept"})
             # o navegador de agente (ChatGPT) só abre URL que apareceu como link numa página lida: o
             # /sql e o .md deste id vão como <a> de verdade e como alternate no <head>
             with open(PAGINA, encoding="utf-8") as f:
@@ -1173,8 +1184,16 @@ class Handler(BaseHTTPRequestHandler):
                      f'Agentes de IA: o SQL desta consulta está em <a href="/q/{ident}/sql">https://db.rodado.xyz/q/{ident}/sql</a>; '
                      f'descrição, SQL e como adaptar em <a href="/q/{ident}.md">https://db.rodado.xyz/q/{ident}.md</a>; '
                      f'o resultado em JSON em <a href="{html.escape(_url_query(sql_q))}">este link</a>.</p>\n')
-            pagina = pagina.replace("</head>", alt + "</head>", 1).replace("<body>\n", "<body>\n" + aviso, 1)
-            return self._responde(200, pagina, "text/html; charset=utf-8", {"Cache-Control": "no-cache"})
+            # leitor sem JavaScript que não reconheci pelo User-Agent: o SQL e o link de resultado no <noscript>
+            desc = _descricao_q(sql_q)
+            sem_js = (f'<noscript><h1>Consulta salva /q/{ident}</h1>' + (f'<p>{html.escape(desc)}</p>' if desc else '')
+                      + f'<pre>{html.escape(sql_q.strip())}</pre>'
+                      + f'<p><a href="{html.escape(_url_query(sql_q))}">Resultado desta consulta (JSON)</a> · '
+                      f'<a href="/q/{ident}.md">em markdown, com como adaptar</a> · <a href="/llm">guia da API</a></p></noscript>\n')
+            pagina = pagina.replace("</head>", alt + "</head>", 1).replace("<body>\n", "<body>\n" + aviso + sem_js, 1)
+            if desc:
+                pagina = pagina.replace("<title>Rodado SQL</title>", f"<title>{html.escape(desc[:90])} · Rodado SQL</title>", 1)
+            return self._responde(200, pagina, "text/html; charset=utf-8", {"Cache-Control": "no-cache", "Vary": "User-Agent, Accept"})
         with open(caminho, encoding="utf-8") as f:
             return self._responde(200, f.read(), extra={"Cache-Control": "no-cache"})
 
