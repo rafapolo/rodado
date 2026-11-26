@@ -543,6 +543,32 @@ def link_q_em_markdown_para_agente():
     assert get(f"/q/{ident}", "text/html,text/markdown;q=0.9,*/*")[1].startswith("text/html")
     assert get(f"/q/{ident}", "*/*")[1].startswith("text/html")
     assert get("/q/naoexiste99", "text/markdown")[0] == 404
+    # a página HTML do link traz o /sql e o .md deste id como link de verdade
+    pagina = get(f"/q/{ident}", "text/html")[2]
+    assert f'href="/q/{ident}/sql"' in pagina and f'href="/q/{ident}.md"' in pagina, pagina[:300]
+    # o link de resultado do markdown executa por GET (o que um navegador de agente consegue fazer)
+    import re as _re, urllib.parse as _up
+    novo(cota_dia=1000)
+    url = _re.search(r"https://db\.rodado\.xyz(/query\?q=\S+)", corpo).group(1)
+    assert _up.unquote(url.split("q=", 1)[1]).startswith("-- linhas pequenas")
+    st, _h, res = pede("", url, ip="10.7.0.1", metodo="GET")
+    assert st == 200 and json.loads(res)["linhas"], res[:200]
+    # HEAD responde (era 501) sem corpo e sem contar clique; /query não aceita HEAD
+    cliques = consulta._meta_q(ident).get("cliques")
+    c = http.client.HTTPConnection("127.0.0.1", PORTA, timeout=60)
+    c.request("HEAD", f"/q/{ident}/sql")
+    r = c.getresponse()
+    assert r.status == 200 and r.read() == b"" and int(r.getheader("Content-Length")) > 0
+    c.close()
+    c = http.client.HTTPConnection("127.0.0.1", PORTA, timeout=60)
+    c.request("HEAD", f"/q/{ident}")
+    assert c.getresponse().status == 200
+    c.close()
+    assert consulta._meta_q(ident).get("cliques") == cliques
+    c = http.client.HTTPConnection("127.0.0.1", PORTA, timeout=60)
+    c.request("HEAD", "/query?q=SELECT+1")
+    assert c.getresponse().status == 405
+    c.close()
 
 
 if __name__ == "__main__":

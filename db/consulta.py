@@ -26,7 +26,7 @@ import unicodedata
 import uuid
 from http.cookies import SimpleCookie
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-from urllib.parse import parse_qs, urlparse
+from urllib.parse import parse_qs, quote, urlparse
 
 import duckdb
 
@@ -119,10 +119,23 @@ def _q_markdown(ident, sql):
               f"A página HTML deste link é um terminal que só executa com JavaScript; aqui vai o SQL.\n\n"
             + f"{cerca}sql\n{sql.strip()}\n{cerca}\n\n"
             + f"- tempo medido no servidor: {tempo}\n"
+            + f"- resultado desta consulta (abrir o link executa, JSON): {_url_query(sql)}\n"
             + f"- SQL puro: https://db.rodado.xyz/q/{ident}/sql\n"
-            + f"- executar: `curl -s https://db.rodado.xyz/q/{ident}/sql | "
-              f"curl --data-binary @- 'https://db.rodado.xyz/query?formato=json'`\n"
-            + "- guia da API (limites, catálogo, formatos): https://db.rodado.xyz/llm\n")
+            + f"- por terminal: `curl -s https://db.rodado.xyz/q/{ident}/sql | "
+              f"curl --data-binary @- 'https://db.rodado.xyz/query?formato=json'`\n\n"
+            + "## Adaptar e perguntar mais\n\n"
+              "Para responder outra pergunta a partir desta (outro ano, outro filtro, outro agrupamento), "
+              "mude o SQL acima e abra `https://db.rodado.xyz/query?q=<SQL codificado para URL>`: o GET "
+              "executa e devolve JSON, sem senha. Um comando por vez, só SELECT, filtre partição "
+              "(`ano`, `sigla_uf`) em tabela grande. Colunas de uma tabela: "
+              "`https://db.rodado.xyz/colunas?t=<dataset>.<tabela>`; ressalvas do dataset: "
+              "`https://db.rodado.xyz/contexto?dataset=<dataset>`; guia completo e limites: "
+              "https://db.rodado.xyz/llm\n")
+
+
+def _url_query(sql):
+    """O link GET que executa o SQL (navegador de agente só faz GET e só abre link que viu)."""
+    return "https://db.rodado.xyz/query?q=" + quote(sql.strip(), safe="")
 
 
 def _mede_q():
@@ -916,7 +929,8 @@ class Handler(BaseHTTPRequestHandler):
         for k, v in (extra or {}).items():
             self.send_header(k, v)
         self.end_headers()
-        self.wfile.write(dados)
+        if self.command != "HEAD":
+            self.wfile.write(dados)
 
     def _erro(self, status, msg, cabecalhos=None, **extra):
         self._responde(status, json.dumps({"erro": rodado_sql.mascara_texto(msg), **{k: v for k, v in extra.items() if v}},
@@ -1135,7 +1149,8 @@ class Handler(BaseHTTPRequestHandler):
         if not os.path.exists(caminho):
             return self._erro(404, "link não encontrado")
         if parte != "/sql":
-            _anota_q(ident, clique=True)
+            if self.command != "HEAD":
+                _anota_q(ident, clique=True)
             # agente que pede markdown (e não HTML), ou ?formato=md: o SQL e como rodá-lo, não o
             # terminal (que só executa com JavaScript). Sem executar aqui: robô que abre link não gasta consulta.
             aceita = self.headers.get("Accept", "")
@@ -1146,8 +1161,20 @@ class Handler(BaseHTTPRequestHandler):
                 with open(caminho, encoding="utf-8") as f:
                     return self._responde(200, _q_markdown(ident, f.read()), "text/markdown; charset=utf-8",
                                           {"Cache-Control": "no-cache"})
-            with open(PAGINA, "rb") as f:
-                return self._responde(200, f.read(), "text/html; charset=utf-8", {"Cache-Control": "no-cache"})
+            # o navegador de agente (ChatGPT) só abre URL que apareceu como link numa página lida: o
+            # /sql e o .md deste id vão como <a> de verdade e como alternate no <head>
+            with open(PAGINA, encoding="utf-8") as f:
+                pagina = f.read()
+            with open(caminho, encoding="utf-8") as f:
+                sql_q = f.read()
+            alt = (f'<link rel="alternate" type="text/markdown" href="/q/{ident}.md" title="esta consulta em markdown">\n'
+                   f'<link rel="alternate" type="text/plain" href="/q/{ident}/sql" title="o SQL desta consulta">\n')
+            aviso = (f'<p style="position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)">'
+                     f'Agentes de IA: o SQL desta consulta está em <a href="/q/{ident}/sql">https://db.rodado.xyz/q/{ident}/sql</a>; '
+                     f'descrição, SQL e como adaptar em <a href="/q/{ident}.md">https://db.rodado.xyz/q/{ident}.md</a>; '
+                     f'o resultado em JSON em <a href="{html.escape(_url_query(sql_q))}">este link</a>.</p>\n')
+            pagina = pagina.replace("</head>", alt + "</head>", 1).replace("<body>\n", "<body>\n" + aviso, 1)
+            return self._responde(200, pagina, "text/html; charset=utf-8", {"Cache-Control": "no-cache"})
         with open(caminho, encoding="utf-8") as f:
             return self._responde(200, f.read(), extra={"Cache-Control": "no-cache"})
 
@@ -1211,6 +1238,13 @@ class Handler(BaseHTTPRequestHandler):
         if not sql.strip():
             return self._responde(200, USO)
         self._executa(sql, params)
+
+    def do_HEAD(self):
+        """HEAD das rotas de leitura (leitores de agente checam antes de abrir; até 2026-11-26 dava 501).
+        /query e /confere executam SQL: sem HEAD."""
+        if urlparse(self.path).path.rstrip("/") in ("/query", "/confere"):
+            return self._erro(405, "use GET ou POST")
+        self.do_GET()
 
     def do_POST(self):
         url = urlparse(self.path)
