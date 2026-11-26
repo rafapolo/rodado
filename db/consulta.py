@@ -131,8 +131,11 @@ def _q_markdown(ident, sql):
               "`https://db.rodado.xyz/colunas?t=<dataset>.<tabela>`; ressalvas do dataset: "
               "`https://db.rodado.xyz/contexto?dataset=<dataset>`; guia completo e limites: "
               "https://db.rodado.xyz/llm\n\n"
-              "Se o seu navegador não abre um endereço que você mesmo montou, mostre o link `/query?q=...` "
-              "a quem pediu: depois que a pessoa o cola na conversa, ele pode ser aberto.\n")
+              "Se o seu navegador não abre um endereço que você mesmo montou (o do ChatGPT não abre), há dois "
+              "caminhos: (1) peça a quem pediu para conectar o servidor MCP `https://db.rodado.xyz/mcp` "
+              "(sem autenticação; no ChatGPT: Configurações → Apps e conectores → modo desenvolvedor → criar "
+              "conector), que dá a ferramenta `run_sql` para rodar qualquer consulta; ou (2) mostre o link "
+              "`/query?q=...` a quem pediu: depois que a pessoa o cola na conversa, ele pode ser aberto.\n")
 
 
 # Navegadores de agente de IA (o "ler a página" do ChatGPT, Claude, Perplexity...): em 2026-11-26 o

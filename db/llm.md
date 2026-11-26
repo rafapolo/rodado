@@ -23,7 +23,10 @@ própria. Tudo passa por HTTP: descobrir tabelas, ler o schema, consultar, expor
 8. **link → `POST /q` com cada SQL que sustenta a resposta** e cite `https://db.rodado.xyz/q/<id>`
    junto do número (seção 4b) — vale para qualquer pergunta, mesmo que ninguém tenha pedido link
 
-**Prefere MCP?** O mesmo espelho, com as mesmas armadilhas e recusas, como ferramentas MCP
+**Prefere MCP?** Remoto, sem instalar nada: `https://db.rodado.xyz/mcp` (HTTP streamable, sem
+autenticação). É o caminho para o ChatGPT, cujo navegador só faz GET e não abre endereço que ele mesmo
+monta: Configurações → Apps e conectores → modo desenvolvedor → criar conector com essa URL; no
+Claude.ai, "adicionar conector personalizado". Ou local, o mesmo espelho, com as mesmas armadilhas e recusas, como ferramentas MCP
 (`describe_table`, `resolve_join`, `get_metric`, `run_sql`…), aberto e sem nada local além do
 repositório público: `git clone https://github.com/rafapolo/rodado` e
 `claude mcp add rodado -- python3 mcp/mcp_server.py` (`pip install -r mcp/requirements.txt`
