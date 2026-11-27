@@ -2,7 +2,7 @@
 
 **Gerado por `scripts/gera_catalog_md.py`, a partir de `_rodado_metadata/catalog.parquet` — não editar à mão.** Descrições vêm de `docs/context/dataset_descriptions.yaml`; a coluna Dado até vem de `docs/context/dataset_freshness.yaml` (curado, só ~6 datasets por enquanto — vazio não significa "sem gap", significa "não conferido ainda"). Editar os YAML e regenerar (`build_metadata_catalog.py` → `gera_catalog_md.py`), nunca este arquivo.
 
-**352 datasets, 2.184 tabelas, 36.005.338.416 linhas.** 34 dataset(s) sem descrição. 13 com data de frescor conferida (de 352).
+**353 datasets, 2.390 tabelas, 37.076.782.050 linhas.** 34 dataset(s) sem descrição. 13 com data de frescor conferida (de 353).
 
 | Dataset | Descrição | Tabelas | Linhas | Dado até | Fonte |
 |---|---|---:|---:|---|---|
@@ -22,7 +22,7 @@
 | `br_anm` | ANM/SIGMINE — processos minerários, CFEM (royalties de mineração) e licenciamento | 22 | 8.380.445 | — | ANM / SIGMINE — títulos minerários e CFEM |
 | `br_anm_barragens` | ANM — barragens de mineração (risco, dano potencial, nível de emergência), manchas de inundação e polígonos de empreendimentos minerários | 8 | 48.447 | — | ANM — barragens de mineração (SIGBM público), manchas de inundação, empreendimentos minerários, jurisdição |
 | `br_anp_combustiveis` | ANP — preços de combustíveis por posto/revenda | 1 | 2.225.643 | — | ANP combustíveis (preços revenda/distribuição) |
-| `br_anp_dados_abertos` | ANP — vendas de combustíveis (1947–2026), royalties e participação especial, incidentes, importação/exportação, refino, biocombustíveis, terminais, gasodutos, tancagem, revendas, multas e fiscalização | 46 | 13.910.472 | — | ANP — dados abertos tabulares: vendas (1947–2026), royalties e participação especial, incidentes, import/export, refino e derivados, biocombustíveis, terminais aquaviários, gasodutos, comercialização de gás, tancagem, cadastros de revendas, multas, fiscalização |
+| `br_anp_dados_abertos` | ANP — vendas de combustíveis (1947–2026), royalties e participação especial, incidentes, importação/exportação, refino, biocombustíveis, terminais, gasodutos, tancagem, revendas, multas e fiscalização | 47 | 13.911.165 | — | ANP — distribuição da participação especial por pagamento e beneficiário (União, estados, municípios), 2025 em diante |
 | `br_anp_geo` | ANP — geoserviços de exploração e produção: plataformas offshore, poços, campos, blocos de todas as rodadas, dutos, sísmica, refinarias, terminais, usinas, postos e batimetria | 207 | 419.971 | — | ANP — geoserviços (exploração e produção, abastecimento, infraestrutura): unidades de produção offshore, poços, campos, blocos de todas as rodadas, dutos, sísmica, refinarias, terminais GNL, usinas, postos, batimetria |
 | `br_anp_precos_combustiveis` | ANP — preços de combustíveis pesquisados (via Base dos Dados) | 1 | 16.887.683 | — | Base dos Dados |
 | `br_anp_producao` | ANP — produção de petróleo e gás por poço (mensal, 2005–2023) e por estado (1997–2026) | 8 | 2.309.989 | — | ANP — produção de petróleo e gás por poço (mensal) e por estado |
@@ -59,6 +59,7 @@
 | `br_caixa_sorteios` | Caixa Econômica — resultados da Mega-Sena | 1 | 18.540 | — | SIDRA/IBGE (IPCA, IPCA-15, INPC, IPP, população, PAM, PEVS) e Loterias Caixa (Mega-Sena) |
 | `br_camara_dados_abertos` | Câmara dos Deputados — deputados, votações, despesas, licitações internas | 30 | 15.057.224 | — | Base dos Dados |
 | `br_capes_bolsas` | CAPES — bolsas de mobilidade acadêmica internacional | 1 | 146.036 | — | Base dos Dados |
+| `br_ccee_dadosabertos` | CCEE — dados abertos do mercado de energia: PLD (horário desde 2021), geração e consumo por usina, perfil e submercado, contratos, leilões, garantia física, CVU, CCC dos sistemas isolados e encargos (205 tabelas) | 205 | 1.071.442.941 | — | CCEE — dados abertos, todos os pacotes do CKAN |
 | `br_ce_fortaleza_sefin_iptu` | Prefeitura de Fortaleza — cadastro de IPTU por face de quadra | 1 | 68.932 | — | Base dos Dados |
 | `br_cgu_beneficios_cidadao` | CGU — benefícios sociais federais (Bolsa Família, Auxílio Emergencial, BPC etc.) | 6 | 3.411.074.270 | — | Base dos Dados |
 | `br_cgu_cartao_pagamento` | CGU — gastos com cartão de pagamento do governo federal | 4 | 3.342.432 | — | Base dos Dados |

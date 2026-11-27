@@ -9,7 +9,7 @@ conferimos a fonte (esse registro não existe).
 o arquivo em disco é ~1% maior (rodapé e índices), e muito mais em dataset minúsculo.
 `0 B` = só view ou tabela nativa do `.duckdb`, sem parquet.
 
-351 datasets, 2183 tabelas.
+352 datasets, 2389 tabelas.
 
 | dataset | tabelas | tamanho | linhas | updated_at |
 |---|---:|---:|---:|---|
@@ -28,7 +28,7 @@ o arquivo em disco é ~1% maior (rodapé e índices), e muito mais em dataset mi
 | `br_anm` | 22 | 380,8 MB | 8.380.445 | 2026-10-21 |
 | `br_anm_barragens` | 8 | 241,7 MB | 48.447 | 2026-11-27 |
 | `br_anp_combustiveis` | 1 | 29,5 MB | 2.225.643 | 2026-11-23 |
-| `br_anp_dados_abertos` | 46 | 50,2 MB | 13.910.472 | 2026-11-27 |
+| `br_anp_dados_abertos` | 47 | 50,3 MB | 13.911.165 | 2026-11-27 |
 | `br_anp_geo` | 207 | 311,5 MB | 419.971 | 2026-11-27 |
 | `br_anp_precos_combustiveis` | 1 | 427,9 MB | 16.887.683 | 2026-10-09 |
 | `br_anp_producao` | 8 | 51,8 MB | 2.309.989 | 2026-11-27 |
@@ -65,6 +65,7 @@ o arquivo em disco é ~1% maior (rodapé e índices), e muito mais em dataset mi
 | `br_caixa_sorteios` | 1 | 37,1 KB | 18.540 | 2026-11-25 |
 | `br_camara_dados_abertos` | 30 | 297,3 MB | 15.057.224 | 2026-11-20 |
 | `br_capes_bolsas` | 1 | 4,0 MB | 146.036 | 2026-10-07 |
+| `br_ccee_dadosabertos` | 205 | 15,9 GB | 1.071.442.941 | 2026-11-27 |
 | `br_ce_fortaleza_sefin_iptu` | 1 | 1,6 MB | 68.932 | 2026-07-05 |
 | `br_cgu_beneficios_cidadao` | 6 | 15,7 GB | 3.411.074.270 | 2026-11-20 |
 | `br_cgu_cartao_pagamento` | 4 | 45,5 MB | 3.342.432 | 2026-11-20 |

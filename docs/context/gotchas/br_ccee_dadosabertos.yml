@@ -1,0 +1,38 @@
+dataset: br_ccee_dadosabertos
+gotchas:
+  - id: akamai_recusa_impressao_tls
+    resumo: "dadosabertos.ccee.org.br e pda-download.ccee.org.br estão atrás do Akamai, que devolve 403 'Acesso bloqueado' para a impressão TLS de curl, requests e urllib, de qualquer IP (Mac, beelink, finland e 1.079 proxies proxifly: todos 403). Passa com curl_cffi imitando navegador (impersonate='chrome'), sem proxy. Sem Accept-Encoding: identity a transferência vem comprimida e o Content-Length não é o tamanho do arquivo."
+    tabelas: ['*']
+    colunas: []
+    severidade: barulhento
+    verificado: "2026-11-27: do finland, curl 403 e curl_cffi 200 no mesmo IP; do beelink, curl_cffi 200; pld_final_historico baixado (11 KB, 264 linhas)"
+  - id: pld_horario_antes_de_2021_e_semanal
+    resumo: "pld_horario só é horário desde jan/2021. De 2001 a 2020 o PLD era semanal por patamar e a tabela repete cada linha 3 vezes (uma por patamar, sem coluna de patamar): 624 linhas por ano, 208 distintas. Use DISTINCT antes de 2021, ou pld_media_mensal."
+    tabelas: [pld_horario]
+    colunas: [MES_REFERENCIA, SUBMERCADO, DIA, HORA, PLD_HORA]
+    severidade: silencioso
+    verificado: "2026-11-27: 2001-2020 n = 3 × distintos (2019: 624 / 208); 2021 em diante 35.040 = 35.040 (8.760 horas × 4 submercados)"
+  - id: cvu_conjuntural_cabecalho_com_e_sem_cedilha
+    resumo: "custo_variavel_unitario_conjuntural mistura arquivos com CODIGO_MODELO_PREÇO e CODIGO_MODELO_PRECO no cabeçalho: a união por nome dá duas colunas, cada uma nula onde a outra existe. Use coalesce(CODIGO_MODELO_PRECO, \"CODIGO_MODELO_PREÇO\")."
+    tabelas: [custo_variavel_unitario_conjuntural]
+    colunas: [CODIGO_MODELO_PRECO, "CODIGO_MODELO_PREÇO"]
+    severidade: silencioso
+    verificado: "2026-11-27: 911 linhas com PRECO e 573 com PREÇO, 1.484 no total"
+  - id: versoes_e_sandbox
+    resumo: "Quatro pacotes vêm em duas versões (ccc_ctg_beneficiario/_v1, ccc_ctg_sigfi/_v1, geracao_uhe/_v2, lista_perfil/_v1); às vezes a nova continua a série (geracao_uhe 2000-2012, _v2 2012-2026), às vezes a substitui. Cinco rd_disp_*_sandbox são, pelo nome, dados de teste da CCEE. Conferir a cobertura de cada par antes de unir."
+    tabelas: [ccc_ctg_beneficiario, ccc_ctg_beneficiario_v1, ccc_ctg_sigfi, ccc_ctg_sigfi_v1, geracao_uhe, geracao_uhe_v2, lista_perfil, lista_perfil_v1]
+    colunas: []
+    severidade: silencioso
+    verificado: "2026-11-27: 205 pacotes no CKAN"
+  - id: mes_referencia_inteiro_e_texto_cp1252
+    resumo: "MES_REFERENCIA (e COMPETENCIA, MES_CAIXA) é inteiro AAAAMM, não data. Data vem dd/mm/aaaa na fonte e já sai DATE. Parte dos CSVs é cp1252 (com o travessão 0x96) e 8 usam vírgula em vez de ponto e vírgula; o raspador converte, mas uma recoleta à mão precisa dos dois cuidados."
+    tabelas: ['*']
+    colunas: [MES_REFERENCIA, COMPETENCIA]
+    severidade: silencioso
+    verificado: "2026-11-27: lista_perfil_v1 cp1252; custo_variavel_unitario_*, desligamento_*, mve_* com vírgula"
+  - id: custo_ccc_por_mwh
+    resumo: "ccc_ctg_usina traz, por usina e mês, GERACAO em MWh e CTG (custo total de geração, R$); CTG / GERACAO dá R$/MWh. Usinas sem geração no mês vêm com tudo zero: filtre GERACAO > 0 antes de dividir. SISTEMA separa 'isolado' de 'interligado'."
+    tabelas: [ccc_ctg_usina]
+    colunas: [COMPETENCIA, CEG, SISTEMA, GERACAO, CTG]
+    severidade: silencioso
+    verificado: "2026-11-27: out/2025-set/2026, diesel isolado 166 usinas, 2,43 TWh, R$ 5,50 bi, R$ 2.263/MWh"
