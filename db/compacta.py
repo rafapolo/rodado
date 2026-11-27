@@ -4,7 +4,7 @@
 O beelink grava em zstd 3 a 9 (escrever rápido importa lá, e o disco sobra). O db.rodado.xyz
 paga cada byte que baixa do bucket, então a cópia do bucket (e a do SSD) vai no nível 19:
 ~20% menos no espelho, leitura igual (medido em 2026-10-22, ver
-tasks/plans/normalizar_e_reordenar.md). O nível 22 dá o mesmo tamanho que o 19 no DuckDB.
+tasks/done/normalizar_e_reordenar.md). O nível 22 dá o mesmo tamanho que o 19 no DuckDB.
 
 Para cada objeto: baixa, regrava (mesma ordem de linhas), confere linhas + soma de hash de
 todas as linhas + tipos das colunas, confere que o objeto não mudou no bucket enquanto isso,
@@ -121,7 +121,20 @@ def fila(objs, m):
 def impressao(con, arq):
     lit = "'" + arq.replace("'", "''") + "'"
     tipos = con.execute(f"SELECT column_name, column_type FROM (DESCRIBE SELECT * FROM read_parquet({lit}, hive_partitioning=false))").fetchall()
-    n, h = con.execute(f"SELECT count(*), sum(hash(t))::HUGEINT FROM read_parquet({lit}, hive_partitioning=false) t").fetchone()
+    # hash da linha inteira com geometria/BLOB/aninhados convertidos (mesma regra de scripts/sync/confere_hash.py;
+    # o hash(t) cru deixou passar 1 linha trocada no beelink em 2026-11-10); em blocos de 200 colunas
+    def ex(n, t):
+        t = t.upper()
+        q = '"' + n.replace('"', '""') + '"'
+        if t.startswith("GEOMETRY"):
+            return f"{q}::BLOB"
+        if t.startswith(("STRUCT", "MAP", "UNION")) or t.endswith("]"):
+            return f"CAST({q} AS VARCHAR)"
+        return q
+    es = [ex(n, t) for n, t in tipos]
+    hl = "hash(" + ", ".join("hash(" + ", ".join(es[i:i + 200]) + ")" for i in range(0, len(es), 200)) + ")" if len(es) > 200 \
+        else "hash(" + ", ".join(es) + ")"
+    n, h = con.execute(f"SELECT count(*), sum({hl}::HUGEINT) FROM read_parquet({lit}, hive_partitioning=false) t").fetchone()
     return tipos, n, h
 
 

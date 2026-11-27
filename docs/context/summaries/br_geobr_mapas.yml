@@ -1,7 +1,7 @@
 # Cartão das tabelas: o que é uma linha, o que se soma e para que serve. Rascunho gerado por
 # agente e conferido por medição no beelink; os campos `rascunho` não foram medidos.
 # Todas as tabelas têm coluna `geometria` (GEOMETRY, lon/lat em graus) e nenhuma medida somável,
-# salvo onde dito. Gotchas medidos: limite_vizinhanca_sao_bairros, bioma_2019_sem_amazonia, semiarido_por_municipio.
+# salvo onde dito. Gotchas medidos: limite_vizinhanca_sao_bairros, bioma_2019_amazonia_reposta, pegada_urbana_e_2015_so_concentracoes, semiarido_por_municipio.
 dataset: br_geobr_mapas
 tabelas:
   pais:
@@ -91,7 +91,7 @@ tabelas:
     chave: "(ano, id_bioma)"
     tempo: {natureza: serie_de_periodos, coluna: ano, cobertura: "2004–2019"}
     territorio: {nivel: outro, colunas: {id_bioma: "2004: 'AMZ','CAAT','CER','MAT','PMP','PTN' mais 4 massas d'água ('000Magua'..'003Magua'); 2019: '1.0'..'6.0'; um NULL (Sistema Costeiro)", nome_bioma: "nome"}}
-    filtros_tipicos: ["ano = 2004: 10 linhas (6 biomas + 4 massas d'água) com geometria; ano = 2019: 7 linhas e a Amazônia vem com geometria NULL (gotcha bioma_2019_sem_amazonia)", "id_bioma tem códigos diferentes por ano ('AMZ' em 2004, '1.0' em 2019): junte por nome_bioma"]
+    filtros_tipicos: ["ano = 2004: 10 linhas (6 biomas + 4 massas d'água) com geometria; ano = 2019: 7 linhas, todas com geometria (a Amazônia foi reposta do IBGE em 2026-11-23, gotcha bioma_2019_amazonia_reposta)", "id_bioma tem códigos diferentes por ano ('AMZ' em 2004, '1.0' em 2019): junte por nome_bioma"]
     use_para: "contornos de biomas."
     nao_use_para: "junção por id_bioma entre 2004 e 2019: os códigos diferem."
     rascunho: [use_para, nao_use_para]
@@ -192,7 +192,7 @@ tabelas:
     rascunho: [use_para, nao_use_para]
     verificado: "14832 linhas; neighborhood 14482 (14373 ids distintos, 93 ids repetidos), subdistrict 254 e district 96 sem id_vizinhanca — medido 2026-10-27"
   pegada_urbana:
-    grao: "um polígono da pegada urbana (área urbanizada, vazio ou equipamento) de um município"
+    grao: "um polígono da pegada urbana (área urbanizada, vazio ou equipamento) de um município; edição 2015, só concentrações urbanas de 100 mil habitantes ou mais (gotcha pegada_urbana_e_2015_so_concentracoes)"
     chave: "nenhuma: id_pegada_urbana é nulo em 26,7% (3662 linhas) e tem 10050 valores não nulos para 10042 distintos"
     tempo: {natureza: sem_tempo}
     territorio: {nivel: municipio, colunas: {id_municipio: "município (193 distintos)"}}

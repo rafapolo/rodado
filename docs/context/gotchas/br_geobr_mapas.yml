@@ -6,12 +6,18 @@ gotchas:
     colunas: [geometria]
     severidade: aviso
     verificado: "14.832 linhas com id_vizinhanca e nome_vizinhanca — medido 2026-10-22 (bragro)"
-  - id: bioma_2019_sem_amazonia
-    resumo: "bioma traz 2004 e 2019; em 2019 a Amazônia vem com geometria NULL. Use a de 2004."
+  - id: bioma_2019_amazonia_reposta
+    resumo: "bioma traz 2004 (IBGE 1:5.000.000, com massas d'água) e 2019 (IBGE 1:250.000, mais o Sistema Costeiro). Até 2026-11-23 a Amazônia de 2019 vinha com geometria NULL da Base dos Dados; foi reposta com o polígono do Biomas_250mil.zip do IBGE. As duas edições têm escalas e recortes diferentes: não compare área entre 2004 e 2019."
     tabelas: [bioma]
     colunas: [geometria, ano]
+    severidade: aviso
+    verificado: "Biomas_250mil.zip (geoftp IBGE): Caatinga, Cerrado, Mata Atlântica, Pampa e Pantanal batem com o espelho em ST_NPoints e ST_Area; Amazônia 2019 reposta com 344.211 pontos, área 344,75 graus², ST_IsValid true — corrigido 2026-11-23"
+  - id: pegada_urbana_e_2015_so_concentracoes
+    resumo: "pegada_urbana é a edição 2015 das Áreas Urbanizadas do IBGE, que cobre só as concentrações urbanas com 100 mil habitantes ou mais (mais Boa Vista e Palmas): 193 municípios, não o Brasil. Não é tabela incompleta. As edições 2019 e 2022 cobrem o país inteiro e não estão no espelho."
+    tabelas: [pegada_urbana]
+    colunas: [id_municipio]
     severidade: silencioso
-    verificado: "2019, Amazônia: ST_NPoints NULL — medido 2026-10-22 (bragro)"
+    verificado: "13.712 linhas, 193 municípios; escopo pelo 01_LEIA_ME.txt de areas_urbanizadas_do_brasil/2015 no geoftp do IBGE — conferido 2026-11-23"
   - id: semiarido_por_municipio
     resumo: "semiarido são os 1.262 municípios, um polígono cada: a união deixa frestas (furos) entre vizinhos; um buffer de ida e volta (0,003°) fecha."
     tabelas: [semiarido]

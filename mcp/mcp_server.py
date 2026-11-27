@@ -218,7 +218,7 @@ with open(DICIONARIO_COVERAGE_PATH, encoding="utf-8") as f:
 # código (baixa cardinalidade) mas não têm fonte de significado conhecida em
 # nenhum mecanismo acima — nem dicionario, nem bridges.yaml, nem
 # hierarchies.yaml. Generaliza o alerta manual que
-# tasks/plans/harness_tasks.md B9 escreveu à mão pra
+# tasks/done/harness_tasks.md B9 escreveu à mão pra
 # br_ms_sim.circunstancia_obito (subcontava suicídio, 749 contra 789 reais,
 # sem nenhum mecanismo avisando) num aviso que soa pra qualquer tabela.
 _NAO_VERIFICADO_BY_TABLE: dict = {}
@@ -296,7 +296,7 @@ def _gotchas_for(dataset: str, table_name: str) -> list[dict]:
     return out
 
 
-# tasks/plans/cartao_tabela.md: o cartão de cada tabela (grão, chave, tempo,
+# tasks/done/cartao_tabela.md: o cartão de cada tabela (grão, chave, tempo,
 # medidas, filtros, use/não use para) levou o Haiku de 21/27 a 27/27; o perfil
 # gerado (nulos, distintos, min/max, top) acerta o literal do filtro. Lidos sob
 # demanda, um dataset por vez: os perfis somam 11 MB de YAML.
@@ -1129,7 +1129,7 @@ def describe_table(table: str) -> dict:
                 "file": f"docs/context/gotchas/{dataset}.yml",
             }
     # o cartão diz o que é uma linha e como somar; sem ele o modelo escolhe a coluna
-    # plausível em vez da certa (tasks/plans/cartao_tabela.md)
+    # plausível em vez da certa (tasks/done/cartao_tabela.md)
     cartao = _cartao_for(dataset, table_name)
     if cartao:
         result["cartao"] = cartao

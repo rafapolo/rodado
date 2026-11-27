@@ -277,7 +277,7 @@ def _confere_arvore(con, sql: str) -> None:
 # pode trocar de nome para um sem "cpf" (alias, CTE com colunas, `* RENAME`, UNION por posição,
 # UNPIVOT), senão a transformação viria um nível acima com outro nome. Colunas mistas
 # (`cpf_cnpj`) entram também: 8 dígitos de um CPF somados ao miolo que a máscara mostra o
-# remontam. O que segue aberto está em tasks/plans/limites_abuso_db.md.
+# remontam. O que segue aberto está em tasks/done/limites_abuso_db.md.
 
 _NOME_CPF = re.compile(r"cpf", re.I)
 # o valor sai igual (a máscara da saída o pega)

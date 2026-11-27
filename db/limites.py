@@ -1,4 +1,4 @@
-"""Limites contra raspagem do /query (plano em tasks/plans/limites_abuso_db.md).
+"""Limites contra raspagem do /query (plano em tasks/done/limites_abuso_db.md).
 
 Sem dependência de DuckDB nem de rede, para testar sozinho (`python3 db/testes/limites.py`).
 Peças, todas configuráveis por variável de ambiente (valores em `Config.do_ambiente`):

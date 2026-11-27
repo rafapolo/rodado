@@ -487,7 +487,7 @@ LIMITE_PADRAO = 10_000
 LIMITE_MAXIMO = 10_000
 N_SIMULTANEAS = int(os.environ.get("RODADO_SIMULTANEAS", "4"))
 SIMULTANEAS = threading.BoundedSemaphore(N_SIMULTANEAS)
-# Limites contra raspagem (limites.py, plano tasks/plans/limites_abuso_db.md). Cada um se desliga
+# Limites contra raspagem (limites.py, plano tasks/done/limites_abuso_db.md). Cada um se desliga
 # com 0 na variável de ambiente; os padrões são os do plano.
 CFG = limites.Config.do_ambiente()
 LIMITES = limites.Limites(CFG)

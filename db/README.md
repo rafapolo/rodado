@@ -124,7 +124,7 @@ se vier) e os links `/q`. A resposta traz um aviso quando o anônimo cita um CPF
 
 ## Limites contra raspagem
 
-Plano em `tasks/plans/limites_abuso_db.md`. O dado é público na origem: o objetivo é deixar a
+Plano em `tasks/done/limites_abuso_db.md`. O dado é público na origem: o objetivo é deixar a
 raspagem em massa **lenta, cara e atribuível**, sem atrapalhar quem agrega no servidor. Tudo
 em `limites.py` (sem dependência de DuckDB), ligado em `consulta.py`; cada limite se muda por
 variável de ambiente (descomentar no `haloy.yml`) e `0` o desliga.
@@ -160,7 +160,7 @@ cabe nos limites padrão (teste `exporta_do_terminal_segue_funcionando_com_os_pa
 árvore do parser e recusa transformar ou renomear coluna com "cpf" no nome no que a consulta
 devolve (filtrar, juntar, agrupar e contar seguem livres); vale para o terminal, o `/query` e o
 MCP. Teste: `python3 db/testes/cpf_saida.py`. O que segue aberto fica fora do git
-(`tasks/plans/limites_abuso_db.md`).
+(`tasks/done/limites_abuso_db.md`).
 
 **O que a recusa de tabela grande não pega** (só o comando de cima, de uma tabela, sem filtro):
 `WITH x AS (SELECT * FROM grande) SELECT * FROM x`, `row_number()` como paginação e `WHERE id > n`
