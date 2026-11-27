@@ -1,0 +1,56 @@
+dataset: br_anp_dados_abertos
+gotchas:
+  - id: vendas_municipio_em_litros
+    resumo: "vendas_municipio_anual está em litros (líquidos) e kg (GLP), não em m³ como diz o metadado da ANP: a soma por produto é exatamente 1.000x a série mensal nacional em m³."
+    tabelas: [vendas_municipio_anual, vendas_combustiveis_mensal]
+    colunas: [vendas_litros, vendas_kg, vendas_p13_kg, vendas_outros_kg]
+    severidade: silencioso
+    verificado: "razão 1000 em 1990, 1991, 1992, 1995, 2005, 2015 e 2024 — medido 2026-11-27"
+  - id: royalties_uniao_e_distribuicao
+    resumo: "royalties_uniao é a distribuição por destino e já inclui linhas 'estados' e 'municípios': não some com royalties_estados e royalties_municipios, senão conta duas vezes."
+    detalhe: >
+      Em royalties_municipios a coluna estado é a sigla da UF; nas outras tabelas de royalties
+      é o nome por extenso.
+    tabelas: [royalties_uniao, royalties_estados, royalties_municipios]
+    colunas: [destino, estado]
+    severidade: silencioso
+    verificado: "coluna destino com estados/municípios/fundo social — 2026-11-27"
+  - id: royalties_municipio_nome_duplo
+    resumo: "royalties_municipios grafa o mesmo município de dois jeitos em anos diferentes ('marica' e 'marica-rj'): agrupe por regexp_replace(municipio, '-[a-z]{2}$', '') + estado, senão Maricá aparece duas vezes e o total por cidade sai partido."
+    tabelas: [royalties_municipios]
+    colunas: [municipio, estado]
+    severidade: silencioso
+    verificado: "2025 (caixa): 995 municípios depois de normalizar; sem normalizar, nomes em dobro — medido 2026-11-27"
+  - id: participacao_especial_parou_2024
+    resumo: "participacao_especial_* para em 2024-09 (o CSV dos dados abertos não foi atualizado); a ANP segue publicando a PE por trimestre em planilhas de distribuição na página de participação especial. Para 2025, a PE paga somou R$ 33,2 bi (União 16,6, estados 13,3, municípios 3,3)."
+    detalhe: >
+      Royalties e PE se comparam pelo mês de caixa (pagamento), não pela competência: o royalty
+      é pago dois meses depois e a PE do trimestre no segundo mês seguinte. Somar por ano de
+      competência deixa 2025 com 10 meses de royalties.
+    tabelas: [participacao_especial_uniao, participacao_especial_estado, participacao_especial_municipio, royalties_uniao]
+    colunas: [competencia, caixa]
+    severidade: aviso
+    verificado: "40 planilhas de distribuição pagas em 2025 somam R$ 33,18 bi; royalties por caixa 2025 = R$ 62,16 bi, 12 meses — medido 2026-11-27"
+  - id: gasodutos_variavel_mistura_unidades
+    resumo: "movimentacao_gas_gasodutos (10,8 M linhas) é formato longo: a coluna variavel mistura grandezas e unidades e muda de rótulo entre anos ('Volume Realizado' x 'Volume Realizado (mil m³)'). Filtre uma variável antes de somar."
+    tabelas: [movimentacao_gas_gasodutos]
+    colunas: [variavel]
+    severidade: silencioso
+    verificado: "rótulos distintos entre 2021 e 2026 — 2026-11-27"
+  - id: incidentes_datas_fora
+    resumo: "incidentes.data_estimada_do_incidente tem datas de 1900 e de 2026-11: o ano tem outliers. Corte a série no intervalo plausível e diga quantos ficaram de fora."
+    tabelas: [incidentes]
+    colunas: [data_estimada_do_incidente, ano]
+    severidade: aviso
+    verificado: "mín 1900, máx 2026-11 — 2026-11-27"
+  - id: multas_texto_perdido
+    resumo: "multas_aplicadas de 2023 e 2025 vêm da fonte com caractere de substituição (U+FFFD) no lugar dos acentos: busca por razão social com acento falha nesses anos; case por CNPJ."
+    tabelas: [multas_aplicadas]
+    severidade: aviso
+    verificado: "U+FFFD gravado na fonte — 2026-11-27"
+  - id: fiscalizacao_cpf
+    resumo: "acoes_fiscalizacao.cnpj_cpf traz CPF de pessoas físicas fiscalizadas, como na fonte pública. Não exponha CPF em página publicada."
+    tabelas: [acoes_fiscalizacao]
+    colunas: [cnpj_cpf]
+    severidade: aviso
+    verificado: "CPF presente na fonte — 2026-11-27"

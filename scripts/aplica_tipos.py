@@ -28,6 +28,8 @@ APLICAR = "docs/context/tipos_aplicar.json"
 REMOTO = r'''
 import duckdb, glob, json, os, re, sys, time
 H = os.path.expanduser("~")
+sys.path.insert(0, f"{H}/scripts")
+from confere_hash import confere   # hash da linha inteira das colunas que NÃO mudam de tipo
 R = f"{H}/rodado"
 DATA = os.environ["DATA"]
 BACKUP = f"{H}/.backups/tipos-{DATA}"
@@ -135,6 +137,11 @@ for tabela, cols in sorted(por_tabela.items()):
             errado = [c for c, t, _ in aqui if tipos_novos.get(c) != t]
             if n_old != n_new or dif or perda or errado:
                 raise RuntimeError(f"{rel}: linhas {n_old}->{n_new}, diferencas {dif}, perdas {perda}, tipo {errado}")
+            # as colunas que não mudam (geometria, BLOB, aninhados...) não passam pelo IS DISTINCT FROM acima:
+            # contagem + soma de hash da linha inteira delas, original x novo (beelink errou 1 linha em COPY grande)
+            ok_h, msg_h = confere(a, novo, exclui=[c for c, _, _ in aqui], sem_tipos=True, tentativas=2)
+            if not ok_h:
+                raise RuntimeError(f"{rel}: colunas intactas divergem: {msg_h}")
             trocas.append((a, novo, rel))
         # 4. backup por hardlink + rename atômico
         for a, novo, rel in trocas:

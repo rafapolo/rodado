@@ -38,18 +38,18 @@ PAD = 78
 
 VARIANTS = {
     "og.png": {
-        "eyebrow": "1.789 TABELAS · 299 DATASETS · 155 FONTES · 508 GB",
+        "eyebrow": "2.184 TABELAS · 352 DATASETS · 155 FONTES · 510 GB",
         "head": ["Brasil em dados,", "retratos dos números oficiais"],
         "dek": "Vínculos de emprego, óbitos, contratos públicos, resultados\neleitorais — cruzados por raça, classe, gênero e território.",
     },
     "og-en.png": {
-        "eyebrow": "1,789 TABLES · 299 DATASETS · 155 SOURCES · 508 GB",
+        "eyebrow": "2,184 TABLES · 352 DATASETS · 155 SOURCES · 510 GB",
         "head": ["Brazil in data,", "portraits of the official numbers"],
         "dek": "Employment records, deaths, public contracts, election results —\ncross-referenced by race, class, gender and territory.",
     },
     # o cartão de /atlas/ (scripts/build_atlas.py aponta para ele)
     "og-atlas.png": {
-        "eyebrow": "ATLAS · 1.789 TABELAS · 299 DATASETS",
+        "eyebrow": "ATLAS · 2.184 TABELAS · 352 DATASETS",
         "head": ["O mapa das tabelas", "e das chaves que as ligam"],
         "dek": "Cada tabela do espelho é um nó; cada coluna de join, uma aresta.\nBusque um dataset e veja com o que ele cruza.",
     },
@@ -281,7 +281,7 @@ def gera_analises(raiz: Path) -> int:
 # Repete a abertura do terminal.py: o logo ASCII em degradê mauve -> pêssego sobre o
 # fundo radial do index.html (--fundo-terminal), com a moldura lavanda da página.
 
-DB_RESUMO = [("1.789", "tabelas"), ("299", "datasets"), ("508 GB", "de dados"), ("155", "fontes")]
+DB_RESUMO = [("2.184", "tabelas"), ("352", "datasets"), ("510 GB", "de dados"), ("155", "fontes")]
 JETBRAINS = str(Path.home() / "Library/Fonts/JetBrainsMono-Regular.ttf")
 JETBRAINS_BOLD = str(Path.home() / "Library/Fonts/JetBrainsMono-Bold.ttf")
 DB_CENTRO, DB_BORDA = (33, 33, 52), (24, 24, 37)        # #222237ab sobre o --base #1e1e2e -> #181825

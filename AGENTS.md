@@ -4,7 +4,7 @@ Guia para agentes (Claude Code, Pi e outros) neste repositório. Detalhes, hist�
 
 ## O que é
 
-Espelho de tabelas públicas brasileiras (Base dos Dados + fontes raspadas) em Parquet+zstd no beelink, `~/rodado/<dataset>/<tabela>/*.parquet`, consultado por DuckDB sob demanda. 1.789 tabelas · 299 datasets · 508 GB · 35,5 bilhões de linhas (2026-11-23). Procedência de cada fonte raspada: `tasks/done/datasets_to_scrap_done.md`.
+Espelho de tabelas públicas brasileiras (Base dos Dados + fontes raspadas) em Parquet+zstd no beelink, `~/rodado/<dataset>/<tabela>/*.parquet`, consultado por DuckDB sob demanda. 2.184 tabelas · 352 datasets · 510 GB · 36,0 bilhões de linhas (2026-11-27). Procedência de cada fonte raspada: `tasks/done/datasets_to_scrap_done.md`.
 
 ## Consultar
 

@@ -1,0 +1,37 @@
+dataset: br_anm_barragens
+gotchas:
+  - id: nivel_emergencia_menos_um
+    resumo: "id_nivel_emergencial = -1 é 'sem nível' (834 barragens), não um nível. Em emergência são 65 (≥ 1: 59 no nível 1, 5 no 2, 1 no 3); nível 0 tem 9."
+    tabelas: [barragens]
+    colunas: [id_nivel_emergencial, ds_motivo_nivel_emergencial]
+    severidade: silencioso
+    verificado: "908 barragens: -1=834, 0=9, 1=59, 2=5, 3=1 — medido 2026-11-27"
+  - id: manchas_varias_por_barragem
+    resumo: "manchas_inundacao tem 1.465 polígonos de 788 barragens: uma barragem tem várias manchas (zona ZAS/ZSS, cenário de falha). Somar área por linha conta a sobreposição."
+    detalhe: >
+      zona vem suja: ZAS (1.089), ZSS (334), 'zas' minúsculo (3), MI, ENV, ZAZ e 33 nulos.
+      modelo_falha tem dezenas de grafias da mesma coisa ('Galgamento', 'Galganento'...).
+      Para a área atingida por barragem, una (ST_Union) as manchas da mesma id_barragem.
+      Todas as 788 id_barragem existem em barragens.
+    tabelas: [manchas_inundacao]
+    colunas: [id_barragem, zona, modelo_falha, qt_area_m]
+    severidade: silencioso
+    verificado: "1.465 linhas, 788 id_barragem distintos, todos em barragens — medido 2026-11-27"
+  - id: id_barragem_empreendimentos
+    resumo: "empreendimentos_barragem.id_barragem não é o mesmo identificador de barragens: só 34% casam. Não junte as duas por essa coluna sem conferir."
+    tabelas: [empreendimentos_barragem, barragens]
+    colunas: [id_barragem]
+    severidade: silencioso
+    verificado: "34% dos id_barragem de empreendimentos_barragem existem em barragens — medido 2026-11-27"
+  - id: sem_codigo_municipio
+    resumo: "Nenhuma tabela tem código IBGE do município, só nome e UF. Para juntar com outras bases, case por nome+UF normalizado ou por ponto-no-polígono com br_geobr_mapas.municipio."
+    tabelas: [barragens, empreendimentos_mina]
+    colunas: [nm_municipio, sg_estado, sg_uf]
+    severidade: aviso
+    verificado: "conferido nas 8 tabelas — 2026-11-27"
+  - id: unidades_nao_declaradas
+    resumo: "nr_altura_maxima_atual, nr_volume_atual_reservatorio e area_tot vêm sem unidade declarada na fonte (provável m, m³ e ha); confira a ordem de grandeza com uma barragem conhecida antes de somar."
+    tabelas: [barragens, empreendimentos_mina]
+    colunas: [nr_altura_maxima_atual, nr_volume_atual_reservatorio, area_tot]
+    severidade: aviso
+    verificado: "fonte não declara unidade — 2026-11-27"

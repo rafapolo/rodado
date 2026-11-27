@@ -1,0 +1,27 @@
+dataset: br_aneel_sigel
+gotchas:
+  - id: ute_ufv_usar_todas
+    resumo: "Para térmicas e solares use usinas_ute_todas (3.709) e usinas_ufv_todas (23.595): usinas_ute e usinas_ufv têm só um recorte (733 e 591 em operação contra 3.068 e 17.043)."
+    tabelas: [usinas_ute, usinas_ute_todas, usinas_ufv, usinas_ufv_todas]
+    severidade: silencioso
+    verificado: "em operação: UTE 733 x 3.068, UFV 591 x 17.043 — medido 2026-11-27"
+  - id: ceg_formatos
+    resumo: "ceg do SIGEL ('UFVRSBA032318-7-01') e CodCEG do SIGA ('PCH.PH.MG.000008-6.1') têm formatos diferentes: tire tudo que não é letra/dígito e compare os 14 primeiros. Casa ~93–99% das usinas em operação por fonte."
+    detalhe: >
+      Casamento em operação: CGH 716/771, EOL 1.128/1.137, PCH 431/433, UFV 579/591, UHE 215/218,
+      UTE 712/733. Há ceg repetido e nulo (CGH: 1.170 linhas, 961 ceg distintos).
+    tabelas: [usinas_cgh, usinas_pch, usinas_uhe, usinas_eol, usinas_ufv, usinas_ute]
+    colunas: [ceg]
+    severidade: silencioso
+    verificado: "contagens de casamento por fonte — medido 2026-11-27"
+  - id: fase_caixa_mista
+    resumo: "fase mistura maiúscula e minúscula ('DRO' e 'dro'): use lower(fase) ao filtrar. Usina 'em operação' = fase Operação; o rios-do-brasil usa fase Operação e pot_fisc_kw > 0."
+    tabelas: [usinas_ufv, usinas_uhe, usinas_pch, usinas_cgh]
+    colunas: [fase, pot_fisc_kw]
+    severidade: silencioso
+    verificado: "relatado na coleta — 2026-11-27"
+  - id: transmissao_sem_atributos
+    resumo: "ons_linhas_transmissao e ons_subestacoes vêm de KML do ONS, só com nome: sem tensão nem proprietário. Para linhas com atributos use br_epe_webmap.linhas_transmissao_existente."
+    tabelas: [ons_linhas_transmissao, ons_subestacoes]
+    severidade: aviso
+    verificado: "serviços com atributos fora do ar em 2026-11-27"

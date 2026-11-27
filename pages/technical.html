@@ -16,14 +16,14 @@
 <meta property="og:url" content="https://rodado.xyz/technical">
 <meta property="og:title" content="Technical reference">
 <meta property="og:description" content="How rodado is built: a local Parquet mirror of 1,759 Brazilian public tables, a semantic layer of joins, metrics and per-dataset warnings, and read-only SQL and MCP access on top.">
-<meta property="og:image" content="https://rodado.xyz/assets/og-en.png?v=a38de6c3">
+<meta property="og:image" content="https://rodado.xyz/assets/og-en.png?v=2086493e">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Technical reference — rodado">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Technical reference">
 <meta name="twitter:description" content="How rodado is built: a local Parquet mirror of 1,759 Brazilian public tables, a semantic layer of joins, metrics and per-dataset warnings, and read-only SQL and MCP access on top.">
-<meta name="twitter:image" content="https://rodado.xyz/assets/og-en.png?v=a38de6c3">
+<meta name="twitter:image" content="https://rodado.xyz/assets/og-en.png?v=2086493e">
 <link rel="icon" href="assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
@@ -76,7 +76,7 @@
   <p class="dek">The analyses on this site all come from one place: a local mirror of Brazilian public data, plus a semantic layer that says how the tables join and where they mislead. This page describes both, and the read-only ways in.</p>
 
   <h2>The mirror</h2>
-  <p>1,789 tables in 299 datasets from 155 sources, 508 GB and 35.5 billion rows as of 23 November 2026. 804 tables mirror <a href="https://basedosdados.org" target="_blank" rel="noopener">Base dos Dados</a>; the other 985 are scraped from the original publishers to fill its gaps: sanctions lists, SICAF, SINAN microdata, consumer complaints, CGU payments and more. Each table is a directory of Parquet files compressed with zstd, and DuckDB reads the files directly, with nothing imported into a database.</p>
+  <p>2,184 tables in 352 datasets from 155 sources, 510 GB and 36.0 billion rows as of 27 November 2026. Much of it is scraped straight from the original publishers, including what no consolidated repository carries: sanctions lists, SICAF, SINAN microdata, consumer complaints, CGU payments and more. Each table is a directory of Parquet files compressed with zstd, and DuckDB reads the files directly, with nothing imported into a database.</p>
   <p>A metadata catalog records rows, size, source URL, collection date, status and provenance for every table. It is rebuilt after each update, and it is what the SQL terminal shows when a table is opened.</p>
 
   <h2>Architecture</h2>
@@ -96,7 +96,7 @@
   <p>Every session is opened read-only, with the readable directories allow-listed and the configuration locked. The SQL comes from a model or from a stranger, and a query that only reads can still read the wrong file.</p>
 
   <h2>Semantic layer</h2>
-  <p>Table and column names are not enough to query 1,789 tables correctly. The same code means different things in different years, and two columns with the same name can hold different quantities. The semantic layer records this once, measured on the real data and dated, so a query does not have to rediscover it.</p>
+  <p>Table and column names are not enough to query 2,184 tables correctly. The same code means different things in different years, and two columns with the same name can hold different quantities. The semantic layer records this once, measured on the real data and dated, so a query does not have to rediscover it.</p>
   <div class="data-table-wrap">
     <table>
       <thead><tr><th>Piece</th><th>Size</th><th>What it does</th></tr></thead>
@@ -133,7 +133,7 @@
   </div>
 
   <h2>Table selection</h2>
-  <p>With 1,789 tables, the hard step is choosing the few worth reading before any SQL is written. A wrong choice there produces joins that look valid and are not. The local harness puts the whole dataset catalog in the prompt (about 2,000 tokens, cached after the first question) and lands on the right dataset 88% of the time. An embedding index over about eight synthetic questions per table scored around 53% on the same test and was removed. Agents then narrow down with <code>list_datasets</code> → <code>list_tables</code> → <code>describe_table</code>.</p>
+  <p>With 2,184 tables, the hard step is choosing the few worth reading before any SQL is written. A wrong choice there produces joins that look valid and are not. The local harness puts the whole dataset catalog in the prompt (about 2,000 tokens, cached after the first question) and lands on the right dataset 88% of the time. An embedding index over about eight synthetic questions per table scored around 53% on the same test and was removed. Agents then narrow down with <code>list_datasets</code> → <code>list_tables</code> → <code>describe_table</code>.</p>
 
   <h2>Example queries</h2>
   <p>Three questions answered with the mirror. All three run as written against the current schema (checked on 13 November 2026).</p>
@@ -228,7 +228,7 @@ ORDER BY contratos_federais_2023_2025 DESC</pre>
 <footer>
   <div class="footer-inner">
     <a href="/temas-en/">Topic index</a>
-    <span>1,789 tables · 508 GB · DuckDB + Parquet</span>
+    <span>2,184 tables · 510 GB · DuckDB + Parquet</span>
     <span class="footer-by">by <a href="https://extrapolo.com" target="_blank" rel="noopener">extrapolo.com</a></span>
   </div>
 </footer>

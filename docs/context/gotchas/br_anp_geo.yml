@@ -1,0 +1,60 @@
+dataset: br_anp_geo
+gotchas:
+  - id: camadas_duplicadas
+    resumo: "A ANP publica a mesma camada com vários nomes (versão _old, view/shp/gishub, rodada com e sem 'a'). Há grupos idênticos linha a linha: use uma tabela por grupo, senão a contagem dobra."
+    detalhe: >
+      Idênticas pelo hash do conteúdo (atributos + geometria): geoanp_10_rodada_de_licitacoes_de_blocos
+      = geoanp_10_rodada_de_licitacoes_de_blocos_b; geoanp_5_rodada_de_licitacoes_de_blocos =
+      geoanp_5a_rodada_de_licitacoes_de_blocos = geoanp_5a_rodada_de_licitacoes_de_blocos_teste;
+      geoanp_well_all = geoanp_well_shp_geoanp; sisroc_bloco_view = sisroc_bloco_view_geoanp;
+      sisroc_campo_view = sisroc_campo_view_geoanp = sisroc_campo_view_geoanp_old;
+      sisroc_well_view2 = sisroc_well_view_geoanp; geoanp_opc_areas_am_ofertadas_6o_ciclo =
+      geoanp_opc_areas_com_acumulacoes_marginais_disponiveis_no_edital. Os prefixos dizem de qual
+      servidor veio: geoanp_/sisroc_ de um, bd_anp_/basemap_ de outro; os dois se sobrepõem
+      (bacias, setores, sísmica, refinarias, usinas) com nomes de coluna diferentes.
+    tabelas: [geoanp_well_all, sisroc_campo_view, sisroc_bloco_view, geoanp_5_rodada_de_licitacoes_de_blocos]
+    severidade: silencioso
+    verificado: "7 grupos de camadas idênticas pelo hash do conteúdo — medido 2026-11-27"
+  - id: pocos_varias_contagens
+    resumo: "Sete camadas de poços com totais diferentes (28.589 a 31.348): são recortes ou retratos diferentes do cadastro (a fonte não diz qual). Para 'quantos poços', use bd_anp_pocos_sirgas (31.348, a mais recente) ou públicos + confidenciais."
+    detalhe: >
+      geoanp_well_all 30.100; sisroc_well_view 28.589; sisroc_well_view_geoanp 31.344;
+      sisroc_pocos_gishub_db 31.323; bd_anp_pocos_sirgas 31.348; bd_anp_pocos_publicos 30.607 +
+      bd_anp_pocos_confidenciais 606. Em sisroc_pocos_gishub_db o nome do poço (name) é único,
+      mas o cadastro repete em 14 casos.
+    tabelas: [bd_anp_pocos_sirgas, bd_anp_pocos_publicos, bd_anp_pocos_confidenciais, sisroc_pocos_gishub_db, geoanp_well_all]
+    severidade: aviso
+    verificado: "contagens das 7 camadas — medido 2026-11-27"
+  - id: datas_texto
+    resumo: "Datas vêm como texto, em formato que muda por camada ('11/01/2003', '2009-02-17T00:00:00Z'); '00/01/1900' é data vazia (1.763 poços em dat_termin)."
+    detalhe: >
+      Converta com strptime no formato da camada e trate '00/01/1900' como nulo antes de calcular
+      duração de perfuração ou série por ano.
+    tabelas: [sisroc_pocos_gishub_db, geoanp_unidade_de_producao]
+    colunas: [dat_inicio, dat_termin, dat_conclusao, DAT_INICIO_VIGENCIA]
+    severidade: silencioso
+    verificado: "1.763 poços com dat_termin = '00/01/1900' em sisroc_pocos_gishub_db — medido 2026-11-27"
+  - id: unidade_producao_so_ativas
+    resumo: "geoanp_unidade_de_producao tem só as 183 plataformas/UEPs ativas (FIXA 83, FPSO 74, semissubmersível 14...); as desativadas não estão. MED_DISTANCIA_LAMINA é texto, em metros (6 a 2.510)."
+    detalhe: >
+      DESC_ATENDIMENTOS lista os campos atendidos com a data de início entre parênteses
+      ('MARLIM LESTE(12/01/2008)'). QTD_PROCESSAMENTO_PETROLEO em bbl/dia e QTD_PROCESSAMENTO_GAS em
+      mil m³/dia, a conferir contra a ficha da ANP. NOM_FANTASIA é a operadora; NOM_PROPRIETARIO, a dona
+      da unidade (MODEC, SBM...).
+    tabelas: [geoanp_unidade_de_producao]
+    colunas: [DESC_TIPO_UEP, MED_DISTANCIA_LAMINA, DESC_ATENDIMENTOS, NOM_FANTASIA, NOM_PROPRIETARIO]
+    severidade: aviso
+    verificado: "183 linhas, 10 tipos, lâmina 6–2.510 — medido 2026-11-27"
+  - id: partilha_so_geometria
+    resumo: "bd_anp_blocos_arrematados_partilha_1..6 têm só ID e geometria: as colunas de nome, rodada e bacia estão quebradas na fonte. Para o nome do bloco, use geoanp_blocos_arrematados_opp_*."
+    tabelas: [bd_anp_blocos_arrematados_partilha_1, bd_anp_blocos_arrematados_partilha_6]
+    severidade: aviso
+    verificado: "fonte devolve erro de coluna inexistente em nome, cod_bloco, rodada, nome_bacia, setor — 2026-11-27"
+  - id: camadas_ausentes
+    resumo: "Terminais de combustíveis líquidos, sismica 2D antiga e três camadas do pré-sal não existem aqui: estavam quebradas nos dois servidores da ANP. O polígono do pré-sal está em bd_anp_poligono_presal_plsirgas e sisroc_presal_shp_geoanp."
+    severidade: aviso
+    verificado: "erro de servidor nas 6 camadas em WFS e WMS — 2026-11-27"
+  - id: extensao_maritima
+    resumo: "Camadas marítimas (setores, bacias, sísmica, batimetria) vão até a zona econômica exclusiva, de ~37°S a ~9°N: ponto fora do território não é erro de coordenada."
+    severidade: aviso
+    verificado: "bbox de setores_maritimos -53,3/-35,5 a -31,5/8,75 — medido 2026-11-27"

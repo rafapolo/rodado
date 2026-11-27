@@ -2,10 +2,11 @@
 
 **Gerado por `scripts/gera_catalog_md.py`, a partir de `_rodado_metadata/catalog.parquet` — não editar à mão.** Descrições vêm de `docs/context/dataset_descriptions.yaml`; a coluna Dado até vem de `docs/context/dataset_freshness.yaml` (curado, só ~6 datasets por enquanto — vazio não significa "sem gap", significa "não conferido ainda"). Editar os YAML e regenerar (`build_metadata_catalog.py` → `gera_catalog_md.py`), nunca este arquivo.
 
-**299 datasets, 1.789 tabelas, 35.539.612.681 linhas.** 34 dataset(s) sem descrição. 13 com data de frescor conferida (de 299).
+**352 datasets, 2.184 tabelas, 36.005.338.416 linhas.** 34 dataset(s) sem descrição. 13 com data de frescor conferida (de 352).
 
 | Dataset | Descrição | Tabelas | Linhas | Dado até | Fonte |
 |---|---|---:|---:|---|---|
+| `_local_rais_cnpj` | RAIS de estabelecimentos cruzada com CNPJ, 2010-2021 | 1 | 40.626.223 | — | RAIS estabelecimentos por CNPJ 2010–2021 (import local) |
 | `br_abrinq_oca` | Observatório da Criança e do Adolescente (Fundação Abrinq) — indicadores de primeira infância por município | 1 | 55.700 | — | Base dos Dados |
 | `br_ana_atlas_esgotos` | Atlas Esgotos da ANA — diagnóstico de coleta e tratamento de esgoto por município | 1 | 5.570 | — | Base dos Dados |
 | `br_ana_bho` | Base Hidrográfica Ottocodificada da ANA — topologia de trechos de rio | 1 | 462.539 | — | ANA Base Hidrográfica Ottocodificada (topologia) |
@@ -16,28 +17,33 @@
 | `br_anatel_banda_larga_fixa` | Densidade de acessos de banda larga fixa por município/UF (Anatel) | 4 | 68.642.882 | — | Base dos Dados |
 | `br_anatel_indice_brasileiro_conectividade` | Índice Brasileiro de Conectividade por município (Anatel) | 1 | 22.280 | — | Base dos Dados |
 | `br_anatel_telefonia_movel` | Anatel — telefonia móvel (SMP): acessos por município, empresa, tecnologia e modalidade, mês a mês desde 2019 (177 mi linhas), séries por DDD 2005–2018 e densidade por 100 habitantes | 6 | 179.805.272 | — | Anatel — telefonia móvel (SMP): microdados de acessos, densidades, modalidade e tecnologia |
-| `br_aneel_dadosabertos` | ANEEL — geração distribuída, usinas (SIGA), tarifas homologadas e indicadores de continuidade DEC/FEC | 8 | 41.048.559 | — | ANEEL — usinas SIGA, tarifas homologadas, DEC/FEC |
+| `br_aneel_dadosabertos` | ANEEL — geração distribuída, usinas (SIGA), tarifas homologadas e indicadores de continuidade DEC/FEC | 8 | 41.334.869 | — | ANEEL — usinas SIGA, tarifas homologadas, DEC/FEC |
+| `br_aneel_sigel` | ANEEL/SIGEL — usinas de geração com ponto, CEG, potência e fase; aerogeradores, parques eólicos, aproveitamentos hidrelétricos; linhas e subestações do ONS | 17 | 67.097 | — | ANEEL — SIGEL: usinas por fonte (ponto, CEG, potência, fase), aerogeradores e parques eólicos, aproveitamentos hidrelétricos, linhas/subestações do ONS (KML) |
 | `br_anm` | ANM/SIGMINE — processos minerários, CFEM (royalties de mineração) e licenciamento | 22 | 8.380.445 | — | ANM / SIGMINE — títulos minerários e CFEM |
+| `br_anm_barragens` | ANM — barragens de mineração (risco, dano potencial, nível de emergência), manchas de inundação e polígonos de empreendimentos minerários | 8 | 48.447 | — | ANM — barragens de mineração (SIGBM público), manchas de inundação, empreendimentos minerários, jurisdição |
 | `br_anp_combustiveis` | ANP — preços de combustíveis por posto/revenda | 1 | 2.225.643 | — | ANP combustíveis (preços revenda/distribuição) |
+| `br_anp_dados_abertos` | ANP — vendas de combustíveis (1947–2026), royalties e participação especial, incidentes, importação/exportação, refino, biocombustíveis, terminais, gasodutos, tancagem, revendas, multas e fiscalização | 46 | 13.910.472 | — | ANP — dados abertos tabulares: vendas (1947–2026), royalties e participação especial, incidentes, import/export, refino e derivados, biocombustíveis, terminais aquaviários, gasodutos, comercialização de gás, tancagem, cadastros de revendas, multas, fiscalização |
+| `br_anp_geo` | ANP — geoserviços de exploração e produção: plataformas offshore, poços, campos, blocos de todas as rodadas, dutos, sísmica, refinarias, terminais, usinas, postos e batimetria | 207 | 419.971 | — | ANP — geoserviços (exploração e produção, abastecimento, infraestrutura): unidades de produção offshore, poços, campos, blocos de todas as rodadas, dutos, sísmica, refinarias, terminais GNL, usinas, postos, batimetria |
 | `br_anp_precos_combustiveis` | ANP — preços de combustíveis pesquisados (via Base dos Dados) | 1 | 16.887.683 | — | Base dos Dados |
+| `br_anp_producao` | ANP — produção de petróleo e gás por poço (mensal, 2005–2023) e por estado (1997–2026) | 8 | 2.309.989 | — | ANP — produção de petróleo e gás por poço (mensal) e por estado |
 | `br_ans_beneficiario` | ANS — beneficiários de planos de saúde suplementar | 1 | 2.480.627.453 | 2026-10-20 | Base dos Dados |
-| `br_ans_operadoras` | ANS — operadoras de planos de saúde (cadastro, reclamações, penalidades, ressarcimento ao SUS, demonstrações contábeis) | 18 | 111.586.224 | — | CVM cia aberta e ANS operadoras, recoleta de 2026-11-11 |
+| `br_ans_operadoras` | ANS — operadoras de planos de saúde (cadastro, reclamações, penalidades, ressarcimento ao SUS, demonstrações contábeis) | 18 | 111.586.112 | — | CVM cia aberta e ANS operadoras, recoleta de 2026-11-11 |
 | `br_antt_dadosabertos` | ANTT — RNTRC (transportadores e veículos de carga), CIOT e acidentes nas rodovias federais concedidas | 4 | 18.909.325 | — | ANTT — RNTRC, veículos, CIOT, acidentes em rodovias concedidas |
 | `br_anvisa_cmed` | CMED/ANVISA — preços regulados de medicamentos | 1 | 53.388 | — | CMED (preços de medicamentos, ANVISA) |
-| `br_anvisa_consultas` | ANVISA — registros de agrotóxicos, alimentos e produtos regulados | 3 | 101.386 | — | ANVISA (consulta completa) |
+| `br_anvisa_consultas` | ANVISA — registros de agrotóxicos, alimentos e produtos regulados | 3 | 101.413 | — | ANVISA (consulta completa) |
 | `br_anvisa_medicamentos_industrializados` | ANVISA — medicamentos industrializados registrados | 1 | 615.769.727 | — | ANVISA SNGPC — venda de medicamentos industrializados controlados, mês inteiro (a BD tinha amostra de 10 M linhas) |
 | `br_b3_cotacoes` | _(sem descrição)_ | 1 | 24.760.472 | — | B3 — cotações históricas diárias (COTAHIST) |
 | `br_ba_feiradesantana_camara_leis` | Câmara Municipal de Feira de Santana — leis municipais | 1 | 6.033 | — | Base dos Dados |
-| `br_bcb_agencia` | BCB — agências bancárias, retrato mensal 2007–2024 (endereço, município, instituição) e o retrato atual do Olinda | 2 | 4.127.012 | — | BCB — agências bancárias (série mensal 2007–2024 e retrato do Olinda) |
+| `br_bcb_agencia` | BCB — agências bancárias, retrato mensal 2007–2024 (endereço, município, instituição) e o retrato atual do Olinda | 2 | 4.140.509 | — | BCB — agências bancárias (série mensal 2007–2024 e retrato do Olinda) |
 | `br_bcb_desenrola` | BCB — programa Desenrola Brasil (renegociação de dívidas de pessoa física) | 1 | 14.122 | — | BCB Desenrola Brasil |
 | `br_bcb_estban` | BCB ESTBAN — estatísticas bancárias por agência/município | 3 | 779.013.036 | — | Base dos Dados |
 | `br_bcb_ifdata` | BCB IF.data — indicadores financeiros de instituições financeiras | 5 | 55.700.812 | — | BCB — IF.data (valores e cadastro por instituição) |
 | `br_bcb_penalidades` | BCB — penalidades aplicadas a instituições financeiras | 1 | 17.097 | — | BCB Penalties |
 | `br_bcb_pix_municipio` | BCB — volume de transações Pix por município, separado por perfil pagador/recebedor PF/PJ | 1 | 401.019 | — | BCB — Estatísticas do Pix por município |
-| `br_bcb_ptax` | BCB PTAX — cotação de fechamento do dólar e das demais moedas, diária, via Olinda | 3 | 806.477 | — | BCB — PTAX (cotações diárias) |
+| `br_bcb_ptax` | BCB PTAX — cotação de fechamento do dólar e das demais moedas, diária, via Olinda | 3 | 806.630 | — | BCB — PTAX (cotações diárias) |
 | `br_bcb_scrdata` | BCB SCR.data — carteira de crédito do Sistema de Informações de Crédito | 1 | 43.690.931 | — | BCB SCR.data |
-| `br_bcb_sgs` | BCB SGS — séries temporais macroeconômicas (câmbio, Selic, inflação etc.) | 1 | 25.276 | 2026-11-19 | BACEN/BCB SGS séries |
-| `br_bcb_sicor` | BCB SICOR — operações de crédito rural | 20 | 821.243.327 | — | Base dos Dados |
+| `br_bcb_sgs` | BCB SGS — séries temporais macroeconômicas (câmbio, Selic, inflação etc.) | 1 | 25.281 | 2026-11-24 | BACEN/BCB SGS séries |
+| `br_bcb_sicor` | BCB SICOR — operações de crédito rural | 20 | 821.240.405 | — | Base dos Dados |
 | `br_bd_diretorios_brasil` | Base dos Dados — diretórios de referência (CEP, CNAE, CID, município etc.) | 23 | 2.033.171 | — | Base dos Dados |
 | `br_bd_diretorios_data_tempo` | Base dos Dados — diretório de calendário/tempo | 11 | 1.922.812 | — | Base dos Dados |
 | `br_bd_diretorios_mundo` | Base dos Dados — diretórios internacionais (país, NCM, sistema harmonizado) | 4 | 20.648 | — | Base dos Dados |
@@ -50,7 +56,7 @@
 | `br_brasilapi` | BrasilAPI — bancos, DDDs, feriados nacionais, taxas de referência | 4 | 6.149 | — | BrasilAPI |
 | `br_brasilio_holdings` | Brasil.IO — estrutura societária de holdings empresariais | 1 | 515.191 | — | Brasil.IO holdings |
 | `br_caixa_sinapi` | SINAPI/Caixa — custos e insumos de construção civil | 1 | 2.267.886 | — | SINAPI (custos/insumos de construção civil) |
-| `br_caixa_sorteios` | Caixa Econômica — resultados da Mega-Sena | 1 | 18.522 | — | SIDRA/IBGE (IPCA, IPCA-15, INPC, IPP, população, PAM, PEVS) e Loterias Caixa (Mega-Sena) |
+| `br_caixa_sorteios` | Caixa Econômica — resultados da Mega-Sena | 1 | 18.540 | — | SIDRA/IBGE (IPCA, IPCA-15, INPC, IPP, população, PAM, PEVS) e Loterias Caixa (Mega-Sena) |
 | `br_camara_dados_abertos` | Câmara dos Deputados — deputados, votações, despesas, licitações internas | 30 | 15.057.224 | — | Base dos Dados |
 | `br_capes_bolsas` | CAPES — bolsas de mobilidade acadêmica internacional | 1 | 146.036 | — | Base dos Dados |
 | `br_ce_fortaleza_sefin_iptu` | Prefeitura de Fortaleza — cadastro de IPTU por face de quadra | 1 | 68.932 | — | Base dos Dados |
@@ -63,8 +69,8 @@
 | `br_cgu_fef` | CGU — Fundo de Erradicação da Pobreza e sorteios de fiscalização | 3 | 84.945 | — | Base dos Dados |
 | `br_cgu_garantia_safra` | Garantia-Safra — pagamentos aos agricultores familiares do semiárido | 3 | 36.210.983 | — | Portal - Garantia-Safra |
 | `br_cgu_gas_do_povo` | Gás do Povo — pagamentos do benefício de gás de cozinha | 1 | 24.494.950 | — | Gás do Povo (CGU) |
-| `br_cgu_licitacao_contrato` | CGU — licitações e contratos do governo federal | 8 | 100.222.871 | — | Base dos Dados |
-| `br_cgu_novo_bolsa_familia` | Novo Bolsa Família — pagamentos mensais por beneficiário | 3 | 889.084.279 | — | Novo Bolsa Família (CGU) |
+| `br_cgu_licitacao_contrato` | CGU — licitações e contratos do governo federal | 8 | 100.264.050 | — | Base dos Dados |
+| `br_cgu_novo_bolsa_familia` | Novo Bolsa Família — pagamentos mensais por beneficiário | 3 | 908.086.537 | — | Novo Bolsa Família (CGU) |
 | `br_cgu_orcamento_publico` | CGU — orçamento federal por órgão, programa, ação e elemento: inicial, atualizado, empenhado e realizado, 2014–2024 | 1 | 341.269 | — | Base dos Dados |
 | `br_cgu_pe_de_meia` | Pé-de-Meia — pagamentos do programa de incentivo à permanência escolar | 4 | 97.981.384 | — | Portal - Pe-de-Meia |
 | `br_cgu_pessoal_executivo_federal` | CGU — terceirizados do Poder Executivo federal | 1 | 1.293.210 | — | CGU — terceirizados do Executivo federal, cargas 2024-01 a 2026-05 |
@@ -75,17 +81,19 @@
 | `br_cgu_transferencias` | _(sem descrição)_ | 1 | 23.086.484 | — | Portal da Transparência — Transferências (todos os repasses da União a estados, municípios e fundos) |
 | `br_cgu_viagens` | CGU — viagens a serviço de servidores federais | 4 | 53.192.569 | — | Portal - Viagens |
 | `br_clp_ranking_competitividade` | CLP — ranking de competitividade dos estados | 2 | 10.619 | — | CLP — Ranking de Competitividade dos Estados, 2023 a 2026 |
+| `br_cnj_datajud` | CNJ — Justiça em Números, indicadores por tribunal e ano (2009–2025) | 3 | 907.860 | — | Base dos Dados — Justiça em Números por tribunal e ano (CNJ), 2009-2025 |
 | `br_cnj_estatisticas_poder_judiciario` | CNJ — recursos financeiros do Poder Judiciário | 1 | 1.581 | — | CNJ — Justiça em Números, recursos financeiros e pessoal por tribunal, 2009-2025 (tabela refeita da fonte) |
 | `br_cnj_improbidade_administrativa` | CNJ — condenações por improbidade administrativa | 1 | 53.342 | — | Base dos Dados |
 | `br_cnpq_bolsas` | CNPq — bolsas de pesquisa concedidas | 2 | 2.839.807 | — | Base dos Dados |
 | `br_comprasgov_catmatcatser` | ComprasGov — catálogo de materiais e serviços padronizados (CATMAT/CATSER) | 2 | 252.825 | — | CATMAT/CATSER (catálogo de materiais/serviços) |
 | `br_comprasgov_sicaf` | SICAF — cadastro de fornecedores habilitados a contratar com o governo | 1 | 962.016 | — | SICAF fornecedores |
 | `br_cvm_administradores_carteira` | CVM — administradores de carteira de valores mobiliários | 3 | 16.476 | — | Base dos Dados |
-| `br_cvm_cia_aberta` | CVM — companhias abertas (cadastro, demonstrações financeiras, formulário de referência, administradores e remuneração) | 118 | 71.347.599 | — | CVM cia aberta e ANS operadoras, recoleta de 2026-11-11 |
-| `br_cvm_fundos` | CVM — cadastro de fundos de investimento | 39 | 440.462.913 | 2026-11-18 | CVM Fundos |
-| `br_cvm_oferta_publica_distribuicao` | CVM — ofertas públicas de distribuição de valores mobiliários | 1 | 64.194 | — | Base dos Dados |
+| `br_cvm_cia_aberta` | CVM — companhias abertas (cadastro, demonstrações financeiras, formulário de referência, administradores e remuneração) | 118 | 71.294.089 | — | CVM cia aberta e ANS operadoras, recoleta de 2026-11-11 |
+| `br_cvm_fundos` | CVM — cadastro de fundos de investimento | 39 | 440.462.913 | 2026-11-23 | CVM Fundos |
+| `br_cvm_oferta_publica_distribuicao` | CVM — ofertas públicas de distribuição de valores mobiliários | 1 | 64.234 | — | Base dos Dados |
 | `br_datahackers_state_data` | Data Hackers — pesquisa State of Data sobre o mercado de dados no Brasil | 1 | 4.271 | — | Base dos Dados |
 | `br_datasus_cid10` | DATASUS — tabela de códigos CID-10 e CID-O | 6 | 15.672 | — | CID-10 (tabela de códigos, DATASUS) |
+| `br_epe_webmap` | EPE — infraestrutura energética: usinas existentes e planejadas, linhas de transmissão e subestações, gás natural, combustíveis líquidos, biocombustíveis, eólica offshore, hidrogênio e irradiação solar | 53 | 308.545 | — | EPE — Webmap EPE: usinas existentes e planejadas por fonte (com CEG), linhas de transmissão e subestações existentes e planejadas, gás natural, combustíveis líquidos, biocombustíveis, eólica offshore, hidrogênio, UHEs planejadas (reservatórios), irradiação solar |
 | `br_fbsp_absp` | Fórum Brasileiro de Segurança Pública — violência nas escolas | 3 | 2.592 | — | Base dos Dados |
 | `br_fgv_igp` | FGV — índices de preços (IGP-M, IGP-DI e variantes) | 7 | 2.665 | — | Base dos Dados |
 | `br_fipe_veiculos` | FIPE — tabela de preços de referência de veículos | 1 | 11.463 | — | FIPE veículos |
@@ -98,7 +106,7 @@
 | `br_ggb_relatorio_lgbtqi` | Grupo Gay da Bahia — relatório de mortes de pessoas LGBTQI+ | 5 | 248 | — | GGB — mortes violentas de LGBT+ no Brasil, 2020-2025 (sem 2022) |
 | `br_ibama_autos` | IBAMA — autos de infração ambiental | 8 | 3.103.683 | — | IBAMA — autos de infração |
 | `br_ibama_ctf` | IBAMA — Cadastro Técnico Federal de atividades potencialmente poluidoras | 2 | 1.473.755 | — | IBAMA — CTF/APP (atividades potencialmente poluidoras) |
-| `br_ibama_embargos_novo` | IBAMA — termos de embargo ambiental | 8 | 983.631 | — | IBAMA — termos de embargo (re-raspagem) |
+| `br_ibama_embargos_novo` | IBAMA — termos de embargo ambiental | 8 | 983.893 | — | IBAMA — termos de embargo (re-raspagem) |
 | `br_ibge_amc` | IBGE — correspondência de áreas mínimas comparáveis entre municípios ao longo do tempo | 1 | 434.070 | — | Base dos Dados |
 | `br_ibge_areas_risco` | _(sem descrição)_ | 4 | 21.499 | — | IBGE + Cemaden — População em áreas de risco no Brasil (2018, base Censo 2010) |
 | `br_ibge_cbo_2002` | IBGE — Classificação Brasileira de Ocupações 2002 | 2 | 177.556 | — | Base dos Dados |
@@ -114,7 +122,7 @@
 | `br_ibge_ipca` | IBGE — Índice de Preços ao Consumidor Amplo | 4 | 740.446 | — | Base dos Dados |
 | `br_ibge_ipca15` | IBGE — IPCA-15, prévia mensal do IPCA | 4 | 434.802 | — | Base dos Dados |
 | `br_ibge_ipp` | IBGE — Índice de Preços ao Produtor | 6 | 8.088 | — | SIDRA/IBGE (IPCA, IPCA-15, INPC, IPP, população, PAM, PEVS) e Loterias Caixa (Mega-Sena) |
-| `br_ibge_lspa` | _(sem descrição)_ | 2 | 76.725 | — | IBGE SIDRA — LSPA, PIA, PAC, PAIC, PAS e Censo Agropecuário 2017, em formato longo |
+| `br_ibge_lspa` | _(sem descrição)_ | 2 | 80.757 | — | IBGE SIDRA — LSPA, PIA, PAC, PAIC, PAS e Censo Agropecuário 2017, em formato longo |
 | `br_ibge_munic` | IBGE — Pesquisa de Informações Básicas Municipais (MUNIC) | 56 | 1.153.374 | — | IBGE — MUNIC e ESTADIC, bases completas 2020–2024 |
 | `br_ibge_nomes_brasil` | IBGE — frequência de nomes por município, Censo 2010 (nomes raros suprimidos: soma 145 mi de 191 mi) | 1 | 1.959.116 | — | Base dos Dados |
 | `br_ibge_pac` | _(sem descrição)_ | 2 | 504.016 | — | IBGE SIDRA — LSPA, PIA, PAC, PAIC, PAS e Censo Agropecuário 2017, em formato longo |
@@ -151,10 +159,10 @@
 | `br_inep_saeb` | INEP — SAEB, proficiência de alunos por etapa/disciplina | 11 | 201.337.763 | — | Base dos Dados |
 | `br_inep_sinopse_estatistica_educacao_basica` | INEP — sinopse estatística da educação básica | 18 | 121.127.598 | — | Base dos Dados |
 | `br_inmet_bdmep` | INMET — Banco de Dados Meteorológicos, séries por estação | 2 | 90.064.017 | — | Base dos Dados |
-| `br_inpe_deter` | INPE DETER — alertas quase em tempo real de desmatamento | 2 | 1.426.806 | — | INPE — polígonos do PRODES (6 biomas) e do DETER |
+| `br_inpe_deter` | INPE DETER — alertas quase em tempo real de desmatamento | 2 | 1.426.804 | — | INPE — polígonos do PRODES (6 biomas) e do DETER |
 | `br_inpe_prodes` | INPE PRODES — desmatamento anual agregado por município e bioma | 1 | 156.864 | — | Base dos Dados |
 | `br_inpe_prodes_acumulado` | INPE PRODES — polígonos de desmatamento acumulado por bioma, geometria em centroide | 3 | 14.457.350 | — | INPE — polígonos do PRODES (6 biomas) e do DETER |
-| `br_inpe_queimadas` | INPE — focos de queimada detectados por satélite | 1 | 24.184.209 | — | Base dos Dados |
+| `br_inpe_queimadas` | INPE — focos de queimada detectados por satélite | 1 | 24.322.246 | — | Base dos Dados |
 | `br_inpe_sisam` | INPE SISAM — qualidade do ar | 1 | 158.705.816 | — | Base dos Dados |
 | `br_inss_cat` | INSS — Comunicações de Acidente de Trabalho (CAT), uma linha por comunicação, com CNAE, CBO, CID e município do empregador, 2011–2026 | 1 | 7.847.481 | — | INSS — CAT, Comunicações de Acidente de Trabalho 2011-01 a 2026-09 |
 | `br_ipea_acesso_oportunidades` | IPEA — grade H3 das 20 maiores cidades, 2019: população por renda e raça e contagem de escolas e unidades de saúde por hexágono (sem os indicadores de tempo de acesso) | 1 | 336.427 | — | Base dos Dados |
@@ -183,7 +191,7 @@
 | `br_mf_divida_ativa` | PGFN — estoque trimestral da dívida ativa do FGTS e previdenciária, uma linha por inscrição e devedor (via Base dos Dados) | 2 | 146.548.734 | 2026-10-02 | Base dos Dados |
 | `br_mg_belohorizonte_smfa_iptu` | Prefeitura de Belo Horizonte — cadastro de IPTU | 2 | 45.489.983 | — | Base dos Dados |
 | `br_mgi_compras_publicas` | Compras públicas federais do Compras.gov.br (MGI) — licitações, pregões, itens, ofertas, compras sem licitação, fornecedores e catálogo de materiais e serviços | 21 | 100.278.894 | — | SEGES/Compras.gov.br — atas, contratações (Lei 14.133) e contratos SIASG em lote |
-| `br_mgi_pncp` | Portal Nacional de Contratações Públicas (PNCP) via Base dos Dados — dicionário de códigos (as tabelas grandes estão sob acesso restrito no BD) | 4 | 5.738.944 | — | PNCP — API de consulta: atas de registro de preço, instrumentos de cobrança, contratações |
+| `br_mgi_pncp` | Portal Nacional de Contratações Públicas (PNCP) via Base dos Dados — dicionário de códigos (as tabelas grandes estão sob acesso restrito no BD) | 4 | 5.923.861 | — | PNCP — API de consulta: atas de registro de preço, instrumentos de cobrança, contratações |
 | `br_minc_salic` | MinC — SALIC/Lei Rouanet, projetos culturais incentivados | 18 | 4.370.266 | — | SALIC/Lei Rouanet (MinC) |
 | `br_mj_consumidorgovbr` | Consumidor.gov.br — reclamações contra empresas, 2014–2025 (2025 parcial; os arquivos de 2019 vêm sem Data Abertura, usar Data Finalização; Data Finalização mistura ISO (2020–2025) e dd/mm/aaaa (2014–2021) — parsear os dois) | 1 | 15.392.507 | — | Consumidor.gov.br |
 | `br_mj_sinesp` | SINESP (MJSP) via Base dos Dados — ocorrências criminais e vítimas por município e mês e por UF e mês | 3 | 9.097.924 | — | Base dos Dados |
@@ -197,12 +205,12 @@
 | `br_mma_extincao` | MMA — listas oficiais de fauna e flora ameaçadas de extinção | 2 | 7.676 | — | Base dos Dados |
 | `br_mma_sinpatinhas` | SinPatinhas (MMA) — cadastro nacional de cães e gatos, microdados | 1 | 930.442 | — | Base dos Dados |
 | `br_mme_consumo_energia_eletrica` | MME — consumo de energia elétrica por UF | 1 | 38.880 | — | Base dos Dados |
-| `br_mme_luz_para_todos` | _(sem descrição)_ | 2 | 620.328 | — | MME — Programa Luz para Todos (domicílios atendidos por município e recursos aplicados) |
+| `br_mme_luz_para_todos` | _(sem descrição)_ | 2 | 623.580 | — | MME — Programa Luz para Todos (domicílios atendidos por município e recursos aplicados) |
 | `br_mobilidados_indicadores` | MobiliDados — indicadores de mobilidade urbana (transporte, ciclovia, acidentes) | 10 | 671.362 | — | Base dos Dados |
 | `br_mp_pep` | Ministério do Planejamento — cargos e funções do Poder Executivo federal | 1 | 1.799.733 | — | Base dos Dados |
 | `br_mps_beneficios` | Benefícios do INSS concedidos e mantidos por município e mês, com o dicionário de espécies | 3 | 81.270.189 | — | INSS — benefícios concedidos 2026 (XLSX mensal) |
 | `br_ms_atencao_basica` | Ministério da Saúde — indicadores de atenção básica por município | 1 | 901.944 | — | Base dos Dados |
-| `br_ms_cnes` | CNES — Cadastro Nacional de Estabelecimentos de Saúde | 15 | 523.625.929 | — | Base dos Dados |
+| `br_ms_cnes` | CNES — Cadastro Nacional de Estabelecimentos de Saúde | 15 | 524.234.322 | — | Base dos Dados |
 | `br_ms_imunizacoes` | Ministério da Saúde — cobertura vacinal por município | 1 | 149.124 | — | Base dos Dados |
 | `br_ms_mais_medicos` | _(sem descrição)_ | 4 | 861.470 | — | Mais Médicos (PMMB e especialistas) — Ministério da Saúde |
 | `br_ms_pns` | Ministério da Saúde — Pesquisa Nacional de Saúde | 3 | 521.059 | — | Base dos Dados |
@@ -212,10 +220,52 @@
 | `br_ms_sih` | SIH/SUS — Autorizações de Internação Hospitalar (AIH) | 3 | 2.848.310.544 | 2026-07-31 | Base dos Dados |
 | `br_ms_sim` | SIM — Sistema de Informações sobre Mortalidade | 6 | 107.245.069 | — | Base dos Dados |
 | `br_ms_sinan` | SINAN — notificação compulsória de dengue e influenza/SRAG | 3 | 37.172.816 | — | Base dos Dados |
+| `br_ms_sinan_acidente_trabalho_grave` | SINAN — notificação compulsória de acidente de trabalho grave (microdados do FTP do DataSUS) | 1 | 3.739.881 | — | Sem procedência registrada |
+| `br_ms_sinan_acidente_trabalho_material_biologico` | SINAN — notificação compulsória de acidente de trabalho com material biológico (microdados do FTP do DataSUS) | 1 | 1.142.363 | — | Sem procedência registrada |
+| `br_ms_sinan_animais_peconhentos` | SINAN — notificação compulsória de acidentes por animais peçonhentos (microdados do FTP do DataSUS) | 1 | 4.441.546 | — | Sem procedência registrada |
+| `br_ms_sinan_atendimento_antirrabico` | SINAN — notificação compulsória de atendimento antirrábico humano (microdados do FTP do DataSUS) | 1 | 12.776.652 | — | Sem procedência registrada |
+| `br_ms_sinan_botulismo` | SINAN — notificação compulsória de botulismo (microdados do FTP do DataSUS) | 1 | 618 | — | Sem procedência registrada |
+| `br_ms_sinan_chagas` | SINAN — notificação compulsória de doença de Chagas aguda (microdados do FTP do DataSUS) | 1 | 87.636 | — | Sem procedência registrada |
 | `br_ms_sinan_chikungunya` | SINAN — notificação compulsória de chikungunya | 1 | 2.519.878 | — | SINAN Chikungunya |
+| `br_ms_sinan_colera` | SINAN — notificação compulsória de cólera (microdados do FTP do DataSUS) | 1 | 3 | — | Sem procedência registrada |
+| `br_ms_sinan_coqueluche` | SINAN — notificação compulsória de coqueluche (microdados do FTP do DataSUS) | 1 | 170.216 | — | Sem procedência registrada |
+| `br_ms_sinan_dermatoses_ocupacionais` | SINAN — notificação compulsória de dermatoses ocupacionais (microdados do FTP do DataSUS) | 1 | 12.948 | — | Sem procedência registrada |
+| `br_ms_sinan_difteria` | SINAN — notificação compulsória de difteria (microdados do FTP do DataSUS) | 1 | 1.154 | — | Sem procedência registrada |
+| `br_ms_sinan_doenca_creutzfeldt_jakob` | SINAN — notificação compulsória de doença de Creutzfeldt-Jakob (microdados do FTP do DataSUS) | 1 | 2.055 | — | Sem procedência registrada |
+| `br_ms_sinan_esporotricose` | SINAN — notificação compulsória de esporotricose (microdados do FTP do DataSUS) | 1 | 32.492 | — | Sem procedência registrada |
 | `br_ms_sinan_esquistossomose` | SINAN — notificação compulsória de esquistossomose | 1 | 169.721 | — | SINAN Esquistossomose |
 | `br_ms_sinan_febre_amarela` | SINAN — notificação compulsória de febre amarela | 1 | 82.844 | — | SINAN Febre Amarela |
+| `br_ms_sinan_febre_maculosa` | SINAN — notificação compulsória de febre maculosa (microdados do FTP do DataSUS) | 1 | 82.844 | — | Sem procedência registrada |
+| `br_ms_sinan_febre_tifoide` | SINAN — notificação compulsória de febre tifoide (microdados do FTP do DataSUS) | 1 | 9.502 | — | Sem procedência registrada |
+| `br_ms_sinan_hanseniase` | SINAN — notificação compulsória de hanseníase (microdados do FTP do DataSUS) | 1 | 1.033.470 | — | Sem procedência registrada |
+| `br_ms_sinan_hantavirose` | SINAN — notificação compulsória de hantavirose (microdados do FTP do DataSUS) | 1 | 24.594 | — | Sem procedência registrada |
+| `br_ms_sinan_hepatites` | SINAN — notificação compulsória de hepatites virais (microdados do FTP do DataSUS) | 1 | 664.654 | — | Sem procedência registrada |
+| `br_ms_sinan_intoxicacao_exogena` | SINAN — notificação compulsória de intoxicação exógena (microdados do FTP do DataSUS) | 1 | 2.714.557 | — | Sem procedência registrada |
+| `br_ms_sinan_leishmaniose_tegumentar` | SINAN — notificação compulsória de leishmaniose tegumentar americana (microdados do FTP do DataSUS) | 1 | 554.324 | — | Sem procedência registrada |
+| `br_ms_sinan_leishmaniose_visceral` | SINAN — notificação compulsória de leishmaniose visceral (microdados do FTP do DataSUS) | 1 | 207.099 | — | Sem procedência registrada |
+| `br_ms_sinan_leptospirose` | SINAN — notificação compulsória de leptospirose (microdados do FTP do DataSUS) | 1 | 431.596 | — | Sem procedência registrada |
+| `br_ms_sinan_ler_dort` | SINAN — notificação compulsória de LER/DORT relacionada ao trabalho (microdados do FTP do DataSUS) | 1 | 164.832 | — | Sem procedência registrada |
 | `br_ms_sinan_malaria` | SINAN — notificação compulsória de malária fora da Amazônia Legal | 1 | 71.159 | — | SINAN Malária (notificação fora da Amazônia Legal) |
+| `br_ms_sinan_meningite` | SINAN — notificação compulsória de meningite (microdados do FTP do DataSUS) | 1 | 529.165 | — | Sem procedência registrada |
+| `br_ms_sinan_notificacao_negativa_trabalho` | SINAN — notificação compulsória de notificação negativa de agravos do trabalho (microdados do FTP do DataSUS) | 1 | 37.521 | — | Sem procedência registrada |
+| `br_ms_sinan_pair_trabalho` | SINAN — notificação compulsória de perda auditiva induzida por ruído (PAIR) no trabalho (microdados do FTP do DataSUS) | 1 | 11.611 | — | Sem procedência registrada |
+| `br_ms_sinan_paralisia_flacida_aguda` | SINAN — notificação compulsória de paralisia flácida aguda (microdados do FTP do DataSUS) | 1 | 10.396 | — | Sem procedência registrada |
+| `br_ms_sinan_peste` | SINAN — notificação compulsória de peste (microdados do FTP do DataSUS) | 1 | 158 | — | Sem procedência registrada |
+| `br_ms_sinan_pneumoconioses` | SINAN — notificação compulsória de pneumoconioses (microdados do FTP do DataSUS) | 1 | 7.191 | — | Sem procedência registrada |
+| `br_ms_sinan_raiva_humana` | SINAN — notificação compulsória de raiva humana (microdados do FTP do DataSUS) | 1 | 1.725 | — | Sem procedência registrada |
+| `br_ms_sinan_rotavirus` | SINAN — notificação compulsória de rotavírus (microdados do FTP do DataSUS) | 1 | 22.257 | — | Sem procedência registrada |
+| `br_ms_sinan_sifilis_adquirida` | SINAN — notificação compulsória de sífilis adquirida (microdados do FTP do DataSUS) | 1 | 1.902.301 | — | Sem procedência registrada |
+| `br_ms_sinan_sifilis_congenita` | SINAN — notificação compulsória de sífilis congênita (microdados do FTP do DataSUS) | 1 | 334.314 | — | Sem procedência registrada |
+| `br_ms_sinan_sifilis_gestante` | SINAN — notificação compulsória de sífilis em gestante (microdados do FTP do DataSUS) | 1 | 804.888 | — | Sem procedência registrada |
+| `br_ms_sinan_surto_dta` | SINAN — notificação compulsória de surtos de doenças transmitidas por alimentos (microdados do FTP do DataSUS) | 1 | 15.033 | — | Sem procedência registrada |
+| `br_ms_sinan_tetano_acidental` | SINAN — notificação compulsória de tétano acidental (microdados do FTP do DataSUS) | 1 | 11.659 | — | Sem procedência registrada |
+| `br_ms_sinan_tetano_neonatal` | SINAN — notificação compulsória de tétano neonatal (microdados do FTP do DataSUS) | 1 | 52 | — | Sem procedência registrada |
+| `br_ms_sinan_toxoplasmose_congenita` | SINAN — notificação compulsória de toxoplasmose congênita (microdados do FTP do DataSUS) | 1 | 36.254 | — | Sem procedência registrada |
+| `br_ms_sinan_toxoplasmose_gestacional` | SINAN — notificação compulsória de toxoplasmose gestacional (microdados do FTP do DataSUS) | 1 | 87.469 | — | Sem procedência registrada |
+| `br_ms_sinan_tracoma` | SINAN — notificação compulsória de tracoma (microdados do FTP do DataSUS) | 1 | 181.508 | — | Sem procedência registrada |
+| `br_ms_sinan_transtornos_mentais_trabalho` | SINAN — notificação compulsória de transtornos mentais relacionados ao trabalho (microdados do FTP do DataSUS) | 1 | 38.183 | — | Sem procedência registrada |
+| `br_ms_sinan_tuberculose` | SINAN — notificação compulsória de tuberculose (microdados do FTP do DataSUS) | 1 | 2.301.397 | — | Sem procedência registrada |
+| `br_ms_sinan_varicela` | SINAN — notificação compulsória de varicela (microdados do FTP do DataSUS) | 1 | 1.502.834 | — | Sem procedência registrada |
 | `br_ms_sinan_violencia` | SINAN — notificação compulsória de violência doméstica, sexual e outras | 1 | 5.384.473 | — | SINAN Violência (violência doméstica, sexual e/ou outras) |
 | `br_ms_sinan_zika` | SINAN — notificação compulsória de zika | 1 | 608.320 | — | SINAN Zika |
 | `br_ms_sinasc` | SINASC — Sistema de Informações sobre Nascidos Vivos | 2 | 93.344.585 | — | Base dos Dados |
@@ -223,18 +273,19 @@
 | `br_ms_sipni_cobertura_historica` | _(sem descrição)_ | 1 | 2.762.327 | — | SI-PNI cobertura histórica (healthbr-data) |
 | `br_ms_sipni_dicionarios` | SI-PNI — dicionários de cobertura vacinal | 4 | 224 | — | SI-PNI dicionários (healthbr-data) |
 | `br_ms_sipni_doses_historicas` | SI-PNI — doses de vacina aplicadas, série histórica agregada | 1 | 93.785.056 | — | SI-PNI doses históricas (healthbr-data) |
+| `br_ms_sipni_microdados` | SI-PNI — microdados de vacinação individual (2020) | 1 | 102.423.524 | — | SI-PNI microdados (healthbr-data) |
 | `br_ms_sisvan` | SISVAN — Sistema de Vigilância Alimentar e Nutricional | 2 | 406.253.847 | 2023-12-31 | Base dos Dados |
 | `br_ms_vacinacao_covid19` | Ministério da Saúde — vacinação contra covid-19 | 2 | 805.917 | — | Base dos Dados |
 | `br_mte_listasuja` | MTE — Lista Suja do trabalho escravo (Cadastro de Empregadores) e CEAC, com CNPJ/CPF | 5 | 2.837 | — | MTE — Lista Suja do Trabalho Escravo (Cadastro de Empregadores) + CEAC |
-| `br_ok_queridodiario` | Querido Diário — metadados de diários oficiais municipais | 1 | 326.052 | — | Querido Diário |
+| `br_ok_queridodiario` | Querido Diário — metadados de diários oficiais municipais | 1 | 329.642 | — | Querido Diário |
 | `br_ok_queridodiario_texto` | Querido Diário — texto integral das edições de diários oficiais municipais | 1 | 320.422 | 2026-10-06 | Querido Diário — texto integral das edições |
 | `br_ons_avaliacao_operacao` | ONS — avaliação da operação do Sistema Interligado Nacional (geração por usina, térmicas por motivo de despacho, restrição de eólicas, energia armazenada e afluente por reservatório) | 6 | 89.805.415 | — | Base dos Dados |
 | `br_ons_dados_abertos` | _(sem descrição)_ | 93 | 669.600.799 | — | ONS — dados abertos, 4 conjuntos que faltavam |
 | `br_ons_estimativa_custos` | ONS — estimativas de custo da operação (balanço de energia por subsistema, custo marginal semanal e semi-horário, custo variável das térmicas) | 5 | 1.407.872 | — | Base dos Dados |
 | `br_pgfn_dividaativa` | PGFN — dívida ativa da União (tributária, FGTS, previdenciária) | 2 | 914.557.709 | — | PGFN |
-| `br_pncp` | PNCP — Portal Nacional de Contratações Públicas, licitações e contratos de todos os entes | 1 | 5.370.608 | — | PNCP — Portal Nacional de Contratações Públicas |
+| `br_pncp` | PNCP — Portal Nacional de Contratações Públicas, licitações e contratos de todos os entes | 1 | 4.525.064 | — | PNCP — Portal Nacional de Contratações Públicas |
 | `br_poder360_pesquisas` | Poder360 — pesquisas eleitorais | 1 | 162.075 | — | Base dos Dados |
-| `br_presidencia_comunicabr` | Presidência — ComunicaBR, painel de 84 programas federais (Bolsa Família, MCMV, PNAE, Mais Médicos, Plano Safra…) por município, UF e Brasil, 2023–2026, agregado e com ref por variável; um parquet por coleta | 3 | 1.566.488 | — | Presidência — ComunicaBR, painel de indicadores dos programas federais por município |
+| `br_presidencia_comunicabr` | Presidência — ComunicaBR, painel de 84 programas federais (Bolsa Família, MCMV, PNAE, Mais Médicos, Plano Safra…) por município, UF e Brasil, 2023–2026, agregado e com ref por variável; um parquet por coleta | 3 | 3.090.034 | — | Presidência — ComunicaBR, painel de indicadores dos programas federais por município |
 | `br_prf_acidentes` | Acidentes em rodovias federais (PRF) — ocorrências, pessoas envolvidas e causas | 3 | 11.950.547 | — | PRF — acidentes 2026 (setembro) em `br_prf_acidentes` |
 | `br_prf_infracoes` | _(sem descrição)_ | 1 | 63.217.947 | — | PRF — infrações (autos) em rodovias federais |
 | `br_rf_arrecadacao` | Receita Federal — arrecadação tributária federal | 5 | 535.465 | — | Base dos Dados |
@@ -247,7 +298,7 @@
 | `br_rodado_indicadores_municipais` | Rodado — os indicadores do painel municipal em formato longo: 987 indicadores em 19 seções (segurança, saúde, educação, benefícios…) para os 5.571 municípios, uma linha por município × indicador × ano/mês/dimensão | 1 | 12.382.056 | — | Sem procedência registrada |
 | `br_saude_bps` | Boletim de Pessoal da Saúde — dados de profissionais de saúde | 1 | 376.508 | — | BPS |
 | `br_saude_farmaciapopular` | Farmácia Popular — estabelecimentos credenciados | 3 | 522.807 | — | Farmácia Popular — pessoas atendidas por município (MGDI, Ministério da Saúde) |
-| `br_sedec_desastres` | SEDEC/Defesa Civil — reconhecimentos vigentes de situação de emergência ou calamidade | 1 | 20.380 | — | Base dos Dados |
+| `br_sedec_desastres` | SEDEC/Defesa Civil — reconhecimentos vigentes de situação de emergência ou calamidade | 2 | 68.097 | — | Base dos Dados — reconhecimentos de emergência/calamidade realizados (Sedec), 2013-2026 |
 | `br_seeg_emissoes` | SEEG — emissões estimadas de gases de efeito estufa por município e setor | 3 | 191.801.271 | — | Base dos Dados |
 | `br_sema_mt_embargos` | _(sem descrição)_ | 2 | 27.093 | — | SEMA-MT — áreas embargadas e desembargadas |
 | `br_semas_pa_ldi` | _(sem descrição)_ | 1 | 5.387 | — | SEMAS-PA — Lista de Desmatamento Ilegal (LDI) |
@@ -255,8 +306,8 @@
 | `br_senado_dados_abertos` | Senado Federal — senadores, votações, discursos, comissões | 18 | 612.356 | — | Base dos Dados |
 | `br_senado_dados_abertos_administrativos` | Senado Federal — dados administrativos (CEAPS, remuneração de servidores) | 40 | 641.617 | — | Base dos Dados |
 | `br_senado_dadosabertos` | Senado Federal — comissões, matérias, senadores e votações (fonte alternativa) | 4 | 167.221 | — | Senado (geral) |
-| `br_senatran_estatisticas` | Frota de veículos por UF e tipo (SENATRAN, via Base dos Dados) | 1 | 160.461 | — | Base dos Dados |
-| `br_senatran_frota` | SENATRAN — frota de veículos por município e tipo, mensal desde 2013 | 1 | 20.223.786 | — | SENATRAN — frota de veículos por município e tipo |
+| `br_senatran_estatisticas` | Frota de veículos por UF e tipo (SENATRAN, via Base dos Dados) | 7 | 244.660.695 | — | Base dos Dados — SENATRAN, frota por município x ano de fabricação/modelo, CEP, cor, potência, restrição e tipo/espécie/eixos, 2014-09 a 2026-09 |
+| `br_senatran_frota` | SENATRAN — frota de veículos por município e tipo, mensal desde 2013 | 1 | 20.346.370 | — | SENATRAN — frota de veículos por município e tipo |
 | `br_sfb_cnfp` | _(sem descrição)_ | 1 | 12.874 | — | SFB — Cadastro Nacional de Florestas Públicas 2025 |
 | `br_sfb_concessoes` | _(sem descrição)_ | 2 | 75 | — | Serviço Florestal Brasileiro — concessões florestais federais (contratos e produção) |
 | `br_sfb_sicar` | SICAR/SFB — Cadastro Ambiental Rural | 12 | 72.747.267 | — | SFB — SICAR, as 5 tabelas restantes, sem geometria |
@@ -268,30 +319,32 @@
 | `br_sp_saopaulo_geosampa_iptu` | Prefeitura de São Paulo — cadastro de IPTU (GeoSampa) | 1 | 93.430.758 | — | Base dos Dados |
 | `br_stf_corte_aberta` | STF — decisões do projeto Corte Aberta | 2 | 2.708.896 | — | Base dos Dados |
 | `br_stj_dadosabertos` | STJ — decisões monocráticas e acórdãos publicados em 2021 (só este ano) | 1 | 3.604.791 | — | STJ dados abertos |
+| `br_stn_capag` | Tesouro Nacional — CAPAG, base de cálculo do indicador por município (2024–2026) | 1 | 2.968.462 | — | Base dos Dados — CAPAG, base de cálculo dos municípios (STN), 2024-2026 |
 | `br_susep_dados_abertos` | _(sem descrição)_ | 22 | 11.940.674 | — | SUSEP — dados abertos pela API Olinda (cadastro, administradores, produtos, receitas, despesas, provisões, contábeis) |
-| `br_tce_es` | TCE-ES — fiscalização de contas de municípios e do estado | 5 | 13.101 | — | TCE-ES |
+| `br_tce_es` | TCE-ES — fiscalização de contas de municípios e do estado | 5 | 13.068 | — | TCE-ES |
 | `br_tce_pi` | TCE-PI — despesas, licitações e receitas de municípios | 5 | 405 | — | TCE-PI |
 | `br_tce_rj` | TCE-RJ — contratos, licitações, convênios e gastos com pessoal | 6 | 225.683 | — | TCE-RJ |
 | `br_tce_sp` | TCE-SP — municípios fiscalizados | 1 | 644 | — | TCE-SP |
 | `br_tce_to` | TCE-TO — pautas de julgamento | 1 | 50 | — | TCE-TO |
 | `br_tcu_dadosabertos` | TCU — acórdãos (Plenário e Câmaras) com relator, sumário e link, 2024–2026 | 1 | 39.302 | — | TCU |
-| `br_tcu_inidoneos` | TCU — empresas e responsáveis inidôneos ou inabilitados | 4 | 58.562 | — | TCU inidôneos e suspensos |
-| `br_tesouro_capag` | Tesouro Nacional — Capacidade de Pagamento (CAPAG) de estados e municípios | 2 | 5.815 | — | CAPAG (capacidade de pagamento, entes SICONFI) |
+| `br_tcu_inidoneos` | TCU — empresas e responsáveis inidôneos ou inabilitados | 4 | 58.715 | — | TCU inidôneos e suspensos |
+| `br_tesouro_capag` | Tesouro Nacional — Capacidade de Pagamento (CAPAG) de estados e municípios | 2 | 5.842 | — | CAPAG (capacidade de pagamento, entes SICONFI) |
 | `br_tesouro_cauc` | Tesouro Transparente — CAUC, regularidade fiscal de estados e municípios | 3 | 5.674 | — | Tesouro Transparente — CAUC |
 | `br_tesouro_transferencias` | _(sem descrição)_ | 2 | 25.346.631 | — | Tesouro Transparente — transferências constitucionais (FPM, FPE, Fundeb, royalties…) para municípios e estados |
 | `br_transferegov` | TransfereGov — planos de ação, programas e transferências (API normalizada) | 3 | 30.346 | — | TransfereGov |
 | `br_transferegov_siconv` | TransfereGov/SICONV — convênios, contratos de repasse e execução física/financeira completa | 62 | 69.060.758 | — | Transferegov/SICONV completo |
 | `br_trase_supply_chain` | Trase — cadeia de suprimentos de soja e carne bovina, do frigorífico/esmagadora à origem | 7 | 1.824.843 | — | Sem procedência registrada |
-| `br_tse_eleicoes` | TSE — eleições 2026 (candidatos, votação, resultados, bens, receitas) | 32 | 1.719.618.148 | 2026-10-25 | Base dos Dados |
+| `br_tse_eleicoes` | TSE — eleições 2026 (candidatos, votação, resultados, bens, receitas) | 32 | 1.719.634.758 | 2026-10-25 | Base dos Dados |
 | `br_tse_filiacao_partidaria` | TSE — filiação partidária | 2 | 42.201.443 | — | Base dos Dados |
 | `br_ufmg_censo_demografico_1872` | Recenseamento Geral do Império do Brasil de 1872 (UFMG) por província, município e paróquia, nos dados originais e corrigidos | 58 | 1.251.630 | — | Base dos Dados |
 | `eu_sanctions` | União Europeia — lista de sanções | 1 | 44.286 | — | EU Sanctions |
 | `global_ibge_tabua_mares` | IBGE — tábua de marés | 2 | 1.261.446 | — | Tábua de Marés |
 | `global_icij_offshoreleaks` | ICIJ Offshore Leaks — empresas offshore, intermediários e beneficiários | 6 | 5.356.929 | — | ICIJ Offshore Leaks |
 | `global_ofac_sanctions` | OFAC (EUA) — lista de sanções | 1 | 19.599 | — | OFAC |
-| `global_opensanctions` | OpenSanctions — consolidado mundial de listas de sanções e PEP | 1 | 1.251.468 | — | OpenSanctions |
+| `global_opensanctions` | OpenSanctions — consolidado mundial de listas de sanções e PEP | 1 | 1.253.279 | — | OpenSanctions |
 | `mundo_transfermarkt_competicoes` | Transfermarkt — Campeonato Brasileiro Série A e Copa do Brasil | 2 | 9.054 | — | Base dos Dados |
 | `mundo_transfermarkt_competicoes_internacionais` | Transfermarkt — Champions League | 1 | 2.617 | — | Base dos Dados |
+| `politicos` | Base dos Dados — contatos de políticos | 1 | 7.664 | — | Políticos — contato (Câmara + Senado) |
 | `un_sanctions` | ONU — lista de sanções | 1 | 1.007 | — | UN Sanctions |
 | `us_harvard_ned` | Harvard NED — eleições parlamentares e presidenciais internacionais | 2 | 6.309 | — | Base dos Dados |
 | `world_ampas_oscar` | Oscar (AMPAS) — demografia de vencedores | 1 | 415 | — | Base dos Dados |
