@@ -22,15 +22,18 @@ gotchas:
     severidade: silencioso
     verificado: "2025 (caixa): 995 municípios depois de normalizar; sem normalizar, nomes em dobro — medido 2026-11-27"
   - id: participacao_especial_parou_2024
-    resumo: "participacao_especial_* para em 2024-09 (o CSV dos dados abertos não foi atualizado); a ANP segue publicando a PE por trimestre em planilhas de distribuição na página de participação especial. Para 2025, a PE paga somou R$ 33,2 bi (União 16,6, estados 13,3, municípios 3,3)."
+    resumo: "participacao_especial_{uniao,estado,municipio,campo} param em 2024-09 (o CSV dos dados abertos não é mais atualizado). De 2025 em diante use participacao_especial_distribuicao (uma linha por pagamento e beneficiário): 2025 = R$ 33,18 bi (União 16,6, estados 13,3, municípios 3,3)."
     detalhe: >
-      Royalties e PE se comparam pelo mês de caixa (pagamento), não pela competência: o royalty
-      é pago dois meses depois e a PE do trimestre no segundo mês seguinte. Somar por ano de
-      competência deixa 2025 com 10 meses de royalties.
-    tabelas: [participacao_especial_uniao, participacao_especial_estado, participacao_especial_municipio, royalties_uniao]
-    colunas: [competencia, caixa]
+      Royalties e PE se comparam pelo ano de pagamento (caixa / data_pagamento), não pela
+      competência: o royalty é pago dois meses depois e a PE do trimestre no segundo mês seguinte.
+      Somar por ano de competência deixa 2025 com 10 meses de royalties. Em
+      participacao_especial_distribuicao, os municípios vêm em caixa alta sem acento ('MARICA', uf RJ)
+      e uma planilha pode ser acerto (auditoria, recálculo, parcela do acordo de Jubarte), não só o
+      trimestre: some todas as do ano para o total pago.
+    tabelas: [participacao_especial_distribuicao, participacao_especial_uniao, participacao_especial_municipio, royalties_uniao]
+    colunas: [data_pagamento, planilha, tipo_beneficiario, competencia, caixa]
     severidade: aviso
-    verificado: "40 planilhas de distribuição pagas em 2025 somam R$ 33,18 bi; royalties por caixa 2025 = R$ 62,16 bi, 12 meses — medido 2026-11-27"
+    verificado: "70 planilhas; soma por planilha = Total Distribuído; 2025 = R$ 33,183 bi — medido 2026-11-27"
   - id: gasodutos_variavel_mistura_unidades
     resumo: "movimentacao_gas_gasodutos (10,8 M linhas) é formato longo: a coluna variavel mistura grandezas e unidades e muda de rótulo entre anos ('Volume Realizado' x 'Volume Realizado (mil m³)'). Filtre uma variável antes de somar."
     tabelas: [movimentacao_gas_gasodutos]

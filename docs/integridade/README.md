@@ -1,5 +1,7 @@
 # Integridade: hash lógico de cada tabela
 
+> Visão geral de fonte, hash por publicação e histórico de mudanças: [`governanca.md`](governanca.md).
+
 `hashes.csv` (gerado pela primeira passada, em andamento desde 25/11/2026) traz, para cada tabela do espelho, o número de linhas e um **hash do conteúdo**.
 `particoes.csv` traz o mesmo por ano, nas tabelas que têm a coluna `ano`. O histórico do git
 destes dois arquivos registra quando cada hash mudou, ou seja, quando o conteúdo mudou:
