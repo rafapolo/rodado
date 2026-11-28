@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Preenche os blocos gerados da home (pages/index.html e pages/en.html).
 
-A home é uma apresentação curta: oito plataformas escolhidas (HOME_PLATAFORMAS), o teaser do
+A home é uma apresentação curta: nove plataformas escolhidas (HOME_PLATAFORMAS), o teaser do
 DataViz (estático) e as análises mais recentes em cartões de notícia — no EN,
 só as escritas em inglês. Os 43 temas saíram dela para
 pages/temas/index.html (e temas-en/index.html) — leitores relataram que a
@@ -29,7 +29,7 @@ PLATAFORMAS = PAGES / "plataformas" / "plataformas.json"
 
 N_ANALISES = 8
 # a vitrine da home mostra só estas, nesta ordem; /plataformas/ continua com todas
-HOME_PLATAFORMAS = ["eleicoes", "brasilume", "templos-religiosos", "os-rios-estao-secando",
+HOME_PLATAFORMAS = ["eleicoes", "electra", "brasilume", "templos-religiosos", "os-rios-estao-secando",
                     "datative", "viso", "fincrime", "religioes"]
 LIMITE_DEK = 230
 
@@ -46,7 +46,7 @@ TEXTO = {
         "analises_h2": "Analyses in English",
         "analises_todas": "All {n} analyses in English →",
         "plataformas_h2": "Platforms",
-        "plataformas_dek": "<a href=\"/plataformas/en.html\">Dashboards, maps and networks</a> to explore the whole "
+        "plataformas_dek": "<a href=\"/plataformas/en\">Dashboards, maps and networks</a> to explore the whole "
                            "data, not just the slice an analysis used. The "
                            "platforms themselves are in Portuguese.",
         "plataformas_todas": "See the {n} platforms →",
@@ -159,7 +159,7 @@ def bloco_plataformas(itens: list[dict], lang: str) -> str:
             f'<span>{e(titulo)}</span></a>'
         )
     # o "ver todas" é o último cartão do carrossel (assets/carrossel.js)
-    destino = "/plataformas/en.html" if en else "/plataformas/"
+    destino = "/plataformas/en" if en else "/plataformas/"
     linhas.append(f'    <a class="teaser-tile ver-todas" href="{destino}">'
                   f'<span class="ver-todas-seta" aria-hidden="true">→</span>'
                   f'<span>{t["plataformas_todas"].format(n=len(itens)).rstrip(" →")}</span></a>')
