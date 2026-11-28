@@ -29,8 +29,12 @@ on:
   # /plataformas/datative vem de rafapolo/datative: o site estático é gerado
   # aqui (build:graph + build:site) a partir dos static/entities/*.json já
   # commitados lá, pelo mesmo repository_dispatch.
+  #
+  # /plataformas/electra vem de rafapolo/electra: os dados já estão
+  # versionados lá (dados/ + index.html); aqui só roda o build (minifica para
+  # dist/), pelo mesmo repository_dispatch.
   repository_dispatch:
-    types: [tse-bens-updated, rios-updated, brasilumen-updated, eleicoes-updated, datative-updated]
+    types: [tse-bens-updated, rios-updated, brasilumen-updated, eleicoes-updated, datative-updated, electra-updated]
 
 permissions:
   contents: read
@@ -180,6 +184,22 @@ jobs:
           mkdir -p "$GITHUB_WORKSPACE/pages/plataformas/datative"
           cp -r dist/. "$GITHUB_WORKSPACE/pages/plataformas/datative/"
           rm -rf "$GITHUB_WORKSPACE/_datative"
+      - name: Checkout electra
+        uses: actions/checkout@v7
+        with:
+          repository: rafapolo/electra
+          ref: ${{ github.event.action == 'electra-updated' && github.event.client_payload.sha || '' }}
+          path: _electra
+      # Caminhos relativos (manifest e service worker com escopo ./), então o
+      # dist/ funciona sob /plataformas/electra/ como no github.io.
+      - name: Monta electra
+        run: |
+          cd _electra
+          bun install --frozen-lockfile
+          bun run build
+          mkdir -p "$GITHUB_WORKSPACE/pages/plataformas/electra"
+          cp -r dist/. "$GITHUB_WORKSPACE/pages/plataformas/electra/"
+          rm -rf "$GITHUB_WORKSPACE/_electra"
       # Plataformas montadas acima sem cartão de compartilhamento ganham um,
       # do plataformas.json (título, dek, img/og-<slug>.png). Página que já
       # tem og:title fica como veio. O sitemap.xml já lista estas URLs
